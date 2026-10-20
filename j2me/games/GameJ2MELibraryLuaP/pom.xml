@@ -1,0 +1,192 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.allbinary</groupId>
+  <artifactId>GameJ2MELibraryPOMLua</artifactId>
+  <packaging>pom</packaging>
+  <!-- AllBinary Platform Version Start -->
+  <version>1.0.0-SNAPSHOT</version>
+  <!-- AllBinary Platform Version End -->
+
+  <name>GameJ2MELibraryPOMLua</name>
+  <url>http://www.allbinary.com/</url>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <name>AllBinary Snapshots Nexus</name>
+            <url>https://nexus-allbinary.rhcloud.com/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>nexus-releases</id>
+            <name>AllBinary Releases Nexus</name>
+            <url>https://nexus-allbinary.rhcloud.com/nexus/content/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
+
+
+
+    <modules>
+
+        <!--
+        NoGyroSensorLibrary
+
+        -->
+        <module>../../android/AndroidUtilJavaLibraryLuaM</module>
+
+        <module>../../../allbinary_src/security/SimpleCryptLibraryLuaM</module>
+        <!--
+        <module>../../../../working_thirdparty/security/BouncyCastleDESJavaLibraryLuaM</module>
+        <module>../../../../working_thirdparty/communication/XmlRpc/XmlRpcJavaLibraryLuaM</module>
+        -->
+        <module>../../../allbinary_src/TokenizerJavaLibraryLuaM</module>
+        <module>../../../allbinary_src/security/BasicSecurityJavaLibraryLuaM</module>
+        <module>../../../replace_these_stub_projects/security/YourCryptFileJavaLibraryLuaM</module>
+        <module>../../../replace_these_stub_projects/security/YourSecurityJavaLibraryLuaM</module>
+        <module>../../../replace_these_stub_projects/communication/YourXmlRpcJavaLibraryLuaM</module>
+        <module>../../../replace_these_stub_projects/allbinary_src/J2MEOnlyJavaLibraryLuaM</module>
+        <module>../../../replace_these_stub_projects/allbinary_src/J2MECompatibilityJavaLibraryLuaM</module>
+        <module>../../../replace_these_stub_projects/allbinary_src/J2MEJsInteropCompatibilityJavaLibraryLuaM</module>
+
+        <module>../../DebugJavaLibraryLuaM</module>             
+        <module>../../ResourceLibraryLuaM</module>
+        <module>../../ResourceJ2MEJavaLibraryLuaM</module>
+        <module>../../AndroidResourceLibraryLuaM</module>
+        <module>../../../allbinary_src/hardware/AndroidSystemJavaLibraryLuaM</module>
+
+        <module>../../../game/behavior/ArtificialIntelligenceLibraryLuaM</module>
+
+        <module>../../media/graphics/PlatformNullImageJavaLibraryLuaM</module>
+        <module>../../media/graphics/ImageCacheBaseJ2MEJavaLibraryLuaM</module>
+        <module>../../media/graphics/ImageCacheJ2MEJavaLibraryLuaM</module>
+        <module>../../../graphics/opengl/OpenGLJ2MENoneJavaLibraryLuaM</module>
+        <module>../../../graphics/opengl/OpenGLNoneJavaLibraryLuaM</module>
+        <module>../../../graphics/opengl/OpenGLNoneOtherJavaLibraryLuaM</module>
+        <module>../../../graphics/opengl/OpenGLNoneOther2JavaLibraryLuaM</module>
+        <module>../../../graphics/opengl/OpenGLESBaseJ2MEJavaLibraryLuaM</module>
+
+        <module>../../media/graphics/animation/AnimationLibraryLuaM</module>
+        <module>../../media/graphics/animation/RotationAnimationJavaLibraryLuaM</module>
+
+        <module>../../games/GameInputLibraryLuaM</module>
+
+        <module>../../games/GameScoresBaseJavaLibraryLuaM</module>
+        <module>../../games/GameScoresBaseJ2MELibraryLuaM</module>
+
+        <module>../../statistics/ApplicationStatisticsHTMLLibraryLuaM</module>
+        <!--
+        <module>../../games/GameConfigurationHTMLJavaLibraryLuaM</module>
+        -->
+        <module>../../games/GameConfigurationJ2MEJavaLibraryLuaM</module>   
+        <module>../../games/GameConfigurationJavaLibraryLuaM</module>
+
+        <module>../../games/GameIntermissionLibraryLuaM</module>
+
+        <module>../../GroupLibraryLuaM</module>
+
+        <module>../../input/NoSensorJavaLibraryLuaM</module>
+
+        <module>../../input/AllBinarySensorJavaLibraryLuaM</module>
+
+        <module>../../input/platform/me/GameInputMEJavaLibraryLuaM</module>
+        <module>../../input/platform/me/GameInputMEKeyOnlyJavaLibraryLuaM</module>
+        <module>../../input/platform/me/GameInputMEMotionJavaLibraryLuaM</module>
+        <module>../../input/platform/pc/GameInputPCBaseJavaLibraryLuaM</module>
+        <module>../../input/platform/pc/GameInputPCJavaLibraryLuaM</module>
+        <module>../../input/platform/pc/GameInputPCKeyOnlyJavaLibraryLuaM</module>
+        <module>../../input/platform/pc/GameInputPCMotionJavaLibraryLuaM</module>
+        <module>../../input/platform/pc/GameInputSwtJavaLibraryLuaM</module>
+
+        <module>../../input/AllBinaryGyroSensorJavaLibraryLuaM</module>
+        <module>../../input/MotionGestureJavaLibraryLuaM</module>
+        
+        <module>../../input/MotionGestureBaseJavaLibraryLuaM</module>
+
+        <module>../../games/GameInputPersistanceLibraryLuaM</module>
+        <module>../../games/GameInputNoPersistanceLibraryLuaM</module>
+        
+        <module>../../lib/VectorThreeDimensionalLibraryLuaM</module>
+        <module>../../input/AllBinaryAccelerometerSensorJavaLibraryLuaM</module>
+        <module>../../input/NoGyroSensorJavaLibraryLuaM</module>
+        <module>../../input/JSEGyroSensorJavaLibraryLuaM</module>
+        <!--
+        <module>../../input/android/</module>
+        <module>../../input/platform/android/GameInputAndroidBaseJavaLibraryLuaM</module>
+        -->
+
+        <module>../../media/sound/BasicPlayerJavaLibraryLuaM</module>
+        <module>../../media/sound/BasicPlayerMIDP2JavaLibraryLuaM</module>
+        <module>../../media/sound/NoPlayerJavaLibraryLuaM</module>
+        <module>../../media/sound/SoundJ2MELibraryLuaM</module>
+
+        <module>../../media/motion/AllBinaryVibrationJavaLibraryLuaM</module>
+        <module>../../media/motion/NoVibrateJavaLibraryLuaM</module>
+        <module>../../media/motion/VibrateAndroidJavaLibraryLuaM</module>
+
+        <module>../../media/graphics/NullCustomUIJavaLibraryLuaM</module>
+        <module>../../media/graphics/NullCustomUIBaseJavaLibraryLuaM</module>
+
+        <module>../../media/graphics/FormValidationJavaLibraryLuaM</module>
+        
+        <module>../../media/graphics/FormJavaLibraryLuaM</module>
+        <module>../../media/graphics/FormBaseJavaLibraryLuaM</module>
+        <!--
+        <module>../../media/graphics/FormJMEJavaLibraryLuaM</module>
+        -->
+        <module>../../../j2me/media/graphics/FormJMEJavaLibraryLuaM</module>
+
+        <module>../../media/graphics/animation/AnimationResourceJavaLibraryLuaM</module>
+        <module>../../media/graphics/animation/TransitionAnimationJavaLibraryLuaM</module>
+        <module>../../media/graphics/animation/NoTransitionAnimationJavaLibraryLuaM</module>
+        <!--
+        AndroidTransitionAnimationJavaLibraryM
+        -->
+        <module>../../media/graphics/animation/GameAnimationJavaLibraryLuaM</module>
+        <module>../../games/GameResourceJavaLibraryLuaM</module>
+        <module>../../games/GameSoundsJavaLibraryLuaM</module>
+
+        <module>../../input/TouchInputLibraryP</module>
+
+        <module>../../media/MediaDataLuaM</module>
+        <module>../../media/sound/NotDeviceSpecificNoMediaMIDP1LibraryLuaM</module>
+
+        <module>../../../allbinary_src/content/ContentNoneJavaLibraryLuaM</module>
+        <module>../../../allbinary_src/content/ContentAndroidJavaLibraryLuaM</module>
+
+        <module>../../games/GameConfigurationFormJavaLibraryLuaM</module>
+
+        <module>../../FullScreenNoneJavaLibraryLuaM</module>
+        <!--
+        <module>../../FullScreenJavaLibraryLuaM</module>
+        -->
+
+        <module>../../../physics/VelocityLibraryLuaM</module>
+
+        <module>../../games/weapon/SoundsBasicWeaponsJavaLibraryLuaM</module>
+
+        <module>../../lib/TrigJ2MELibraryLuaM</module>
+
+        <module>../../media/graphics/geography/map/LayerPlacementLibraryLuaM</module>
+        <module>../../media/graphics/layer/AllBinaryLayerJavaLibraryLuaM</module>
+
+        <module>../../ScreenCaptureNoneJavaLibraryLuaM</module>
+        
+        <module>../licensing/GameLicensingNullJavaLibraryLuaM</module>
+        
+        <module>../../business/advertisement/AllBinaryAdvertisementClientJavaLibraryLuaM</module>
+        <module>../../business/advertisement/AdvertisementClientNoneJavaLibraryLuaM</module>
+
+        <module>../GameNotificationJavaLibraryLuaM</module>
+
+        <module>../../../graphics/opengl/NoSWTJavaLibraryLuaM</module>
+        <module>../../../graphics/opengl/SWTWithoutJOGLJavaLibraryLuaM</module>
+        <module>../SWTJavaLibraryLuaM</module>
+        <module>../GameJ2MELibraryLuaM</module>
+        
+        <!--
+        <module>../GameJ2MEOptionalLibraryPOLuaM</module>
+        -->
+    
+    </modules>
+
+</project>
+

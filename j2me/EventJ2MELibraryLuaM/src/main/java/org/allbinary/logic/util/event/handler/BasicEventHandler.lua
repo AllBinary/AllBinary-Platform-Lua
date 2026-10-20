@@ -1,0 +1,162 @@
+--
+-- AllBinary Open License Version 1
+-- Copyright (c) 2011 AllBinary
+-- 
+-- By agreeing to this license you and any business entity you represent are
+-- legally bound to the AllBinary Open License Version 1 legal agreement.
+-- 
+-- You may obtain the AllBinary Open License Version 1 legal agreement from
+-- AllBinary or the root directory of AllBinary's AllBinary Platform repository.
+-- 
+-- Created By: Travis Berthelot
+--  
+-- Generated Code Do Not Modify
+-- package org.allbinary.logic.util.event.handler
+
+local JsType = require("jsinterop.annotations.JsType")
+local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = require("org.allbinary.logic.string.StringMaker")
+local AllBinaryEventObject = require("org.allbinary.logic.util.event.AllBinaryEventObject")
+local EventListenerInterface = require("org.allbinary.logic.util.event.EventListenerInterface")
+local EventStrings = require("org.allbinary.logic.util.event.EventStrings")
+local CommonStrings = require("org.allbinary.string.CommonStrings")
+local BasicArrayList = require("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
+local JsMethod = require("jsinterop.annotations.JsMethod")
+local JsConstructor = require("jsinterop.annotations.JsConstructor")
+local JsProperty = require("jsinterop.annotations.JsProperty")
+local BasicEventHandlerInterface = require("org.allbinary.logic.util.event.handler.BasicEventHandlerInterface")
+
+local function java_idiv(a, b)
+    local q = a / b
+    if q < 0 then return math.ceil(q) end
+    return math.floor(q)
+end
+
+local function java_int(value)
+    if value < 0 then return math.tointeger(math.ceil(value)) end
+    return math.tointeger(math.floor(value))
+end
+
+local BasicEventHandler = {}
+BasicEventHandler.__index = BasicEventHandler
+BasicEventHandler.className = "BasicEventHandler"
+
+function BasicEventHandler:_init_fields()
+    self.logUtil = LogUtil.getInstance()
+    self.commonStrings = CommonStrings.getInstance()
+    self.eventStrings = EventStrings.getInstance()
+    self.eventListenerInterfaceList = nil
+end
+
+
+function BasicEventHandler.new()
+    local self = setmetatable({}, BasicEventHandler)
+    self:_init_fields()
+        self.eventListenerInterfaceList = BasicArrayListD.new()
+    return self
+end
+
+
+function BasicEventHandler:removeAllListeners()
+        self.eventListenerInterfaceList = BasicArrayListD.new()
+end
+
+
+function BasicEventHandler:addListeners(vector)
+        local eventListenerInterface = nil
+        local size = vector:size()
+        for index = 0, size - 1 do
+            eventListenerInterface = vector:get(index)
+            self:addListenerInterface(eventListenerInterface)
+        end
+end
+
+
+function BasicEventHandler:removeListeners(vector)
+        local eventListenerInterface = nil
+        local size = vector:size()
+        for index = 0, size - 1 do
+            eventListenerInterface = vector:get(index)
+            self:removeListener(eventListenerInterface)
+        end
+end
+
+
+function BasicEventHandler:addListenerSingleThreaded(eventListenerInterface)
+        if not self.eventListenerInterfaceList:contains(eventListenerInterface) then
+            self.eventListenerInterfaceList:add(eventListenerInterface)
+        end
+end
+
+
+function BasicEventHandler:addListenerInterface(eventListenerInterface)
+        if not self.eventListenerInterfaceList:contains(eventListenerInterface) then
+            self.eventListenerInterfaceList:add(eventListenerInterface)
+        end
+end
+
+
+function BasicEventHandler:removeListenerSingleThreaded(eventListenerInterface)
+        self.eventListenerInterfaceList:remove(eventListenerInterface)
+end
+
+
+function BasicEventHandler:removeListener(eventListenerInterface)
+        self.eventListenerInterfaceList:remove(eventListenerInterface)
+end
+
+
+-- throws Exception
+function BasicEventHandler:fireEvent(eventObject)
+        local eventListenerInterface = nil
+        local index = 0
+        while index < self.eventListenerInterfaceList:size() do
+            local try_ok, try_error = pcall(function()
+                eventListenerInterface = self.eventListenerInterfaceList:get(index)
+                self:process(eventObject, eventListenerInterface)
+            end)
+            if not try_ok then
+                local e = try_error
+                self.logUtil:put(self.commonStrings.EXCEPTION, self, self.eventStrings.FIRE_EVENT, e)
+            end
+            index = index + 1
+        end
+end
+
+
+-- throws Exception
+function BasicEventHandler:process(eventObject, eventListenerInterface)
+        eventListenerInterface:onEvent(eventObject)
+end
+
+
+function BasicEventHandler:getEventListenerInterfaceListP()
+        return self.eventListenerInterfaceList
+end
+
+
+function BasicEventHandler:toString()
+        local stringBuffer = StringMaker.new()
+        stringBuffer:append(self.eventStrings.TOTAL_LISTENERS)
+        stringBuffer:appendint(self.eventListenerInterfaceList:size())
+        local eventListenerInterface = nil
+        local index = 0
+        while index < self.eventListenerInterfaceList:size() do
+            local try_ok, try_error = pcall(function()
+                eventListenerInterface = self.eventListenerInterfaceList:get(index)
+                stringBuffer:append(self.eventStrings.LISTENER_LABEL)
+                stringBuffer:append(tostring(eventListenerInterface))
+            end)
+            if not try_ok then
+                local e = try_error
+                self.logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.TOSTRING, e)
+            end
+            index = index + 1
+        end
+        return tostring(stringBuffer)
+end
+BasicEventHandler.__tostring = function(self) return self:toString() end
+
+return BasicEventHandler
+

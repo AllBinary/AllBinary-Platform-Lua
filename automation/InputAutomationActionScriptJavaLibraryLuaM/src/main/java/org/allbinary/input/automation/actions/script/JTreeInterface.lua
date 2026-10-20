@@ -1,0 +1,32 @@
+-- Generated Code Do Not Modify
+-- package org.allbinary.input.automation.actions.script
+
+
+local function java_idiv(a, b)
+    local q = a / b
+    if q < 0 then return math.ceil(q) end
+    return math.floor(q)
+end
+
+local function java_int(value)
+    if value < 0 then return math.tointeger(math.ceil(value)) end
+    return math.tointeger(math.floor(value))
+end
+
+-- Java interface
+local JTreeInterface = {}
+JTreeInterface.__index = JTreeInterface
+JTreeInterface.className = "JTreeInterface"
+
+
+function JTreeInterface:updateJTree()
+    error("abstract method updateJTree")
+end
+
+
+function JTreeInterface:getActionScriptJTree()
+    error("abstract method getActionScriptJTree")
+end
+
+return JTreeInterface
+

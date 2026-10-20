@@ -1,0 +1,148 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.allbinary.business</groupId>
+    <artifactId>BlisketJavaLibraryPLua</artifactId>
+    <packaging>pom</packaging>
+    <!-- AllBinary Platform Version Start -->
+    <version>1.0.0-SNAPSHOT</version>
+    <!-- AllBinary Platform Version End -->
+
+    <name>BlisketJavaLibraryPLua</name>
+    <url>http://www.allbinary.com/</url>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <name>AllBinary Snapshots Nexus</name>
+            <url>https://nexus-allbinary.rhcloud.com/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>nexus-releases</id>
+            <name>AllBinary Releases Nexus</name>
+            <url>https://nexus-allbinary.rhcloud.com/nexus/content/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
+    
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    
+    <modules>
+
+        <!--
+        <module>../../j2me/AllBinaryJ2MELibraryP</module>
+        -->
+        <!--
+        <module>../data/DataJavaLibraryLuaM</module>
+        -->
+
+        <module>../licensing/TestServiceClientInfoJavaLibraryLuaM</module>        
+
+        <module>../data/DataTableInterfacesLuaM</module>
+        
+        <module>../QueueJavaLibraryLuaM</module>
+        
+        <!--
+        <module>../TokenizerJavaLibraryLuaM</module>
+        -->
+
+        <module>../logging/LogConfigTypeFreeblisketJavaLibraryLuaM</module>
+
+        <module>../JavaUtilLibraryLuaM</module>
+        <module>../NullInitInfoJavaLibraryLuaM</module>        
+        <module>../InitInfoJavaLibraryLuaM</module>
+        <module>../PreLoaderHttpJavaLibraryLuaM</module>
+        
+        <module>../TagsBaseJavaLibraryLuaM</module>
+        <module>../CustomLoaderJavaLibraryLuaM</module>
+        
+        <!--
+        <module>../logic/data/file/FileJ2SEJavaLibraryLuaM</module>
+        <module>../logic/data/file/FileJavaLibraryLuaM</module>
+        -->
+
+        <module>../data/SQLAllBinaryJavaLibraryLuaM</module>
+
+        <!--
+        <module>../licensing/FileLicenseInitInfoJavaLibraryLuaM</module>
+        -->
+
+        <module>../DocumentObjectModelJavaLibraryLuaM</module>
+
+        <module>../VisualStyleJavaLibraryLuaM</module>
+
+        <module>../ConfigurationJavaLibraryLuaM</module>
+
+        <module>../VisualTransformBaseJavaLibraryLuaM</module>
+
+        <module>../CategoryBaseJavaLibraryLuaM</module>
+        <module>../CategoryJavaLibraryLuaM</module>
+
+        <module>../UserJavaLibraryLuaM</module>
+
+        <module>../PaymentGatewayBaseJavaLibraryLuaM</module>
+
+        <module>../data/vo/EntitiesBlisketVOJavaLibraryLuaM</module>
+        <module>../PaymentGatewayJavaLibraryLuaM</module>
+        <module>../data/vo/EntitiesOrderHistoryVOJavaLibraryLuaM</module>
+        <module>../data/vo/EntityPaymentGatewayVOJavaLibraryLuaM</module>
+        <module>../data/vo/EntityStoreFrontVOJavaLibraryLuaM</module>
+
+        <module>../data/EntitiesBlisketBaseInterfacesJavaLibraryLuaM</module>
+        <module>../data/EntitiesBlisketBaseJavaLibraryLuaM</module>
+        
+        <module>../data/EntitiesAdvertisementBaseJavaLibraryLuaM</module>
+        <module>../data/EntityOrderHistoryJavaLibraryLuaM</module>
+        <module>../data/EntityPaymentGatewayJavaLibraryLuaM</module>
+        <module>../data/EntityVisualTransformJavaLibraryLuaM</module>
+        <module>../data/EntityUserJavaLibraryLuaM</module>
+        <module>../data/EntityWorkflowJavaLibraryLuaM</module>
+
+        <module>../SMTPConfigurationJavaLibraryLuaM</module>
+        <module>../SMTPBaseJavaLibraryLuaM</module>
+
+        <module>../VisualTransformJavaLibraryLuaM</module>
+
+        <module>../../replace_these_stub_projects/allbinary_src/YourRuntimeEnvironmentJavaLibraryLuaM</module>
+        <module>../GatewayJavaLibraryLuaM</module>
+        
+        <module>../WorkflowBaseJavaLibraryLuaM</module>
+        <module>../WorkflowJavaLibraryLuaM</module>
+
+        <module>../IdGeneratorUsingFilesJavaLibraryLuaM</module>
+        <module>../BlisketPreVOJavaLibraryLuaM</module>
+
+        <!-- 
+        EntitiesOrderHistoryVOJavaLibrary
+        UserJavaLibrary
+        -->
+        
+        <module>../BlisketVOJavaLibraryLuaM</module>
+
+        <module>../UserCommerceJavaLibraryLuaM</module>
+
+        <module>../CustomizerValidatorsJavaLibraryLuaM</module>
+
+        <!-- 
+        AllBinaryCacheForShiftOneJavaLibrary
+        AllBinaryJSECacheJavaLibrary
+        ColorJavaLibrary
+        ImageJavaLibrary
+        -->
+        
+        <module>../logic/data/file/FileMediaJ2SEJavaLibraryLuaM</module>
+        <module>../BlisketBaseJavaLibraryLuaM</module>
+
+        <module>../logging/LoggingGAEAllLuaM</module>
+        <module>../BlisketJavaLibraryLuaM</module>
+        
+    </modules>
+
+</project>
+

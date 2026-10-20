@@ -1,0 +1,1280 @@
+--
+-- AllBinary Open License Version 1
+-- Copyright (c) 2011 AllBinary
+-- 
+-- By agreeing to this license you and any business entity you represent are
+-- legally bound to the AllBinary Open License Version 1 legal agreement.
+-- 
+-- You may obtain the AllBinary Open License Version 1 legal agreement from
+-- AllBinary or the root directory of AllBinary's AllBinary Platform repository.
+-- 
+-- Created By: Travis Berthelot
+--  
+-- Generated Code Do Not Modify
+-- package org.allbinary.math
+
+local JsType = require("jsinterop.annotations.JsType")
+local PreLogUtil = require("org.allbinary.logic.communication.log.PreLogUtil")
+local MathUtil = require("org.allbinary.logic.math.MathUtil")
+local StringMaker = require("org.allbinary.logic.string.StringMaker")
+local CommonLabels = require("org.allbinary.string.CommonLabels")
+local CommonSeps = require("org.allbinary.string.CommonSeps")
+local JsMethod = require("jsinterop.annotations.JsMethod")
+local JsConstructor = require("jsinterop.annotations.JsConstructor")
+local JsProperty = require("jsinterop.annotations.JsProperty")
+
+-- Java library Throwable. tostring gives the message like Java getMessage.
+local function java_exception(className, message, cause)
+    if cause == nil and type(message) == "table" then
+        cause = message
+        message = tostring(message)
+    end
+    local exception = {className = className, message = message, cause = cause}
+    function exception:getMessage() return self.message end
+    function exception:getCause() return self.cause end
+    function exception:printStackTrace() print(debug.traceback(tostring(self))) end
+    return setmetatable(exception, {__tostring = function(self) if self.message ~= nil then return tostring(self.message) end return self.className end})
+end
+
+local function java_new_array(default, size, ...)
+    local array = {n = size}
+    for index = 1, size do
+        if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
+    end
+    return array
+end
+
+local function java_idiv(a, b)
+    local q = a / b
+    if q < 0 then return math.ceil(q) end
+    return math.floor(q)
+end
+
+local function java_int(value)
+    if value < 0 then return math.tointeger(math.ceil(value)) end
+    return math.tointeger(math.floor(value))
+end
+
+local NoDecimalTrigTable = {}
+NoDecimalTrigTable.__index = NoDecimalTrigTable
+NoDecimalTrigTable.className = "NoDecimalTrigTable"
+
+function NoDecimalTrigTable:_init_fields()
+    self.mathUtil = MathUtil.getInstance()
+    self.noDecimalSin = nil
+    self.noDecimalCos = nil
+    self.noDecimalTan = nil
+    self.SCALE = 10000
+end
+
+
+function NoDecimalTrigTable.getInstance()
+        return NoDecimalTrigTable.instance
+end
+
+
+function NoDecimalTrigTable.new()
+    local self = setmetatable({}, NoDecimalTrigTable)
+    self:_init_fields()
+        local TOTAL_ANGLE = java_int(AngleFactory.getInstance().TOTAL_ANGLE)
+        local MAX_VALUE = (java_int(Integer.MAX_VALUE))
+        self.noDecimalSin = java_new_array(0, TOTAL_ANGLE)
+        self.noDecimalCos = java_new_array(0, TOTAL_ANGLE)
+        self.noDecimalTan = java_new_array(0, TOTAL_ANGLE + 1)
+        self.noDecimalSin[1] = 0
+        self.noDecimalSin[2] = 174
+        self.noDecimalSin[3] = 348
+        self.noDecimalSin[4] = 523
+        self.noDecimalSin[5] = 697
+        self.noDecimalSin[6] = 871
+        self.noDecimalSin[7] = 1045
+        self.noDecimalSin[8] = 1218
+        self.noDecimalSin[9] = 1391
+        self.noDecimalSin[10] = 1564
+        self.noDecimalSin[11] = 1736
+        self.noDecimalSin[12] = 1908
+        self.noDecimalSin[13] = 2079
+        self.noDecimalSin[14] = 2249
+        self.noDecimalSin[15] = 2419
+        self.noDecimalSin[16] = 2588
+        self.noDecimalSin[17] = 2756
+        self.noDecimalSin[18] = 2923
+        self.noDecimalSin[19] = 3090
+        self.noDecimalSin[20] = 3255
+        self.noDecimalSin[21] = 3420
+        self.noDecimalSin[22] = 3583
+        self.noDecimalSin[23] = 3746
+        self.noDecimalSin[24] = 3907
+        self.noDecimalSin[25] = 4067
+        self.noDecimalSin[26] = 4226
+        self.noDecimalSin[27] = 4383
+        self.noDecimalSin[28] = 4539
+        self.noDecimalSin[29] = 4694
+        self.noDecimalSin[30] = 4848
+        self.noDecimalSin[31] = 4999
+        self.noDecimalSin[32] = 5150
+        self.noDecimalSin[33] = 5299
+        self.noDecimalSin[34] = 5446
+        self.noDecimalSin[35] = 5591
+        self.noDecimalSin[36] = 5735
+        self.noDecimalSin[37] = 5877
+        self.noDecimalSin[38] = 6018
+        self.noDecimalSin[39] = 6156
+        self.noDecimalSin[40] = 6293
+        self.noDecimalSin[41] = 6427
+        self.noDecimalSin[42] = 6560
+        self.noDecimalSin[43] = 6691
+        self.noDecimalSin[44] = 6819
+        self.noDecimalSin[45] = 6946
+        self.noDecimalSin[46] = 7071
+        self.noDecimalSin[47] = 7193
+        self.noDecimalSin[48] = 7313
+        self.noDecimalSin[49] = 7431
+        self.noDecimalSin[50] = 7547
+        self.noDecimalSin[51] = 7660
+        self.noDecimalSin[52] = 7771
+        self.noDecimalSin[53] = 7880
+        self.noDecimalSin[54] = 7986
+        self.noDecimalSin[55] = 8090
+        self.noDecimalSin[56] = 8191
+        self.noDecimalSin[57] = 8290
+        self.noDecimalSin[58] = 8386
+        self.noDecimalSin[59] = 8480
+        self.noDecimalSin[60] = 8571
+        self.noDecimalSin[61] = 8660
+        self.noDecimalSin[62] = 8746
+        self.noDecimalSin[63] = 8829
+        self.noDecimalSin[64] = 8910
+        self.noDecimalSin[65] = 8987
+        self.noDecimalSin[66] = 9063
+        self.noDecimalSin[67] = 9135
+        self.noDecimalSin[68] = 9205
+        self.noDecimalSin[69] = 9271
+        self.noDecimalSin[70] = 9335
+        self.noDecimalSin[71] = 9396
+        self.noDecimalSin[72] = 9455
+        self.noDecimalSin[73] = 9510
+        self.noDecimalSin[74] = 9563
+        self.noDecimalSin[75] = 9612
+        self.noDecimalSin[76] = 9659
+        self.noDecimalSin[77] = 9702
+        self.noDecimalSin[78] = 9743
+        self.noDecimalSin[79] = 9781
+        self.noDecimalSin[80] = 9816
+        self.noDecimalSin[81] = 9848
+        self.noDecimalSin[82] = 9876
+        self.noDecimalSin[83] = 9902
+        self.noDecimalSin[84] = 9925
+        self.noDecimalSin[85] = 9945
+        self.noDecimalSin[86] = 9961
+        self.noDecimalSin[87] = 9975
+        self.noDecimalSin[88] = 9986
+        self.noDecimalSin[89] = 9993
+        self.noDecimalSin[90] = 9998
+        self.noDecimalSin[91] = 10000
+        self.noDecimalSin[92] = 9998
+        self.noDecimalSin[93] = 9993
+        self.noDecimalSin[94] = 9986
+        self.noDecimalSin[95] = 9975
+        self.noDecimalSin[96] = 9961
+        self.noDecimalSin[97] = 9945
+        self.noDecimalSin[98] = 9925
+        self.noDecimalSin[99] = 9902
+        self.noDecimalSin[100] = 9876
+        self.noDecimalSin[101] = 9848
+        self.noDecimalSin[102] = 9816
+        self.noDecimalSin[103] = 9781
+        self.noDecimalSin[104] = 9743
+        self.noDecimalSin[105] = 9702
+        self.noDecimalSin[106] = 9659
+        self.noDecimalSin[107] = 9612
+        self.noDecimalSin[108] = 9563
+        self.noDecimalSin[109] = 9510
+        self.noDecimalSin[110] = 9455
+        self.noDecimalSin[111] = 9396
+        self.noDecimalSin[112] = 9335
+        self.noDecimalSin[113] = 9271
+        self.noDecimalSin[114] = 9205
+        self.noDecimalSin[115] = 9135
+        self.noDecimalSin[116] = 9063
+        self.noDecimalSin[117] = 8987
+        self.noDecimalSin[118] = 8910
+        self.noDecimalSin[119] = 8829
+        self.noDecimalSin[120] = 8746
+        self.noDecimalSin[121] = 8660
+        self.noDecimalSin[122] = 8571
+        self.noDecimalSin[123] = 8480
+        self.noDecimalSin[124] = 8386
+        self.noDecimalSin[125] = 8290
+        self.noDecimalSin[126] = 8191
+        self.noDecimalSin[127] = 8090
+        self.noDecimalSin[128] = 7986
+        self.noDecimalSin[129] = 7880
+        self.noDecimalSin[130] = 7771
+        self.noDecimalSin[131] = 7660
+        self.noDecimalSin[132] = 7547
+        self.noDecimalSin[133] = 7431
+        self.noDecimalSin[134] = 7313
+        self.noDecimalSin[135] = 7193
+        self.noDecimalSin[136] = 7071
+        self.noDecimalSin[137] = 6946
+        self.noDecimalSin[138] = 6819
+        self.noDecimalSin[139] = 6691
+        self.noDecimalSin[140] = 6560
+        self.noDecimalSin[141] = 6427
+        self.noDecimalSin[142] = 6293
+        self.noDecimalSin[143] = 6156
+        self.noDecimalSin[144] = 6018
+        self.noDecimalSin[145] = 5877
+        self.noDecimalSin[146] = 5735
+        self.noDecimalSin[147] = 5591
+        self.noDecimalSin[148] = 5446
+        self.noDecimalSin[149] = 5299
+        self.noDecimalSin[150] = 5150
+        self.noDecimalSin[151] = 4999
+        self.noDecimalSin[152] = 4848
+        self.noDecimalSin[153] = 4694
+        self.noDecimalSin[154] = 4539
+        self.noDecimalSin[155] = 4383
+        self.noDecimalSin[156] = 4226
+        self.noDecimalSin[157] = 4067
+        self.noDecimalSin[158] = 3907
+        self.noDecimalSin[159] = 3746
+        self.noDecimalSin[160] = 3583
+        self.noDecimalSin[161] = 3420
+        self.noDecimalSin[162] = 3255
+        self.noDecimalSin[163] = 3090
+        self.noDecimalSin[164] = 2923
+        self.noDecimalSin[165] = 2756
+        self.noDecimalSin[166] = 2588
+        self.noDecimalSin[167] = 2419
+        self.noDecimalSin[168] = 2249
+        self.noDecimalSin[169] = 2079
+        self.noDecimalSin[170] = 1908
+        self.noDecimalSin[171] = 1736
+        self.noDecimalSin[172] = 1564
+        self.noDecimalSin[173] = 1391
+        self.noDecimalSin[174] = 1218
+        self.noDecimalSin[175] = 1045
+        self.noDecimalSin[176] = 871
+        self.noDecimalSin[177] = 697
+        self.noDecimalSin[178] = 523
+        self.noDecimalSin[179] = 348
+        self.noDecimalSin[180] = 174
+        self.noDecimalSin[181] = 0
+        self.noDecimalSin[182] = -174
+        self.noDecimalSin[183] = -348
+        self.noDecimalSin[184] = -523
+        self.noDecimalSin[185] = -697
+        self.noDecimalSin[186] = -871
+        self.noDecimalSin[187] = -1045
+        self.noDecimalSin[188] = -1218
+        self.noDecimalSin[189] = -1391
+        self.noDecimalSin[190] = -1564
+        self.noDecimalSin[191] = -1736
+        self.noDecimalSin[192] = -1908
+        self.noDecimalSin[193] = -2079
+        self.noDecimalSin[194] = -2249
+        self.noDecimalSin[195] = -2419
+        self.noDecimalSin[196] = -2588
+        self.noDecimalSin[197] = -2756
+        self.noDecimalSin[198] = -2923
+        self.noDecimalSin[199] = -3090
+        self.noDecimalSin[200] = -3255
+        self.noDecimalSin[201] = -3420
+        self.noDecimalSin[202] = -3583
+        self.noDecimalSin[203] = -3746
+        self.noDecimalSin[204] = -3907
+        self.noDecimalSin[205] = -4067
+        self.noDecimalSin[206] = -4226
+        self.noDecimalSin[207] = -4383
+        self.noDecimalSin[208] = -4539
+        self.noDecimalSin[209] = -4694
+        self.noDecimalSin[210] = -4848
+        self.noDecimalSin[211] = -5000
+        self.noDecimalSin[212] = -5150
+        self.noDecimalSin[213] = -5299
+        self.noDecimalSin[214] = -5446
+        self.noDecimalSin[215] = -5591
+        self.noDecimalSin[216] = -5735
+        self.noDecimalSin[217] = -5877
+        self.noDecimalSin[218] = -6018
+        self.noDecimalSin[219] = -6156
+        self.noDecimalSin[220] = -6293
+        self.noDecimalSin[221] = -6427
+        self.noDecimalSin[222] = -6560
+        self.noDecimalSin[223] = -6691
+        self.noDecimalSin[224] = -6819
+        self.noDecimalSin[225] = -6946
+        self.noDecimalSin[226] = -7071
+        self.noDecimalSin[227] = -7193
+        self.noDecimalSin[228] = -7313
+        self.noDecimalSin[229] = -7431
+        self.noDecimalSin[230] = -7547
+        self.noDecimalSin[231] = -7660
+        self.noDecimalSin[232] = -7771
+        self.noDecimalSin[233] = -7880
+        self.noDecimalSin[234] = -7986
+        self.noDecimalSin[235] = -8090
+        self.noDecimalSin[236] = -8191
+        self.noDecimalSin[237] = -8290
+        self.noDecimalSin[238] = -8386
+        self.noDecimalSin[239] = -8480
+        self.noDecimalSin[240] = -8571
+        self.noDecimalSin[241] = -8660
+        self.noDecimalSin[242] = -8746
+        self.noDecimalSin[243] = -8829
+        self.noDecimalSin[244] = -8910
+        self.noDecimalSin[245] = -8987
+        self.noDecimalSin[246] = -9063
+        self.noDecimalSin[247] = -9135
+        self.noDecimalSin[248] = -9205
+        self.noDecimalSin[249] = -9271
+        self.noDecimalSin[250] = -9335
+        self.noDecimalSin[251] = -9396
+        self.noDecimalSin[252] = -9455
+        self.noDecimalSin[253] = -9510
+        self.noDecimalSin[254] = -9563
+        self.noDecimalSin[255] = -9612
+        self.noDecimalSin[256] = -9659
+        self.noDecimalSin[257] = -9702
+        self.noDecimalSin[258] = -9743
+        self.noDecimalSin[259] = -9781
+        self.noDecimalSin[260] = -9816
+        self.noDecimalSin[261] = -9848
+        self.noDecimalSin[262] = -9876
+        self.noDecimalSin[263] = -9902
+        self.noDecimalSin[264] = -9925
+        self.noDecimalSin[265] = -9945
+        self.noDecimalSin[266] = -9961
+        self.noDecimalSin[267] = -9975
+        self.noDecimalSin[268] = -9986
+        self.noDecimalSin[269] = -9993
+        self.noDecimalSin[270] = -9998
+        self.noDecimalSin[271] = -10000
+        self.noDecimalSin[272] = -9998
+        self.noDecimalSin[273] = -9993
+        self.noDecimalSin[274] = -9986
+        self.noDecimalSin[275] = -9975
+        self.noDecimalSin[276] = -9961
+        self.noDecimalSin[277] = -9945
+        self.noDecimalSin[278] = -9925
+        self.noDecimalSin[279] = -9902
+        self.noDecimalSin[280] = -9876
+        self.noDecimalSin[281] = -9848
+        self.noDecimalSin[282] = -9816
+        self.noDecimalSin[283] = -9781
+        self.noDecimalSin[284] = -9743
+        self.noDecimalSin[285] = -9702
+        self.noDecimalSin[286] = -9659
+        self.noDecimalSin[287] = -9612
+        self.noDecimalSin[288] = -9563
+        self.noDecimalSin[289] = -9510
+        self.noDecimalSin[290] = -9455
+        self.noDecimalSin[291] = -9396
+        self.noDecimalSin[292] = -9335
+        self.noDecimalSin[293] = -9271
+        self.noDecimalSin[294] = -9205
+        self.noDecimalSin[295] = -9135
+        self.noDecimalSin[296] = -9063
+        self.noDecimalSin[297] = -8987
+        self.noDecimalSin[298] = -8910
+        self.noDecimalSin[299] = -8829
+        self.noDecimalSin[300] = -8746
+        self.noDecimalSin[301] = -8660
+        self.noDecimalSin[302] = -8571
+        self.noDecimalSin[303] = -8480
+        self.noDecimalSin[304] = -8386
+        self.noDecimalSin[305] = -8290
+        self.noDecimalSin[306] = -8191
+        self.noDecimalSin[307] = -8090
+        self.noDecimalSin[308] = -7986
+        self.noDecimalSin[309] = -7880
+        self.noDecimalSin[310] = -7771
+        self.noDecimalSin[311] = -7660
+        self.noDecimalSin[312] = -7547
+        self.noDecimalSin[313] = -7431
+        self.noDecimalSin[314] = -7313
+        self.noDecimalSin[315] = -7193
+        self.noDecimalSin[316] = -7071
+        self.noDecimalSin[317] = -6946
+        self.noDecimalSin[318] = -6819
+        self.noDecimalSin[319] = -6691
+        self.noDecimalSin[320] = -6560
+        self.noDecimalSin[321] = -6427
+        self.noDecimalSin[322] = -6293
+        self.noDecimalSin[323] = -6156
+        self.noDecimalSin[324] = -6018
+        self.noDecimalSin[325] = -5877
+        self.noDecimalSin[326] = -5735
+        self.noDecimalSin[327] = -5591
+        self.noDecimalSin[328] = -5446
+        self.noDecimalSin[329] = -5299
+        self.noDecimalSin[330] = -5150
+        self.noDecimalSin[331] = -5000
+        self.noDecimalSin[332] = -4848
+        self.noDecimalSin[333] = -4694
+        self.noDecimalSin[334] = -4539
+        self.noDecimalSin[335] = -4383
+        self.noDecimalSin[336] = -4226
+        self.noDecimalSin[337] = -4067
+        self.noDecimalSin[338] = -3907
+        self.noDecimalSin[339] = -3746
+        self.noDecimalSin[340] = -3583
+        self.noDecimalSin[341] = -3420
+        self.noDecimalSin[342] = -3255
+        self.noDecimalSin[343] = -3090
+        self.noDecimalSin[344] = -2923
+        self.noDecimalSin[345] = -2756
+        self.noDecimalSin[346] = -2588
+        self.noDecimalSin[347] = -2419
+        self.noDecimalSin[348] = -2249
+        self.noDecimalSin[349] = -2079
+        self.noDecimalSin[350] = -1908
+        self.noDecimalSin[351] = -1736
+        self.noDecimalSin[352] = -1564
+        self.noDecimalSin[353] = -1391
+        self.noDecimalSin[354] = -1218
+        self.noDecimalSin[355] = -1045
+        self.noDecimalSin[356] = -871
+        self.noDecimalSin[357] = -697
+        self.noDecimalSin[358] = -523
+        self.noDecimalSin[359] = -348
+        self.noDecimalSin[360] = -174
+        self.noDecimalCos[1] = 10000
+        self.noDecimalCos[2] = 9998
+        self.noDecimalCos[3] = 9993
+        self.noDecimalCos[4] = 9986
+        self.noDecimalCos[5] = 9975
+        self.noDecimalCos[6] = 9961
+        self.noDecimalCos[7] = 9945
+        self.noDecimalCos[8] = 9925
+        self.noDecimalCos[9] = 9902
+        self.noDecimalCos[10] = 9876
+        self.noDecimalCos[11] = 9848
+        self.noDecimalCos[12] = 9816
+        self.noDecimalCos[13] = 9781
+        self.noDecimalCos[14] = 9743
+        self.noDecimalCos[15] = 9702
+        self.noDecimalCos[16] = 9659
+        self.noDecimalCos[17] = 9612
+        self.noDecimalCos[18] = 9563
+        self.noDecimalCos[19] = 9510
+        self.noDecimalCos[20] = 9455
+        self.noDecimalCos[21] = 9396
+        self.noDecimalCos[22] = 9335
+        self.noDecimalCos[23] = 9271
+        self.noDecimalCos[24] = 9205
+        self.noDecimalCos[25] = 9135
+        self.noDecimalCos[26] = 9063
+        self.noDecimalCos[27] = 8987
+        self.noDecimalCos[28] = 8910
+        self.noDecimalCos[29] = 8829
+        self.noDecimalCos[30] = 8746
+        self.noDecimalCos[31] = 8660
+        self.noDecimalCos[32] = 8571
+        self.noDecimalCos[33] = 8480
+        self.noDecimalCos[34] = 8386
+        self.noDecimalCos[35] = 8290
+        self.noDecimalCos[36] = 8191
+        self.noDecimalCos[37] = 8090
+        self.noDecimalCos[38] = 7986
+        self.noDecimalCos[39] = 7880
+        self.noDecimalCos[40] = 7771
+        self.noDecimalCos[41] = 7660
+        self.noDecimalCos[42] = 7547
+        self.noDecimalCos[43] = 7431
+        self.noDecimalCos[44] = 7313
+        self.noDecimalCos[45] = 7193
+        self.noDecimalCos[46] = 7071
+        self.noDecimalCos[47] = 6946
+        self.noDecimalCos[48] = 6819
+        self.noDecimalCos[49] = 6691
+        self.noDecimalCos[50] = 6560
+        self.noDecimalCos[51] = 6427
+        self.noDecimalCos[52] = 6293
+        self.noDecimalCos[53] = 6156
+        self.noDecimalCos[54] = 6018
+        self.noDecimalCos[55] = 5877
+        self.noDecimalCos[56] = 5735
+        self.noDecimalCos[57] = 5591
+        self.noDecimalCos[58] = 5446
+        self.noDecimalCos[59] = 5299
+        self.noDecimalCos[60] = 5150
+        self.noDecimalCos[61] = 5000
+        self.noDecimalCos[62] = 4848
+        self.noDecimalCos[63] = 4694
+        self.noDecimalCos[64] = 4539
+        self.noDecimalCos[65] = 4383
+        self.noDecimalCos[66] = 4226
+        self.noDecimalCos[67] = 4067
+        self.noDecimalCos[68] = 3907
+        self.noDecimalCos[69] = 3746
+        self.noDecimalCos[70] = 3583
+        self.noDecimalCos[71] = 3420
+        self.noDecimalCos[72] = 3255
+        self.noDecimalCos[73] = 3090
+        self.noDecimalCos[74] = 2923
+        self.noDecimalCos[75] = 2756
+        self.noDecimalCos[76] = 2588
+        self.noDecimalCos[77] = 2419
+        self.noDecimalCos[78] = 2249
+        self.noDecimalCos[79] = 2079
+        self.noDecimalCos[80] = 1908
+        self.noDecimalCos[81] = 1736
+        self.noDecimalCos[82] = 1564
+        self.noDecimalCos[83] = 1391
+        self.noDecimalCos[84] = 1218
+        self.noDecimalCos[85] = 1045
+        self.noDecimalCos[86] = 871
+        self.noDecimalCos[87] = 697
+        self.noDecimalCos[88] = 523
+        self.noDecimalCos[89] = 348
+        self.noDecimalCos[90] = 174
+        self.noDecimalCos[91] = 0
+        self.noDecimalCos[92] = -174
+        self.noDecimalCos[93] = -348
+        self.noDecimalCos[94] = -523
+        self.noDecimalCos[95] = -697
+        self.noDecimalCos[96] = -871
+        self.noDecimalCos[97] = -1045
+        self.noDecimalCos[98] = -1218
+        self.noDecimalCos[99] = -1391
+        self.noDecimalCos[100] = -1564
+        self.noDecimalCos[101] = -1736
+        self.noDecimalCos[102] = -1908
+        self.noDecimalCos[103] = -2079
+        self.noDecimalCos[104] = -2249
+        self.noDecimalCos[105] = -2419
+        self.noDecimalCos[106] = -2588
+        self.noDecimalCos[107] = -2756
+        self.noDecimalCos[108] = -2923
+        self.noDecimalCos[109] = -3090
+        self.noDecimalCos[110] = -3255
+        self.noDecimalCos[111] = -3420
+        self.noDecimalCos[112] = -3583
+        self.noDecimalCos[113] = -3746
+        self.noDecimalCos[114] = -3907
+        self.noDecimalCos[115] = -4067
+        self.noDecimalCos[116] = -4226
+        self.noDecimalCos[117] = -4383
+        self.noDecimalCos[118] = -4539
+        self.noDecimalCos[119] = -4694
+        self.noDecimalCos[120] = -4848
+        self.noDecimalCos[121] = -4999
+        self.noDecimalCos[122] = -5150
+        self.noDecimalCos[123] = -5299
+        self.noDecimalCos[124] = -5446
+        self.noDecimalCos[125] = -5591
+        self.noDecimalCos[126] = -5735
+        self.noDecimalCos[127] = -5877
+        self.noDecimalCos[128] = -6018
+        self.noDecimalCos[129] = -6156
+        self.noDecimalCos[130] = -6293
+        self.noDecimalCos[131] = -6427
+        self.noDecimalCos[132] = -6560
+        self.noDecimalCos[133] = -6691
+        self.noDecimalCos[134] = -6819
+        self.noDecimalCos[135] = -6946
+        self.noDecimalCos[136] = -7071
+        self.noDecimalCos[137] = -7193
+        self.noDecimalCos[138] = -7313
+        self.noDecimalCos[139] = -7431
+        self.noDecimalCos[140] = -7547
+        self.noDecimalCos[141] = -7660
+        self.noDecimalCos[142] = -7771
+        self.noDecimalCos[143] = -7880
+        self.noDecimalCos[144] = -7986
+        self.noDecimalCos[145] = -8090
+        self.noDecimalCos[146] = -8191
+        self.noDecimalCos[147] = -8290
+        self.noDecimalCos[148] = -8386
+        self.noDecimalCos[149] = -8480
+        self.noDecimalCos[150] = -8571
+        self.noDecimalCos[151] = -8660
+        self.noDecimalCos[152] = -8746
+        self.noDecimalCos[153] = -8829
+        self.noDecimalCos[154] = -8910
+        self.noDecimalCos[155] = -8987
+        self.noDecimalCos[156] = -9063
+        self.noDecimalCos[157] = -9135
+        self.noDecimalCos[158] = -9205
+        self.noDecimalCos[159] = -9271
+        self.noDecimalCos[160] = -9335
+        self.noDecimalCos[161] = -9396
+        self.noDecimalCos[162] = -9455
+        self.noDecimalCos[163] = -9510
+        self.noDecimalCos[164] = -9563
+        self.noDecimalCos[165] = -9612
+        self.noDecimalCos[166] = -9659
+        self.noDecimalCos[167] = -9702
+        self.noDecimalCos[168] = -9743
+        self.noDecimalCos[169] = -9781
+        self.noDecimalCos[170] = -9816
+        self.noDecimalCos[171] = -9848
+        self.noDecimalCos[172] = -9876
+        self.noDecimalCos[173] = -9902
+        self.noDecimalCos[174] = -9925
+        self.noDecimalCos[175] = -9945
+        self.noDecimalCos[176] = -9961
+        self.noDecimalCos[177] = -9975
+        self.noDecimalCos[178] = -9986
+        self.noDecimalCos[179] = -9993
+        self.noDecimalCos[180] = -9998
+        self.noDecimalCos[181] = -10000
+        self.noDecimalCos[182] = -9998
+        self.noDecimalCos[183] = -9993
+        self.noDecimalCos[184] = -9986
+        self.noDecimalCos[185] = -9975
+        self.noDecimalCos[186] = -9961
+        self.noDecimalCos[187] = -9945
+        self.noDecimalCos[188] = -9925
+        self.noDecimalCos[189] = -9902
+        self.noDecimalCos[190] = -9876
+        self.noDecimalCos[191] = -9848
+        self.noDecimalCos[192] = -9816
+        self.noDecimalCos[193] = -9781
+        self.noDecimalCos[194] = -9743
+        self.noDecimalCos[195] = -9702
+        self.noDecimalCos[196] = -9659
+        self.noDecimalCos[197] = -9612
+        self.noDecimalCos[198] = -9563
+        self.noDecimalCos[199] = -9510
+        self.noDecimalCos[200] = -9455
+        self.noDecimalCos[201] = -9396
+        self.noDecimalCos[202] = -9335
+        self.noDecimalCos[203] = -9271
+        self.noDecimalCos[204] = -9205
+        self.noDecimalCos[205] = -9135
+        self.noDecimalCos[206] = -9063
+        self.noDecimalCos[207] = -8987
+        self.noDecimalCos[208] = -8910
+        self.noDecimalCos[209] = -8829
+        self.noDecimalCos[210] = -8746
+        self.noDecimalCos[211] = -8660
+        self.noDecimalCos[212] = -8571
+        self.noDecimalCos[213] = -8480
+        self.noDecimalCos[214] = -8386
+        self.noDecimalCos[215] = -8290
+        self.noDecimalCos[216] = -8191
+        self.noDecimalCos[217] = -8090
+        self.noDecimalCos[218] = -7986
+        self.noDecimalCos[219] = -7880
+        self.noDecimalCos[220] = -7771
+        self.noDecimalCos[221] = -7660
+        self.noDecimalCos[222] = -7547
+        self.noDecimalCos[223] = -7431
+        self.noDecimalCos[224] = -7313
+        self.noDecimalCos[225] = -7193
+        self.noDecimalCos[226] = -7071
+        self.noDecimalCos[227] = -6946
+        self.noDecimalCos[228] = -6819
+        self.noDecimalCos[229] = -6691
+        self.noDecimalCos[230] = -6560
+        self.noDecimalCos[231] = -6427
+        self.noDecimalCos[232] = -6293
+        self.noDecimalCos[233] = -6156
+        self.noDecimalCos[234] = -6018
+        self.noDecimalCos[235] = -5877
+        self.noDecimalCos[236] = -5735
+        self.noDecimalCos[237] = -5591
+        self.noDecimalCos[238] = -5446
+        self.noDecimalCos[239] = -5299
+        self.noDecimalCos[240] = -5150
+        self.noDecimalCos[241] = -5000
+        self.noDecimalCos[242] = -4848
+        self.noDecimalCos[243] = -4694
+        self.noDecimalCos[244] = -4539
+        self.noDecimalCos[245] = -4383
+        self.noDecimalCos[246] = -4226
+        self.noDecimalCos[247] = -4067
+        self.noDecimalCos[248] = -3907
+        self.noDecimalCos[249] = -3746
+        self.noDecimalCos[250] = -3583
+        self.noDecimalCos[251] = -3420
+        self.noDecimalCos[252] = -3255
+        self.noDecimalCos[253] = -3090
+        self.noDecimalCos[254] = -2923
+        self.noDecimalCos[255] = -2756
+        self.noDecimalCos[256] = -2588
+        self.noDecimalCos[257] = -2419
+        self.noDecimalCos[258] = -2249
+        self.noDecimalCos[259] = -2079
+        self.noDecimalCos[260] = -1908
+        self.noDecimalCos[261] = -1736
+        self.noDecimalCos[262] = -1564
+        self.noDecimalCos[263] = -1391
+        self.noDecimalCos[264] = -1218
+        self.noDecimalCos[265] = -1045
+        self.noDecimalCos[266] = -871
+        self.noDecimalCos[267] = -697
+        self.noDecimalCos[268] = -523
+        self.noDecimalCos[269] = -348
+        self.noDecimalCos[270] = -174
+        self.noDecimalCos[271] = 0
+        self.noDecimalCos[272] = 174
+        self.noDecimalCos[273] = 348
+        self.noDecimalCos[274] = 523
+        self.noDecimalCos[275] = 697
+        self.noDecimalCos[276] = 871
+        self.noDecimalCos[277] = 1045
+        self.noDecimalCos[278] = 1218
+        self.noDecimalCos[279] = 1391
+        self.noDecimalCos[280] = 1564
+        self.noDecimalCos[281] = 1736
+        self.noDecimalCos[282] = 1908
+        self.noDecimalCos[283] = 2079
+        self.noDecimalCos[284] = 2249
+        self.noDecimalCos[285] = 2419
+        self.noDecimalCos[286] = 2588
+        self.noDecimalCos[287] = 2756
+        self.noDecimalCos[288] = 2923
+        self.noDecimalCos[289] = 3090
+        self.noDecimalCos[290] = 3255
+        self.noDecimalCos[291] = 3420
+        self.noDecimalCos[292] = 3583
+        self.noDecimalCos[293] = 3746
+        self.noDecimalCos[294] = 3907
+        self.noDecimalCos[295] = 4067
+        self.noDecimalCos[296] = 4226
+        self.noDecimalCos[297] = 4383
+        self.noDecimalCos[298] = 4539
+        self.noDecimalCos[299] = 4694
+        self.noDecimalCos[300] = 4848
+        self.noDecimalCos[301] = 5000
+        self.noDecimalCos[302] = 5150
+        self.noDecimalCos[303] = 5299
+        self.noDecimalCos[304] = 5446
+        self.noDecimalCos[305] = 5591
+        self.noDecimalCos[306] = 5735
+        self.noDecimalCos[307] = 5877
+        self.noDecimalCos[308] = 6018
+        self.noDecimalCos[309] = 6156
+        self.noDecimalCos[310] = 6293
+        self.noDecimalCos[311] = 6427
+        self.noDecimalCos[312] = 6560
+        self.noDecimalCos[313] = 6691
+        self.noDecimalCos[314] = 6819
+        self.noDecimalCos[315] = 6946
+        self.noDecimalCos[316] = 7071
+        self.noDecimalCos[317] = 7193
+        self.noDecimalCos[318] = 7313
+        self.noDecimalCos[319] = 7431
+        self.noDecimalCos[320] = 7547
+        self.noDecimalCos[321] = 7660
+        self.noDecimalCos[322] = 7771
+        self.noDecimalCos[323] = 7880
+        self.noDecimalCos[324] = 7986
+        self.noDecimalCos[325] = 8090
+        self.noDecimalCos[326] = 8191
+        self.noDecimalCos[327] = 8290
+        self.noDecimalCos[328] = 8386
+        self.noDecimalCos[329] = 8480
+        self.noDecimalCos[330] = 8571
+        self.noDecimalCos[331] = 8660
+        self.noDecimalCos[332] = 8746
+        self.noDecimalCos[333] = 8829
+        self.noDecimalCos[334] = 8910
+        self.noDecimalCos[335] = 8987
+        self.noDecimalCos[336] = 9063
+        self.noDecimalCos[337] = 9135
+        self.noDecimalCos[338] = 9205
+        self.noDecimalCos[339] = 9271
+        self.noDecimalCos[340] = 9335
+        self.noDecimalCos[341] = 9396
+        self.noDecimalCos[342] = 9455
+        self.noDecimalCos[343] = 9510
+        self.noDecimalCos[344] = 9563
+        self.noDecimalCos[345] = 9612
+        self.noDecimalCos[346] = 9659
+        self.noDecimalCos[347] = 9702
+        self.noDecimalCos[348] = 9743
+        self.noDecimalCos[349] = 9781
+        self.noDecimalCos[350] = 9816
+        self.noDecimalCos[351] = 9848
+        self.noDecimalCos[352] = 9876
+        self.noDecimalCos[353] = 9902
+        self.noDecimalCos[354] = 9925
+        self.noDecimalCos[355] = 9945
+        self.noDecimalCos[356] = 9961
+        self.noDecimalCos[357] = 9975
+        self.noDecimalCos[358] = 9986
+        self.noDecimalCos[359] = 9993
+        self.noDecimalCos[360] = 9998
+        self.noDecimalTan[1] = 0
+        self.noDecimalTan[2] = 174
+        self.noDecimalTan[3] = 349
+        self.noDecimalTan[4] = 524
+        self.noDecimalTan[5] = 699
+        self.noDecimalTan[6] = 874
+        self.noDecimalTan[7] = 1051
+        self.noDecimalTan[8] = 1227
+        self.noDecimalTan[9] = 1405
+        self.noDecimalTan[10] = 1583
+        self.noDecimalTan[11] = 1763
+        self.noDecimalTan[12] = 1943
+        self.noDecimalTan[13] = 2125
+        self.noDecimalTan[14] = 2308
+        self.noDecimalTan[15] = 2493
+        self.noDecimalTan[16] = 2679
+        self.noDecimalTan[17] = 2867
+        self.noDecimalTan[18] = 3057
+        self.noDecimalTan[19] = 3249
+        self.noDecimalTan[20] = 3443
+        self.noDecimalTan[21] = 3639
+        self.noDecimalTan[22] = 3838
+        self.noDecimalTan[23] = 4040
+        self.noDecimalTan[24] = 4244
+        self.noDecimalTan[25] = 4452
+        self.noDecimalTan[26] = 4663
+        self.noDecimalTan[27] = 4877
+        self.noDecimalTan[28] = 5095
+        self.noDecimalTan[29] = 5317
+        self.noDecimalTan[30] = 5543
+        self.noDecimalTan[31] = 5773
+        self.noDecimalTan[32] = 6008
+        self.noDecimalTan[33] = 6248
+        self.noDecimalTan[34] = 6494
+        self.noDecimalTan[35] = 6745
+        self.noDecimalTan[36] = 7002
+        self.noDecimalTan[37] = 7265
+        self.noDecimalTan[38] = 7535
+        self.noDecimalTan[39] = 7812
+        self.noDecimalTan[40] = 8097
+        self.noDecimalTan[41] = 8390
+        self.noDecimalTan[42] = 8692
+        self.noDecimalTan[43] = 9004
+        self.noDecimalTan[44] = 9325
+        self.noDecimalTan[45] = 9656
+        self.noDecimalTan[46] = 9999
+        self.noDecimalTan[47] = 10355
+        self.noDecimalTan[48] = 10723
+        self.noDecimalTan[49] = 11106
+        self.noDecimalTan[50] = 11503
+        self.noDecimalTan[51] = 11917
+        self.noDecimalTan[52] = 12348
+        self.noDecimalTan[53] = 12799
+        self.noDecimalTan[54] = 13270
+        self.noDecimalTan[55] = 13763
+        self.noDecimalTan[56] = 14281
+        self.noDecimalTan[57] = 14825
+        self.noDecimalTan[58] = 15398
+        self.noDecimalTan[59] = 16003
+        self.noDecimalTan[60] = 16642
+        self.noDecimalTan[61] = 17320
+        self.noDecimalTan[62] = 18040
+        self.noDecimalTan[63] = 18807
+        self.noDecimalTan[64] = 19626
+        self.noDecimalTan[65] = 20503
+        self.noDecimalTan[66] = 21445
+        self.noDecimalTan[67] = 22460
+        self.noDecimalTan[68] = 23558
+        self.noDecimalTan[69] = 24750
+        self.noDecimalTan[70] = 26050
+        self.noDecimalTan[71] = 27474
+        self.noDecimalTan[72] = 29042
+        self.noDecimalTan[73] = 30776
+        self.noDecimalTan[74] = 32708
+        self.noDecimalTan[75] = 34874
+        self.noDecimalTan[76] = 37320
+        self.noDecimalTan[77] = 40107
+        self.noDecimalTan[78] = 43314
+        self.noDecimalTan[79] = 47046
+        self.noDecimalTan[80] = 51445
+        self.noDecimalTan[81] = 56712
+        self.noDecimalTan[82] = 63137
+        self.noDecimalTan[83] = 71153
+        self.noDecimalTan[84] = 81443
+        self.noDecimalTan[85] = 95143
+        self.noDecimalTan[86] = 114300
+        self.noDecimalTan[87] = 143006
+        self.noDecimalTan[88] = 190811
+        self.noDecimalTan[89] = 286362
+        self.noDecimalTan[90] = 572899
+        self.noDecimalTan[91] = MAX_VALUE
+        self.noDecimalTan[92] = -572899
+        self.noDecimalTan[93] = -286362
+        self.noDecimalTan[94] = -190811
+        self.noDecimalTan[95] = -143006
+        self.noDecimalTan[96] = -114300
+        self.noDecimalTan[97] = -95143
+        self.noDecimalTan[98] = -81443
+        self.noDecimalTan[99] = -71153
+        self.noDecimalTan[100] = -63137
+        self.noDecimalTan[101] = -56712
+        self.noDecimalTan[102] = -51445
+        self.noDecimalTan[103] = -47046
+        self.noDecimalTan[104] = -43314
+        self.noDecimalTan[105] = -40107
+        self.noDecimalTan[106] = -37320
+        self.noDecimalTan[107] = -34874
+        self.noDecimalTan[108] = -32708
+        self.noDecimalTan[109] = -30776
+        self.noDecimalTan[110] = -29042
+        self.noDecimalTan[111] = -27474
+        self.noDecimalTan[112] = -26050
+        self.noDecimalTan[113] = -24750
+        self.noDecimalTan[114] = -23558
+        self.noDecimalTan[115] = -22460
+        self.noDecimalTan[116] = -21445
+        self.noDecimalTan[117] = -20503
+        self.noDecimalTan[118] = -19626
+        self.noDecimalTan[119] = -18807
+        self.noDecimalTan[120] = -18040
+        self.noDecimalTan[121] = -17320
+        self.noDecimalTan[122] = -16642
+        self.noDecimalTan[123] = -16003
+        self.noDecimalTan[124] = -15398
+        self.noDecimalTan[125] = -14825
+        self.noDecimalTan[126] = -14281
+        self.noDecimalTan[127] = -13763
+        self.noDecimalTan[128] = -13270
+        self.noDecimalTan[129] = -12799
+        self.noDecimalTan[130] = -12348
+        self.noDecimalTan[131] = -11917
+        self.noDecimalTan[132] = -11503
+        self.noDecimalTan[133] = -11106
+        self.noDecimalTan[134] = -10723
+        self.noDecimalTan[135] = -10355
+        self.noDecimalTan[136] = -10000
+        self.noDecimalTan[137] = -9656
+        self.noDecimalTan[138] = -9325
+        self.noDecimalTan[139] = -9004
+        self.noDecimalTan[140] = -8692
+        self.noDecimalTan[141] = -8390
+        self.noDecimalTan[142] = -8097
+        self.noDecimalTan[143] = -7812
+        self.noDecimalTan[144] = -7535
+        self.noDecimalTan[145] = -7265
+        self.noDecimalTan[146] = -7002
+        self.noDecimalTan[147] = -6745
+        self.noDecimalTan[148] = -6494
+        self.noDecimalTan[149] = -6248
+        self.noDecimalTan[150] = -6008
+        self.noDecimalTan[151] = -5773
+        self.noDecimalTan[152] = -5543
+        self.noDecimalTan[153] = -5317
+        self.noDecimalTan[154] = -5095
+        self.noDecimalTan[155] = -4877
+        self.noDecimalTan[156] = -4663
+        self.noDecimalTan[157] = -4452
+        self.noDecimalTan[158] = -4244
+        self.noDecimalTan[159] = -4040
+        self.noDecimalTan[160] = -3838
+        self.noDecimalTan[161] = -3639
+        self.noDecimalTan[162] = -3443
+        self.noDecimalTan[163] = -3249
+        self.noDecimalTan[164] = -3057
+        self.noDecimalTan[165] = -2867
+        self.noDecimalTan[166] = -2679
+        self.noDecimalTan[167] = -2493
+        self.noDecimalTan[168] = -2308
+        self.noDecimalTan[169] = -2125
+        self.noDecimalTan[170] = -1943
+        self.noDecimalTan[171] = -1763
+        self.noDecimalTan[172] = -1583
+        self.noDecimalTan[173] = -1405
+        self.noDecimalTan[174] = -1227
+        self.noDecimalTan[175] = -1051
+        self.noDecimalTan[176] = -874
+        self.noDecimalTan[177] = -699
+        self.noDecimalTan[178] = -524
+        self.noDecimalTan[179] = -349
+        self.noDecimalTan[180] = -174
+        self.noDecimalTan[181] = 0
+        self.noDecimalTan[182] = 174
+        self.noDecimalTan[183] = 349
+        self.noDecimalTan[184] = 524
+        self.noDecimalTan[185] = 699
+        self.noDecimalTan[186] = 874
+        self.noDecimalTan[187] = 1051
+        self.noDecimalTan[188] = 1227
+        self.noDecimalTan[189] = 1405
+        self.noDecimalTan[190] = 1583
+        self.noDecimalTan[191] = 1763
+        self.noDecimalTan[192] = 1943
+        self.noDecimalTan[193] = 2125
+        self.noDecimalTan[194] = 2308
+        self.noDecimalTan[195] = 2493
+        self.noDecimalTan[196] = 2679
+        self.noDecimalTan[197] = 2867
+        self.noDecimalTan[198] = 3057
+        self.noDecimalTan[199] = 3249
+        self.noDecimalTan[200] = 3443
+        self.noDecimalTan[201] = 3639
+        self.noDecimalTan[202] = 3838
+        self.noDecimalTan[203] = 4040
+        self.noDecimalTan[204] = 4244
+        self.noDecimalTan[205] = 4452
+        self.noDecimalTan[206] = 4663
+        self.noDecimalTan[207] = 4877
+        self.noDecimalTan[208] = 5095
+        self.noDecimalTan[209] = 5317
+        self.noDecimalTan[210] = 5543
+        self.noDecimalTan[211] = 5773
+        self.noDecimalTan[212] = 6008
+        self.noDecimalTan[213] = 6248
+        self.noDecimalTan[214] = 6494
+        self.noDecimalTan[215] = 6745
+        self.noDecimalTan[216] = 7002
+        self.noDecimalTan[217] = 7265
+        self.noDecimalTan[218] = 7535
+        self.noDecimalTan[219] = 7812
+        self.noDecimalTan[220] = 8097
+        self.noDecimalTan[221] = 8390
+        self.noDecimalTan[222] = 8692
+        self.noDecimalTan[223] = 9004
+        self.noDecimalTan[224] = 9325
+        self.noDecimalTan[225] = 9656
+        self.noDecimalTan[226] = 9999
+        self.noDecimalTan[227] = 10355
+        self.noDecimalTan[228] = 10723
+        self.noDecimalTan[229] = 11106
+        self.noDecimalTan[230] = 11503
+        self.noDecimalTan[231] = 11917
+        self.noDecimalTan[232] = 12348
+        self.noDecimalTan[233] = 12799
+        self.noDecimalTan[234] = 13270
+        self.noDecimalTan[235] = 13763
+        self.noDecimalTan[236] = 14281
+        self.noDecimalTan[237] = 14825
+        self.noDecimalTan[238] = 15398
+        self.noDecimalTan[239] = 16003
+        self.noDecimalTan[240] = 16642
+        self.noDecimalTan[241] = 17320
+        self.noDecimalTan[242] = 18040
+        self.noDecimalTan[243] = 18807
+        self.noDecimalTan[244] = 19626
+        self.noDecimalTan[245] = 20503
+        self.noDecimalTan[246] = 21445
+        self.noDecimalTan[247] = 22460
+        self.noDecimalTan[248] = 23558
+        self.noDecimalTan[249] = 24750
+        self.noDecimalTan[250] = 26050
+        self.noDecimalTan[251] = 27474
+        self.noDecimalTan[252] = 29042
+        self.noDecimalTan[253] = 30776
+        self.noDecimalTan[254] = 32708
+        self.noDecimalTan[255] = 34874
+        self.noDecimalTan[256] = 37320
+        self.noDecimalTan[257] = 40107
+        self.noDecimalTan[258] = 43314
+        self.noDecimalTan[259] = 47046
+        self.noDecimalTan[260] = 51445
+        self.noDecimalTan[261] = 56712
+        self.noDecimalTan[262] = 63137
+        self.noDecimalTan[263] = 71153
+        self.noDecimalTan[264] = 81443
+        self.noDecimalTan[265] = 95143
+        self.noDecimalTan[266] = 114300
+        self.noDecimalTan[267] = 143006
+        self.noDecimalTan[268] = 190811
+        self.noDecimalTan[269] = 286362
+        self.noDecimalTan[270] = 572899
+        self.noDecimalTan[271] = MAX_VALUE
+        self.noDecimalTan[272] = -572899
+        self.noDecimalTan[273] = -286362
+        self.noDecimalTan[274] = -190811
+        self.noDecimalTan[275] = -143006
+        self.noDecimalTan[276] = -114300
+        self.noDecimalTan[277] = -95143
+        self.noDecimalTan[278] = -81443
+        self.noDecimalTan[279] = -71153
+        self.noDecimalTan[280] = -63137
+        self.noDecimalTan[281] = -56712
+        self.noDecimalTan[282] = -51445
+        self.noDecimalTan[283] = -47046
+        self.noDecimalTan[284] = -43314
+        self.noDecimalTan[285] = -40107
+        self.noDecimalTan[286] = -37320
+        self.noDecimalTan[287] = -34874
+        self.noDecimalTan[288] = -32708
+        self.noDecimalTan[289] = -30776
+        self.noDecimalTan[290] = -29042
+        self.noDecimalTan[291] = -27474
+        self.noDecimalTan[292] = -26050
+        self.noDecimalTan[293] = -24750
+        self.noDecimalTan[294] = -23558
+        self.noDecimalTan[295] = -22460
+        self.noDecimalTan[296] = -21445
+        self.noDecimalTan[297] = -20503
+        self.noDecimalTan[298] = -19626
+        self.noDecimalTan[299] = -18807
+        self.noDecimalTan[300] = -18040
+        self.noDecimalTan[301] = -17320
+        self.noDecimalTan[302] = -16642
+        self.noDecimalTan[303] = -16003
+        self.noDecimalTan[304] = -15398
+        self.noDecimalTan[305] = -14825
+        self.noDecimalTan[306] = -14281
+        self.noDecimalTan[307] = -13763
+        self.noDecimalTan[308] = -13270
+        self.noDecimalTan[309] = -12799
+        self.noDecimalTan[310] = -12348
+        self.noDecimalTan[311] = -11917
+        self.noDecimalTan[312] = -11503
+        self.noDecimalTan[313] = -11106
+        self.noDecimalTan[314] = -10723
+        self.noDecimalTan[315] = -10355
+        self.noDecimalTan[316] = -10000
+        self.noDecimalTan[317] = -9656
+        self.noDecimalTan[318] = -9325
+        self.noDecimalTan[319] = -9004
+        self.noDecimalTan[320] = -8692
+        self.noDecimalTan[321] = -8390
+        self.noDecimalTan[322] = -8097
+        self.noDecimalTan[323] = -7812
+        self.noDecimalTan[324] = -7535
+        self.noDecimalTan[325] = -7265
+        self.noDecimalTan[326] = -7002
+        self.noDecimalTan[327] = -6745
+        self.noDecimalTan[328] = -6494
+        self.noDecimalTan[329] = -6248
+        self.noDecimalTan[330] = -6008
+        self.noDecimalTan[331] = -5773
+        self.noDecimalTan[332] = -5543
+        self.noDecimalTan[333] = -5317
+        self.noDecimalTan[334] = -5095
+        self.noDecimalTan[335] = -4877
+        self.noDecimalTan[336] = -4663
+        self.noDecimalTan[337] = -4452
+        self.noDecimalTan[338] = -4244
+        self.noDecimalTan[339] = -4040
+        self.noDecimalTan[340] = -3838
+        self.noDecimalTan[341] = -3639
+        self.noDecimalTan[342] = -3443
+        self.noDecimalTan[343] = -3249
+        self.noDecimalTan[344] = -3057
+        self.noDecimalTan[345] = -2867
+        self.noDecimalTan[346] = -2679
+        self.noDecimalTan[347] = -2493
+        self.noDecimalTan[348] = -2308
+        self.noDecimalTan[349] = -2125
+        self.noDecimalTan[350] = -1943
+        self.noDecimalTan[351] = -1763
+        self.noDecimalTan[352] = -1583
+        self.noDecimalTan[353] = -1405
+        self.noDecimalTan[354] = -1227
+        self.noDecimalTan[355] = -1051
+        self.noDecimalTan[356] = -874
+        self.noDecimalTan[357] = -699
+        self.noDecimalTan[358] = -524
+        self.noDecimalTan[359] = -349
+        self.noDecimalTan[360] = -174
+        self.noDecimalTan[1] = -174
+    return self
+end
+
+
+function NoDecimalTrigTable:sin(angle)
+        return self.noDecimalSin[angle + 1]
+end
+
+
+function NoDecimalTrigTable:cos(angle)
+        return self.noDecimalCos[angle + 1]
+end
+
+
+function NoDecimalTrigTable:tan(angle)
+        return self.noDecimalTan[angle + 1]
+end
+
+
+-- throws Exception
+function NoDecimalTrigTable:antiTan(dx, dy)
+        local MAX_VALUE = (java_int(Integer.MAX_VALUE))
+        local MIN_VALUE = (java_int(Integer.MIN_VALUE))
+        local ratio = (MAX_VALUE - 1)
+        if dy ~= 0 then
+            local dxl = (dx)
+            ratio = java_idiv(self.SCALE * dxl, dy)
+            if dx <= 0 and dy < 0 then
+                ratio = self.mathUtil:abslong(ratio)
+            end
+        end
+        if (dx >= 0 and dy < 0) then
+            for index = 180, 90 + 1, -1 do
+                if ratio <= self.noDecimalTan[index + 1] then
+                    if ratio > self.noDecimalTan[index - 1 + 1] then
+                        return (index)
+                    elseif self.noDecimalTan[index - 1 + 1] == MAX_VALUE and ratio > MIN_VALUE then
+                        return (index)
+                    end
+                end
+            end
+        elseif (dx < 0 and dy <= 0) then
+            for index = 270, 180 + 1, -1 do
+                if ratio < self.noDecimalTan[index + 1] and ratio >= self.noDecimalTan[index - 1 + 1] then
+                    return (index)
+                end
+            end
+        elseif (dx < 0 and dy > 0) then
+            for index = ((self.noDecimalTan.n or #self.noDecimalTan) - 1), 270 + 1, -1 do
+                if ratio < self.noDecimalTan[index + 1] then
+                    if ratio >= self.noDecimalTan[index - 1 + 1] then
+                        return (index)
+                    elseif self.noDecimalTan[index - 1 + 1] == MAX_VALUE and ratio >= MIN_VALUE then
+                        return (index)
+                    end
+                end
+            end
+        elseif (dx >= 0 and dy >= 0) then
+            for index = 90, 0 + 1, -1 do
+                if ratio < self.noDecimalTan[index + 1] and ratio >= self.noDecimalTan[index - 1 + 1] then
+                    return (index)
+                end
+            end
+        end
+        local stringBuffer = StringMaker.new()
+        stringBuffer:append("Invalid Ratio: ")
+        stringBuffer:appendlong(ratio)
+        stringBuffer:append(CommonSeps.getInstance().SPACE)
+        stringBuffer:append(PositionStrings.getInstance().DX_LABEL)
+        stringBuffer:appendint(dx)
+        stringBuffer:append(CommonSeps.getInstance().SPACE)
+        stringBuffer:append(PositionStrings.getInstance().DX_LABEL)
+        stringBuffer:appendint(dy)
+        error(java_exception("Exception", tostring(stringBuffer)), 0)
+end
+
+
+-- throws Exception
+function NoDecimalTrigTable:antiTanDebug(screenX, screenY, targetX, targetY)
+        local METHOD_NAME = "antiTanDebug"
+        local TARGET_ANGLE = " Targeting angle: "
+        local stringMaker = StringMaker.new()
+        PreLogUtil.put(tostring(stringMaker:append("screenX: "):appendint(screenX):append(" screenY: "):appendint(screenY):append(" targetX: "):appendint(targetX):append(" targetY: "):appendint(targetY)), self, METHOD_NAME)
+        local targetX2 = -targetX
+        local targetY2 = -targetY
+        local screenX2 = -screenX
+        local screenY2 = -screenY
+        local dx = java_new_array(0, 4)
+        dx[1] = (screenX - targetX)
+        dx[2] = (screenX - targetX2)
+        dx[3] = (screenX2 - targetX)
+        dx[4] = (screenX2 - targetX2)
+        local dy = java_new_array(0, 4)
+        dy[1] = (screenY - targetY)
+        dy[2] = (screenY - targetY2)
+        dy[3] = (screenY2 - targetY)
+        dy[4] = (screenY2 - targetY2)
+        local angleOfTarget = 0
+        local angleFactory = AngleFactory.getInstance()
+        local angle = nil
+        for index = 0, (dx.n or #dx) - 1 do
+            for index2 = 0, (dy.n or #dy) - 1 do
+                angleOfTarget = self:antiTan(dx[index + 1], dy[index2 + 1])
+                angle = angleFactory:getAt(angleOfTarget)
+                stringMaker:delete(0, stringMaker:length())
+                PreLogUtil.put(tostring(stringMaker:append(CommonLabels.getInstance().INDEX_LABEL):appendint(index):append(" index2: "):appendint(index2):append(PositionStrings.getInstance().DX_LABEL):appendint(dx[index + 1]):append(PositionStrings.getInstance().DY_LABEL):appendint(dy[index2 + 1]):append(TARGET_ANGLE):appendshort(angleOfTarget):append(CommonSeps.getInstance().EQUALS):appendshort(java_int(angle:getValue()))), self, METHOD_NAME)
+            end
+        end
+        angleOfTarget = self:antiTan(dx[1], dy[1])
+        return angleOfTarget
+end
+
+NoDecimalTrigTable.instance = NoDecimalTrigTable.new()
+
+return NoDecimalTrigTable
+

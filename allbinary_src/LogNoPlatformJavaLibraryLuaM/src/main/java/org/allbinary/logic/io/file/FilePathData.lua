@@ -1,0 +1,56 @@
+--
+-- AllBinary Open License Version 1
+-- Copyright (c) 2011 AllBinary
+-- 
+-- By agreeing to this license you and any business entity you represent are
+-- legally bound to the AllBinary Open License Version 1 legal agreement.
+-- 
+-- You may obtain the AllBinary Open License Version 1 legal agreement from
+-- AllBinary or the root directory of AllBinary's AllBinary Platform repository.
+-- 
+-- Created By: Travis Berthelot
+--   
+-- Generated Code Do Not Modify
+-- package org.allbinary.logic.io.file
+
+-- local File = require("java.io.File")
+
+local function java_idiv(a, b)
+    local q = a / b
+    if q < 0 then return math.ceil(q) end
+    return math.floor(q)
+end
+
+local function java_int(value)
+    if value < 0 then return math.tointeger(math.ceil(value)) end
+    return math.tointeger(math.floor(value))
+end
+
+local FilePathData = {}
+FilePathData.__index = FilePathData
+FilePathData.className = "FilePathData"
+
+function FilePathData:_init_fields()
+    self.SEPARATORCHAR = File.separatorChar
+    self.PATH_START = File.separator
+end
+
+
+function FilePathData.getInstance()
+        return FilePathData.instance
+end
+
+
+function FilePathData.new()
+    local self = setmetatable({}, FilePathData)
+    self:_init_fields()
+        if File.separatorChar == "\\" then
+            self.PATH_START = File.separator + File.separator
+        end
+    return self
+end
+
+FilePathData.instance = FilePathData.new()
+
+return FilePathData
+

@@ -1,0 +1,52 @@
+--
+-- AllBinary Open License Version 1
+-- Copyright (c) 2011 AllBinary
+-- 
+-- By agreeing to this license you and any business entity you represent are
+-- legally bound to the AllBinary Open License Version 1 legal agreement.
+-- 
+-- You may obtain the AllBinary Open License Version 1 legal agreement from
+-- AllBinary or the root directory of AllBinary's AllBinary Platform repository.
+-- 
+-- Created By: Travis Berthelot
+--  
+-- Generated Code Do Not Modify
+-- package org.allbinary.image
+
+-- local Graphics = require("javax.microedition.lcdui.Graphics")
+-- local Image = require("javax.microedition.lcdui.Image")
+local PaintableInterface = require("org.allbinary.graphics.paint.PaintableInterface")
+
+local function java_idiv(a, b)
+    local q = a / b
+    if q < 0 then return math.ceil(q) end
+    return math.floor(q)
+end
+
+local function java_int(value)
+    if value < 0 then return math.tointeger(math.ceil(value)) end
+    return math.tointeger(math.floor(value))
+end
+
+local PaintableToImageUtil = {}
+PaintableToImageUtil.__index = PaintableToImageUtil
+PaintableToImageUtil.className = "PaintableToImageUtil"
+
+function PaintableToImageUtil.new()
+    local self = setmetatable({}, PaintableToImageUtil)
+    return self
+end
+
+
+-- throws Exception
+function PaintableToImageUtil.getImage(paintableInterface, width, height)
+        local image = GameFeatureImageCacheFactory.getInstance():get(getmetatable(PaintableToImageUtil.instance).className, width, height)
+        local graphics = image:getGraphics()
+        paintableInterface:paint(graphics)
+        return image
+end
+
+PaintableToImageUtil.instance = PaintableToImageUtil.new()
+
+return PaintableToImageUtil
+

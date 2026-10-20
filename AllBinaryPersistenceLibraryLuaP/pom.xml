@@ -1,0 +1,59 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.allbinary</groupId>
+    <artifactId>AllBinaryPersistenceLibraryPLua</artifactId>
+    <packaging>pom</packaging>
+    <!-- AllBinary Platform Version Start -->
+    <version>1.0.0-SNAPSHOT</version>
+    <!-- AllBinary Platform Version End -->
+
+    <name>AllBinaryPersistenceLibraryPLua</name>
+    <url>http://www.allbinary.com/</url>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <name>AllBinary Snapshots Nexus</name>
+            <url>https://nexus-allbinary.rhcloud.com/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>nexus-releases</id>
+            <name>AllBinary Releases Nexus</name>
+            <url>https://nexus-allbinary.rhcloud.com/nexus/content/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
+    
+    <properties>
+        <buildLabel>${project.version}</buildLabel>
+        <assemblyPluginVersion>2.2-beta-1</assemblyPluginVersion>
+    </properties>
+
+    <modules>
+        
+        <!--
+        -->
+        <module>../allbinary_src/cache/AllBinaryCacheLibraryLuaM</module>
+        <module>../allbinary_src/PermutationsJavaLibraryLuaM</module>
+        <module>../allbinary_src/logic/BasePreloaderFileJavaLibraryLuaM</module>
+        <module>../allbinary_src/logic/data/file/FileJavaLibraryLuaM</module>
+        <module>../allbinary_src/logic/data/file/FileJ2SEJavaLibraryLuaM</module>
+        <module>../allbinary_src/data/DataJavaLibraryLuaM</module>
+        <module>../allbinary_src/logic/data/file/FileUnamedJavaLibraryLuaM</module>
+        <module>../allbinary_src/logic/data/file/FileAdvancedJavaLibraryLuaM</module>
+        <module>../allbinary_src/PreLoaderJavaLibraryLuaM</module>
+        <module>../allbinary_src/FileInitInfoJavaLibraryLuaM</module>
+        <module>../allbinary_src/PreLoaderFileJavaLibraryLuaM</module>
+        <module>../allbinary_src/PreLoaderLicenseJavaLibraryLuaM</module>
+        <module>../j2me/PCResourceLibraryLuaM</module>
+        <module>../j2me/ProgressJ2MEJavaLibraryLuaM</module>
+        <module>../allbinary_src/licensing/ClientInfoBaseJavaLibraryLuaM</module>
+        <module>../allbinary_src/licensing/RemoteXmlRpcJavaLibraryLuaM</module>
+        <module>../allbinary_src/licensing/LicenseClientJavaLibraryLuaM</module>
+
+        <!--
+        <module>../allbinary_src/PreLoaderLicenseJavaLibraryLuaM</module>
+        -->
+    </modules>
+
+</project>
+

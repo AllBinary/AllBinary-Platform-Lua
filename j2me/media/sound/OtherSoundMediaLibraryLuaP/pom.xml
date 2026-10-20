@@ -1,0 +1,52 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.allbinary</groupId>
+    <artifactId>OtherSoundMediaLibraryPLua</artifactId>
+    <packaging>pom</packaging>
+    <!-- AllBinary Platform Version Start -->
+    <version>1.0.0-SNAPSHOT</version>
+    <!-- AllBinary Platform Version End -->
+
+    <name>OtherSoundMediaLibraryPLua</name>
+    <url>http://www.allbinary.com/</url>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <name>AllBinary Snapshots Nexus</name>
+            <url>https://nexus-allbinary.rhcloud.com/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>nexus-releases</id>
+            <name>AllBinary Releases Nexus</name>
+            <url>https://nexus-allbinary.rhcloud.com/nexus/content/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
+
+
+    <properties>
+        <buildLabel>${project.version}</buildLabel>
+    </properties>
+
+    <modules>
+        <!--
+        Already in Game POM
+        <module>../../sound/NotDeviceSpecificNoMediaMIDP1LibraryLuaM</module>
+        
+        <module>../../sound/NullMusicAndroidJavaLibraryLuaM</module>
+        <module>../../sound/MusicAndroidJavaLibraryLuaM</module>
+        <module>../../sound/J2SEMediaMIDPJorbisJavaLibraryLuaM</module>        
+        -->
+
+        <module>../../sound/NotDeviceSpecificMIDP2JavaLibraryLuaM</module>
+<!--        <module>../../sound/J2SEMediaMIDPMinimalJavaLibraryLuaM</module>-->
+<!--        <module>../../sound/MediaMIDP2ForHTMLJavaLibraryLuaM</module>-->
+        <module>../../sound/AndroidMediaMIDPLibraryLuaM</module>
+        
+        <module>../../../games/Resources/sounds/release/GameSoundsWavResourcesJavaLibraryLuaM</module>
+        <module>../../../games/Resources/sounds/release/GameSoundsOggResourcesJavaLibraryLuaM</module>
+        
+    </modules>
+
+</project>
+

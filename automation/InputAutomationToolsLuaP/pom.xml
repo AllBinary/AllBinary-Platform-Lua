@@ -1,0 +1,61 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.allbinary</groupId>
+    <artifactId>InputAutomationToolsLua</artifactId>
+    <packaging>pom</packaging>
+    <!-- AllBinary Platform Version Start -->
+    <version>1.0.0-SNAPSHOT</version>
+    <!-- AllBinary Platform Version End -->
+
+    <name>InputAutomationToolsLua</name>
+    <url>http://www.allbinary.com/</url>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <name>AllBinary Snapshots Nexus</name>
+            <url>https://nexus-allbinary.rhcloud.com/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>nexus-releases</id>
+            <name>AllBinary Releases Nexus</name>
+            <url>https://nexus-allbinary.rhcloud.com/nexus/content/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
+    
+    <properties>
+        <buildLabel>${project.version}</buildLabel>
+        <assemblyPluginVersion>2.2-beta-1</assemblyPluginVersion>
+    </properties>
+
+    <modules>
+        <!--
+        <module>../AllBinaryCoreJavaLibraryLuaM</module>        
+        -->
+
+        <module>../../replace_these_stub_projects/osgi/YourOSGIComponentLibraryLuaM</module>
+        <module>../../allbinary_src/AllBinaryOSGIJavaLibraryLuaM</module>
+
+        <module>../../graphics/ColorJavaLibraryLuaM</module>
+        <module>../../graphics/ImageJavaLibraryLuaM</module>
+        <module>../../graphics/ImageComparisonJavaLibraryLuaM</module>
+        <module>../../graphics/AdvancedImageJ2SEJavaLibraryLuaM</module>
+        
+        <module>../InputAutomationModuleJavaLibraryLuaM</module>
+        
+        <module>../InputAutomationActionScriptJavaLibraryLuaM</module>
+        <module>../InputAutomationGenericModuleJavaLibraryLuaM</module>
+        <module>../InputAutomationGeneric2ModuleJavaLibraryLuaM</module>
+
+        <module>../../allbinary_src/HelpJavaLibraryLuaM</module>
+        <module>../InputAutomationJavaLibraryLuaM</module>
+
+        <module>../InputAutomationJavaApplicationLuaM</module>
+        
+        <module>../../game/InputAutomationGameModulesJavaLibraryLuaM</module>
+        
+        <module>../AllBinaryCoreJavaLibraryLuaM</module>
+    </modules>
+
+</project>
+

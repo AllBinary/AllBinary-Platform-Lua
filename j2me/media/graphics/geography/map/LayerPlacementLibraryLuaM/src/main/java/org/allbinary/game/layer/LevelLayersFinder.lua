@@ -1,0 +1,76 @@
+--
+-- AllBinary Open License Version 1
+-- Copyright (c) 2011 AllBinary
+-- 
+-- By agreeing to this license you and any business entity you represent are
+-- legally bound to the AllBinary Open License Version 1 legal agreement.
+-- 
+-- You may obtain the AllBinary Open License Version 1 legal agreement from
+-- AllBinary or the root directory of AllBinary's AllBinary Platform repository.
+-- 
+-- Created By: Travis Berthelot
+--  
+-- Generated Code Do Not Modify
+-- package org.allbinary.game.layer
+
+-- local Enumeration = require("java.util.Enumeration")
+local Layer = require("org.allbinary.layer.Layer")
+local SmallIntegerSingletonFactory = require("org.allbinary.logic.math.SmallIntegerSingletonFactory")
+local ABHashtable = require("org.allbinary.util.ABHashtable")
+local BasicArrayList = require("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
+local EnumerationUtil = require("org.allbinary.util.EnumerationUtil")
+
+local function java_idiv(a, b)
+    local q = a / b
+    if q < 0 then return math.ceil(q) end
+    return math.floor(q)
+end
+
+local function java_int(value)
+    if value < 0 then return math.tointeger(math.ceil(value)) end
+    return math.tointeger(math.floor(value))
+end
+
+local LevelLayersFinder = {}
+LevelLayersFinder.__index = LevelLayersFinder
+LevelLayersFinder.className = "LevelLayersFinder"
+
+function LevelLayersFinder:_init_fields()
+    self.enumerationUtil = EnumerationUtil.getInstance()
+end
+
+function LevelLayersFinder.new()
+    local self = setmetatable({}, LevelLayersFinder)
+    self:_init_fields()
+    return self
+end
+
+
+function LevelLayersFinder.getInstance()
+        return LevelLayersFinder.instance
+end
+
+
+function LevelLayersFinder:get(hashtable)
+        local smallIntegerSingletonFactory = SmallIntegerSingletonFactory.getInstance()
+        local list = BasicArrayListD.new()
+        local enumeration = hashtable:keys()
+        local layerHashtableCanBeNull = nil
+        local integerCanBeNull = nil
+        local cachedIntegerCanBeNull = nil
+        while self.enumerationUtil:hasMoreElements(enumeration) do
+            layerHashtableCanBeNull = hashtable:get(self.enumerationUtil:nextElement(enumeration))
+            integerCanBeNull = layerHashtableCanBeNull:get(Layer.ID)
+            cachedIntegerCanBeNull = smallIntegerSingletonFactory:getAt(math.tointeger(integerCanBeNull // 1))
+            if not list:contains(cachedIntegerCanBeNull) then
+                list:add(cachedIntegerCanBeNull)
+            end
+        end
+        return list
+end
+
+LevelLayersFinder.instance = LevelLayersFinder.new()
+
+return LevelLayersFinder
+

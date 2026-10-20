@@ -1,0 +1,45 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.allbinary</groupId>
+    <artifactId>TouchInputLibraryPLua</artifactId>
+    <packaging>pom</packaging>
+    <!-- AllBinary Platform Version Start -->
+    <version>1.0.0-SNAPSHOT</version>
+    <!-- AllBinary Platform Version End -->
+
+    <name>TouchInputLibraryPLua</name>
+    <url>http://www.allbinary.com/</url>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <name>AllBinary Snapshots Nexus</name>
+            <url>https://nexus-allbinary.rhcloud.com/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>nexus-releases</id>
+            <name>AllBinary Releases Nexus</name>
+            <url>https://nexus-allbinary.rhcloud.com/nexus/content/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
+
+
+
+    <modules>
+
+        <module>../TouchButtonBaseJavaLibraryLuaM</module>
+        <module>../TouchButtonMappingJavaLibraryLuaM</module>
+        <module>../NoTouchButtonJavaLibraryLuaM</module>
+        <module>../TouchScreenJavaLibraryLuaM</module>
+        <module>../TouchButtonJavaLibraryLuaM</module>
+        
+        <!-- Not really required here -->
+        <module>../platform/me/TouchScreenJ2MENoneJavaLibraryLuaM</module>
+        <module>../platform/me/TouchScreenJ2MEJavaLibraryLuaM</module>
+        
+        <module>../platform/me/TouchJ2MEJavaLibraryLuaM</module>
+        
+    </modules>
+
+</project>
+

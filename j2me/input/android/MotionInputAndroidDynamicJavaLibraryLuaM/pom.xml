@@ -1,0 +1,195 @@
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.allbinary</groupId>
+    <artifactId>MotionInputAndroidDynamicJavaLibraryLua</artifactId>
+    <packaging>jar</packaging>
+    <!-- AllBinary Platform Version Start -->
+    <version>1.0.0-SNAPSHOT</version>
+    <!-- AllBinary Platform Version End -->
+    <name>MotionInputAndroidDynamicJavaLibraryLua</name>
+    <url>http://maven.apache.org</url>
+
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <name>AllBinary Snapshots Nexus</name>
+            <url>https://nexus-allbinary.rhcloud.com/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>nexus-releases</id>
+            <name>AllBinary Releases Nexus</name>
+            <url>https://nexus-allbinary.rhcloud.com/nexus/content/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
+    
+
+
+    <properties>
+        <cygwin.home>G:/cygwin64</cygwin.home>
+        <!-- The generated code uses math.tointeger so it needs Lua 5.3 or later -->
+        <lua.compiler>luac5.3</lua.compiler>
+        <!-- Set to false to continue the Maven build when the generated Lua does not compile -->
+        <lua.fail.on.error>true</lua.fail.on.error>
+        <!-- Set to false to continue the Maven build when a require() is not found in this project or its dependencies -->
+        <lua.fail.on.missing.dependency>true</lua.fail.on.missing.dependency>
+        <lua.dependency.directory>${project.build.directory}/lua-dependencies/META-INF/lua</lua.dependency.directory>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.allbinary</groupId>
+            <artifactId>LoggingJ2MEAllLua</artifactId>
+            <!-- AllBinary Platform Version Start -->
+            <version>1.0.0-SNAPSHOT</version>
+            <!-- AllBinary Platform Version End -->
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.allbinary</groupId>
+            <artifactId>AllBinaryJ2MELibraryLua</artifactId>
+            <!-- AllBinary Platform Version Start -->
+            <version>1.0.0-SNAPSHOT</version>
+            <!-- AllBinary Platform Version End -->
+        </dependency>
+
+        <dependency>          
+            <groupId>org.allbinary</groupId>
+            <artifactId>AndroidBaseJavaLibraryLua</artifactId>
+            <!-- AllBinary Platform Version Start -->
+            <version>1.0.0-SNAPSHOT</version>
+            <!-- AllBinary Platform Version End -->
+        </dependency>
+
+        <dependency>          
+            <groupId>org.allbinary</groupId>
+            <artifactId>AndroidAPI19UpTo29JavaLibraryLua</artifactId>
+            <!-- AllBinary Platform Version Start -->
+            <version>1.0.0-SNAPSHOT</version>
+            <!-- AllBinary Platform Version End -->
+        </dependency>
+
+        <dependency>          
+            <groupId>org.allbinary</groupId>
+            <artifactId>MotionInputThroughAPI4AndroidJavaLibraryLua</artifactId>
+            <!-- AllBinary Platform Version Start -->
+            <version>1.0.0-SNAPSHOT</version>
+            <!-- AllBinary Platform Version End -->
+        </dependency>
+
+        <dependency>          
+            <groupId>org.allbinary</groupId>
+            <artifactId>MotionInputAPI5AndUpAndroidJavaLibraryLua</artifactId>
+            <!-- AllBinary Platform Version Start -->
+            <version>1.0.0-SNAPSHOT</version>
+            <!-- AllBinary Platform Version End -->
+        </dependency>
+  
+        <dependency>
+            <groupId>org.microemu</groupId>
+            <artifactId>microemu-midpLua</artifactId>
+            <version>2.0.4</version>
+            <optional>true</optional>
+        </dependency>
+        
+
+        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>androidLua</artifactId>
+            <version>1.5_r3</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>androidLua</artifactId>
+            <version>1.5_r3</version>
+            <scope>provided</scope>
+            <classifier>sources</classifier>
+        </dependency>
+    </dependencies>
+
+
+
+    <build>
+        
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.8.1</version>
+                <executions>
+                    <execution>
+                        <id>unpack-lua-dependencies</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeScope>runtime</includeScope>
+                            <includeTypes>jar</includeTypes>
+                            <excludeClassifiers>sources</excludeClassifiers>
+                            <includes>META-INF/lua/**</includes>
+                            <outputDirectory>${project.build.directory}/lua-dependencies</outputDirectory>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <id>compile-lua-sources</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>${cygwin.home}/bin/bash.exe</executable>
+                            <arguments>
+                                <argument>${project.basedir}/build-cygwin.sh</argument>
+                                <argument>${project.basedir}/src/main/java</argument>
+                                <argument>${project.build.outputDirectory}/META-INF/lua</argument>
+                                <argument>${lua.compiler}</argument>
+                                <argument>${lua.fail.on.error}</argument>
+                                <argument>${lua.dependency.directory}</argument>
+                                <argument>${lua.fail.on.missing.dependency}</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+</project>
+

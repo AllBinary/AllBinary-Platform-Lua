@@ -1,0 +1,88 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.allbinary</groupId>
+    <artifactId>AllBinaryBaseLibraryPOMLua</artifactId>
+    <packaging>pom</packaging>
+    <!-- AllBinary Platform Version Start -->
+    <version>1.0.0-SNAPSHOT</version>
+    <!-- AllBinary Platform Version End -->
+
+    <name>AllBinaryBaseLibraryPOMLua</name>
+    <url>http://www.allbinary.com/</url>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <name>AllBinary Snapshots Nexus</name>
+            <url>https://nexus-allbinary.rhcloud.com/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>nexus-releases</id>
+            <name>AllBinary Releases Nexus</name>
+            <url>https://nexus-allbinary.rhcloud.com/nexus/content/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
+    
+    <properties>
+        <buildLabel>${project.version}</buildLabel>
+        <assemblyPluginVersion>2.2-beta-1</assemblyPluginVersion>
+    </properties>
+
+    <modules>
+        <module>../CommonJavaLibraryLuaM</module>
+        <module>../TempBaseJavaLibraryLuaM</module>
+        
+        <module>../../allbinary_src/LogLuaM</module>
+        <module>../../allbinary_src/allbinary_src_designpatterns_srcLuaM</module>
+        <module>../../allbinary_src/data/BaseDataJavaLibraryLuaM</module>
+        <module>../../allbinary_src/cache/BaseCacheJavaLibraryLuaM</module>
+        <module>../../allbinary_src/logic/BasePreloaderJavaLibraryLuaM</module>
+        <module>../../allbinary_src/logic/BasePreloaderJ2MEJavaLibraryLuaM</module>
+
+        <module>../ExceptionHTMLJavaLibraryLuaM</module>
+        <module>../J2MEExceptionLibraryLuaM</module>
+        <module>../../allbinary_src/J2SEExceptionLibraryLuaM</module>
+        <module>../J2MEUtilJavaLibraryLuaM</module>
+        <module>../J2MEColorJavaLibraryLuaM</module>
+        <module>../EventJ2MELibraryLuaM</module>
+
+        <module>../../allbinary_src/LogNoPlatformJavaLibraryLuaM</module>
+        <module>../../allbinary_src/LogJ2MEJavaLibraryLuaM</module>
+        <module>../../allbinary_src/LogJ2SEJavaLibraryLuaM</module>
+<!--        <module>../../allbinary_src/LogAndroidJavaLibraryLuaM</module>-->
+        <module>../logging/LoggingNoneLuaM</module>
+        <module>../logging/LoggingJ2MEAllLuaM</module>
+        <module>../logging/LoggingJ2MEExceptionLuaM</module>
+<!--        <module>../logging/LoggingAndroidAllLuaM</module>-->
+        <!--
+        //While it is a possible dependency option it really does not fit here
+        //as such it is actually build in the final POM builds instead
+        <module>../logging/LoggingRemoteExceptionLuaM</module>  
+        -->
+        
+        <module>../J2MEWindowingJavaLibraryLuaM</module>
+        
+        <module>../lib/BaseMathLibraryLuaM</module>
+        <module>../lib/BasicMathLibraryLuaM</module>
+        
+        <module>../../allbinary_src/ThreadLibraryLuaM</module>
+        <module>../../allbinary_src/ThreadHTMLLibraryLuaM</module>
+        <module>../../replace_these_stub_projects/allbinary_src/NoneOnlyJavaLibraryLuaM</module>
+        <module>../../allbinary_src/ThreadJ2MELibraryLuaM</module>
+        <module>../time/TimeJavaLibraryLuaM</module>
+
+        <module>../statistics/ApplicationStatisticsJ2SELibraryLuaM</module>
+        <module>../statistics/ApplicationStatisticsJ2MELibraryLuaM</module>
+        <module>../statistics/ApplicationStatisticsJavaLibraryLuaM</module>
+
+        <module>../../allbinary_src/logging/BasicLogConfigTypeJavaLibraryLuaM</module>
+        <module>../../allbinary_src/logging/LogConfigTypeGameClientJavaLibraryLuaM</module>
+
+        <module>../../allbinary_src/hardware/HardwareLibraryPOLuaM</module>
+
+        <module>../lib/TrigBaseLibraryLuaM</module>
+
+    </modules>
+
+</project>
+

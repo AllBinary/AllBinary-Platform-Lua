@@ -1,0 +1,26 @@
+-- Generated Code Do Not Modify
+-- package org.allbinary.graphics.form.item
+
+
+local function java_idiv(a, b)
+    local q = a / b
+    if q < 0 then return math.ceil(q) end
+    return math.floor(q)
+end
+
+local function java_int(value)
+    if value < 0 then return math.tointeger(math.ceil(value)) end
+    return math.tointeger(math.floor(value))
+end
+
+local ABImageStringItem = {}
+ABImageStringItem.__index = ABImageStringItem
+ABImageStringItem.className = "ABImageStringItem"
+
+function ABImageStringItem.new()
+    local self = setmetatable({}, ABImageStringItem)
+    return self
+end
+
+return ABImageStringItem
+

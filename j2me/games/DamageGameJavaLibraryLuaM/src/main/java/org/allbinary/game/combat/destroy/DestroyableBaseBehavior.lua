@@ -1,0 +1,75 @@
+--
+-- AllBinary Open License Version 1
+-- Copyright (c) 2011 AllBinary
+-- 
+-- By agreeing to this license you and any business entity you represent are
+-- legally bound to the AllBinary Open License Version 1 legal agreement.
+-- 
+-- You may obtain the AllBinary Open License Version 1 legal agreement from
+-- AllBinary or the root directory of AllBinary's AllBinary Platform repository.
+-- 
+-- Created By: Travis Berthelot
+--  
+-- Generated Code Do Not Modify
+-- package org.allbinary.game.combat.destroy
+
+local CommonStrings = require("org.allbinary.string.CommonStrings")
+local DestroyableInterface = require("org.allbinary.game.combat.destroy.DestroyableInterface")
+
+-- Java library Throwable. tostring gives the message like Java getMessage.
+local function java_exception(className, message, cause)
+    if cause == nil and type(message) == "table" then
+        cause = message
+        message = tostring(message)
+    end
+    local exception = {className = className, message = message, cause = cause}
+    function exception:getMessage() return self.message end
+    function exception:getCause() return self.cause end
+    function exception:printStackTrace() print(debug.traceback(tostring(self))) end
+    return setmetatable(exception, {__tostring = function(self) if self.message ~= nil then return tostring(self.message) end return self.className end})
+end
+
+local function java_idiv(a, b)
+    local q = a / b
+    if q < 0 then return math.ceil(q) end
+    return math.floor(q)
+end
+
+local function java_int(value)
+    if value < 0 then return math.tointeger(math.ceil(value)) end
+    return math.tointeger(math.floor(value))
+end
+
+local DestroyableBaseBehavior = {}
+DestroyableBaseBehavior.__index = DestroyableBaseBehavior
+DestroyableBaseBehavior.className = "DestroyableBaseBehavior"
+
+function DestroyableBaseBehavior.new()
+    local self = setmetatable({}, DestroyableBaseBehavior)
+    return self
+end
+
+
+function DestroyableBaseBehavior.getInstance()
+        return DestroyableBaseBehavior.instance
+end
+
+
+function DestroyableBaseBehavior:getName()
+        return getmetatable(self).className
+end
+
+
+-- throws Exception
+function DestroyableBaseBehavior:isDestroyed()
+        error(java_exception("Exception", CommonStrings.getInstance().NOT_IMPLEMENTED), 0)
+end
+
+
+function DestroyableBaseBehavior:setDestroyed(destroyed)
+end
+
+DestroyableBaseBehavior.instance = DestroyableBaseBehavior.new()
+
+return DestroyableBaseBehavior
+

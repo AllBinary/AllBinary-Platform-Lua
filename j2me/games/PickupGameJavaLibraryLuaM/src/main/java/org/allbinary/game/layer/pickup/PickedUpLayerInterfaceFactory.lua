@@ -1,0 +1,68 @@
+--
+-- AllBinary Open License Version 1
+-- Copyright (c) 2011 AllBinary
+-- 
+-- By agreeing to this license you and any business entity you represent are
+-- legally bound to the AllBinary Open License Version 1 legal agreement.
+-- 
+-- You may obtain the AllBinary Open License Version 1 legal agreement from
+-- AllBinary or the root directory of AllBinary's AllBinary Platform repository.
+-- 
+-- Created By: Travis Berthelot
+--  
+-- Generated Code Do Not Modify
+-- package org.allbinary.game.layer.pickup
+
+local Animation = require("org.allbinary.animation.Animation")
+local AllBinaryLayer = require("org.allbinary.layer.AllBinaryLayer")
+local PickedUpLayerInterfaceFactoryBase = require("org.allbinary.game.layer.pickup.PickedUpLayerInterfaceFactoryBase")
+
+local function java_idiv(a, b)
+    local q = a / b
+    if q < 0 then return math.ceil(q) end
+    return math.floor(q)
+end
+
+local function java_int(value)
+    if value < 0 then return math.tointeger(math.ceil(value)) end
+    return math.tointeger(math.floor(value))
+end
+
+local PickedUpLayerInterfaceFactory = {}
+PickedUpLayerInterfaceFactory.__index = PickedUpLayerInterfaceFactory
+PickedUpLayerInterfaceFactory.className = "PickedUpLayerInterfaceFactory"
+setmetatable(PickedUpLayerInterfaceFactory, {__index = PickedUpLayerInterfaceFactoryBase})
+
+function PickedUpLayerInterfaceFactory:_init_fields()
+    self.pickedUpLayerType = nil
+    self.iconLayer = nil
+    self.animationInterface = nil
+end
+
+
+function PickedUpLayerInterfaceFactory.new(pickeUpLayerType, iconLayer, animationInterface)
+    local self = setmetatable(PickedUpLayerInterfaceFactoryBase.new(), PickedUpLayerInterfaceFactory)
+    self:_init_fields()
+        self.pickedUpLayerType = pickeUpLayerType
+        self.animationInterface = animationInterface
+        self.iconLayer = iconLayer
+    return self
+end
+
+
+function PickedUpLayerInterfaceFactory:getIconLayer()
+        return self.iconLayer
+end
+
+
+function PickedUpLayerInterfaceFactory:getAnimationInterface()
+        return self.animationInterface
+end
+
+
+function PickedUpLayerInterfaceFactory:getPickedUpLayerType()
+        return self.pickedUpLayerType
+end
+
+return PickedUpLayerInterfaceFactory
+
