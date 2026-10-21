@@ -7,7 +7,7 @@ This repo is used to allow developers to skip the Lua code generation step.
 
 What are some examples game with this Lua code?
 
-https://allbinary.itch.io (The downloads with "-ts" in the filename are Lua only builds. Currently that only includes nothing. Also the Lua builds are not available on Google Play or other stores.)
+https://allbinary.itch.io (The downloads with "-lua" in the filename are Lua only builds. Currently that only includes nothing. Also the Lua builds are not available on Google Play or other stores.)
 
 What is the License?
 
