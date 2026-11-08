@@ -53,7 +53,7 @@
         <!--
         <module>../../../graphics/opengl/OpenGLESJavaLibraryLuaM</module>
         -->
-        <module>../../../graphics/opengl/OpenGLJOGLJavaLibraryLuaM</module>
+        <!--<module>../../../graphics/opengl/OpenGLJOGLJavaLibraryLuaM</module>-->
         <module>../../../graphics/opengl/OpenGLESBaseJavaLibraryLuaM</module>
 
         <!-- Not used in Platform Libraries -->

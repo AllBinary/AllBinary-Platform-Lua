@@ -37,18 +37,18 @@
         <module>../allbinary_src/logic/BasePreloaderFileJavaLibraryLuaM</module>
         <module>../allbinary_src/logic/data/file/FileJavaLibraryLuaM</module>
         <module>../allbinary_src/logic/data/file/FileJ2SEJavaLibraryLuaM</module>
-        <module>../allbinary_src/data/DataJavaLibraryLuaM</module>
-        <module>../allbinary_src/logic/data/file/FileUnamedJavaLibraryLuaM</module>
-        <module>../allbinary_src/logic/data/file/FileAdvancedJavaLibraryLuaM</module>
-        <module>../allbinary_src/PreLoaderJavaLibraryLuaM</module>
-        <module>../allbinary_src/FileInitInfoJavaLibraryLuaM</module>
-        <module>../allbinary_src/PreLoaderFileJavaLibraryLuaM</module>
-        <module>../allbinary_src/PreLoaderLicenseJavaLibraryLuaM</module>
+        <!--<module>../allbinary_src/data/DataJavaLibraryLuaM</module>-->
+        <!--<module>../allbinary_src/logic/data/file/FileUnamedJavaLibraryLuaM</module>-->
+        <!--<module>../allbinary_src/logic/data/file/FileAdvancedJavaLibraryLuaM</module>-->
+        <!--<module>../allbinary_src/PreLoaderJavaLibraryLuaM</module>-->
+        <!--<module>../allbinary_src/FileInitInfoJavaLibraryLuaM</module>-->
+        <!--<module>../allbinary_src/PreLoaderFileJavaLibraryLuaM</module>-->
+        <!--<module>../allbinary_src/PreLoaderLicenseJavaLibraryLuaM</module>-->
         <module>../j2me/PCResourceLibraryLuaM</module>
         <module>../j2me/ProgressJ2MEJavaLibraryLuaM</module>
         <module>../allbinary_src/licensing/ClientInfoBaseJavaLibraryLuaM</module>
-        <module>../allbinary_src/licensing/RemoteXmlRpcJavaLibraryLuaM</module>
-        <module>../allbinary_src/licensing/LicenseClientJavaLibraryLuaM</module>
+        <!--<module>../allbinary_src/licensing/RemoteXmlRpcJavaLibraryLuaM</module>-->
+        <!--<module>../allbinary_src/licensing/LicenseClientJavaLibraryLuaM</module>-->
 
         <!--
         <module>../allbinary_src/PreLoaderLicenseJavaLibraryLuaM</module>

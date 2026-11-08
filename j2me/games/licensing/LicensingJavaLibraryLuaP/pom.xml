@@ -14,8 +14,8 @@
 
     <modules>
 
-        <module>../../platform/android/AndroidResourcesTempJavaLibraryLuaM</module>
-        <module>../../../../allbinary_src/licensing/ClientInformationMobileLicensingRegistrationJavaLibraryLuaM</module>
+        <!--<module>../../platform/android/AndroidResourcesTempJavaLibraryLuaM</module>-->
+        <!--<module>../../../../allbinary_src/licensing/ClientInformationMobileLicensingRegistrationJavaLibraryLuaM</module>-->
 
         <!--
         <module>../../../../../working/allbinary_src/licensing/LicenseRegistrationJavaLibraryLuaM</module>

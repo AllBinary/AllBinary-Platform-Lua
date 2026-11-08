@@ -61,7 +61,7 @@
         <!--
         <module>../../graphics/animation/image/ImageHTMLJavaLibraryLuaM</module>
         -->
-        <module>../../graphics/animation/image/ImageJ2SEJavaLibraryLuaM</module>
+        <!--<module>../../graphics/animation/image/ImageJ2SEJavaLibraryLuaM</module>-->
         <!--
         <module>../../graphics/animation/image/ImageAndroidJavaLibraryLuaM</module>
         -->

@@ -33,14 +33,14 @@
         -->
         
         
-        <module>../AllBinaryGraphicsUserInterfaceJavaLibraryLuaM</module>
+        <!--<module>../AllBinaryGraphicsUserInterfaceJavaLibraryLuaM</module>-->
         
         <module>../../allbinary_src/logging/LogConfigTypeThickClientJavaLibraryLuaM</module>
-        <module>../../allbinary_src/logging/GUILoggingLuaM</module>
+        <!--<module>../../allbinary_src/logging/GUILoggingLuaM</module>-->
                 
-        <module>../AllBinaryGraphicsJavaApplicationLuaM</module>
+        <!--<module>../AllBinaryGraphicsJavaApplicationLuaM</module>-->
         
-        <module>../ImageToolJavaApplicationLuaM</module>
+        <!--<module>../ImageToolJavaApplicationLuaM</module>-->
     </modules>
 
 </project>

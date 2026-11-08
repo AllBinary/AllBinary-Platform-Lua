@@ -31,7 +31,7 @@
         NoGyroSensorLibrary
 
         -->
-        <module>../../android/AndroidUtilJavaLibraryLuaM</module>
+        <!--<module>../../android/AndroidUtilJavaLibraryLuaM</module>-->
 
         <module>../../../allbinary_src/security/SimpleCryptLibraryLuaM</module>
         <!--
@@ -40,7 +40,7 @@
         -->
         <module>../../../allbinary_src/TokenizerJavaLibraryLuaM</module>
         <module>../../../allbinary_src/security/BasicSecurityJavaLibraryLuaM</module>
-        <module>../../../replace_these_stub_projects/security/YourCryptFileJavaLibraryLuaM</module>
+        <!--<module>../../../replace_these_stub_projects/security/YourCryptFileJavaLibraryLuaM</module>-->
         <module>../../../replace_these_stub_projects/security/YourSecurityJavaLibraryLuaM</module>
         <module>../../../replace_these_stub_projects/communication/YourXmlRpcJavaLibraryLuaM</module>
         <module>../../../replace_these_stub_projects/allbinary_src/J2MEOnlyJavaLibraryLuaM</module>
@@ -50,8 +50,8 @@
         <module>../../DebugJavaLibraryLuaM</module>             
         <module>../../ResourceLibraryLuaM</module>
         <module>../../ResourceJ2MEJavaLibraryLuaM</module>
-        <module>../../AndroidResourceLibraryLuaM</module>
-        <module>../../../allbinary_src/hardware/AndroidSystemJavaLibraryLuaM</module>
+        <!--<module>../../AndroidResourceLibraryLuaM</module>-->
+        <!--<module>../../../allbinary_src/hardware/AndroidSystemJavaLibraryLuaM</module>-->
 
         <module>../../../game/behavior/ArtificialIntelligenceLibraryLuaM</module>
 
