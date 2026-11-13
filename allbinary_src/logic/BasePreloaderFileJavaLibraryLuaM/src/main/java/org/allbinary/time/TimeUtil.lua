@@ -50,8 +50,7 @@ function TimeUtil:setCalendar(calendar, yearString, monthString, dayString, hour
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function TimeUtil:setCalendar(calendar, yearString, monthString, dayString, hourString, minuteString, secondString)
+function TimeUtil:setCalendarWithTime(calendar, yearString, monthString, dayString, hourString, minuteString, secondString)
         local year = math.tointeger(yearString // 1)
         local month = math.tointeger(monthString // 1)
         local day = math.tointeger(dayString // 1)

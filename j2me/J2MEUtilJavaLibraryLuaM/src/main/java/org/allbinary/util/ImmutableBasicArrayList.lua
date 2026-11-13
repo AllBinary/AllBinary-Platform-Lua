@@ -13,6 +13,7 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.util
 
+local JsType = require("jsinterop.annotations.JsType")
 local ForcedLogUtil = require("org.allbinary.logic.communication.log.ForcedLogUtil")
 local BasicArrayListS = require("org.allbinary.util.BasicArrayListS")
 

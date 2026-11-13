@@ -53,29 +53,6 @@ local ProgressCanvas = {}
 ProgressCanvas.__index = ProgressCanvas
 ProgressCanvas.className = "ProgressCanvas"
 setmetatable(ProgressCanvas, {__index = RunnableCanvas})
-local ProgressPaintable = {}
-    ProgressPaintable.__index = ProgressPaintable
-    ProgressPaintable.className = "ProgressPaintable"
-    setmetatable(ProgressPaintable, {__index = Paintable})
-    ProgressCanvas.ProgressPaintable = ProgressPaintable
-
-    function ProgressPaintable:_init_fields()
-        self.progressCanvas = nil
-    end
-    
-
-    function ProgressCanvas.new(progressCanvas)
-        local self = setmetatable(Paintable.new(), ProgressCanvas)
-        self:_init_fields()
-            self.progressCanvas = progressCanvas
-        return self
-    end
-    
-
-    function ProgressCanvas:paint(graphics)
-            self.progressCanvas:paint2(graphics)
-    end
-
 
 function ProgressCanvas:_init_fields()
     self.hasPainted = false

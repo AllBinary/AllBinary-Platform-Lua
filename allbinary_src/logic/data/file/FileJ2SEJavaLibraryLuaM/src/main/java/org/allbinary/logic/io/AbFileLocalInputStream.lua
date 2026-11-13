@@ -36,7 +36,7 @@ setmetatable(AbFileLocalInputStream, {__index = AbFileInputStream})
 
 
 function AbFileLocalInputStream.new(file)
-    local self = setmetatable(AbFileInputStream.new(AbFileNativeUtil.get(file)), AbFileLocalInputStream)
+    local self = setmetatable(AbFileInputStream.new(AbFileNativeUtil.get(file):getPath()), AbFileLocalInputStream)
         -- super(...) made self above
     return self
 end

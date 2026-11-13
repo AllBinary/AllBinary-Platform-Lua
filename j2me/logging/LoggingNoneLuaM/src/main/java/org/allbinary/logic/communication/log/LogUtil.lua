@@ -50,8 +50,7 @@ function LogUtil:putF(specialMessage, anyType, functionName)
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function LogUtil:putF(specialMessage, className, functionName)
+function LogUtil:putFS(specialMessage, className, functionName)
 end
 
 

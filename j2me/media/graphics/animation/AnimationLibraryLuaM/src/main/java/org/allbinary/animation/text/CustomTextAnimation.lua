@@ -88,6 +88,11 @@ function CustomTextAnimation:setScale(scaleX, scaleY)
 end
 
 
+function CustomTextAnimation:setTextWithOnMeasure(text, textChangeListener)
+        TextAnimation.setTextWithOnMeasure(self, text, textChangeListener)
+end
+
+
 function CustomTextAnimation:setText(text)
         if self.lastText ~= text then
             self.hasChanged = true

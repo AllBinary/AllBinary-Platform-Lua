@@ -32,6 +32,21 @@ end
 local NoGameNotificationHudSingleton = {}
 NoGameNotificationHudSingleton.__index = NoGameNotificationHudSingleton
 NoGameNotificationHudSingleton.className = "NoGameNotificationHudSingleton"
+local NoGameGameNotificationHud = {}
+    NoGameGameNotificationHud.__index = NoGameGameNotificationHud
+    NoGameGameNotificationHud.className = "NoGameGameNotificationHud"
+    setmetatable(NoGameGameNotificationHud, {__index = GameNotificationHud})
+    NoGameNotificationHudSingleton.NoGameGameNotificationHud = NoGameGameNotificationHud
+    
+
+    function NoGameNotificationHudSingleton.new()
+        local self = setmetatable(GameNotificationHud.new(BasicHudFactory.getInstance().TOPCENTER, BasicHudFactory.getInstance().HORIZONTAL, 2, BasicColorFactory.getInstance().RED), NoGameNotificationHudSingleton)
+            -- super(...) made self above
+            self.updateMaxWidth = 40
+            self.updateMaxHeight = 14
+        return self
+    end
+
 
 function NoGameNotificationHudSingleton:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -49,20 +64,6 @@ function NoGameNotificationHudSingleton.new()
     self:_init_fields()
         local try_ok, try_error = pcall(function()
             local basicHudFactory = BasicHudFactory.getInstance()
-            local NoGameGameNotificationHud = {}
-            NoGameGameNotificationHud.__index = NoGameGameNotificationHud
-            NoGameGameNotificationHud.className = "NoGameGameNotificationHud"
-            setmetatable(NoGameGameNotificationHud, {__index = GameNotificationHud})
-            
-
-            function NoGameNotificationHudSingleton.new()
-                local self = setmetatable(GameNotificationHud.new(self.basicHudFactory.TOPCENTER, self.basicHudFactory.HORIZONTAL, 2, BasicColorFactory.getInstance().RED), NoGameNotificationHudSingleton)
-                    -- super(...) made self above
-                    self.updateMaxWidth = 40
-                    self.updateMaxHeight = 14
-                return self
-            end
-
             self.gameNotificationHud = NoGameGameNotificationHud.new()
         end)
         if not try_ok then

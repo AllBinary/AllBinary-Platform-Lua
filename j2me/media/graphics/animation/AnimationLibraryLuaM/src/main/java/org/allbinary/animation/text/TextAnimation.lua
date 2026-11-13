@@ -110,7 +110,7 @@ end
 
 function TextAnimation:setText(text)
         local list = BasicArrayListD.new()
-        if text ~= nil and #text > 0 then
+        if #text > 0 then
             local index = 0
             local startIndex = 0
             local endIndex = 0

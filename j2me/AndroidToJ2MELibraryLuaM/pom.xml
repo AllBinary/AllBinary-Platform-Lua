@@ -198,7 +198,7 @@
 
         <dependency>
             <groupId>org.microemu</groupId>
-            <artifactId>microemu-midpLua</artifactId>
+            <artifactId>microemu-midp-for-polyglotLua</artifactId>
             <version>3.0.0-SNAPSHOT</version>
             <optional>true</optional>
         </dependency>
@@ -215,12 +215,15 @@
             <optional>true</optional>
         </dependency>-->
 
+        <!-- Not available for this language
         <dependency>
             <groupId>com.google.android</groupId>
             <artifactId>androidLua</artifactId>
             <version>4.1.1.4</version>
             <scope>provided</scope>
         </dependency>
+        -->
+        <!-- Not available for this language
         <dependency>
             <groupId>com.google.android</groupId>
             <artifactId>androidLua</artifactId>
@@ -228,6 +231,7 @@
             <scope>provided</scope>
             <classifier>sources</classifier>
         </dependency>
+        -->
     </dependencies>
 
 

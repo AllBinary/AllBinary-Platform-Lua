@@ -60,5 +60,15 @@ function CircleFilledAnimation:paintXY(graphics, x, y)
         graphics:fillRect(x, y, self.width, self.height)
 end
 
+
+function CircleFilledAnimation:getBasicColorP()
+        return Animation.getBasicColorP(self)
+end
+
+
+function CircleFilledAnimation:setBasicColorP(basicColor)
+        Animation.setBasicColorP(self, basicColor)
+end
+
 return CircleFilledAnimation
 

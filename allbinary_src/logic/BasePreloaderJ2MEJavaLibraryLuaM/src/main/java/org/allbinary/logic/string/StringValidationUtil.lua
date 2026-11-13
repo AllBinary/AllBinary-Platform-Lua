@@ -83,7 +83,7 @@ end
 
 
 function StringValidationUtil:isValidRequired(value, min, max)
-        if value == nil or #value < min or #value > max then
+        if #value < min or #value > max then
             return false
         end
         return true
@@ -102,7 +102,7 @@ end
 
 
 function StringValidationUtil:isValidNotRequired(value, min, max)
-        if value ~= nil then
+        if #value > 0 then
             if #value < min or #value > max then
                 return false
             end
@@ -112,7 +112,7 @@ end
 
 
 function StringValidationUtil:isValidNotRequiredNumber(value, min, max)
-        if value ~= nil then
+        if #value > 0 then
             if self.tsUtil:compareTo(value, self.stringUtil.NULL_STRING) == 0 or #value < min or #value > max then
                 return false
             end
@@ -125,7 +125,7 @@ end
 
 
 function StringValidationUtil:isEmpty(string)
-        if string ~= nil and self.tsUtil:compareTo(string, self.stringUtil.NULL_STRING) ~= 0 and self.tsUtil:compareTo(string, self.stringUtil.EMPTY_STRING) ~= 0 then
+        if self.tsUtil:compareTo(string, self.stringUtil.NULL_STRING) ~= 0 and self.tsUtil:compareTo(string, self.stringUtil.EMPTY_STRING) ~= 0 then
             return false
         else
             return true

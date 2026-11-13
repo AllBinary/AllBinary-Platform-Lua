@@ -13,7 +13,6 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.displayable
 
-local ARunnable = require("org.allbinary.thread.ARunnable")
 -- local Canvas = require("javax.microedition.lcdui.Canvas")
 local Features = require("org.allbinary.game.configuration.feature.Features")
 local DisplayInfoSingleton = require("org.allbinary.graphics.displayable.DisplayInfoSingleton")
@@ -64,24 +63,7 @@ function RepaintBehavior:onChangeRepaint(canvas)
         if features:isFeature(openGLFeatureFactory.OPENGL) then
             DisplayInfoSingleton.getInstance():process()
         else
-            local thread = Thread.new((function()
-                local o = ARunnable.new and ARunnable.new() or setmetatable({}, {__index = ARunnable})
-                
-
-                function o:run()
-                    local try_ok, try_error = pcall(function()
-                        canvas:repaint()
-                        DisplayInfoSingleton.getInstance():process()
-                    end)
-                    if not try_ok then
-                        local e = try_error
-                        local commonStrings = CommonStrings.getInstance()
-                        local logUtil = LogUtil.getInstance()
-                        logUtil:put(commonStrings.EXCEPTION, self, commonStrings.RUN, e)
-                    end
-                end
-                return o
-            end)(), self.NAME)
+            local thread = Thread.new(RepaintRunnable.new(canvas), self.NAME)
             thread:start()
         end
 end

@@ -205,18 +205,6 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-pluginLua</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>org.allbinary.graphics.j2me.MyFrame</mainClass>
-                            <packageName>org.allbinary.graphics.j2me</packageName>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
 
         </plugins>
 

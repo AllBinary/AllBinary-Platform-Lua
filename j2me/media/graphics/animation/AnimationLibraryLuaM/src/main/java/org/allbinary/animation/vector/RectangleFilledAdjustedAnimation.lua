@@ -70,5 +70,15 @@ function RectangleFilledAdjustedAnimation:setOffsetY(offsetY)
         self.offsetY = offsetY
 end
 
+
+function RectangleFilledAdjustedAnimation:getBasicColorP()
+        return RectangleFilledAnimation.getBasicColorP(self)
+end
+
+
+function RectangleFilledAdjustedAnimation:setBasicColorP(basicColor)
+        RectangleFilledAnimation.setBasicColorP(self, basicColor)
+end
+
 return RectangleFilledAdjustedAnimation
 

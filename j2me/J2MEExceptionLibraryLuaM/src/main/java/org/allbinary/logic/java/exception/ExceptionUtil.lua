@@ -88,10 +88,7 @@ function ExceptionUtil:getStackTrace(e)
         local bs = java_byte_array_output_stream()
         print(debug.traceback(tostring(e)))
         local output = tostring(bs)
-        if output ~= nil then
-            return tostring(output)
-        end
-        return self.NONE
+        return tostring(output)
 end
 
 ExceptionUtil.instance = ExceptionUtil.new()

@@ -57,7 +57,7 @@ end
 function Tokenizer.new(sep)
     local self = setmetatable({}, Tokenizer)
     self:_init_fields()
-        if sep == nil or TsUtil.getInstance():compareTo(sep, StringUtil.getInstance().EMPTY_STRING) == 0 then
+        if TsUtil.getInstance():compareTo(sep, StringUtil.getInstance().EMPTY_STRING) == 0 then
             error(java_exception("Exception", "Sep provided is not valid"), 0)
         end
         self.sep = sep

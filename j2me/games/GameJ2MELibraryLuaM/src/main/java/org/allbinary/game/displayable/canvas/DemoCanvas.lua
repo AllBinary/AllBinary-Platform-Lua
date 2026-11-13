@@ -915,6 +915,16 @@ function DemoCanvas:getType()
         return DemoCanvas.TYPE
 end
 
+
+function DemoCanvas:getTitle()
+        return RunnableCanvas.getTitle(self)
+end
+
+
+function DemoCanvas:isPaused()
+        return RunnableCanvas.isPaused(self)
+end
+
 DemoCanvas.id = 0
 DemoCanvas.BOT_GAME_STATS = "Bot Game Statistics: "
 DemoCanvas.TYPE = 3

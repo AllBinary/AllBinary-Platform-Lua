@@ -18,6 +18,7 @@ local AdConfiguration = require("org.allbinary.business.advertisement.AdConfigur
 local VirtualKeyboardEvent = require("org.allbinary.input.event.VirtualKeyboardEvent")
 local VirtualKeyboardEventHandler = require("org.allbinary.input.event.VirtualKeyboardEventHandler")
 local VirtualKeyboardEventListenerInterface = require("org.allbinary.input.event.VirtualKeyboardEventListenerInterface")
+local AllBinaryEventObject = require("org.allbinary.logic.util.event.AllBinaryEventObject")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -46,6 +47,11 @@ end
 
 -- throws Exception
 function GameAdState:onVirtualKeyboardEvent(virtualKeyboardEvent)
+end
+
+
+function GameAdState:onEvent(eventObject)
+        GameAdStateBase.onEvent(self, eventObject)
 end
 
 return GameAdState

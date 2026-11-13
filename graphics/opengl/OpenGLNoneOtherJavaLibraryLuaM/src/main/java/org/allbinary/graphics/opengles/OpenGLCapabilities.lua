@@ -31,6 +31,7 @@ OpenGLCapabilities.__index = OpenGLCapabilities
 OpenGLCapabilities.className = "OpenGLCapabilities"
 
 function OpenGLCapabilities:_init_fields()
+    self.CUSTOM_GL_SURFACE_VIEW = true
     self.VERSION_1_0 = "1.0"
     self.VERSION_1_1 = "1.1"
     self.VERSION_2_0 = "2.0"
@@ -54,6 +55,11 @@ function OpenGLCapabilities.new()
     local self = setmetatable({}, OpenGLCapabilities)
     self:_init_fields()
     return self
+end
+
+
+function OpenGLCapabilities:isInitialized()
+        return true
 end
 
 

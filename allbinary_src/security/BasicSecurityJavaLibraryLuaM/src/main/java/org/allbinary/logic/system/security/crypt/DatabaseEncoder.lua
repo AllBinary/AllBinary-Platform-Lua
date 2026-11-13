@@ -78,20 +78,12 @@ function DatabaseEncoder.decode(value)
         local try_ok, try_error = pcall(function()
             local tokenizer = Tokenizer.new(CommonSeps.getInstance().SPACE)
             local vector = tokenizer:getTokensFromString(value, BasicArrayListD.new())
-            local byteVector = BasicArrayListD.new()
             local size = vector:size()
+            local decode = java_new_array(0, size)
             local byteOfData = nil
             for index = 0, size - 1 do
                 byteOfData = vector.objectArray[index + 1]
-                byteVector:add(byteOfData)
-            end
-            local decode = java_new_array(0, byteVector:size())
-            local decodeIndex = 0
-            local aByte = nil
-            for index = 0, size - 1 do
-                aByte = byteVector.objectArray[index + 1]
-                decode[decodeIndex + 1] = math.tointeger(aByte // 1)
-                decodeIndex = decodeIndex + 1
+                decode[index + 1] = Byte.parseByte(byteOfData)
             end
             return decode
         end)

@@ -15,6 +15,19 @@
 
 local CircularIndexUtil = require("org.allbinary.util.CircularIndexUtil")
 
+-- Java library Throwable. tostring gives the message like Java getMessage.
+local function java_exception(className, message, cause)
+    if cause == nil and type(message) == "table" then
+        cause = message
+        message = tostring(message)
+    end
+    local exception = {className = className, message = message, cause = cause}
+    function exception:getMessage() return self.message end
+    function exception:getCause() return self.cause end
+    function exception:printStackTrace() print(debug.traceback(tostring(self))) end
+    return setmetatable(exception, {__tostring = function(self) if self.message ~= nil then return tostring(self.message) end return self.className end})
+end
+
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
@@ -41,7 +54,9 @@ WeaponLayerArrayLayerCircularStaticPool.className = "WeaponLayerArrayLayerCircul
 function WeaponLayerArrayLayerCircularStaticPool:_init_fields()
     self.MAX = 5
     self.circularIndexUtil = CircularIndexUtil.createInstance(self.MAX)
-    self.ALL_WEAPONLAYER_ARRAY = java_new_array(nil, 4)
+    self.WEAPONLAYER_ARRAY = nil
+    self.TWO_WEAPONLAYER_ARRAY = nil
+    self.THREE_WEAPONLAYER_ARRAY = nil
 end
 
 function WeaponLayerArrayLayerCircularStaticPool.new()
@@ -65,15 +80,27 @@ function WeaponLayerArrayLayerCircularStaticPool:init()
             TWO_WEAPONLAYER_ARRAY[index + 1] = java_new_array(nil, 2)
             THREE_WEAPONLAYER_ARRAY[index + 1] = java_new_array(nil, 3)
         end
-        self.ALL_WEAPONLAYER_ARRAY[2] = WEAPONLAYER_ARRAY
-        self.ALL_WEAPONLAYER_ARRAY[3] = TWO_WEAPONLAYER_ARRAY
-        self.ALL_WEAPONLAYER_ARRAY[4] = THREE_WEAPONLAYER_ARRAY
+        self.WEAPONLAYER_ARRAY = WEAPONLAYER_ARRAY
+        self.TWO_WEAPONLAYER_ARRAY = TWO_WEAPONLAYER_ARRAY
+        self.THREE_WEAPONLAYER_ARRAY = THREE_WEAPONLAYER_ARRAY
+end
+
+
+function WeaponLayerArrayLayerCircularStaticPool:getWeaponLayerArrays(size)
+        if size == 1 then
+            return self.WEAPONLAYER_ARRAY
+        elseif size == 2 then
+            return self.TWO_WEAPONLAYER_ARRAY
+        elseif size == 3 then
+            return self.THREE_WEAPONLAYER_ARRAY
+        end
+        error(java_exception("RuntimeException"), 0)
 end
 
 
 -- throws Exception
 function WeaponLayerArrayLayerCircularStaticPool:getInstanceArray(size)
-        local weaponLayerArray = self.ALL_WEAPONLAYER_ARRAY[size + 1][self.circularIndexUtil:getIndex() + 1]
+        local weaponLayerArray = self:getWeaponLayerArrays(size)[self.circularIndexUtil:getIndex() + 1]
         self.circularIndexUtil:next()
         return weaponLayerArray
 end

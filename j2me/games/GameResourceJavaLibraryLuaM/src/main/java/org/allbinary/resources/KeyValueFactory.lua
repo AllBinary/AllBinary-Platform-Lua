@@ -48,11 +48,10 @@ end
 
 
 function KeyValueFactory:get(key)
-        local value = self.MAP:get(key)
-        if value == nil then
+        if not self.MAP:containsKey(key) then
             return key
         end
-        return value
+        return self.MAP:get(key)
 end
 
 KeyValueFactory.instance = KeyValueFactory.new()

@@ -133,7 +133,7 @@
 
         <dependency>
             <groupId>org.microemu</groupId>
-            <artifactId>microemu-midpLua</artifactId>
+            <artifactId>microemu-midp-for-polyglotLua</artifactId>
             <version>2.0.4</version>
             <optional>true</optional>
         </dependency>
@@ -141,14 +141,14 @@
         Public microemu
         <dependency>
             <groupId>org.microemu</groupId>
-            <artifactId>microemu-midpLua</artifactId>
+            <artifactId>microemu-midp-for-polyglotLua</artifactId>
             <version>2.0.4</version>
             <optional>true</optional>
         </dependency>
         Custom microemu
         <dependency>
             <groupId>org.microemu</groupId>
-            <artifactId>microemu-midpLua</artifactId>
+            <artifactId>microemu-midp-for-polyglotLua</artifactId>
             <version>3.0.0-SNAPSHOT</version>
             <optional>true</optional>
         </dependency>
@@ -156,7 +156,7 @@
 
         <dependency>
             <groupId>org.microemu</groupId>
-            <artifactId>microemu-jsr-135Lua</artifactId>
+            <artifactId>microemu-jsr-135-for-polyglotLua</artifactId>
             <version>2.0.4</version>
             <optional>true</optional>
             <exclusions>
@@ -170,7 +170,7 @@
         Public microemu
         <dependency>
             <groupId>org.microemu</groupId>
-            <artifactId>microemu-jsr-135Lua</artifactId>
+            <artifactId>microemu-jsr-135-for-polyglotLua</artifactId>
             <version>2.0.4</version>
             <optional>true</optional>
             <exclusions>
@@ -183,7 +183,7 @@
         Custom microemu
         <dependency>
             <groupId>org.microemu</groupId>
-            <artifactId>microemu-jsr-135Lua</artifactId>
+            <artifactId>microemu-jsr-135-for-polyglotLua</artifactId>
             <version>3.0.0-SNAPSHOT</version>
             <optional>true</optional>
             <exclusions>

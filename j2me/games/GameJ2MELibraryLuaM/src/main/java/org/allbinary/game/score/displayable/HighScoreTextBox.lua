@@ -67,11 +67,7 @@ function HighScoreTextBox.new(highScoresFactoryInterface, highScoresHelper, abeC
         local operatingSystemInterface = OperatingSystemFactory.getInstance():getOperatingSystemInstance()
         if operatingSystemInterface:isOverScan() then
             local username = InApplicationPurchaseFactory.getInstance():getUserName()
-            if username ~= nil then
-                self:getTextFieldItem():setString(username)
-            else
-                self:getTextFieldItem():setString("NoGamerInfo")
-            end
+            self:getTextFieldItem():setString(username)
         end
     return self
 end

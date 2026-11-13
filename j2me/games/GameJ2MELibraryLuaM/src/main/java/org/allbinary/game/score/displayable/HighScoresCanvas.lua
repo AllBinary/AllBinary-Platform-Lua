@@ -59,6 +59,55 @@ local HighScoresCanvas = {}
 HighScoresCanvas.__index = HighScoresCanvas
 HighScoresCanvas.className = "HighScoresCanvas"
 setmetatable(HighScoresCanvas, {__index = GameCommandCanvas})
+local HighScoreRunnable = {}
+    HighScoreRunnable.__index = HighScoreRunnable
+    HighScoreRunnable.className = "HighScoreRunnable"
+    setmetatable(HighScoreRunnable, {__index = ARunnable})
+    HighScoresCanvas.HighScoreRunnable = HighScoreRunnable
+
+    function HighScoreRunnable:_init_fields()
+        self.highScoresCanvas = nil
+    end
+    
+
+    function HighScoresCanvas.new(highScoresCanvas)
+        local self = setmetatable(ARunnable.new(), HighScoresCanvas)
+        self:_init_fields()
+            self.highScoresCanvas = highScoresCanvas
+        return self
+    end
+    
+
+    function HighScoresCanvas:run()
+            local commonStrings = CommonStrings.getInstance()
+            local logUtil = LogUtil.getInstance()
+            local highScoresCanvas = self.highScoresCanvas
+            local try_ok, try_error = pcall(function()
+                local isHTML = J2MEUtil.isHTML()
+                if not isHTML then
+                    while not highScoresCanvas.hasPainted do
+                    end
+                    highScoresCanvas.hasPainted = false
+                end
+                local stringMaker = StringMaker.new()
+                local systemWrapper = ABSystemWrapper.getInstance()
+                local currentTimeMillis = systemWrapper:currentTimeMillis()
+                logUtil:putF(tostring(stringMaker:append("HighScoresCanvas - Request repaint to be sure: "):appendlong(currentTimeMillis)), self, commonStrings.RUN)
+                highScoresCanvas.repaintBehavior:onChangeRepaint(highScoresCanvas)
+                if not isHTML then
+                    while not highScoresCanvas.hasPainted do
+                    end
+                end
+                stringMaker:delete(0, stringMaker:length())
+                logUtil:putF(tostring(stringMaker:append("HighScoresCanvas - Now that the canvas has completed repaint go ahead and fetch the scores: "):appendlong(currentTimeMillis)), self, commonStrings.RUN)
+                highScoresCanvas:executeUpdate()
+            end)
+            if not try_ok then
+                local e = try_error
+                logUtil:put(commonStrings.EXCEPTION, self, commonStrings.RUN, e)
+            end
+    end
+
 
 function HighScoresCanvas:_init_fields()
     self.paintable = NullPaintable.getInstance()
@@ -87,61 +136,13 @@ function HighScoresCanvas.new(commandListener, allBinaryGameLayerManager, gameIn
         self.waitPaintable:setBasicColorP(allBinaryGameLayerManager:getForegroundBasicColor())
         self:getHighScoresPaintable():setBasicColorP(allBinaryGameLayerManager:getForegroundBasicColor())
         self.colorFillPaintable = ColorFillPaintableFactory.getInstance():getInstance(allBinaryGameLayerManager:getBackgroundBasicColor(), false)
-        if self.highScoresHelper:getHighScoresArray() == NoHighScoresFactory.getInstance().NO_HIGH_SCORES then
+        if (self.highScoresHelper:getHighScoresArray().n or #self.highScoresHelper:getHighScoresArray()) == (NoHighScoresFactory.getInstance().NO_HIGH_SCORES.n or #NoHighScoresFactory.getInstance().NO_HIGH_SCORES) then
             self:setPaintable(self.waitPaintable)
         else
             self.logUtil:putF("Show HighScores that are already loaded", self, self.commonStrings.CONSTRUCTOR)
             self:updateCommand(self.currentCommand)
             self:setPaintable(self:getHighScoresPaintable())
         end
-        local HighScoreRunnable = {}
-        HighScoreRunnable.__index = HighScoreRunnable
-        HighScoreRunnable.className = "HighScoreRunnable"
-        setmetatable(HighScoreRunnable, {__index = ARunnable})
-
-        function HighScoreRunnable:_init_fields()
-            self.highScoresCanvas = nil
-        end
-        
-
-        function HighScoresCanvas.new(highScoresCanvas)
-            local self = setmetatable(ARunnable.new(), HighScoresCanvas)
-            self:_init_fields()
-                self.highScoresCanvas = highScoresCanvas
-            return self
-        end
-        
-
-        function HighScoresCanvas:run()
-                local commonStrings = CommonStrings.getInstance()
-                local logUtil = LogUtil.getInstance()
-                local highScoresCanvas = self.highScoresCanvas
-                local try_ok, try_error = pcall(function()
-                    local isHTML = J2MEUtil.isHTML()
-                    if not isHTML then
-                        while not highScoresCanvas.hasPainted do
-                        end
-                        highScoresCanvas.hasPainted = false
-                    end
-                    local stringMaker = StringMaker.new()
-                    local systemWrapper = ABSystemWrapper.getInstance()
-                    local currentTimeMillis = systemWrapper:currentTimeMillis()
-                    logUtil:putF(tostring(stringMaker:append("HighScoresCanvas - Request repaint to be sure: "):appendlong(currentTimeMillis)), self, commonStrings.RUN)
-                    highScoresCanvas.repaintBehavior:onChangeRepaint(highScoresCanvas)
-                    if not isHTML then
-                        while not highScoresCanvas.hasPainted do
-                        end
-                    end
-                    stringMaker:delete(0, stringMaker:length())
-                    logUtil:putF(tostring(stringMaker:append("HighScoresCanvas - Now that the canvas has completed repaint go ahead and fetch the scores: "):appendlong(currentTimeMillis)), self, commonStrings.RUN)
-                    highScoresCanvas:executeUpdate()
-                end)
-                if not try_ok then
-                    local e = try_error
-                    logUtil:put(commonStrings.EXCEPTION, self, commonStrings.RUN, e)
-                end
-        end
-
         SecondaryThreadPool.getInstance():runTask(HighScoreRunnable.new(self))
     return self
 end

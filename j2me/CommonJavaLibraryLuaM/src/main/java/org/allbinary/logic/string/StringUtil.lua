@@ -46,6 +46,7 @@ function StringUtil:_init_fields()
     self.NULL_STRING = "null"
     self.EMPTY_STRING = ""
     self.ONE_EMPTY_STRING_ARRAY = {self.EMPTY_STRING}
+    self.ONE_EMPTY_STRING_ARRAY_OF_ARRAYS = java_new_array(nil, 0, 0)
     self.stringArray = java_new_array(nil, 0)
 end
 
@@ -63,11 +64,7 @@ end
 
 
 function StringUtil:getNonNull(string)
-        if string == nil then
-            return self.EMPTY_STRING
-        else
-            return string
-        end
+        return string
 end
 
 

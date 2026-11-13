@@ -38,7 +38,7 @@ setmetatable(CurrentlyPressedTouchButtonSingletonDebug, {__index = CurrentlyPres
 function CurrentlyPressedTouchButtonSingletonDebug:_init_fields()
     self.string = StringUtil.getInstance().EMPTY_STRING
     self.listString = StringUtil.getInstance().EMPTY_STRING
-    self.append = StringUtil.getInstance().EMPTY_STRING
+    self.appendText = StringUtil.getInstance().EMPTY_STRING
     self.PRESSED_AND_FIRED = "pressed & fired"
     self.PRESSED_AND_NOT_FIRED = "pressed in button but not fired"
     self.ASSOCIATED_RELEASED_AND_FIRED = "assoc. rel & fired"
@@ -64,20 +64,20 @@ function CurrentlyPressedTouchButtonSingletonDebug:appendTouchButtonInput(append
         stringBuffer:append(tostring(touchButtonInput))
         stringBuffer:append(CommonSeps.getInstance().SPACE)
         stringBuffer:append(append)
-        self.append = tostring(stringBuffer)
-        self.string = tostring(StringMaker.new():append(self.listString):append(self.append))
+        self.appendText = tostring(stringBuffer)
+        self.string = tostring(StringMaker.new():append(self.listString):append(self.appendText))
 end
 
 
 function CurrentlyPressedTouchButtonSingletonDebug:append(append)
-        self.append = tostring(StringMaker.new():append(self.append):append(append))
-        self.string = tostring(StringMaker.new():append(self.listString):append(self.append))
+        self.appendText = tostring(StringMaker.new():append(self.appendText):append(append))
+        self.string = tostring(StringMaker.new():append(self.listString):append(self.appendText))
 end
 
 
 function CurrentlyPressedTouchButtonSingletonDebug:clearLog(x, y)
-        self.append = tostring(StringMaker.new():append(GPoint.toStringStatic(x, y, 0)):append(CommonSeps.getInstance().SPACE))
-        self.string = tostring(StringMaker.new():append(self.listString):append(self.append))
+        self.appendText = tostring(StringMaker.new():append(GPoint.toStringStatic(x, y, 0)):append(CommonSeps.getInstance().SPACE))
+        self.string = tostring(StringMaker.new():append(self.listString):append(self.appendText))
 end
 
 
@@ -114,7 +114,7 @@ end
 function CurrentlyPressedTouchButtonSingletonDebug:removeAt(index)
         local touchButtonInput = CurrentlyPressedTouchButtonSingleton.removeAt(self, index)
         self.listString = tostring(self.list)
-        self.string = tostring(StringMaker.new():append(self.listString):append(self.append))
+        self.string = tostring(StringMaker.new():append(self.listString):append(self.appendText))
         return touchButtonInput
 end
 
@@ -122,7 +122,7 @@ end
 function CurrentlyPressedTouchButtonSingletonDebug:remove(touchButtonInput)
         local isRemoved = CurrentlyPressedTouchButtonSingleton.remove(self, touchButtonInput)
         self.listString = tostring(self.list)
-        self.string = tostring(StringMaker.new():append(self.listString):append(self.append))
+        self.string = tostring(StringMaker.new():append(self.listString):append(self.appendText))
         return isRemoved
 end
 
@@ -130,7 +130,7 @@ end
 function CurrentlyPressedTouchButtonSingletonDebug:add(touchButtonInput)
         CurrentlyPressedTouchButtonSingleton.add(self, touchButtonInput)
         self.listString = tostring(self.list)
-        self.string = tostring(StringMaker.new():append(self.listString):append(self.append))
+        self.string = tostring(StringMaker.new():append(self.listString):append(self.appendText))
 end
 
 

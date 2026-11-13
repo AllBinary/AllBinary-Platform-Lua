@@ -23,6 +23,7 @@ local BasicAI = require("org.allbinary.game.ai.BasicAI")
 local DestroyedEvent = require("org.allbinary.game.combat.destroy.event.DestroyedEvent")
 local DestroyedEventHandler = require("org.allbinary.game.combat.destroy.event.DestroyedEventHandler")
 local DestroyedEventListenerInterface = require("org.allbinary.game.combat.destroy.event.DestroyedEventListenerInterface")
+local Group = require("org.allbinary.game.identification.Group")
 local GameInput = require("org.allbinary.game.input.GameInput")
 local BasicVelocityProperties = require("org.allbinary.game.physics.velocity.BasicVelocityProperties")
 local VelocityInterfaceCompositeInterface = require("org.allbinary.game.physics.velocity.VelocityInterfaceCompositeInterface")
@@ -128,7 +129,9 @@ function DiveAndDirectionalTrackingAI:target(allBinaryLayerManager)
         self.lastTrackingLayerInterface = lastTrackingEvent:getLayerInterface()
         local layerInterface = self.lastTrackingLayerInterface
         local ownerLayerInterface = self:getOwnerLayerInterface()
-        if layerInterface:getGroupInterface() == ownerLayerInterface:getGroupInterface() then
+        local groupArray = layerInterface:getGroupInterface()
+        local ownerGroupArray = ownerLayerInterface:getGroupInterface()
+        if groupArray == ownerGroupArray then
             return
         end
         local x = self.lastTrackingLayerInterface:getXP()

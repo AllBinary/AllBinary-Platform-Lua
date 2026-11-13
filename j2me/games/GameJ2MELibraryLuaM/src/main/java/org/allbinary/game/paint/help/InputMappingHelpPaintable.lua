@@ -23,6 +23,7 @@ local GameInputMapping = require("org.allbinary.game.input.mapping.GameInputMapp
 local PersistentInputMapping = require("org.allbinary.game.input.mapping.PersistentInputMapping")
 local BasicColor = require("org.allbinary.graphics.color.BasicColor")
 local BasicColorFactory = require("org.allbinary.graphics.color.BasicColorFactory")
+local BasicColorUtil = require("org.allbinary.graphics.color.BasicColorUtil")
 local NullUtil = require("org.allbinary.logic.NullUtil")
 local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
 local StringMaker = require("org.allbinary.logic.string.StringMaker")
@@ -66,7 +67,7 @@ local UpdateMyFontProperties = {}
         self.keymappingBeginWidthArray = NullUtil.getInstance().NULL_INT_ARRAY
         self.actionStringDeltaXArray = NullUtil.getInstance().NULL_INT_ARRAY
         self.inputDeltaXArray = NullUtil.getInstance().NULL_INT_ARRAY_ARRAY
-        self.sepArray = java_new_array(nil, 0, 0)
+        self.sepArray = StringUtil.getInstance().ONE_EMPTY_STRING_ARRAY_OF_ARRAYS
         self.sepWidthArray = NullUtil.getInstance().NULL_INT_ARRAY_ARRAY
         self.charHeight = 0
     end
@@ -88,7 +89,7 @@ function InputMappingHelpPaintable:_init_fields()
     self.EMPTY_STRING = StringUtil.getInstance().EMPTY_STRING
     self.gameInputMappingArray = nil
     self.keyMappingArray = java_new_array(nil, 0)
-    self.actionBasicColor = java_new_array(nil, 0)
+    self.actionBasicColor = BasicColorUtil.getInstance().ZERO_ARRAY
     self.inputBasicColorArray = java_new_array(nil, 0, 0)
     self.selectedBasicColor = nil
     self.updateMyFontProperties = UpdateMyFontProperties.new()

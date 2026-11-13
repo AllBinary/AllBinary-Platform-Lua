@@ -91,5 +91,15 @@ end
 function LineAnimation:nextFrame()
 end
 
+
+function LineAnimation:getBasicColorP()
+        return Animation.getBasicColorP(self)
+end
+
+
+function LineAnimation:setBasicColorP(basicColor)
+        Animation.setBasicColorP(self, basicColor)
+end
+
 return LineAnimation
 

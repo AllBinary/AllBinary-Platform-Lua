@@ -112,5 +112,10 @@ end
 function CustomTextBoxIndexedAnimation:paintThreedXYZ(graphics, x, y, z)
 end
 
+
+function CustomTextBoxIndexedAnimation:getWidth()
+        return IndexedAnimation.getWidth(self)
+end
+
 return CustomTextBoxIndexedAnimation
 

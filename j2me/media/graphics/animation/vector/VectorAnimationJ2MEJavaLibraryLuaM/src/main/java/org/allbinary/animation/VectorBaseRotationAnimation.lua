@@ -132,5 +132,15 @@ function VectorBaseRotationAnimation:setPoints(currentPoints)
         self.circularIndexUtil = CircularIndexUtil.createInstance((self.currentPoints.n or #self.currentPoints))
 end
 
+
+function VectorBaseRotationAnimation:getBasicColorP()
+        return RotationAnimation.getBasicColorP(self)
+end
+
+
+function VectorBaseRotationAnimation:setBasicColorP(basicColor)
+        RotationAnimation.setBasicColorP(self, basicColor)
+end
+
 return VectorBaseRotationAnimation
 

@@ -14,14 +14,15 @@
 -- package org.allbinary.logic.io.file
 
 -- local ByteArrayOutputStream = require("java.io.ByteArrayOutputStream")
--- local IOException = require("java.io.IOException")
 -- local InputStream = require("java.io.InputStream")
 -- local OutputStream = require("java.io.OutputStream")
 -- local Reader = require("java.io.Reader")
 -- local Writer = require("java.io.Writer")
--- local CharBuffer = require("java.nio.CharBuffer")
 local NullUtil = require("org.allbinary.logic.NullUtil")
 local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
+local NullOutputStream = require("org.allbinary.logic.io.NullOutputStream")
+local NullReader = require("org.allbinary.logic.io.NullReader")
+local NullWriter = require("org.allbinary.logic.io.NullWriter")
 local StreamUtil = require("org.allbinary.logic.io.StreamUtil")
 local StringMaker = require("org.allbinary.logic.string.StringMaker")
 local CommonStrings = require("org.allbinary.string.CommonStrings")
@@ -87,123 +88,17 @@ end
 
 
 function SimpleFileUtil.nullOutputStream()
-        return (function()
-            local o = OutputStream.new and OutputStream.new() or setmetatable({}, {__index = OutputStream})
-            
-
-            -- throws IOException
-        function o:write(b)
-            end
-            
-
-            -- throws IOException
-        function o:write(b, off, len)
-            end
-            
-
-            function o:close()
-            end
-            return o
-        end)()
+        return NullOutputStream.NULL_OUTPUT_STREAM
 end
 
 
 function SimpleFileUtil.nullWriter()
-        return (function()
-            local o = Writer.new and Writer.new() or setmetatable({}, {__index = Writer})
-            self.closed = false
-            
-
-            -- throws IOException
-        function o:append(c)
-                return self
-            end
-            
-
-            -- throws IOException
-        function o:append(csq)
-                return self
-            end
-            
-
-            -- throws IOException
-        function o:append(csq, start, end_)
-                return self
-            end
-            
-
-            -- throws IOException
-        function o:write(c)
-            end
-            
-
-            -- throws IOException
-        function o:write(cbuf, off, len)
-            end
-            
-
-            -- throws IOException
-        function o:write(str)
-            end
-            
-
-            -- throws IOException
-        function o:write(str, off, len)
-            end
-            
-
-            -- throws IOException
-        function o:flush()
-            end
-            
-
-            -- throws IOException
-        function o:close()
-            end
-            return o
-        end)()
+        return NullWriter.NULL_WRITER
 end
 
 
 function SimpleFileUtil.nullReader()
-        return (function()
-            local o = Reader.new and Reader.new() or setmetatable({}, {__index = Reader})
-            
-
-            -- throws IOException
-        function o:read()
-                return -1
-            end
-            
-
-            -- throws IOException
-        function o:read(cbuf, off, len)
-                return -1
-            end
-            
-
-            -- throws IOException
-        function o:read(target)
-                return -1
-            end
-            
-
-            -- throws IOException
-        function o:ready()
-                return false
-            end
-            
-
-            -- throws IOException
-        function o:skip(n)
-                return 0
-            end
-            
-
-            function o:close()
-            end
-            return o
-        end)()
+        return NullReader.NULL_READER
 end
 
 

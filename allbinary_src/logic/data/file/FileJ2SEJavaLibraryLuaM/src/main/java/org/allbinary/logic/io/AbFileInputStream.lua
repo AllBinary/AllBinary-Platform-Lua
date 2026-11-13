@@ -35,33 +35,23 @@ AbFileInputStream.__index = AbFileInputStream
 AbFileInputStream.className = "AbFileInputStream"
 setmetatable(AbFileInputStream, {__index = FileInputStream})
 
-function AbFileInputStream.new(...)
-    local count = select("#", ...)
-    if count == 1 then return AbFileInputStream._new1(...)
-    elseif count == 1 then return AbFileInputStream._new1(...)
-    elseif count == 1 then return AbFileInputStream._new1(...)
-    end
-end
 
-
-function AbFileInputStream._new1(name)
+function AbFileInputStream.new(name)
     local self = setmetatable(FileInputStream.new(name), AbFileInputStream)
         -- super(...) made self above
     return self
 end
 
 
-function AbFileInputStream._new1(file)
-    local self = setmetatable(FileInputStream.new(AbFileNativeUtil.get(file)), AbFileInputStream)
-        -- super(...) made self above
-    return self
+-- throws FileNotFoundException
+function AbFileInputStream.createFromAbFile(file)
+        return AbFileInputStream.new(AbFileNativeUtil.get(file):getPath())
 end
 
 
-function AbFileInputStream._new1(file)
-    local self = setmetatable(FileInputStream.new(file), AbFileInputStream)
-        -- super(...) made self above
-    return self
+-- throws FileNotFoundException
+function AbFileInputStream.createFromFile(file)
+        return AbFileInputStream.new(file:getPath())
 end
 
 return AbFileInputStream

@@ -259,46 +259,7 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <artifactId>maven-resources-pluginLua</artifactId>
-                <version>2.4.3</version>
-                <executions>
-                    <execution>
-                        <id>copy-resources</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${outputPath}</outputDirectory>
-                            <resources>          
-                                <resource>
-                                    <directory>${inputPath}</directory>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>              
-                        </configuration>            
-                    </execution>
-                </executions>
-            </plugin>
                         
-            <plugin>
-                <artifactId>maven-assembly-pluginLua</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <attach>true</attach>
-                    <descriptors>
-                        <descriptor>assembly.xml</descriptor>
-                    </descriptors>
-                </configuration>
-            </plugin>
             
         </plugins>
 

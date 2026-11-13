@@ -742,6 +742,21 @@ function StartCanvas:getGameInitializationInterfaceFactoryInterface()
         return self.gameInitializationInterfaceFactoryInterface
 end
 
+
+function StartCanvas:getTitle()
+        return RunnableCanvas.getTitle(self)
+end
+
+
+function StartCanvas:isPaused()
+        return RunnableCanvas.isPaused(self)
+end
+
+
+function StartCanvas:getType()
+        return RunnableCanvas.getType(self)
+end
+
 StartCanvas.id = 0
 StartCanvas.BOT_GAME_STATS = "Bot Game Statistics: "
 

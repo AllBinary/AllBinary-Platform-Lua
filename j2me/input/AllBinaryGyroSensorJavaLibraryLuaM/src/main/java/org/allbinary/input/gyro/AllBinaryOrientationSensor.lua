@@ -71,5 +71,7 @@ function AllBinaryOrientationSensor:getOrientation()
         error(java_exception("Exception", self.commonStrings.NOT_IMPLEMENTED), 0)
 end
 
+AllBinaryOrientationSensor.NULL_ALLBINARY_ORIENTATION_SENSOR = AllBinaryOrientationSensor.new()
+
 return AllBinaryOrientationSensor
 

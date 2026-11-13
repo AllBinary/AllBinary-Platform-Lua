@@ -62,23 +62,44 @@ local AllBinaryGameLayer = {}
 AllBinaryGameLayer.__index = AllBinaryGameLayer
 AllBinaryGameLayer.className = "AllBinaryGameLayer"
 setmetatable(AllBinaryGameLayer, {__index = AllBinaryLayer})
+--Named instead of anonymous so the languages generated from this Java can convert it
+    local SWTBlackPaintable = {}
+    SWTBlackPaintable.__index = SWTBlackPaintable
+    SWTBlackPaintable.className = "SWTBlackPaintable"
+    setmetatable(SWTBlackPaintable, {__index = Paintable})
+    AllBinaryGameLayer.SWTBlackPaintable = SWTBlackPaintable
+
+    function SWTBlackPaintable:_init_fields()
+        self.basicSetColorUtil = BasicColorSetUtil.getInstance()
+        self.BLACK = BasicColorFactory.getInstance().BLACK
+    end
+
+    function SWTBlackPaintable.new()
+        local self = setmetatable(Paintable.new(), SWTBlackPaintable)
+        self:_init_fields()
+        return self
+    end
+    
+
+    function AllBinaryGameLayer:paint(graphics)
+            self.basicSetColorUtil:setBasicColorP(graphics, self.BLACK)
+    end
+
 
 function AllBinaryGameLayer:_init_fields()
     self.commonStrings = CommonStrings.getInstance()
     self.basicSetColorUtil = BasicColorSetUtil.getInstance()
     self.RED = BasicColorFactory.getInstance().RED
-    self.paintable = (function() if SWTUtil.isSWT then return (function()
-        local o = Paintable.new and Paintable.new() or setmetatable({}, {__index = Paintable})
-        self.basicSetColorUtil = BasicColorSetUtil.getInstance()
-        self.BLACK = BasicColorFactory.getInstance().BLACK
-        
-
-        function o:paint(graphics)
-            self.basicSetColorUtil:setBasicColorP(graphics, self.BLACK)
-        end
-        return o
-    end)() else return NullPaintable.getInstance() end end)()
+    self.paintable = AllBinaryGameLayer.createPaintable()
     self.gameKeyEventList = BasicArrayListD.new()
+end
+
+
+function AllBinaryGameLayer.createPaintable()
+        if SWTUtil.isSWT then
+            return SWTBlackPaintable.new()
+        end
+        return NullPaintable.getInstance()
 end
 
 

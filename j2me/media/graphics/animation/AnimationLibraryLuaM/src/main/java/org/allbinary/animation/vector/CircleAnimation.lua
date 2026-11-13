@@ -61,5 +61,15 @@ function CircleAnimation:paintXY(graphics, x, y)
         graphics:drawArc(x, y, self.width, self.height, 0, self.TOTAL_ANGLE)
 end
 
+
+function CircleAnimation:getBasicColorP()
+        return Animation.getBasicColorP(self)
+end
+
+
+function CircleAnimation:setBasicColorP(basicColor)
+        Animation.setBasicColorP(self, basicColor)
+end
+
 return CircleAnimation
 

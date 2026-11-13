@@ -42,5 +42,25 @@ function ABTextItem:getLabelStringComponent()
         return ABStringComponent.NULL_STRING_COMPONENT
 end
 
+
+function ABTextItem:getMinimumWidth()
+        return CustomCustomItem.getMinimumWidth(self)
+end
+
+
+function ABTextItem:getMinimumHeight()
+        return CustomCustomItem.getMinimumHeight(self)
+end
+
+
+function ABTextItem:getLabel()
+        return CustomCustomItem.getLabel(self)
+end
+
+
+function ABTextItem:paintXY(graphics, x, y)
+        CustomCustomItem.paintXY(self, graphics, x, y)
+end
+
 return ABTextItem
 

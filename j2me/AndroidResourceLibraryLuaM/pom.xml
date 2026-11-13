@@ -76,12 +76,15 @@
             <!-- AllBinary Platform Version End -->
         </dependency>
 
+        <!-- Not available for this language
         <dependency>
             <groupId>com.google.android</groupId>
             <artifactId>androidLua</artifactId>
             <version>1.5_r4</version>
             <scope>provided</scope>
         </dependency>
+        -->
+        <!-- Not available for this language
         <dependency>
             <groupId>com.google.android</groupId>
             <artifactId>androidLua</artifactId>
@@ -89,6 +92,7 @@
             <scope>provided</scope>
             <classifier>sources</classifier>
         </dependency>
+        -->
     </dependencies>
         
 

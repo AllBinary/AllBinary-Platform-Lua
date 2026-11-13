@@ -9,7 +9,7 @@
 -- AllBinary or the root directory of AllBinary's AllBinary Platform repository.
 -- 
 -- Created By: Travis Berthelot
---  
+--   
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.identification
 
@@ -82,8 +82,9 @@ function GroupFactory:init(groups, nameArray)
         self.list:clear()
         self.index = 0
         local size = self.list:size()
+        local name = nil
         while size < groups do
-            local name = stringUtil.EMPTY_STRING
+            name = stringUtil.EMPTY_STRING
             if size < (nameArray.n or #nameArray) then
                 name = nameArray[size + 1]
             else

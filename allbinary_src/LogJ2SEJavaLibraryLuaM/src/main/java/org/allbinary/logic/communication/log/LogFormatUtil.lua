@@ -86,9 +86,6 @@ end
 
 
 function LogFormatUtil:getF(className, functionName)
-        if functionName == nil then
-            functionName = self.NONE
-        end
         local stringBuffer = StringMaker.new()
         stringBuffer:append(self.TIME)
         stringBuffer:append(self.timeStampUtil:getAsString())
@@ -105,11 +102,7 @@ function LogFormatUtil:getO(exception)
             local stringBuffer = StringMaker.new()
             stringBuffer:append(self.LOG_ERROR)
             local exceptionAsString = tostring(exception)
-            if exceptionAsString ~= nil then
-                stringBuffer:append(exceptionAsString)
-            else
-                stringBuffer:append(self.EMPTY)
-            end
+            stringBuffer:append(exceptionAsString)
             stringBuffer:append(self.STACK_TRACE)
             if exception ~= self.nullUtil.NULL_OBJECT then
                 stringBuffer:append(self.exceptionUtil:getStackTrace(exception))

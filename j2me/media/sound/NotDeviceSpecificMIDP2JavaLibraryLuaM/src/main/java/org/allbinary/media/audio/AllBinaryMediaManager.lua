@@ -17,6 +17,7 @@
 -- local Manager = require("javax.microedition.media.Manager")
 -- local MediaException = require("javax.microedition.media.MediaException")
 -- local Player = require("javax.microedition.media.Player")
+local MIDPUtil = require("org.allbinary.MIDPUtil")
 local TsUtil = require("org.allbinary.TsUtil")
 local AudioContentTypeDataFactory = require("org.allbinary.audio.AudioContentTypeDataFactory")
 local ResourceUtil = require("org.allbinary.data.resource.ResourceUtil")
@@ -88,7 +89,7 @@ function AllBinaryMediaManager.createPlayer(resource)
                 return Manager.createPlayer(resource)
             else
                 local inputStream = ResourceUtil.getInstance():getResourceAsStream(resource)
-                return Manager.createPlayer(inputStream, AudioContentTypeDataFactory.getInstance().MIME_AUDIO_WAV:getName())
+                return MIDPUtil.getInstance():createPlayerFromInputStream(inputStream, AudioContentTypeDataFactory.getInstance().MIME_AUDIO_WAV:getName())
             end
         else
             return NoPlayer.NO_PLAYER

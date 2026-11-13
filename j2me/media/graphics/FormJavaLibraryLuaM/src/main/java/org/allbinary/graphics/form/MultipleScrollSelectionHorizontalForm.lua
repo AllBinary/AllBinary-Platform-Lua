@@ -93,6 +93,29 @@ local MultipleScrollSelectionFormVerticalPaintable = {}
             return self.multipleScrollSelectionForm:paintVertical(graphics, index, item, dx, dy)
     end
 
+local MultipleScrollSelectionFormRectPaintable = {}
+    MultipleScrollSelectionFormRectPaintable.__index = MultipleScrollSelectionFormRectPaintable
+    MultipleScrollSelectionFormRectPaintable.className = "MultipleScrollSelectionFormRectPaintable"
+    setmetatable(MultipleScrollSelectionFormRectPaintable, {__index = Paintable})
+    MultipleScrollSelectionHorizontalForm.MultipleScrollSelectionFormRectPaintable = MultipleScrollSelectionFormRectPaintable
+
+    function MultipleScrollSelectionFormRectPaintable:_init_fields()
+        self.multipleScrollSelectionForm = nil
+    end
+    
+
+    function MultipleScrollSelectionHorizontalForm.new(multipleScrollSelectionForm)
+        local self = setmetatable(Paintable.new(), MultipleScrollSelectionHorizontalForm)
+        self:_init_fields()
+            self.multipleScrollSelectionForm = multipleScrollSelectionForm
+        return self
+    end
+    
+
+    function MultipleScrollSelectionHorizontalForm:paint(graphics)
+            self.multipleScrollSelectionForm:fillRect(graphics)
+    end
+
 
 function MultipleScrollSelectionHorizontalForm:_init_fields()
     self.rectPaintable = NullPaintable.getInstance()
@@ -118,22 +141,7 @@ function MultipleScrollSelectionHorizontalForm.new(title, items, formPaintableFa
         -- super(...) made self above
         if J2MEUtil.isJ2ME() or J2MEUtil.isHTML() then
         else
-            local MPaintable = {}
-            MPaintable.__index = MPaintable
-            MPaintable.className = "MPaintable"
-            setmetatable(MPaintable, {__index = Paintable})
-
-            function MPaintable.new()
-                local self = setmetatable(Paintable.new(), MPaintable)
-                return self
-            end
-            
-
-            function MultipleScrollSelectionHorizontalForm:paint(graphics)
-                    self:fillRect(graphics)
-            end
-
-            self.rectPaintable = MPaintable.new()
+            self.rectPaintable = MultipleScrollSelectionFormRectPaintable.new(self)
         end
     return self
 end

@@ -2,6 +2,7 @@
 -- package org.allbinary.graphics.opengles
 
 -- local GL10 = require("javax.microedition.khronos.opengles.GL10")
+local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
 local CommonStrings = require("org.allbinary.string.CommonStrings")
 
 local function java_idiv(a, b)
@@ -20,6 +21,7 @@ OpenGLProcessor.__index = OpenGLProcessor
 OpenGLProcessor.className = "OpenGLProcessor"
 
 function OpenGLProcessor:_init_fields()
+    self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
 end
 

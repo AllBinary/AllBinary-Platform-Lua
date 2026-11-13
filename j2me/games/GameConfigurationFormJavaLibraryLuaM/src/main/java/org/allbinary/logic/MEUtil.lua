@@ -14,6 +14,7 @@
 -- package org.allbinary.logic
 
 -- local Item = require("javax.microedition.lcdui.Item")
+local MIDPUtil = require("org.allbinary.MIDPUtil")
 local CommandForm = require("org.allbinary.graphics.displayable.screen.CommandForm")
 
 local function java_idiv(a, b)
@@ -44,7 +45,7 @@ end
 
 
 function MEUtil:appendItem(form, item)
-        form:append(item)
+        MIDPUtil.getInstance():appendItem(form, item)
 end
 
 MEUtil.instance = MEUtil.new()

@@ -131,7 +131,13 @@ end
 
 -- throws Exception
 function BaseResourceAnimationInterfaceFactoryInterfaceFactory:getRectangleArrayOfArrays(resource)
-        return self.rectangleArrayOfArraysHashtable:get(resource)
+        local valueCanBeNull = self.rectangleArrayOfArraysHashtable:get(resource)
+        if valueCanBeNull ~= nil then
+            local rectangleArrayOfArrays = valueCanBeNull
+            return rectangleArrayOfArrays
+        else
+            return RectangleFactory.ARRAY_OF_ARRAYS
+        end
 end
 
 

@@ -56,6 +56,12 @@ function BufferedLineReader:readLine()
 end
 
 
+-- throws Exception
+function BufferedLineReader:ready()
+        return self.tmpIn:ready()
+end
+
+
 function BufferedLineReader:getSize()
         return 0
 end

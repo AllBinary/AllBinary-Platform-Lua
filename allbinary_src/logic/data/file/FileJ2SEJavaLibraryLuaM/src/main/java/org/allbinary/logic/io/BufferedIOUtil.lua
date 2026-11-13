@@ -47,11 +47,8 @@ function BufferedIOUtil.copy(backupFile, backupFileBak)
         local line = StringUtil.getInstance().EMPTY_STRING
         local tmpOut = BufferedWriter.new(FileWriter.new(AbFileNativeUtil.get(backupFileBak)))
         local tmpIn = BufferedReader.new(FileReader.new(AbFileNativeUtil.get(backupFile)))
-        while true do
+        while tmpIn:ready() do
             line = tmpIn:readLine()
-            if line == nil then
-                break
-            end
             tmpOut:write(line, 0, #line)
             tmpOut:newLine()
         end

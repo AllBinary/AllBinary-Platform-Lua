@@ -57,7 +57,7 @@
 
         <dependency>
             <groupId>org.microemu</groupId>
-            <artifactId>microemu-midpLua</artifactId>
+            <artifactId>microemu-midp-for-polyglotLua</artifactId>
             <version>2.0.4</version>
             <optional>true</optional>
         </dependency>
@@ -162,10 +162,10 @@
 
                     <exclusions>
                         <exclusion>
-                            <groupId>org.microemu</groupId><artifactId>microemu-midpLua</artifactId>
+                            <groupId>org.microemu</groupId><artifactId>microemu-midp-for-polyglotLua</artifactId>
                         </exclusion>
                         <exclusion>
-                            <groupId>org.microemu</groupId><artifactId>microemu-jsr-135Lua</artifactId>
+                            <groupId>org.microemu</groupId><artifactId>microemu-jsr-135-for-polyglotLua</artifactId>
                         </exclusion>
                     </exclusions>
 

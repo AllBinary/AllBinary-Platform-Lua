@@ -51,7 +51,7 @@ end
 function FileStreamFactory:getFileInputStreamInstance(path, fileName)
         local FILEABPATH = AbPath.new(path, fileName)
         local file = AbFile.createAbFileFromAbPath(FILEABPATH)
-        return AbFileInputStream.new(file)
+        return AbFileInputStream.createFromAbFile(file)
 end
 
 

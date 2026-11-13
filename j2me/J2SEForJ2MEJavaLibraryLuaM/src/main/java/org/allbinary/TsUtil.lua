@@ -66,6 +66,16 @@ function TsUtil.getInstance()
 end
 
 
+function TsUtil:longBitsToDouble(bits)
+        return java.lang.Double:longBitsToDouble(bits)
+end
+
+
+function TsUtil:intBitsToFloat(bits)
+        return java.lang.Float:intBitsToFloat(bits)
+end
+
+
 function TsUtil:hashCode(anyType)
         return anyType:hashCode()
 end

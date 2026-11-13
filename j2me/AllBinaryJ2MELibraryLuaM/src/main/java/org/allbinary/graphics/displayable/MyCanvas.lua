@@ -73,6 +73,16 @@ function MyCanvas.new(name, childNameList)
 end
 
 
+function MyCanvas:getWidth()
+        return Canvas.getWidth(self)
+end
+
+
+function MyCanvas:getHeight()
+        return Canvas.getHeight(self)
+end
+
+
 function MyCanvas:setFullScreenMode(mode)
         Canvas.setFullScreenMode(self, mode)
         self.displayInfo:update(self, self.canvasStrings.SET_FULL_SCREEN_MODE)

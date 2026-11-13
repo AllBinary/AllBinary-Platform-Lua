@@ -54,8 +54,7 @@ end
 
 
 -- throws XmlRpcException, IOException
--- Java overloaded method: Lua keeps the last definition
-function XmlRpcClient:execute(method, params, cryptInterface)
+function XmlRpcClient:executeWithCrypt(method, params, cryptInterface)
         return NullUtil.getInstance().NULL_OBJECT
 end
 

@@ -205,5 +205,10 @@ function VectorAnimation:setPoints(currentPoints)
         self.circularIndexUtil = CircularIndexUtil.createInstance((currentPoints.n or #currentPoints))
 end
 
+
+function VectorAnimation:getBasicColorP()
+        return IndexedAnimation.getBasicColorP(self)
+end
+
 return VectorAnimation
 

@@ -69,5 +69,15 @@ function RectangleAnimation:setHeight(height)
         self.height = height
 end
 
+
+function RectangleAnimation:getBasicColorP()
+        return Animation.getBasicColorP(self)
+end
+
+
+function RectangleAnimation:setBasicColorP(basicColor)
+        Animation.setBasicColorP(self, basicColor)
+end
+
 return RectangleAnimation
 

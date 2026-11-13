@@ -90,9 +90,7 @@ function ExceptionUtil:getStackTrace(e)
             local printStream = PrintStream.new(byteArrayOutputStream)
             e:printStackTrace(printStream)
             local output = tostring(byteArrayOutputStream)
-            if output ~= nil then
-                return tostring(output)
-            end
+            return tostring(output)
         end
         return self.NONE
 end

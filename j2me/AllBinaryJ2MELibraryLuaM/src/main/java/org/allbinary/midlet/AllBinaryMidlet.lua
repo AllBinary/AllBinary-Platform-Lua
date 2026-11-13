@@ -81,11 +81,7 @@ function AllBinaryMidlet:setDisplay(newDisplay)
         local title = StringUtil.getInstance().EMPTY_STRING
         if newDisplay ~= NullCanvas.NULL_CANVAS then
             title = newDisplay:getTitle()
-            if title ~= nil then
-                self.logUtil:putF(tostring(StringMaker.new():append(self.SETTING_):append(title):append(self._DISPLAY_):append(StringUtil.getInstance():toString(newDisplay))), self, self.SET_DISPLAY)
-            else
-                self.logUtil:putF(tostring(StringMaker.new():append(self.SETTING_NO_TITLE):append(StringUtil.getInstance():toString(newDisplay))), self, self.SET_DISPLAY)
-            end
+            self.logUtil:putF(tostring(StringMaker.new():append(self.SETTING_):append(title):append(self._DISPLAY_):append(StringUtil.getInstance():toString(newDisplay))), self, self.SET_DISPLAY)
         end
         local display = self:getDisplay()
         display:setCurrent(newDisplay)

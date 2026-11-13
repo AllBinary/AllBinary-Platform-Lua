@@ -14,6 +14,7 @@
 -- package org.allbinary.logic.math.permutations
 
 local Visitor = require("org.allbinary.logic.util.visitor.Visitor")
+local StringMaker = require("org.allbinary.logic.string.StringMaker")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
@@ -116,7 +117,7 @@ function OrderedIntArrayPermutationUtil.main(args)
         local permutationVisitor = IntPermutationVisitor.new(data)
         local ORIGINAL_DATA_LABEL = "Original Data: "
         io.write(tostring(ORIGINAL_DATA_LABEL))
-        permutationVisitor:print(data)
+        permutationVisitor:print(data, StringMaker.new())
         OrderedIntArrayPermutationUtil.getInstance():generate(data, permutationVisitor)
 end
 

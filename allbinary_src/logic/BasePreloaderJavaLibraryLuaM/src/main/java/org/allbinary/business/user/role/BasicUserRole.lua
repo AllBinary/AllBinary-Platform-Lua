@@ -14,21 +14,6 @@
 -- package org.allbinary.business.user.role
 
 -- local Serializable = require("java.io.Serializable")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-
--- Java library Throwable. tostring gives the message like Java getMessage.
-local function java_exception(className, message, cause)
-    if cause == nil and type(message) == "table" then
-        cause = message
-        message = tostring(message)
-    end
-    local exception = {className = className, message = message, cause = cause}
-    function exception:getMessage() return self.message end
-    function exception:getCause() return self.cause end
-    function exception:printStackTrace() print(debug.traceback(tostring(self))) end
-    return setmetatable(exception, {__tostring = function(self) if self.message ~= nil then return tostring(self.message) end return self.className end})
-end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -76,7 +61,7 @@ function BasicUserRole._new5(aRole, aDisplayValue, a_int_RoleId, aSessionTimeout
         self.displayValue = aDisplayValue
         self.sessionTimeout = aSessionTimeout
         self.sessionInactivityTimeout = aSessionInactivityTimeout
-        BasicUserRole.roleVector:add(self)
+        BasicUserRoles.getInstance().roleVector:add(self)
     return self
 end
 
@@ -114,28 +99,6 @@ function BasicUserRole:toString()
         return self:getRole()
 end
 BasicUserRole.__tostring = function(self) return self:toString() end
-
-
--- throws Exception
--- Java overloaded method: Lua keeps the last definition
-function BasicUserRole.getRole(role)
-        local roleVector = BasicUserRole.getAll()
-        local size = roleVector:size()
-        for index = 0, size - 1 do
-            local userRole = roleVector:get(index)
-            if ((role < tostring(userRole) and -1) or (role > tostring(userRole) and 1) or 0) == 0 then
-                return userRole
-            end
-        end
-        error(java_exception("Exception", "Unable to get role - Unknown Role"), 0)
-end
-
-
-function BasicUserRole.getAll()
-        return BasicUserRole.roleVector
-end
-
-BasicUserRole.roleVector = BasicArrayListD.new()
 
 return BasicUserRole
 

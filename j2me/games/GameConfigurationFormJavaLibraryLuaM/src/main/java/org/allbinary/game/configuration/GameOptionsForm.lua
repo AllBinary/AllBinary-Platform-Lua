@@ -166,7 +166,7 @@ function GameOptionsForm:save(abeClientInformation)
         GameConfigurationUtil.getInstance():updateCompetitionValue()
         local hashtable = StdUtil.getInstance():createHashtable()
         local SCALE = GameConfigurationCentral.getInstance().SCALE
-        hashtable:put(SCALE:getName(), tostring(SCALE:getValue()))
+        hashtable:put(SCALE:getName(), tostring(math.tointeger(SCALE:getValue() // 1)))
         local keyValuePersistance = GameConfigurationPersistanceSingleton.getInstance()
         keyValuePersistance:clear()
         keyValuePersistance:loadAll(abeClientInformation)

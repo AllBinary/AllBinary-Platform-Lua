@@ -111,10 +111,10 @@ function LayerManagerEventHandler:fireDeleteEvent(eventObject)
         local eventListenerInterfaceList = self.eventListenerInterfaceList
         local eventListenerInterface = nil
         local layerManagerEventListenerInterface = nil
-        local index = 0
-        while index < eventListenerInterfaceList:size() do
+        local listenerIndex = 0
+        while listenerIndex < eventListenerInterfaceList:size() do
             local try_ok, try_error = pcall(function()
-                eventListenerInterface = eventListenerInterfaceList.objectArray[index + 1]
+                eventListenerInterface = eventListenerInterfaceList.objectArray[listenerIndex + 1]
                 layerManagerEventListenerInterface = (eventListenerInterface)
                 layerManagerEventListenerInterface:onDeleteLayerManagerEvent(eventObject)
             end)
@@ -122,7 +122,7 @@ function LayerManagerEventHandler:fireDeleteEvent(eventObject)
                 local e = try_error
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, EventStrings.getInstance().FIRE_EVENT, e)
             end
-            index = index + 1
+            listenerIndex = listenerIndex + 1
         end
 end
 

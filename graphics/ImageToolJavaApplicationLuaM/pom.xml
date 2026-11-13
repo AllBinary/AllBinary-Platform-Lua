@@ -258,18 +258,6 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-pluginLua</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>org.allbinary.image.ImageTool</mainClass>
-                            <packageName>org.allbinary.image</packageName>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
 
         </plugins>
 

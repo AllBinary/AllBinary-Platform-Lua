@@ -189,6 +189,44 @@ local AllBinaryGameCanvas = {}
 AllBinaryGameCanvas.__index = AllBinaryGameCanvas
 AllBinaryGameCanvas.className = "AllBinaryGameCanvas"
 setmetatable(AllBinaryGameCanvas, {__index = RunnableCanvas})
+local SaveHighScoreRunnable = {}
+    SaveHighScoreRunnable.__index = SaveHighScoreRunnable
+    SaveHighScoreRunnable.className = "SaveHighScoreRunnable"
+    AllBinaryGameCanvas.SaveHighScoreRunnable = SaveHighScoreRunnable
+
+    function SaveHighScoreRunnable:_init_fields()
+        self.progressCanvas = ProgressCanvasFactory.getInstance()
+        self.isLast = nil
+        self.textBox = nil
+    end
+    
+
+    function AllBinaryGameCanvas.new(isLast, textBox)
+        local self = setmetatable({}, AllBinaryGameCanvas)
+        self:_init_fields()
+            self.isLast = isLast
+            self.textBox = textBox
+        return self
+    end
+    
+
+    function AllBinaryGameCanvas:run()
+            local logUtil = LogUtil.getInstance()
+            local try_ok, try_error = pcall(function()
+                if self.isLast then
+                    self.textBox:submit()
+                else
+                    self.textBox:saveHighScore()
+                end
+            end)
+            if not try_ok then
+                local e = try_error
+                local commonStrings = CommonStrings.getInstance()
+                logUtil:put(commonStrings.EXCEPTION, self, "run", e)
+                self.progressCanvas:end_()
+            end
+    end
+
 
 function AllBinaryGameCanvas:_init_fields()
     self.basicColorFactory = BasicColorFactory.getInstance()
@@ -1300,39 +1338,7 @@ function AllBinaryGameCanvas:setHighScore2(abeClientInformation, name, score, au
             self:getCustomCommandListener():commandAction(GameCommandsFactory.getInstance().SET_MENU_DISPLAYABLE, textBox)
         end
         if autoSubmit then
-            local SaveHighScoreRunnable = {}
-            SaveHighScoreRunnable.__index = SaveHighScoreRunnable
-            SaveHighScoreRunnable.className = "SaveHighScoreRunnable"
-
-            function SaveHighScoreRunnable:_init_fields()
-                self.progressCanvas = ProgressCanvasFactory.getInstance()
-            end
-
-            function SaveHighScoreRunnable.new()
-                local self = setmetatable({}, SaveHighScoreRunnable)
-                self:_init_fields()
-                return self
-            end
-            
-
-            function AllBinaryGameCanvas:run()
-                    local logUtil = LogUtil.getInstance()
-                    local try_ok, try_error = pcall(function()
-                        if self.isLast then
-                            self.textBox:submit()
-                        else
-                            self.textBox:saveHighScore()
-                        end
-                    end)
-                    if not try_ok then
-                        local e = try_error
-                        local commonStrings = CommonStrings.getInstance()
-                        logUtil:put(commonStrings.EXCEPTION, self, "run", e)
-                        self.progressCanvas:end_()
-                    end
-            end
-
-            SecondaryThreadPool.getInstance():runTask(SaveHighScoreRunnable.new())
+            SecondaryThreadPool.getInstance():runTask(SaveHighScoreRunnable.new(isLast, textBox))
         end
 end
 
@@ -1640,6 +1646,16 @@ end
 
 function AllBinaryGameCanvas:getType()
         return AllBinaryGameCanvas.TYPE
+end
+
+
+function AllBinaryGameCanvas:getTitle()
+        return RunnableCanvas.getTitle(self)
+end
+
+
+function AllBinaryGameCanvas:isPaused()
+        return RunnableCanvas.isPaused(self)
 end
 
 AllBinaryGameCanvas.id = 0

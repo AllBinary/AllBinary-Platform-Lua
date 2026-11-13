@@ -15,6 +15,7 @@
 
 -- local InputStream = require("java.io.InputStream")
 -- local Image = require("javax.microedition.lcdui.Image")
+local MIDPUtil = require("org.allbinary.MIDPUtil")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -51,13 +52,13 @@ end
 
 -- throws Exception
 function ImageFactory:createImage(caller, width, height)
-        return Image.createImage(width, height)
+        return MIDPUtil.getInstance():createImageWH(width, height)
 end
 
 
 -- throws Exception
 function ImageFactory:createImageFromInputStream(key, inputStream)
-        local image = Image.createImage(inputStream)
+        local image = MIDPUtil.getInstance():createImageFromInputStream(inputStream)
         return image
 end
 
@@ -65,7 +66,7 @@ end
 -- throws Exception
 -- Java overloaded method: Lua keeps the last definition
 function ImageFactory:createImageFromInputStream(inputStream)
-        return Image.createImage(inputStream)
+        return MIDPUtil.getInstance():createImageFromInputStream(inputStream)
 end
 
 ImageFactory.instance = ImageFactory.new()

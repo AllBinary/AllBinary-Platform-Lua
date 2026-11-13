@@ -67,9 +67,7 @@ end
 
 
 function KeyValueDrawString:update(value)
-        if value ~= nil then
-            self.value = value
-        end
+        self.value = value
 end
 
 return KeyValueDrawString

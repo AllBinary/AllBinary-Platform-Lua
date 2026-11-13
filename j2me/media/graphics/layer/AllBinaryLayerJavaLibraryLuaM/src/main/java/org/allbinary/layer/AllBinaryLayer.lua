@@ -61,11 +61,7 @@ function AllBinaryLayer.new(name, rectangle, viewPosition)
     self:_init_fields()
         -- super(...) made self above
         local localName = nil
-        if name == nil then
-            localName = getmetatable(self).className
-        else
-            localName = tostring(StringMaker.new():append(name):append(CommonSeps.getInstance().COLON):append(string.format("%x", TsUtil.getInstance():hashCode(self))))
-        end
+        localName = tostring(StringMaker.new():append(name):append(CommonSeps.getInstance().COLON):append(string.format("%x", TsUtil.getInstance():hashCode(self))))
         self.name = localName
         local point = rectangle:getPoint()
         self:setPosition(point:getX(), point:getY(), point:getZ())
@@ -74,6 +70,56 @@ function AllBinaryLayer.new(name, rectangle, viewPosition)
         self.viewPosition = viewPosition
         self.viewPosition:setAllbinaryLayer(self)
     return self
+end
+
+
+function AllBinaryLayer:setPosition(x, y, z)
+        Layer.setPosition(self, x, y, z)
+end
+
+
+function AllBinaryLayer:moveDXYZ(dx, dy, dz)
+        Layer.moveDXYZ(self, dx, dy, dz)
+end
+
+
+function AllBinaryLayer:getXP()
+        return Layer.getXP(self)
+end
+
+
+function AllBinaryLayer:getYP()
+        return Layer.getYP(self)
+end
+
+
+function AllBinaryLayer:getZP()
+        return Layer.getZP(self)
+end
+
+
+function AllBinaryLayer:getWidth()
+        return Layer.getWidth(self)
+end
+
+
+function AllBinaryLayer:getHeight()
+        return Layer.getHeight(self)
+end
+
+
+function AllBinaryLayer:setVisible(visible)
+        Layer.setVisible(self, visible)
+end
+
+
+function AllBinaryLayer:isVisible()
+        return Layer.isVisible(self)
+end
+
+
+function AllBinaryLayer:paint(graphics)
+        Layer.paint(self, graphics)
 end
 
 
@@ -191,19 +237,19 @@ function AllBinaryLayer:toStringAppend(stringBuffer)
         stringBuffer:appendint(self:getType())
         stringBuffer:append(commonSeps.SPACE)
         stringBuffer:append(positionStrings.X_LABEL)
-        stringBuffer:appendint(java_int(self:getXP()))
+        stringBuffer:appendint(self:getXP())
         stringBuffer:append(commonSeps.SPACE)
         stringBuffer:append(positionStrings.Y_LABEL)
-        stringBuffer:appendint(java_int(self:getYP()))
+        stringBuffer:appendint(self:getYP())
         stringBuffer:append(commonSeps.SPACE)
         stringBuffer:append(positionStrings.Z_LABEL)
-        stringBuffer:appendint(java_int(self:getZP()))
+        stringBuffer:appendint(self:getZP())
         stringBuffer:append(commonSeps.SPACE)
         stringBuffer:append(commonLabels.WIDTH_LABEL)
-        stringBuffer:appendint(java_int(self:getWidth()))
+        stringBuffer:appendint(self:getWidth())
         stringBuffer:append(commonSeps.SPACE)
         stringBuffer:append(commonLabels.HEIGHT_LABEL)
-        stringBuffer:appendint(java_int(self:getHeight()))
+        stringBuffer:appendint(self:getHeight())
 end
 
 

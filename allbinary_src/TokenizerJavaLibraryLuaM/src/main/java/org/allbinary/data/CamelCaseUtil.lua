@@ -54,9 +54,6 @@ end
 
 -- throws Exception
 function CamelCaseUtil:getAsCamelCase(string, stringBuilder)
-        if string == nil then
-            return StringUtil.getInstance().EMPTY_STRING
-        end
         local stringValidationUtil = StringValidationUtil.getInstance()
         stringBuilder:delete(0, stringBuilder:length())
         local list = BasicArrayListD.new()

@@ -48,11 +48,11 @@
         <module>../../../allbinary_src/licensing/ClientInfoLicensingJavaLibraryLuaM</module>
 
         <module>../../games/licensing/PartnerJ2MEJavaLibraryLuaM</module>
-        <module>../../games/licensing/PartnerHTMLJavaLibraryLuaM</module>
+        <!--<module>../../games/licensing/PartnerHTMLJavaLibraryLuaM</module>-->
         <module>../../games/licensing/PartnerAndroidJavaLibraryLuaM</module>
         <module>../../games/licensing/NoGameLicensingJavaLibraryLuaM</module>
         <module>../../games/licensing/GameLicensingOnlyDemoJavaLibraryLuaM</module>
-        <module>../../games/licensing/GameLicensingOnlyNormalJavaLibraryLuaM</module>
+        <!--<module>../../games/licensing/GameLicensingOnlyNormalJavaLibraryLuaM</module>-->
         <module>../../games/licensing/GameLicensingBaseJavaLibraryLuaM</module>
 
         <!--
@@ -61,7 +61,7 @@
         <module>../../games/GameScoresBaseJ2MELibraryLuaM</module>
         -->
         <module>../../games/GameScoresLocalJavaLibraryLuaM</module>
-        <module>../../games/GameScoresRemoteAndLocalJavaLibraryLuaM</module>
+        <!--<module>../../games/GameScoresRemoteAndLocalJavaLibraryLuaM</module>-->
 
         <module>../../../store/ThirdPartyStoreJavaLibraryLuaM</module>
         <module>../../../store/NoThirdPartyStoreJavaLibraryLuaM</module>
@@ -111,16 +111,16 @@
         <module>../../../../work/j2me/games/strategy/rts/RTSGameJavaLibraryP</module>
         -->
 
-        <module>../../media/graphics/OtherGraphicsMediaLibraryP</module>
+        <module>../../media/graphics/OtherGraphicsMediaLibraryLuaP</module>
 
         <module>../../input/NoTouchButtonResourceAnimationJavaLibraryLuaM</module>
         <module>../../input/TouchButtonResourceAnimationJavaLibraryLuaM</module>
         <module>../../input/TouchButtonResourceOpenGLESAnimationJavaLibraryLuaM</module>
 
         <module>../../input/TrackingEventJavaLibraryLuaM</module>
-        <module>../../../game/behavior/BehaviorLibraryP</module>
+        <module>../../../game/behavior/BehaviorLibraryLuaP</module>
 
-        <module>../../media/sound/OtherSoundMediaLibraryP</module>
+        <module>../../media/sound/OtherSoundMediaLibraryLuaP</module>
 
         <module>../../../allbinary_src/licensing/ApplicationConfigurationJavaLibraryLuaM</module>
         <module>../../../allbinary_src/licensing/ApplicationConfigurationNoFSJavaLibraryLuaM</module>

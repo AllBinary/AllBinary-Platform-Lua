@@ -41,6 +41,16 @@ function TsUtil.getInstance()
 end
 
 
+function TsUtil:longBitsToDouble(bits)
+        return java.lang.Double:longBitsToDouble(bits)
+end
+
+
+function TsUtil:intBitsToFloat(bits)
+        return java.lang.Float:intBitsToFloat(bits)
+end
+
+
 function TsUtil:hashCode(anyType)
         return anyType:hashCode()
 end
@@ -50,6 +60,11 @@ end
 function TsUtil:waitFor(any, timeoutMillis)
         local anyType = any
         anyType:wait(timeoutMillis)
+end
+
+
+function TsUtil:compareTo(a, b)
+        return ((a < b and -1) or (a > b and 1) or 0)
 end
 
 TsUtil.instance = TsUtil.new()
