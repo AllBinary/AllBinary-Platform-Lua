@@ -13,7 +13,23 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.graphics.j2me
 
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
+local StatusFactory = {}
+package.loaded["org.allbinary.graphics.j2me.StatusFactory"] = StatusFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local MyFrame = java_lazy("org.allbinary.graphics.j2me.MyFrame")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -22,13 +38,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local StatusFactory = {}
+-- class table StatusFactory is declared before the requires
 StatusFactory.__index = StatusFactory
 StatusFactory.className = "StatusFactory"
+StatusFactory.javaClassName = "org.allbinary.graphics.j2me.StatusFactory"
 
 function StatusFactory:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -36,15 +59,18 @@ function StatusFactory:_init_fields()
     self.STATUS_LABEL = "Status: "
 end
 
-function StatusFactory.new()
-    local self = setmetatable({}, StatusFactory)
-    self:_init_fields()
+function StatusFactory._jinit(self)
+    StatusFactory._init_fields(self)
     return self
+end
+
+function StatusFactory.new()
+    return StatusFactory._jinit(setmetatable({}, StatusFactory))
 end
 
 
 function StatusFactory.getInstance()
-        return StatusFactory.instance
+        return StatusFactory.instance_f
 end
 
 
@@ -58,7 +84,7 @@ function StatusFactory:setStatus(status)
         self.logUtil:putF(self.STATUS_LABEL .. status, self, self.SETSTATUS)
 end
 
-StatusFactory.instance = StatusFactory.new()
+StatusFactory.instance_f = StatusFactory.new()
 
 return StatusFactory
 

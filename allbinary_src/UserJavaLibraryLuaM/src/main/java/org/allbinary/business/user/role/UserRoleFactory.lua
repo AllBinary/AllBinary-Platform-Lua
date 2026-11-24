@@ -13,22 +13,38 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.user.role
 
-local UserFactory = require("org.allbinary.business.user.modules.UserFactory")
-local AdminUserFactory = require("org.allbinary.business.user.modules.admin.AdminUserFactory")
-local StoreAdminUserFactory = require("org.allbinary.business.user.modules.admin.store.StoreAdminUserFactory")
-local CustomerStoreAdminUserFactory = require("org.allbinary.business.user.modules.admin.store.customer.CustomerStoreAdminUserFactory")
-local OrderStoreAdminUserFactory = require("org.allbinary.business.user.modules.admin.store.order.OrderStoreAdminUserFactory")
-local AdjustOrderStoreAdminUserFactory = require("org.allbinary.business.user.modules.admin.store.order.adjust.AdjustOrderStoreAdminUserFactory")
-local ReviewOrderStoreAdminUserFactory = require("org.allbinary.business.user.modules.admin.store.order.review.ReviewOrderStoreAdminUserFactory")
-local ShipOrderStoreAdminUserFactory = require("org.allbinary.business.user.modules.admin.store.order.ship.ShipOrderStoreAdminUserFactory")
-local PaymentStoreAdminUserFactory = require("org.allbinary.business.user.modules.admin.store.payment.PaymentStoreAdminUserFactory")
-local ProductStoreAdminUserFactory = require("org.allbinary.business.user.modules.admin.store.product.ProductStoreAdminUserFactory")
-local WebStoreAdminUserFactory = require("org.allbinary.business.user.modules.admin.store.web.WebStoreAdminUserFactory")
-local ViewEditorWebStoreAdminUserFactory = require("org.allbinary.business.user.modules.admin.store.web.view.editor.ViewEditorWebStoreAdminUserFactory")
-local WizardWebStoreAdminUserFactory = require("org.allbinary.business.user.modules.admin.store.web.wizard.WizardWebStoreAdminUserFactory")
-local WorkflowEditorWebStoreAdminUserFactory = require("org.allbinary.business.user.modules.admin.store.web.workflow.editor.WorkflowEditorWebStoreAdminUserFactory")
-local SubscriberUserFactory = require("org.allbinary.business.user.modules.customer.subscriber.SubscriberUserFactory")
-local WholesaleUserFactory = require("org.allbinary.business.user.modules.customer.wholesale.WholesaleUserFactory")
+local UserRoleFactory = {}
+package.loaded["org.allbinary.business.user.role.UserRoleFactory"] = UserRoleFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local UserFactory = java_lazy("org.allbinary.business.user.modules.UserFactory")
+local AdminUserFactory = java_lazy("org.allbinary.business.user.modules.admin.AdminUserFactory")
+local StoreAdminUserFactory = java_lazy("org.allbinary.business.user.modules.admin.store.StoreAdminUserFactory")
+local CustomerStoreAdminUserFactory = java_lazy("org.allbinary.business.user.modules.admin.store.customer.CustomerStoreAdminUserFactory")
+local OrderStoreAdminUserFactory = java_lazy("org.allbinary.business.user.modules.admin.store.order.OrderStoreAdminUserFactory")
+local AdjustOrderStoreAdminUserFactory = java_lazy("org.allbinary.business.user.modules.admin.store.order.adjust.AdjustOrderStoreAdminUserFactory")
+local ReviewOrderStoreAdminUserFactory = java_lazy("org.allbinary.business.user.modules.admin.store.order.review.ReviewOrderStoreAdminUserFactory")
+local ShipOrderStoreAdminUserFactory = java_lazy("org.allbinary.business.user.modules.admin.store.order.ship.ShipOrderStoreAdminUserFactory")
+local PaymentStoreAdminUserFactory = java_lazy("org.allbinary.business.user.modules.admin.store.payment.PaymentStoreAdminUserFactory")
+local ProductStoreAdminUserFactory = java_lazy("org.allbinary.business.user.modules.admin.store.product.ProductStoreAdminUserFactory")
+local WebStoreAdminUserFactory = java_lazy("org.allbinary.business.user.modules.admin.store.web.WebStoreAdminUserFactory")
+local ViewEditorWebStoreAdminUserFactory = java_lazy("org.allbinary.business.user.modules.admin.store.web.view.editor.ViewEditorWebStoreAdminUserFactory")
+local WizardWebStoreAdminUserFactory = java_lazy("org.allbinary.business.user.modules.admin.store.web.wizard.WizardWebStoreAdminUserFactory")
+local WorkflowEditorWebStoreAdminUserFactory = java_lazy("org.allbinary.business.user.modules.admin.store.web.workflow.editor.WorkflowEditorWebStoreAdminUserFactory")
+local SubscriberUserFactory = java_lazy("org.allbinary.business.user.modules.customer.subscriber.SubscriberUserFactory")
+local WholesaleUserFactory = java_lazy("org.allbinary.business.user.modules.customer.wholesale.WholesaleUserFactory")
+local UserRoleB = java_lazy("org.allbinary.business.user.role.UserRoleB")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -37,13 +53,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local UserRoleFactory = {}
+-- class table UserRoleFactory is declared before the requires
 UserRoleFactory.__index = UserRoleFactory
 UserRoleFactory.className = "UserRoleFactory"
+UserRoleFactory.javaClassName = "org.allbinary.business.user.role.UserRoleFactory"
 
 function UserRoleFactory:_init_fields()
     self.basicUserRoleFactory = BasicUserRoleFactory.getInstance()
@@ -66,18 +89,21 @@ function UserRoleFactory:_init_fields()
     self.VIEWEDITOR = UserRoleB.new(self.basicUserRoleFactory.VIEWEDITOR, ViewEditorWebStoreAdminUserFactory.new())
 end
 
-function UserRoleFactory.new()
-    local self = setmetatable({}, UserRoleFactory)
-    self:_init_fields()
+function UserRoleFactory._jinit(self)
+    UserRoleFactory._init_fields(self)
     return self
+end
+
+function UserRoleFactory.new()
+    return UserRoleFactory._jinit(setmetatable({}, UserRoleFactory))
 end
 
 
 function UserRoleFactory.getInstance()
-        return UserRoleFactory.instance
+        return UserRoleFactory.instance_f
 end
 
-UserRoleFactory.instance = UserRoleFactory.new()
+UserRoleFactory.instance_f = UserRoleFactory.new()
 
 return UserRoleFactory
 

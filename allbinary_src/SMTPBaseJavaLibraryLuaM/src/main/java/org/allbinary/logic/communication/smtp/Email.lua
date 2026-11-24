@@ -13,9 +13,24 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.communication.smtp
 
--- local ByteArrayOutputStream = require("java.io.ByteArrayOutputStream")
--- local PrintStream = require("java.io.PrintStream")
--- local HashMap = require("java.util.HashMap")
+local Email = {}
+package.loaded["org.allbinary.logic.communication.smtp.Email"] = Email
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local ByteArrayOutputStream = java_lazy("java.io.ByteArrayOutputStream")
+local PrintStream = java_lazy("java.io.PrintStream")
+local HashMap = java_lazy("java.util.HashMap")
 -- local Properties = require("java.util.Properties")
 -- local Address = require("javax.mail.Address")
 -- local Authenticator = require("javax.mail.Authenticator")
@@ -27,14 +42,16 @@
 -- local MimeBodyPart = require("javax.mail.internet.MimeBodyPart")
 -- local MimeMessage = require("javax.mail.internet.MimeMessage")
 -- local MimeMultipart = require("javax.mail.internet.MimeMultipart")
-local ModDomHelper = require("org.allbinary.data.tree.dom.ModDomHelper")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local StringValidationUtil = require("org.allbinary.logic.string.StringValidationUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local Document = require("org.w3c.dom.Document")
-local Node = require("org.w3c.dom.Node")
+local ModDomHelper = java_lazy("org.allbinary.data.tree.dom.ModDomHelper")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local Document = java_lazy("org.w3c.dom.Document")
+local Node = java_lazy("org.w3c.dom.Node")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local EmailInterface = require("org.allbinary.logic.communication.smtp.EmailInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
@@ -50,34 +67,53 @@ local function java_exception(className, message, cause)
     return setmetatable(exception, {__tostring = function(self) if self.message ~= nil then return tostring(self.message) end return self.className end})
 end
 
--- Java library java.io.ByteArrayOutputStream
-local function java_byte_array_output_stream()
-    local stream = {buffer = {}}
-    function stream:write(value, offset, length)
-        if type(value) == "table" then
-            local first = (offset or 0) + 1
-            local last = first + (length or #value) - 1
-            for index = first, last do self.buffer[#self.buffer + 1] = string.char(value[index] % 256) end
-        elseif type(value) == "number" then
-            self.buffer[#self.buffer + 1] = string.char(value % 256)
-        else
-            self.buffer[#self.buffer + 1] = tostring(value)
-        end
-    end
-    function stream:toString() return table.concat(self.buffer) end
-    function stream:size() return #table.concat(self.buffer) end
-    function stream:reset() self.buffer = {} end
-    function stream:flush() end
-    function stream:close() end
-    return setmetatable(stream, {__tostring = function(self) return table.concat(self.buffer) end})
-end
-
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
     return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
+    return array
+end
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
 end
 
 local function java_idiv(a, b)
@@ -87,43 +123,57 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local Email = {}
+-- class table Email is declared before the requires
 Email.__index = Email
 Email.className = "Email"
+Email.javaClassName = "org.allbinary.logic.communication.smtp.Email"
+Email.java_implements = " EmailInterface "
+Email.java_interfaces = function() return {EmailInterface} end
 
 function Email:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
-    self.msg = nil
-    self.properties = nil
-    self.bs = nil
-    self.isDebug = nil
+    if self.msg == nil then self.msg = nil end
+    if self.properties == nil then self.properties = nil end
+    if self.bs == nil then self.bs = nil end
+    if self.isDebug == nil then self.isDebug = nil end
+end
+
+function Email._jinit(self, ...)
+    local count = select("#", ...)
+    if count == 7 then return Email._new7(self, ...)
+    elseif count == 8 then return Email._new8(self, ...)
+    end
+    error("No constructor of Email takes " .. count .. " arguments")
 end
 
 function Email.new(...)
-    local count = select("#", ...)
-    if count == 7 then return Email._new7(...)
-    elseif count == 8 then return Email._new8(...)
-    end
+    local self = setmetatable({}, Email)
+    Email._jinit(self, ...)
+    return self
 end
 
 
-function Email._new7(from, to, subject, server, textBody, htmlAttachment, contentBase)
-    local self = setmetatable({}, Email)
-    self:_init_fields()
+function Email._new7(self, from, to, subject, server, textBody, htmlAttachment, contentBase)
+    Email._init_fields(self)
         self.isDebug = false
         self:init(from, to, subject, server, textBody, htmlAttachment, contentBase)
     return self
 end
 
 
-function Email._new8(from, to, subject, server, textBody, htmlAttachment, contentBase, isDebug)
-    local self = setmetatable({}, Email)
-    self:_init_fields()
+function Email._new8(self, from, to, subject, server, textBody, htmlAttachment, contentBase, isDebug)
+    Email._init_fields(self)
         self.isDebug = isDebug
         self:init(from, to, subject, server, textBody, htmlAttachment, contentBase)
     return self
@@ -131,8 +181,8 @@ end
 
 
 -- throws Exception
-function Email:init(from, to, subject, server, textBody, htmlAttachment, contentBase)
-        local try_ok, try_error = pcall(function()
+function Email:init_j7(from, to, subject, server, textBody, htmlAttachment, contentBase)
+        local try_ok, try_error, try_value = pcall(function()
             local stringValidationUtil = StringValidationUtil.getInstance()
             local mimeBodyParts = java_new_array(nil, (function() if not stringValidationUtil:isEmpty(htmlAttachment) then return 2 else return 1 end end)())
             mimeBodyParts[1] = MimeBodyPart.new()
@@ -149,7 +199,8 @@ function Email:init(from, to, subject, server, textBody, htmlAttachment, content
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().EMAILLOGGINGERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().EMAILLOGGINGERROR) then
                 local commonStrings = CommonStrings.getInstance()
                 self.logUtil:put(commonStrings.EXCEPTION, self, "emailConstructor", e)
             end
@@ -159,14 +210,13 @@ end
 
 
 -- throws MessagingException
--- Java overloaded method: Lua keeps the last definition
-function Email:init(server, authenticator, addresses_from, addresses_to, addresses_cc, addresses_bcc, subject, mimeBodyParts)
+function Email:init_j8(server, authenticator, addresses_from, addresses_to, addresses_cc, addresses_bcc, subject, mimeBodyParts)
         self.properties = Properties.new()
         self.properties:put(Email.SMTP_HOST, server)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local hostName = StringUtil.getInstance().EMPTY_STRING
             if StringValidationUtil.getInstance():isEmpty(hostName) then
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().EMAILLOGGINGERROR) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().EMAILLOGGINGERROR) then
                     self.logUtil:putF("Unable to get HostName so using fake", self, "init()")
                 end
                 self.properties:put(Email.SMTP_LOCAL_HOST, "FakeHostName")
@@ -174,7 +224,8 @@ function Email:init(server, authenticator, addresses_from, addresses_to, address
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().EMAILLOGGINGERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().EMAILLOGGINGERROR) then
                 self.logUtil:put("Continuing on Exception: Unable to get HostName", self, "init()", e)
             end
             self.properties:put(Email.SMTP_LOCAL_HOST, "FakeHostName")
@@ -185,7 +236,7 @@ function Email:init(server, authenticator, addresses_from, addresses_to, address
         local session = Session.getInstance(self.properties, authenticator)
         if self.isDebug then
             session:setDebug(true)
-            self.bs = java_byte_array_output_stream()
+            self.bs = require("java.io.ByteArrayOutputStream").new()
             local printStream = PrintStream.new(self.bs)
             session:setDebugOut(printStream)
         end
@@ -201,6 +252,13 @@ function Email:init(server, authenticator, addresses_from, addresses_to, address
         end
         self.msg:setContent(mimeMultipart)
 end
+function Email:init(...)
+    local count = select("#", ...)
+    if count == 7 then return self:init_j7(...) end
+    if count == 8 then return self:init_j8(...) end
+    error("No method init takes " .. count .. " arguments")
+end
+Email.init__jdispatcher = Email.init
 
 
 function Email:getMimeMessage()
@@ -225,7 +283,7 @@ end
 
 -- throws Exception
 function Email:toHashMap()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local hashMap = StdUtil.getInstance():createHashMap()
             hashMap:put(EmailData.SERVER, self.properties:get(Email.SMTP_HOST))
             local addresses = self.msg:getFrom()
@@ -260,15 +318,17 @@ function Email:toHashMap()
                     hashMap:put(EmailData.CONTENT, content)
                 end
             end
-            return hashMap
+            do return "__jreturn", hashMap end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().EMAILLOGGINGERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().EMAILLOGGINGERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "toHashMap()", e)
             end
             error(e, 0)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
@@ -281,7 +341,7 @@ end
 
 -- throws Exception
 function Email:toXmlDoc()
-        error(java_exception("Exception", CommonStrings.getInstance().NOT_IMPLEMENTED), 0)
+        error(require("java.lang.Exception").new(CommonStrings.getInstance().NOT_IMPLEMENTED), 0)
 end
 
 Email.DEBUG = "mail.debug"

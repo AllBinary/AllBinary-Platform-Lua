@@ -13,22 +13,46 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.configuration.feature
 
--- local Enumeration = require("java.util.Enumeration")
+local GameFeatureUtil = {}
+package.loaded["org.allbinary.game.configuration.feature.GameFeatureUtil"] = GameFeatureUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local Enumeration = java_lazy("java.util.Enumeration")
 -- local ChoiceGroup = require("javax.microedition.lcdui.ChoiceGroup")
-local TsUtil = require("org.allbinary.TsUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local CommonLabels = require("org.allbinary.string.CommonLabels")
-local ABHashtable = require("org.allbinary.util.ABHashtable")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local EnumerationUtil = require("org.allbinary.util.EnumerationUtil")
-local HashtableUtil = require("org.allbinary.util.HashtableUtil")
+local TsUtil = java_lazy("org.allbinary.TsUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
+local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local EnumerationUtil = java_lazy("org.allbinary.util.EnumerationUtil")
+local HashtableUtil = java_lazy("org.allbinary.util.HashtableUtil")
+local Feature = java_lazy("org.allbinary.game.configuration.feature.Feature")
+local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
+local GameFeatureChoiceGroups = java_lazy("org.allbinary.game.configuration.feature.GameFeatureChoiceGroups")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -39,13 +63,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local GameFeatureUtil = {}
+-- class table GameFeatureUtil is declared before the requires
 GameFeatureUtil.__index = GameFeatureUtil
 GameFeatureUtil.className = "GameFeatureUtil"
+GameFeatureUtil.javaClassName = "org.allbinary.game.configuration.feature.GameFeatureUtil"
 
 function GameFeatureUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -55,15 +86,18 @@ function GameFeatureUtil:_init_fields()
     self.GAME_FEATURE_CHANGED = "Game Feature Changed: "
 end
 
-function GameFeatureUtil.new()
-    local self = setmetatable({}, GameFeatureUtil)
-    self:_init_fields()
+function GameFeatureUtil._jinit(self)
+    GameFeatureUtil._init_fields(self)
     return self
+end
+
+function GameFeatureUtil.new()
+    return GameFeatureUtil._jinit(setmetatable({}, GameFeatureUtil))
 end
 
 
 function GameFeatureUtil.getInstance()
-        return GameFeatureUtil.instance
+        return GameFeatureUtil.instance_f
 end
 
 
@@ -204,7 +238,7 @@ function GameFeatureUtil:updateExclusiveList(gameFeature, list)
         end
 end
 
-GameFeatureUtil.instance = GameFeatureUtil.new()
+GameFeatureUtil.instance_f = GameFeatureUtil.new()
 
 return GameFeatureUtil
 

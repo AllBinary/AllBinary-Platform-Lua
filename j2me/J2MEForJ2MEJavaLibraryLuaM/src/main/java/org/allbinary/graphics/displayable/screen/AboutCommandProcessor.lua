@@ -13,6 +13,21 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.graphics.displayable.screen
 
+local AboutCommandProcessor = {}
+package.loaded["org.allbinary.graphics.displayable.screen.AboutCommandProcessor"] = AboutCommandProcessor
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Canvas = require("javax.microedition.lcdui.Canvas")
 -- local Command = require("javax.microedition.lcdui.Command")
 -- local CommandListener = require("javax.microedition.lcdui.CommandListener")
@@ -24,22 +39,32 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local AboutCommandProcessor = {}
+-- class table AboutCommandProcessor is declared before the requires
 AboutCommandProcessor.__index = AboutCommandProcessor
 AboutCommandProcessor.className = "AboutCommandProcessor"
+AboutCommandProcessor.javaClassName = "org.allbinary.graphics.displayable.screen.AboutCommandProcessor"
+
+function AboutCommandProcessor._jinit(self)
+    return self
+end
 
 function AboutCommandProcessor.new()
-    local self = setmetatable({}, AboutCommandProcessor)
-    return self
+    return AboutCommandProcessor._jinit(setmetatable({}, AboutCommandProcessor))
 end
 
 
 function AboutCommandProcessor.getInstance()
-        return AboutCommandProcessor.instance
+        return AboutCommandProcessor.instance_f
 end
 
 
@@ -47,7 +72,7 @@ function AboutCommandProcessor:process(midletCommandListener, command, canvas)
         midletCommandListener:commandAction(command, canvas)
 end
 
-AboutCommandProcessor.instance = AboutCommandProcessor.new()
+AboutCommandProcessor.instance_f = AboutCommandProcessor.new()
 
 return AboutCommandProcessor
 

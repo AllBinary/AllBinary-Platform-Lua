@@ -1,6 +1,21 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.graphics.opengles
 
+local OpenGLThreadUtil = {}
+package.loaded["org.allbinary.graphics.opengles.OpenGLThreadUtil"] = OpenGLThreadUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 
 local function java_idiv(a, b)
     local q = a / b
@@ -9,22 +24,32 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local OpenGLThreadUtil = {}
+-- class table OpenGLThreadUtil is declared before the requires
 OpenGLThreadUtil.__index = OpenGLThreadUtil
 OpenGLThreadUtil.className = "OpenGLThreadUtil"
+OpenGLThreadUtil.javaClassName = "org.allbinary.graphics.opengles.OpenGLThreadUtil"
+
+function OpenGLThreadUtil._jinit(self)
+    return self
+end
 
 function OpenGLThreadUtil.new()
-    local self = setmetatable({}, OpenGLThreadUtil)
-    return self
+    return OpenGLThreadUtil._jinit(setmetatable({}, OpenGLThreadUtil))
 end
 
 
 function OpenGLThreadUtil.getInstance()
-        return OpenGLThreadUtil.instance
+        return OpenGLThreadUtil.instance_f
 end
 
 
@@ -39,7 +64,7 @@ end
 function OpenGLThreadUtil:onResume()
 end
 
-OpenGLThreadUtil.instance = OpenGLThreadUtil.new()
+OpenGLThreadUtil.instance_f = OpenGLThreadUtil.new()
 
 return OpenGLThreadUtil
 

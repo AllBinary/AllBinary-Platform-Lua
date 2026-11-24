@@ -13,6 +13,21 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.android.view
 
+local AllBinaryRenderer = {}
+package.loaded["org.allbinary.android.view.AllBinaryRenderer"] = AllBinaryRenderer
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 
 local function java_idiv(a, b)
     local q = a / b
@@ -21,22 +36,32 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local AllBinaryRenderer = {}
+-- class table AllBinaryRenderer is declared before the requires
 AllBinaryRenderer.__index = AllBinaryRenderer
 AllBinaryRenderer.className = "AllBinaryRenderer"
+AllBinaryRenderer.javaClassName = "org.allbinary.android.view.AllBinaryRenderer"
+
+function AllBinaryRenderer._jinit(self)
+    return self
+end
 
 function AllBinaryRenderer.new()
-    local self = setmetatable({}, AllBinaryRenderer)
-    return self
+    return AllBinaryRenderer._jinit(setmetatable({}, AllBinaryRenderer))
 end
 
 
 function AllBinaryRenderer.getInstance()
-        return AllBinaryRenderer.instance
+        return AllBinaryRenderer.instance_f
 end
 
 
@@ -47,7 +72,7 @@ end
 function AllBinaryRenderer:clearRunnable()
 end
 
-AllBinaryRenderer.instance = AllBinaryRenderer.new()
+AllBinaryRenderer.instance_f = AllBinaryRenderer.new()
 
 return AllBinaryRenderer
 

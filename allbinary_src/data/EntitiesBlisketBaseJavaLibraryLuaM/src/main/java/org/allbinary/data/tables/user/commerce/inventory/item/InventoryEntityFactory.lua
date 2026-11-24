@@ -13,8 +13,26 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.data.tables.user.commerce.inventory.item
 
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local InventoryEntityFactory = {}
+package.loaded["org.allbinary.data.tables.user.commerce.inventory.item.InventoryEntityFactory"] = InventoryEntityFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local InventoryEntity = java_lazy("org.allbinary.data.tables.user.commerce.inventory.item.InventoryEntity")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -23,13 +41,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local InventoryEntityFactory = {}
+-- class table InventoryEntityFactory is declared before the requires
 InventoryEntityFactory.__index = InventoryEntityFactory
 InventoryEntityFactory.className = "InventoryEntityFactory"
+InventoryEntityFactory.javaClassName = "org.allbinary.data.tables.user.commerce.inventory.item.InventoryEntityFactory"
 
 function InventoryEntityFactory:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -37,32 +62,39 @@ end
 
 
 function InventoryEntityFactory.getInstance()
-        return InventoryEntityFactory.instance
+        return InventoryEntityFactory.instance_f
 end
 
 
-function InventoryEntityFactory.new()
+function InventoryEntityFactory._jinit(self)
+    InventoryEntityFactory._init_fields(self)
+    return self
+end
+
+function InventoryEntityFactory.new(...)
     local self = setmetatable({}, InventoryEntityFactory)
-    self:_init_fields()
+    InventoryEntityFactory._jinit(self, ...)
     return self
 end
 
 
 function InventoryEntityFactory:getInventoryEntityInstance()
-        local try_ok, try_error = pcall(function()
-            return InventoryEntity.new()
+        local try_ok, try_error, try_value = pcall(function()
+            do return "__jreturn", InventoryEntity.new() end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local commonStrings = CommonStrings.getInstance()
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().ENTITYFACTORYERROR) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().ENTITYFACTORYERROR) then
                 self.logUtil:put(commonStrings.EXCEPTION, self, "getInventoryEntityInstance()", e)
             end
             return nil
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
-InventoryEntityFactory.instance = InventoryEntityFactory.new()
+InventoryEntityFactory.instance_f = InventoryEntityFactory.new()
 
 return InventoryEntityFactory
 

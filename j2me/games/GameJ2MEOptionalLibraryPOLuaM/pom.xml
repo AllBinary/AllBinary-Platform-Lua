@@ -63,7 +63,7 @@
         <module>../../../../work/j2me/media/graphics/FormJSEJavaLibraryLuaM</module>
         -->
 
-        <!--<module>../../media/sound/J2SEMediaMIDPMinimalJavaLibraryLuaM</module>-->
+        <module>../../media/sound/J2SEMediaMIDPMinimalJavaLibraryLuaM</module>
 <!--        <module>../../media/sound/NotDeviceSpecificMIDP2JavaLibraryLuaM</module>-->
         <!--<module>../../media/sound/MediaMIDP2ForHTMLJavaLibraryLuaM</module>-->
 

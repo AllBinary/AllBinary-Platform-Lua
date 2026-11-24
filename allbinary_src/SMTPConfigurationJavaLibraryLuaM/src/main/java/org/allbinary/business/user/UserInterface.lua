@@ -13,11 +13,26 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.user
 
--- local HashMap = require("java.util.HashMap")
-local UserConfigurationInterface = require("org.allbinary.business.user.modules.configuration.UserConfigurationInterface")
-local UserRole = require("org.allbinary.business.user.role.UserRole")
+local UserInterface = {}
+package.loaded["org.allbinary.business.user.UserInterface"] = UserInterface
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
+local UserConfigurationInterface = java_lazy("org.allbinary.business.user.modules.configuration.UserConfigurationInterface")
+local UserRole = java_lazy("org.allbinary.business.user.role.UserRole")
 local TableMappingInterface = require("org.allbinary.data.tables.TableMappingInterface")
-local WeblisketSessionInterface = require("org.allbinary.logic.communication.http.request.session.WeblisketSessionInterface")
+local WeblisketSessionInterface = java_lazy("org.allbinary.logic.communication.http.request.session.WeblisketSessionInterface")
 local ValidationInterface = require("org.allbinary.logic.control.validate.ValidationInterface")
 
 local function java_idiv(a, b)
@@ -27,15 +42,23 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
 -- Java interface
-local UserInterface = {}
+-- class table UserInterface is declared before the requires
 UserInterface.__index = UserInterface
 UserInterface.className = "UserInterface"
+UserInterface.javaClassName = "org.allbinary.business.user.UserInterface"
 setmetatable(UserInterface, {__index = TableMappingInterface})
+UserInterface.java_interfaces = function() return {TableMappingInterface, ValidationInterface} end
 
 
 function UserInterface:setUserName(value)

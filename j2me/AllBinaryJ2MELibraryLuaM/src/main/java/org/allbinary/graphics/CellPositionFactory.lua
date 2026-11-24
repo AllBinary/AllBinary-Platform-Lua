@@ -13,15 +13,37 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.graphics
 
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local CellPositionFactory = {}
+package.loaded["org.allbinary.graphics.CellPositionFactory"] = CellPositionFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local CellPosition = java_lazy("org.allbinary.graphics.CellPosition")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -32,20 +54,27 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local CellPositionFactory = {}
+-- class table CellPositionFactory is declared before the requires
 CellPositionFactory.__index = CellPositionFactory
 CellPositionFactory.className = "CellPositionFactory"
+CellPositionFactory.javaClassName = "org.allbinary.graphics.CellPositionFactory"
 
 function CellPositionFactory:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.NONE = CellPosition.new(-1, -1, -1, -1)
     self.cellPositionArray = java_new_array(nil, 0, 0)
-    self.columns = 0
-    self.rows = 0
+    if self.columns == nil then self.columns = 0 end
+    if self.rows == nil then self.rows = 0 end
 end
 
 
@@ -54,9 +83,14 @@ function CellPositionFactory.getInstance()
 end
 
 
-function CellPositionFactory.new()
+function CellPositionFactory._jinit(self)
+    CellPositionFactory._init_fields(self)
+    return self
+end
+
+function CellPositionFactory.new(...)
     local self = setmetatable({}, CellPositionFactory)
-    self:_init_fields()
+    CellPositionFactory._jinit(self, ...)
     return self
 end
 
@@ -81,15 +115,17 @@ end
 
 
 function CellPositionFactory:getInstanceColRow(i_column, i_row)
-        local try_ok, try_error = pcall(function()
-            return self.cellPositionArray[i_column + 1][i_row + 1]
+        local try_ok, try_error, try_value = pcall(function()
+            do return "__jreturn", self.cellPositionArray[i_column + 1][i_row + 1] end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local commonStrings = CommonStrings.getInstance()
             self.logUtil:put(tostring(StringMaker.new():append("columns: "):appendint(self:getColumns()):append(" rows: "):appendint(self:getRows()):append(" col: "):appendint(i_column):append(" row: "):appendint(i_row)), self, commonStrings.GET_INSTANCE, e)
             return self.NONE
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 

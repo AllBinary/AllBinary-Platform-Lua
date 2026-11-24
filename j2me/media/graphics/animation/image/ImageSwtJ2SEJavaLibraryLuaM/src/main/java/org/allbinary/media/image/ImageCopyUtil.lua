@@ -13,30 +13,51 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media.image
 
+local ImageCopyUtil = {}
+package.loaded["org.allbinary.media.image.ImageCopyUtil"] = ImageCopyUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Image = require("javax.microedition.lcdui.Image")
-local Features = require("org.allbinary.game.configuration.feature.Features")
-local GameFeatureFactory = require("org.allbinary.game.configuration.feature.GameFeatureFactory")
-local DisplayInfoSingleton = require("org.allbinary.graphics.displayable.DisplayInfoSingleton")
-local OpenGLFeatureFactory = require("org.allbinary.graphics.opengles.OpenGLFeatureFactory")
-local OpenGLUtil = require("org.allbinary.graphics.opengles.OpenGLUtil")
-local OpenGLESDeviceImageTranslate = require("org.allbinary.image.opengles.OpenGLESDeviceImageTranslate")
-local OpenGLESImage = require("org.allbinary.image.opengles.OpenGLESImage")
-local OpenGLESImageExclusionUtil = require("org.allbinary.image.opengles.OpenGLESImageExclusionUtil")
-local OpenGLESImageProperties = require("org.allbinary.image.opengles.OpenGLESImageProperties")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local ImageData = require("org.eclipse.swt.graphics.ImageData")
-local SwtDeviceComponent = require("org.microemu.app.ui.swt.SwtDeviceComponent")
-local PostLoadSwtImmutableImageProcessor = require("org.microemu.device.swt.PostLoadSwtImmutableImageProcessor")
-local PostLoadSwtMutableImageProcessor = require("org.microemu.device.swt.PostLoadSwtMutableImageProcessor")
-local SwtImmutableImage = require("org.microemu.device.swt.SwtImmutableImage")
-local SwtMutableImage = require("org.microemu.device.swt.SwtMutableImage")
+local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
+local GameFeatureFactory = java_lazy("org.allbinary.game.configuration.feature.GameFeatureFactory")
+local DisplayInfoSingleton = java_lazy("org.allbinary.graphics.displayable.DisplayInfoSingleton")
+local OpenGLFeatureFactory = java_lazy("org.allbinary.graphics.opengles.OpenGLFeatureFactory")
+local OpenGLUtil = java_lazy("org.allbinary.graphics.opengles.OpenGLUtil")
+local OpenGLESDeviceImageTranslate = java_lazy("org.allbinary.image.opengles.OpenGLESDeviceImageTranslate")
+local OpenGLESImage = java_lazy("org.allbinary.image.opengles.OpenGLESImage")
+local OpenGLESImageExclusionUtil = java_lazy("org.allbinary.image.opengles.OpenGLESImageExclusionUtil")
+local OpenGLESImageProperties = java_lazy("org.allbinary.image.opengles.OpenGLESImageProperties")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local ImageData = java_lazy("org.eclipse.swt.graphics.ImageData")
+local SwtDeviceComponent = java_lazy("org.microemu.app.ui.swt.SwtDeviceComponent")
+local PostLoadSwtImmutableImageProcessor = java_lazy("org.microemu.device.swt.PostLoadSwtImmutableImageProcessor")
+local PostLoadSwtMutableImageProcessor = java_lazy("org.microemu.device.swt.PostLoadSwtMutableImageProcessor")
+local SwtImmutableImage = java_lazy("org.microemu.device.swt.SwtImmutableImage")
+local SwtMutableImage = java_lazy("org.microemu.device.swt.SwtMutableImage")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -47,13 +68,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ImageCopyUtil = {}
+-- class table ImageCopyUtil is declared before the requires
 ImageCopyUtil.__index = ImageCopyUtil
 ImageCopyUtil.className = "ImageCopyUtil"
+ImageCopyUtil.javaClassName = "org.allbinary.media.image.ImageCopyUtil"
 
 function ImageCopyUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -71,13 +99,18 @@ end
 
 
 function ImageCopyUtil.getInstance()
-        return ImageCopyUtil.instance
+        return ImageCopyUtil.instance_f
 end
 
 
-function ImageCopyUtil.new()
+function ImageCopyUtil._jinit(self)
+    ImageCopyUtil._init_fields(self)
+    return self
+end
+
+function ImageCopyUtil.new(...)
     local self = setmetatable({}, ImageCopyUtil)
-    self:_init_fields()
+    ImageCopyUtil._jinit(self, ...)
     return self
 end
 
@@ -86,7 +119,7 @@ end
 function ImageCopyUtil:createImageForRotation(originalImage)
         if self.features:isFeature(self.openGLFeatureFactory.OPENGL) then
             local image = originalImage
-            image = self.openGLUtil:addImage(image)
+            image = SwtOpenGLESImageBridge.addImage(self.openGLUtil, image)
             return image
         else
             return self:createImage(originalImage)
@@ -103,8 +136,8 @@ function ImageCopyUtil:createImage(originalImage)
         local originalImage2 = originalImage
         if self.features:isFeature(self.openGLFeatureFactory.OPENGL) then
             if originalImage:getType() >= OpenGLESImage.TYPE then
-                local openGLESImage = (originalImage)
-                originalImage2 = openGLESImage.openGLBitmap:getImage()
+                local openGLESImage = SwtOpenGLESImageBridge.getOpenGLESImage(originalImage)
+                originalImage2 = SwtOpenGLESImageBridge.getBitmapImage(openGLESImage)
             end
         end
         local image = nil
@@ -115,7 +148,7 @@ function ImageCopyUtil:createImage(originalImage)
             local originalImmutableImage = originalImage2
             image = SwtMutableImage.new(SwtDeviceComponent.createImage(originalImmutableImage.image:getImageData()))
         end
-        image = self.openGLUtil:addImage(image)
+        image = SwtOpenGLESImageBridge.addImage(self.openGLUtil, image)
         return image
 end
 
@@ -128,12 +161,12 @@ function ImageCopyUtil:createImageWH(originalImage, width, height, mutable)
             return originalImage
         end
         if self.features:isFeature(self.openGLFeatureFactory.OPENGL) then
-            if self.openGLESImageExclusionUtil:isCustomScaling(originalImage) then
+            if SwtOpenGLESImageBridge.isCustomScaling(self.openGLESImageExclusionUtil, originalImage) then
                 return self:createImage2(originalImage, width, height, mutable)
             end
             if originalImage:getType() >= OpenGLESImage.TYPE then
-                local openGLESImage = (originalImage)
-                originalImage2 = openGLESImage.openGLBitmap:getImage()
+                local openGLESImage = SwtOpenGLESImageBridge.getOpenGLESImage(originalImage)
+                originalImage2 = SwtOpenGLESImageBridge.getBitmapImage(openGLESImage)
             end
         end
         local image = nil
@@ -161,7 +194,7 @@ function ImageCopyUtil:createImageWH(originalImage, width, height, mutable)
                 image = SwtImmutableImage.new(originalImmutableImage:getName(), PostLoadSwtImmutableImageProcessor.new(originalImmutableImage))
             end
         end
-        image = self.openGLUtil:addImage(image)
+        image = SwtOpenGLESImageBridge.addImage(self.openGLUtil, image)
         return image
 end
 
@@ -177,7 +210,7 @@ function ImageCopyUtil:createImage2(originalImage, width, height, mutable)
         if self.features:isFeature(self.openGLFeatureFactory.OPENGL) then
             local displayInfoSingleton = DisplayInfoSingleton.getInstance()
             if originalImage:getType() >= OpenGLESImage.TYPE then
-                local openGLESImage = (originalImage)
+                local openGLESImage = SwtOpenGLESImageBridge.getOpenGLESImage(originalImage)
                 local openGLESImageProperties = openGLESImage.openGLESImageProperties
                 local openGLWidth = openGLESImage.openGLBitmap:getWidth()
                 local openGLHeight = openGLESImage.openGLBitmap:getHeight()
@@ -191,10 +224,10 @@ function ImageCopyUtil:createImage2(originalImage, width, height, mutable)
                     openGLESImageProperties.scaleX2 = openGLESImageProperties.scaleX2 + (1.0 / (openGLWidth + 0.0))
                     openGLESImageProperties.scaleY2 = openGLESImageProperties.scaleY2 + (1.0 / (openGLHeight + 0.0))
                 end
-                image = openGLESImage
+                image = SwtOpenGLESImageBridge.asImage(openGLESImage)
             else
                 image = originalImage
-                local openGLESImage = self.openGLUtil:addImage(image)
+                local openGLESImage = SwtOpenGLESImageBridge.getOpenGLESImage(SwtOpenGLESImageBridge.addImage(self.openGLUtil, image))
                 local openGLESImageProperties = openGLESImage.openGLESImageProperties
                 openGLESImageProperties.scaleX2 = ((((width + 0.0)) / openGLESImage:getWidth()) + 0.0)
                 openGLESImageProperties.scaleX = openGLESImageProperties.scaleX2
@@ -221,7 +254,7 @@ function ImageCopyUtil:createImage2(originalImage, width, height, mutable)
                         openGLESImageProperties.scaleY = 1.0
                     end
                 end
-                image = openGLESImage
+                image = SwtOpenGLESImageBridge.asImage(openGLESImage)
             end
         else
             if originalImage2:isMutable() and mutable then
@@ -243,7 +276,7 @@ function ImageCopyUtil:createImage2(originalImage, width, height, mutable)
                     image = SwtImmutableImage.new(originalImmutableImage:getName(), PostLoadSwtImmutableImageProcessor.new(originalImmutableImage))
                 end
             end
-            image = self.openGLUtil:addImage(image)
+            image = SwtOpenGLESImageBridge.addImage(self.openGLUtil, image)
         end
         return image
 end
@@ -271,8 +304,8 @@ function ImageCopyUtil:createImageScale(originalImage, canvasScale, resize)
             local mutableImage2 = image
             local halfWidthDelta = (newWidth - originalImage:getWidth()) / 2
             local halfHeightDelta = (newHeight - originalImage:getHeight()) / 2
-            local originalPixelArray = java_new_array(0, originalImage:getWidth() * originalImage:getHeight())
-            local newPixelArray = java_new_array(0, image:getWidth() * image:getHeight())
+            local originalPixelArray = java_typed_array("I", java_new_array(0, originalImage:getWidth() * originalImage:getHeight()))
+            local newPixelArray = java_typed_array("I", java_new_array(0, image:getWidth() * image:getHeight()))
             local width = originalImage:getWidth()
             local height = originalImage:getHeight()
             for i = 0, height - 1 do
@@ -283,15 +316,15 @@ function ImageCopyUtil:createImageScale(originalImage, canvasScale, resize)
                     newPixelArray[index + (index2 * width) + 1] = originalPixelArray[(index - halfWidthDelta) + ((index2 - halfHeightDelta) * width) + 1]
                 end
             end
-            (mutableImage2:getImage()):getImageData():setPixels(0, 0, image:getWidth(), newPixelArray, 0)
+            ;(mutableImage2:getImage()):getImageData():setPixels(0, 0, image:getWidth(), newPixelArray, 0)
             return image
         else
             local originalImmutableImage = image
             local originalImageData = (originalImage:getImage()):getImageData()
             local halfWidthDelta = (newWidth - originalImage:getWidth()) / 2
             local halfHeightDelta = (newHeight - originalImage:getHeight()) / 2
-            local originalPixelArray = java_new_array(0, originalImage:getWidth() * originalImage:getHeight())
-            local newPixelArray = java_new_array(0, image:getWidth() * image:getHeight())
+            local originalPixelArray = java_typed_array("I", java_new_array(0, originalImage:getWidth() * originalImage:getHeight()))
+            local newPixelArray = java_typed_array("I", java_new_array(0, image:getWidth() * image:getHeight()))
             local width = originalImage:getWidth()
             local height = originalImage:getHeight()
             for i = 0, height - 1 do
@@ -302,12 +335,12 @@ function ImageCopyUtil:createImageScale(originalImage, canvasScale, resize)
                     newPixelArray[index + (index2 * width) + 1] = originalPixelArray[(index - halfWidthDelta) + ((index2 - halfHeightDelta) * width) + 1]
                 end
             end
-            (originalImmutableImage:getImage()):getImageData():setPixels(0, 0, image:getWidth(), newPixelArray, 0)
+            ;(originalImmutableImage:getImage()):getImageData():setPixels(0, 0, image:getWidth(), newPixelArray, 0)
             return image
         end
 end
 
-ImageCopyUtil.instance = ImageCopyUtil.new()
+ImageCopyUtil.instance_f = ImageCopyUtil.new()
 
 return ImageCopyUtil
 

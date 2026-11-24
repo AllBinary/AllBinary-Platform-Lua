@@ -13,10 +13,25 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.input.media.image
 
--- local HashMap = require("java.util.HashMap")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local StdUtil = require("org.allbinary.logic.StdUtil")
+local InputImageType = {}
+package.loaded["org.allbinary.input.media.image.InputImageType"] = InputImageType
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -25,27 +40,39 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local InputImageType = {}
+-- class table InputImageType is declared before the requires
 InputImageType.__index = InputImageType
 InputImageType.className = "InputImageType"
+InputImageType.javaClassName = "org.allbinary.input.media.image.InputImageType"
 
 function InputImageType:_init_fields()
-    self.name = nil
-    self.index = nil
+    if self.name_f == nil then self.name_f = nil end
+    if self.index == nil then self.index = nil end
 end
 
 
-function InputImageType.new(name, index)
-    local self = setmetatable({}, InputImageType)
-    self:_init_fields()
-        self.name = name
+function InputImageType._jinit(self, name, index)
+    InputImageType._init_fields(self)
+        self.name_f = name
         self.index = index
         InputImageType.TYPE_VECTOR:add(self)
         InputImageType.hashMap:put(self:getName(), self)
+    return self
+end
+
+function InputImageType.new(...)
+    local self = setmetatable({}, InputImageType)
+    InputImageType._jinit(self, ...)
     return self
 end
 
@@ -57,7 +84,7 @@ InputImageType.__tostring = function(self) return self:toString() end
 
 
 function InputImageType:getName()
-        return self.name
+        return self.name_f
 end
 
 

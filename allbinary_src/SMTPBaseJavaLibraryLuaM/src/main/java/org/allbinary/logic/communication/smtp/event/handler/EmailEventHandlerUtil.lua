@@ -13,19 +13,37 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.communication.smtp.event.handler
 
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local UserInterface = require("org.allbinary.business.user.UserInterface")
-local UserConfigurationInterface = require("org.allbinary.business.user.modules.configuration.UserConfigurationInterface")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local UserEmailConfigurationInterface = require("org.allbinary.logic.communication.smtp.configuration.user.UserEmailConfigurationInterface")
-local UserEmailEventsConfigurationInterface = require("org.allbinary.logic.communication.smtp.configuration.user.event.UserEmailEventsConfigurationInterface")
-local UserEmailEventListenerInterface = require("org.allbinary.logic.communication.smtp.event.UserEmailEventListenerInterface")
-local UserEmailEventNameData = require("org.allbinary.logic.communication.smtp.event.UserEmailEventNameData")
-local LogUserEmailEventListenerModule = require("org.allbinary.logic.communication.smtp.event.modules.log.LogUserEmailEventListenerModule")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local AbeClientInformationInterface = require("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
+local EmailEventHandlerUtil = {}
+package.loaded["org.allbinary.logic.communication.smtp.event.handler.EmailEventHandlerUtil"] = EmailEventHandlerUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local UserInterface = java_lazy("org.allbinary.business.user.UserInterface")
+local UserConfigurationInterface = java_lazy("org.allbinary.business.user.modules.configuration.UserConfigurationInterface")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local UserEmailConfigurationInterface = java_lazy("org.allbinary.logic.communication.smtp.configuration.user.UserEmailConfigurationInterface")
+local UserEmailEventsConfigurationInterface = java_lazy("org.allbinary.logic.communication.smtp.configuration.user.event.UserEmailEventsConfigurationInterface")
+local UserEmailEventListenerInterface = java_lazy("org.allbinary.logic.communication.smtp.event.UserEmailEventListenerInterface")
+local UserEmailEventNameData = java_lazy("org.allbinary.logic.communication.smtp.event.UserEmailEventNameData")
+local LogUserEmailEventListenerModule = java_lazy("org.allbinary.logic.communication.smtp.event.modules.log.LogUserEmailEventListenerModule")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local AbeClientInformationInterface = java_lazy("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local UserEmailEventHandler = java_lazy("org.allbinary.logic.communication.smtp.event.handler.UserEmailEventHandler")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -34,13 +52,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local EmailEventHandlerUtil = {}
+-- class table EmailEventHandlerUtil is declared before the requires
 EmailEventHandlerUtil.__index = EmailEventHandlerUtil
 EmailEventHandlerUtil.className = "EmailEventHandlerUtil"
+EmailEventHandlerUtil.javaClassName = "org.allbinary.logic.communication.smtp.event.handler.EmailEventHandlerUtil"
 
 function EmailEventHandlerUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -48,20 +73,25 @@ end
 
 
 function EmailEventHandlerUtil.getInstance()
-        return EmailEventHandlerUtil.instance
+        return EmailEventHandlerUtil.instance_f
 end
 
 
-function EmailEventHandlerUtil.new()
+function EmailEventHandlerUtil._jinit(self)
+    EmailEventHandlerUtil._init_fields(self)
+    return self
+end
+
+function EmailEventHandlerUtil.new(...)
     local self = setmetatable({}, EmailEventHandlerUtil)
-    self:_init_fields()
+    EmailEventHandlerUtil._jinit(self, ...)
     return self
 end
 
 
 -- throws Exception
 function EmailEventHandlerUtil:getEventHandler(abeClientInformation, userEmailEventNameData, userVector)
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().EMAILLOGGING) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().EMAILLOGGING) then
             local stringBuffer = StringMaker.new()
             stringBuffer:append("Returning UserEmailEventHandler for ")
             stringBuffer:appendint(userVector:size())
@@ -91,7 +121,7 @@ function EmailEventHandlerUtil.getUserEmailEventListenerVector(abeClientInformat
         return vector
 end
 
-EmailEventHandlerUtil.instance = EmailEventHandlerUtil.new()
+EmailEventHandlerUtil.instance_f = EmailEventHandlerUtil.new()
 
 return EmailEventHandlerUtil
 

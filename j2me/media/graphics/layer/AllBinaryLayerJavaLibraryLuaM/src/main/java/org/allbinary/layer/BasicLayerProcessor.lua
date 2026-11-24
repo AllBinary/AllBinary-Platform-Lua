@@ -13,10 +13,27 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.layer
 
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
+local BasicLayerProcessor = {}
+package.loaded["org.allbinary.layer.BasicLayerProcessor"] = BasicLayerProcessor
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local AllBinaryLayer = java_lazy("org.allbinary.layer.AllBinaryLayer")
+local AllBinaryLayerManager = java_lazy("org.allbinary.layer.AllBinaryLayerManager")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -38,13 +55,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local BasicLayerProcessor = {}
+-- class table BasicLayerProcessor is declared before the requires
 BasicLayerProcessor.__index = BasicLayerProcessor
 BasicLayerProcessor.className = "BasicLayerProcessor"
+BasicLayerProcessor.javaClassName = "org.allbinary.layer.BasicLayerProcessor"
 
 function BasicLayerProcessor:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -52,9 +76,14 @@ function BasicLayerProcessor:_init_fields()
 end
 
 
-function BasicLayerProcessor.new()
+function BasicLayerProcessor._jinit(self)
+    BasicLayerProcessor._init_fields(self)
+    return self
+end
+
+function BasicLayerProcessor.new(...)
     local self = setmetatable({}, BasicLayerProcessor)
-    self:_init_fields()
+    BasicLayerProcessor._jinit(self, ...)
     return self
 end
 
@@ -68,7 +97,7 @@ end
 
 -- throws Exception
 function BasicLayerProcessor:process(allBinaryLayerManager)
-        error(java_exception("Exception", CommonStrings.getInstance().NOT_IMPLEMENTED), 0)
+        error(require("java.lang.Exception").new(CommonStrings.getInstance().NOT_IMPLEMENTED), 0)
 end
 
 

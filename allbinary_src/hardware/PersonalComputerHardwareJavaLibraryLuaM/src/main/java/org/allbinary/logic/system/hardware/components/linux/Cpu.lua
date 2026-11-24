@@ -13,23 +13,74 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.system.hardware.components.linux
 
+local Cpu = {}
+package.loaded["org.allbinary.logic.system.hardware.components.linux.Cpu"] = Cpu
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local FileReader = require("java.io.FileReader")
 -- local LineNumberReader = require("java.io.LineNumberReader")
--- local HashMap = require("java.util.HashMap")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local LogConfigTypeFactory = require("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
-local LogConfigTypes = require("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
-local AbFile = require("org.allbinary.logic.io.file.AbFile")
-local FilePathData = require("org.allbinary.logic.io.file.FilePathData")
-local SubDirectory = require("org.allbinary.logic.io.file.directory.SubDirectory")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local CpuInterface = require("org.allbinary.logic.system.hardware.components.interfaces.CpuInterface")
-local HardwareComponentInterface = require("org.allbinary.logic.system.hardware.components.interfaces.HardwareComponentInterface")
-local CommonLabels = require("org.allbinary.string.CommonLabels")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
+local HashMap = java_lazy("java.util.HashMap")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
+local FilePathData = java_lazy("org.allbinary.logic.io.file.FilePathData")
+local SubDirectory = java_lazy("org.allbinary.logic.io.file.directory.SubDirectory")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local CpuInterface = java_lazy("org.allbinary.logic.system.hardware.components.interfaces.CpuInterface")
+local HardwareComponentInterface = java_lazy("org.allbinary.logic.system.hardware.components.interfaces.HardwareComponentInterface")
+local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local CpuInfo = java_lazy("org.allbinary.logic.system.hardware.components.linux.CpuInfo")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -38,53 +89,68 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local Cpu = {}
+-- class table Cpu is declared before the requires
 Cpu.__index = Cpu
 Cpu.className = "Cpu"
+Cpu.javaClassName = "org.allbinary.logic.system.hardware.components.linux.Cpu"
+Cpu.java_implements = " CpuInterface HardwareComponentInterface "
+Cpu.java_interfaces = function() return {CpuInterface, HardwareComponentInterface} end
 
 function Cpu:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
     self.CPUFILE = "/proc/cpuinfo"
-    self.cpuHashMap = nil
+    if self.cpuHashMap == nil then self.cpuHashMap = nil end
+end
+
+function Cpu._jinit(self, ...)
+    local count = select("#", ...)
+    if count == 1 then return Cpu._new1(self, ...)
+    elseif count == 0 then return Cpu._new0(self, ...)
+    end
+    error("No constructor of Cpu takes " .. count .. " arguments")
 end
 
 function Cpu.new(...)
-    local count = select("#", ...)
-    if count == 1 then return Cpu._new1(...)
-    elseif count == 0 then return Cpu._new0(...)
-    end
+    local self = setmetatable({}, Cpu)
+    Cpu._jinit(self, ...)
+    return self
 end
 
 
-function Cpu._new1(filePath)
-    local self = setmetatable({}, Cpu)
-    self:_init_fields()
+function Cpu._new1(self, filePath)
+    Cpu._init_fields(self)
         self:init(filePath)
     return self
 end
 
 
-function Cpu._new0()
-    local self = setmetatable({}, Cpu)
-    self:_init_fields()
+function Cpu._new0(self)
+    Cpu._init_fields(self)
         self:init(self.CPUFILE)
     return self
 end
 
 
 -- throws Exception
-function Cpu:init(filePath)
+function Cpu:init_j1(filePath)
         local lineNumberReader = nil
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             self:init(lineNumberReader, filePath)
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().OS) then
                 self.logUtil:put(tostring(StringMaker.new():append("Cpu Data: "):append(tostring(self))), self, self.commonStrings.CONSTRUCTOR, e)
             end
@@ -94,9 +160,8 @@ end
 
 
 -- throws Exception
--- Java overloaded method: Lua keeps the last definition
-function Cpu:init(lineNumberReader, filePath)
-        local try_ok, try_error = pcall(function()
+function Cpu:init_j2(lineNumberReader, filePath)
+        local try_ok, try_error, try_value = pcall(function()
             local fileReader = FileReader.new(filePath)
             lineNumberReader = LineNumberReader.new(fileReader)
             self.cpuHashMap = StdUtil.getInstance():createHashMap()
@@ -112,7 +177,7 @@ function Cpu:init(lineNumberReader, filePath)
             end
             if lineNumberReader ~= nil then
                 local nextLine = lineNumberReader:readLine()
-                while lineNumberReader ~= nil and nextLine ~= nil do
+                while nextLine ~= nil do
                     local index = ((string.find(nextLine, ":", 1, true) or 0) - 1)
                     if index >= 0 then
                         local key = string.sub(nextLine, (0) + 1, index)
@@ -154,6 +219,13 @@ function Cpu:init(lineNumberReader, filePath)
         end
         if not try_ok then error(try_error, 0) end
 end
+function Cpu:init(...)
+    local count = select("#", ...)
+    if count == 1 then return self:init_j1(...) end
+    if count == 2 then return self:init_j2(...) end
+    error("No method init takes " .. count .. " arguments")
+end
+Cpu.init__jdispatcher = Cpu.init
 
 
 function Cpu:getProcessor()
@@ -196,14 +268,24 @@ function Cpu:getCacheSize()
 end
 
 
-function Cpu:compareTo(cpuInterface)
+function Cpu:compareTo_j1_1(cpuInterface)
         return true
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function Cpu:compareTo(componentInterface)
+function Cpu:compareTo_j1_2(componentInterface)
         return true
+end
+function Cpu:compareTo(...)
+    local count = select("#", ...)
+    if count == 1 then return self:compareTo_j1(...) end
+    error("No method compareTo takes " .. count .. " arguments")
+end
+Cpu.compareTo__jdispatcher = Cpu.compareTo
+function Cpu:compareTo_j1(...)
+    local java_a1 = ...
+    if true and (java_a1 == nil or java_is(java_a1, "CpuInterface")) then return Cpu.compareTo_j1_1(self, ...) end
+    return Cpu.compareTo_j1_2(self, ...)
 end
 
 

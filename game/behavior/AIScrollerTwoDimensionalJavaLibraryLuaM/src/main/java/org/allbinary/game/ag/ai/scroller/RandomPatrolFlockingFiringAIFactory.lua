@@ -13,18 +13,41 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.ag.ai.scroller
 
-local ArtificialIntelligenceInterface = require("org.allbinary.ai.ArtificialIntelligenceInterface")
-local ArrayAI = require("org.allbinary.game.ag.ai.ArrayAI")
-local ArtificialIntelligenceInterfaceFactoryInterface = require("org.allbinary.game.ai.ArtificialIntelligenceInterfaceFactoryInterface")
-local GameInput = require("org.allbinary.game.input.GameInput")
-local AllBinaryLayer = require("org.allbinary.layer.AllBinaryLayer")
-local ABHashtable = require("org.allbinary.util.ABHashtable")
+local RandomPatrolFlockingFiringAIFactory = {}
+package.loaded["org.allbinary.game.ag.ai.scroller.RandomPatrolFlockingFiringAIFactory"] = RandomPatrolFlockingFiringAIFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local ArtificialIntelligenceInterface = java_lazy("org.allbinary.ai.ArtificialIntelligenceInterface")
+local ArrayAI = java_lazy("org.allbinary.game.ag.ai.ArrayAI")
+local ArtificialIntelligenceInterfaceFactoryInterface = java_lazy("org.allbinary.game.ai.ArtificialIntelligenceInterfaceFactoryInterface")
+local GameInput = java_lazy("org.allbinary.game.input.GameInput")
+local AllBinaryLayer = java_lazy("org.allbinary.layer.AllBinaryLayer")
+local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
+local RandomPatrolAI = java_lazy("org.allbinary.game.ag.ai.scroller.RandomPatrolAI")
+local TimedFireAI = java_lazy("org.allbinary.game.ag.ai.scroller.TimedFireAI")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -35,17 +58,29 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local RandomPatrolFlockingFiringAIFactory = {}
+-- class table RandomPatrolFlockingFiringAIFactory is declared before the requires
 RandomPatrolFlockingFiringAIFactory.__index = RandomPatrolFlockingFiringAIFactory
 RandomPatrolFlockingFiringAIFactory.className = "RandomPatrolFlockingFiringAIFactory"
+RandomPatrolFlockingFiringAIFactory.javaClassName = "org.allbinary.game.ag.ai.scroller.RandomPatrolFlockingFiringAIFactory"
+RandomPatrolFlockingFiringAIFactory.java_implements = " ArtificialIntelligenceInterfaceFactoryInterface "
+RandomPatrolFlockingFiringAIFactory.java_interfaces = function() return {ArtificialIntelligenceInterfaceFactoryInterface} end
+
+function RandomPatrolFlockingFiringAIFactory._jinit(self)
+    return self
+end
 
 function RandomPatrolFlockingFiringAIFactory.new()
-    local self = setmetatable({}, RandomPatrolFlockingFiringAIFactory)
-    return self
+    return RandomPatrolFlockingFiringAIFactory._jinit(setmetatable({}, RandomPatrolFlockingFiringAIFactory))
 end
 
 

@@ -13,16 +13,32 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.system.security.licensing
 
+local SetLicenseInitInfo = {}
+package.loaded["org.allbinary.logic.system.security.licensing.SetLicenseInitInfo"] = SetLicenseInitInfo
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local BufferedReader = require("java.io.BufferedReader")
 -- local InputStreamReader = require("java.io.InputStreamReader")
-local LicenseInitInfo = require("org.allbinary.business.init.LicenseInitInfo")
-local LicenseInitInfoUtil = require("org.allbinary.business.init.LicenseInitInfoUtil")
-local FileFactory = require("org.allbinary.logic.io.file.FileFactory")
-local PATH_GLOBALS = require("org.allbinary.globals.PATH_GLOBALS")
--- local File = require("java.io.File")
+local LicenseInitInfo = java_lazy("org.allbinary.business.init.LicenseInitInfo")
+local LicenseInitInfoUtil = java_lazy("org.allbinary.business.init.LicenseInitInfoUtil")
+local FileFactory = java_lazy("org.allbinary.logic.io.file.FileFactory")
+local PATH_GLOBALS = java_lazy("org.allbinary.globals.PATH_GLOBALS")
+local File = java_lazy("java.io.File")
 -- local FileReader = require("java.io.FileReader")
 -- local LineNumberReader = require("java.io.LineNumberReader")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local PrintLicenseInitInfo = java_lazy("org.allbinary.logic.system.security.licensing.PrintLicenseInitInfo")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -44,26 +60,38 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local SetLicenseInitInfo = {}
+-- class table SetLicenseInitInfo is declared before the requires
 SetLicenseInitInfo.__index = SetLicenseInitInfo
 SetLicenseInitInfo.className = "SetLicenseInitInfo"
+SetLicenseInitInfo.javaClassName = "org.allbinary.logic.system.security.licensing.SetLicenseInitInfo"
 
 function SetLicenseInitInfo:_init_fields()
     self.vector = BasicArrayListD.new()
 end
 
 
-function SetLicenseInitInfo.new(options)
-    local self = setmetatable({}, SetLicenseInitInfo)
-    self:_init_fields()
-        LicenseInitInfoUtil.getInstance():setFilePath(PrintLicenseInitInfo.PATH + self.PATH_GLOBALS:getInstance().INIT_PATH)
+function SetLicenseInitInfo._jinit(self, options)
+    SetLicenseInitInfo._init_fields(self)
+        LicenseInitInfoUtil.getInstance():setFilePath(PrintLicenseInitInfo.PATH + PATH_GLOBALS.getInstance().INIT_PATH)
         for index = 1, (options.n or #options) - 1 do
             self.vector:add(options[index + 1])
         end
+    return self
+end
+
+function SetLicenseInitInfo.new(...)
+    local self = setmetatable({}, SetLicenseInitInfo)
+    SetLicenseInitInfo._jinit(self, ...)
     return self
 end
 
@@ -80,9 +108,9 @@ end
 
 
 function SetLicenseInitInfo:createNewLicenseInitInfo(licenceServerVector)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             if licenceServerVector == nil then
-                error(java_exception("Exception", "null BasicArrayList Passed - Just Make Empty if you want"), 0)
+                error(require("java.lang.Exception").new("null BasicArrayList Passed - Just Make Empty if you want"), 0)
             end
             local licenseInitInfo = self:getLicenseInitInfo()
             print("License Serv Example: http://www.dartstatistics.com/LicServ/serverssl.php")
@@ -90,19 +118,15 @@ function SetLicenseInitInfo:createNewLicenseInitInfo(licenceServerVector)
             local file = File.new(tostring(PrintLicenseInitInfo.PATH) .. "licenseservers.txt")
             local reader = FileReader.new(file)
             local lineNumberReader = LineNumberReader.new(reader)
-            while true do
-                local line = lineNumberReader:readLine()
-                if line ~= nil then
-                    licenseInitInfo:addServer(line)
-                else
-                    break
-                end
+            while lineNumberReader:ready() do
+                licenseInitInfo:addServer(lineNumberReader:readLine())
             end
             LicenseInitInfoUtil.getInstance():write(licenseInitInfo)
             LicenseInitInfoUtil.getInstance():read()
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             io.write(tostring("Error: " .. tostring(e)))
             print(debug.traceback(tostring(e)))
         end
@@ -115,7 +139,7 @@ function SetLicenseInitInfo.main(args)
         initInfo:createNewLicenseInitInfo(BasicArrayListD.new())
 end
 
-SetLicenseInitInfo.stdinput = BufferedReader.new(InputStreamReader.new(System.in_))
+SetLicenseInitInfo.stdinput = BufferedReader.new(InputStreamReader.new(require("java.lang.System").in_))
 
 return SetLicenseInitInfo
 

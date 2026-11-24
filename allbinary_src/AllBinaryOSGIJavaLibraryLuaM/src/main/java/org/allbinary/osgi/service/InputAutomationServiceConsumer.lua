@@ -13,14 +13,30 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.osgi.service
 
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local BundleContext = require("org.osgi.framework.BundleContext")
-local ServiceReference = require("org.osgi.framework.ServiceReference")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local OSGIServiceInterface = require("org.allbinary.osgi.OSGIServiceInterface")
-local OSGIServiceVisitorInterface = require("org.allbinary.osgi.OSGIServiceVisitorInterface")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local InputAutomationServiceConsumer = {}
+package.loaded["org.allbinary.osgi.service.InputAutomationServiceConsumer"] = InputAutomationServiceConsumer
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local BundleContext = java_lazy("org.osgi.framework.BundleContext")
+local ServiceReference = java_lazy("org.osgi.framework.ServiceReference")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local OSGIServiceInterface = java_lazy("org.allbinary.osgi.OSGIServiceInterface")
+local OSGIServiceVisitorInterface = java_lazy("org.allbinary.osgi.OSGIServiceVisitorInterface")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local OSGIServiceUtil = java_lazy("org.allbinary.osgi.service.OSGIServiceUtil")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -42,30 +58,42 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local InputAutomationServiceConsumer = {}
+-- class table InputAutomationServiceConsumer is declared before the requires
 InputAutomationServiceConsumer.__index = InputAutomationServiceConsumer
 InputAutomationServiceConsumer.className = "InputAutomationServiceConsumer"
+InputAutomationServiceConsumer.javaClassName = "org.allbinary.osgi.service.InputAutomationServiceConsumer"
 
 function InputAutomationServiceConsumer:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
     self.osgiServiceUtil = OSGIServiceUtil.getInstance()
-    self.registryName = nil
-    self.bundleContext = nil
-    self.osgiServiceVisitorInterface = nil
+    if self.registryName == nil then self.registryName = nil end
+    if self.bundleContext == nil then self.bundleContext = nil end
+    if self.osgiServiceVisitorInterface == nil then self.osgiServiceVisitorInterface = nil end
 end
 
 
-function InputAutomationServiceConsumer.new(registryName, bundleContext, osgiServiceVisitorInterface)
-    local self = setmetatable({}, InputAutomationServiceConsumer)
-    self:_init_fields()
+function InputAutomationServiceConsumer._jinit(self, registryName, bundleContext, osgiServiceVisitorInterface)
+    InputAutomationServiceConsumer._init_fields(self)
         self:setRegistryName(registryName)
         self:setBundleContext(bundleContext)
         self:setOsgiServiceVisitorInterface(osgiServiceVisitorInterface)
+    return self
+end
+
+function InputAutomationServiceConsumer.new(...)
+    local self = setmetatable({}, InputAutomationServiceConsumer)
+    InputAutomationServiceConsumer._jinit(self, ...)
     return self
 end
 
@@ -80,7 +108,7 @@ function InputAutomationServiceConsumer:process()
         for index = 0, size - 1 do
             osgiServiceInterface = vector:get(index)
             if not self:getOsgiServiceVisitorInterface():visit(osgiServiceInterface) then
-                error(java_exception("Exception", "Unable to process service: " .. tostring(osgiServiceInterface)), 0)
+                error(require("java.lang.Exception").new("Unable to process service: " .. tostring(osgiServiceInterface)), 0)
             end
         end
 end

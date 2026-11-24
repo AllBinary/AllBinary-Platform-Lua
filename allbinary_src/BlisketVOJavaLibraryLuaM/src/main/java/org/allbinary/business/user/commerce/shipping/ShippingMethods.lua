@@ -13,14 +13,32 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.user.commerce.shipping
 
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local StoreFrontInterface = require("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
-local ShippingInterface = require("org.allbinary.business.user.commerce.shipping.modules.ShippingInterface")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local AbeClientInformationInterface = require("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local ShippingMethods = {}
+package.loaded["org.allbinary.business.user.commerce.shipping.ShippingMethods"] = ShippingMethods
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local StoreFrontInterface = java_lazy("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
+local ShippingInterface = java_lazy("org.allbinary.business.user.commerce.shipping.modules.ShippingInterface")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local AbeClientInformationInterface = java_lazy("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local ShippingMethodsInterface = require("org.allbinary.business.user.commerce.shipping.ShippingMethodsInterface")
+local ShippingMethodsFactory = java_lazy("org.allbinary.business.user.commerce.shipping.ShippingMethodsFactory")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -42,27 +60,41 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ShippingMethods = {}
+-- class table ShippingMethods is declared before the requires
 ShippingMethods.__index = ShippingMethods
 ShippingMethods.className = "ShippingMethods"
+ShippingMethods.javaClassName = "org.allbinary.business.user.commerce.shipping.ShippingMethods"
+ShippingMethods.java_implements = " ShippingMethodsInterface "
+ShippingMethods.java_interfaces = function() return {ShippingMethodsInterface} end
 
 function ShippingMethods:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
-    self.shippingVector = nil
-    self.defaultShippingMethodInterface = nil
+    if self.shippingVector == nil then self.shippingVector = nil end
+    if self.defaultShippingMethodInterface == nil then self.defaultShippingMethodInterface = nil end
 end
 
 
-function ShippingMethods.new(abeClientInformation, storeFrontInterface)
-    local self = setmetatable({}, ShippingMethods)
-    self:_init_fields()
+function ShippingMethods._jinit(self, abeClientInformation, storeFrontInterface)
+    ShippingMethods._init_fields(self)
         self.defaultShippingMethodInterface = ShippingMethodsFactory.new(abeClientInformation, storeFrontInterface):getDefaultInstance()
         self.shippingVector = ShippingMethodsFactory.new(abeClientInformation, storeFrontInterface):getInstance()
+    return self
+end
+
+function ShippingMethods.new(...)
+    local self = setmetatable({}, ShippingMethods)
+    ShippingMethods._jinit(self, ...)
     return self
 end
 
@@ -83,10 +115,10 @@ function ShippingMethods:getShippingInterface(name)
             end
         end
         local error = "Error Finding Shipping: " .. name
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SHIPPINGERROR) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SHIPPINGERROR) then
             self.logUtil:putF(self.commonStrings.EXCEPTION, self, "getShippingInterface(String name)")
         end
-        error(java_exception("Exception", error), 0)
+        error(require("java.lang.Exception").new(error), 0)
 end
 
 

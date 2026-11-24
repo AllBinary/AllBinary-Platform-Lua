@@ -13,16 +13,123 @@
 -- Generated Code Do Not Modify
 -- package views.business.context.modules.storefront.customizer.bodies.generic.title
 
-local DomNodeInterface = require("org.allbinary.data.tree.dom.DomNodeInterface")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local ValidationComponentInterface = require("org.allbinary.logic.control.validate.ValidationComponentInterface")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local TransformInfoInterface = require("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
-local TitleBodyValidation = require("org.allbinary.logic.visual.transform.template.customizer.bodies.title.TitleBodyValidation")
-local Document = require("org.w3c.dom.Document")
-local Node = require("org.w3c.dom.Node")
-local CustomizerUtil = require("views.business.context.modules.storefront.customizer.CustomizerUtil")
+local NewTitleBodyValidationView = {}
+package.loaded["views.business.context.modules.storefront.customizer.bodies.generic.title.NewTitleBodyValidationView"] = NewTitleBodyValidationView
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local DomNodeInterface = java_lazy("org.allbinary.data.tree.dom.DomNodeInterface")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local ValidationComponentInterface = java_lazy("org.allbinary.logic.control.validate.ValidationComponentInterface")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local TransformInfoInterface = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
+local TitleBodyValidation = java_lazy("org.allbinary.logic.visual.transform.template.customizer.bodies.title.TitleBodyValidation")
+local Document = java_lazy("org.w3c.dom.Document")
+local Node = java_lazy("org.w3c.dom.Node")
+local CustomizerUtil = java_lazy("views.business.context.modules.storefront.customizer.CustomizerUtil")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local ValidationOnlyTempUtil = java_lazy("views.ValidationOnlyTempUtil")
 local TitleBodyCustomizerView = require("views.business.context.modules.storefront.customizer.bodies.generic.title.TitleBodyCustomizerView")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
+
+local function java_super(class, name, count)
+    local mangled = name .. "_j" .. count
+    local current = class
+    while type(current) == "table" do
+        local method = rawget(current, mangled)
+        if method ~= nil then return method end
+        method = rawget(current, name)
+        if method ~= nil and method ~= rawget(current, name .. "__jdispatcher") then return method end
+        local parent = getmetatable(current)
+        local index = parent and parent.__index
+        if index == current then index = nil end
+        current = index
+    end
+    return class[name]
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -31,28 +138,43 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local NewTitleBodyValidationView = {}
+-- class table NewTitleBodyValidationView is declared before the requires
 NewTitleBodyValidationView.__index = NewTitleBodyValidationView
 NewTitleBodyValidationView.className = "NewTitleBodyValidationView"
+NewTitleBodyValidationView.javaClassName = "views.business.context.modules.storefront.customizer.bodies.generic.title.NewTitleBodyValidationView"
 setmetatable(NewTitleBodyValidationView, {__index = TitleBodyCustomizerView})
+NewTitleBodyValidationView.java_implements = " ValidationComponentInterface "
+NewTitleBodyValidationView.java_interfaces = function() return {ValidationComponentInterface} end
 
 function NewTitleBodyValidationView:_init_fields()
     self.logUtil = LogUtil.getInstance()
 end
 
 
-function NewTitleBodyValidationView.new(transformInfoInterface)
-    local self = setmetatable(TitleBodyCustomizerView.new(transformInfoInterface), NewTitleBodyValidationView)
-    self:_init_fields()
+function NewTitleBodyValidationView._jinit(self, transformInfoInterface)
+    java_super_init(TitleBodyCustomizerView, self, transformInfoInterface)
+    NewTitleBodyValidationView._init_fields(self)
         -- super(...) made self above
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             self.logUtil:putF("View Name: " .. transformInfoInterface:getName(), self, "NewTitleBodyValidationView()")
         end
         self.titleBody = TitleBodyValidation.new()
+    return self
+end
+
+function NewTitleBodyValidationView.new(...)
+    local self = setmetatable({}, NewTitleBodyValidationView)
+    NewTitleBodyValidationView._jinit(self, ...)
     return self
 end
 
@@ -61,58 +183,75 @@ end
 function NewTitleBodyValidationView:toXmlDoc()
         return nil
 end
+java_overload(NewTitleBodyValidationView, "toXmlDoc", 0)
 
 
 function NewTitleBodyValidationView:isValid()
-        local try_ok, try_error = pcall(function()
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+        local try_ok, try_error, try_value = pcall(function()
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                 self.logUtil:putF("View Name: " .. self:getTransformInfoInterface():getName(), self, self.commonStrings.IS_VALID)
             end
             do
                 CustomizerUtil.getInstance():insert(self:getTransformInfoInterface(), self.titleBody)
             end
-            return true
+            do return "__jreturn", true end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEWERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEWERROR) then
                 self.logUtil:put("Failed to validate", self, self.commonStrings.IS_VALID, e)
             end
             return false
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+java_overload(NewTitleBodyValidationView, "isValid", 0)
 
 
 function NewTitleBodyValidationView:validationInfo()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local stringBuffer = StringMaker.new()
             stringBuffer:append(self.titleBody:validationInfo())
-            return tostring(stringBuffer)
+            do return "__jreturn", tostring(stringBuffer) end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEWERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEWERROR) then
                 self.logUtil:put("Failed to generate validation error info", self, "validationInfo()", e)
             end
             return "Error Getting Validation Info"
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+java_overload(NewTitleBodyValidationView, "validationInfo", 0)
 
 
 function NewTitleBodyValidationView:toValidationInfoDoc()
         return nil
 end
+java_overload(NewTitleBodyValidationView, "toValidationInfoDoc", 0)
 
 
 function NewTitleBodyValidationView:toValidationInfoNode(document)
         return nil
 end
+java_overload(NewTitleBodyValidationView, "toValidationInfoNode", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "Document")) end)
 
 
 -- throws Exception
 function NewTitleBodyValidationView:view()
-        return self.views.ValidationOnlyTempUtil:getInstance():view(self)
+        return ValidationOnlyTempUtil.getInstance():view(self)
 end
+java_overload(NewTitleBodyValidationView, "view", 0)
+
+
+-- throws Exception
+function NewTitleBodyValidationView:getTransformInfoInterface()
+        return java_super(TitleBodyCustomizerView, "getTransformInfoInterface", 0)(self)
+end
+java_overload(NewTitleBodyValidationView, "getTransformInfoInterface", 0)
 
 return NewTitleBodyValidationView
 

@@ -13,29 +13,52 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media.graphics.geography.map
 
+local GeographicMapCellHistory = {}
+package.loaded["org.allbinary.media.graphics.geography.map.GeographicMapCellHistory"] = GeographicMapCellHistory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Font = require("javax.microedition.lcdui.Font")
 -- local Graphics = require("javax.microedition.lcdui.Graphics")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local BooleanFactory = require("org.allbinary.logic.java.bool.BooleanFactory")
-local Animation = require("org.allbinary.animation.Animation")
-local AnimationBehavior = require("org.allbinary.animation.AnimationBehavior")
-local TextAnimation = require("org.allbinary.animation.text.TextAnimation")
-local AllBinaryTiledLayer = require("org.allbinary.game.layer.AllBinaryTiledLayer")
-local GPoint = require("org.allbinary.graphics.GPoint")
-local BasicColorFactory = require("org.allbinary.graphics.color.BasicColorFactory")
-local MyFontProcessor = require("org.allbinary.graphics.font.MyFontProcessor")
-local UpdateMyFontInterface = require("org.allbinary.graphics.font.UpdateMyFontInterface")
-local UpdateMyFontProcessor = require("org.allbinary.graphics.font.UpdateMyFontProcessor")
-local BasicDecimal = require("org.allbinary.logic.math.BasicDecimal")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local BooleanFactory = java_lazy("org.allbinary.logic.java.bool.BooleanFactory")
+local Animation = java_lazy("org.allbinary.animation.Animation")
+local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
+local TextAnimation = java_lazy("org.allbinary.animation.text.TextAnimation")
+local AllBinaryTiledLayer = java_lazy("org.allbinary.game.layer.AllBinaryTiledLayer")
+local GPoint = java_lazy("org.allbinary.graphics.GPoint")
+local BasicColorFactory = java_lazy("org.allbinary.graphics.color.BasicColorFactory")
+local MyFontProcessor = java_lazy("org.allbinary.graphics.font.MyFontProcessor")
+local UpdateMyFontInterface = java_lazy("org.allbinary.graphics.font.UpdateMyFontInterface")
+local UpdateMyFontProcessor = java_lazy("org.allbinary.graphics.font.UpdateMyFontProcessor")
+local BasicDecimal = java_lazy("org.allbinary.logic.math.BasicDecimal")
+local BasicGeographicMap = java_lazy("org.allbinary.media.graphics.geography.map.BasicGeographicMap")
+local GeographicMapCellPosition = java_lazy("org.allbinary.media.graphics.geography.map.GeographicMapCellPosition")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -46,35 +69,49 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local GeographicMapCellHistory = {}
+-- class table GeographicMapCellHistory is declared before the requires
 GeographicMapCellHistory.__index = GeographicMapCellHistory
 GeographicMapCellHistory.className = "GeographicMapCellHistory"
+GeographicMapCellHistory.javaClassName = "org.allbinary.media.graphics.geography.map.GeographicMapCellHistory"
+GeographicMapCellHistory.java_implements = " UpdateMyFontInterface "
+GeographicMapCellHistory.java_interfaces = function() return {UpdateMyFontInterface} end
 
 function GeographicMapCellHistory:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.booleanFactory = BooleanFactory.getInstance()
-    self.list = nil
-    self.visitedList = nil
+    if self.list == nil then self.list = nil end
+    if self.visitedList == nil then self.visitedList = nil end
     self.MISSED_INFO = "Missed"
     self.animation = TextAnimation.new(self.MISSED_INFO, AnimationBehavior.getInstance())
     self.myFontProcessor = UpdateMyFontProcessor.new(self)
-    self.totalVisited = 0
+    if self.totalVisited == nil then self.totalVisited = 0 end
     self.halfWidth = 0
     self.fontHeight = 0
     self.RED = math.tointeger(BasicColorFactory.getInstance().RED // 1)
 end
 
 
-function GeographicMapCellHistory.new()
-    local self = setmetatable({}, GeographicMapCellHistory)
-    self:_init_fields()
+function GeographicMapCellHistory._jinit(self)
+    GeographicMapCellHistory._init_fields(self)
         self.list = BasicArrayListD.new()
         self.visitedList = BasicArrayListD.new()
         self:init()
+    return self
+end
+
+function GeographicMapCellHistory.new(...)
+    local self = setmetatable({}, GeographicMapCellHistory)
+    GeographicMapCellHistory._jinit(self, ...)
     return self
 end
 
@@ -272,7 +309,7 @@ end
 
 
 function GeographicMapCellHistory:paintNotVisited(graphics, geographicMapInterface)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             self.myFontProcessor:process(graphics)
             graphics:setColor(self.RED)
             local localVisitedList = self.visitedList
@@ -292,6 +329,7 @@ function GeographicMapCellHistory:paintNotVisited(graphics, geographicMapInterfa
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local commonStrings = CommonStrings.getInstance()
             self.logUtil:put(commonStrings.EXCEPTION, self, "paintNotVisited", e)
         end

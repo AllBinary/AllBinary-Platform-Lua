@@ -13,15 +13,33 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.math
 
-local JsType = require("jsinterop.annotations.JsType")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local CommonPhoneStrings = require("org.allbinary.string.CommonPhoneStrings")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local JsMethod = require("jsinterop.annotations.JsMethod")
-local JsConstructor = require("jsinterop.annotations.JsConstructor")
-local JsProperty = require("jsinterop.annotations.JsProperty")
+local AngleFactory = {}
+package.loaded["org.allbinary.math.AngleFactory"] = AngleFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local JsType = java_lazy("jsinterop.annotations.JsType")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local CommonPhoneStrings = java_lazy("org.allbinary.string.CommonPhoneStrings")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local JsMethod = java_lazy("jsinterop.annotations.JsMethod")
+local JsConstructor = java_lazy("jsinterop.annotations.JsConstructor")
+local JsProperty = java_lazy("jsinterop.annotations.JsProperty")
+local Angle = java_lazy("org.allbinary.math.Angle")
+local FrameUtil = java_lazy("org.allbinary.math.FrameUtil")
+local NamedAngle = java_lazy("org.allbinary.math.NamedAngle")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -44,6 +62,12 @@ local function java_new_array(default, size, ...)
     return array
 end
 
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
+    return array
+end
+
 local function java_idiv(a, b)
     local q = a / b
     if q < 0 then return math.ceil(q) end
@@ -51,13 +75,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local AngleFactory = {}
+-- class table AngleFactory is declared before the requires
 AngleFactory.__index = AngleFactory
 AngleFactory.className = "AngleFactory"
+AngleFactory.javaClassName = "org.allbinary.math.AngleFactory"
 
 function AngleFactory:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -66,22 +97,21 @@ function AngleFactory:_init_fields()
     self.angleArray = java_new_array(nil, self.TOTAL_ANGLE)
     self.NEGATIVE_ONE = -1
     self.NOT_ANGLE = NamedAngle.new(self.NEGATIVE_ONE, CommonStrings.getInstance().EMPTY)
-    self.DOWN = nil
-    self.UP = nil
-    self.LEFT = nil
-    self.RIGHT = nil
+    if self.DOWN == nil then self.DOWN = nil end
+    if self.UP == nil then self.UP = nil end
+    if self.LEFT == nil then self.LEFT = nil end
+    if self.RIGHT == nil then self.RIGHT = nil end
     self.frameUtil = FrameUtil.getInstance()
 end
 
 
 function AngleFactory.getInstance()
-        return AngleFactory.instance
+        return AngleFactory.instance_f
 end
 
 
-function AngleFactory.new()
-    local self = setmetatable({}, AngleFactory)
-    self:_init_fields()
+function AngleFactory._jinit(self)
+    AngleFactory._init_fields(self)
         local commonPhoneStrings = CommonPhoneStrings.getInstance()
         local total = (self.angleArray.n or #self.angleArray)
         self.UP = NamedAngle.new(0, commonPhoneStrings.UP)
@@ -107,6 +137,12 @@ function AngleFactory.new()
     return self
 end
 
+function AngleFactory.new(...)
+    local self = setmetatable({}, AngleFactory)
+    AngleFactory._jinit(self, ...)
+    return self
+end
+
 
 function AngleFactory:getAt(index)
         local adjustedIndex = java_int(self.frameUtil:adjustAngleToFrameAngle(index))
@@ -124,7 +160,7 @@ function AngleFactory:getClosestDirection(angle)
         elseif angle >= 225 and angle < 315 then
             return self.LEFT
         end
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
@@ -142,7 +178,7 @@ function AngleFactory.main(args)
         LogUtil.getInstance():putF(tostring(stringMaker), "main", "main")
 end
 
-AngleFactory.instance = AngleFactory.new()
+AngleFactory.instance_f = AngleFactory.new()
 
 return AngleFactory
 

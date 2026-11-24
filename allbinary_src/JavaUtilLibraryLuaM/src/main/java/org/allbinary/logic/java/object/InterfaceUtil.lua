@@ -13,8 +13,58 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.java.anyType
 
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
+local InterfaceUtil = {}
+package.loaded["org.allbinary.logic.java.anyType.InterfaceUtil"] = InterfaceUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -23,17 +73,29 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local InterfaceUtil = {}
+-- class table InterfaceUtil is declared before the requires
 InterfaceUtil.__index = InterfaceUtil
 InterfaceUtil.className = "InterfaceUtil"
+InterfaceUtil.javaClassName = "org.allbinary.logic.java.anyType.InterfaceUtil"
 
 
-function InterfaceUtil.new()
+function InterfaceUtil._jinit(self)
+    return self
+end
+
+function InterfaceUtil.new(...)
     local self = setmetatable({}, InterfaceUtil)
+    InterfaceUtil._jinit(self, ...)
     return self
 end
 
@@ -65,10 +127,10 @@ function InterfaceUtil.getClass(interfaceName, interfaces)
 end
 
 
-function InterfaceUtil.isImplemented(clazz, anyType)
+function InterfaceUtil.isImplemented_j2_1(clazz, anyType)
         local classes = getmetatable(anyType):getInterfaces()
         for index = 0, (classes.n or #classes) - 1 do
-            if clazz:getName():compareTo(classes[index + 1]:getName()) == 0 then
+            if (clazz.javaClassName or clazz.className):compareTo(classes[index + 1]:getName()) == 0 then
                 return true
             end
         end
@@ -76,8 +138,7 @@ function InterfaceUtil.isImplemented(clazz, anyType)
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function InterfaceUtil.isImplemented(className, anyType)
+function InterfaceUtil.isImplemented_j2_2(className, anyType)
         local classes = getmetatable(anyType):getInterfaces()
         for index = 0, (classes.n or #classes) - 1 do
             if classes[index + 1]:getName():indexOf(className) == 0 then
@@ -86,6 +147,17 @@ function InterfaceUtil.isImplemented(className, anyType)
         end
         return false
 end
+function InterfaceUtil.isImplemented(...)
+    local count = select("#", ...)
+    if count == 2 then return InterfaceUtil.isImplemented_j2(...) end
+    error("No method isImplemented takes " .. count .. " arguments")
+end
+InterfaceUtil.isImplemented__jdispatcher = InterfaceUtil.isImplemented
+function InterfaceUtil.isImplemented_j2(...)
+    local java_a1, java_a2 = ...
+    if true and (java_a1 == nil or java_is(java_a1, "Class")) then return InterfaceUtil.isImplemented_j2_1(...) end
+    return InterfaceUtil.isImplemented_j2_2(...)
+end
 
 
 function InterfaceUtil.isImplementedView(clazz, anyType)
@@ -93,7 +165,7 @@ function InterfaceUtil.isImplementedView(clazz, anyType)
         local classes = getmetatable(anyType):getInterfaces()
         stringBuffer:append("isImplementedView: \n")
         for index = 0, (classes.n or #classes) - 1 do
-            stringBuffer:append(clazz:getName())
+            stringBuffer:append((clazz.javaClassName or clazz.className))
             stringBuffer:append(" should be = ")
             stringBuffer:append(classes[index + 1]:getName())
             stringBuffer:append(classes[index + 1]:getName())

@@ -13,8 +13,23 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.displayable.canvas
 
+local CanvasUtil = {}
+package.loaded["org.allbinary.game.displayable.canvas.CanvasUtil"] = CanvasUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Canvas = require("javax.microedition.lcdui.Canvas")
-local CommonPhoneStrings = require("org.allbinary.string.CommonPhoneStrings")
+local CommonPhoneStrings = java_lazy("org.allbinary.string.CommonPhoneStrings")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -23,17 +38,29 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local CanvasUtil = {}
+-- class table CanvasUtil is declared before the requires
 CanvasUtil.__index = CanvasUtil
 CanvasUtil.className = "CanvasUtil"
+CanvasUtil.javaClassName = "org.allbinary.game.displayable.canvas.CanvasUtil"
 
 
-function CanvasUtil.new()
+function CanvasUtil._jinit(self)
+    return self
+end
+
+function CanvasUtil.new(...)
     local self = setmetatable({}, CanvasUtil)
+    CanvasUtil._jinit(self, ...)
     return self
 end
 

@@ -13,9 +13,113 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.layer
 
-local CollisionType = require("org.allbinary.game.collision.CollisionType")
-local CollisionTypeFactory = require("org.allbinary.game.collision.CollisionTypeFactory")
+local CollidableRTSBehavior = {}
+package.loaded["org.allbinary.game.layer.CollidableRTSBehavior"] = CollidableRTSBehavior
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local CollisionType = java_lazy("org.allbinary.game.collision.CollisionType")
+local CollisionTypeFactory = java_lazy("org.allbinary.game.collision.CollisionTypeFactory")
 local CollidableDestroyableDamageableBehavior = require("org.allbinary.game.layer.special.CollidableDestroyableDamageableBehavior")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
+
+local function java_super(class, name, count)
+    local mangled = name .. "_j" .. count
+    local current = class
+    while type(current) == "table" do
+        local method = rawget(current, mangled)
+        if method ~= nil then return method end
+        method = rawget(current, name)
+        if method ~= nil and method ~= rawget(current, name .. "__jdispatcher") then return method end
+        local parent = getmetatable(current)
+        local index = parent and parent.__index
+        if index == current then index = nil end
+        current = index
+    end
+    return class[name]
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -24,19 +128,32 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local CollidableRTSBehavior = {}
+-- class table CollidableRTSBehavior is declared before the requires
 CollidableRTSBehavior.__index = CollidableRTSBehavior
 CollidableRTSBehavior.className = "CollidableRTSBehavior"
+CollidableRTSBehavior.javaClassName = "org.allbinary.game.layer.CollidableRTSBehavior"
 setmetatable(CollidableRTSBehavior, {__index = CollidableDestroyableDamageableBehavior})
 
 
-function CollidableRTSBehavior.new(collidable)
-    local self = setmetatable(CollidableDestroyableDamageableBehavior.new(collidable), CollidableRTSBehavior)
+function CollidableRTSBehavior._jinit(self, collidable)
+    java_super_init(CollidableDestroyableDamageableBehavior, self, collidable)
         -- super(...) made self above
+    return self
+end
+
+function CollidableRTSBehavior.new(...)
+    local self = setmetatable({}, CollidableRTSBehavior)
+    CollidableRTSBehavior._jinit(self, ...)
     return self
 end
 
@@ -46,7 +163,7 @@ function CollidableRTSBehavior:isCollision(ownerLayer, collidableInterfaceCompos
         local collisionType = collidableInterfaceCompositeInterface:getCollidableInferface():getCollisionTypeWith(ownerLayer)
         if collisionType == collisionTypeFactory.PICKUP then
         elseif collisionType == collisionTypeFactory.COLLISION then
-            return CollidableDestroyableDamageableBehavior.isCollision(self, ownerLayer, collidableInterfaceCompositeInterface)
+            return java_super(CollidableDestroyableDamageableBehavior, "isCollision", 2)(self, ownerLayer, collidableInterfaceCompositeInterface)
         else
             if collidableInterfaceCompositeInterface:getX2() <= ownerLayer:getXP() or collidableInterfaceCompositeInterface:getY2() <= ownerLayer:getYP() or collidableInterfaceCompositeInterface:getYP() >= ownerLayer:getY2() or collidableInterfaceCompositeInterface:getXP() >= ownerLayer:getX2() then
                 return false
@@ -56,6 +173,7 @@ function CollidableRTSBehavior:isCollision(ownerLayer, collidableInterfaceCompos
         end
         return false
 end
+java_overload(CollidableRTSBehavior, "isCollision", 2, function(java_a1, java_a2) return true and (java_a1 == nil or java_is(java_a1, "CollidableCompositeLayer")) and (java_a2 == nil or java_is(java_a2, "CollidableCompositeLayer")) end)
 
 
 -- throws Exception
@@ -64,16 +182,18 @@ function CollidableRTSBehavior:collide(ownerLayer, collidableInterfaceCompositeI
         local collisionType = collidableInterfaceCompositeInterface:getCollidableInferface():getCollisionTypeWith(ownerLayer)
         if collisionType == collisionTypeFactory.PICKUP then
         elseif collisionType == collisionTypeFactory.COLLISION then
-            CollidableDestroyableDamageableBehavior.collide(self, ownerLayer, collidableInterfaceCompositeInterface)
+            java_super(CollidableDestroyableDamageableBehavior, "collide", 2)(self, ownerLayer, collidableInterfaceCompositeInterface)
         else
             self:collideNone(ownerLayer, collidableInterfaceCompositeInterface)
         end
 end
+java_overload(CollidableRTSBehavior, "collide", 2, function(java_a1, java_a2) return true and (java_a1 == nil or java_is(java_a1, "CollidableCompositeLayer")) and (java_a2 == nil or java_is(java_a2, "CollidableCompositeLayer")) end)
 
 
 -- throws Exception
 function CollidableRTSBehavior:collideNone(ownerLayer, collidableInterface)
 end
+java_overload(CollidableRTSBehavior, "collideNone", 2, function(java_a1, java_a2) return true and (java_a1 == nil or java_is(java_a1, "CollidableCompositeLayer")) and (java_a2 == nil or java_is(java_a2, "CollidableCompositeLayer")) end)
 
 return CollidableRTSBehavior
 

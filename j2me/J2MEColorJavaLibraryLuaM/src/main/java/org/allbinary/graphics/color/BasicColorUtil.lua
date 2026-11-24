@@ -13,12 +13,34 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.graphics.color
 
+local BasicColorUtil = {}
+package.loaded["org.allbinary.graphics.color.BasicColorUtil"] = BasicColorUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -29,30 +51,40 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local BasicColorUtil = {}
+-- class table BasicColorUtil is declared before the requires
 BasicColorUtil.__index = BasicColorUtil
 BasicColorUtil.className = "BasicColorUtil"
+BasicColorUtil.javaClassName = "org.allbinary.graphics.color.BasicColorUtil"
 
 function BasicColorUtil:_init_fields()
     self.ZERO_ARRAY = java_new_array(nil, 0)
-    self.ALPHA = 0xFF000000
+    self.ALPHA = (0xFF000000 - 0x100000000)
     self.isAlpha = true
     self.ffOpaque = true
 end
 
-function BasicColorUtil.new()
-    local self = setmetatable({}, BasicColorUtil)
-    self:_init_fields()
+function BasicColorUtil._jinit(self)
+    BasicColorUtil._init_fields(self)
     return self
+end
+
+function BasicColorUtil.new()
+    return BasicColorUtil._jinit(setmetatable({}, BasicColorUtil))
 end
 
 
 function BasicColorUtil.getInstance()
-        return BasicColorUtil.instance
+        return BasicColorUtil.instance_f
 end
 
 
@@ -84,7 +116,7 @@ function BasicColorUtil:invert(color)
         return (0xFFFFFF - color) | self.ALPHA
 end
 
-BasicColorUtil.instance = BasicColorUtil.new()
+BasicColorUtil.instance_f = BasicColorUtil.new()
 
 return BasicColorUtil
 

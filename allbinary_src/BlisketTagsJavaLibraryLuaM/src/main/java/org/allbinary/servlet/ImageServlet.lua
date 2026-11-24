@@ -13,41 +13,37 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.servlet
 
--- local ByteArrayOutputStream = require("java.io.ByteArrayOutputStream")
+local ImageServlet = {}
+package.loaded["org.allbinary.servlet.ImageServlet"] = ImageServlet
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local ByteArrayOutputStream = java_lazy("java.io.ByteArrayOutputStream")
 -- local IOException = require("java.io.IOException")
 -- local InputStream = require("java.io.InputStream")
 -- local ServletException = require("javax.servlet.ServletException")
 -- local HttpServlet = require("javax.servlet.http.HttpServlet")
 -- local HttpServletRequest = require("javax.servlet.http.HttpServletRequest")
 -- local HttpServletResponse = require("javax.servlet.http.HttpServletResponse")
-local URLGLOBALS = require("org.allbinary.globals.URLGLOBALS")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local CloudStreamUtil = require("org.allbinary.logic.io.CloudStreamUtil")
-local StreamUtil = require("org.allbinary.logic.io.StreamUtil")
-local AbFile = require("org.allbinary.logic.io.file.AbFile")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-
--- Java library java.io.ByteArrayOutputStream
-local function java_byte_array_output_stream()
-    local stream = {buffer = {}}
-    function stream:write(value, offset, length)
-        if type(value) == "table" then
-            local first = (offset or 0) + 1
-            local last = first + (length or #value) - 1
-            for index = first, last do self.buffer[#self.buffer + 1] = string.char(value[index] % 256) end
-        elseif type(value) == "number" then
-            self.buffer[#self.buffer + 1] = string.char(value % 256)
-        else
-            self.buffer[#self.buffer + 1] = tostring(value)
-        end
-    end
-    function stream:toString() return table.concat(self.buffer) end
-    function stream:size() return #table.concat(self.buffer) end
-    function stream:reset() self.buffer = {} end
-    function stream:flush() end
-    function stream:close() end
-    return setmetatable(stream, {__tostring = function(self) return table.concat(self.buffer) end})
-end
+local URLGLOBALS = java_lazy("org.allbinary.globals.URLGLOBALS")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local CloudStreamUtil = java_lazy("org.allbinary.logic.io.CloudStreamUtil")
+local StreamUtil = java_lazy("org.allbinary.logic.io.StreamUtil")
+local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local BlisketServletUtil = java_lazy("org.allbinary.servlet.BlisketServletUtil")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
@@ -57,6 +53,85 @@ local function java_new_array(default, size, ...)
     return array
 end
 
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
+    return array
+end
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
+
 local function java_idiv(a, b)
     local q = a / b
     if q < 0 then return math.ceil(q) end
@@ -64,13 +139,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ImageServlet = {}
+-- class table ImageServlet is declared before the requires
 ImageServlet.__index = ImageServlet
 ImageServlet.className = "ImageServlet"
+ImageServlet.javaClassName = "org.allbinary.servlet.ImageServlet"
 setmetatable(ImageServlet, {__index = HttpServlet})
 
 function ImageServlet:_init_fields()
@@ -78,29 +160,34 @@ function ImageServlet:_init_fields()
     self.commonStrings = CommonStrings.getInstance()
 end
 
-function ImageServlet.new()
-    local self = setmetatable(HttpServlet.new(), ImageServlet)
-    self:_init_fields()
+function ImageServlet._jinit(self)
+    java_super_init(HttpServlet, self)
+    ImageServlet._init_fields(self)
     return self
+end
+
+function ImageServlet.new()
+    return ImageServlet._jinit(setmetatable({}, ImageServlet))
 end
 
 
 -- throws ServletException, IOException
 function ImageServlet:processRequest(request, response)
         local inputStream = nil
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             BlisketServletUtil.getInstance():init(request)
             local requestURI = request:getRequestURI()
-            local file = AbFile.createAbFile(tostring(self.URLGLOBALS:getWebappPath()) .. requestURI)
+            local file = AbFile.createAbFile(tostring(URLGLOBALS.getWebappPath()) .. requestURI)
             inputStream = CloudStreamUtil.getInstance():getFileLocal(file)
-            local outputStream = java_byte_array_output_stream()
-            local byteArray = StreamUtil.getInstance():getByteArray(inputStream, outputStream, java_new_array(0, 16384))
+            local outputStream = require("java.io.ByteArrayOutputStream").new(8000)
+            local byteArray = StreamUtil.getInstance():getByteArray(inputStream, outputStream, java_typed_array("B", java_new_array(0, 16384)))
             response:setContentType("image/jpeg;charset=utf-8")
             response:getOutputStream():write(byteArray)
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEWERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEWERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "processRequest()", e)
             end
         end
@@ -111,23 +198,27 @@ function ImageServlet:processRequest(request, response)
             end
         end
 end
+java_overload(ImageServlet, "processRequest", 2, function(java_a1, java_a2) return true and (java_a1 == nil or java_is(java_a1, "HttpServletRequest")) and (java_a2 == nil or java_is(java_a2, "HttpServletResponse")) end)
 
 
 -- throws ServletException, IOException
 function ImageServlet:doGet(request, response)
         self:processRequest(request, response)
 end
+java_overload(ImageServlet, "doGet", 2, function(java_a1, java_a2) return true and (java_a1 == nil or java_is(java_a1, "HttpServletRequest")) and (java_a2 == nil or java_is(java_a2, "HttpServletResponse")) end)
 
 
 -- throws ServletException, IOException
 function ImageServlet:doPost(request, response)
         self:processRequest(request, response)
 end
+java_overload(ImageServlet, "doPost", 2, function(java_a1, java_a2) return true and (java_a1 == nil or java_is(java_a1, "HttpServletRequest")) and (java_a2 == nil or java_is(java_a2, "HttpServletResponse")) end)
 
 
 function ImageServlet:getServletInfo()
         return "Serves Up Image"
 end
+java_overload(ImageServlet, "getServletInfo", 0)
 
 return ImageServlet
 

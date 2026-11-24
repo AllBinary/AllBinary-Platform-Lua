@@ -13,19 +13,37 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.score.remote
 
-local GameInfo = require("org.allbinary.game.GameInfo")
-local GameInfoData = require("org.allbinary.game.GameInfoData")
-local GameConfigurationCentral = require("org.allbinary.game.configuration.GameConfigurationCentral")
-local DisplayInfoSingleton = require("org.allbinary.graphics.displayable.DisplayInfoSingleton")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local XmlRpcAbeClient = require("org.allbinary.logic.communication.xmlrpc.XmlRpcAbeClient")
-local BooleanFactory = require("org.allbinary.logic.java.bool.BooleanFactory")
-local NoCrypt = require("org.allbinary.logic.system.security.crypt.jcehelper.NoCrypt")
-local AbeClientInformationInterface = require("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local ABHashtable = require("org.allbinary.util.ABHashtable")
-local HashtableUtil = require("org.allbinary.util.HashtableUtil")
+local RemoteHighScoresProcessor = {}
+package.loaded["org.allbinary.game.score.remote.RemoteHighScoresProcessor"] = RemoteHighScoresProcessor
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local GameInfo = java_lazy("org.allbinary.game.GameInfo")
+local GameInfoData = java_lazy("org.allbinary.game.GameInfoData")
+local GameConfigurationCentral = java_lazy("org.allbinary.game.configuration.GameConfigurationCentral")
+local DisplayInfoSingleton = java_lazy("org.allbinary.graphics.displayable.DisplayInfoSingleton")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local XmlRpcAbeClient = java_lazy("org.allbinary.logic.communication.xmlrpc.XmlRpcAbeClient")
+local BooleanFactory = java_lazy("org.allbinary.logic.java.bool.BooleanFactory")
+local NoCrypt = java_lazy("org.allbinary.logic.system.security.crypt.jcehelper.NoCrypt")
+local AbeClientInformationInterface = java_lazy("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
+local HashtableUtil = java_lazy("org.allbinary.util.HashtableUtil")
 local RemoteHighScoresProcessorInterface = require("org.allbinary.game.score.remote.RemoteHighScoresProcessorInterface")
+local RemoteHighScores = java_lazy("org.allbinary.game.score.remote.RemoteHighScores")
+local RemoteHighScoresData = java_lazy("org.allbinary.game.score.remote.RemoteHighScoresData")
+local XmlRpcRemoteHighScoresClient = java_lazy("org.allbinary.game.score.remote.XmlRpcRemoteHighScoresClient")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -34,13 +52,22 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local RemoteHighScoresProcessor = {}
+-- class table RemoteHighScoresProcessor is declared before the requires
 RemoteHighScoresProcessor.__index = RemoteHighScoresProcessor
 RemoteHighScoresProcessor.className = "RemoteHighScoresProcessor"
+RemoteHighScoresProcessor.javaClassName = "org.allbinary.game.score.remote.RemoteHighScoresProcessor"
+RemoteHighScoresProcessor.java_implements = " RemoteHighScoresProcessorInterface "
+RemoteHighScoresProcessor.java_interfaces = function() return {RemoteHighScoresProcessorInterface} end
 
 function RemoteHighScoresProcessor:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -49,9 +76,14 @@ function RemoteHighScoresProcessor:_init_fields()
 end
 
 
-function RemoteHighScoresProcessor.new()
+function RemoteHighScoresProcessor._jinit(self)
+    RemoteHighScoresProcessor._init_fields(self)
+    return self
+end
+
+function RemoteHighScoresProcessor.new(...)
     local self = setmetatable({}, RemoteHighScoresProcessor)
-    self:_init_fields()
+    RemoteHighScoresProcessor._jinit(self, ...)
     return self
 end
 

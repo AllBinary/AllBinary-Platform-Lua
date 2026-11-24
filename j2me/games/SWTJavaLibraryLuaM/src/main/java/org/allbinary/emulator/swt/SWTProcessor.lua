@@ -13,8 +13,23 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.emulator.swt
 
-local NullRunnable = require("org.allbinary.thread.NullRunnable")
-local Display = require("org.eclipse.swt.widgets.Display")
+local SWTProcessor = {}
+package.loaded["org.allbinary.emulator.swt.SWTProcessor"] = SWTProcessor
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local NullRunnable = java_lazy("org.allbinary.thread.NullRunnable")
+local Display = java_lazy("org.eclipse.swt.widgets.Display")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -23,13 +38,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local SWTProcessor = {}
+-- class table SWTProcessor is declared before the requires
 SWTProcessor.__index = SWTProcessor
 SWTProcessor.className = "SWTProcessor"
+SWTProcessor.javaClassName = "org.allbinary.emulator.swt.SWTProcessor"
 
 function SWTProcessor:_init_fields()
     self.runnable = NullRunnable.getInstance()
@@ -37,13 +59,18 @@ end
 
 
 function SWTProcessor.getInstance()
-        return SWTProcessor.instance
+        return SWTProcessor.instance_f
 end
 
 
-function SWTProcessor.new()
+function SWTProcessor._jinit(self)
+    SWTProcessor._init_fields(self)
+    return self
+end
+
+function SWTProcessor.new(...)
     local self = setmetatable({}, SWTProcessor)
-    self:_init_fields()
+    SWTProcessor._jinit(self, ...)
     return self
 end
 
@@ -52,7 +79,7 @@ function SWTProcessor:process(display)
         display:sleep()
 end
 
-SWTProcessor.instance = SWTProcessor.new()
+SWTProcessor.instance_f = SWTProcessor.new()
 
 return SWTProcessor
 

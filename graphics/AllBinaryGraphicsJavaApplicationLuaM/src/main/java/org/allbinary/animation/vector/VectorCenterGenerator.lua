@@ -13,17 +13,32 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.animation.vector
 
--- local HashMap = require("java.util.HashMap")
-local GPoint = require("org.allbinary.graphics.GPoint")
-local GraphicItemInterface = require("org.allbinary.graphics.j2me.workarea.tools.GraphicItemInterface")
-local LinesGraphicItem = require("org.allbinary.graphics.j2me.workarea.tools.LinesGraphicItem")
-local Points = require("org.allbinary.graphics.j2me.workarea.tools.Points")
-local BasicGraphicsPipeline = require("org.allbinary.graphics.pipeline.BasicGraphicsPipeline")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local CommonLabels = require("org.allbinary.string.CommonLabels")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
+local VectorCenterGenerator = {}
+package.loaded["org.allbinary.animation.vector.VectorCenterGenerator"] = VectorCenterGenerator
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
+local GPoint = java_lazy("org.allbinary.graphics.GPoint")
+local GraphicItemInterface = java_lazy("org.allbinary.graphics.j2me.workarea.tools.GraphicItemInterface")
+local LinesGraphicItem = java_lazy("org.allbinary.graphics.j2me.workarea.tools.LinesGraphicItem")
+local Points = java_lazy("org.allbinary.graphics.j2me.workarea.tools.Points")
+local BasicGraphicsPipeline = java_lazy("org.allbinary.graphics.pipeline.BasicGraphicsPipeline")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -32,31 +47,43 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local VectorCenterGenerator = {}
+-- class table VectorCenterGenerator is declared before the requires
 VectorCenterGenerator.__index = VectorCenterGenerator
 VectorCenterGenerator.className = "VectorCenterGenerator"
+VectorCenterGenerator.javaClassName = "org.allbinary.animation.vector.VectorCenterGenerator"
 
 function VectorCenterGenerator:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
-    self.minX = Integer.MAX_VALUE
-    self.minY = Integer.MAX_VALUE
-    self.maxX = Integer.MIN_VALUE
-    self.maxY = Integer.MIN_VALUE
+    self.minX = require("java.lang.Integer").MAX_VALUE
+    self.minY = require("java.lang.Integer").MAX_VALUE
+    self.maxX = require("java.lang.Integer").MIN_VALUE
+    self.maxY = require("java.lang.Integer").MIN_VALUE
     self.dx = 0
     self.dy = 0
-    self.width = 0
-    self.height = 0
+    if self.width == nil then self.width = 0 end
+    if self.height == nil then self.height = 0 end
 end
 
 
-function VectorCenterGenerator.new()
+function VectorCenterGenerator._jinit(self)
+    VectorCenterGenerator._init_fields(self)
+    return self
+end
+
+function VectorCenterGenerator.new(...)
     local self = setmetatable({}, VectorCenterGenerator)
-    self:_init_fields()
+    VectorCenterGenerator._jinit(self, ...)
     return self
 end
 
@@ -107,7 +134,7 @@ end
 
 -- throws Exception
 function VectorCenterGenerator:getInstance(pointVector)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local size = pointVector:size()
             for index = 0, size - 1 do
                 local point = pointVector:get(index)
@@ -127,6 +154,7 @@ function VectorCenterGenerator:getInstance(pointVector)
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.GET_INSTANCE, e)
             error(e, 0)
         end

@@ -13,19 +13,36 @@
 -- Generated Code Do Not Modify
 -- package views.business.context.modules.storefront.customizer
 
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local TransformInfoEntity = require("org.allbinary.data.tables.transform.info.TransformInfoEntity")
-local TransformInfoEntityBuilder = require("org.allbinary.data.tables.transform.info.TransformInfoEntityBuilder")
-local DomNodeInterface = require("org.allbinary.data.tree.dom.DomNodeInterface")
-local DomDocumentHelper = require("org.allbinary.data.tree.dom.document.DomDocumentHelper")
-local XmlDocumentHelper = require("org.allbinary.data.tree.dom.document.XmlDocumentHelper")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local TransformInfo = require("org.allbinary.logic.visual.transform.info.TransformInfo")
-local TransformInfoHttpInterface = require("org.allbinary.logic.visual.transform.info.TransformInfoHttpInterface")
-local TransformInfoInterface = require("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
-local TransformInfoObjectConfigInterface = require("org.allbinary.logic.visual.transform.info.objectConfig.TransformInfoObjectConfigInterface")
-local Document = require("org.w3c.dom.Document")
+local CustomizerUtil = {}
+package.loaded["views.business.context.modules.storefront.customizer.CustomizerUtil"] = CustomizerUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local TransformInfoEntity = java_lazy("org.allbinary.data.tables.transform.info.TransformInfoEntity")
+local TransformInfoEntityBuilder = java_lazy("org.allbinary.data.tables.transform.info.TransformInfoEntityBuilder")
+local DomNodeInterface = java_lazy("org.allbinary.data.tree.dom.DomNodeInterface")
+local DomDocumentHelper = java_lazy("org.allbinary.data.tree.dom.document.DomDocumentHelper")
+local XmlDocumentHelper = java_lazy("org.allbinary.data.tree.dom.document.XmlDocumentHelper")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local TransformInfo = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfo")
+local TransformInfoHttpInterface = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoHttpInterface")
+local TransformInfoInterface = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
+local TransformInfoObjectConfigInterface = java_lazy("org.allbinary.logic.visual.transform.info.objectConfig.TransformInfoObjectConfigInterface")
+local Document = java_lazy("org.w3c.dom.Document")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -47,13 +64,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local CustomizerUtil = {}
+-- class table CustomizerUtil is declared before the requires
 CustomizerUtil.__index = CustomizerUtil
 CustomizerUtil.className = "CustomizerUtil"
+CustomizerUtil.javaClassName = "views.business.context.modules.storefront.customizer.CustomizerUtil"
 
 function CustomizerUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -61,20 +85,25 @@ end
 
 
 function CustomizerUtil.getInstance()
-        return CustomizerUtil.instance
+        return CustomizerUtil.instance_f
 end
 
 
-function CustomizerUtil.new()
+function CustomizerUtil._jinit(self)
+    CustomizerUtil._init_fields(self)
+    return self
+end
+
+function CustomizerUtil.new(...)
     local self = setmetatable({}, CustomizerUtil)
-    self:_init_fields()
+    CustomizerUtil._jinit(self, ...)
     return self
 end
 
 
 -- throws Exception
 function CustomizerUtil:getTransformInfoInterfaceToCustomize(customizerTransformInfoInterface, transformInfoInterface)
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             self.logUtil:putF("View Name: " .. customizerTransformInfoInterface:getName(), self, "getTransformInfoInterfaceToCustomize()")
         end
         local transformInfoEntityInterface = TransformInfoEntityBuilder.getInstance()
@@ -87,7 +116,7 @@ end
 
 -- throws Exception
 function CustomizerUtil:getTransformInfoObjectConfigComponentNodesToCustomize(customizerTransformInfoInterface, transformInfoInterface)
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             self.logUtil:putF("View Name: " .. customizerTransformInfoInterface:getName(), self, "getTransformInfoObjectConfigComponentNodesToCustomize()")
         end
         local transformInfoEntityInterface = TransformInfoEntityBuilder.getInstance()
@@ -100,7 +129,7 @@ end
 
 -- throws Exception
 function CustomizerUtil:getTransformInfoObjectConfigComponentNodes(transformInfoInterface)
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             self.logUtil:putF("View Name: " .. transformInfoInterface:getName(), self, "getTransformInfoObjectConfigComponentNodes()")
         end
         local transformInfoObjectConfigInterface = transformInfoInterface:getObjectConfigInterface()
@@ -110,7 +139,7 @@ end
 
 -- throws Exception
 function CustomizerUtil:getTransformInfoObjectConfigGroupComponentNodes(transformInfoInterface)
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             self.logUtil:putF("View Name: " .. transformInfoInterface:getName(), self, "getTransformInfoObjectConfigComponentNodes()")
         end
         local transformInfoObjectConfigInterface = transformInfoInterface:getObjectConfigInterface()
@@ -120,7 +149,7 @@ end
 
 -- throws Exception
 function CustomizerUtil:insert(transformInfoInterface, domNodeInterface)
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             self.logUtil:putF("View Name: " .. transformInfoInterface:getName(), self, "insert()")
         end
         local transformInfoEntityInterface = TransformInfoEntityBuilder.getInstance()
@@ -129,7 +158,7 @@ function CustomizerUtil:insert(transformInfoInterface, domNodeInterface)
         document:appendChild(domNodeInterface:toXmlNode(document))
         local documentString = XmlDocumentHelper.toString(document)
         local stringBuffer = StringMaker.new()
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             stringBuffer:append("Total Views For Modification: ")
             stringBuffer:appendint(allViewsToBeModified:size())
             stringBuffer:append(" New Xml/Data: ")
@@ -141,7 +170,7 @@ function CustomizerUtil:insert(transformInfoInterface, domNodeInterface)
         for index = 0, size - 1 do
             local transformInfo = allViewsToBeModified:get(index)
             local viewNameOfViewToBeModified = transformInfo:getName()
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                 stringBuffer:delete(0, stringBuffer:length())
                 stringBuffer:append(transformInfoInterface:getName())
                 stringBuffer:append(" is modifying view: ")
@@ -151,7 +180,7 @@ function CustomizerUtil:insert(transformInfoInterface, domNodeInterface)
             local httpTransformInfoInterface = transformInfoInterface
             local specifiedTransformInfoInterface = transformInfoEntityInterface:get(viewNameOfViewToBeModified, httpTransformInfoInterface:getPropertiesHashMap(), httpTransformInfoInterface:getPageContext())
             if specifiedTransformInfoInterface == nil then
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     stringBuffer:delete(0, stringBuffer:length())
                     stringBuffer:append(transformInfoInterface:getName())
                     stringBuffer:append(" is unable to add data to view: ")
@@ -160,10 +189,10 @@ function CustomizerUtil:insert(transformInfoInterface, domNodeInterface)
                     self.logUtil:putF(tostring(stringBuffer), self, "insert()")
                 end
             else
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     self.logUtil:putF(transformInfoInterface:getName() .. " is adding data to view: " .. viewNameOfViewToBeModified, self, "insert()")
                 end
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     stringBuffer:delete(0, stringBuffer:length())
                     stringBuffer:append(viewNameOfViewToBeModified)
                     stringBuffer:append(" is changing data in ")
@@ -180,7 +209,7 @@ end
 
 -- throws Exception
 function CustomizerUtil:write(specifiedTransformInfoInterface, documentString)
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             self.logUtil:putF("View Name: " .. specifiedTransformInfoInterface:getName(), self, "write()")
         end
         local transformInfoEntityInterface = TransformInfoEntityBuilder.getInstance()
@@ -191,7 +220,7 @@ end
 
 -- throws Exception
 function CustomizerUtil:getViewDataForComponentsInObjectConfig(transformInfoInterface)
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             self.logUtil:putF("View Name: " .. transformInfoInterface:getName(), self, "getViewDataForComponentsInObjectConfig()")
         end
         local transformInfoObjectConfigInterface = transformInfoInterface:getObjectConfigInterface()
@@ -205,10 +234,10 @@ function CustomizerUtil:getViewDataForComponentsInObjectConfig(transformInfoInte
             local specifiedTransformInfoInterface = transformInfoEntityInterface:get(viewNameOfViewToBeModified, httpTransformInfoInterface:getPropertiesHashMap(), httpTransformInfoInterface:getPageContext())
             return specifiedTransformInfoInterface:getDataDocument()
         end
-        error(java_exception("Exception", "No Components Specified in ObjectConfig"), 0)
+        error(require("java.lang.Exception").new("No Components Specified in ObjectConfig"), 0)
 end
 
-CustomizerUtil.instance = CustomizerUtil.new()
+CustomizerUtil.instance_f = CustomizerUtil.new()
 
 return CustomizerUtil
 

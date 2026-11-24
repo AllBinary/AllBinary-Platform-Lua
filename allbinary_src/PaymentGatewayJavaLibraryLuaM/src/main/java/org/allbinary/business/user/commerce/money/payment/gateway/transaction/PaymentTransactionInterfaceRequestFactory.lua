@@ -13,31 +13,85 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.user.commerce.money.payment.gateway.transaction
 
--- local HashMap = require("java.util.HashMap")
+local PaymentTransactionInterfaceRequestFactory = {}
+package.loaded["org.allbinary.business.user.commerce.money.payment.gateway.transaction.PaymentTransactionInterfaceRequestFactory"] = PaymentTransactionInterfaceRequestFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
 -- local HttpServletRequest = require("javax.servlet.http.HttpServletRequest")
 -- local PageContext = require("javax.servlet.jsp.PageContext")
-local StoreFrontFactory = require("org.allbinary.business.context.modules.storefront.StoreFrontFactory")
-local StoreFrontInterface = require("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
-local StreetAddress = require("org.allbinary.business.user.address.StreetAddress")
-local Basket = require("org.allbinary.business.user.commerce.inventory.basket.Basket")
-local OrderHistory = require("org.allbinary.business.user.commerce.inventory.order.OrderHistory")
-local OrderInterface = require("org.allbinary.business.user.commerce.inventory.order.OrderInterface")
-local Money = require("org.allbinary.business.user.commerce.money.Money")
-local Payment = require("org.allbinary.business.user.commerce.money.payment.Payment")
-local PaymentData = require("org.allbinary.business.user.commerce.money.payment.PaymentData")
-local PaymentGatewayData = require("org.allbinary.business.user.commerce.money.payment.gateway.PaymentGatewayData")
-local TenderTypeFactory = require("org.allbinary.business.user.commerce.money.payment.types.TenderTypeFactory")
-local TransactionTypeFactory = require("org.allbinary.business.user.commerce.money.payment.types.TransactionTypeFactory")
-local OrderIdGenerator = require("org.allbinary.data.generator.OrderIdGenerator")
-local OrderHistoryEntityFactory = require("org.allbinary.data.tables.user.commerce.inventory.order.OrderHistoryEntityFactory")
-local OrderHistoryEntityInterface = require("org.allbinary.data.tables.user.commerce.inventory.order.OrderHistoryEntityInterface")
-local WeblisketSession = require("org.allbinary.logic.communication.http.request.session.WeblisketSession")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local StringValidationUtil = require("org.allbinary.logic.string.StringValidationUtil")
-local TransformInfoHttpInterface = require("org.allbinary.logic.visual.transform.info.TransformInfoHttpInterface")
-local TransformInfoInterface = require("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local StoreFrontFactory = java_lazy("org.allbinary.business.context.modules.storefront.StoreFrontFactory")
+local StoreFrontInterface = java_lazy("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
+local StreetAddress = java_lazy("org.allbinary.business.user.address.StreetAddress")
+local Basket = java_lazy("org.allbinary.business.user.commerce.inventory.basket.Basket")
+local OrderHistory = java_lazy("org.allbinary.business.user.commerce.inventory.order.OrderHistory")
+local OrderInterface = java_lazy("org.allbinary.business.user.commerce.inventory.order.OrderInterface")
+local Money = java_lazy("org.allbinary.business.user.commerce.money.Money")
+local Payment = java_lazy("org.allbinary.business.user.commerce.money.payment.Payment")
+local PaymentData = java_lazy("org.allbinary.business.user.commerce.money.payment.PaymentData")
+local PaymentGatewayData = java_lazy("org.allbinary.business.user.commerce.money.payment.gateway.PaymentGatewayData")
+local TenderTypeFactory = java_lazy("org.allbinary.business.user.commerce.money.payment.types.TenderTypeFactory")
+local TransactionTypeFactory = java_lazy("org.allbinary.business.user.commerce.money.payment.types.TransactionTypeFactory")
+local OrderIdGenerator = java_lazy("org.allbinary.data.generator.OrderIdGenerator")
+local OrderHistoryEntityFactory = java_lazy("org.allbinary.data.tables.user.commerce.inventory.order.OrderHistoryEntityFactory")
+local OrderHistoryEntityInterface = java_lazy("org.allbinary.data.tables.user.commerce.inventory.order.OrderHistoryEntityInterface")
+local WeblisketSession = java_lazy("org.allbinary.logic.communication.http.request.session.WeblisketSession")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
+local TransformInfoHttpInterface = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoHttpInterface")
+local TransformInfoInterface = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local GLOBALS2 = java_lazy("org.allbinary.globals.GLOBALS2")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local PaymentTransactionInterfaceFactory = java_lazy("org.allbinary.business.user.commerce.money.payment.gateway.transaction.PaymentTransactionInterfaceFactory")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -46,13 +100,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local PaymentTransactionInterfaceRequestFactory = {}
+-- class table PaymentTransactionInterfaceRequestFactory is declared before the requires
 PaymentTransactionInterfaceRequestFactory.__index = PaymentTransactionInterfaceRequestFactory
 PaymentTransactionInterfaceRequestFactory.className = "PaymentTransactionInterfaceRequestFactory"
+PaymentTransactionInterfaceRequestFactory.javaClassName = "org.allbinary.business.user.commerce.money.payment.gateway.transaction.PaymentTransactionInterfaceRequestFactory"
 
 function PaymentTransactionInterfaceRequestFactory:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -61,27 +122,31 @@ end
 
 
 function PaymentTransactionInterfaceRequestFactory.getInstance()
-        return PaymentTransactionInterfaceRequestFactory.instance
+        return PaymentTransactionInterfaceRequestFactory.instance_f
 end
 
 
-function PaymentTransactionInterfaceRequestFactory.new()
+function PaymentTransactionInterfaceRequestFactory._jinit(self)
+    PaymentTransactionInterfaceRequestFactory._init_fields(self)
+    return self
+end
+
+function PaymentTransactionInterfaceRequestFactory.new(...)
     local self = setmetatable({}, PaymentTransactionInterfaceRequestFactory)
-    self:_init_fields()
+    PaymentTransactionInterfaceRequestFactory._jinit(self, ...)
     return self
 end
 
 
 -- throws Exception
--- Java overloaded method: Lua keeps the last definition
 function PaymentTransactionInterfaceRequestFactory:getInstance(transformInfoInterface)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local httpTransformInfoInterface = transformInfoInterface
             local pageContext = httpTransformInfoInterface:getPageContext()
             local httpServletRequest = pageContext:getRequest()
-            local command = httpServletRequest:getParameter(org.allbinary.globals.GLOBALS2.ADMINCOMMAND)
-            if command ~= nil and ((command < org.allbinary.globals.GLOBALS2.AUTHORIZEFORMEVALBODYONERROR and -1) or (command > org.allbinary.globals.GLOBALS2.AUTHORIZEFORMEVALBODYONERROR and 1) or 0) == 0 then
-                return self:generateFromTestData(transformInfoInterface)
+            local command = httpServletRequest:getParameter(GLOBALS2.ADMINCOMMAND)
+            if command ~= nil and ((command < GLOBALS2.AUTHORIZEFORMEVALBODYONERROR and -1) or (command > GLOBALS2.AUTHORIZEFORMEVALBODYONERROR and 1) or 0) == 0 then
+                do return "__jreturn", self:generateFromTestData(transformInfoInterface) end
             else
                 local propertiesHashMap = httpTransformInfoInterface:getPropertiesHashMap()
                 local weblisketSession = WeblisketSession.new(propertiesHashMap, pageContext)
@@ -94,26 +159,28 @@ function PaymentTransactionInterfaceRequestFactory:getInstance(transformInfoInte
                 orderPaymentInfo:setTransactionType(tostring(TransactionTypeFactory.getInstance().SALE))
                 orderPaymentInfo:setTenderType(tostring(TenderTypeFactory.getInstance().CREDITCARD))
                 orderReview:setPaymentInfo(orderPaymentInfo)
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().PAYMENT) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PAYMENT) then
                     self.logUtil:putF(orderReview:getId(), self, "getPaymentTransactionInterface()")
                 end
                 local paymentTransactionInterface = PaymentTransactionInterfaceFactory.getInstance():getInstance(orderReview)
-                return paymentTransactionInterface
+                do return "__jreturn", paymentTransactionInterface end
             end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().PAYMENTERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PAYMENTERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "getPaymentTransactionInterface()", e)
             end
             error(e, 0)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
 -- throws Exception
 function PaymentTransactionInterfaceRequestFactory:generateFromTestData(transformInfoInterface)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local httpTransformInfoInterface = transformInfoInterface
             local propertiesHashMap = httpTransformInfoInterface:getPropertiesHashMap()
             local pageContext = httpTransformInfoInterface:getPageContext()
@@ -172,18 +239,20 @@ function PaymentTransactionInterfaceRequestFactory:generateFromTestData(transfor
             end
             orderReview:setPaymentInfo(payment)
             local paymentTransactionInterface = PaymentTransactionInterfaceFactory.getInstance():getInstance(orderReview)
-            return paymentTransactionInterface
+            do return "__jreturn", paymentTransactionInterface end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().PAYMENTERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PAYMENTERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "generatePaymentTransactionInterfaceFromTestData()", e)
             end
             error(e, 0)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
-PaymentTransactionInterfaceRequestFactory.instance = PaymentTransactionInterfaceRequestFactory.new()
+PaymentTransactionInterfaceRequestFactory.instance_f = PaymentTransactionInterfaceRequestFactory.new()
 
 return PaymentTransactionInterfaceRequestFactory
 

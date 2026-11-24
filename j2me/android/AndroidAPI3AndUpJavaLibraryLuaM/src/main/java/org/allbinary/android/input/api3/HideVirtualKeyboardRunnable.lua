@@ -13,17 +13,31 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.android.input.api3
 
-local Activity = require("android.app.Activity")
-local Context = require("android.content.Context")
-local IBinder = require("android.os.IBinder")
-local View = require("android.view.View")
-local InputMethodManager = require("android.view.inputmethod.InputMethodManager")
-local ViewCompositeInterface = require("org.allbinary.android.activity.ViewCompositeInterface")
-local ForcedLogUtil = require("org.allbinary.logic.communication.log.ForcedLogUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
--- java.lang.Runnable has no Lua module
-local Runnable = {}
+local HideVirtualKeyboardRunnable = {}
+package.loaded["org.allbinary.android.input.api3.HideVirtualKeyboardRunnable"] = HideVirtualKeyboardRunnable
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local Activity = java_lazy("android.app.Activity")
+local Context = java_lazy("android.content.Context")
+local IBinder = java_lazy("android.os.IBinder")
+local View = java_lazy("android.view.View")
+local InputMethodManager = java_lazy("android.view.inputmethod.InputMethodManager")
+local ViewCompositeInterface = java_lazy("org.allbinary.android.activity.ViewCompositeInterface")
+local ForcedLogUtil = java_lazy("org.allbinary.logic.communication.log.ForcedLogUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local Runnable = require("java.lang.Runnable")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -32,31 +46,45 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local HideVirtualKeyboardRunnable = {}
+-- class table HideVirtualKeyboardRunnable is declared before the requires
 HideVirtualKeyboardRunnable.__index = HideVirtualKeyboardRunnable
 HideVirtualKeyboardRunnable.className = "HideVirtualKeyboardRunnable"
+HideVirtualKeyboardRunnable.javaClassName = "org.allbinary.android.input.api3.HideVirtualKeyboardRunnable"
+HideVirtualKeyboardRunnable.java_implements = " Runnable "
+HideVirtualKeyboardRunnable.java_interfaces = function() return {Runnable} end
 
 function HideVirtualKeyboardRunnable:_init_fields()
     self.logUtil = LogUtil.getInstance()
-    self.activity = nil
+    if self.activity == nil then self.activity = nil end
 end
 
 
-function HideVirtualKeyboardRunnable.new(activity)
-    local self = setmetatable({}, HideVirtualKeyboardRunnable)
-    self:_init_fields()
+function HideVirtualKeyboardRunnable._jinit(self, activity)
+    HideVirtualKeyboardRunnable._init_fields(self)
         self.activity = activity
+    return self
+end
+
+function HideVirtualKeyboardRunnable.new(...)
+    local self = setmetatable({}, HideVirtualKeyboardRunnable)
+    HideVirtualKeyboardRunnable._jinit(self, ...)
     return self
 end
 
 
 function HideVirtualKeyboardRunnable:run()
         local commonStrings = CommonStrings.getInstance()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local inputMethodManager = self.activity:getSystemService(Context.INPUT_METHOD_SERVICE)
             local viewCompositeInterface = self.activity
             if viewCompositeInterface == nil then
@@ -65,15 +93,17 @@ function HideVirtualKeyboardRunnable:run()
             local view = viewCompositeInterface:getView()
             if view:getWindowToken() == nil then
                 self.logUtil:putF("Unable to hide virtual keyboard as window token is null - This usually happens during loading when the view is not attached to a window", self, commonStrings.RUN)
-                return
+                do return "__jreturn" end
             end
             local token = view:getWindowToken()
             inputMethodManager:hideSoftInputFromWindow(token, 0)
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put(commonStrings.EXCEPTION, self, commonStrings.RUN, e)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 return HideVirtualKeyboardRunnable

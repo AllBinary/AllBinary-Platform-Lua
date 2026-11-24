@@ -13,16 +13,37 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media.graphics.geography.map.racetrack
 
+local RaceTrackData = {}
+package.loaded["org.allbinary.media.graphics.geography.map.racetrack.RaceTrackData"] = RaceTrackData
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Image = require("javax.microedition.lcdui.Image")
 -- local NullImage = require("javax.microedition.lcdui.NullImage")
-local CellPosition = require("org.allbinary.graphics.CellPosition")
-local NullUtil = require("org.allbinary.logic.NullUtil")
+local CellPosition = java_lazy("org.allbinary.graphics.CellPosition")
+local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -33,13 +54,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local RaceTrackData = {}
+-- class table RaceTrackData is declared before the requires
 RaceTrackData.__index = RaceTrackData
 RaceTrackData.className = "RaceTrackData"
+RaceTrackData.javaClassName = "org.allbinary.media.graphics.geography.map.racetrack.RaceTrackData"
 
 function RaceTrackData:_init_fields()
     self.tileSetImage = NullImage.NULL_IMAGE
@@ -52,13 +80,12 @@ function RaceTrackData:_init_fields()
     self.cellTypeIdToGeographicMapCellTypeArray = NullUtil.getInstance().NULL_INT_ARRAY
     self.NO_OVER_PASSES_ARRAY = java_new_array(nil, 0)
     self.overPassGeographicMapCellPositionArray = self.NO_OVER_PASSES_ARRAY
-    self.id = nil
+    if self.id == nil then self.id = nil end
 end
 
 
-function RaceTrackData.new(id, cellWidth, cellHeight, miniCellWidth, miniCellHeight, cellTypeIdToGeographicMapCellTypeArray, mapArray)
-    local self = setmetatable({}, RaceTrackData)
-    self:_init_fields()
+function RaceTrackData._jinit(self, id, cellWidth, cellHeight, miniCellWidth, miniCellHeight, cellTypeIdToGeographicMapCellTypeArray, mapArray)
+    RaceTrackData._init_fields(self)
         self.id = id
         self.cellWidth = cellWidth
         self.cellHeight = cellHeight
@@ -66,6 +93,12 @@ function RaceTrackData.new(id, cellWidth, cellHeight, miniCellWidth, miniCellHei
         self.miniCellHeight = miniCellHeight
         self.mapArray = mapArray
         self.cellTypeIdToGeographicMapCellTypeArray = cellTypeIdToGeographicMapCellTypeArray
+    return self
+end
+
+function RaceTrackData.new(...)
+    local self = setmetatable({}, RaceTrackData)
+    RaceTrackData._jinit(self, ...)
     return self
 end
 

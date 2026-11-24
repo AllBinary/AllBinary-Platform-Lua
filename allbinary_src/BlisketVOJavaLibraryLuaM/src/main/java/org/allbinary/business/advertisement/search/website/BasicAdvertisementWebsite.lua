@@ -13,6 +13,21 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.advertisement.search.website
 
+local BasicAdvertisementWebsite = {}
+package.loaded["org.allbinary.business.advertisement.search.website.BasicAdvertisementWebsite"] = BasicAdvertisementWebsite
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 local AdvertisementWebsiteInterface = require("org.allbinary.business.advertisement.search.website.AdvertisementWebsiteInterface")
 
 local function java_idiv(a, b)
@@ -22,23 +37,37 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local BasicAdvertisementWebsite = {}
+-- class table BasicAdvertisementWebsite is declared before the requires
 BasicAdvertisementWebsite.__index = BasicAdvertisementWebsite
 BasicAdvertisementWebsite.className = "BasicAdvertisementWebsite"
+BasicAdvertisementWebsite.javaClassName = "org.allbinary.business.advertisement.search.website.BasicAdvertisementWebsite"
+BasicAdvertisementWebsite.java_implements = " AdvertisementWebsiteInterface "
+BasicAdvertisementWebsite.java_interfaces = function() return {AdvertisementWebsiteInterface} end
 
 function BasicAdvertisementWebsite:_init_fields()
-    self.websiteId = nil
+    if self.websiteId == nil then self.websiteId = nil end
 end
 
 
-function BasicAdvertisementWebsite.new(websiteId)
-    local self = setmetatable({}, BasicAdvertisementWebsite)
-    self:_init_fields()
+function BasicAdvertisementWebsite._jinit(self, websiteId)
+    BasicAdvertisementWebsite._init_fields(self)
         self.websiteId = websiteId
+    return self
+end
+
+function BasicAdvertisementWebsite.new(...)
+    local self = setmetatable({}, BasicAdvertisementWebsite)
+    BasicAdvertisementWebsite._jinit(self, ...)
     return self
 end
 

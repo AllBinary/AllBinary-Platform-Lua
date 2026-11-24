@@ -13,18 +13,33 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.communication.xmlrpc
 
-local MyRandomFactory = require("org.allbinary.game.rand.MyRandomFactory")
-local NullUtil = require("org.allbinary.logic.NullUtil")
-local ForcedLogUtil = require("org.allbinary.logic.communication.log.ForcedLogUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local AbeClientInformationInterface = require("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
-local CommonLabels = require("org.allbinary.string.CommonLabels")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local NullXmlRpcHandler = require("org.apache.xmlrpc.NullXmlRpcHandler")
-local XmlRpcClient = require("org.apache.xmlrpc.XmlRpcClient")
-local XmlRpcHandler = require("org.apache.xmlrpc.XmlRpcHandler")
+local XmlRpcAbeClient = {}
+package.loaded["org.allbinary.logic.communication.xmlrpc.XmlRpcAbeClient"] = XmlRpcAbeClient
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local MyRandomFactory = java_lazy("org.allbinary.game.rand.MyRandomFactory")
+local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
+local ForcedLogUtil = java_lazy("org.allbinary.logic.communication.log.ForcedLogUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local AbeClientInformationInterface = java_lazy("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
+local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local NullXmlRpcHandler = java_lazy("org.apache.xmlrpc.NullXmlRpcHandler")
+local XmlRpcClient = java_lazy("org.apache.xmlrpc.XmlRpcClient")
+local XmlRpcHandler = java_lazy("org.apache.xmlrpc.XmlRpcHandler")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -46,24 +61,31 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local XmlRpcAbeClient = {}
+-- class table XmlRpcAbeClient is declared before the requires
 XmlRpcAbeClient.__index = XmlRpcAbeClient
 XmlRpcAbeClient.className = "XmlRpcAbeClient"
+XmlRpcAbeClient.javaClassName = "org.allbinary.logic.communication.xmlrpc.XmlRpcAbeClient"
 
 function XmlRpcAbeClient:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
-    self.remoteMethod = nil
-    self.clientInfo = nil
+    if self.remoteMethod == nil then self.remoteMethod = nil end
+    if self.clientInfo == nil then self.clientInfo = nil end
     self.client = NullXmlRpcHandler.NULL_XML_RPC_HANDLER
-    self.server = nil
-    self.start = 0
-    self.maxServers = 0
-    self.isDone = nil
+    if self.server == nil then self.server = nil end
+    if self.start == nil then self.start = 0 end
+    if self.maxServers == nil then self.maxServers = 0 end
+    if self.isDone == nil then self.isDone = nil end
     self.START_SERVER = "Start With Server #"
     self.TRYING = "Trying Server #"
     self.SEP = CommonLabels.getInstance().COLON_SEP
@@ -80,9 +102,8 @@ function XmlRpcAbeClient:_init_fields()
 end
 
 
-function XmlRpcAbeClient.new(clientInfo, remoteMethod)
-    local self = setmetatable({}, XmlRpcAbeClient)
-    self:_init_fields()
+function XmlRpcAbeClient._jinit(self, clientInfo, remoteMethod)
+    XmlRpcAbeClient._init_fields(self)
         self.remoteMethod = remoteMethod
         self.clientInfo = clientInfo
         if clientInfo:getNumberOfLicenseServers() > 1 then
@@ -100,6 +121,12 @@ function XmlRpcAbeClient.new(clientInfo, remoteMethod)
         stringBuffer:append(self.SEP)
         stringBuffer:append(clientInfo:getLicenseServer(self:getServer()))
         self.logUtil:putF(tostring(stringBuffer), self, self.commonStrings.CONSTRUCTOR)
+    return self
+end
+
+function XmlRpcAbeClient.new(...)
+    local self = setmetatable({}, XmlRpcAbeClient)
+    XmlRpcAbeClient._jinit(self, ...)
     return self
 end
 
@@ -123,7 +150,7 @@ function XmlRpcAbeClient:tryAnother(anyType)
         else
             self:setIsDone(true)
         end
-        error(java_exception("Exception", "Tried All Servers But Still Failed"), 0)
+        error(require("java.lang.Exception").new("Tried All Servers But Still Failed"), 0)
 end
 
 

@@ -13,10 +13,25 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.ag.layer.hud.basic.time
 
-local PrimitiveLongSingleton = require("org.allbinary.logic.math.PrimitiveLongSingleton")
-local PrimitiveLongUtil = require("org.allbinary.logic.math.PrimitiveLongUtil")
-local GameTickTimeDelayHelper = require("org.allbinary.time.GameTickTimeDelayHelper")
-local GameTickTimeDelayHelperFactory = require("org.allbinary.time.GameTickTimeDelayHelperFactory")
+local HudTimer = {}
+package.loaded["org.allbinary.game.ag.layer.hud.basic.time.HudTimer"] = HudTimer
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local PrimitiveLongSingleton = java_lazy("org.allbinary.logic.math.PrimitiveLongSingleton")
+local PrimitiveLongUtil = java_lazy("org.allbinary.logic.math.PrimitiveLongUtil")
+local GameTickTimeDelayHelper = java_lazy("org.allbinary.time.GameTickTimeDelayHelper")
+local GameTickTimeDelayHelperFactory = java_lazy("org.allbinary.time.GameTickTimeDelayHelperFactory")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -25,32 +40,44 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local HudTimer = {}
+-- class table HudTimer is declared before the requires
 HudTimer.__index = HudTimer
 HudTimer.className = "HudTimer"
+HudTimer.javaClassName = "org.allbinary.game.ag.layer.hud.basic.time.HudTimer"
 
 function HudTimer:_init_fields()
     self.startTime = -1
-    self.hundredthTime = 0
-    self.maxTime = nil
-    self.modifier = 0
+    if self.hundredthTime == nil then self.hundredthTime = 0 end
+    if self.maxTime == nil then self.maxTime = nil end
+    if self.modifier == nil then self.modifier = 0 end
     self.hundrethsString = PrimitiveLongSingleton.getInstance().ZERO
     self.totalDigits = 1
-    self.primitiveLongUtil = nil
+    if self.primitiveLongUtil == nil then self.primitiveLongUtil = nil end
     self.MAX = {"L", "O", "L"}
     self.gameTickTimeDelayHelper = GameTickTimeDelayHelperFactory.getInstance()
 end
 
 
-function HudTimer.new(maxTime)
-    local self = setmetatable({}, HudTimer)
-    self:_init_fields()
+function HudTimer._jinit(self, maxTime)
+    HudTimer._init_fields(self)
         self.primitiveLongUtil = PrimitiveLongUtil.createPowerOfTen(maxTime)
         self.maxTime = maxTime
+    return self
+end
+
+function HudTimer.new(...)
+    local self = setmetatable({}, HudTimer)
+    HudTimer._jinit(self, ...)
     return self
 end
 

@@ -13,23 +13,39 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.communication.http.request.session
 
--- local HashMap = require("java.util.HashMap")
+local WeblisketSession = {}
+package.loaded["org.allbinary.logic.communication.http.request.session.WeblisketSession"] = WeblisketSession
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
 -- local HttpServletRequest = require("javax.servlet.http.HttpServletRequest")
 -- local HttpSession = require("javax.servlet.http.HttpSession")
 -- local PageContext = require("javax.servlet.jsp.PageContext")
-local StoreFrontData = require("org.allbinary.business.context.modules.storefront.StoreFrontData")
-local StoreFrontFactory = require("org.allbinary.business.context.modules.storefront.StoreFrontFactory")
-local StoreFrontInterface = require("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
-local UserData = require("org.allbinary.business.user.UserData")
-local Basket = require("org.allbinary.business.user.commerce.inventory.basket.Basket")
-local Order = require("org.allbinary.business.user.commerce.inventory.order.Order")
-local OrderInterface = require("org.allbinary.business.user.commerce.inventory.order.OrderInterface")
-local PaymentGatewayData = require("org.allbinary.business.user.commerce.money.payment.gateway.PaymentGatewayData")
-local UserRole = require("org.allbinary.business.user.role.UserRole")
-local UserRoleB = require("org.allbinary.business.user.role.UserRoleB")
-local UserRoleData = require("org.allbinary.business.user.role.UserRoleData")
-local BooleanFactory = require("org.allbinary.logic.java.bool.BooleanFactory")
-local StringValidationUtil = require("org.allbinary.logic.string.StringValidationUtil")
+local StoreFrontData = java_lazy("org.allbinary.business.context.modules.storefront.StoreFrontData")
+local StoreFrontFactory = java_lazy("org.allbinary.business.context.modules.storefront.StoreFrontFactory")
+local StoreFrontInterface = java_lazy("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
+local UserData = java_lazy("org.allbinary.business.user.UserData")
+local Basket = java_lazy("org.allbinary.business.user.commerce.inventory.basket.Basket")
+local Order = java_lazy("org.allbinary.business.user.commerce.inventory.order.Order")
+local OrderInterface = java_lazy("org.allbinary.business.user.commerce.inventory.order.OrderInterface")
+local PaymentGatewayData = java_lazy("org.allbinary.business.user.commerce.money.payment.gateway.PaymentGatewayData")
+local UserRole = java_lazy("org.allbinary.business.user.role.UserRole")
+local UserRoleB = java_lazy("org.allbinary.business.user.role.UserRoleB")
+local UserRoleData = java_lazy("org.allbinary.business.user.role.UserRoleData")
+local BooleanFactory = java_lazy("org.allbinary.logic.java.bool.BooleanFactory")
+local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
+local GLOBALS2 = java_lazy("org.allbinary.globals.GLOBALS2")
 local WeblisketSessionInterface = require("org.allbinary.logic.communication.http.request.session.WeblisketSessionInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
@@ -45,6 +61,41 @@ local function java_exception(className, message, cause)
     return setmetatable(exception, {__tostring = function(self) if self.message ~= nil then return tostring(self.message) end return self.className end})
 end
 
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
 local function java_idiv(a, b)
     local q = a / b
     if q < 0 then return math.ceil(q) end
@@ -52,36 +103,56 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local WeblisketSession = {}
+-- class table WeblisketSession is declared before the requires
 WeblisketSession.__index = WeblisketSession
 WeblisketSession.className = "WeblisketSession"
+WeblisketSession.javaClassName = "org.allbinary.logic.communication.http.request.session.WeblisketSession"
+WeblisketSession.java_implements = " WeblisketSessionInterface "
+WeblisketSession.java_interfaces = function() return {WeblisketSessionInterface} end
 
 function WeblisketSession:_init_fields()
-    self.session = nil
+    if self.session == nil then self.session = nil end
+end
+
+function WeblisketSession._jinit(self, ...)
+    local count = select("#", ...)
+    if count == 2 then return WeblisketSession._new2(self, ...)
+    end
+    error("No constructor of WeblisketSession takes " .. count .. " arguments")
 end
 
 function WeblisketSession.new(...)
-    local count = select("#", ...)
-    if count == 2 then return WeblisketSession._new2(...)
-    elseif count == 2 then return WeblisketSession._new2(...)
-    end
+    local self = setmetatable({}, WeblisketSession)
+    WeblisketSession._jinit(self, ...)
+    return self
+end
+
+function WeblisketSession._new2(self, ...)
+    local java_a1, java_a2 = ...
+    if true and (java_a1 == nil or java_is(java_a1, "HashMap")) and (java_a2 == nil or java_is(java_a2, "PageContext")) then return WeblisketSession._new2_1(self, ...) end
+    return WeblisketSession._new2_2(self, ...)
 end
 
 
-function WeblisketSession._new2(hashMap, pageContext)
-    local self = WeblisketSession._new2(hashMap, pageContext:getRequest())
+function WeblisketSession._new2_1(self, hashMap, pageContext)
+    WeblisketSession._jinit(self, hashMap, pageContext:getRequest())
         -- this(...) made self above
     return self
 end
 
 
-function WeblisketSession._new2(hashMap, httpServletRequest)
-    local self = setmetatable({}, WeblisketSession)
-    self:_init_fields()
+function WeblisketSession._new2_2(self, hashMap, httpServletRequest)
+    WeblisketSession._init_fields(self)
         local propertiesHashMap = hashMap
         local request = httpServletRequest
         self.session = request:getSession(true)
@@ -112,7 +183,7 @@ function WeblisketSession:setPaymentMethod(value)
 end
 
 
-function WeblisketSession:setAuthenticated()
+function WeblisketSession:setAuthenticated_j0()
         self.session:setAttribute(WeblisketSessionData.AUTHENTICATED, BooleanFactory.getInstance().TRUE_STRING)
 end
 
@@ -138,7 +209,7 @@ end
 
 
 function WeblisketSession:getWebAppPath()
-        return self.session:getAttribute(org.allbinary.globals.GLOBALS2.WEBAPPPATH)
+        return self.session:getAttribute(GLOBALS2.WEBAPPPATH)
 end
 
 
@@ -200,15 +271,21 @@ function WeblisketSession:getOrder()
             self.session:setAttribute(basketName, orderInterface)
             return orderInterface
         else
-            error(java_exception("Exception", "Basket Name Not Found"), 0)
+            error(require("java.lang.Exception").new("Basket Name Not Found"), 0)
         end
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function WeblisketSession:setAuthenticated(value)
+function WeblisketSession:setAuthenticated_j1(value)
         self.session:setAttribute(WeblisketSessionData.AUTHENTICATED, BooleanFactory.getInstance().FALSE_STRING)
 end
+function WeblisketSession:setAuthenticated(...)
+    local count = select("#", ...)
+    if count == 0 then return self:setAuthenticated_j0(...) end
+    if count == 1 then return self:setAuthenticated_j1(...) end
+    error("No method setAuthenticated takes " .. count .. " arguments")
+end
+WeblisketSession.setAuthenticated__jdispatcher = WeblisketSession.setAuthenticated
 
 
 function WeblisketSession:clear()

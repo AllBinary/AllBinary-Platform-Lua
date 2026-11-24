@@ -13,17 +13,33 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.image
 
+local ImageCacheBase = {}
+package.loaded["org.allbinary.image.ImageCacheBase"] = ImageCacheBase
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local InputStream = require("java.io.InputStream")
 -- local Image = require("javax.microedition.lcdui.Image")
 -- local NullImage = require("javax.microedition.lcdui.NullImage")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local CommonLabels = require("org.allbinary.string.CommonLabels")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local ABHashtable = require("org.allbinary.util.ABHashtable")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
+local ImageFactory = java_lazy("org.allbinary.image.ImageFactory")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -46,6 +62,12 @@ local function java_new_array(default, size, ...)
     return array
 end
 
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
+    return array
+end
+
 local function java_idiv(a, b)
     local q = a / b
     if q < 0 then return math.ceil(q) end
@@ -53,21 +75,28 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ImageCacheBase = {}
+-- class table ImageCacheBase is declared before the requires
 ImageCacheBase.__index = ImageCacheBase
 ImageCacheBase.className = "ImageCacheBase"
+ImageCacheBase.javaClassName = "org.allbinary.image.ImageCacheBase"
 
 function ImageCacheBase:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.imageFactory = ImageFactory.getInstance()
     self.hashtable = StdUtil.getInstance():createHashtable()
     self.SIZE = 128
-    self.widths = java_new_array(0, self.SIZE)
-    self.heights = java_new_array(0, self.SIZE)
+    self.widths = java_typed_array("I", java_new_array(0, self.SIZE))
+    self.heights = java_typed_array("I", java_new_array(0, self.SIZE))
     self.listOfList = java_new_array(nil, self.SIZE)
     self.availableListOfList = java_new_array(nil, self.SIZE)
     self.volume = 0
@@ -75,15 +104,20 @@ function ImageCacheBase:_init_fields()
 end
 
 
-function ImageCacheBase.new()
-    local self = setmetatable({}, ImageCacheBase)
-    self:_init_fields()
+function ImageCacheBase._jinit(self)
+    ImageCacheBase._init_fields(self)
         for index = (self.listOfList.n or #self.listOfList) - 1, 0, -1 do
             self.listOfList[index + 1] = BasicArrayListD.new()
         end
         for index = (self.availableListOfList.n or #self.availableListOfList) - 1, 0, -1 do
             self.availableListOfList[index + 1] = BasicArrayListD.new()
         end
+    return self
+end
+
+function ImageCacheBase.new(...)
+    local self = setmetatable({}, ImageCacheBase)
+    ImageCacheBase._jinit(self, ...)
     return self
 end
 
@@ -132,13 +166,13 @@ end
 
 -- throws Exception
 function ImageCacheBase:get(caller, width, height)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 -- throws Exception
 function ImageCacheBase:getWithKey(key)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 

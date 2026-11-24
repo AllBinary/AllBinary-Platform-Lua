@@ -13,6 +13,21 @@
 -- Generated Code Do Not Modify
 -- package tags
 
+local TagStrings = {}
+package.loaded["tags.TagStrings"] = TagStrings
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 
 local function java_idiv(a, b)
     local q = a / b
@@ -21,30 +36,40 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local TagStrings = {}
+-- class table TagStrings is declared before the requires
 TagStrings.__index = TagStrings
 TagStrings.className = "TagStrings"
+TagStrings.javaClassName = "tags.TagStrings"
 
 function TagStrings:_init_fields()
     self.DO_START_TAG = "doStartTag"
 end
 
-function TagStrings.new()
-    local self = setmetatable({}, TagStrings)
-    self:_init_fields()
+function TagStrings._jinit(self)
+    TagStrings._init_fields(self)
     return self
+end
+
+function TagStrings.new()
+    return TagStrings._jinit(setmetatable({}, TagStrings))
 end
 
 
 function TagStrings.getInstance()
-        return TagStrings.instance
+        return TagStrings.instance_f
 end
 
-TagStrings.instance = TagStrings.new()
+TagStrings.instance_f = TagStrings.new()
 
 return TagStrings
 

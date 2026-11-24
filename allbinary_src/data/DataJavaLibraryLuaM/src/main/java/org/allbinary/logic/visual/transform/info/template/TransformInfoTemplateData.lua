@@ -13,6 +13,21 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.visual.transform.info.template
 
+local TransformInfoTemplateData = {}
+package.loaded["org.allbinary.logic.visual.transform.info.template.TransformInfoTemplateData"] = TransformInfoTemplateData
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 
 local function java_idiv(a, b)
     local q = a / b
@@ -21,13 +36,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local TransformInfoTemplateData = {}
+-- class table TransformInfoTemplateData is declared before the requires
 TransformInfoTemplateData.__index = TransformInfoTemplateData
 TransformInfoTemplateData.className = "TransformInfoTemplateData"
+TransformInfoTemplateData.javaClassName = "org.allbinary.logic.visual.transform.info.template.TransformInfoTemplateData"
 
 function TransformInfoTemplateData:_init_fields()
     self.UNCRYPTED_EXTENSION = "xsl"
@@ -36,17 +58,22 @@ end
 
 
 function TransformInfoTemplateData.getInstance()
-        return TransformInfoTemplateData.instance
+        return TransformInfoTemplateData.instance_f
 end
 
 
-function TransformInfoTemplateData.new()
-    local self = setmetatable({}, TransformInfoTemplateData)
-    self:_init_fields()
+function TransformInfoTemplateData._jinit(self)
+    TransformInfoTemplateData._init_fields(self)
     return self
 end
 
-TransformInfoTemplateData.instance = TransformInfoTemplateData.new()
+function TransformInfoTemplateData.new(...)
+    local self = setmetatable({}, TransformInfoTemplateData)
+    TransformInfoTemplateData._jinit(self, ...)
+    return self
+end
+
+TransformInfoTemplateData.instance_f = TransformInfoTemplateData.new()
 
 return TransformInfoTemplateData
 

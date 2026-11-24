@@ -13,29 +13,50 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.layer.unit
 
+local UnitItemArrayFactory = {}
+package.loaded["org.allbinary.game.layer.unit.UnitItemArrayFactory"] = UnitItemArrayFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Image = require("javax.microedition.lcdui.Image")
 -- local ImageItem = require("javax.microedition.lcdui.ImageItem")
-local RTSGameStrings = require("org.allbinary.game.layer.RTSGameStrings")
-local LayerInterfaceFactoryImageItem = require("org.allbinary.game.layer.item.LayerInterfaceFactoryImageItem")
-local RTSLayerTextAnimation = require("org.allbinary.game.layer.item.RTSLayerTextAnimation")
-local BasicGameResources = require("org.allbinary.game.layer.resources.BasicGameResources")
-local FlagGameResources = require("org.allbinary.game.layer.waypoint.FlagGameResources")
-local ABCustomItem = require("org.allbinary.graphics.form.item.ABCustomItem")
-local GameFeatureImageCacheFactory = require("org.allbinary.image.GameFeatureImageCacheFactory")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local Animation = require("org.allbinary.animation.Animation")
-local BasicColor = require("org.allbinary.graphics.color.BasicColor")
-local BasicColorFactory = require("org.allbinary.graphics.color.BasicColorFactory")
-local CustomItemUtil = require("org.allbinary.graphics.form.item.CustomItemUtil")
-local ItemArraySingletonFactoryInterface = require("org.allbinary.graphics.form.item.ItemArraySingletonFactoryInterface")
-local ImageCache = require("org.allbinary.image.ImageCache")
-local LayerInterfaceFactoryInterface = require("org.allbinary.layer.LayerInterfaceFactoryInterface")
+local RTSGameStrings = java_lazy("org.allbinary.game.layer.RTSGameStrings")
+local LayerInterfaceFactoryImageItem = java_lazy("org.allbinary.game.layer.item.LayerInterfaceFactoryImageItem")
+local RTSLayerTextAnimation = java_lazy("org.allbinary.game.layer.item.RTSLayerTextAnimation")
+local BasicGameResources = java_lazy("org.allbinary.game.layer.resources.BasicGameResources")
+local FlagGameResources = java_lazy("org.allbinary.game.layer.waypoint.FlagGameResources")
+local ABCustomItem = java_lazy("org.allbinary.graphics.form.item.ABCustomItem")
+local GameFeatureImageCacheFactory = java_lazy("org.allbinary.image.GameFeatureImageCacheFactory")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local Animation = java_lazy("org.allbinary.animation.Animation")
+local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
+local BasicColorFactory = java_lazy("org.allbinary.graphics.color.BasicColorFactory")
+local CustomItemUtil = java_lazy("org.allbinary.graphics.form.item.CustomItemUtil")
+local ItemArraySingletonFactoryInterface = java_lazy("org.allbinary.graphics.form.item.ItemArraySingletonFactoryInterface")
+local ImageCache = java_lazy("org.allbinary.image.ImageCache")
+local LayerInterfaceFactoryInterface = java_lazy("org.allbinary.layer.LayerInterfaceFactoryInterface")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -46,25 +67,39 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local UnitItemArrayFactory = {}
+-- class table UnitItemArrayFactory is declared before the requires
 UnitItemArrayFactory.__index = UnitItemArrayFactory
 UnitItemArrayFactory.className = "UnitItemArrayFactory"
+UnitItemArrayFactory.javaClassName = "org.allbinary.game.layer.unit.UnitItemArrayFactory"
+UnitItemArrayFactory.java_implements = " ItemArraySingletonFactoryInterface "
+UnitItemArrayFactory.java_interfaces = function() return {ItemArraySingletonFactoryInterface} end
 
 function UnitItemArrayFactory:_init_fields()
     self.commonSeps = CommonSeps.getInstance()
     self.basicColor = BasicColorFactory.getInstance().WHITE
-    self.resources = nil
+    if self.resources == nil then self.resources = nil end
 end
 
 
-function UnitItemArrayFactory.new(resources)
-    local self = setmetatable({}, UnitItemArrayFactory)
-    self:_init_fields()
+function UnitItemArrayFactory._jinit(self, resources)
+    UnitItemArrayFactory._init_fields(self)
         self.resources = resources
+    return self
+end
+
+function UnitItemArrayFactory.new(...)
+    local self = setmetatable({}, UnitItemArrayFactory)
+    UnitItemArrayFactory._jinit(self, ...)
     return self
 end
 

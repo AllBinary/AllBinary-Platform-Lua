@@ -13,12 +13,29 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.context
 
--- local HashMap = require("java.util.HashMap")
+local AbContext = {}
+package.loaded["org.allbinary.business.context.AbContext"] = AbContext
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
 -- local PageContext = require("javax.servlet.jsp.PageContext")
-local WeblisketSession = require("org.allbinary.logic.communication.http.request.session.WeblisketSession")
-local WeblisketSessionInterface = require("org.allbinary.logic.communication.http.request.session.WeblisketSessionInterface")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local WeblisketSession = java_lazy("org.allbinary.logic.communication.http.request.session.WeblisketSession")
+local WeblisketSessionInterface = java_lazy("org.allbinary.logic.communication.http.request.session.WeblisketSessionInterface")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -27,30 +44,42 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local AbContext = {}
+-- class table AbContext is declared before the requires
 AbContext.__index = AbContext
 AbContext.className = "AbContext"
+AbContext.javaClassName = "org.allbinary.business.context.AbContext"
 
 function AbContext:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
-    self.propertiesHashMap = nil
-    self.pageContext = nil
+    if self.propertiesHashMap == nil then self.propertiesHashMap = nil end
+    if self.pageContext == nil then self.pageContext = nil end
 end
 
 
-function AbContext.new(propertiesHashMap, pageContext)
-    local self = setmetatable({}, AbContext)
-    self:_init_fields()
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+function AbContext._jinit(self, propertiesHashMap, pageContext)
+    AbContext._init_fields(self)
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             self.logUtil:putF("Properties HashMap: " .. tostring(propertiesHashMap), self, self.commonStrings.CONSTRUCTOR)
         end
         self.propertiesHashMap = propertiesHashMap
         self.pageContext = pageContext
+    return self
+end
+
+function AbContext.new(...)
+    local self = setmetatable({}, AbContext)
+    AbContext._jinit(self, ...)
     return self
 end
 

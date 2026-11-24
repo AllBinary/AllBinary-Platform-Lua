@@ -13,20 +13,43 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.part
 
-local CountedPickedUpLayerInterfaceFactory = require("org.allbinary.game.layer.pickup.CountedPickedUpLayerInterfaceFactory")
-local CountedPickedUpLayerInterfaceFactoryPool = require("org.allbinary.game.layer.pickup.CountedPickedUpLayerInterfaceFactoryPool")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local BasicArrayListUtil = require("org.allbinary.util.BasicArrayListUtil")
+local MakeCountedPartsSingletonArrayFactory = {}
+package.loaded["org.allbinary.game.part.MakeCountedPartsSingletonArrayFactory"] = MakeCountedPartsSingletonArrayFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local CountedPickedUpLayerInterfaceFactory = java_lazy("org.allbinary.game.layer.pickup.CountedPickedUpLayerInterfaceFactory")
+local CountedPickedUpLayerInterfaceFactoryPool = java_lazy("org.allbinary.game.layer.pickup.CountedPickedUpLayerInterfaceFactoryPool")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local BasicArrayListUtil = java_lazy("org.allbinary.util.BasicArrayListUtil")
+local CountedLayerInterfaceFactoryPart = java_lazy("org.allbinary.game.part.CountedLayerInterfaceFactoryPart")
+local PartInterface = java_lazy("org.allbinary.game.part.PartInterface")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -37,28 +60,38 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local MakeCountedPartsSingletonArrayFactory = {}
+-- class table MakeCountedPartsSingletonArrayFactory is declared before the requires
 MakeCountedPartsSingletonArrayFactory.__index = MakeCountedPartsSingletonArrayFactory
 MakeCountedPartsSingletonArrayFactory.className = "MakeCountedPartsSingletonArrayFactory"
+MakeCountedPartsSingletonArrayFactory.javaClassName = "org.allbinary.game.part.MakeCountedPartsSingletonArrayFactory"
 
 function MakeCountedPartsSingletonArrayFactory:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.list = BasicArrayListUtil.getInstance():getImmutableInstance()
 end
 
-function MakeCountedPartsSingletonArrayFactory.new()
-    local self = setmetatable({}, MakeCountedPartsSingletonArrayFactory)
-    self:_init_fields()
+function MakeCountedPartsSingletonArrayFactory._jinit(self)
+    MakeCountedPartsSingletonArrayFactory._init_fields(self)
     return self
+end
+
+function MakeCountedPartsSingletonArrayFactory.new()
+    return MakeCountedPartsSingletonArrayFactory._jinit(setmetatable({}, MakeCountedPartsSingletonArrayFactory))
 end
 
 
 function MakeCountedPartsSingletonArrayFactory.getInstance()
-        return MakeCountedPartsSingletonArrayFactory.instance
+        return MakeCountedPartsSingletonArrayFactory.instance_f
 end
 
 
@@ -90,7 +123,7 @@ function MakeCountedPartsSingletonArrayFactory:getUpdated(partInterfaceArray)
         return newPartInterfaceArray
 end
 
-MakeCountedPartsSingletonArrayFactory.instance = MakeCountedPartsSingletonArrayFactory.new()
+MakeCountedPartsSingletonArrayFactory.instance_f = MakeCountedPartsSingletonArrayFactory.new()
 
 return MakeCountedPartsSingletonArrayFactory
 

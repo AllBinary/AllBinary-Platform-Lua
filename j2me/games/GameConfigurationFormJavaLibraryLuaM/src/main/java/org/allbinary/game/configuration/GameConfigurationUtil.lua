@@ -13,13 +13,30 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.configuration
 
+local GameConfigurationUtil = {}
+package.loaded["org.allbinary.game.configuration.GameConfigurationUtil"] = GameConfigurationUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Item = require("javax.microedition.lcdui.Item")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local SmallIntegerSingletonFactory = require("org.allbinary.logic.math.SmallIntegerSingletonFactory")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local SmallIntegerSingletonFactory = java_lazy("org.allbinary.logic.math.SmallIntegerSingletonFactory")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local GameOptionsForm = java_lazy("org.allbinary.game.configuration.GameOptionsForm")
 
 local function java_instanceof(object, class)
+    class = java_real(class)
     local metatable = getmetatable(object)
     while metatable do
         if metatable == class then return true end
@@ -36,13 +53,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local GameConfigurationUtil = {}
+-- class table GameConfigurationUtil is declared before the requires
 GameConfigurationUtil.__index = GameConfigurationUtil
 GameConfigurationUtil.className = "GameConfigurationUtil"
+GameConfigurationUtil.javaClassName = "org.allbinary.game.configuration.GameConfigurationUtil"
 
 function GameConfigurationUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -53,15 +77,18 @@ function GameConfigurationUtil:_init_fields()
     self.COMPETITION_VALUE = 1
 end
 
-function GameConfigurationUtil.new()
-    local self = setmetatable({}, GameConfigurationUtil)
-    self:_init_fields()
+function GameConfigurationUtil._jinit(self)
+    GameConfigurationUtil._init_fields(self)
     return self
+end
+
+function GameConfigurationUtil.new()
+    return GameConfigurationUtil._jinit(setmetatable({}, GameConfigurationUtil))
 end
 
 
 function GameConfigurationUtil.getInstance()
-        return GameConfigurationUtil.instance
+        return GameConfigurationUtil.instance_f
 end
 
 
@@ -151,7 +178,7 @@ function GameConfigurationUtil:getCompetitionValue()
         return self.COMPETITION_VALUE
 end
 
-GameConfigurationUtil.instance = GameConfigurationUtil.new()
+GameConfigurationUtil.instance_f = GameConfigurationUtil.new()
 
 return GameConfigurationUtil
 

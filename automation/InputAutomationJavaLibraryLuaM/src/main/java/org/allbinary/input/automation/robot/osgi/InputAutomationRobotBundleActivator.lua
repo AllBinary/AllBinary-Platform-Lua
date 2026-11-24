@@ -13,16 +13,33 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.input.automation.robot.osgi
 
-local BundleActivator = require("org.osgi.framework.BundleActivator")
-local BundleContext = require("org.osgi.framework.BundleContext")
-local ServiceFactory = require("org.osgi.framework.ServiceFactory")
-local ServiceReference = require("org.osgi.framework.ServiceReference")
-local InputAutomationRobotChangeListener = require("bundle.input.automation.robot.InputAutomationRobotChangeListener")
-local InputAutomationRobotServiceInterface = require("bundle.input.automation.robot.InputAutomationRobotServiceInterface")
-local InputRobotInterface = require("org.allbinary.input.automation.robot.InputRobotInterface")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local OSGIActivatorUtil = require("org.allbinary.osgi.OSGIActivatorUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local InputAutomationRobotBundleActivator = {}
+package.loaded["org.allbinary.input.automation.robot.osgi.InputAutomationRobotBundleActivator"] = InputAutomationRobotBundleActivator
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local BundleActivator = java_lazy("org.osgi.framework.BundleActivator")
+local BundleContext = java_lazy("org.osgi.framework.BundleContext")
+local ServiceFactory = java_lazy("org.osgi.framework.ServiceFactory")
+local ServiceReference = java_lazy("org.osgi.framework.ServiceReference")
+local InputAutomationRobotChangeListener = java_lazy("bundle.input.automation.robot.InputAutomationRobotChangeListener")
+local InputAutomationRobotServiceInterface = java_lazy("bundle.input.automation.robot.InputAutomationRobotServiceInterface")
+local InputRobotInterface = java_lazy("org.allbinary.input.automation.robot.InputRobotInterface")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local OSGIActivatorUtil = java_lazy("org.allbinary.osgi.OSGIActivatorUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local InputAutomationRobotChangeEvent = java_lazy("org.allbinary.input.automation.robot.osgi.InputAutomationRobotChangeEvent")
+local InputAutomationRobotUtil = java_lazy("org.allbinary.input.automation.robot.osgi.InputAutomationRobotUtil")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -44,33 +61,47 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local InputAutomationRobotBundleActivator = {}
+-- class table InputAutomationRobotBundleActivator is declared before the requires
 InputAutomationRobotBundleActivator.__index = InputAutomationRobotBundleActivator
 InputAutomationRobotBundleActivator.className = "InputAutomationRobotBundleActivator"
+InputAutomationRobotBundleActivator.javaClassName = "org.allbinary.input.automation.robot.osgi.InputAutomationRobotBundleActivator"
+InputAutomationRobotBundleActivator.java_implements = " BundleActivator "
+InputAutomationRobotBundleActivator.java_interfaces = function() return {BundleActivator} end
 
 function InputAutomationRobotBundleActivator:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
-    self.inputRobotInterface = nil
-    self.serviceFactory = nil
+    if self.inputRobotInterface == nil then self.inputRobotInterface = nil end
+    if self.serviceFactory == nil then self.serviceFactory = nil end
 end
 
 
-function InputAutomationRobotBundleActivator.new()
-    local self = setmetatable({}, InputAutomationRobotBundleActivator)
-    self:_init_fields()
+function InputAutomationRobotBundleActivator._jinit(self)
+    InputAutomationRobotBundleActivator._init_fields(self)
         self:init()
+    return self
+end
+
+function InputAutomationRobotBundleActivator.new(...)
+    local self = setmetatable({}, InputAutomationRobotBundleActivator)
+    InputAutomationRobotBundleActivator._jinit(self, ...)
     return self
 end
 
 
 -- throws Exception
 function InputAutomationRobotBundleActivator:init()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
@@ -86,7 +117,7 @@ function InputAutomationRobotBundleActivator:getInputAutomationRobotChangeListen
         if serviceReference ~= nil then
             local inputAutomationRobotChangeListener = context:getService(serviceReference)
             if inputAutomationRobotChangeListener == nil then
-                error(java_exception("Exception", "No Service For ServiceReference"), 0)
+                error(require("java.lang.Exception").new("No Service For ServiceReference"), 0)
             end
             return inputAutomationRobotChangeListener
         else
@@ -97,7 +128,7 @@ end
 
 
 function InputAutomationRobotBundleActivator:addRobots(context)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             self.logUtil:putF(self.commonStrings.START, self, "addRobots")
             local inputAutomationRobotChangeListener = self:getInputAutomationRobotChangeListener(context)
             if inputAutomationRobotChangeListener ~= nil then
@@ -109,13 +140,14 @@ function InputAutomationRobotBundleActivator:addRobots(context)
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:putF(self.commonStrings.EXCEPTION, self, "addModules")
         end
 end
 
 
 function InputAutomationRobotBundleActivator:removeRobots(context)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             self.logUtil:putF(self.commonStrings.START, self, "removeRobots")
             local inputAutomationRobotChangeListener = self:getInputAutomationRobotChangeListener(context)
             if inputAutomationRobotChangeListener ~= nil then
@@ -127,6 +159,7 @@ function InputAutomationRobotBundleActivator:removeRobots(context)
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:putF(self.commonStrings.EXCEPTION, self, "removeRobots")
         end
 end

@@ -13,12 +13,27 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.visual.transform.template.customizer.widgets.logo
 
+local LogoImageFileUtil = {}
+package.loaded["org.allbinary.logic.visual.transform.template.customizer.widgets.logo.LogoImageFileUtil"] = LogoImageFileUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local ByteArrayInputStream = require("java.io.ByteArrayInputStream")
-local AbFile = require("org.allbinary.logic.io.file.AbFile")
-local FileUtil = require("org.allbinary.logic.io.file.FileUtil")
-local Directory = require("org.allbinary.logic.io.file.directory.Directory")
-local AbPath = require("org.allbinary.logic.io.path.AbPath")
-local FileItem = require("org.apache.commons.fileupload.FileItem")
+local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
+local FileUtil = java_lazy("org.allbinary.logic.io.file.FileUtil")
+local Directory = java_lazy("org.allbinary.logic.io.file.directory.Directory")
+local AbPath = java_lazy("org.allbinary.logic.io.path.AbPath")
+local FileItem = java_lazy("org.apache.commons.fileupload.FileItem")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -40,26 +55,38 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local LogoImageFileUtil = {}
+-- class table LogoImageFileUtil is declared before the requires
 LogoImageFileUtil.__index = LogoImageFileUtil
 LogoImageFileUtil.className = "LogoImageFileUtil"
+LogoImageFileUtil.javaClassName = "org.allbinary.logic.visual.transform.template.customizer.widgets.logo.LogoImageFileUtil"
 
 function LogoImageFileUtil:_init_fields()
     self.directory = Directory.getInstance()
-    self.fileName = nil
-    self.imageFileAbPath = nil
+    if self.fileName == nil then self.fileName = nil end
+    if self.imageFileAbPath == nil then self.imageFileAbPath = nil end
 end
 
 
-function LogoImageFileUtil.new(imageAbPath, imageFile)
-    local self = setmetatable({}, LogoImageFileUtil)
-    self:_init_fields()
+function LogoImageFileUtil._jinit(self, imageAbPath, imageFile)
+    LogoImageFileUtil._init_fields(self)
         self.fileName = imageFile
         self.imageFileAbPath = imageAbPath
+    return self
+end
+
+function LogoImageFileUtil.new(...)
+    local self = setmetatable({}, LogoImageFileUtil)
+    LogoImageFileUtil._jinit(self, ...)
     return self
 end
 
@@ -67,10 +94,10 @@ end
 -- throws Exception
 function LogoImageFileUtil:saveFiles(fileItem)
         if self.fileName == nil then
-            error(java_exception("Exception", "Image File Name Was Null"), 0)
+            error(require("java.lang.Exception").new("Image File Name Was Null"), 0)
         end
         if not self.directory:create(self.imageFileAbPath) then
-            error(java_exception("Exception", "Unable to save file to non creatable directory"), 0)
+            error(require("java.lang.Exception").new("Unable to save file to non creatable directory"), 0)
         end
         local originalImageFile = AbFile.createAbFile(tostring(self.imageFileAbPath) .. self.fileName)
         originalImageFile:createNewFile()

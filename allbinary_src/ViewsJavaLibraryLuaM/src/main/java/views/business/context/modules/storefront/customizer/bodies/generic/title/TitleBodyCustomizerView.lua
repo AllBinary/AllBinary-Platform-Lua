@@ -13,20 +13,110 @@
 -- Generated Code Do Not Modify
 -- package views.business.context.modules.storefront.customizer.bodies.generic.title
 
-local PageData = require("org.allbinary.business.page.PageData")
-local DomNodeInterface = require("org.allbinary.data.tree.dom.DomNodeInterface")
-local ModDomHelper = require("org.allbinary.data.tree.dom.ModDomHelper")
-local XmlDocumentHelper = require("org.allbinary.data.tree.dom.document.XmlDocumentHelper")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringValidationUtil = require("org.allbinary.logic.string.StringValidationUtil")
-local StoreTransformer = require("org.allbinary.logic.visual.transform.StoreTransformer")
-local TransformInfoInterface = require("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
-local TitleBodyValidation = require("org.allbinary.logic.visual.transform.template.customizer.bodies.title.TitleBodyValidation")
-local TransformTemplateCustomizerUtil = require("org.allbinary.logic.visual.transform.template.util.TransformTemplateCustomizerUtil")
-local StringEscapeUtils = require("org.apache.commons.lang3.StringEscapeUtils")
-local Document = require("org.w3c.dom.Document")
-local Node = require("org.w3c.dom.Node")
+local TitleBodyCustomizerView = {}
+package.loaded["views.business.context.modules.storefront.customizer.bodies.generic.title.TitleBodyCustomizerView"] = TitleBodyCustomizerView
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local PageData = java_lazy("org.allbinary.business.page.PageData")
+local DomNodeInterface = java_lazy("org.allbinary.data.tree.dom.DomNodeInterface")
+local ModDomHelper = java_lazy("org.allbinary.data.tree.dom.ModDomHelper")
+local XmlDocumentHelper = java_lazy("org.allbinary.data.tree.dom.document.XmlDocumentHelper")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
+local StoreTransformer = java_lazy("org.allbinary.logic.visual.transform.StoreTransformer")
+local TransformInfoInterface = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
+local TitleBodyValidation = java_lazy("org.allbinary.logic.visual.transform.template.customizer.bodies.title.TitleBodyValidation")
+local TransformTemplateCustomizerUtil = java_lazy("org.allbinary.logic.visual.transform.template.util.TransformTemplateCustomizerUtil")
+local StringEscapeUtils = java_lazy("org.apache.commons.lang3.StringEscapeUtils")
+local Document = java_lazy("org.w3c.dom.Document")
+local Node = java_lazy("org.w3c.dom.Node")
 local HttpStoreComponentView = require("views.business.context.modules.storefront.HttpStoreComponentView")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -35,25 +125,40 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local TitleBodyCustomizerView = {}
+-- class table TitleBodyCustomizerView is declared before the requires
 TitleBodyCustomizerView.__index = TitleBodyCustomizerView
 TitleBodyCustomizerView.className = "TitleBodyCustomizerView"
+TitleBodyCustomizerView.javaClassName = "views.business.context.modules.storefront.customizer.bodies.generic.title.TitleBodyCustomizerView"
 setmetatable(TitleBodyCustomizerView, {__index = HttpStoreComponentView})
+TitleBodyCustomizerView.java_implements = " DomNodeInterface "
+TitleBodyCustomizerView.java_interfaces = function() return {DomNodeInterface} end
 
 function TitleBodyCustomizerView:_init_fields()
     self.logUtil = LogUtil.getInstance()
-    self.titleBody = nil
+    if self.titleBody == nil then self.titleBody = nil end
 end
 
 
-function TitleBodyCustomizerView.new(transformInfoInterface)
-    local self = setmetatable(HttpStoreComponentView.new(transformInfoInterface), TitleBodyCustomizerView)
-    self:_init_fields()
+function TitleBodyCustomizerView._jinit(self, transformInfoInterface)
+    java_super_init(HttpStoreComponentView, self, transformInfoInterface)
+    TitleBodyCustomizerView._init_fields(self)
         -- super(...) made self above
+    return self
+end
+
+function TitleBodyCustomizerView.new(...)
+    local self = setmetatable({}, TitleBodyCustomizerView)
+    TitleBodyCustomizerView._jinit(self, ...)
     return self
 end
 
@@ -63,6 +168,7 @@ function TitleBodyCustomizerView:addDomNodeInterfaces()
         self:addDomNodeInterface(self.titleBody)
         self:addDomNodeInterface(self)
 end
+java_overload(TitleBodyCustomizerView, "addDomNodeInterfaces", 0)
 
 
 -- throws Exception
@@ -73,23 +179,27 @@ function TitleBodyCustomizerView:toXmlNode(document)
         end
         return ModDomHelper.createNameValueNodes(document, PageData.getInstance().NAME, pageName)
 end
+java_overload(TitleBodyCustomizerView, "toXmlNode", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "Document")) end)
 
 
 -- throws Exception
 function TitleBodyCustomizerView:view()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local success = XmlDocumentHelper.toString(self:getDoc())
             local result = StoreTransformer.new(self.abeClientInformation, self:getTransformInfoInterface()):translate(success)
-            return StringEscapeUtils.unescapeHtml3(result)
+            do return "__jreturn", StringEscapeUtils.unescapeHtml3(result) end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().TAGHELPERERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "view()", e)
             end
             error(e, 0)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+java_overload(TitleBodyCustomizerView, "view", 0)
 
 TitleBodyCustomizerView.NAME = "None"
 

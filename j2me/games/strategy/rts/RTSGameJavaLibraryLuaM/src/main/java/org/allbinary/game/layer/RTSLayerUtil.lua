@@ -13,26 +13,49 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.layer
 
-local GroupCommonFactory = require("org.allbinary.game.identification.GroupCommonFactory")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local DirectionFactory = require("org.allbinary.direction.DirectionFactory")
-local GameInfo = require("org.allbinary.game.GameInfo")
-local WeaponProperties = require("org.allbinary.game.combat.weapon.WeaponProperties")
-local BasicGroupFactory = require("org.allbinary.game.identification.BasicGroupFactory")
-local PartInterface = require("org.allbinary.game.part.PartInterface")
-local BasicWeaponPart = require("org.allbinary.game.part.weapon.BasicWeaponPart")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local BasicGeographicMap = require("org.allbinary.media.graphics.geography.map.BasicGeographicMap")
-local BaseRaceTrackGeographicMap = require("org.allbinary.media.graphics.geography.map.racetrack.BaseRaceTrackGeographicMap")
-local ABHashtable = require("org.allbinary.util.ABHashtable")
+local RTSLayerUtil = {}
+package.loaded["org.allbinary.game.layer.RTSLayerUtil"] = RTSLayerUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local GroupCommonFactory = java_lazy("org.allbinary.game.identification.GroupCommonFactory")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local DirectionFactory = java_lazy("org.allbinary.direction.DirectionFactory")
+local GameInfo = java_lazy("org.allbinary.game.GameInfo")
+local WeaponProperties = java_lazy("org.allbinary.game.combat.weapon.WeaponProperties")
+local BasicGroupFactory = java_lazy("org.allbinary.game.identification.BasicGroupFactory")
+local PartInterface = java_lazy("org.allbinary.game.part.PartInterface")
+local BasicWeaponPart = java_lazy("org.allbinary.game.part.weapon.BasicWeaponPart")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local BasicGeographicMap = java_lazy("org.allbinary.media.graphics.geography.map.BasicGeographicMap")
+local BaseRaceTrackGeographicMap = java_lazy("org.allbinary.media.graphics.geography.map.racetrack.BaseRaceTrackGeographicMap")
+local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
+local FakeLayerManager = java_lazy("org.allbinary.game.layer.FakeLayerManager")
+local RTSLayer = java_lazy("org.allbinary.game.layer.RTSLayer")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -43,29 +66,39 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local RTSLayerUtil = {}
+-- class table RTSLayerUtil is declared before the requires
 RTSLayerUtil.__index = RTSLayerUtil
 RTSLayerUtil.className = "RTSLayerUtil"
+RTSLayerUtil.javaClassName = "org.allbinary.game.layer.RTSLayerUtil"
 
 function RTSLayerUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.groupCommonFactory = GroupCommonFactory.getInstance()
-    self.MAX_RELOAD_TIME = java_idiv(java_int(Integer.MAX_VALUE), 100000)
+    self.MAX_RELOAD_TIME = java_idiv(java_int(require("java.lang.Integer").MAX_VALUE), 100000)
+end
+
+function RTSLayerUtil._jinit(self)
+    RTSLayerUtil._init_fields(self)
+    return self
 end
 
 function RTSLayerUtil.new()
-    local self = setmetatable({}, RTSLayerUtil)
-    self:_init_fields()
-    return self
+    return RTSLayerUtil._jinit(setmetatable({}, RTSLayerUtil))
 end
 
 
 function RTSLayerUtil.getInstance()
-        return RTSLayerUtil.instance
+        return RTSLayerUtil.instance_f
 end
 
 
@@ -202,7 +235,7 @@ function RTSLayerUtil:createFakeRTSLayerHashtable(baseRaceTrackGeographicMap)
         return hashtable
 end
 
-RTSLayerUtil.instance = RTSLayerUtil.new()
+RTSLayerUtil.instance_f = RTSLayerUtil.new()
 
 return RTSLayerUtil
 

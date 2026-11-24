@@ -1,15 +1,36 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.string
 
-local JsType = require("jsinterop.annotations.JsType")
-local JsMethod = require("jsinterop.annotations.JsMethod")
-local JsConstructor = require("jsinterop.annotations.JsConstructor")
+local StringMaker = {}
+package.loaded["org.allbinary.logic.string.StringMaker"] = StringMaker
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local JsType = java_lazy("jsinterop.annotations.JsType")
+local JsMethod = java_lazy("jsinterop.annotations.JsMethod")
+local JsConstructor = java_lazy("jsinterop.annotations.JsConstructor")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -20,32 +41,44 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local StringMaker = {}
+-- class table StringMaker is declared before the requires
 StringMaker.__index = StringMaker
 StringMaker.className = "StringMaker"
+StringMaker.javaClassName = "org.allbinary.logic.string.StringMaker"
 
 function StringMaker:_init_fields()
-    self.charArray = nil
-    self.currentLength = 0
+    if self.charArray == nil then self.charArray = nil end
+    if self.currentLength == nil then self.currentLength = 0 end
 end
 
 
-function StringMaker.new()
-    local self = setmetatable({}, StringMaker)
-    self:_init_fields()
+function StringMaker._jinit(self)
+    StringMaker._init_fields(self)
         self.charArray = java_new_array("\0", 20)
     return self
 end
 
+function StringMaker.new(...)
+    local self = setmetatable({}, StringMaker)
+    StringMaker._jinit(self, ...)
+    return self
+end
 
-function StringMaker:append(string)
-        local stringLength = #string
+
+function StringMaker:append(string_)
+        local stringLength = #string_
         self:ensureCapacity(self.currentLength + stringLength)
-        string:getChars(0, stringLength, self.charArray, self.currentLength)
+        ;(function(text, first, last, destination, offset) for index = first, last - 1 do destination[offset + index - first + 1] = string.sub(text, index + 1, index + 1) end end)(string_, 0, stringLength, self.charArray, self.currentLength)
         self.currentLength = self.currentLength + (stringLength)
         return self
 end
@@ -148,7 +181,7 @@ end
 
 
 function StringMaker:toString()
-        return String.new(self.charArray, 0, self.currentLength)
+        return (function(value, offset, count) local parts = {} for index = offset + 1, offset + count do local item = value[index] if type(item) == "string" then parts[#parts + 1] = item else parts[#parts + 1] = string.char(item & 0xFF) end end return table.concat(parts) end)(self.charArray, 0, self.currentLength)
 end
 StringMaker.__tostring = function(self) return self:toString() end
 

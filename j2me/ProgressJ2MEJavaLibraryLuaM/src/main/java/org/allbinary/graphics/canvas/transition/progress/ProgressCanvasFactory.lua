@@ -13,11 +13,26 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.graphics.canvas.transition.progress
 
-local BasicColorFactory = require("org.allbinary.graphics.color.BasicColorFactory")
-local NullPaintable = require("org.allbinary.graphics.paint.NullPaintable")
-local PaintableInterface = require("org.allbinary.graphics.paint.PaintableInterface")
-local NullUtil = require("org.allbinary.logic.NullUtil")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
+local ProgressCanvasFactory = {}
+package.loaded["org.allbinary.graphics.canvas.transition.progress.ProgressCanvasFactory"] = ProgressCanvasFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local BasicColorFactory = java_lazy("org.allbinary.graphics.color.BasicColorFactory")
+local NullPaintable = java_lazy("org.allbinary.graphics.paint.NullPaintable")
+local PaintableInterface = java_lazy("org.allbinary.graphics.paint.PaintableInterface")
+local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -26,17 +41,27 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ProgressCanvasFactory = {}
+-- class table ProgressCanvasFactory is declared before the requires
 ProgressCanvasFactory.__index = ProgressCanvasFactory
 ProgressCanvasFactory.className = "ProgressCanvasFactory"
+ProgressCanvasFactory.javaClassName = "org.allbinary.graphics.canvas.transition.progress.ProgressCanvasFactory"
+
+function ProgressCanvasFactory._jinit(self)
+    return self
+end
 
 function ProgressCanvasFactory.new()
-    local self = setmetatable({}, ProgressCanvasFactory)
-    return self
+    return ProgressCanvasFactory._jinit(setmetatable({}, ProgressCanvasFactory))
 end
 
 

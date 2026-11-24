@@ -13,10 +13,26 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.input.motion.button
 
-local CellPosition = require("org.allbinary.graphics.CellPosition")
-local CellPositionFactory = require("org.allbinary.graphics.CellPositionFactory")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local BasicTouchButtonCellPositionFactory = {}
+package.loaded["org.allbinary.input.motion.button.BasicTouchButtonCellPositionFactory"] = BasicTouchButtonCellPositionFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local CellPosition = java_lazy("org.allbinary.graphics.CellPosition")
+local CellPositionFactory = java_lazy("org.allbinary.graphics.CellPositionFactory")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local TouchButtonLocationHelper = java_lazy("org.allbinary.input.motion.button.TouchButtonLocationHelper")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -25,44 +41,50 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local BasicTouchButtonCellPositionFactory = {}
+-- class table BasicTouchButtonCellPositionFactory is declared before the requires
 BasicTouchButtonCellPositionFactory.__index = BasicTouchButtonCellPositionFactory
 BasicTouchButtonCellPositionFactory.className = "BasicTouchButtonCellPositionFactory"
+BasicTouchButtonCellPositionFactory.javaClassName = "org.allbinary.input.motion.button.BasicTouchButtonCellPositionFactory"
 
 function BasicTouchButtonCellPositionFactory:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
-    self.TOP_RIGHT = nil
-    self.TOP_LEFT = nil
-    self.SECOND_FROM_TOP_LEFT = nil
-    self.SECOND_FROM_TOP_RIGHT = nil
-    self.TOP_SECOND_FROM_LEFT = nil
-    self.TOP_SECOND_FROM_RIGHT = nil
-    self.BOTTOM_RIGHT = nil
-    self.BOTTOM_SECOND_FROM_RIGHT = nil
-    self.SECOND_FROM_BOTTOM_RIGHT = nil
-    self.THIRD_FROM_BOTTOM_RIGHT = nil
-    self.FOURTH_FROM_BOTTOM_RIGHT = nil
-    self.SECOND_FROM_BOTTOM_SECOND_FROM_RIGHT = nil
-    self.SECOND_FROM_BOTTOM_THIRD_FROM_RIGHT = nil
-    self.SECOND_FROM_BOTTOM_FOURTH_FROM_RIGHT = nil
-    self.BOTTOM_THIRD_FROM_RIGHT = nil
-    self.BOTTOM_FOURTH_FROM_RIGHT = nil
-    self.BOTTOM_SECOND_FROM_LEFT = nil
-    self.SECOND_FROM_BOTTOM_LEFT = nil
-    self.THIRD_FROM_BOTTOM_LEFT = nil
-    self.BOTTOM_LEFT = nil
-    self.SECOND_FROM_BOTTOM_SECOND_FROM_LEFT = nil
+    if self.TOP_RIGHT == nil then self.TOP_RIGHT = nil end
+    if self.TOP_LEFT == nil then self.TOP_LEFT = nil end
+    if self.SECOND_FROM_TOP_LEFT == nil then self.SECOND_FROM_TOP_LEFT = nil end
+    if self.SECOND_FROM_TOP_RIGHT == nil then self.SECOND_FROM_TOP_RIGHT = nil end
+    if self.TOP_SECOND_FROM_LEFT == nil then self.TOP_SECOND_FROM_LEFT = nil end
+    if self.TOP_SECOND_FROM_RIGHT == nil then self.TOP_SECOND_FROM_RIGHT = nil end
+    if self.BOTTOM_RIGHT == nil then self.BOTTOM_RIGHT = nil end
+    if self.BOTTOM_SECOND_FROM_RIGHT == nil then self.BOTTOM_SECOND_FROM_RIGHT = nil end
+    if self.SECOND_FROM_BOTTOM_RIGHT == nil then self.SECOND_FROM_BOTTOM_RIGHT = nil end
+    if self.THIRD_FROM_BOTTOM_RIGHT == nil then self.THIRD_FROM_BOTTOM_RIGHT = nil end
+    if self.FOURTH_FROM_BOTTOM_RIGHT == nil then self.FOURTH_FROM_BOTTOM_RIGHT = nil end
+    if self.SECOND_FROM_BOTTOM_SECOND_FROM_RIGHT == nil then self.SECOND_FROM_BOTTOM_SECOND_FROM_RIGHT = nil end
+    if self.SECOND_FROM_BOTTOM_THIRD_FROM_RIGHT == nil then self.SECOND_FROM_BOTTOM_THIRD_FROM_RIGHT = nil end
+    if self.SECOND_FROM_BOTTOM_FOURTH_FROM_RIGHT == nil then self.SECOND_FROM_BOTTOM_FOURTH_FROM_RIGHT = nil end
+    if self.BOTTOM_THIRD_FROM_RIGHT == nil then self.BOTTOM_THIRD_FROM_RIGHT = nil end
+    if self.BOTTOM_FOURTH_FROM_RIGHT == nil then self.BOTTOM_FOURTH_FROM_RIGHT = nil end
+    if self.BOTTOM_SECOND_FROM_LEFT == nil then self.BOTTOM_SECOND_FROM_LEFT = nil end
+    if self.SECOND_FROM_BOTTOM_LEFT == nil then self.SECOND_FROM_BOTTOM_LEFT = nil end
+    if self.THIRD_FROM_BOTTOM_LEFT == nil then self.THIRD_FROM_BOTTOM_LEFT = nil end
+    if self.BOTTOM_LEFT == nil then self.BOTTOM_LEFT = nil end
+    if self.SECOND_FROM_BOTTOM_SECOND_FROM_LEFT == nil then self.SECOND_FROM_BOTTOM_SECOND_FROM_LEFT = nil end
 end
 
 
-function BasicTouchButtonCellPositionFactory.new()
-    local self = setmetatable({}, BasicTouchButtonCellPositionFactory)
-    self:_init_fields()
+function BasicTouchButtonCellPositionFactory._jinit(self)
+    BasicTouchButtonCellPositionFactory._init_fields(self)
         self.logUtil:putF(self.commonStrings.START, self, self.commonStrings.CONSTRUCTOR)
         local touchButtonLocationHelper = TouchButtonLocationHelper.new()
         local cellPositionFactory = CellPositionFactory.getInstance()
@@ -108,6 +130,12 @@ function BasicTouchButtonCellPositionFactory.new()
             self.TOP_SECOND_FROM_LEFT = cellPositionFactory.NONE
             self.TOP_SECOND_FROM_RIGHT = cellPositionFactory.NONE
         end
+    return self
+end
+
+function BasicTouchButtonCellPositionFactory.new(...)
+    local self = setmetatable({}, BasicTouchButtonCellPositionFactory)
+    BasicTouchButtonCellPositionFactory._jinit(self, ...)
     return self
 end
 

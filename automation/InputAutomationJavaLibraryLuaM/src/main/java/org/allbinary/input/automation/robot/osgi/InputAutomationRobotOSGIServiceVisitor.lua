@@ -13,13 +13,63 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.input.automation.robot.osgi
 
-local InputAutomationRobotServiceInterface = require("bundle.input.automation.robot.InputAutomationRobotServiceInterface")
-local InputRobotFactory = require("org.allbinary.input.automation.robot.InputRobotFactory")
-local InputRobotInterface = require("org.allbinary.input.automation.robot.InputRobotInterface")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local OSGIServiceInterface = require("org.allbinary.osgi.OSGIServiceInterface")
-local OSGIServiceVisitorInterface = require("org.allbinary.osgi.OSGIServiceVisitorInterface")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local InputAutomationRobotOSGIServiceVisitor = {}
+package.loaded["org.allbinary.input.automation.robot.osgi.InputAutomationRobotOSGIServiceVisitor"] = InputAutomationRobotOSGIServiceVisitor
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local InputAutomationRobotServiceInterface = java_lazy("bundle.input.automation.robot.InputAutomationRobotServiceInterface")
+local InputRobotFactory = java_lazy("org.allbinary.input.automation.robot.InputRobotFactory")
+local InputRobotInterface = java_lazy("org.allbinary.input.automation.robot.InputRobotInterface")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local OSGIServiceInterface = java_lazy("org.allbinary.osgi.OSGIServiceInterface")
+local OSGIServiceVisitorInterface = java_lazy("org.allbinary.osgi.OSGIServiceVisitorInterface")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -28,13 +78,22 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local InputAutomationRobotOSGIServiceVisitor = {}
+-- class table InputAutomationRobotOSGIServiceVisitor is declared before the requires
 InputAutomationRobotOSGIServiceVisitor.__index = InputAutomationRobotOSGIServiceVisitor
 InputAutomationRobotOSGIServiceVisitor.className = "InputAutomationRobotOSGIServiceVisitor"
+InputAutomationRobotOSGIServiceVisitor.javaClassName = "org.allbinary.input.automation.robot.osgi.InputAutomationRobotOSGIServiceVisitor"
+InputAutomationRobotOSGIServiceVisitor.java_implements = " OSGIServiceVisitorInterface "
+InputAutomationRobotOSGIServiceVisitor.java_interfaces = function() return {OSGIServiceVisitorInterface} end
 
 function InputAutomationRobotOSGIServiceVisitor:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -42,21 +101,25 @@ function InputAutomationRobotOSGIServiceVisitor:_init_fields()
 end
 
 
-function InputAutomationRobotOSGIServiceVisitor.new()
+function InputAutomationRobotOSGIServiceVisitor._jinit(self)
+    InputAutomationRobotOSGIServiceVisitor._init_fields(self)
+    return self
+end
+
+function InputAutomationRobotOSGIServiceVisitor.new(...)
     local self = setmetatable({}, InputAutomationRobotOSGIServiceVisitor)
-    self:_init_fields()
+    InputAutomationRobotOSGIServiceVisitor._jinit(self, ...)
     return self
 end
 
 
-function InputAutomationRobotOSGIServiceVisitor:visit(anyType)
+function InputAutomationRobotOSGIServiceVisitor:visit_j1_1(anyType)
         return self:visit(anyType)
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function InputAutomationRobotOSGIServiceVisitor:visit(osgiServiceInterface)
-        local try_ok, try_error = pcall(function()
+function InputAutomationRobotOSGIServiceVisitor:visit_j1_2(osgiServiceInterface)
+        local try_ok, try_error, try_value = pcall(function()
             self.logUtil:putF(self.commonStrings.START, self, "visit")
             local inputAutomationRobotServiceInterface = osgiServiceInterface
             local inputRobotInterfaceArray = inputAutomationRobotServiceInterface:getInputRobotInterfaceArray()
@@ -64,13 +127,26 @@ function InputAutomationRobotOSGIServiceVisitor:visit(osgiServiceInterface)
                 self.logUtil:putF("Adding: " .. inputRobotInterfaceArray[index + 1]:getName(), self, "visit")
                 InputRobotFactory.getInstance():add(inputRobotInterfaceArray[index + 1])
             end
-            return true
+            do return "__jreturn", true end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put(self.commonStrings.EXCEPTION, self, "visit", e)
             return false
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
+end
+function InputAutomationRobotOSGIServiceVisitor:visit(...)
+    local count = select("#", ...)
+    if count == 1 then return self:visit_j1(...) end
+    error("No method visit takes " .. count .. " arguments")
+end
+InputAutomationRobotOSGIServiceVisitor.visit__jdispatcher = InputAutomationRobotOSGIServiceVisitor.visit
+function InputAutomationRobotOSGIServiceVisitor:visit_j1(...)
+    local java_a1 = ...
+    if true and (java_a1 == nil or java_is(java_a1, "OSGIServiceInterface")) then return InputAutomationRobotOSGIServiceVisitor.visit_j1_2(self, ...) end
+    return InputAutomationRobotOSGIServiceVisitor.visit_j1_1(self, ...)
 end
 
 return InputAutomationRobotOSGIServiceVisitor

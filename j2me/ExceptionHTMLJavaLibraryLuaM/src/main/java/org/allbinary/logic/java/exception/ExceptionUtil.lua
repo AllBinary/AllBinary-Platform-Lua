@@ -13,7 +13,22 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.java.exception
 
-local JsType = require("jsinterop.annotations.JsType")
+local ExceptionUtil = {}
+package.loaded["org.allbinary.logic.java.exception.ExceptionUtil"] = ExceptionUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local JsType = java_lazy("jsinterop.annotations.JsType")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -35,14 +50,21 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
 --ActualPlatform
-local ExceptionUtil = {}
+-- class table ExceptionUtil is declared before the requires
 ExceptionUtil.__index = ExceptionUtil
 ExceptionUtil.className = "ExceptionUtil"
+ExceptionUtil.javaClassName = "org.allbinary.logic.java.exception.ExceptionUtil"
 
 function ExceptionUtil:_init_fields()
     self.NONE = "No Stack Trace"
@@ -50,13 +72,18 @@ end
 
 
 function ExceptionUtil.getInstance()
-        return ExceptionUtil.instance
+        return ExceptionUtil.instance_f
 end
 
 
-function ExceptionUtil.new()
+function ExceptionUtil._jinit(self)
+    ExceptionUtil._init_fields(self)
+    return self
+end
+
+function ExceptionUtil.new(...)
     local self = setmetatable({}, ExceptionUtil)
-    self:_init_fields()
+    ExceptionUtil._jinit(self, ...)
     return self
 end
 
@@ -66,8 +93,8 @@ function ExceptionUtil:getStackTrace(e)
         return self.NONE
 end
 
-ExceptionUtil.instance = ExceptionUtil.new()
-ExceptionUtil.PRETEND_EXCEPTION = java_exception("Exception", "Not Really An Exception")
+ExceptionUtil.instance_f = ExceptionUtil.new()
+ExceptionUtil.PRETEND_EXCEPTION = require("java.lang.Exception").new("Not Really An Exception")
 
 return ExceptionUtil
 

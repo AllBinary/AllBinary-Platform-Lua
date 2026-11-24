@@ -13,6 +13,21 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.graphics.opengles.shader
 
+local ShaderStrings = {}
+package.loaded["org.allbinary.graphics.opengles.shader.ShaderStrings"] = ShaderStrings
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 
 local function java_idiv(a, b)
     local q = a / b
@@ -21,13 +36,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ShaderStrings = {}
+-- class table ShaderStrings is declared before the requires
 ShaderStrings.__index = ShaderStrings
 ShaderStrings.className = "ShaderStrings"
+ShaderStrings.javaClassName = "org.allbinary.graphics.opengles.shader.ShaderStrings"
 
 function ShaderStrings:_init_fields()
     self.NO_PROGRAM_HANDLE = "No program handle"
@@ -36,18 +58,21 @@ function ShaderStrings:_init_fields()
     self.UNIFORM_ATTRIBUTE_HANDLE = "Uniform Attribute Handle: "
 end
 
-function ShaderStrings.new()
-    local self = setmetatable({}, ShaderStrings)
-    self:_init_fields()
+function ShaderStrings._jinit(self)
+    ShaderStrings._init_fields(self)
     return self
+end
+
+function ShaderStrings.new()
+    return ShaderStrings._jinit(setmetatable({}, ShaderStrings))
 end
 
 
 function ShaderStrings.getInstance()
-        return ShaderStrings.instance
+        return ShaderStrings.instance_f
 end
 
-ShaderStrings.instance = ShaderStrings.new()
+ShaderStrings.instance_f = ShaderStrings.new()
 
 return ShaderStrings
 

@@ -13,19 +13,43 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.util
 
-local JsType = require("jsinterop.annotations.JsType")
-local MyRandomFactory = require("org.allbinary.game.rand.MyRandomFactory")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local CommonLabels = require("org.allbinary.string.CommonLabels")
-local CommonPhoneStrings = require("org.allbinary.string.CommonPhoneStrings")
-local JsMethod = require("jsinterop.annotations.JsMethod")
-local JsProperty = require("jsinterop.annotations.JsProperty")
+local BasicArrayListUtil = {}
+package.loaded["org.allbinary.util.BasicArrayListUtil"] = BasicArrayListUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local JsType = java_lazy("jsinterop.annotations.JsType")
+local MyRandomFactory = java_lazy("org.allbinary.game.rand.MyRandomFactory")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
+local CommonPhoneStrings = java_lazy("org.allbinary.string.CommonPhoneStrings")
+local JsMethod = java_lazy("jsinterop.annotations.JsMethod")
+local JsProperty = java_lazy("jsinterop.annotations.JsProperty")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local ImmutableBasicArrayList = java_lazy("org.allbinary.util.ImmutableBasicArrayList")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -36,13 +60,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local BasicArrayListUtil = {}
+-- class table BasicArrayListUtil is declared before the requires
 BasicArrayListUtil.__index = BasicArrayListUtil
 BasicArrayListUtil.className = "BasicArrayListUtil"
+BasicArrayListUtil.javaClassName = "org.allbinary.util.BasicArrayListUtil"
 
 function BasicArrayListUtil:_init_fields()
     self.NULL_ARRAY_OF_ARRAY = java_new_array(nil, 0, 0)
@@ -50,15 +81,18 @@ function BasicArrayListUtil:_init_fields()
     self.immutableInstance = ImmutableBasicArrayList.new("Immutable", 0)
 end
 
-function BasicArrayListUtil.new()
-    local self = setmetatable({}, BasicArrayListUtil)
-    self:_init_fields()
+function BasicArrayListUtil._jinit(self)
+    BasicArrayListUtil._init_fields(self)
     return self
+end
+
+function BasicArrayListUtil.new()
+    return BasicArrayListUtil._jinit(setmetatable({}, BasicArrayListUtil))
 end
 
 
 function BasicArrayListUtil.getInstance()
-        return BasicArrayListUtil.instance
+        return BasicArrayListUtil.instance_f
 end
 
 
@@ -123,7 +157,7 @@ function BasicArrayListUtil.main(args)
         print(tostring(list))
 end
 
-BasicArrayListUtil.instance = BasicArrayListUtil.new()
+BasicArrayListUtil.instance_f = BasicArrayListUtil.new()
 
 return BasicArrayListUtil
 

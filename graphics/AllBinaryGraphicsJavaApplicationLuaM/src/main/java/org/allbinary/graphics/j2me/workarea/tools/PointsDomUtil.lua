@@ -13,13 +13,30 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.graphics.j2me.workarea.tools
 
-local GPoint = require("org.allbinary.graphics.GPoint")
-local PointFactory = require("org.allbinary.graphics.PointFactory")
-local WorkAreaJPanel = require("org.allbinary.graphics.j2me.workarea.WorkAreaJPanel")
-local CanvasDom = require("org.allbinary.graphics.j2me.workarea.canvas.CanvasDom")
-local PositionStrings = require("org.allbinary.math.PositionStrings")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local Node = require("org.w3c.dom.Node")
+local PointsDomUtil = {}
+package.loaded["org.allbinary.graphics.j2me.workarea.tools.PointsDomUtil"] = PointsDomUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local GPoint = java_lazy("org.allbinary.graphics.GPoint")
+local PointFactory = java_lazy("org.allbinary.graphics.PointFactory")
+local WorkAreaJPanel = java_lazy("org.allbinary.graphics.j2me.workarea.WorkAreaJPanel")
+local CanvasDom = java_lazy("org.allbinary.graphics.j2me.workarea.canvas.CanvasDom")
+local PositionStrings = java_lazy("org.allbinary.math.PositionStrings")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local Node = java_lazy("org.w3c.dom.Node")
+local Document = java_lazy("org.w3c.dom.Document")
+local PointsUtil = java_lazy("org.allbinary.graphics.j2me.workarea.tools.PointsUtil")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -28,13 +45,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local PointsDomUtil = {}
+-- class table PointsDomUtil is declared before the requires
 PointsDomUtil.__index = PointsDomUtil
 PointsDomUtil.className = "PointsDomUtil"
+PointsDomUtil.javaClassName = "org.allbinary.graphics.j2me.workarea.tools.PointsDomUtil"
 
 function PointsDomUtil:_init_fields()
     self.LINES = "lines"
@@ -45,15 +69,18 @@ function PointsDomUtil:_init_fields()
     self.LINE = "line"
 end
 
-function PointsDomUtil.new()
-    local self = setmetatable({}, PointsDomUtil)
-    self:_init_fields()
+function PointsDomUtil._jinit(self)
+    PointsDomUtil._init_fields(self)
     return self
+end
+
+function PointsDomUtil.new()
+    return PointsDomUtil._jinit(setmetatable({}, PointsDomUtil))
 end
 
 
 function PointsDomUtil.getInstance()
-        return PointsDomUtil.instance
+        return PointsDomUtil.instance_f
 end
 
 
@@ -107,7 +134,7 @@ function PointsDomUtil:getPointNode(point, pointName)
         return pointNode
 end
 
-PointsDomUtil.instance = PointsDomUtil.new()
+PointsDomUtil.instance_f = PointsDomUtil.new()
 
 return PointsDomUtil
 

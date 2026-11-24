@@ -13,27 +13,44 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.user.commerce.money.tax.modules
 
-local StoreFrontInterface = require("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
-local StreetAddress = require("org.allbinary.business.user.address.StreetAddress")
-local StreetAddressData = require("org.allbinary.business.user.address.StreetAddressData")
-local TaxData = require("org.allbinary.business.user.commerce.money.tax.components.TaxData")
-local DomNodeHelper = require("org.allbinary.data.tree.dom.DomNodeHelper")
-local DomSearchHelper = require("org.allbinary.data.tree.dom.DomSearchHelper")
-local DomDocumentHelper = require("org.allbinary.data.tree.dom.document.DomDocumentHelper")
-local XmlDocumentHelper = require("org.allbinary.data.tree.dom.document.XmlDocumentHelper")
-local FREEBLISKET_PATH_GLOBALS = require("org.allbinary.globals.FREEBLISKET_PATH_GLOBALS")
-local URLGLOBALS = require("org.allbinary.globals.URLGLOBALS")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local CryptFileReader = require("org.allbinary.logic.control.crypt.file.CryptFileReader")
-local AbPath = require("org.allbinary.logic.io.path.AbPath")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringValidationUtil = require("org.allbinary.logic.string.StringValidationUtil")
-local TransformInfoObjectConfigData = require("org.allbinary.logic.visual.transform.info.objectConfig.TransformInfoObjectConfigData")
-local CommonPhoneStrings = require("org.allbinary.string.CommonPhoneStrings")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local Document = require("org.w3c.dom.Document")
-local Node = require("org.w3c.dom.Node")
-local NodeList = require("org.w3c.dom.NodeList")
+local SimpleStateTaxModule = {}
+package.loaded["org.allbinary.business.user.commerce.money.tax.modules.SimpleStateTaxModule"] = SimpleStateTaxModule
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local StoreFrontInterface = java_lazy("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
+local StreetAddress = java_lazy("org.allbinary.business.user.address.StreetAddress")
+local StreetAddressData = java_lazy("org.allbinary.business.user.address.StreetAddressData")
+local TaxData = java_lazy("org.allbinary.business.user.commerce.money.tax.components.TaxData")
+local DomNodeHelper = java_lazy("org.allbinary.data.tree.dom.DomNodeHelper")
+local DomSearchHelper = java_lazy("org.allbinary.data.tree.dom.DomSearchHelper")
+local DomDocumentHelper = java_lazy("org.allbinary.data.tree.dom.document.DomDocumentHelper")
+local XmlDocumentHelper = java_lazy("org.allbinary.data.tree.dom.document.XmlDocumentHelper")
+local FREEBLISKET_PATH_GLOBALS = java_lazy("org.allbinary.globals.FREEBLISKET_PATH_GLOBALS")
+local URLGLOBALS = java_lazy("org.allbinary.globals.URLGLOBALS")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local CryptFileReader = java_lazy("org.allbinary.logic.control.crypt.file.CryptFileReader")
+local AbPath = java_lazy("org.allbinary.logic.io.path.AbPath")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
+local TransformInfoObjectConfigData = java_lazy("org.allbinary.logic.visual.transform.info.objectConfig.TransformInfoObjectConfigData")
+local CommonPhoneStrings = java_lazy("org.allbinary.string.CommonPhoneStrings")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local Document = java_lazy("org.w3c.dom.Document")
+local Node = java_lazy("org.w3c.dom.Node")
+local NodeList = java_lazy("org.w3c.dom.NodeList")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local TaxModuleInterface = require("org.allbinary.business.user.commerce.money.tax.modules.TaxModuleInterface")
 
 local function java_idiv(a, b)
@@ -43,29 +60,43 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local SimpleStateTaxModule = {}
+-- class table SimpleStateTaxModule is declared before the requires
 SimpleStateTaxModule.__index = SimpleStateTaxModule
 SimpleStateTaxModule.className = "SimpleStateTaxModule"
+SimpleStateTaxModule.javaClassName = "org.allbinary.business.user.commerce.money.tax.modules.SimpleStateTaxModule"
+SimpleStateTaxModule.java_implements = " TaxModuleInterface "
+SimpleStateTaxModule.java_interfaces = function() return {TaxModuleInterface} end
 
 function SimpleStateTaxModule:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
-    self.streetAddress = nil
-    self.storeFrontInterface = nil
+    if self.streetAddress == nil then self.streetAddress = nil end
+    if self.storeFrontInterface == nil then self.storeFrontInterface = nil end
     self.ALL = CommonPhoneStrings.getInstance().STAR
     self.STATETAXPATH = "/generic/taxes/"
     self.STATETAXFILE = "stateTaxation.xml"
-    self.document = nil
+    if self.document == nil then self.document = nil end
 end
 
 
-function SimpleStateTaxModule.new()
+function SimpleStateTaxModule._jinit(self)
+    SimpleStateTaxModule._init_fields(self)
+    return self
+end
+
+function SimpleStateTaxModule.new(...)
     local self = setmetatable({}, SimpleStateTaxModule)
-    self:_init_fields()
+    SimpleStateTaxModule._jinit(self, ...)
     return self
 end
 
@@ -74,10 +105,10 @@ end
 function SimpleStateTaxModule:getTaxRate(streetAddress, storeFrontInterface)
         self.streetAddress = streetAddress
         self.storeFrontInterface = storeFrontInterface
-        local fileAbPath = AbPath.new(tostring(self.URLGLOBALS:getMainPath() + self.FREEBLISKET_PATH_GLOBALS:getInstance().XSLPATH) .. self.storeFrontInterface:getName() .. self.STATETAXPATH, self.STATETAXFILE)
+        local fileAbPath = AbPath.new(tostring(URLGLOBALS.getMainPath() + FREEBLISKET_PATH_GLOBALS.getInstance().XSLPATH) .. self.storeFrontInterface:getName() .. self.STATETAXPATH, self.STATETAXFILE)
         local data = CryptFileReader.new(TransformInfoObjectConfigData.getInstance().UNCRYPTED_EXTENSION, TransformInfoObjectConfigData.getInstance().ENCRYPTED_EXTENSION):get(fileAbPath)
         self.document = DomDocumentHelper.create(data)
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().TAX) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAX) then
             self.logUtil:putF("Tax Doc: " .. XmlDocumentHelper.toString(self.document), self, "getTaxRate")
         end
         local state = self.streetAddress:getState()
@@ -104,13 +135,13 @@ end
 
 
 function SimpleStateTaxModule:isValid(streetAddress, storeFrontInterface)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             self.streetAddress = streetAddress
             self.storeFrontInterface = storeFrontInterface
-            local fileAbPath = AbPath.new(tostring(self.URLGLOBALS:getMainPath() + self.FREEBLISKET_PATH_GLOBALS:getInstance().XSLPATH) .. self.storeFrontInterface:getName() .. self.STATETAXPATH, self.STATETAXFILE)
+            local fileAbPath = AbPath.new(tostring(URLGLOBALS.getMainPath() + FREEBLISKET_PATH_GLOBALS.getInstance().XSLPATH) .. self.storeFrontInterface:getName() .. self.STATETAXPATH, self.STATETAXFILE)
             local data = CryptFileReader.new(TransformInfoObjectConfigData.getInstance().UNCRYPTED_EXTENSION, TransformInfoObjectConfigData.getInstance().ENCRYPTED_EXTENSION):get(fileAbPath)
             self.document = DomDocumentHelper.create(data)
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().TAX) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAX) then
                 self.logUtil:putF("Tax Doc: " .. XmlDocumentHelper.toString(self.document), self, self.commonStrings.IS_VALID)
             end
             local country = self.streetAddress:getCountry()
@@ -120,7 +151,7 @@ function SimpleStateTaxModule:isValid(streetAddress, storeFrontInterface)
                 local node = nodeList:item(index)
                 local taxNodeChildren = node:getChildNodes()
                 local streetAddressNode = DomSearchHelper.getNode(StreetAddressData.NAME, taxNodeChildren)
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().TAX) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAX) then
                     local stringBuffer = StringMaker.new()
                     stringBuffer:append("StreetAddress Node: ")
                     stringBuffer:append(streetAddressNode:getNodeName())
@@ -133,24 +164,26 @@ function SimpleStateTaxModule:isValid(streetAddress, storeFrontInterface)
                 local taxableStreetAddress = StreetAddress.new(streetAddressNode)
                 local stringValidationUtil = StringValidationUtil.getInstance()
                 if not stringValidationUtil:isEmpty(country) and not stringValidationUtil:isEmpty(taxableStreetAddress:getCountry()) and taxableStreetAddress:getCountry():compareTo(self.ALL) == 0 then
-                    return true
+                    do return "__jreturn", true end
                 end
                 if not stringValidationUtil:isEmpty(country) and not stringValidationUtil:isEmpty(taxableStreetAddress:getCountry()) and ((country < taxableStreetAddress:getCountry() and -1) or (country > taxableStreetAddress:getCountry() and 1) or 0) == 0 then
                     local state = self.streetAddress:getState()
                     if state ~= nil then
-                        return true
+                        do return "__jreturn", true end
                     end
                 end
             end
-            return false
+            do return "__jreturn", false end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEWERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEWERROR) then
                 self.logUtil:put("Failed to validate", self, self.commonStrings.IS_VALID, e)
             end
             return false
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 return SimpleStateTaxModule

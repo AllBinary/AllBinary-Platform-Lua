@@ -13,16 +13,37 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.string
 
-local JsType = require("jsinterop.annotations.JsType")
-local JsMethod = require("jsinterop.annotations.JsMethod")
-local JsConstructor = require("jsinterop.annotations.JsConstructor")
-local JsProperty = require("jsinterop.annotations.JsProperty")
+local StringUtil = {}
+package.loaded["org.allbinary.logic.string.StringUtil"] = StringUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local JsType = java_lazy("jsinterop.annotations.JsType")
+local JsMethod = java_lazy("jsinterop.annotations.JsMethod")
+local JsConstructor = java_lazy("jsinterop.annotations.JsConstructor")
+local JsProperty = java_lazy("jsinterop.annotations.JsProperty")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -33,13 +54,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local StringUtil = {}
+-- class table StringUtil is declared before the requires
 StringUtil.__index = StringUtil
 StringUtil.className = "StringUtil"
+StringUtil.javaClassName = "org.allbinary.logic.string.StringUtil"
 
 function StringUtil:_init_fields()
     self.INIT_STRING = tostring("")
@@ -52,19 +80,24 @@ end
 
 
 function StringUtil.getInstance()
-        return StringUtil.instance
+        return StringUtil.instance_f
 end
 
 
-function StringUtil.new()
+function StringUtil._jinit(self)
+    StringUtil._init_fields(self)
+    return self
+end
+
+function StringUtil.new(...)
     local self = setmetatable({}, StringUtil)
-    self:_init_fields()
+    StringUtil._jinit(self, ...)
     return self
 end
 
 
-function StringUtil:getNonNull(string)
-        return string
+function StringUtil:getNonNull(string_)
+        return string_
 end
 
 
@@ -73,11 +106,11 @@ function StringUtil:getArrayInstance()
 end
 
 
-function StringUtil:count(string, aChar)
+function StringUtil:count(string_, aChar)
         local count = 0
-        local size = #string
+        local size = #string_
         for index = 0, size - 1 do
-            if string.sub(string, (index) + 1, (index) + 1) == aChar then
+            if string.sub(string_, (index) + 1, (index) + 1) == aChar then
                 count = count + 1
             end
         end
@@ -93,7 +126,7 @@ function StringUtil:toString(anyType)
         end
 end
 
-StringUtil.instance = StringUtil.new()
+StringUtil.instance_f = StringUtil.new()
 
 return StringUtil
 

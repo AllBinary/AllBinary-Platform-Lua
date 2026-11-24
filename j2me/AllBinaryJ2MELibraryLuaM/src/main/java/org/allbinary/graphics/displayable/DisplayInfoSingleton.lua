@@ -13,30 +13,53 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.graphics.displayable
 
+local DisplayInfoSingleton = {}
+package.loaded["org.allbinary.graphics.displayable.DisplayInfoSingleton"] = DisplayInfoSingleton
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Displayable = require("javax.microedition.lcdui.Displayable")
-local AndroidUtil = require("org.allbinary.AndroidUtil")
-local Features = require("org.allbinary.game.configuration.feature.Features")
-local DisplayChangeEvent = require("org.allbinary.graphics.displayable.event.DisplayChangeEvent")
-local DisplayChangeEventHandler = require("org.allbinary.graphics.displayable.event.DisplayChangeEventHandler")
-local LastDisplayChangeEventHandler = require("org.allbinary.graphics.displayable.event.LastDisplayChangeEventHandler")
-local OpenGLFeatureFactory = require("org.allbinary.graphics.opengles.OpenGLFeatureFactory")
-local SWTJOGLProcessor = require("org.allbinary.graphics.threed.SWTJOGLProcessor")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local PreLogUtil = require("org.allbinary.logic.communication.log.PreLogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local GenericOperatingSystem = require("org.allbinary.logic.system.os.GenericOperatingSystem")
-local OperatingSystemFactory = require("org.allbinary.logic.system.os.OperatingSystemFactory")
-local CommonLabels = require("org.allbinary.string.CommonLabels")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
+local AndroidUtil = java_lazy("org.allbinary.AndroidUtil")
+local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
+local DisplayChangeEvent = java_lazy("org.allbinary.graphics.displayable.event.DisplayChangeEvent")
+local DisplayChangeEventHandler = java_lazy("org.allbinary.graphics.displayable.event.DisplayChangeEventHandler")
+local LastDisplayChangeEventHandler = java_lazy("org.allbinary.graphics.displayable.event.LastDisplayChangeEventHandler")
+local OpenGLFeatureFactory = java_lazy("org.allbinary.graphics.opengles.OpenGLFeatureFactory")
+local SWTJOGLProcessor = java_lazy("org.allbinary.graphics.threed.SWTJOGLProcessor")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local GenericOperatingSystem = java_lazy("org.allbinary.logic.system.os.GenericOperatingSystem")
+local OperatingSystemFactory = java_lazy("org.allbinary.logic.system.os.OperatingSystemFactory")
+local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local BaseScalable = java_lazy("org.allbinary.graphics.displayable.BaseScalable")
+local ScalableListener = java_lazy("org.allbinary.graphics.displayable.ScalableListener")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -47,13 +70,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local DisplayInfoSingleton = {}
+-- class table DisplayInfoSingleton is declared before the requires
 DisplayInfoSingleton.__index = DisplayInfoSingleton
 DisplayInfoSingleton.className = "DisplayInfoSingleton"
+DisplayInfoSingleton.javaClassName = "org.allbinary.graphics.displayable.DisplayInfoSingleton"
 
 function DisplayInfoSingleton:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -63,20 +93,20 @@ function DisplayInfoSingleton:_init_fields()
     self.ORIENTATION = "ORIENTATION"
     self.ADJUSTING_FOR_SCALING_IN_PORTRAIT = "Adjusting for Scaling in portrait display ratio: "
     self.ADJUSTING_FOR_SCALING_IN_LANDSCAPE = "Adjusting for Scaling in landscape display ratio: "
-    self.last = java_new_array(0, 4)
-    self.lastHalf = java_new_array(0, 4)
-    self.full = java_new_array(0, 4)
-    self.top = 0
-    self.left = 0
-    self.xOffset = 0
-    self.yOffset = 0
-    self.scaleLargestTo = 0.0
+    self.last = java_typed_array("I", java_new_array(0, 4))
+    self.lastHalf = java_typed_array("I", java_new_array(0, 4))
+    self.full = java_typed_array("I", java_new_array(0, 4))
+    if self.top == nil then self.top = 0 end
+    if self.left == nil then self.left = 0 end
+    if self.xOffset == nil then self.xOffset = 0 end
+    if self.yOffset == nil then self.yOffset = 0 end
+    if self.scaleLargestTo == nil then self.scaleLargestTo = 0.0 end
     self.WIDTH = 0
     self.HEIGHT = 1
     self.CUSTOM_WIDTH = 2
     self.CUSTOM_HEIGHT = 3
     self.scalableListener = BaseScalable.new()
-    self.displayRatio = 0.0
+    if self.displayRatio == nil then self.displayRatio = 0.0 end
     self.ratio = 1.0
     self.SET_LAST_SIZE_METHOD_NAME = "setLastSize"
     self.FULL_WIDTH = " FullWidth: "
@@ -102,9 +132,8 @@ function DisplayInfoSingleton.getInstance()
 end
 
 
-function DisplayInfoSingleton.new()
-    local self = setmetatable({}, DisplayInfoSingleton)
-    self:_init_fields()
+function DisplayInfoSingleton._jinit(self)
+    DisplayInfoSingleton._init_fields(self)
         local size = (self.last.n or #self.last)
         for index = 0, size - 1 do
             self.last[index + 1] = 0
@@ -116,6 +145,12 @@ function DisplayInfoSingleton.new()
         else
             self.scaleLargestTo = 1080.0
         end
+    return self
+end
+
+function DisplayInfoSingleton.new(...)
+    local self = setmetatable({}, DisplayInfoSingleton)
+    DisplayInfoSingleton._jinit(self, ...)
     return self
 end
 
@@ -234,7 +269,7 @@ end
 
 
 function DisplayInfoSingleton:process()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             if self.list:size() > 0 then
                 self:processForced()
             end
@@ -242,13 +277,14 @@ function DisplayInfoSingleton:process()
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             PreLogUtil.putOE(self.commonStrings.EXCEPTION, self, self.FIRE_METHOD_NAME, e)
         end
 end
 
 
 function DisplayInfoSingleton:processForced()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local swtJOGLProcessor = SWTJOGLProcessor.getInstance()
             swtJOGLProcessor:clear()
             DisplayChangeEventHandler.getInstance():fireEvent(self.displayChangeEvent)
@@ -257,6 +293,7 @@ function DisplayInfoSingleton:processForced()
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             PreLogUtil.putOE(self.commonStrings.EXCEPTION, self, self.FIRE_METHOD_NAME, e)
         end
 end

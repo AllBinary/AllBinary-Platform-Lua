@@ -13,7 +13,22 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.system.security.crypt.jcehelper
 
-local CryptInterface = require("org.allbinary.init.crypt.jcehelper.CryptInterface")
+local NoCrypt = {}
+package.loaded["org.allbinary.logic.system.security.crypt.jcehelper.NoCrypt"] = NoCrypt
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local CryptInterface = java_lazy("org.allbinary.init.crypt.jcehelper.CryptInterface")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -22,17 +37,29 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local NoCrypt = {}
+-- class table NoCrypt is declared before the requires
 NoCrypt.__index = NoCrypt
 NoCrypt.className = "NoCrypt"
+NoCrypt.javaClassName = "org.allbinary.logic.system.security.crypt.jcehelper.NoCrypt"
+NoCrypt.java_implements = " CryptInterface "
+NoCrypt.java_interfaces = function() return {CryptInterface} end
+
+function NoCrypt._jinit(self)
+    return self
+end
 
 function NoCrypt.new()
-    local self = setmetatable({}, NoCrypt)
-    return self
+    return NoCrypt._jinit(setmetatable({}, NoCrypt))
 end
 
 

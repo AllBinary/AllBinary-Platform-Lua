@@ -13,14 +13,34 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.input.motion.button
 
-local DownGameKeyEventHandler = require("org.allbinary.game.input.event.DownGameKeyEventHandler")
-local GameKeyEvent = require("org.allbinary.game.input.event.GameKeyEvent")
-local UpGameKeyEventHandler = require("org.allbinary.game.input.event.UpGameKeyEventHandler")
-local GPoint = require("org.allbinary.graphics.GPoint")
-local Rectangle = require("org.allbinary.graphics.Rectangle")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local RectangleCollisionUtil = require("org.allbinary.math.RectangleCollisionUtil")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
+local TouchButtonRecognizer = {}
+package.loaded["org.allbinary.input.motion.button.TouchButtonRecognizer"] = TouchButtonRecognizer
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local DownGameKeyEventHandler = java_lazy("org.allbinary.game.input.event.DownGameKeyEventHandler")
+local GameKeyEvent = java_lazy("org.allbinary.game.input.event.GameKeyEvent")
+local UpGameKeyEventHandler = java_lazy("org.allbinary.game.input.event.UpGameKeyEventHandler")
+local GPoint = java_lazy("org.allbinary.graphics.GPoint")
+local Rectangle = java_lazy("org.allbinary.graphics.Rectangle")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local RectangleCollisionUtil = java_lazy("org.allbinary.math.RectangleCollisionUtil")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicTouchInputFactory = java_lazy("org.allbinary.input.motion.button.BasicTouchInputFactory")
+local CurrentlyPressedTouchButtonSingleton = java_lazy("org.allbinary.input.motion.button.CurrentlyPressedTouchButtonSingleton")
+local MultitouchReleaseHelper = java_lazy("org.allbinary.input.motion.button.MultitouchReleaseHelper")
+local ReleaseHelper = java_lazy("org.allbinary.input.motion.button.ReleaseHelper")
+local TouchButton = java_lazy("org.allbinary.input.motion.button.TouchButton")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -29,75 +49,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local TouchButtonRecognizer = {}
+-- class table TouchButtonRecognizer is declared before the requires
 TouchButtonRecognizer.__index = TouchButtonRecognizer
 TouchButtonRecognizer.className = "TouchButtonRecognizer"
---CurrentlyPressedTouchButtonSingletonDebug.getInstance();
-    local ReleaseHelper = {}
-    ReleaseHelper.__index = ReleaseHelper
-    ReleaseHelper.className = "ReleaseHelper"
-    TouchButtonRecognizer.ReleaseHelper = ReleaseHelper
-
-    function ReleaseHelper:_init_fields()
-        self.touchButtonRecognizer = nil
-    end
-    
-
-    function TouchButtonRecognizer.new(touchButtonRecognizer)
-        local self = setmetatable({}, TouchButtonRecognizer)
-        self:_init_fields()
-            self.touchButtonRecognizer = touchButtonRecognizer
-        return self
-    end
-    
-
-    -- throws Exception
-    function TouchButtonRecognizer:release(touchButtonInput, deviceId)
-            local nextTouchButtonInput = nil
-            local gameKeyEvent = nil
-            for index = self.touchButtonRecognizer.currentlyPressedTouchButtonSingleton:size() - 1, 0, -1 do
-                nextTouchButtonInput = self.touchButtonRecognizer.currentlyPressedTouchButtonSingleton:get(index)
-                gameKeyEvent = nextTouchButtonInput:getGameKeyEvent()
-                self.touchButtonRecognizer.upGameKeyEventHandler:fireEvent(gameKeyEvent)
-                self.touchButtonRecognizer.upGameKeyEventHandler:getInstanceForDevice(deviceId):fireEvent(gameKeyEvent)
-                self.touchButtonRecognizer.currentlyPressedTouchButtonSingleton:removeAt(index)
-            end
-    end
-
-local MultitouchReleaseHelper = {}
-    MultitouchReleaseHelper.__index = MultitouchReleaseHelper
-    MultitouchReleaseHelper.className = "MultitouchReleaseHelper"
-    setmetatable(MultitouchReleaseHelper, {__index = ReleaseHelper})
-    TouchButtonRecognizer.MultitouchReleaseHelper = MultitouchReleaseHelper
-    
-
-    function TouchButtonRecognizer.new(touchButtonRecognizer)
-        local self = setmetatable(ReleaseHelper.new(touchButtonRecognizer), TouchButtonRecognizer)
-            -- super(...) made self above
-        return self
-    end
-    
-
-    -- throws Exception
-    function TouchButtonRecognizer:release(touchButtonInput, deviceId)
-            local cancelTouchButtonInput = CancelTouchButtonInputFactory.getInstance():getCancel(touchButtonInput)
-            local nextTouchButtonInput = nil
-            local gameKeyEvent = nil
-            for index = self.touchButtonRecognizer.currentlyPressedTouchButtonSingleton:size() - 1, 0, -1 do
-                nextTouchButtonInput = self.touchButtonRecognizer.currentlyPressedTouchButtonSingleton:get(index)
-                if cancelTouchButtonInput == nextTouchButtonInput then
-                    gameKeyEvent = nextTouchButtonInput:getGameKeyEvent()
-                    self.touchButtonRecognizer.upGameKeyEventHandler:fireEvent(gameKeyEvent)
-                    self.touchButtonRecognizer.upGameKeyEventHandler:getInstanceForDevice(deviceId):fireEvent(gameKeyEvent)
-                    self.touchButtonRecognizer.currentlyPressedTouchButtonSingleton:removeAt(index)
-                end
-            end
-    end
-
+TouchButtonRecognizer.javaClassName = "org.allbinary.input.motion.button.TouchButtonRecognizer"
 
 function TouchButtonRecognizer:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -106,18 +71,23 @@ function TouchButtonRecognizer:_init_fields()
     self.downGameKeyEventHandler = DownGameKeyEventHandler.getInstance()
     self.lastPressedTouchButtonInput = BasicTouchInputFactory.getInstance().NONE
     self.currentlyPressedTouchButtonSingleton = CurrentlyPressedTouchButtonSingleton.getInstance()
-    self.releaseHelper = nil
+    if self.releaseHelper == nil then self.releaseHelper = nil end
 end
 
 
-function TouchButtonRecognizer.new()
-    local self = setmetatable({}, TouchButtonRecognizer)
-    self:_init_fields()
+function TouchButtonRecognizer._jinit(self)
+    TouchButtonRecognizer._init_fields(self)
         if TouchScreenFactory.getInstance():isMultiTouch() then
             self.releaseHelper = MultitouchReleaseHelper.new(self)
         else
             self.releaseHelper = ReleaseHelper.new(self)
         end
+    return self
+end
+
+function TouchButtonRecognizer.new(...)
+    local self = setmetatable({}, TouchButtonRecognizer)
+    TouchButtonRecognizer._jinit(self, ...)
     return self
 end
 

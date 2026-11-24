@@ -13,9 +13,25 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.java.bool
 
-local TsUtil = require("org.allbinary.TsUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringValidationUtil = require("org.allbinary.logic.string.StringValidationUtil")
+local BooleanUtil = {}
+package.loaded["org.allbinary.logic.java.bool.BooleanUtil"] = BooleanUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local TsUtil = java_lazy("org.allbinary.TsUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
+local BooleanFactory = java_lazy("org.allbinary.logic.java.bool.BooleanFactory")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -37,13 +53,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local BooleanUtil = {}
+-- class table BooleanUtil is declared before the requires
 BooleanUtil.__index = BooleanUtil
 BooleanUtil.className = "BooleanUtil"
+BooleanUtil.javaClassName = "org.allbinary.logic.java.bool.BooleanUtil"
 
 function BooleanUtil:_init_fields()
     self.tsUtil = TsUtil.getInstance()
@@ -51,13 +74,18 @@ end
 
 
 function BooleanUtil.getInstance()
-        return BooleanUtil.instance
+        return BooleanUtil.instance_f
 end
 
 
-function BooleanUtil.new()
+function BooleanUtil._jinit(self)
+    BooleanUtil._init_fields(self)
+    return self
+end
+
+function BooleanUtil.new(...)
     local self = setmetatable({}, BooleanUtil)
-    self:_init_fields()
+    BooleanUtil._jinit(self, ...)
     return self
 end
 
@@ -75,7 +103,7 @@ function BooleanUtil:getFromString(booleanString)
         elseif self.tsUtil:compareTo(booleanStringLowerCase, booleanFactory.FALSE_STRING) == 0 then
             return false
         else
-            error(java_exception("Exception", "Invalid booleanString - Must be true or false"), 0)
+            error(require("java.lang.Exception").new("Invalid booleanString - Must be true or false"), 0)
         end
 end
 
@@ -100,7 +128,7 @@ function BooleanUtil:toStringFromBooleanArray(booleanArray)
         return tostring(stringMaker)
 end
 
-BooleanUtil.instance = BooleanUtil.new()
+BooleanUtil.instance_f = BooleanUtil.new()
 
 return BooleanUtil
 

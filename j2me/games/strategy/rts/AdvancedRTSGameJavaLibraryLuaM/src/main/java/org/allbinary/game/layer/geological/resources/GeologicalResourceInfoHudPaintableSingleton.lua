@@ -13,6 +13,22 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.layer.geological.resources
 
+local GeologicalResourceInfoHudPaintableSingleton = {}
+package.loaded["org.allbinary.game.layer.geological.resources.GeologicalResourceInfoHudPaintableSingleton"] = GeologicalResourceInfoHudPaintableSingleton
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local GeologicalResourceInfoHudPaintable = java_lazy("org.allbinary.game.layer.geological.resources.GeologicalResourceInfoHudPaintable")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -21,25 +37,35 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local GeologicalResourceInfoHudPaintableSingleton = {}
+-- class table GeologicalResourceInfoHudPaintableSingleton is declared before the requires
 GeologicalResourceInfoHudPaintableSingleton.__index = GeologicalResourceInfoHudPaintableSingleton
 GeologicalResourceInfoHudPaintableSingleton.className = "GeologicalResourceInfoHudPaintableSingleton"
+GeologicalResourceInfoHudPaintableSingleton.javaClassName = "org.allbinary.game.layer.geological.resources.GeologicalResourceInfoHudPaintableSingleton"
+
+function GeologicalResourceInfoHudPaintableSingleton._jinit(self)
+    return self
+end
 
 function GeologicalResourceInfoHudPaintableSingleton.new()
-    local self = setmetatable({}, GeologicalResourceInfoHudPaintableSingleton)
-    return self
+    return GeologicalResourceInfoHudPaintableSingleton._jinit(setmetatable({}, GeologicalResourceInfoHudPaintableSingleton))
 end
 
 
 function GeologicalResourceInfoHudPaintableSingleton.getInstance()
-        return GeologicalResourceInfoHudPaintableSingleton.instance
+        return GeologicalResourceInfoHudPaintableSingleton.instance_f
 end
 
-GeologicalResourceInfoHudPaintableSingleton.instance = GeologicalResourceInfoHudPaintable.new()
+GeologicalResourceInfoHudPaintableSingleton.instance_f = GeologicalResourceInfoHudPaintable.new()
 
 return GeologicalResourceInfoHudPaintableSingleton
 

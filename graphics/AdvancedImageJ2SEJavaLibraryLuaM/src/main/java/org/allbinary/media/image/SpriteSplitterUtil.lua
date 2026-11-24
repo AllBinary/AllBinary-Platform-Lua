@@ -13,17 +13,40 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media.image
 
+local SpriteSplitterUtil = {}
+package.loaded["org.allbinary.media.image.SpriteSplitterUtil"] = SpriteSplitterUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local BufferedImage = require("java.awt.image.BufferedImage")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local ImageProcessedVisitor = java_lazy("org.allbinary.media.image.ImageProcessedVisitor")
+local ImageProcessorInput = java_lazy("org.allbinary.media.image.ImageProcessorInput")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -34,13 +57,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local SpriteSplitterUtil = {}
+-- class table SpriteSplitterUtil is declared before the requires
 SpriteSplitterUtil.__index = SpriteSplitterUtil
 SpriteSplitterUtil.className = "SpriteSplitterUtil"
+SpriteSplitterUtil.javaClassName = "org.allbinary.media.image.SpriteSplitterUtil"
 
 function SpriteSplitterUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -54,15 +84,18 @@ function SpriteSplitterUtil:_init_fields()
     self._ROW = "_row"
 end
 
-function SpriteSplitterUtil.new()
-    local self = setmetatable({}, SpriteSplitterUtil)
-    self:_init_fields()
+function SpriteSplitterUtil._jinit(self)
+    SpriteSplitterUtil._init_fields(self)
     return self
+end
+
+function SpriteSplitterUtil.new()
+    return SpriteSplitterUtil._jinit(setmetatable({}, SpriteSplitterUtil))
 end
 
 
 function SpriteSplitterUtil.getInstance()
-        return SpriteSplitterUtil.instance
+        return SpriteSplitterUtil.instance_f
 end
 
 
@@ -158,7 +191,7 @@ function SpriteSplitterUtil:process(imageProcessorInput, totalFrames, totalAnima
         end
 end
 
-SpriteSplitterUtil.instance = SpriteSplitterUtil.new()
+SpriteSplitterUtil.instance_f = SpriteSplitterUtil.new()
 
 return SpriteSplitterUtil
 

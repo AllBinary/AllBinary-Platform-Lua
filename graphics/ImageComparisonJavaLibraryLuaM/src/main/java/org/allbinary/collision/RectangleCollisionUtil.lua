@@ -13,8 +13,58 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.collision
 
--- local awt = require("java.awt")
-local GPoint = require("org.allbinary.graphics.GPoint")
+local RectangleCollisionUtil = {}
+package.loaded["org.allbinary.collision.RectangleCollisionUtil"] = RectangleCollisionUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+-- local Rectangle = require("java.awt.Rectangle")
+local GPoint = java_lazy("org.allbinary.graphics.GPoint")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -23,22 +73,34 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local RectangleCollisionUtil = {}
+-- class table RectangleCollisionUtil is declared before the requires
 RectangleCollisionUtil.__index = RectangleCollisionUtil
 RectangleCollisionUtil.className = "RectangleCollisionUtil"
+RectangleCollisionUtil.javaClassName = "org.allbinary.collision.RectangleCollisionUtil"
 
 
-function RectangleCollisionUtil.new()
+function RectangleCollisionUtil._jinit(self)
+    return self
+end
+
+function RectangleCollisionUtil.new(...)
     local self = setmetatable({}, RectangleCollisionUtil)
+    RectangleCollisionUtil._jinit(self, ...)
     return self
 end
 
 
-function RectangleCollisionUtil.isCollision(rectangle, point)
+function RectangleCollisionUtil.isCollision_j2_1(rectangle, point)
         if point:getX() > (java_int(rectangle.x) + rectangle:getWidth()) or point:getY() > (java_int(rectangle.y) + rectangle:getHeight()) or point:getX() < rectangle.x or point:getY() < rectangle.y then
             return false
         else
@@ -47,19 +109,29 @@ function RectangleCollisionUtil.isCollision(rectangle, point)
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function RectangleCollisionUtil.isCollision(rectangle1, rectangle2)
+function RectangleCollisionUtil.isCollision_j2_2(rectangle1, rectangle2)
         return RectangleCollisionUtil.isCollision(rectangle1.x, rectangle1.y, rectangle1.x + rectangle1.width, rectangle1.y + rectangle1.height, rectangle2.x, rectangle2.y, rectangle2.x + rectangle2.width, rectangle2.y + rectangle2.height)
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function RectangleCollisionUtil.isCollision(rectX1, rectY1, rectX2, rectY2, rect2X1, rect2Y1, rect2X2, rect2Y2)
+function RectangleCollisionUtil.isCollision_j8(rectX1, rectY1, rectX2, rectY2, rect2X1, rect2Y1, rect2X2, rect2Y2)
         if rect2X1 >= rectX2 or rect2Y1 >= rectY2 or rect2X2 <= rectX1 or rect2Y2 <= rectY1 then
             return false
         else
             return true
         end
+end
+function RectangleCollisionUtil.isCollision(...)
+    local count = select("#", ...)
+    if count == 2 then return RectangleCollisionUtil.isCollision_j2(...) end
+    if count == 8 then return RectangleCollisionUtil.isCollision_j8(...) end
+    error("No method isCollision takes " .. count .. " arguments")
+end
+RectangleCollisionUtil.isCollision__jdispatcher = RectangleCollisionUtil.isCollision
+function RectangleCollisionUtil.isCollision_j2(...)
+    local java_a1, java_a2 = ...
+    if true and (java_a1 == nil or java_is(java_a1, "Rectangle")) and (java_a2 == nil or java_is(java_a2, "GPoint")) then return RectangleCollisionUtil.isCollision_j2_1(...) end
+    return RectangleCollisionUtil.isCollision_j2_2(...)
 end
 
 return RectangleCollisionUtil

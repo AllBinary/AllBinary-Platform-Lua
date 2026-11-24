@@ -13,22 +13,128 @@
 -- Generated Code Do Not Modify
 -- package views
 
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local DomNodeHelper = require("org.allbinary.data.tree.dom.DomNodeHelper")
-local DomNodeInterface = require("org.allbinary.data.tree.dom.DomNodeInterface")
-local XmlDocumentHelper = require("org.allbinary.data.tree.dom.document.XmlDocumentHelper")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local AbeClientInformationInterface = require("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
-local ServiceClientInformationInterfaceFactory = require("org.allbinary.logic.system.security.licensing.ServiceClientInformationInterfaceFactory")
-local BasicTransformer = require("org.allbinary.logic.visual.transform.BasicTransformer")
-local TransformInterface = require("org.allbinary.logic.visual.transform.TransformInterface")
-local TransformDocumentInterface = require("org.allbinary.logic.visual.transform.data.TransformDocumentInterface")
-local TransformHttpRequestDocumentFactory = require("org.allbinary.logic.visual.transform.data.TransformHttpRequestDocumentFactory")
+local HttpComponentView = {}
+package.loaded["views.HttpComponentView"] = HttpComponentView
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local DomNodeHelper = java_lazy("org.allbinary.data.tree.dom.DomNodeHelper")
+local DomNodeInterface = java_lazy("org.allbinary.data.tree.dom.DomNodeInterface")
+local XmlDocumentHelper = java_lazy("org.allbinary.data.tree.dom.document.XmlDocumentHelper")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local AbeClientInformationInterface = java_lazy("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
+local ServiceClientInformationInterfaceFactory = java_lazy("org.allbinary.logic.system.security.licensing.ServiceClientInformationInterfaceFactory")
+local BasicTransformer = java_lazy("org.allbinary.logic.visual.transform.BasicTransformer")
+local TransformInterface = java_lazy("org.allbinary.logic.visual.transform.TransformInterface")
+local TransformDocumentInterface = java_lazy("org.allbinary.logic.visual.transform.data.TransformDocumentInterface")
+local TransformHttpRequestDocumentFactory = java_lazy("org.allbinary.logic.visual.transform.data.TransformHttpRequestDocumentFactory")
 local TransformInfoHttpComposite = require("org.allbinary.logic.visual.transform.info.TransformInfoHttpComposite")
-local TransformInfoInterface = require("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
-local Document = require("org.w3c.dom.Document")
-local Node = require("org.w3c.dom.Node")
+local TransformInfoInterface = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
+local Document = java_lazy("org.w3c.dom.Document")
+local Node = java_lazy("org.w3c.dom.Node")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
+
+local function java_super(class, name, count)
+    local mangled = name .. "_j" .. count
+    local current = class
+    while type(current) == "table" do
+        local method = rawget(current, mangled)
+        if method ~= nil then return method end
+        method = rawget(current, name)
+        if method ~= nil and method ~= rawget(current, name .. "__jdispatcher") then return method end
+        local parent = getmetatable(current)
+        local index = parent and parent.__index
+        if index == current then index = nil end
+        current = index
+    end
+    return class[name]
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -37,29 +143,38 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local HttpComponentView = {}
+-- class table HttpComponentView is declared before the requires
 HttpComponentView.__index = HttpComponentView
 HttpComponentView.className = "HttpComponentView"
+HttpComponentView.javaClassName = "views.HttpComponentView"
 setmetatable(HttpComponentView, {__index = TransformInfoHttpComposite})
+HttpComponentView.java_implements = " TransformInterface "
+HttpComponentView.java_interfaces = function() return {TransformInterface} end
 
 function HttpComponentView:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.abeClientInformation = ServiceClientInformationInterfaceFactory.getInstance()
-    self.domNodeInterfaceVector = nil
-    self.transformDocumentInterface = nil
+    if self.domNodeInterfaceVector == nil then self.domNodeInterfaceVector = nil end
+    if self.transformDocumentInterface == nil then self.transformDocumentInterface = nil end
     self.NO_TYPE = 0
 end
 
 
-function HttpComponentView.new(transformInfoInterface)
-    local self = setmetatable(TransformInfoHttpComposite.new(transformInfoInterface), HttpComponentView)
-    self:_init_fields()
+function HttpComponentView._jinit(self, transformInfoInterface)
+    java_super_init(TransformInfoHttpComposite, self, transformInfoInterface)
+    HttpComponentView._init_fields(self)
         -- super(...) made self above
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             self.logUtil:putF("View Name: " .. transformInfoInterface:getName(), self, self.commonStrings.CONSTRUCTOR)
         end
         self.domNodeInterfaceVector = BasicArrayListD.new()
@@ -67,45 +182,58 @@ function HttpComponentView.new(transformInfoInterface)
     return self
 end
 
+function HttpComponentView.new(...)
+    local self = setmetatable({}, HttpComponentView)
+    HttpComponentView._jinit(self, ...)
+    return self
+end
+
 
 function HttpComponentView:getTypeId()
         return self.NO_TYPE
 end
+java_overload(HttpComponentView, "getTypeId", 0)
 
 
 function HttpComponentView:getTransformDocumentInterface()
         return self.transformDocumentInterface
 end
+java_overload(HttpComponentView, "getTransformDocumentInterface", 0)
 
 
 function HttpComponentView:setTransformDocumentInterface(transformDocumentInterface)
         self.transformDocumentInterface = transformDocumentInterface
 end
+java_overload(HttpComponentView, "setTransformDocumentInterface", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "TransformDocumentInterface")) end)
 
 
 function HttpComponentView:addDomNodeInterface(domNodeInterface)
         self.domNodeInterfaceVector:add(domNodeInterface)
 end
+java_overload(HttpComponentView, "addDomNodeInterface", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "DomNodeInterface")) end)
 
 
 -- throws Exception
 function HttpComponentView:toXmlDoc()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local size = self.domNodeInterfaceVector:size()
             for index = 0, size - 1 do
                 local domNodeInterface = self.domNodeInterfaceVector:get(index)
                 self.transformDocumentInterface:getBaseNode():appendChild(domNodeInterface:toXmlNode(self.transformDocumentInterface:getDoc()))
             end
-            return self:getTransformDocumentInterface():getDoc()
+            do return "__jreturn", self:getTransformDocumentInterface():getDoc() end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEWERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEWERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "toXmlDoc()", e)
             end
             error(e, 0)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+java_overload(HttpComponentView, "toXmlDoc", 0)
 
 
 -- throws Exception
@@ -120,24 +248,35 @@ function HttpComponentView:getDoc()
         end
         return self:getTransformDocumentInterface():getDoc()
 end
+java_overload(HttpComponentView, "getDoc", 0)
 
 
 -- throws Exception
 function HttpComponentView:view()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             self:toXmlDoc()
             local success = XmlDocumentHelper.toString(self:getDoc())
             local result = BasicTransformer.new(self.abeClientInformation, self:getTransformInfoInterface()):translate(success)
-            return result
+            do return "__jreturn", result end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().TAGHELPERERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "view()", e)
             end
             error(e, 0)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+java_overload(HttpComponentView, "view", 0)
+
+
+-- throws Exception
+function HttpComponentView:getTransformInfoInterface()
+        return java_super(TransformInfoHttpComposite, "getTransformInfoInterface", 0)(self)
+end
+java_overload(HttpComponentView, "getTransformInfoInterface", 0)
 
 return HttpComponentView
 

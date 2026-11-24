@@ -13,19 +13,125 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.data.tables.staticpages
 
--- local HashMap = require("java.util.HashMap")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local StoreFrontData = require("org.allbinary.business.context.modules.storefront.StoreFrontData")
-local StaticPagesDbInitInfo = require("org.allbinary.business.init.db.StaticPagesDbInitInfo")
-local BasicItemData = require("org.allbinary.business.user.commerce.inventory.item.BasicItemData")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
+local StaticPagesEntity = {}
+package.loaded["org.allbinary.data.tables.staticpages.StaticPagesEntity"] = StaticPagesEntity
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local StoreFrontData = java_lazy("org.allbinary.business.context.modules.storefront.StoreFrontData")
+local StaticPagesDbInitInfo = java_lazy("org.allbinary.business.init.db.StaticPagesDbInitInfo")
+local BasicItemData = java_lazy("org.allbinary.business.user.commerce.inventory.item.BasicItemData")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local AbSqlBean = require("org.allbinary.logic.communication.sql.AbSqlBean")
-local SearchData = require("org.allbinary.logic.control.search.SearchData")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
+local SearchData = java_lazy("org.allbinary.logic.control.search.SearchData")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local StaticPagesEntityInterface = require("org.allbinary.data.tables.staticpages.StaticPagesEntityInterface")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
+
+local function java_super(class, name, count)
+    local mangled = name .. "_j" .. count
+    local current = class
+    while type(current) == "table" do
+        local method = rawget(current, mangled)
+        if method ~= nil then return method end
+        method = rawget(current, name)
+        if method ~= nil and method ~= rawget(current, name .. "__jdispatcher") then return method end
+        local parent = getmetatable(current)
+        local index = parent and parent.__index
+        if index == current then index = nil end
+        current = index
+    end
+    return class[name]
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -34,14 +140,23 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local StaticPagesEntity = {}
+-- class table StaticPagesEntity is declared before the requires
 StaticPagesEntity.__index = StaticPagesEntity
 StaticPagesEntity.className = "StaticPagesEntity"
+StaticPagesEntity.javaClassName = "org.allbinary.data.tables.staticpages.StaticPagesEntity"
 setmetatable(StaticPagesEntity, {__index = AbSqlBean})
+StaticPagesEntity.java_implements = " StaticPagesEntityInterface "
+StaticPagesEntity.java_interfaces = function() return {StaticPagesEntityInterface} end
 
 function StaticPagesEntity:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -50,54 +165,66 @@ function StaticPagesEntity:_init_fields()
 end
 
 
-function StaticPagesEntity.new()
-    local self = setmetatable(AbSqlBean.new(StaticPagesDbInitInfo.new()), StaticPagesEntity)
-    self:_init_fields()
+function StaticPagesEntity._jinit(self)
+    java_super_init(AbSqlBean, self, StaticPagesDbInitInfo.new())
+    StaticPagesEntity._init_fields(self)
         -- super(...) made self above
         self:setTableName(self.TABLENAME)
     return self
 end
 
+function StaticPagesEntity.new(...)
+    local self = setmetatable({}, StaticPagesEntity)
+    StaticPagesEntity._jinit(self, ...)
+    return self
+end
+
 
 function StaticPagesEntity:insert(values)
-        local try_ok, try_error = pcall(function()
-            AbSqlBean.insert(self, values)
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGING) then
+        local try_ok, try_error, try_value = pcall(function()
+            java_super(AbSqlBean, "insert", 1)(self, values)
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                 self.logUtil:putF(self.commonStrings.SUCCESS, self, self.INSERT)
             end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGING) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                 self.logUtil:put(self.commonStrings.FAILURE, self, self.INSERT, e)
             end
         end
 end
+java_overload(StaticPagesEntity, "insert", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "BasicArrayList")) end)
 
 
 function StaticPagesEntity:getFile(store, keywords)
         local whereHashMap = StdUtil.getInstance():createHashMap()
         whereHashMap:put(StoreFrontData.getInstance().NAME, store)
         whereHashMap:put(self.basicItemData.KEYWORDS, keywords)
-        local file = AbSqlBean.getField(self, whereHashMap, SearchData.PAGE)
+        local file = java_super(AbSqlBean, "getField", 2)(self, whereHashMap, SearchData.PAGE)
         return file
 end
+java_overload(StaticPagesEntity, "getFile", 2, function(java_a1, java_a2) return true and (java_a1 == nil or type(java_a1) == "string") and (java_a2 == nil or type(java_a2) == "string") end)
 
 
 function StaticPagesEntity:delete(keywords)
-        AbSqlBean.deleteWhere(self, self.basicItemData.KEYWORDS, keywords)
+        java_super(AbSqlBean, "deleteWhere", 2)(self, self.basicItemData.KEYWORDS, keywords)
 end
+java_overload(StaticPagesEntity, "delete", 1, function(java_a1) return true and (java_a1 == nil or type(java_a1) == "string") end)
 
 
 function StaticPagesEntity:dropTable()
-        local returnStr = AbSqlBean.dropTable(self)
+        local returnStr = java_super(AbSqlBean, "dropTable", 0)(self)
         return returnStr
 end
+java_overload(StaticPagesEntity, "dropTable", 0)
 
 
 function StaticPagesEntity:update(updatedValues)
-        AbSqlBean.updateWhere(self, self.basicItemData.KEYWORDS, updatedValues:get(self.basicItemData.KEYWORDS), updatedValues)
+        java_super(AbSqlBean, "updateWhere", 3)(self, self.basicItemData.KEYWORDS, updatedValues:get(self.basicItemData.KEYWORDS), updatedValues)
 end
+java_overload(StaticPagesEntity, "update", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "HashMap")) end)
 
 
 function StaticPagesEntity:createTableStatement()
@@ -105,11 +232,13 @@ function StaticPagesEntity:createTableStatement()
         stringBuffer:append(self.sqlStrings.CREATE_TABLE):append(self.TABLENAME):append(self.sqlStrings.START):append(StoreFrontData.getInstance().NAME):append(self.sqlTypeStrings.SIXTY_CHAR_COLUMN_NOT_NULL):append(self.basicItemData.KEYWORDS):append(self.sqlTypeStrings.MAX_CHAR_COLUMN_NOT_NULL):append(SearchData.PAGE):append(self.sqlTypeStrings.MAX_CHAR_COLUMN_NOT_NULL):append(self.sqlStrings.PRIMARY_KEY):append(StoreFrontData.getInstance().NAME):append(CommonSeps.getInstance().COMMA_SEP):append(self.basicItemData.KEYWORDS):append(self.sqlStrings.END)
         return tostring(stringBuffer)
 end
+java_overload(StaticPagesEntity, "createTableStatement", 0)
 
 
 function StaticPagesEntity:createTable()
-        return AbSqlBean.createTable(self, self:createTableStatement())
+        return java_super(AbSqlBean, "createTable", 1)(self, self:createTableStatement())
 end
+java_overload(StaticPagesEntity, "createTable", 0)
 
 return StaticPagesEntity
 

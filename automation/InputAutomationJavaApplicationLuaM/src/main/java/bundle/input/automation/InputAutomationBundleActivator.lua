@@ -13,18 +13,33 @@
 -- Generated Code Do Not Modify
 -- package bundle.input.automation
 
-local BundleActivator = require("org.osgi.framework.BundleActivator")
-local BundleContext = require("org.osgi.framework.BundleContext")
-local InputAutomationConfigurationModuleChangeListener = require("bundle.input.automation.module.configuration.InputAutomationConfigurationModuleChangeListener")
-local InputAutomationRobotChangeListener = require("bundle.input.automation.robot.InputAutomationRobotChangeListener")
-local InputAutomationJFrame = require("org.allbinary.input.automation.InputAutomationJFrame")
-local InputAutomationModuleServiceConsumer = require("org.allbinary.input.automation.module.osgi.InputAutomationModuleServiceConsumer")
-local InputAutomationNewBundleRunnable = require("org.allbinary.input.automation.module.osgi.InputAutomationNewBundleRunnable")
-local InputAutomationServiceFactory = require("org.allbinary.input.automation.osgi.InputAutomationServiceFactory")
-local InputAutomationRobotServiceConsumer = require("org.allbinary.input.automation.robot.osgi.InputAutomationRobotServiceConsumer")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local OSGIActivatorUtil = require("org.allbinary.osgi.OSGIActivatorUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local InputAutomationBundleActivator = {}
+package.loaded["bundle.input.automation.InputAutomationBundleActivator"] = InputAutomationBundleActivator
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local BundleActivator = java_lazy("org.osgi.framework.BundleActivator")
+local BundleContext = java_lazy("org.osgi.framework.BundleContext")
+local InputAutomationConfigurationModuleChangeListener = java_lazy("bundle.input.automation.module.configuration.InputAutomationConfigurationModuleChangeListener")
+local InputAutomationRobotChangeListener = java_lazy("bundle.input.automation.robot.InputAutomationRobotChangeListener")
+local InputAutomationJFrame = java_lazy("org.allbinary.input.automation.InputAutomationJFrame")
+local InputAutomationModuleServiceConsumer = java_lazy("org.allbinary.input.automation.module.osgi.InputAutomationModuleServiceConsumer")
+local InputAutomationNewBundleRunnable = java_lazy("org.allbinary.input.automation.module.osgi.InputAutomationNewBundleRunnable")
+local InputAutomationServiceFactory = java_lazy("org.allbinary.input.automation.osgi.InputAutomationServiceFactory")
+local InputAutomationRobotServiceConsumer = java_lazy("org.allbinary.input.automation.robot.osgi.InputAutomationRobotServiceConsumer")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local OSGIActivatorUtil = java_lazy("org.allbinary.osgi.OSGIActivatorUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local InputAutomationBundleActivatorListenerInterface = require("bundle.input.automation.InputAutomationBundleActivatorListenerInterface")
 
 local function java_idiv(a, b)
@@ -34,23 +49,35 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local InputAutomationBundleActivator = {}
+-- class table InputAutomationBundleActivator is declared before the requires
 InputAutomationBundleActivator.__index = InputAutomationBundleActivator
 InputAutomationBundleActivator.className = "InputAutomationBundleActivator"
+InputAutomationBundleActivator.javaClassName = "bundle.input.automation.InputAutomationBundleActivator"
+InputAutomationBundleActivator.java_implements = " BundleActivator InputAutomationBundleActivatorListenerInterface "
+InputAutomationBundleActivator.java_interfaces = function() return {BundleActivator, InputAutomationBundleActivatorListenerInterface} end
 
 function InputAutomationBundleActivator:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
 end
 
-function InputAutomationBundleActivator.new()
-    local self = setmetatable({}, InputAutomationBundleActivator)
-    self:_init_fields()
+function InputAutomationBundleActivator._jinit(self)
+    InputAutomationBundleActivator._init_fields(self)
     return self
+end
+
+function InputAutomationBundleActivator.new()
+    return InputAutomationBundleActivator._jinit(setmetatable({}, InputAutomationBundleActivator))
 end
 
 
@@ -61,15 +88,16 @@ end
 
 -- throws Exception
 function InputAutomationBundleActivator:start(bundleContext)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             self.logUtil:putF(self.commonStrings.START, self, self.commonStrings.START)
             self.bundleContext = bundleContext
-            InputAutomationBundleActivator.moduleManagementThread = Thread.new(InputAutomationNewBundleRunnable.new(self))
+            InputAutomationBundleActivator.moduleManagementThread = require("java.lang.Thread").new(InputAutomationNewBundleRunnable.new(self))
             InputAutomationBundleActivator.moduleManagementThread:start()
             InputAutomationJFrame.create(self)
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.START, e)
             error(e, 0)
         end

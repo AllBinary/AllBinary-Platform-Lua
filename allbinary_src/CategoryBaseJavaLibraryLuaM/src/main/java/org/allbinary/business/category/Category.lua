@@ -13,22 +13,39 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.category
 
--- local HashMap = require("java.util.HashMap")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local CategoryHierarchy = require("org.allbinary.business.category.hierarchy.CategoryHierarchy")
-local CategoryHierarchyInterface = require("org.allbinary.business.category.hierarchy.CategoryHierarchyInterface")
-local CategoryPropertiesFactoryInterface = require("org.allbinary.business.category.properties.CategoryPropertiesFactoryInterface")
-local CategoryPropertiesInterface = require("org.allbinary.business.category.properties.CategoryPropertiesInterface")
-local RootCategoryPropertiesInterface = require("org.allbinary.business.category.properties.root.RootCategoryPropertiesInterface")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local AbPath = require("org.allbinary.logic.io.path.AbPath")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local Document = require("org.w3c.dom.Document")
-local Node = require("org.w3c.dom.Node")
+local Category = {}
+package.loaded["org.allbinary.business.category.Category"] = Category
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local CategoryHierarchy = java_lazy("org.allbinary.business.category.hierarchy.CategoryHierarchy")
+local CategoryHierarchyInterface = java_lazy("org.allbinary.business.category.hierarchy.CategoryHierarchyInterface")
+local CategoryPropertiesFactoryInterface = java_lazy("org.allbinary.business.category.properties.CategoryPropertiesFactoryInterface")
+local CategoryPropertiesInterface = java_lazy("org.allbinary.business.category.properties.CategoryPropertiesInterface")
+local RootCategoryPropertiesInterface = java_lazy("org.allbinary.business.category.properties.root.RootCategoryPropertiesInterface")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local AbPath = java_lazy("org.allbinary.logic.io.path.AbPath")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local Document = java_lazy("org.w3c.dom.Document")
+local Node = java_lazy("org.w3c.dom.Node")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local CategoryInterface = require("org.allbinary.business.category.CategoryInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
@@ -44,6 +61,41 @@ local function java_exception(className, message, cause)
     return setmetatable(exception, {__tostring = function(self) if self.message ~= nil then return tostring(self.message) end return self.className end})
 end
 
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
 local function java_idiv(a, b)
     local q = a / b
     if q < 0 then return math.ceil(q) end
@@ -51,38 +103,53 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local Category = {}
+-- class table Category is declared before the requires
 Category.__index = Category
 Category.className = "Category"
+Category.javaClassName = "org.allbinary.business.category.Category"
+Category.java_implements = " CategoryInterface "
+Category.java_interfaces = function() return {CategoryInterface} end
 
 function Category:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
-    self.categoryHierarchyInterface = nil
-    self.categoryPropertiesInterface = nil
+    if self.categoryHierarchyInterface == nil then self.categoryHierarchyInterface = nil end
+    if self.categoryPropertiesInterface == nil then self.categoryPropertiesInterface = nil end
     self.childCategoryVector = BasicArrayListD.new()
     self.typeVector = BasicArrayListD.new()
     self.PROPERTIES = 1
     self.CATEGORY = 0
 end
 
-function Category.new(...)
+function Category._jinit(self, ...)
     local count = select("#", ...)
-    if count == 1 then return Category._new1(...)
-    elseif count == 2 then return Category._new2(...)
-    elseif count == 3 then return Category._new3(...)
+    if count == 1 then return Category._new1(self, ...)
+    elseif count == 2 then return Category._new2(self, ...)
+    elseif count == 3 then return Category._new3(self, ...)
     end
+    error("No constructor of Category takes " .. count .. " arguments")
+end
+
+function Category.new(...)
+    local self = setmetatable({}, Category)
+    Category._jinit(self, ...)
+    return self
 end
 
 
-function Category._new1(categoryPropertiesFactoryInterface)
-    local self = setmetatable({}, Category)
-    self:_init_fields()
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().CATEGORY) then
+function Category._new1(self, categoryPropertiesFactoryInterface)
+    Category._init_fields(self)
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().CATEGORY) then
             self.logUtil:putF(self.commonStrings.CONSTRUCTOR, self, "Category(CategoryPropertiesFactoryInterface)")
         end
         self.categoryPropertiesInterface = categoryPropertiesFactoryInterface:getInstance()
@@ -92,9 +159,8 @@ function Category._new1(categoryPropertiesFactoryInterface)
 end
 
 
-function Category._new2(categoryPropertiesFactoryInterface, level)
-    local self = setmetatable({}, Category)
-    self:_init_fields()
+function Category._new2(self, categoryPropertiesFactoryInterface, level)
+    Category._init_fields(self)
         self.categoryPropertiesInterface = categoryPropertiesFactoryInterface:getInstance()
         self.categoryHierarchyInterface = CategoryHierarchy.new(self, self, level)
         self:log()
@@ -102,9 +168,8 @@ function Category._new2(categoryPropertiesFactoryInterface, level)
 end
 
 
-function Category._new3(rootCategoryInterface, parentCategoryInterface, categoryPropertiesFactoryInterface)
-    local self = setmetatable({}, Category)
-    self:_init_fields()
+function Category._new3(self, rootCategoryInterface, parentCategoryInterface, categoryPropertiesFactoryInterface)
+    Category._init_fields(self)
         self.categoryPropertiesInterface = categoryPropertiesFactoryInterface:getInstance()
         self.categoryHierarchyInterface = CategoryHierarchy.new(rootCategoryInterface, parentCategoryInterface)
         self:log()
@@ -157,7 +222,7 @@ end
 
 function Category:addChild(categoryInterface)
         self:removeDuplicateChild(categoryInterface)
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().CATEGORY) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().CATEGORY) then
             self.logUtil:putF("adding", self, "addChild")
         end
         local childCategoryHierarchyInterface = categoryInterface:getHierarchy()
@@ -235,7 +300,7 @@ end
 -- throws Exception
 function Category:isLeaf()
         if self.childCategoryVector == nil then
-            error(java_exception("Exception", "Category Error"), 0)
+            error(require("java.lang.Exception").new("Category Error"), 0)
         end
         if self.childCategoryVector:size() == 0 then
             return true
@@ -324,7 +389,7 @@ end
 
 -- throws Exception
 function Category:log()
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().CATEGORY) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().CATEGORY) then
             local stringBuffer = StringMaker.new()
             stringBuffer:append("Category Name: ")
             stringBuffer:append(self.categoryPropertiesInterface:getValue())

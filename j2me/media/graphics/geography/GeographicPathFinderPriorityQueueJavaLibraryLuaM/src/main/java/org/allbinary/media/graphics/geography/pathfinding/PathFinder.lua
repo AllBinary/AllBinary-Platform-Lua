@@ -13,21 +13,36 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media.graphics.geography.pathfinding
 
--- local HashSet = require("java.util.HashSet")
--- local PriorityQueue = require("java.util.PriorityQueue")
-local AllBinaryTiledLayer = require("org.allbinary.game.layer.AllBinaryTiledLayer")
-local NullUtil = require("org.allbinary.logic.NullUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local MathUtil = require("org.allbinary.logic.math.MathUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local BasicGeographicMap = require("org.allbinary.media.graphics.geography.map.BasicGeographicMap")
-local BasicGeographicMapCellPositionFactory = require("org.allbinary.media.graphics.geography.map.BasicGeographicMapCellPositionFactory")
-local GeographicMapCellPosition = require("org.allbinary.media.graphics.geography.map.GeographicMapCellPosition")
-local GeographicMapCellType = require("org.allbinary.media.graphics.geography.map.GeographicMapCellType")
-local RaceTrackGeographicMapCellType = require("org.allbinary.media.graphics.geography.map.racetrack.RaceTrackGeographicMapCellType")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local BasicArrayListUtil = require("org.allbinary.util.BasicArrayListUtil")
+local PathFinder = {}
+package.loaded["org.allbinary.media.graphics.geography.pathfinding.PathFinder"] = PathFinder
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local AllBinaryTiledLayer = java_lazy("org.allbinary.game.layer.AllBinaryTiledLayer")
+local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local MathUtil = java_lazy("org.allbinary.logic.math.MathUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local BasicGeographicMap = java_lazy("org.allbinary.media.graphics.geography.map.BasicGeographicMap")
+local BasicGeographicMapCellPositionFactory = java_lazy("org.allbinary.media.graphics.geography.map.BasicGeographicMapCellPositionFactory")
+local GeographicMapCellPosition = java_lazy("org.allbinary.media.graphics.geography.map.GeographicMapCellPosition")
+local GeographicMapCellType = java_lazy("org.allbinary.media.graphics.geography.map.GeographicMapCellType")
+local RaceTrackGeographicMapCellType = java_lazy("org.allbinary.media.graphics.geography.map.racetrack.RaceTrackGeographicMapCellType")
+local ABHashSet = java_lazy("org.allbinary.util.ABHashSet")
+local ABPriorityQueue = java_lazy("org.allbinary.util.ABPriorityQueue")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local BasicArrayListUtil = java_lazy("org.allbinary.util.BasicArrayListUtil")
 local GeographicPathFinderBase = require("org.allbinary.media.graphics.geography.pathfinding.GeographicPathFinderBase")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
@@ -51,6 +66,85 @@ local function java_new_array(default, size, ...)
     return array
 end
 
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
+    return array
+end
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
+
 local function java_idiv(a, b)
     local q = a / b
     if q < 0 then return math.ceil(q) end
@@ -58,29 +152,40 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local PathFinder = {}
+-- class table PathFinder is declared before the requires
 PathFinder.__index = PathFinder
 PathFinder.className = "PathFinder"
+PathFinder.javaClassName = "org.allbinary.media.graphics.geography.pathfinding.PathFinder"
 setmetatable(PathFinder, {__index = GeographicPathFinderBase})
 
 function PathFinder:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.basicArrayListUtil = BasicArrayListUtil.getInstance()
     self.mathUtil = MathUtil.getInstance()
-    self.openPriorityQueue = PriorityQueue.new()
-    self.closedSet = HashSet.new()
+    self.openPriorityQueue = ABPriorityQueue.new()
+    self.closedSet = ABHashSet.new()
     self.geographicMapInterface = NullUtil.getInstance().NULL_OBJECT
     self.costArray = PathFindingNodeCost.NULL_PATH_FINDING_NODE_COST_ARRAY_ARRAY
 end
 
-function PathFinder.new()
-    local self = setmetatable(GeographicPathFinderBase.new(), PathFinder)
-    self:_init_fields()
+function PathFinder._jinit(self)
+    java_super_init(GeographicPathFinderBase, self)
+    PathFinder._init_fields(self)
     return self
+end
+
+function PathFinder.new()
+    return PathFinder._jinit(setmetatable({}, PathFinder))
 end
 
 
@@ -102,19 +207,23 @@ function PathFinder:init(geographicMapInterface)
             end
         end
 end
+java_overload(PathFinder, "init", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "BasicGeographicMap")) end)
 
 
 function PathFinder:searchTotalPath(startPathFindingNodeList, endPathFindingNodeList, totalPaths)
-        local try_ok, try_error = pcall(function()
-            return self:search(startPathFindingNodeList:get(0), endPathFindingNodeList:get(0))
+        local try_ok, try_error, try_value = pcall(function()
+            do return "__jreturn", self:search(startPathFindingNodeList:get(0), endPathFindingNodeList:get(0)) end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local commonStrings = CommonStrings.getInstance()
             self.logUtil:put(commonStrings.EXCEPTION, self, "search", e)
             return self.basicArrayListUtil:getImmutableInstance()
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+java_overload(PathFinder, "searchTotalPath", 3, function(java_a1, java_a2, java_a3) return true and (java_a1 == nil or java_is(java_a1, "BasicArrayList")) and (java_a2 == nil or java_is(java_a2, "BasicArrayList")) and type(java_a3) == "number" end)
 
 
 -- throws Exception
@@ -128,6 +237,7 @@ function PathFinder:searchTotalPathN(startPathFindingNodeList, endPathFindingNod
         end
         return self.basicArrayListUtil:getImmutableInstance()
 end
+java_overload(PathFinder, "searchTotalPathN", 4, function(java_a1, java_a2, java_a3, java_a4) return true and (java_a1 == nil or java_is(java_a1, "BasicArrayList")) and (java_a2 == nil or java_is(java_a2, "BasicArrayList")) and type(java_a3) == "number" and (java_a4 == nil or java_is(java_a4, "MultipassState")) end)
 
 
 -- throws Exception
@@ -137,12 +247,14 @@ function PathFinder:search(startPathFindingNode, endPathFindingNode)
         pathList:add(list)
         return pathList
 end
+java_overload(PathFinder, "search", 2, function(java_a1, java_a2) return true and (java_a1 == nil or java_is(java_a1, "PathFindingNode")) and (java_a2 == nil or java_is(java_a2, "PathFindingNode")) end)
 
 
 -- throws Exception
 function PathFinder:searchStart(startPathFindingNode, endPathFindingNode, multipassState)
         self:findPathStart(startPathFindingNode.geographicMapCellPosition, endPathFindingNode.geographicMapCellPosition, multipassState)
 end
+java_overload(PathFinder, "searchStart", 3, function(java_a1, java_a2, java_a3) return true and (java_a1 == nil or java_is(java_a1, "PathFindingNode")) and (java_a2 == nil or java_is(java_a2, "PathFindingNode")) and (java_a3 == nil or java_is(java_a3, "MultipassState")) end)
 
 
 -- throws Exception
@@ -157,6 +269,7 @@ function PathFinder:searchN(startPathFindingNode, endPathFindingNode, multipassS
         multipassState.step = 0
         return pathList
 end
+java_overload(PathFinder, "searchN", 3, function(java_a1, java_a2, java_a3) return true and (java_a1 == nil or java_is(java_a1, "PathFindingNode")) and (java_a2 == nil or java_is(java_a2, "PathFindingNode")) and (java_a3 == nil or java_is(java_a3, "MultipassState")) end)
 
 
 -- throws Exception
@@ -195,10 +308,11 @@ function PathFinder:findPath(start, target)
             local calculatedCost = 0
             for column = current.geographicMapCellPosition:getColumn() - 1, current.geographicMapCellPosition:getColumn() + 2 - 1 do
                 for row = current.geographicMapCellPosition:getRow() - 1, current.geographicMapCellPosition:getRow() + 2 - 1 do
+                    do
                     if column > 0 and row > 0 and column < allBinaryTiledLayer:getColumns() and row < allBinaryTiledLayer:getRows() and geographicMapInterface:isOnMap(basicGeographicMapCellPositionFactory:getAt(column, row)) then
                         neighbor = self.costArray[column + 1][row + 1]
                         if self.closedSet:contains(neighbor) then
-                            goto continue_N70394
+                            goto continue_N70404
                         end
                         neighborInfo = neighbor.pathFindingNodeCostInfoP
                         calculatedCost = neighborInfo.costToEndP + neighborInfo.costFromStartP + current.pathFindingNodeCostInfoP.totalCostP
@@ -212,12 +326,14 @@ function PathFinder:findPath(start, target)
                             end
                         end
                     end
-                    ::continue_N70394::
+                    end
+                    ::continue_N70404::
                 end
             end
         until not (not self.openPriorityQueue:isEmpty())
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
+java_overload(PathFinder, "findPath", 2, function(java_a1, java_a2) return true and (java_a1 == nil or java_is(java_a1, "GeographicMapCellPosition")) and (java_a2 == nil or java_is(java_a2, "GeographicMapCellPosition")) end)
 
 
 -- throws Exception
@@ -242,6 +358,7 @@ function PathFinder:findPathStart(start, target, multipassState)
         self.openPriorityQueue:add(startNode)
         multipassState.step = multipassState.step + 1
 end
+java_overload(PathFinder, "findPathStart", 3, function(java_a1, java_a2, java_a3) return true and (java_a1 == nil or java_is(java_a1, "GeographicMapCellPosition")) and (java_a2 == nil or java_is(java_a2, "GeographicMapCellPosition")) and (java_a3 == nil or java_is(java_a3, "MultipassState")) end)
 
 
 -- throws Exception
@@ -263,10 +380,11 @@ function PathFinder:findPathEnd(start, target, multipassState)
             local calculatedCost = 0
             for column = current.geographicMapCellPosition:getColumn() - 1, current.geographicMapCellPosition:getColumn() + 2 - 1 do
                 for row = current.geographicMapCellPosition:getRow() - 1, current.geographicMapCellPosition:getRow() + 2 - 1 do
+                    do
                     if column > 0 and row > 0 and column < allBinaryTiledLayer:getColumns() and row < allBinaryTiledLayer:getRows() and geographicMapInterface:isOnMap(basicGeographicMapCellPositionFactory:getAt(column, row)) then
                         neighbor = self.costArray[column + 1][row + 1]
                         if self.closedSet:contains(neighbor) then
-                            goto continue_N72940
+                            goto continue_N72950
                         end
                         neighborInfo = neighbor.pathFindingNodeCostInfoP
                         calculatedCost = neighborInfo.costToEndP + neighborInfo.costFromStartP + current.pathFindingNodeCostInfoP.totalCostP
@@ -280,7 +398,8 @@ function PathFinder:findPathEnd(start, target, multipassState)
                             end
                         end
                     end
-                    ::continue_N72940::
+                    end
+                    ::continue_N72950::
                 end
             end
             total = total + 1
@@ -288,8 +407,9 @@ function PathFinder:findPathEnd(start, target, multipassState)
                 return self.basicArrayListUtil:getImmutableInstance()
             end
         until not (not self.openPriorityQueue:isEmpty())
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
+java_overload(PathFinder, "findPathEnd", 3, function(java_a1, java_a2, java_a3) return true and (java_a1 == nil or java_is(java_a1, "GeographicMapCellPosition")) and (java_a2 == nil or java_is(java_a2, "GeographicMapCellPosition")) and (java_a3 == nil or java_is(java_a3, "MultipassState")) end)
 
 
 function PathFinder:extractPath(start, current)
@@ -302,6 +422,7 @@ function PathFinder:extractPath(start, current)
         self.basicArrayListUtil:reverse(path)
         return path
 end
+java_overload(PathFinder, "extractPath", 2, function(java_a1, java_a2) return true and (java_a1 == nil or java_is(java_a1, "GeographicMapCellPosition")) and (java_a2 == nil or java_is(java_a2, "PathFindingNodeCost")) end)
 
 return PathFinder
 

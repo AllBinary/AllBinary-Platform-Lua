@@ -13,10 +13,26 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.input.media.image
 
-local CapturedImageInputOutput = require("org.allbinary.input.media.image.capture.CapturedImageInputOutput")
-local ComparisonImageInputOutput = require("org.allbinary.media.image.comparison.ComparisonImageInputOutput")
-local MotionRectanglesImageInputOutput = require("org.allbinary.media.image.comparison.motion.MotionRectanglesImageInputOutput")
-local ImageIOInterface = require("org.allbinary.media.image.io.ImageIOInterface")
+local InputImageIOInterfaceFactory = {}
+package.loaded["org.allbinary.input.media.image.InputImageIOInterfaceFactory"] = InputImageIOInterfaceFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local CapturedImageInputOutput = java_lazy("org.allbinary.input.media.image.capture.CapturedImageInputOutput")
+local ComparisonImageInputOutput = java_lazy("org.allbinary.media.image.comparison.ComparisonImageInputOutput")
+local MotionRectanglesImageInputOutput = java_lazy("org.allbinary.media.image.comparison.motion.MotionRectanglesImageInputOutput")
+local ImageIOInterface = java_lazy("org.allbinary.media.image.io.ImageIOInterface")
+local InputImageType = java_lazy("org.allbinary.input.media.image.InputImageType")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -38,17 +54,29 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local InputImageIOInterfaceFactory = {}
+-- class table InputImageIOInterfaceFactory is declared before the requires
 InputImageIOInterfaceFactory.__index = InputImageIOInterfaceFactory
 InputImageIOInterfaceFactory.className = "InputImageIOInterfaceFactory"
+InputImageIOInterfaceFactory.javaClassName = "org.allbinary.input.media.image.InputImageIOInterfaceFactory"
 
 
-function InputImageIOInterfaceFactory.new()
+function InputImageIOInterfaceFactory._jinit(self)
+    return self
+end
+
+function InputImageIOInterfaceFactory.new(...)
     local self = setmetatable({}, InputImageIOInterfaceFactory)
+    InputImageIOInterfaceFactory._jinit(self, ...)
     return self
 end
 
@@ -62,7 +90,7 @@ function InputImageIOInterfaceFactory.getInstance(imageType)
         elseif imageType == InputImageType.MOTION then
             return MotionRectanglesImageInputOutput.new()
         else
-            error(java_exception("Exception", "No ImageIOInterface for: " .. tostring(imageType)), 0)
+            error(require("java.lang.Exception").new("No ImageIOInterface for: " .. tostring(imageType)), 0)
         end
 end
 

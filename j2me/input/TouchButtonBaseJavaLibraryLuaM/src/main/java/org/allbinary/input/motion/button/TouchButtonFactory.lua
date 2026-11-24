@@ -13,8 +13,23 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.input.motion.button
 
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListUtil = require("org.allbinary.util.BasicArrayListUtil")
+local TouchButtonFactory = {}
+package.loaded["org.allbinary.input.motion.button.TouchButtonFactory"] = TouchButtonFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListUtil = java_lazy("org.allbinary.util.BasicArrayListUtil")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -36,13 +51,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local TouchButtonFactory = {}
+-- class table TouchButtonFactory is declared before the requires
 TouchButtonFactory.__index = TouchButtonFactory
 TouchButtonFactory.className = "TouchButtonFactory"
+TouchButtonFactory.javaClassName = "org.allbinary.input.motion.button.TouchButtonFactory"
 
 function TouchButtonFactory:_init_fields()
     self.LIST = BasicArrayListUtil.getInstance():getImmutableInstance()
@@ -57,9 +79,14 @@ function TouchButtonFactory.getInstance()
 end
 
 
-function TouchButtonFactory.new()
+function TouchButtonFactory._jinit(self)
+    TouchButtonFactory._init_fields(self)
+    return self
+end
+
+function TouchButtonFactory.new(...)
     local self = setmetatable({}, TouchButtonFactory)
-    self:_init_fields()
+    TouchButtonFactory._jinit(self, ...)
     return self
 end
 
@@ -95,7 +122,7 @@ end
 -- throws Exception
 function TouchButtonFactory:setList(list)
         if list == nil then
-            error(java_exception("Exception", "Null List"), 0)
+            error(require("java.lang.Exception").new("Null List"), 0)
         end
         self.list = list
 end

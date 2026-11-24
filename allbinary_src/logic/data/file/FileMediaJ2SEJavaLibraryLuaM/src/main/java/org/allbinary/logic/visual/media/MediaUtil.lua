@@ -1,17 +1,33 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.visual.media
 
+local MediaUtil = {}
+package.loaded["org.allbinary.logic.visual.media.MediaUtil"] = MediaUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local BufferedImage = require("java.awt.image.BufferedImage")
 -- local RenderedImage = require("java.awt.image.RenderedImage")
--- local HashMap = require("java.util.HashMap")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local LogConfigTypeFactory = require("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
-local LogConfigTypes = require("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
-local AbFile = require("org.allbinary.logic.io.file.AbFile")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local ImageUtil = require("org.allbinary.media.image.ImageUtil")
-local CommonLabels = require("org.allbinary.string.CommonLabels")
+local HashMap = java_lazy("java.util.HashMap")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local ImageUtil = java_lazy("org.allbinary.media.image.ImageUtil")
+local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
+local ImageIOUtil = java_lazy("org.allbinary.logic.visual.media.ImageIOUtil")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -33,14 +49,21 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
 --import com.sun.imageio.plugins.common.ImageUtil;
-local MediaUtil = {}
+-- class table MediaUtil is declared before the requires
 MediaUtil.__index = MediaUtil
 MediaUtil.className = "MediaUtil"
+MediaUtil.javaClassName = "org.allbinary.logic.visual.media.MediaUtil"
 
 function MediaUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -48,13 +71,18 @@ end
 
 
 function MediaUtil.getInstance()
-        return MediaUtil.instance
+        return MediaUtil.instance_f
 end
 
 
-function MediaUtil.new()
+function MediaUtil._jinit(self)
+    MediaUtil._init_fields(self)
+    return self
+end
+
+function MediaUtil.new(...)
     local self = setmetatable({}, MediaUtil)
-    self:_init_fields()
+    MediaUtil._jinit(self, ...)
     return self
 end
 
@@ -62,11 +90,11 @@ end
 -- throws Exception
 function MediaUtil:saveImageFile(originalImageFile, newImageFileName, category, mediaData, newWidth, newHeight)
         if originalImageFile == nil or not originalImageFile:isFile() then
-            error(java_exception("Exception", "Original Image File Does Not Exist."), 0)
+            error(require("java.lang.Exception").new("Original Image File Does Not Exist."), 0)
         end
         local bufferedImage = ImageIOUtil.read(originalImageFile)
         if bufferedImage == nil then
-            error(java_exception("Exception", "Unable to find ImageReader for this file."), 0)
+            error(require("java.lang.Exception").new("Unable to find ImageReader for this file."), 0)
         end
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             local hashMap = self:getImageBufferPropertyHashMap(bufferedImage)
@@ -78,7 +106,7 @@ function MediaUtil:saveImageFile(originalImageFile, newImageFileName, category, 
         local newBufferedImage = imageUtil:createBufferedImageForSave(bufferedImage, newWidth, newHeight)
         local isWritten = ImageIOUtil.write(newBufferedImage, mediaData:getName(), imageFile)
         if not isWritten then
-            error(java_exception("Exception", "Unable to write."), 0)
+            error(require("java.lang.Exception").new("Unable to write."), 0)
         end
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             local commonLabels = CommonLabels.getInstance()
@@ -116,7 +144,7 @@ function MediaUtil.getImageBufferPropertyHashMap(bufferedImage)
         return hashMap
 end
 
-MediaUtil.instance = MediaUtil.new()
+MediaUtil.instance_f = MediaUtil.new()
 
 return MediaUtil
 

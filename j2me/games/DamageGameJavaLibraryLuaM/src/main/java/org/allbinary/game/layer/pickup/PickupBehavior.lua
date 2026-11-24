@@ -13,15 +13,30 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.layer.pickup
 
-local HealthInterfaceCompositeInterface = require("org.allbinary.game.health.HealthInterfaceCompositeInterface")
-local CollidableCompositeLayer = require("org.allbinary.game.layer.CollidableCompositeLayer")
-local CollidableDestroyableDamageableLayer = require("org.allbinary.game.layer.special.CollidableDestroyableDamageableLayer")
-local CountedLayerInterfaceFactoryPart = require("org.allbinary.game.part.CountedLayerInterfaceFactoryPart")
-local PartInterface = require("org.allbinary.game.part.PartInterface")
-local NullUtil = require("org.allbinary.logic.NullUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local PreLogUtil = require("org.allbinary.logic.communication.log.PreLogUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local PickupBehavior = {}
+package.loaded["org.allbinary.game.layer.pickup.PickupBehavior"] = PickupBehavior
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HealthInterfaceCompositeInterface = java_lazy("org.allbinary.game.health.HealthInterfaceCompositeInterface")
+local CollidableCompositeLayer = java_lazy("org.allbinary.game.layer.CollidableCompositeLayer")
+local CollidableDestroyableDamageableLayer = java_lazy("org.allbinary.game.layer.special.CollidableDestroyableDamageableLayer")
+local CountedLayerInterfaceFactoryPart = java_lazy("org.allbinary.game.part.CountedLayerInterfaceFactoryPart")
+local PartInterface = java_lazy("org.allbinary.game.part.PartInterface")
+local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local PickupBehaviorInterface = require("org.allbinary.game.layer.pickup.PickupBehaviorInterface")
 
 local function java_idiv(a, b)
@@ -31,18 +46,27 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local PickupBehavior = {}
+-- class table PickupBehavior is declared before the requires
 PickupBehavior.__index = PickupBehavior
 PickupBehavior.className = "PickupBehavior"
+PickupBehavior.javaClassName = "org.allbinary.game.layer.pickup.PickupBehavior"
+PickupBehavior.java_implements = " PickupBehaviorInterface "
+PickupBehavior.java_interfaces = function() return {PickupBehaviorInterface} end
 
 function PickupBehavior:_init_fields()
     self.logUtil = LogUtil.getInstance()
-    self.countedIndex = nil
-    self.ownerLayerInterface = nil
+    if self.countedIndex == nil then self.countedIndex = nil end
+    if self.ownerLayerInterface == nil then self.ownerLayerInterface = nil end
 end
 
 
@@ -54,17 +78,22 @@ function PickupBehavior.getNullInstance()
 end
 
 
-function PickupBehavior.new(ownerLayerInterface, countedIndex)
-    local self = setmetatable({}, PickupBehavior)
-    self:_init_fields()
+function PickupBehavior._jinit(self, ownerLayerInterface, countedIndex)
+    PickupBehavior._init_fields(self)
         self.ownerLayerInterface = ownerLayerInterface
         self.countedIndex = countedIndex
     return self
 end
 
+function PickupBehavior.new(...)
+    local self = setmetatable({}, PickupBehavior)
+    PickupBehavior._jinit(self, ...)
+    return self
+end
+
 
 function PickupBehavior:doPickup(pickupProcessorInterface)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local healthInterfaceCompositeInterface = self.ownerLayerInterface
             if healthInterfaceCompositeInterface:getHealthInterface():isAlive() then
                 pickupProcessorInterface:process(self.ownerLayerInterface)
@@ -72,6 +101,7 @@ function PickupBehavior:doPickup(pickupProcessorInterface)
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local commonStrings = CommonStrings.getInstance()
             self.logUtil:put(commonStrings.EXCEPTION, self, "doPickup", e)
         end
@@ -79,7 +109,7 @@ end
 
 
 function PickupBehavior:doPickupLayer(pickupLayerInterface)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local pickedUpLayerInterfaceFactoryInterface = pickupLayerInterface:getPickedUpLayerInterfaceFactoryInterface()
             local pickedUpLayerType = pickedUpLayerInterfaceFactoryInterface:getPickedUpLayerType()
             local pickedUpLayerTypeFactory = PickedUpLayerTypeFactory.getInstance()
@@ -97,6 +127,7 @@ function PickupBehavior:doPickupLayer(pickupLayerInterface)
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local commonStrings = CommonStrings.getInstance()
             PreLogUtil.putOE(commonStrings.EXCEPTION, self, "doPickup", e)
         end

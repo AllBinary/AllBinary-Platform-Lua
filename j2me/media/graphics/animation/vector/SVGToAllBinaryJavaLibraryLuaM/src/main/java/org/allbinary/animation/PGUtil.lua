@@ -1,6 +1,22 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.animation
 
+local PGUtil = {}
+package.loaded["org.allbinary.animation.PGUtil"] = PGUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local FixedPoint = java_lazy("org.allbinary.animation.FixedPoint")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -9,22 +25,32 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local PGUtil = {}
+-- class table PGUtil is declared before the requires
 PGUtil.__index = PGUtil
 PGUtil.className = "PGUtil"
+PGUtil.javaClassName = "org.allbinary.animation.PGUtil"
+
+function PGUtil._jinit(self)
+    return self
+end
 
 function PGUtil.new()
-    local self = setmetatable({}, PGUtil)
-    return self
+    return PGUtil._jinit(setmetatable({}, PGUtil))
 end
 
 
 function PGUtil.getInstance()
-        return PGUtil.instance
+        return PGUtil.instance_f
 end
 
 
@@ -48,7 +74,7 @@ function PGUtil:flattenCubicBezier(x0, y0, x1, y1, x2, y2, x3, y3, outX, outY, c
         end
 end
 
-PGUtil.instance = PGUtil.new()
+PGUtil.instance_f = PGUtil.new()
 
 return PGUtil
 

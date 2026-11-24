@@ -13,13 +13,28 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media.graphics.geography.map.racetrack
 
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local GPoint = require("org.allbinary.graphics.GPoint")
-local PointFactory = require("org.allbinary.graphics.PointFactory")
-local BasicGeographicMap = require("org.allbinary.media.graphics.geography.map.BasicGeographicMap")
-local GeographicMapCellPosition = require("org.allbinary.media.graphics.geography.map.GeographicMapCellPosition")
-local PathFindingInfo = require("org.allbinary.media.graphics.geography.pathfinding.PathFindingInfo")
-local PathFindingNode = require("org.allbinary.media.graphics.geography.pathfinding.PathFindingNode")
+local RaceTrackStartPointUtil = {}
+package.loaded["org.allbinary.media.graphics.geography.map.racetrack.RaceTrackStartPointUtil"] = RaceTrackStartPointUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local GPoint = java_lazy("org.allbinary.graphics.GPoint")
+local PointFactory = java_lazy("org.allbinary.graphics.PointFactory")
+local BasicGeographicMap = java_lazy("org.allbinary.media.graphics.geography.map.BasicGeographicMap")
+local GeographicMapCellPosition = java_lazy("org.allbinary.media.graphics.geography.map.GeographicMapCellPosition")
+local PathFindingInfo = java_lazy("org.allbinary.media.graphics.geography.pathfinding.PathFindingInfo")
+local PathFindingNode = java_lazy("org.allbinary.media.graphics.geography.pathfinding.PathFindingNode")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -28,17 +43,27 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local RaceTrackStartPointUtil = {}
+-- class table RaceTrackStartPointUtil is declared before the requires
 RaceTrackStartPointUtil.__index = RaceTrackStartPointUtil
 RaceTrackStartPointUtil.className = "RaceTrackStartPointUtil"
+RaceTrackStartPointUtil.javaClassName = "org.allbinary.media.graphics.geography.map.racetrack.RaceTrackStartPointUtil"
+
+function RaceTrackStartPointUtil._jinit(self)
+    return self
+end
 
 function RaceTrackStartPointUtil.new()
-    local self = setmetatable({}, RaceTrackStartPointUtil)
-    return self
+    return RaceTrackStartPointUtil._jinit(setmetatable({}, RaceTrackStartPointUtil))
 end
 
 

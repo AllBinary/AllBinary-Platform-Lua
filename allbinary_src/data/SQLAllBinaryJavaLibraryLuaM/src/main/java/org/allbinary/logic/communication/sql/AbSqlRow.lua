@@ -13,19 +13,109 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.communication.sql
 
+local AbSqlRow = {}
+package.loaded["org.allbinary.logic.communication.sql.AbSqlRow"] = AbSqlRow
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local ResultSet = require("java.sql.ResultSet")
 -- local ResultSetMetaData = require("java.sql.ResultSetMetaData")
--- local HashMap = require("java.util.HashMap")
+local HashMap = java_lazy("java.util.HashMap")
 -- local Set = require("java.util.Set")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local DbConnectionInfo = require("org.allbinary.business.init.db.DbConnectionInfo")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local StringValidationUtil = require("org.allbinary.logic.string.StringValidationUtil")
-local Replace = require("org.allbinary.logic.string.regex.replace.Replace")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local DbConnectionInfo = java_lazy("org.allbinary.business.init.db.DbConnectionInfo")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
+local Replace = java_lazy("org.allbinary.logic.string.regex.replace.Replace")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local AbSqlColumn = require("org.allbinary.logic.communication.sql.AbSqlColumn")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -34,13 +124,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local AbSqlRow = {}
+-- class table AbSqlRow is declared before the requires
 AbSqlRow.__index = AbSqlRow
 AbSqlRow.className = "AbSqlRow"
+AbSqlRow.javaClassName = "org.allbinary.logic.communication.sql.AbSqlRow"
 setmetatable(AbSqlRow, {__index = AbSqlColumn})
 
 function AbSqlRow:_init_fields()
@@ -62,10 +159,16 @@ function AbSqlRow:_init_fields()
 end
 
 
-function AbSqlRow.new(databaseConnectionInfoInterface)
-    local self = setmetatable(AbSqlColumn.new(databaseConnectionInfoInterface), AbSqlRow)
-    self:_init_fields()
+function AbSqlRow._jinit(self, databaseConnectionInfoInterface)
+    java_super_init(AbSqlColumn, self, databaseConnectionInfoInterface)
+    AbSqlRow._init_fields(self)
         -- super(...) made self above
+    return self
+end
+
+function AbSqlRow.new(...)
+    local self = setmetatable({}, AbSqlRow)
+    AbSqlRow._jinit(self, ...)
     return self
 end
 
@@ -77,14 +180,15 @@ function AbSqlRow:getValue(value)
             return value
         end
 end
+java_overload(AbSqlRow, "getValue", 1, function(java_a1) return true and (java_a1 == nil or type(java_a1) == "string") end)
 
 
-function AbSqlRow:updateWhere(key, value, updatedKeyValuePairs)
+function AbSqlRow:updateWhere_j3(key, value, updatedKeyValuePairs)
         local stringBuffer = StringMaker.new()
         stringBuffer:append(self.sqlStrings.UPDATE)
         stringBuffer:append(self:getTableName())
         stringBuffer:append(self.sqlStrings.SET)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local keyArray = updatedKeyValuePairs:keySet():toArray()
             local size = (keyArray.n or #keyArray)
             for i = 0, size - 1 do
@@ -111,13 +215,14 @@ function AbSqlRow:updateWhere(key, value, updatedKeyValuePairs)
             stringBuffer:append(self.sqlStrings.CLOSE_QUOTE)
             local sqlStatement = tostring(stringBuffer)
             self:executeSQLStatement(sqlStatement)
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGING) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                 self.logUtil:putF(tostring(self.SUCCESS_SQL_STATEMENT) .. sqlStatement, self, self.METHOD_UPDATE_WHERE)
             end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGINGERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
                 self.logUtil:put(self.FAILED_SQL_STATEMENT + stringBuffer, self, self.METHOD_UPDATE_WHERE, e)
             end
         end
@@ -125,13 +230,12 @@ end
 
 
 -- throws Exception
--- Java overloaded method: Lua keeps the last definition
-function AbSqlRow:updateWhere(whereKeyValuePairs, updatedKeyValuePairs)
+function AbSqlRow:updateWhere_j2(whereKeyValuePairs, updatedKeyValuePairs)
         local stringBuffer = StringMaker.new()
         stringBuffer:append(self.sqlStrings.UPDATE)
         stringBuffer:append(self:getTableName())
         stringBuffer:append(self.sqlStrings.SET)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local keyArray = updatedKeyValuePairs:keySet():toArray()
             local size = (keyArray.n or #keyArray)
             for i = 0, size - 1 do
@@ -139,7 +243,7 @@ function AbSqlRow:updateWhere(whereKeyValuePairs, updatedKeyValuePairs)
                 stringBuffer:append(self.commonSeps.SPACE)
                 stringBuffer:append(columnName)
                 stringBuffer:append(self.EQUAL_QUOTE)
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGING) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                     self.logUtil:putF(self.COLUMN_NAME_LABEL .. columnName, self, self.METHOD_UPDATE_WHERE)
                 end
                 local columnValue = updatedKeyValuePairs:get(columnName)
@@ -173,21 +277,29 @@ function AbSqlRow:updateWhere(whereKeyValuePairs, updatedKeyValuePairs)
             end
             local sqlStatement = tostring(stringBuffer)
             self:executeSQLStatement(sqlStatement)
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGING) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                 self.logUtil:putF(tostring(self.SUCCESS_SQL_STATEMENT) .. sqlStatement, self, self.METHOD_UPDATE_WHERE)
             end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGINGERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
                 self.logUtil:put(self.FAILED_SQL_STATEMENT + stringBuffer, self, self.METHOD_UPDATE_WHERE, e)
             end
             error(e, 0)
         end
 end
+function AbSqlRow:updateWhere(...)
+    local count = select("#", ...)
+    if count == 3 then return self:updateWhere_j3(...) end
+    if count == 2 then return self:updateWhere_j2(...) end
+    error("No method updateWhere takes " .. count .. " arguments")
+end
+AbSqlRow.updateWhere__jdispatcher = AbSqlRow.updateWhere
 
 
-function AbSqlRow:deleteWhere(key, value)
+function AbSqlRow:deleteWhere_j2(key, value)
         local stringBuffer = StringMaker.new()
         stringBuffer:append(self.sqlStrings.DELETE)
         stringBuffer:append(self.sqlStrings.FROM)
@@ -197,30 +309,30 @@ function AbSqlRow:deleteWhere(key, value)
         stringBuffer:append(self.sqlStrings.EQUAL_QUOTE)
         stringBuffer:append(value)
         stringBuffer:append(self.sqlStrings.CLOSE_QUOTE)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local sqlStatement = tostring(stringBuffer)
             self:executeSQLStatement(sqlStatement)
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGING) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                 self.logUtil:putF(tostring(self.SUCCESS_SQL_STATEMENT) .. sqlStatement, self, self.METHOD_DELETE_WHERE)
             end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGINGERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
                 self.logUtil:put(tostring(self.FAILED_SQL_STATEMENT) .. tostring(stringBuffer), self, self.METHOD_DELETE_WHERE, e)
             end
         end
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function AbSqlRow:deleteWhere(keysAndValues)
+function AbSqlRow:deleteWhere_j1(keysAndValues)
         local stringBuffer = StringMaker.new()
         stringBuffer:append(self.sqlStrings.DELETE)
         stringBuffer:append(self.sqlStrings.FROM)
         stringBuffer:append(self:getTableName())
         stringBuffer:append(self.sqlStrings.WHERE)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local set = keysAndValues:keySet()
             local keyArray = set:toArray()
             local size = (keyArray.n or #keyArray)
@@ -237,17 +349,25 @@ function AbSqlRow:deleteWhere(keysAndValues)
             end
             local sqlStatement = tostring(stringBuffer)
             self:executeSQLStatement(sqlStatement)
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGING) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                 self.logUtil:putF(tostring(self.SUCCESS_SQL_STATEMENT) .. sqlStatement, self, self.METHOD_DELETE_WHERE)
             end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGINGERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
                 self.logUtil:put(tostring(self.FAILED_SQL_STATEMENT) .. tostring(stringBuffer), self, self.METHOD_DELETE_WHERE, e)
             end
         end
 end
+function AbSqlRow:deleteWhere(...)
+    local count = select("#", ...)
+    if count == 2 then return self:deleteWhere_j2(...) end
+    if count == 1 then return self:deleteWhere_j1(...) end
+    error("No method deleteWhere takes " .. count .. " arguments")
+end
+AbSqlRow.deleteWhere__jdispatcher = AbSqlRow.deleteWhere
 
 
 function AbSqlRow:insert(values)
@@ -255,7 +375,7 @@ function AbSqlRow:insert(values)
         stringBuffer:append(self.sqlStrings.INSERT_INTO)
         stringBuffer:append(self:getTableName())
         stringBuffer:append(self.sqlStrings.VALUES)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             for i = 0, values:size() - 1 - 1 do
                 local value = self:getValue(values:get(i))
                 value = Replace.new(self.sqlStrings.ESCAPE, self.sqlStrings.DOUBLE_ESCAPE):all(value)
@@ -268,17 +388,19 @@ function AbSqlRow:insert(values)
             stringBuffer:append(self.INSERT_END)
             local sqlStatement = tostring(stringBuffer)
             self:executeSQLStatement(sqlStatement)
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGING) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                 self.logUtil:putF(tostring(self.SUCCESS_SQL_STATEMENT) .. sqlStatement, self, self.INSERT)
             end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGINGERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
                 self.logUtil:put(tostring(self.FAILED_SQL_STATEMENT) .. tostring(stringBuffer), self, self.INSERT, e)
             end
         end
 end
+java_overload(AbSqlRow, "insert", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "BasicArrayList")) end)
 
 
 function AbSqlRow:getRow(keysAndValues)
@@ -286,7 +408,7 @@ function AbSqlRow:getRow(keysAndValues)
         stringBuffer:append(self.sqlStrings.SELECT_ALL_FROM)
         stringBuffer:append(self:getTableName())
         stringBuffer:append(self.sqlStrings.WHERE)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local result = nil
             local set = keysAndValues:keySet()
             local keyArray = set:toArray()
@@ -303,7 +425,7 @@ function AbSqlRow:getRow(keysAndValues)
                 end
             end
             local sqlStatement = tostring(stringBuffer)
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGING) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                 self.logUtil:putF(tostring(self.sqlStrings.SQL_STATEMENT_LABEL) .. sqlStatement, self, self.METHOD_GET_ROW)
             end
             local rset = self:executeSQLStatement(sqlStatement)
@@ -316,38 +438,40 @@ function AbSqlRow:getRow(keysAndValues)
                     local field = rset:getString(columnName)
                     result:put(columnName, field)
                 end
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGING) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                     self.logUtil:putF(self.ROW_VALUE_LABEL .. tostring(result), self, self.METHOD_GET_ROW)
                 end
-                return result
+                do return "__jreturn", result end
             end
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGINGERROR) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
                 self.logUtil:putF(self.NO_RESULTS_IN_RESULT_SET, self, self.METHOD_GET_ROW)
             end
-            return nil
+            do return "__jreturn", nil end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGINGERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
                 self.logUtil:put(self.FAILED_SQL_STATEMENT + stringBuffer, self, self.METHOD_GET_ROW, e)
             end
             return nil
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+java_overload(AbSqlRow, "getRow", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "HashMap")) end)
 
 
-function AbSqlRow:getRows(keysAndValues)
+function AbSqlRow:getRows_j1(keysAndValues)
         return self:getRows(keysAndValues, StringUtil.getInstance().EMPTY_STRING)
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function AbSqlRow:getRows(keysAndValues, more)
+function AbSqlRow:getRows_j2(keysAndValues, more)
         local stringBuffer = StringMaker.new()
         stringBuffer:append(self.sqlStrings.SELECT_ALL_FROM)
         stringBuffer:append(self:getTableName())
         stringBuffer:append(self.sqlStrings.WHERE)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local rows = BasicArrayListD.new()
             local set = keysAndValues:keySet()
             local keyArray = set:toArray()
@@ -363,7 +487,7 @@ function AbSqlRow:getRows(keysAndValues, more)
                     stringBuffer:append(self.sqlStrings.AND)
                 end
             end
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGING) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                 self.logUtil:putF(self.sqlStrings.SQL_STATEMENT_LABEL + stringBuffer, self, self.METHOD_GET_ROWS)
             end
             stringBuffer:append(more)
@@ -379,29 +503,38 @@ function AbSqlRow:getRows(keysAndValues, more)
                     result:put(columnName, field)
                 end
                 local resultAsString = tostring(result)
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGING) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                     self.logUtil:putF(self.GET_ROW .. resultAsString, self, self.METHOD_GET_ROWS)
                 end
                 rows:add(result)
             end
-            return rows
+            do return "__jreturn", rows end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGINGERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
                 self.logUtil:put(self.FAILED_SQL_STATEMENT + stringBuffer, self, self.METHOD_GET_ROWS, e)
             end
             return nil
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+function AbSqlRow:getRows(...)
+    local count = select("#", ...)
+    if count == 1 then return self:getRows_j1(...) end
+    if count == 2 then return self:getRows_j2(...) end
+    error("No method getRows takes " .. count .. " arguments")
+end
+AbSqlRow.getRows__jdispatcher = AbSqlRow.getRows
 
 
 function AbSqlRow:getAllRows()
         local stringBuffer = StringMaker.new()
         stringBuffer:append(self.sqlStrings.SELECT_ALL_FROM)
         stringBuffer:append(self:getTableName())
-        local try_ok, try_error = pcall(function()
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGING) then
+        local try_ok, try_error, try_value = pcall(function()
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                 self.logUtil:putF(self.sqlStrings.SQL_STATEMENT_LABEL + stringBuffer, self, self.METHOD_GET_ALL_ROWS)
             end
             local rows = BasicArrayListD.new()
@@ -416,28 +549,31 @@ function AbSqlRow:getAllRows()
                     local field = rset:getString(columnName)
                     result:put(columnName, field)
                 end
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGING) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                     self.logUtil:putF(self.ROW_VALUES_LABEL .. tostring(result), self, self.METHOD_GET_ALL_ROWS)
                 end
                 rows:add(result)
             end
-            return rows
+            do return "__jreturn", rows end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGINGERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
                 self.logUtil:put(self.FAILED_SQL_STATEMENT + stringBuffer, self, self.METHOD_GET_ALL_ROWS, e)
             end
             return nil
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+java_overload(AbSqlRow, "getAllRows", 0)
 
 
-function AbSqlRow:getRowsWhereBetween(whereKeyValuePairs, betweenColumn, smallest, largest)
+function AbSqlRow:getRowsWhereBetween_j4(whereKeyValuePairs, betweenColumn, smallest, largest)
         local stringBuffer = StringMaker.new()
         stringBuffer:append(self.sqlStrings.SELECT_ALL_FROM)
         stringBuffer:append(self:getTableName())
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local rows = BasicArrayListD.new()
             stringBuffer:append(self.sqlStrings.WHERE)
             local set = whereKeyValuePairs:keySet()
@@ -464,7 +600,7 @@ function AbSqlRow:getRowsWhereBetween(whereKeyValuePairs, betweenColumn, smalles
             stringBuffer:append(largest)
             stringBuffer:append(self.sqlStrings.CLOSE_QUOTE)
             local sqlStatement = tostring(stringBuffer)
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGING) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                 self.logUtil:putF(tostring(self.sqlStrings.SQL_STATEMENT_LABEL) .. sqlStatement, self, self.METHOD_GET_ROWS_WHERE_BETWEEN)
             end
             local rset = self:executeSQLStatement(sqlStatement)
@@ -483,29 +619,30 @@ function AbSqlRow:getRowsWhereBetween(whereKeyValuePairs, betweenColumn, smalles
                     field = rset:getString(columnName)
                     result:put(columnName, field)
                 end
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGING) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                     self.logUtil:putF(self.ROW_VALUE_LABEL .. tostring(result), self, self.METHOD_GET_ROWS_WHERE_BETWEEN)
                 end
                 rows:add(result)
             end
-            return rows
+            do return "__jreturn", rows end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGINGERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
                 self.logUtil:put(self.FAILED_SQL_STATEMENT + stringBuffer, self, self.METHOD_GET_ROWS_WHERE_BETWEEN, e)
             end
             return nil
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function AbSqlRow:getRowsWhereBetween(betweenColumn, smallest, largest)
+function AbSqlRow:getRowsWhereBetween_j3(betweenColumn, smallest, largest)
         local stringBuffer = StringMaker.new()
         stringBuffer:append(self.sqlStrings.SELECT_ALL_FROM)
         stringBuffer:append(self:getTableName())
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local rows = BasicArrayListD.new()
             stringBuffer:append(self.sqlStrings.WHERE)
             stringBuffer:append(betweenColumn)
@@ -518,7 +655,7 @@ function AbSqlRow:getRowsWhereBetween(betweenColumn, smallest, largest)
             stringBuffer:append(largest)
             stringBuffer:append(self.sqlStrings.CLOSE_QUOTE)
             local sqlStatement = tostring(stringBuffer)
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGING) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                 self.logUtil:putF(tostring(self.sqlStrings.SQL_STATEMENT_LABEL) .. sqlStatement, self, self.METHOD_GET_ROWS_WHERE_BETWEEN)
             end
             local rset = self:executeSQLStatement(sqlStatement)
@@ -537,21 +674,30 @@ function AbSqlRow:getRowsWhereBetween(betweenColumn, smallest, largest)
                     field = rset:getString(columnName)
                     result:put(columnName, field)
                 end
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGING) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                     self.logUtil:putF(self.ROW_VALUE_LABEL .. tostring(result), self, self.METHOD_GET_ROWS_WHERE_BETWEEN)
                 end
                 rows:add(result)
             end
-            return rows
+            do return "__jreturn", rows end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGINGERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
                 self.logUtil:put(self.FAILED_SQL_STATEMENT + stringBuffer, self, self.METHOD_GET_ROWS_WHERE_BETWEEN, e)
             end
             return nil
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+function AbSqlRow:getRowsWhereBetween(...)
+    local count = select("#", ...)
+    if count == 4 then return self:getRowsWhereBetween_j4(...) end
+    if count == 3 then return self:getRowsWhereBetween_j3(...) end
+    error("No method getRowsWhereBetween takes " .. count .. " arguments")
+end
+AbSqlRow.getRowsWhereBetween__jdispatcher = AbSqlRow.getRowsWhereBetween
 
 return AbSqlRow
 

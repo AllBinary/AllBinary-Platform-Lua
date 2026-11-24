@@ -13,41 +13,58 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.context.modules.storefront
 
--- local Calendar = require("java.util.Calendar")
--- local HashMap = require("java.util.HashMap")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
+local StoreFront = {}
+package.loaded["org.allbinary.business.context.modules.storefront.StoreFront"] = StoreFront
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local Calendar = java_lazy("java.util.Calendar")
+local HashMap = java_lazy("java.util.HashMap")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 -- local HttpServletRequest = require("javax.servlet.http.HttpServletRequest")
-local ContextConfiguration = require("org.allbinary.business.context.configuration.ContextConfiguration")
-local ContextConfigurationDomDocumentMapping = require("org.allbinary.business.context.configuration.ContextConfigurationDomDocumentMapping")
-local ContextConfigurationInterface = require("org.allbinary.business.context.configuration.ContextConfigurationInterface")
-local ContextConfigurationInterfaceFactory = require("org.allbinary.business.context.configuration.ContextConfigurationInterfaceFactory")
-local EntryData = require("org.allbinary.business.entry.EntryData")
-local UserData = require("org.allbinary.business.user.UserData")
-local DomDocumentHelper = require("org.allbinary.data.tree.dom.document.DomDocumentHelper")
-local FREEBLISKET_PATH_GLOBALS = require("org.allbinary.globals.FREEBLISKET_PATH_GLOBALS")
-local URLGLOBALS = require("org.allbinary.globals.URLGLOBALS")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local RequestParams = require("org.allbinary.logic.communication.http.request.RequestParams")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local AbFile = require("org.allbinary.logic.io.file.AbFile")
-local FileUtil = require("org.allbinary.logic.io.file.FileUtil")
-local Directory = require("org.allbinary.logic.io.file.directory.Directory")
-local AbPath = require("org.allbinary.logic.io.path.AbPath")
-local AbPathData = require("org.allbinary.logic.io.path.AbPathData")
-local AbPathUtil = require("org.allbinary.logic.io.path.AbPathUtil")
-local SpecialCharacterUtil = require("org.allbinary.logic.string.SpecialCharacterUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local StringValidationUtil = require("org.allbinary.logic.string.StringValidationUtil")
-local Replace = require("org.allbinary.logic.string.regex.replace.Replace")
-local Tokenizer = require("org.allbinary.logic.string.tokens.Tokenizer")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local StringEscapeUtils = require("org.apache.commons.lang3.StringEscapeUtils")
-local Document = require("org.w3c.dom.Document")
+local ContextConfiguration = java_lazy("org.allbinary.business.context.configuration.ContextConfiguration")
+local ContextConfigurationDomDocumentMapping = java_lazy("org.allbinary.business.context.configuration.ContextConfigurationDomDocumentMapping")
+local ContextConfigurationInterface = java_lazy("org.allbinary.business.context.configuration.ContextConfigurationInterface")
+local ContextConfigurationInterfaceFactory = java_lazy("org.allbinary.business.context.configuration.ContextConfigurationInterfaceFactory")
+local EntryData = java_lazy("org.allbinary.business.entry.EntryData")
+local UserData = java_lazy("org.allbinary.business.user.UserData")
+local DomDocumentHelper = java_lazy("org.allbinary.data.tree.dom.document.DomDocumentHelper")
+local FREEBLISKET_PATH_GLOBALS = java_lazy("org.allbinary.globals.FREEBLISKET_PATH_GLOBALS")
+local URLGLOBALS = java_lazy("org.allbinary.globals.URLGLOBALS")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local RequestParams = java_lazy("org.allbinary.logic.communication.http.request.RequestParams")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
+local FileUtil = java_lazy("org.allbinary.logic.io.file.FileUtil")
+local Directory = java_lazy("org.allbinary.logic.io.file.directory.Directory")
+local AbPath = java_lazy("org.allbinary.logic.io.path.AbPath")
+local AbPathData = java_lazy("org.allbinary.logic.io.path.AbPathData")
+local AbPathUtil = java_lazy("org.allbinary.logic.io.path.AbPathUtil")
+local SpecialCharacterUtil = java_lazy("org.allbinary.logic.string.SpecialCharacterUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
+local Replace = java_lazy("org.allbinary.logic.string.regex.replace.Replace")
+local Tokenizer = java_lazy("org.allbinary.logic.string.tokens.Tokenizer")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local StringEscapeUtils = java_lazy("org.apache.commons.lang3.StringEscapeUtils")
+local Document = java_lazy("org.w3c.dom.Document")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local StoreFrontInterface = require("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
@@ -71,6 +88,47 @@ local function java_new_array(default, size, ...)
     return array
 end
 
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
+    return array
+end
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
 local function java_idiv(a, b)
     local q = a / b
     if q < 0 then return math.ceil(q) end
@@ -78,13 +136,22 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local StoreFront = {}
+-- class table StoreFront is declared before the requires
 StoreFront.__index = StoreFront
 StoreFront.className = "StoreFront"
+StoreFront.javaClassName = "org.allbinary.business.context.modules.storefront.StoreFront"
+StoreFront.java_implements = " StoreFrontInterface "
+StoreFront.java_interfaces = function() return {StoreFrontInterface} end
 
 function StoreFront:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -92,7 +159,7 @@ function StoreFront:_init_fields()
     self.directory = Directory.getInstance()
     self.stringUtil = StringUtil.getInstance()
     self.abPathUtil = AbPathUtil.getInstance()
-    self.name = self.stringUtil.EMPTY_STRING
+    self.name_f = self.stringUtil.EMPTY_STRING
     self.basketName = self.stringUtil.EMPTY_STRING
     self.homeHostName = self.stringUtil.EMPTY_STRING
     self.homeHostNamePath = self.abPathUtil.NO_ABPATH
@@ -106,7 +173,7 @@ function StoreFront:_init_fields()
     self.staticPath = self.abPathUtil.NO_ABPATH
     self.categoryPath = self.abPathUtil.NO_ABPATH
     self.inventoryControl = self.stringUtil.EMPTY_STRING
-    self.contextConfigurationInterface = nil
+    if self.contextConfigurationInterface == nil then self.contextConfigurationInterface = nil end
     self.subStores = self.stringUtil.EMPTY_STRING
     self.tagLocation = self.stringUtil.EMPTY_STRING
     self.packageLocation = self.stringUtil.EMPTY_STRING
@@ -127,28 +194,38 @@ function StoreFront:_init_fields()
     self.ONE_EMPTY_STRING_ARRAY = StringUtil.getInstance().ONE_EMPTY_STRING_ARRAY
 end
 
-function StoreFront.new(...)
+function StoreFront._jinit(self, ...)
     local count = select("#", ...)
-    if count == 0 then return StoreFront._new0(...)
-    elseif count == 1 then return StoreFront._new1(...)
-    elseif count == 1 then return StoreFront._new1(...)
+    if count == 0 then return StoreFront._new0(self, ...)
+    elseif count == 1 then return StoreFront._new1(self, ...)
     end
+    error("No constructor of StoreFront takes " .. count .. " arguments")
+end
+
+function StoreFront.new(...)
+    local self = setmetatable({}, StoreFront)
+    StoreFront._jinit(self, ...)
+    return self
+end
+
+function StoreFront._new1(self, ...)
+    local java_a1 = ...
+    if true and (java_a1 == nil or java_is(java_a1, "HttpServletRequest")) then return StoreFront._new1_1(self, ...) end
+    return StoreFront._new1_2(self, ...)
 end
 
 
-function StoreFront._new0()
-    local self = setmetatable({}, StoreFront)
-    self:_init_fields()
+function StoreFront._new0(self)
+    StoreFront._init_fields(self)
         self.contextConfigurationInterface = ContextConfiguration.new()
     return self
 end
 
 
-function StoreFront._new1(request)
-    local self = setmetatable({}, StoreFront)
-    self:_init_fields()
+function StoreFront._new1_1(self, request)
+    StoreFront._init_fields(self)
         self:getFormData(RequestParams.new(request):toHashMap())
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().EMAILLOGGING) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().EMAILLOGGING) then
             self.logUtil:putF("TWB- needs update for adding and updating context configuration - currently defaults to admin context config", self, "StoreFront")
         end
         self:setContextConfigurationInterface(ContextConfigurationInterfaceFactory.getInstance():getInstance("Admin"))
@@ -156,9 +233,8 @@ function StoreFront._new1(request)
 end
 
 
-function StoreFront._new1(hashMap)
-    local self = setmetatable({}, StoreFront)
-    self:_init_fields()
+function StoreFront._new1_2(self, hashMap)
+    StoreFront._init_fields(self)
         self:getFormData(hashMap)
         local domDocumentString = hashMap:get(StoreFrontData.getInstance().CONFIGURATION)
         if domDocumentString == nil then
@@ -179,16 +255,22 @@ end
 
 
 -- throws Exception
-function StoreFront:createPath(key, hashMap)
+function StoreFront:createPath_j2(key, hashMap)
         return AbPath.new(self:create(self.EMPTY_STRING, key, hashMap), StringUtil.getInstance().EMPTY_STRING)
 end
 
 
 -- throws Exception
--- Java overloaded method: Lua keeps the last definition
-function StoreFront:createPath(append, key, hashMap)
+function StoreFront:createPath_j3(append, key, hashMap)
         return AbPath.new(self:create(append, key, hashMap), StringUtil.getInstance().EMPTY_STRING)
 end
+function StoreFront:createPath(...)
+    local count = select("#", ...)
+    if count == 2 then return self:createPath_j2(...) end
+    if count == 3 then return self:createPath_j3(...) end
+    error("No method createPath takes " .. count .. " arguments")
+end
+StoreFront.createPath__jdispatcher = StoreFront.createPath
 
 
 function StoreFront:get(key, hashMap)
@@ -213,7 +295,7 @@ end
 -- throws Exception
 function StoreFront:getFormData(storeHashMap)
         local storeFrontData = StoreFrontData.getInstance()
-        self.name = storeHashMap:get(storeFrontData.NAME)
+        self.name_f = storeHashMap:get(storeFrontData.NAME)
         self.basketName = storeHashMap:get(storeFrontData.NAME)
         self.homeHostName = storeHashMap:get(storeFrontData.HOMEHOSTNAME)
         self.homeHostNamePath = self:createPath(storeFrontData.HOMEHOSTNAMEPATH, storeHashMap)
@@ -244,23 +326,23 @@ end
 
 
 function StoreFront:isNameValid()
-        if not StringValidationUtil.getInstance():isValidRequired(self.name, self.MINSTORENAMELENGTH, self.MAXCHAR) then
+        if not StringValidationUtil.getInstance():isValidRequired(self.name_f, self.MINSTORENAMELENGTH, self.MAXCHAR) then
             return false
         else
             local isEscapedCharactersContained = false
-            local storeNameEscaped = StringEscapeUtils.escapeHtml3(self.name)
-            if ((self.name < storeNameEscaped and -1) or (self.name > storeNameEscaped and 1) or 0) ~= 0 then
+            local storeNameEscaped = StringEscapeUtils.escapeHtml3(self.name_f)
+            if ((self.name_f < storeNameEscaped and -1) or (self.name_f > storeNameEscaped and 1) or 0) ~= 0 then
                 isEscapedCharactersContained = true
             end
             local stringValidationUtil = StringValidationUtil.getInstance()
             local isSpacesContained = false
-            if stringValidationUtil:containsSpaces(self.name) then
+            if stringValidationUtil:containsSpaces(self.name_f) then
                 isSpacesContained = true
             end
             if isSpacesContained or isEscapedCharactersContained then
                 local hashMap = SpecialCharacterUtil.getHashMap()
                 hashMap:put({CommonSeps.getInstance().SPACE}, self.ONE_EMPTY_STRING_ARRAY)
-                self.name = Replace.new(hashMap):all(self.name)
+                self.name_f = Replace.new(hashMap):all(self.name_f)
             end
         end
         return true
@@ -353,7 +435,7 @@ end
 
 function StoreFront:nameValidationInfo()
         local stringValidationUtil = StringValidationUtil.getInstance()
-        if not stringValidationUtil:isValidRequired(self.name, self.MINCHAR, self.MAXCHAR) then
+        if not stringValidationUtil:isValidRequired(self.name_f, self.MINCHAR, self.MAXCHAR) then
             local stringBuffer = StringMaker.new()
             stringBuffer:append("Name is invalid. Must be < ")
             stringBuffer:appendint(self.MAXCHAR)
@@ -365,7 +447,7 @@ end
 
 
 function StoreFront:validationInfo()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local stringValidationUtil = StringValidationUtil.getInstance()
             local stringBuffer = StringMaker.new()
             stringBuffer:append(self:nameValidationInfo())
@@ -451,26 +533,28 @@ function StoreFront:validationInfo()
             if not stringValidationUtil:isValidNotRequired(self.testFtpPassword, self.MINCHAR, self.MAXCHAR) then
                 stringBuffer:append("Test ftp password is invalid. Must be < " .. tostring(self.MAXCHAR) .. " and > 0 characters.<br>")
             end
-            return tostring(stringBuffer)
+            do return "__jreturn", tostring(stringBuffer) end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLTAGSERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put("Failed to generate validation error info", self, "validationInfo()", e)
             end
             return "Error Validating Form"
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
 function StoreFront:getTestHtmlPath()
-        return org.allbinary.globals.URLGLOBALS:getTestHtmlPath() + self:getCurrentHostNamePath()
+        return URLGLOBALS.getTestHtmlPath() + self:getCurrentHostNamePath()
 end
 
 
 function StoreFront:getCurrentHostName()
         local location = self.EMPTY_STRING
-        if org.allbinary.globals.URLGLOBALS:isTestingMode() then
+        if URLGLOBALS.isTestingMode() then
             location = self:getTestHostName()
         else
             location = self:getHostName()
@@ -481,7 +565,7 @@ end
 
 function StoreFront:getCurrentHostNamePath()
         local location = self.EMPTY_STRING
-        if org.allbinary.globals.URLGLOBALS:isTestingMode() then
+        if URLGLOBALS.isTestingMode() then
             location = self:getTestHostNamePath()
         else
             location = self:getHostNamePath()
@@ -492,7 +576,7 @@ end
 
 function StoreFront:getCurrentHomeHostName()
         local location = self.EMPTY_STRING
-        if org.allbinary.globals.URLGLOBALS:isTestingMode() then
+        if URLGLOBALS.isTestingMode() then
             location = self:getTestHomeHostName()
         else
             location = self:getHomeHostName()
@@ -503,7 +587,7 @@ end
 
 function StoreFront:getCurrentHomeHostNamePath()
         local location = self.EMPTY_STRING
-        if org.allbinary.globals.URLGLOBALS:isTestingMode() then
+        if URLGLOBALS.isTestingMode() then
             location = self:getTestHomeHostNamePath()
         else
             location = self:getHomeHostNamePath()
@@ -513,7 +597,7 @@ end
 
 
 function StoreFront:getName()
-        return self.name
+        return self.name_f
 end
 
 
@@ -579,15 +663,17 @@ end
 
 -- throws Exception
 function StoreFront:getSubStores()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local tokenizer = Tokenizer.new(CommonSeps.getInstance().SEMICOLON)
             local subStoreVector = tokenizer:getTokensFromString(self.subStores, BasicArrayListD.new())
-            return subStoreVector
+            do return "__jreturn", subStoreVector end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             error(e, 0)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
@@ -596,7 +682,7 @@ function StoreFront:getTagLocation()
 end
 
 
-function StoreFront:getPackageLocation()
+function StoreFront:getPackageLocation_j0()
         return self.packageLocation
 end
 
@@ -652,7 +738,7 @@ end
 
 
 function StoreFront:setName(value)
-        self.name = value
+        self.name_f = value
 end
 
 
@@ -743,10 +829,16 @@ function StoreFront:setInventoryControl(value)
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function StoreFront:getPackageLocation(value)
+function StoreFront:getPackageLocation_j1(value)
         self.packageLocation = value
 end
+function StoreFront:getPackageLocation(...)
+    local count = select("#", ...)
+    if count == 0 then return self:getPackageLocation_j0(...) end
+    if count == 1 then return self:getPackageLocation_j1(...) end
+    error("No method getPackageLocation takes " .. count .. " arguments")
+end
+StoreFront.getPackageLocation__jdispatcher = StoreFront.getPackageLocation
 
 
 function StoreFront:setFtp(value)
@@ -803,7 +895,7 @@ end
 
 -- throws Exception
 function StoreFront:createDirectories()
-        local storeAbPath = AbPath.new(self.URLGLOBALS:getWebappPath() + self:getCurrentHomeHostNamePath(), StringUtil.getInstance().EMPTY_STRING)
+        local storeAbPath = AbPath.new(URLGLOBALS.getWebappPath() + self:getCurrentHomeHostNamePath(), StringUtil.getInstance().EMPTY_STRING)
         if not self.directory:create(storeAbPath) then
             return false
         end
@@ -819,18 +911,18 @@ end
 
 -- throws Exception
 function StoreFront:install(current, total)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             if not self:createDirectories() then
-                error(java_exception("Exception", "Unable to create store directories"), 0)
+                error(require("java.lang.Exception").new("Unable to create store directories"), 0)
             end
             local stringBuffer = StringMaker.new()
             stringBuffer:delete(0, stringBuffer:length())
-            stringBuffer:append(self.URLGLOBALS:getMainPath())
-            stringBuffer:append(self.FREEBLISKET_PATH_GLOBALS:getInstance().XSLPATH)
+            stringBuffer:append(URLGLOBALS.getMainPath())
+            stringBuffer:append(FREEBLISKET_PATH_GLOBALS.getInstance().XSLPATH)
             local viewPath = tostring(stringBuffer)
             stringBuffer:delete(0, stringBuffer:length())
             stringBuffer:append(viewPath)
-            stringBuffer:append(self.FREEBLISKET_PATH_GLOBALS:getInstance().INSTALLPATH)
+            stringBuffer:append(FREEBLISKET_PATH_GLOBALS.getInstance().INSTALLPATH)
             local fromDirectoryAbPath = AbPath.new(tostring(stringBuffer), StringUtil.getInstance().EMPTY_STRING)
             stringBuffer:delete(0, stringBuffer:length())
             stringBuffer:append(viewPath)
@@ -844,7 +936,7 @@ function StoreFront:install(current, total)
             local toDirectoryAbPath = AbPath.new(tostring(stringBuffer), StringUtil.getInstance().EMPTY_STRING)
             if current == 0 then
                 if not self.directory:create(toDirectoryAbPath) then
-                    error(java_exception("Exception", "Unable to create store view directory: " .. tostring(toDirectoryAbPath)), 0)
+                    error(require("java.lang.Exception").new("Unable to create store view directory: " .. tostring(toDirectoryAbPath)), 0)
                 end
             end
             local viewTotal = java_idiv((total * 85), 100)
@@ -869,7 +961,8 @@ function StoreFront:install(current, total)
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLTAGSERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "install()", e)
             end
             error(e, 0)
@@ -892,7 +985,7 @@ function StoreFront:installResources(fromDirectoryAbPath, current, total)
         stringBuffer:append(AbPathData.getInstance().SEPARATOR)
         local installCategoryAbPath = AbPath.new(tostring(stringBuffer), StringUtil.getInstance().EMPTY_STRING)
         stringBuffer:delete(0, stringBuffer:length())
-        stringBuffer:append(self.URLGLOBALS:getMainPath())
+        stringBuffer:append(URLGLOBALS.getMainPath())
         stringBuffer:append(self:getCurrentHomeHostNamePath())
         stringBuffer:append(AbPathData.getInstance().SEPARATOR)
         stringBuffer:append(self:getCategoryPath())
@@ -906,11 +999,11 @@ function StoreFront:installMedia(fromDirectoryAbPath, current, total)
         local stringBuffer = StringMaker.new()
         stringBuffer:append(tostring(fromDirectoryAbPath))
         stringBuffer:append(AbPathData.getInstance().SEPARATOR)
-        stringBuffer:append(self.FREEBLISKET_PATH_GLOBALS:getInstance().TEMPLATEPATH)
+        stringBuffer:append(FREEBLISKET_PATH_GLOBALS.getInstance().TEMPLATEPATH)
         stringBuffer:append("images")
         stringBuffer:append(AbPathData.getInstance().SEPARATOR)
         local viewStoreImagesDirectoryAbPath = AbPath.new(tostring(stringBuffer), StringUtil.getInstance().EMPTY_STRING)
-        local storeAbPath = AbPath.new(self.URLGLOBALS:getWebappPath() + self:getCurrentHomeHostNamePath(), StringUtil.getInstance().EMPTY_STRING)
+        local storeAbPath = AbPath.new(URLGLOBALS.getWebappPath() + self:getCurrentHomeHostNamePath(), StringUtil.getInstance().EMPTY_STRING)
         FileUtil.getInstance():copyDirectoryPortion(viewStoreImagesDirectoryAbPath, storeAbPath, true, false, current, total)
 end
 
@@ -918,7 +1011,7 @@ end
 -- throws Exception
 function StoreFront:toVector()
         local dataVector = BasicArrayListD.new()
-        dataVector:add(self.name)
+        dataVector:add(self.name_f)
         dataVector:add(self.homeHostName)
         dataVector:add(tostring(self.homeHostNamePath))
         dataVector:add(self.hostName)
@@ -956,7 +1049,7 @@ end
 function StoreFront:toHashMap()
         local storeFrontData = StoreFrontData.getInstance()
         local dataHashMap = StdUtil.getInstance():createHashMap()
-        dataHashMap:put(storeFrontData.NAME, self.name)
+        dataHashMap:put(storeFrontData.NAME, self.name_f)
         dataHashMap:put(storeFrontData.HOMEHOSTNAME, self.homeHostName)
         dataHashMap:put(storeFrontData.HOMEHOSTNAMEPATH, tostring(self.homeHostNamePath))
         dataHashMap:put(storeFrontData.HOSTNAME, self.hostName)

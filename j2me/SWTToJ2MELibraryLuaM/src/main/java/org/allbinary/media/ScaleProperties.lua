@@ -13,8 +13,23 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media
 
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local CommonLabels = require("org.allbinary.string.CommonLabels")
+local ScaleProperties = {}
+package.loaded["org.allbinary.media.ScaleProperties"] = ScaleProperties
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -23,26 +38,36 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ScaleProperties = {}
+-- class table ScaleProperties is declared before the requires
 ScaleProperties.__index = ScaleProperties
 ScaleProperties.className = "ScaleProperties"
+ScaleProperties.javaClassName = "org.allbinary.media.ScaleProperties"
 
 function ScaleProperties:_init_fields()
-    self.scaleX = 0.0
-    self.scaleY = 0.0
-    self.scaleWidth = 0
-    self.scaleHeight = 0
-    self.shouldScale = false
+    if self.scaleX == nil then self.scaleX = 0.0 end
+    if self.scaleY == nil then self.scaleY = 0.0 end
+    if self.scaleWidth == nil then self.scaleWidth = 0 end
+    if self.scaleHeight == nil then self.scaleHeight = 0 end
+    if self.shouldScale == nil then self.shouldScale = false end
+end
+
+function ScaleProperties._jinit(self)
+    ScaleProperties._init_fields(self)
+    return self
 end
 
 function ScaleProperties.new()
-    local self = setmetatable({}, ScaleProperties)
-    self:_init_fields()
-    return self
+    return ScaleProperties._jinit(setmetatable({}, ScaleProperties))
 end
 
 
@@ -51,7 +76,7 @@ function ScaleProperties:toString()
 end
 ScaleProperties.__tostring = function(self) return self:toString() end
 
-ScaleProperties.instance = ScaleProperties.new()
+ScaleProperties.instance_f = ScaleProperties.new()
 
 return ScaleProperties
 

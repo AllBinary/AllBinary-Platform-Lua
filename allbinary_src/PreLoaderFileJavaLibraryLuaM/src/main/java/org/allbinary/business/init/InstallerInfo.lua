@@ -13,18 +13,35 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.init
 
-local PATH_GLOBALS = require("org.allbinary.globals.PATH_GLOBALS")
-local URLGLOBALS = require("org.allbinary.globals.URLGLOBALS")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local AbDataInputStream = require("org.allbinary.logic.io.AbDataInputStream")
-local AbDataOutputStream = require("org.allbinary.logic.io.AbDataOutputStream")
-local AbFileLocalInputStream = require("org.allbinary.logic.io.AbFileLocalInputStream")
-local DataOutputStreamFactory = require("org.allbinary.logic.io.DataOutputStreamFactory")
-local AbFile = require("org.allbinary.logic.io.file.AbFile")
-local AbPath = require("org.allbinary.logic.io.path.AbPath")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local DatabaseEncoder = require("org.allbinary.logic.system.security.crypt.DatabaseEncoder")
-local WeakCrypt = require("org.allbinary.logic.system.security.crypt.WeakCrypt")
+local InstallerInfo = {}
+package.loaded["org.allbinary.business.init.InstallerInfo"] = InstallerInfo
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local PATH_GLOBALS = java_lazy("org.allbinary.globals.PATH_GLOBALS")
+local URLGLOBALS = java_lazy("org.allbinary.globals.URLGLOBALS")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local AbDataInputStream = java_lazy("org.allbinary.logic.io.AbDataInputStream")
+local AbDataOutputStream = java_lazy("org.allbinary.logic.io.AbDataOutputStream")
+local AbFileLocalInputStream = java_lazy("org.allbinary.logic.io.AbFileLocalInputStream")
+local DataOutputStreamFactory = java_lazy("org.allbinary.logic.io.DataOutputStreamFactory")
+local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
+local AbPath = java_lazy("org.allbinary.logic.io.path.AbPath")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local DatabaseEncoder = java_lazy("org.allbinary.logic.system.security.crypt.DatabaseEncoder")
+local WeakCrypt = java_lazy("org.allbinary.logic.system.security.crypt.WeakCrypt")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -33,30 +50,42 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local InstallerInfo = {}
+-- class table InstallerInfo is declared before the requires
 InstallerInfo.__index = InstallerInfo
 InstallerInfo.className = "InstallerInfo"
+InstallerInfo.javaClassName = "org.allbinary.business.init.InstallerInfo"
 
 function InstallerInfo:_init_fields()
     self.logUtil = LogUtil.getInstance()
 end
 
 
-function InstallerInfo.new()
+function InstallerInfo._jinit(self)
+    InstallerInfo._init_fields(self)
+    return self
+end
+
+function InstallerInfo.new(...)
     local self = setmetatable({}, InstallerInfo)
-    self:_init_fields()
+    InstallerInfo._jinit(self, ...)
     return self
 end
 
 
 -- throws Exception
 function InstallerInfo:write()
-        local FILEABPATH = AbPath.new(self.URLGLOBALS:getMainPath() + InstallerInfo.PACKAGE, InstallerInfo.INITFILENAME)
-        local try_ok, try_error = pcall(function()
+        local FILEABPATH = AbPath.new(URLGLOBALS.getMainPath() + InstallerInfo.PACKAGE, InstallerInfo.INITFILENAME)
+        local try_ok, try_error, try_value = pcall(function()
             local newFile = AbFile.createAbFileFromAbPath(FILEABPATH)
             newFile:createNewFile()
             local dataOutputStream = DataOutputStreamFactory.getInstance():getInstanceForAbFile(newFile)
@@ -68,7 +97,8 @@ function InstallerInfo:write()
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().PRELOADERERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRELOADERERROR) then
                 self.logUtil:putF("Failed", self, "write")
             end
             error(e, 0)
@@ -78,8 +108,8 @@ end
 
 -- throws Exception
 function InstallerInfo:read()
-        local FILEABPATH = AbPath.new(self.URLGLOBALS:getMainPath() + InstallerInfo.PACKAGE, InstallerInfo.INITFILENAME)
-        local try_ok, try_error = pcall(function()
+        local FILEABPATH = AbPath.new(URLGLOBALS.getMainPath() + InstallerInfo.PACKAGE, InstallerInfo.INITFILENAME)
+        local try_ok, try_error, try_value = pcall(function()
             local file = AbFile.createAbFileFromAbPath(FILEABPATH)
             if file:isFile() then
                 local iFile = AbFileLocalInputStream.new(file)
@@ -89,14 +119,15 @@ function InstallerInfo:read()
                 self:setUserName(WeakCrypt.new(1):decrypt(decryptedUserName))
                 self:setPassword(WeakCrypt.new(2):decrypt(decryptedPassword))
             else
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().PRELOADER) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRELOADER) then
                     self.logUtil:putF("Not a File - Failed Loading: " .. tostring(FILEABPATH), self, "read")
                 end
             end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().PRELOADERERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRELOADERERROR) then
                 self.logUtil:putF("Failed", self, "read")
             end
         end
@@ -124,7 +155,7 @@ function InstallerInfo:updateIfNeeded()
             InstallerInfo.hasRead = true
             self:read()
             if InstallerInfo.userName == nil or InstallerInfo.password == nil then
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().PRELOADER) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRELOADER) then
                     self.logUtil:putF("Failed", self, "updateIfNeeded")
                 end
             end
@@ -155,9 +186,9 @@ function InstallerInfo:isValid(userName, password)
         return false
 end
 
-InstallerInfo.instance = InstallerInfo.new()
+InstallerInfo.instance_f = InstallerInfo.new()
 InstallerInfo.INITFILENAME = "installerdata.dat"
-InstallerInfo.PACKAGE = self.PATH_GLOBALS:getInstance().INIT_PATH
+InstallerInfo.PACKAGE = PATH_GLOBALS.getInstance().INIT_PATH
 InstallerInfo.userName = StringUtil.getInstance().EMPTY_STRING
 InstallerInfo.password = StringUtil.getInstance().EMPTY_STRING
 InstallerInfo.hasRead = false

@@ -13,15 +13,31 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.layer
 
-local CollidableDestroyableDamageableLayer = require("org.allbinary.game.layer.special.CollidableDestroyableDamageableLayer")
-local WaypointBase = require("org.allbinary.game.layer.waypoint.WaypointBase")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local TickableInterface = require("org.allbinary.game.tick.TickableInterface")
-local AllBinaryLayerManager = require("org.allbinary.layer.AllBinaryLayerManager")
-local GeographicMapCellHistory = require("org.allbinary.media.graphics.geography.map.GeographicMapCellHistory")
-local GeographicMapCellPosition = require("org.allbinary.media.graphics.geography.map.GeographicMapCellPosition")
-local BasicArrayListS = require("org.allbinary.util.BasicArrayListS")
+local WaypointBehaviorBase = {}
+package.loaded["org.allbinary.game.layer.WaypointBehaviorBase"] = WaypointBehaviorBase
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local CollidableDestroyableDamageableLayer = java_lazy("org.allbinary.game.layer.special.CollidableDestroyableDamageableLayer")
+local WaypointBase = java_lazy("org.allbinary.game.layer.waypoint.WaypointBase")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local TickableInterface = java_lazy("org.allbinary.game.tick.TickableInterface")
+local AllBinaryLayerManager = java_lazy("org.allbinary.layer.AllBinaryLayerManager")
+local GeographicMapCellHistory = java_lazy("org.allbinary.media.graphics.geography.map.GeographicMapCellHistory")
+local GeographicMapCellPosition = java_lazy("org.allbinary.media.graphics.geography.map.GeographicMapCellPosition")
+local BasicArrayListS = java_lazy("org.allbinary.util.BasicArrayListS")
+local PathFindingLayerInterface = java_lazy("org.allbinary.game.layer.PathFindingLayerInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -43,32 +59,46 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local WaypointBehaviorBase = {}
+-- class table WaypointBehaviorBase is declared before the requires
 WaypointBehaviorBase.__index = WaypointBehaviorBase
 WaypointBehaviorBase.className = "WaypointBehaviorBase"
+WaypointBehaviorBase.javaClassName = "org.allbinary.game.layer.WaypointBehaviorBase"
+WaypointBehaviorBase.java_implements = " TickableInterface "
+WaypointBehaviorBase.java_interfaces = function() return {TickableInterface} end
 
 function WaypointBehaviorBase:_init_fields()
-    self.ownedWaypointList = nil
+    if self.ownedWaypointList == nil then self.ownedWaypointList = nil end
     self.waypointOverridesAttacking = true
     self.waypoint = WaypointBase.NULL_WAYPOINT_BASE
     self.steeringVisitorList = BasicArrayListD.new()
 end
 
 
-function WaypointBehaviorBase.new()
-    local self = setmetatable({}, WaypointBehaviorBase)
-    self:_init_fields()
+function WaypointBehaviorBase._jinit(self)
+    WaypointBehaviorBase._init_fields(self)
         self.ownedWaypointList = BasicArrayListS.new(1)
+    return self
+end
+
+function WaypointBehaviorBase.new(...)
+    local self = setmetatable({}, WaypointBehaviorBase)
+    WaypointBehaviorBase._jinit(self, ...)
     return self
 end
 
 
 function WaypointBehaviorBase:getName()
-        return getmetatable(self).className
+        return (getmetatable(self).javaClassName or getmetatable(self).className)
 end
 
 
@@ -103,42 +133,42 @@ end
 
 
 function WaypointBehaviorBase:getMovementLogicAsString()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function WaypointBehaviorBase:isWaypointListEmptyOrOnlyTargets()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function WaypointBehaviorBase:isInSensorRange(layerInterface, targetDistance)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function WaypointBehaviorBase:getCurrentTargetLayerInterface()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function WaypointBehaviorBase:getCurrentTargetingStateString()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function WaypointBehaviorBase:isTrackingWaypoint()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function WaypointBehaviorBase:getCurrentPathGeographicMapCellPosition()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function WaypointBehaviorBase:getCurrentGeographicMapCellHistory()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
@@ -148,40 +178,40 @@ end
 
 
 function WaypointBehaviorBase:getNextUnvisitedPathGeographicMapCellPosition()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function WaypointBehaviorBase:needToMove()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function WaypointBehaviorBase:setWaypointPathsList(waypointPathsList)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function WaypointBehaviorBase:getWaypointPathsList()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 -- throws Exception
 function WaypointBehaviorBase:setTarget(layerInterface)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 -- throws Exception
 function WaypointBehaviorBase:setTargetWithDistance(layerInterface, anotherTargetDistance)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 -- throws Exception
 function WaypointBehaviorBase:clearTarget()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 

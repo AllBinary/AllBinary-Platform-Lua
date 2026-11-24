@@ -13,10 +13,27 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.input.motion.button
 
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local TouchScreenFactory = {}
+package.loaded["org.allbinary.input.motion.button.TouchScreenFactory"] = TouchScreenFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local TouchScreenType = java_lazy("org.allbinary.input.motion.button.TouchScreenType")
+local TouchScreenTypesFactory = java_lazy("org.allbinary.input.motion.button.TouchScreenTypesFactory")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -25,35 +42,48 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local TouchScreenFactory = {}
+-- class table TouchScreenFactory is declared before the requires
 TouchScreenFactory.__index = TouchScreenFactory
 TouchScreenFactory.className = "TouchScreenFactory"
+TouchScreenFactory.javaClassName = "org.allbinary.input.motion.button.TouchScreenFactory"
 
 function TouchScreenFactory:_init_fields()
     self.logUtil = LogUtil.getInstance()
-    self.touch = false
-    self.multiTouch = false
-    self.multiTouchDistinct = false
+    if self.touch == nil then self.touch = false end
+    if self.multiTouch == nil then self.multiTouch = false end
+    if self.multiTouchDistinct == nil then self.multiTouchDistinct = false end
     self.touchScreenType = TouchScreenTypesFactory.getInstance().NOTOUCH
 end
 
 
-function TouchScreenFactory.new()
-    local self = setmetatable({}, TouchScreenFactory)
-    self:_init_fields()
-        local try_ok, try_error = pcall(function()
+function TouchScreenFactory._jinit(self)
+    TouchScreenFactory._init_fields(self)
+        local try_ok, try_error, try_value = pcall(function()
             self:setTouch(true)
             self:setMultiTouch(false)
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local commonStrings = CommonStrings.getInstance()
             self.logUtil:put(commonStrings.EXCEPTION, TouchScreenFactory.SINGLETON, commonStrings.GET_INSTANCE, e)
         end
+    return self
+end
+
+function TouchScreenFactory.new(...)
+    local self = setmetatable({}, TouchScreenFactory)
+    TouchScreenFactory._jinit(self, ...)
     return self
 end
 

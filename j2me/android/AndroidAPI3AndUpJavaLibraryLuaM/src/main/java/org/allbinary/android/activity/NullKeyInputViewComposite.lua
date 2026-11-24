@@ -13,7 +13,22 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.android.activity
 
-local View = require("android.view.View")
+local NullKeyInputViewComposite = {}
+package.loaded["org.allbinary.android.activity.NullKeyInputViewComposite"] = NullKeyInputViewComposite
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local View = java_lazy("android.view.View")
 local KeyInputViewCompositeInterface = require("org.allbinary.android.activity.KeyInputViewCompositeInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
@@ -36,17 +51,29 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local NullKeyInputViewComposite = {}
+-- class table NullKeyInputViewComposite is declared before the requires
 NullKeyInputViewComposite.__index = NullKeyInputViewComposite
 NullKeyInputViewComposite.className = "NullKeyInputViewComposite"
+NullKeyInputViewComposite.javaClassName = "org.allbinary.android.activity.NullKeyInputViewComposite"
+NullKeyInputViewComposite.java_implements = " KeyInputViewCompositeInterface "
+NullKeyInputViewComposite.java_interfaces = function() return {KeyInputViewCompositeInterface} end
+
+function NullKeyInputViewComposite._jinit(self)
+    return self
+end
 
 function NullKeyInputViewComposite.new()
-    local self = setmetatable({}, NullKeyInputViewComposite)
-    return self
+    return NullKeyInputViewComposite._jinit(setmetatable({}, NullKeyInputViewComposite))
 end
 
 
@@ -55,12 +82,12 @@ end
 
 
 function NullKeyInputViewComposite:getRootView()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullKeyInputViewComposite:getView()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 

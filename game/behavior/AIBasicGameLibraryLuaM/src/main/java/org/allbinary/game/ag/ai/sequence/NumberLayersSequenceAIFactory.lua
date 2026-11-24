@@ -13,9 +13,25 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.ag.ai.sequence
 
-local ArtificialIntelligenceInterface = require("org.allbinary.ai.ArtificialIntelligenceInterface")
-local GameInput = require("org.allbinary.game.input.GameInput")
-local AllBinaryLayer = require("org.allbinary.layer.AllBinaryLayer")
+local NumberLayersSequenceAIFactory = {}
+package.loaded["org.allbinary.game.ag.ai.sequence.NumberLayersSequenceAIFactory"] = NumberLayersSequenceAIFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local ArtificialIntelligenceInterface = java_lazy("org.allbinary.ai.ArtificialIntelligenceInterface")
+local GameInput = java_lazy("org.allbinary.game.input.GameInput")
+local AllBinaryLayer = java_lazy("org.allbinary.layer.AllBinaryLayer")
+local NumberLayersSequenceAI = java_lazy("org.allbinary.game.ag.ai.sequence.NumberLayersSequenceAI")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -24,17 +40,27 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local NumberLayersSequenceAIFactory = {}
+-- class table NumberLayersSequenceAIFactory is declared before the requires
 NumberLayersSequenceAIFactory.__index = NumberLayersSequenceAIFactory
 NumberLayersSequenceAIFactory.className = "NumberLayersSequenceAIFactory"
+NumberLayersSequenceAIFactory.javaClassName = "org.allbinary.game.ag.ai.sequence.NumberLayersSequenceAIFactory"
+
+function NumberLayersSequenceAIFactory._jinit(self)
+    return self
+end
 
 function NumberLayersSequenceAIFactory.new()
-    local self = setmetatable({}, NumberLayersSequenceAIFactory)
-    return self
+    return NumberLayersSequenceAIFactory._jinit(setmetatable({}, NumberLayersSequenceAIFactory))
 end
 
 

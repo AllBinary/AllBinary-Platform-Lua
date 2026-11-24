@@ -13,11 +13,26 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.input.motion.action
 
-local CompleteMotionGestureInputEvent = require("org.allbinary.game.input.CompleteMotionGestureInputEvent")
-local CompleteMotionGestureInputEventListenerInterface = require("org.allbinary.game.input.CompleteMotionGestureInputEventListenerInterface")
-local ForcedLogUtil = require("org.allbinary.logic.communication.log.ForcedLogUtil")
-local AllBinaryEventObject = require("org.allbinary.logic.util.event.AllBinaryEventObject")
-local EventStrings = require("org.allbinary.logic.util.event.EventStrings")
+local NoCompleteMotionGestureInputEventListener = {}
+package.loaded["org.allbinary.game.input.motion.action.NoCompleteMotionGestureInputEventListener"] = NoCompleteMotionGestureInputEventListener
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local CompleteMotionGestureInputEvent = java_lazy("org.allbinary.game.input.CompleteMotionGestureInputEvent")
+local CompleteMotionGestureInputEventListenerInterface = java_lazy("org.allbinary.game.input.CompleteMotionGestureInputEventListenerInterface")
+local ForcedLogUtil = java_lazy("org.allbinary.logic.communication.log.ForcedLogUtil")
+local AllBinaryEventObject = java_lazy("org.allbinary.logic.util.event.AllBinaryEventObject")
+local EventStrings = java_lazy("org.allbinary.logic.util.event.EventStrings")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -26,17 +41,31 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local NoCompleteMotionGestureInputEventListener = {}
+-- class table NoCompleteMotionGestureInputEventListener is declared before the requires
 NoCompleteMotionGestureInputEventListener.__index = NoCompleteMotionGestureInputEventListener
 NoCompleteMotionGestureInputEventListener.className = "NoCompleteMotionGestureInputEventListener"
+NoCompleteMotionGestureInputEventListener.javaClassName = "org.allbinary.game.input.motion.action.NoCompleteMotionGestureInputEventListener"
+NoCompleteMotionGestureInputEventListener.java_implements = " CompleteMotionGestureInputEventListenerInterface "
+NoCompleteMotionGestureInputEventListener.java_interfaces = function() return {CompleteMotionGestureInputEventListenerInterface} end
 
 
-function NoCompleteMotionGestureInputEventListener.new()
+function NoCompleteMotionGestureInputEventListener._jinit(self)
+    return self
+end
+
+function NoCompleteMotionGestureInputEventListener.new(...)
     local self = setmetatable({}, NoCompleteMotionGestureInputEventListener)
+    NoCompleteMotionGestureInputEventListener._jinit(self, ...)
     return self
 end
 
@@ -51,10 +80,10 @@ end
 
 
 function NoCompleteMotionGestureInputEventListener.getInstance()
-        return NoCompleteMotionGestureInputEventListener.instance
+        return NoCompleteMotionGestureInputEventListener.instance_f
 end
 
-NoCompleteMotionGestureInputEventListener.instance = NoCompleteMotionGestureInputEventListener.new()
+NoCompleteMotionGestureInputEventListener.instance_f = NoCompleteMotionGestureInputEventListener.new()
 
 return NoCompleteMotionGestureInputEventListener
 

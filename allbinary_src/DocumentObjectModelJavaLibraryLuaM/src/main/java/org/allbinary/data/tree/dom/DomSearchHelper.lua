@@ -13,10 +13,25 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.data.tree.dom
 
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local Node = require("org.w3c.dom.Node")
-local NodeList = require("org.w3c.dom.NodeList")
+local DomSearchHelper = {}
+package.loaded["org.allbinary.data.tree.dom.DomSearchHelper"] = DomSearchHelper
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local Node = java_lazy("org.w3c.dom.Node")
+local NodeList = java_lazy("org.w3c.dom.NodeList")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -38,17 +53,29 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local DomSearchHelper = {}
+-- class table DomSearchHelper is declared before the requires
 DomSearchHelper.__index = DomSearchHelper
 DomSearchHelper.className = "DomSearchHelper"
+DomSearchHelper.javaClassName = "org.allbinary.data.tree.dom.DomSearchHelper"
 
 
-function DomSearchHelper.new()
+function DomSearchHelper._jinit(self)
+    return self
+end
+
+function DomSearchHelper.new(...)
     local self = setmetatable({}, DomSearchHelper)
+    DomSearchHelper._jinit(self, ...)
     return self
 end
 
@@ -71,7 +98,7 @@ function DomSearchHelper.getNode(nodeName, nodeList)
         if node ~= nil then
             return node
         else
-            error(java_exception("Exception", nodeName .. " Node Not Found in search"), 0)
+            error(require("java.lang.Exception").new(nodeName .. " Node Not Found in search"), 0)
         end
 end
 
@@ -87,7 +114,7 @@ end
 function DomSearchHelper.getAllNodes(nodeName, nodeList)
         local vector = DomSearchHelper.getAllNodesNoThrow(nodeName, nodeList)
         if vector == nil then
-            error(java_exception("Exception", nodeName .. " Node Not Found in search"), 0)
+            error(require("java.lang.Exception").new(nodeName .. " Node Not Found in search"), 0)
         else
             return vector
         end

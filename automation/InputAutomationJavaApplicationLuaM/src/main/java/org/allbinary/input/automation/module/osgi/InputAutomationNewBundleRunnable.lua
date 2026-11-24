@@ -13,29 +13,44 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.input.automation.module.osgi
 
--- local File = require("java.io.File")
+local InputAutomationNewBundleRunnable = {}
+package.loaded["org.allbinary.input.automation.module.osgi.InputAutomationNewBundleRunnable"] = InputAutomationNewBundleRunnable
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local File = java_lazy("java.io.File")
 -- local FileFilter = require("java.io.FileFilter")
 -- local FileInputStream = require("java.io.FileInputStream")
 -- local URL = require("java.net.URL")
--- local HashMap = require("java.util.HashMap")
+local HashMap = java_lazy("java.util.HashMap")
 -- local Set = require("java.util.Set")
 -- local JarInputStream = require("java.util.jar.JarInputStream")
 -- local Manifest = require("java.util.jar.Manifest")
-local Bundle = require("org.osgi.framework.Bundle")
-local BundleContext = require("org.osgi.framework.BundleContext")
-local Constants = require("org.osgi.framework.Constants")
-local InputAutomationBundleActivator = require("bundle.input.automation.InputAutomationBundleActivator")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local FileWrapperUtil = require("org.allbinary.logic.io.file.FileWrapperUtil")
-local SubDirectory = require("org.allbinary.logic.io.file.directory.SubDirectory")
-local BasicFileFilterUtil = require("org.allbinary.logic.io.file.filter.BasicFileFilterUtil")
-local CommonLabels = require("org.allbinary.string.CommonLabels")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local RunnableInterface = require("org.allbinary.thread.RunnableInterface")
-local TimeDelayHelper = require("org.allbinary.time.TimeDelayHelper")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
+local Bundle = java_lazy("org.osgi.framework.Bundle")
+local BundleContext = java_lazy("org.osgi.framework.BundleContext")
+local Constants = java_lazy("org.osgi.framework.Constants")
+local InputAutomationBundleActivator = java_lazy("bundle.input.automation.InputAutomationBundleActivator")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local FileWrapperUtil = java_lazy("org.allbinary.logic.io.file.FileWrapperUtil")
+local SubDirectory = java_lazy("org.allbinary.logic.io.file.directory.SubDirectory")
+local BasicFileFilterUtil = java_lazy("org.allbinary.logic.io.file.filter.BasicFileFilterUtil")
+local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local RunnableInterface = java_lazy("org.allbinary.thread.RunnableInterface")
+local TimeDelayHelper = java_lazy("org.allbinary.time.TimeDelayHelper")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -44,28 +59,42 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local InputAutomationNewBundleRunnable = {}
+-- class table InputAutomationNewBundleRunnable is declared before the requires
 InputAutomationNewBundleRunnable.__index = InputAutomationNewBundleRunnable
 InputAutomationNewBundleRunnable.className = "InputAutomationNewBundleRunnable"
+InputAutomationNewBundleRunnable.javaClassName = "org.allbinary.input.automation.module.osgi.InputAutomationNewBundleRunnable"
+InputAutomationNewBundleRunnable.java_implements = " RunnableInterface "
+InputAutomationNewBundleRunnable.java_interfaces = function() return {RunnableInterface} end
 
 function InputAutomationNewBundleRunnable:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
-    self.inputAutomationBundleActivator = nil
-    self.running = false
-    self.fileBasicArrayList = nil
+    if self.inputAutomationBundleActivator == nil then self.inputAutomationBundleActivator = nil end
+    if self.running == nil then self.running = false end
+    if self.fileBasicArrayList == nil then self.fileBasicArrayList = nil end
 end
 
 
-function InputAutomationNewBundleRunnable.new(inputAutomationBundleActivator)
-    local self = setmetatable({}, InputAutomationNewBundleRunnable)
-    self:_init_fields()
+function InputAutomationNewBundleRunnable._jinit(self, inputAutomationBundleActivator)
+    InputAutomationNewBundleRunnable._init_fields(self)
         self.inputAutomationBundleActivator = inputAutomationBundleActivator
         self.fileBasicArrayList = BasicArrayListD.new()
+    return self
+end
+
+function InputAutomationNewBundleRunnable.new(...)
+    local self = setmetatable({}, InputAutomationNewBundleRunnable)
+    InputAutomationNewBundleRunnable._jinit(self, ...)
     return self
 end
 
@@ -129,7 +158,7 @@ end
 
 function InputAutomationNewBundleRunnable:getJarModuleFileBasicArrayList()
         self.logUtil:putF(self.commonStrings.START, self, "getJarModuleFileBasicArrayList")
-        local baseJarPath = System.getProperty(InputAutomationNewBundleRunnable.JAR_DIR_PROP)
+        local baseJarPath = require("java.lang.System").getProperty(InputAutomationNewBundleRunnable.JAR_DIR_PROP)
         if (string.sub(baseJarPath, 1, #InputAutomationNewBundleRunnable.FILE) == InputAutomationNewBundleRunnable.FILE) then
             baseJarPath = string.sub(baseJarPath, (InputAutomationNewBundleRunnable.FILE:length()) + 1)
         end
@@ -203,7 +232,7 @@ end
 
 
 function InputAutomationNewBundleRunnable:run()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             self.logUtil:putF(self.commonStrings.START, self, self.commonStrings.RUN)
             self:setRunning(true)
             local timeHelper = TimeDelayHelper.new(1000)
@@ -217,6 +246,7 @@ function InputAutomationNewBundleRunnable:run()
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.RUN, e)
         end
 end

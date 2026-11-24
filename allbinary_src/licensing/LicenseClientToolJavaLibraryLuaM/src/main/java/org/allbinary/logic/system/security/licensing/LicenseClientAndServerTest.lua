@@ -13,16 +13,33 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.system.security.licensing
 
--- local File = require("java.io.File")
+local LicenseClientAndServerTest = {}
+package.loaded["org.allbinary.logic.system.security.licensing.LicenseClientAndServerTest"] = LicenseClientAndServerTest
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local File = java_lazy("java.io.File")
 -- local FileReader = require("java.io.FileReader")
 -- local LineNumberReader = require("java.io.LineNumberReader")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local LicenseInitInfo = require("org.allbinary.business.init.LicenseInitInfo")
-local LicenseInitInfoUtil = require("org.allbinary.business.init.LicenseInitInfoUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local XmlRpcAbeLicenseRetrievalClient = require("org.allbinary.logic.system.security.licensing.client.XmlRpcAbeLicenseRetrievalClient")
-local PATH_GLOBALS = require("org.allbinary.globals.PATH_GLOBALS")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local LicenseInitInfo = java_lazy("org.allbinary.business.init.LicenseInitInfo")
+local LicenseInitInfoUtil = java_lazy("org.allbinary.business.init.LicenseInitInfoUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local XmlRpcAbeLicenseRetrievalClient = java_lazy("org.allbinary.logic.system.security.licensing.client.XmlRpcAbeLicenseRetrievalClient")
+local PATH_GLOBALS = java_lazy("org.allbinary.globals.PATH_GLOBALS")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local PrintLicenseInitInfo = java_lazy("org.allbinary.logic.system.security.licensing.PrintLicenseInitInfo")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -31,13 +48,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local LicenseClientAndServerTest = {}
+-- class table LicenseClientAndServerTest is declared before the requires
 LicenseClientAndServerTest.__index = LicenseClientAndServerTest
 LicenseClientAndServerTest.className = "LicenseClientAndServerTest"
+LicenseClientAndServerTest.javaClassName = "org.allbinary.logic.system.security.licensing.LicenseClientAndServerTest"
 
 function LicenseClientAndServerTest:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -45,10 +69,9 @@ function LicenseClientAndServerTest:_init_fields()
 end
 
 
-function LicenseClientAndServerTest.new(options)
-    local self = setmetatable({}, LicenseClientAndServerTest)
-    self:_init_fields()
-        LicenseInitInfoUtil.getInstance():setFilePath(PrintLicenseInitInfo.PATH + self.PATH_GLOBALS:getInstance().INIT_PATH)
+function LicenseClientAndServerTest._jinit(self, options)
+    LicenseClientAndServerTest._init_fields(self)
+        LicenseInitInfoUtil.getInstance():setFilePath(PrintLicenseInitInfo.PATH + PATH_GLOBALS.getInstance().INIT_PATH)
         for index = 1, (options.n or #options) - 1 do
             self.vector:add(options[index + 1])
         end
@@ -56,22 +79,23 @@ function LicenseClientAndServerTest.new(options)
             local file = File.new(tostring(PrintLicenseInitInfo.PATH) .. "testlicenseservers.txt")
             local reader = FileReader.new(file)
             local lineNumberReader = LineNumberReader.new(reader)
-            while true do
-                local line = lineNumberReader:readLine()
-                if line ~= nil then
-                    self.vector:add(line)
-                else
-                    break
-                end
+            while lineNumberReader:ready() do
+                self.vector:add(lineNumberReader:readLine())
             end
         end
+    return self
+end
+
+function LicenseClientAndServerTest.new(...)
+    local self = setmetatable({}, LicenseClientAndServerTest)
+    LicenseClientAndServerTest._jinit(self, ...)
     return self
 end
 
 
 function LicenseClientAndServerTest:test()
         local stringBuffer = StringMaker.new()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local list = BasicArrayListD.new()
             local TESTING = "Testing with new licence:<br/>"
             local PROCESSING = "Processing: <br/>"
@@ -81,7 +105,7 @@ function LicenseClientAndServerTest:test()
             for index = 0, size - 1 do
                 stringBuffer:append(TESTING)
                 local serverName = self.vector:get(index)
-                local try_ok, try_error = pcall(function()
+                local try_ok, try_error, try_value = pcall(function()
                     local licenseInitInfo = LicenseInitInfo.new()
                     licenseInitInfo:addServer(serverName)
                     LicenseInitInfoUtil.getInstance():write(licenseInitInfo)
@@ -98,6 +122,7 @@ function LicenseClientAndServerTest:test()
                 end)
                 if not try_ok then
                     local e = try_error
+                    if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
                     list:add(serverName)
                     self.logUtil:put("Test Error: " .. tostring(stringBuffer), self, "test", e)
                 end
@@ -106,20 +131,22 @@ function LicenseClientAndServerTest:test()
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put("Test Error: " .. tostring(stringBuffer), self, "test", e)
         end
 end
 
 
 function LicenseClientAndServerTest.main(args)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local licensingTest = LicenseClientAndServerTest.new(args)
             licensingTest:test()
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local logUtil = LogUtil.getInstance()
-            self.logUtil:put(self.commonStrings.EXCEPTION, "main()", "main()", e)
+            logUtil:put(CommonStrings.getInstance().EXCEPTION, "main()", "main()", e)
         end
 end
 

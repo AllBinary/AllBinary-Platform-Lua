@@ -13,12 +13,27 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.system.security.crypt.jcehelper
 
+local KeySpecFactory = {}
+package.loaded["org.allbinary.logic.system.security.crypt.jcehelper.KeySpecFactory"] = KeySpecFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local KeySpec = require("java.security.spec.KeySpec")
 -- local DESKeySpec = require("javax.crypto.spec.DESKeySpec")
 -- local DESedeKeySpec = require("javax.crypto.spec.DESedeKeySpec")
-local TsUtil = require("org.allbinary.TsUtil")
-local PreLogUtil = require("org.allbinary.logic.communication.log.PreLogUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local TsUtil = java_lazy("org.allbinary.TsUtil")
+local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -33,6 +48,41 @@ local function java_exception(className, message, cause)
     return setmetatable(exception, {__tostring = function(self) if self.message ~= nil then return tostring(self.message) end return self.className end})
 end
 
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
 local function java_idiv(a, b)
     local q = a / b
     if q < 0 then return math.ceil(q) end
@@ -40,13 +90,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local KeySpecFactory = {}
+-- class table KeySpecFactory is declared before the requires
 KeySpecFactory.__index = KeySpecFactory
 KeySpecFactory.className = "KeySpecFactory"
+KeySpecFactory.javaClassName = "org.allbinary.logic.system.security.crypt.jcehelper.KeySpecFactory"
 
 function KeySpecFactory:_init_fields()
     self.DES = "DES"
@@ -56,38 +113,44 @@ end
 
 
 function KeySpecFactory.getInstance()
-        return KeySpecFactory.instance
+        return KeySpecFactory.instance_f
 end
 
 
-function KeySpecFactory.new()
+function KeySpecFactory._jinit(self)
+    KeySpecFactory._init_fields(self)
+    return self
+end
+
+function KeySpecFactory.new(...)
     local self = setmetatable({}, KeySpecFactory)
-    self:_init_fields()
+    KeySpecFactory._jinit(self, ...)
     return self
 end
 
 
--- Java overloaded method: Lua keeps the last definition
 function KeySpecFactory:getInstance(algorithm, keyData)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local tsUtil = TsUtil.getInstance()
             if tsUtil:compareTo(algorithm, self.DES) == 0 then
-                return DESKeySpec.new(keyData)
+                do return "__jreturn", DESKeySpec.new(keyData) end
             elseif tsUtil:compareTo(algorithm, self.DESEDE) == 0 then
-                return DESedeKeySpec.new(keyData)
+                do return "__jreturn", DESedeKeySpec.new(keyData) end
             else
-                error(java_exception("RuntimeException"), 0)
+                error(require("java.lang.RuntimeException").new(), 0)
             end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local commonStrings = CommonStrings.getInstance()
             PreLogUtil.putOE(commonStrings.EXCEPTION, self, commonStrings.GET_INSTANCE, e)
-            error(java_exception("RuntimeException"), 0)
+            error(require("java.lang.RuntimeException").new(), 0)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
-KeySpecFactory.instance = KeySpecFactory.new()
+KeySpecFactory.instance_f = KeySpecFactory.new()
 
 return KeySpecFactory
 

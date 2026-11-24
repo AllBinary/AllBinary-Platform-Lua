@@ -13,15 +13,121 @@
 -- Generated Code Do Not Modify
 -- package views.business.context.modules.storefront.customizer.includes.meta
 
-local DomNodeInterface = require("org.allbinary.data.tree.dom.DomNodeInterface")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local ValidationComponentInterface = require("org.allbinary.logic.control.validate.ValidationComponentInterface")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local TransformInfoInterface = require("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
-local Document = require("org.w3c.dom.Document")
-local Node = require("org.w3c.dom.Node")
-local CustomizerUtil = require("views.business.context.modules.storefront.customizer.CustomizerUtil")
+local InsertMetaValidationView = {}
+package.loaded["views.business.context.modules.storefront.customizer.includes.meta.InsertMetaValidationView"] = InsertMetaValidationView
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local DomNodeInterface = java_lazy("org.allbinary.data.tree.dom.DomNodeInterface")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local ValidationComponentInterface = java_lazy("org.allbinary.logic.control.validate.ValidationComponentInterface")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local TransformInfoInterface = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
+local Document = java_lazy("org.w3c.dom.Document")
+local Node = java_lazy("org.w3c.dom.Node")
+local CustomizerUtil = java_lazy("views.business.context.modules.storefront.customizer.CustomizerUtil")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local MetaView = require("views.business.context.modules.storefront.customizer.includes.meta.MetaView")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
+
+local function java_super(class, name, count)
+    local mangled = name .. "_j" .. count
+    local current = class
+    while type(current) == "table" do
+        local method = rawget(current, mangled)
+        if method ~= nil then return method end
+        method = rawget(current, name)
+        if method ~= nil and method ~= rawget(current, name .. "__jdispatcher") then return method end
+        local parent = getmetatable(current)
+        local index = parent and parent.__index
+        if index == current then index = nil end
+        current = index
+    end
+    return class[name]
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -30,24 +136,39 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local InsertMetaValidationView = {}
+-- class table InsertMetaValidationView is declared before the requires
 InsertMetaValidationView.__index = InsertMetaValidationView
 InsertMetaValidationView.className = "InsertMetaValidationView"
+InsertMetaValidationView.javaClassName = "views.business.context.modules.storefront.customizer.includes.meta.InsertMetaValidationView"
 setmetatable(InsertMetaValidationView, {__index = MetaView})
+InsertMetaValidationView.java_implements = " ValidationComponentInterface "
+InsertMetaValidationView.java_interfaces = function() return {ValidationComponentInterface} end
 
 function InsertMetaValidationView:_init_fields()
     self.logUtil = LogUtil.getInstance()
 end
 
 
-function InsertMetaValidationView.new(transformInfoInterface)
-    local self = setmetatable(MetaView.new(transformInfoInterface), InsertMetaValidationView)
-    self:_init_fields()
+function InsertMetaValidationView._jinit(self, transformInfoInterface)
+    java_super_init(MetaView, self, transformInfoInterface)
+    InsertMetaValidationView._init_fields(self)
         -- super(...) made self above
+    return self
+end
+
+function InsertMetaValidationView.new(...)
+    local self = setmetatable({}, InsertMetaValidationView)
+    InsertMetaValidationView._jinit(self, ...)
     return self
 end
 
@@ -56,47 +177,63 @@ end
 function InsertMetaValidationView:toXmlDoc()
         return nil
 end
+java_overload(InsertMetaValidationView, "toXmlDoc", 0)
 
 
 function InsertMetaValidationView:isValid()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local isValid = true
             CustomizerUtil.getInstance():insert(self:getTransformInfoInterface(), self)
-            return isValid
+            do return "__jreturn", isValid end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEWERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEWERROR) then
                 self.logUtil:put("Failed to validate", self, self.commonStrings.IS_VALID, e)
             end
             return false
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+java_overload(InsertMetaValidationView, "isValid", 0)
 
 
 function InsertMetaValidationView:validationInfo()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local stringBuffer = StringMaker.new()
-            return tostring(stringBuffer)
+            do return "__jreturn", tostring(stringBuffer) end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEWERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEWERROR) then
                 self.logUtil:put("Failed to generate validation error info", self, "validationInfo()", e)
             end
             return "Error Getting Validation Info"
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+java_overload(InsertMetaValidationView, "validationInfo", 0)
 
 
 function InsertMetaValidationView:toValidationInfoDoc()
         return nil
 end
+java_overload(InsertMetaValidationView, "toValidationInfoDoc", 0)
 
 
 function InsertMetaValidationView:toValidationInfoNode(document)
         return nil
 end
+java_overload(InsertMetaValidationView, "toValidationInfoNode", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "Document")) end)
+
+
+-- throws Exception
+function InsertMetaValidationView:getTransformInfoInterface()
+        return java_super(MetaView, "getTransformInfoInterface", 0)(self)
+end
+java_overload(InsertMetaValidationView, "getTransformInfoInterface", 0)
 
 return InsertMetaValidationView
 

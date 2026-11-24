@@ -13,25 +13,44 @@
 -- Generated Code Do Not Modify
 -- package views.generic.inventory
 
--- local HashMap = require("java.util.HashMap")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local StoreFrontInterface = require("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
-local BasicItemData = require("org.allbinary.business.user.commerce.inventory.item.BasicItemData")
-local StaticPagesEntity = require("org.allbinary.data.tables.staticpages.StaticPagesEntity")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local SearchParams = require("org.allbinary.logic.control.search.SearchParams")
-local SearchRequest = require("org.allbinary.logic.control.search.SearchRequest")
-local InputOutputTypeData = require("org.allbinary.logic.io.InputOutputTypeData")
-local AbPathData = require("org.allbinary.logic.io.path.AbPathData")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringValidationUtil = require("org.allbinary.logic.string.StringValidationUtil")
-local Replace = require("org.allbinary.logic.string.regex.replace.Replace")
-local AbeClientInformationInterface = require("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
-local ServiceClientInformationInterfaceFactory = require("org.allbinary.logic.system.security.licensing.ServiceClientInformationInterfaceFactory")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local InventoryViewSearchInterface = require("views.admin.inventory.listings.InventoryViewSearchInterface")
+local InventorySearch = {}
+package.loaded["views.generic.inventory.InventorySearch"] = InventorySearch
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local StoreFrontInterface = java_lazy("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
+local BasicItemData = java_lazy("org.allbinary.business.user.commerce.inventory.item.BasicItemData")
+local StaticPagesEntity = java_lazy("org.allbinary.data.tables.staticpages.StaticPagesEntity")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local SearchParams = java_lazy("org.allbinary.logic.control.search.SearchParams")
+local SearchRequest = java_lazy("org.allbinary.logic.control.search.SearchRequest")
+local InputOutputTypeData = java_lazy("org.allbinary.logic.io.InputOutputTypeData")
+local AbPathData = java_lazy("org.allbinary.logic.io.path.AbPathData")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
+local Replace = java_lazy("org.allbinary.logic.string.regex.replace.Replace")
+local AbeClientInformationInterface = java_lazy("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
+local ServiceClientInformationInterfaceFactory = java_lazy("org.allbinary.logic.system.security.licensing.ServiceClientInformationInterfaceFactory")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local InventoryViewSearchInterface = java_lazy("views.admin.inventory.listings.InventoryViewSearchInterface")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local InventorySearchProductUtil = java_lazy("views.generic.inventory.InventorySearchProductUtil")
+local InventorySearchUtil = java_lazy("views.generic.inventory.InventorySearchUtil")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -53,40 +72,54 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local InventorySearch = {}
+-- class table InventorySearch is declared before the requires
 InventorySearch.__index = InventorySearch
 InventorySearch.className = "InventorySearch"
+InventorySearch.javaClassName = "views.generic.inventory.InventorySearch"
+InventorySearch.java_implements = " InventoryViewSearchInterface "
+InventorySearch.java_interfaces = function() return {InventoryViewSearchInterface} end
 
 function InventorySearch:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
     self.basicItemData = BasicItemData.getInstance()
-    self.searchRequest = nil
+    if self.searchRequest == nil then self.searchRequest = nil end
 end
 
 
-function InventorySearch.new(searchRequest)
-    local self = setmetatable({}, InventorySearch)
-    self:_init_fields()
+function InventorySearch._jinit(self, searchRequest)
+    InventorySearch._init_fields(self)
         -- super(...) made self above
         self.searchRequest = searchRequest
+    return self
+end
+
+function InventorySearch.new(...)
+    local self = setmetatable({}, InventorySearch)
+    InventorySearch._jinit(self, ...)
     return self
 end
 
 
 -- throws Exception
 function InventorySearch:searchSingleStaticPage()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local storeFront = self.searchRequest:getStoreFront()
             local searchParams = self.searchRequest:getParams()
             local columnValueHashMap = searchParams:get()
             local file = StaticPagesEntity.new():getFile(storeFront:getName(), Replace.new("-", CommonSeps.getInstance().SPACE):all(columnValueHashMap:get(self.basicItemData.KEYWORDS)))
             if StringValidationUtil.getInstance():isEmpty(file) then
-                return nil
+                do return "__jreturn", nil end
             else
                 local stringBuffer = StringMaker.new()
                 stringBuffer:append(storeFront:getCurrentHostName())
@@ -97,32 +130,36 @@ function InventorySearch:searchSingleStaticPage()
                 stringBuffer:append(AbPathData.getInstance().EXTENSION_SEP)
                 stringBuffer:append(InputOutputTypeData.getInstance().DEFAULT)
                 local filePath = Replace.new(CommonSeps.getInstance().SPACE, "%20"):all(tostring(stringBuffer))
-                return filePath
+                do return "__jreturn", filePath end
             end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().PRODUCTSEARCHLOGGING) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRODUCTSEARCHLOGGING) then
                 self.logUtil:put(self.commonStrings.FAILURE, self, "searchSingleStaticPage", e)
             end
-            error(java_exception("Exception", "Failed retrieve Single Product Page Static"), 0)
+            error(require("java.lang.Exception").new("Failed retrieve Single Product Page Static"), 0)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
 -- throws Exception
 function InventorySearch:searchSingleDynamicPage()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local str = self:search()
-            return str[math.tointeger(self.searchRequest:getParams():getStartPageInt() // 1) + 1]
+            do return "__jreturn", str[math.tointeger(self.searchRequest:getParams():getStartPageInt() // 1) + 1] end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().PRODUCTSEARCHLOGGINGERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRODUCTSEARCHLOGGINGERROR) then
                 self.logUtil:put(self.commonStrings.FAILURE, self, "searchSingleDynamicPage", e)
             end
-            error(java_exception("Exception", "Failed retrieve Single Product Page Dynamically"), 0)
+            error(require("java.lang.Exception").new("Failed retrieve Single Product Page Dynamically"), 0)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 

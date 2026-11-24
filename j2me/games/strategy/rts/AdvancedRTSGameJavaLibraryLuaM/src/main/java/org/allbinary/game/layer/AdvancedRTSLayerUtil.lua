@@ -12,10 +12,25 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.layer
 
-local WorkWaypoint = require("org.allbinary.game.layer.waypoint.WorkWaypoint")
-local SmallIntegerSingletonFactory = require("org.allbinary.logic.math.SmallIntegerSingletonFactory")
-local BaseRaceTrackGeographicMap = require("org.allbinary.media.graphics.geography.map.racetrack.BaseRaceTrackGeographicMap")
-local ABHashtable = require("org.allbinary.util.ABHashtable")
+local AdvancedRTSLayerUtil = {}
+package.loaded["org.allbinary.game.layer.AdvancedRTSLayerUtil"] = AdvancedRTSLayerUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local WorkWaypoint = java_lazy("org.allbinary.game.layer.waypoint.WorkWaypoint")
+local SmallIntegerSingletonFactory = java_lazy("org.allbinary.logic.math.SmallIntegerSingletonFactory")
+local BaseRaceTrackGeographicMap = java_lazy("org.allbinary.media.graphics.geography.map.racetrack.BaseRaceTrackGeographicMap")
+local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -24,22 +39,32 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local AdvancedRTSLayerUtil = {}
+-- class table AdvancedRTSLayerUtil is declared before the requires
 AdvancedRTSLayerUtil.__index = AdvancedRTSLayerUtil
 AdvancedRTSLayerUtil.className = "AdvancedRTSLayerUtil"
+AdvancedRTSLayerUtil.javaClassName = "org.allbinary.game.layer.AdvancedRTSLayerUtil"
+
+function AdvancedRTSLayerUtil._jinit(self)
+    return self
+end
 
 function AdvancedRTSLayerUtil.new()
-    local self = setmetatable({}, AdvancedRTSLayerUtil)
-    return self
+    return AdvancedRTSLayerUtil._jinit(setmetatable({}, AdvancedRTSLayerUtil))
 end
 
 
 function AdvancedRTSLayerUtil.getInstance()
-        return AdvancedRTSLayerUtil.instance
+        return AdvancedRTSLayerUtil.instance_f
 end
 
 
@@ -49,7 +74,7 @@ function AdvancedRTSLayerUtil:createFakeRTSLayerHashtable(baseRaceTrackGeographi
         return hashtable
 end
 
-AdvancedRTSLayerUtil.instance = AdvancedRTSLayerUtil.new()
+AdvancedRTSLayerUtil.instance_f = AdvancedRTSLayerUtil.new()
 
 return AdvancedRTSLayerUtil
 

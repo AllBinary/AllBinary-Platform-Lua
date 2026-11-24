@@ -13,27 +13,45 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.user.commerce.money.payment.types
 
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local EntryData = require("org.allbinary.business.entry.EntryData")
-local PaymentGatewaysData = require("org.allbinary.business.user.commerce.money.payment.gateway.PaymentGatewaysData")
-local DomNodeHelper = require("org.allbinary.data.tree.dom.DomNodeHelper")
-local DomSearchHelper = require("org.allbinary.data.tree.dom.DomSearchHelper")
-local DomDocumentHelper = require("org.allbinary.data.tree.dom.document.DomDocumentHelper")
-local FREEBLISKET_PATH_GLOBALS = require("org.allbinary.globals.FREEBLISKET_PATH_GLOBALS")
-local URLGLOBALS = require("org.allbinary.globals.URLGLOBALS")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local CryptFileReader = require("org.allbinary.logic.control.crypt.file.CryptFileReader")
-local AbPath = require("org.allbinary.logic.io.path.AbPath")
-local AbPathData = require("org.allbinary.logic.io.path.AbPathData")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringValidationUtil = require("org.allbinary.logic.string.StringValidationUtil")
-local TransformInfoObjectConfigData = require("org.allbinary.logic.visual.transform.info.objectConfig.TransformInfoObjectConfigData")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local Document = require("org.w3c.dom.Document")
-local Node = require("org.w3c.dom.Node")
-local NodeList = require("org.w3c.dom.NodeList")
+local PaymentTypeUtil = {}
+package.loaded["org.allbinary.business.user.commerce.money.payment.types.PaymentTypeUtil"] = PaymentTypeUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local EntryData = java_lazy("org.allbinary.business.entry.EntryData")
+local PaymentGatewaysData = java_lazy("org.allbinary.business.user.commerce.money.payment.gateway.PaymentGatewaysData")
+local DomNodeHelper = java_lazy("org.allbinary.data.tree.dom.DomNodeHelper")
+local DomSearchHelper = java_lazy("org.allbinary.data.tree.dom.DomSearchHelper")
+local DomDocumentHelper = java_lazy("org.allbinary.data.tree.dom.document.DomDocumentHelper")
+local FREEBLISKET_PATH_GLOBALS = java_lazy("org.allbinary.globals.FREEBLISKET_PATH_GLOBALS")
+local URLGLOBALS = java_lazy("org.allbinary.globals.URLGLOBALS")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local CryptFileReader = java_lazy("org.allbinary.logic.control.crypt.file.CryptFileReader")
+local AbPath = java_lazy("org.allbinary.logic.io.path.AbPath")
+local AbPathData = java_lazy("org.allbinary.logic.io.path.AbPathData")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
+local TransformInfoObjectConfigData = java_lazy("org.allbinary.logic.visual.transform.info.objectConfig.TransformInfoObjectConfigData")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local Document = java_lazy("org.w3c.dom.Document")
+local Node = java_lazy("org.w3c.dom.Node")
+local NodeList = java_lazy("org.w3c.dom.NodeList")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local PaymentType = java_lazy("org.allbinary.business.user.commerce.money.payment.types.PaymentType")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -55,18 +73,25 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local PaymentTypeUtil = {}
+-- class table PaymentTypeUtil is declared before the requires
 PaymentTypeUtil.__index = PaymentTypeUtil
 PaymentTypeUtil.className = "PaymentTypeUtil"
+PaymentTypeUtil.javaClassName = "org.allbinary.business.user.commerce.money.payment.types.PaymentTypeUtil"
 
 function PaymentTypeUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
-    self.PAYMENTGATEWAYFILEPATHSTRING = nil
+    if self.PAYMENTGATEWAYFILEPATHSTRING == nil then self.PAYMENTGATEWAYFILEPATHSTRING = nil end
     self.SHIPPINGMETHODSFILENAME = "paymentGatewayTypes.xml"
     self.defaultName = nil
     self.paymentTypeVector = BasicArrayListD.new()
@@ -74,13 +99,12 @@ end
 
 
 function PaymentTypeUtil.getInstance()
-        return PaymentTypeUtil.instance
+        return PaymentTypeUtil.instance_f
 end
 
 
-function PaymentTypeUtil.new()
-    local self = setmetatable({}, PaymentTypeUtil)
-    self:_init_fields()
+function PaymentTypeUtil._jinit(self)
+    PaymentTypeUtil._init_fields(self)
         local stringBuffer = StringMaker.new()
         local sep = AbPathData.getInstance().SEPARATOR
         stringBuffer:append(sep)
@@ -100,6 +124,12 @@ function PaymentTypeUtil.new()
     return self
 end
 
+function PaymentTypeUtil.new(...)
+    local self = setmetatable({}, PaymentTypeUtil)
+    PaymentTypeUtil._jinit(self, ...)
+    return self
+end
+
 
 function PaymentTypeUtil:add(paymentType)
         self.paymentTypeVector:add(paymentType)
@@ -115,19 +145,19 @@ function PaymentTypeUtil:get(paymentTypeString)
                 return paymentType
             end
         end
-        error(java_exception("Exception", "Unknown PaymentType: " .. paymentTypeString), 0)
+        error(require("java.lang.Exception").new("Unknown PaymentType: " .. paymentTypeString), 0)
 end
 
 
 -- throws Exception
 function PaymentTypeUtil:initDefault(storeName)
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().PAYMENT) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PAYMENT) then
             self.logUtil:putF("initDefault Payment: " .. self.defaultName, self, "initDefault")
         end
         if StringValidationUtil.getInstance():isEmpty(self.defaultName) then
             local stringBuffer = StringMaker.new()
-            stringBuffer:append(self.URLGLOBALS:getMainPath())
-            stringBuffer:append(self.FREEBLISKET_PATH_GLOBALS:getInstance().XSLPATH)
+            stringBuffer:append(URLGLOBALS.getMainPath())
+            stringBuffer:append(FREEBLISKET_PATH_GLOBALS.getInstance().XSLPATH)
             stringBuffer:append(storeName)
             stringBuffer:append(AbPathData.getInstance().SEPARATOR)
             stringBuffer:append(self.PAYMENTGATEWAYFILEPATHSTRING)
@@ -139,7 +169,7 @@ function PaymentTypeUtil:initDefault(storeName)
                 local node = nodeList:item(index)
                 local defaultPaymentGatewayNode = DomSearchHelper.getNode(EntryData.getInstance().DEFAULT, node:getChildNodes())
                 local defaultPaymentGatewayNodeValue = DomNodeHelper.getTextNodeValue(defaultPaymentGatewayNode)
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().PAYMENT) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PAYMENT) then
                     self.logUtil:putF("DefaultPaymentGatewayNodeValue: " .. defaultPaymentGatewayNodeValue, self, "initDefault")
                 end
                 if not StringValidationUtil.getInstance():isEmpty(defaultPaymentGatewayNodeValue) then
@@ -152,14 +182,14 @@ end
 
 -- throws Exception
 function PaymentTypeUtil:getDefault(storeName)
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().PAYMENT) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PAYMENT) then
             self.logUtil:putF(self.commonStrings.START, self, "getDefault")
         end
         self:initDefault(storeName)
         if not StringValidationUtil.getInstance():isEmpty(self.defaultName) then
             return self:get(self.defaultName)
         end
-        error(java_exception("Exception", "No Default: " .. self.defaultName), 0)
+        error(require("java.lang.Exception").new("No Default: " .. self.defaultName), 0)
 end
 
 
@@ -180,7 +210,7 @@ function PaymentTypeUtil:difference(a_PaymentTypeVector)
         return diff
 end
 
-PaymentTypeUtil.instance = PaymentTypeUtil.new()
+PaymentTypeUtil.instance_f = PaymentTypeUtil.new()
 
 
 do -- Java static initializer

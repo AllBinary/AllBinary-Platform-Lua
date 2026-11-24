@@ -13,25 +13,48 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media.image.comparison.motion
 
--- local awt = require("java.awt")
+local MotionRectanglesImageInputOutput = {}
+package.loaded["org.allbinary.media.image.comparison.motion.MotionRectanglesImageInputOutput"] = MotionRectanglesImageInputOutput
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+-- local Graphics = require("java.awt.Graphics")
+-- local Rectangle = require("java.awt.Rectangle")
+-- local Color = require("java.awt.Color")
 -- local BufferedImage = require("java.awt.image.BufferedImage")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local ImageOutputData = require("org.allbinary.input.automation.ImageOutputData")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local LongUtil = require("org.allbinary.logic.java.number.LongUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local AutomaticCacheInterface = require("org.allbinary.logic.util.cache.AutomaticCacheInterface")
-local PoolInterface = require("org.allbinary.logic.util.cache.PoolInterface")
-local MediaDataFactory = require("org.allbinary.logic.visual.media.MediaDataFactory")
-local ImagePersistanceUtil = require("org.allbinary.media.image.ImagePersistanceUtil")
-local BufferedImageCacheable = require("org.allbinary.media.image.cache.BufferedImageCacheable")
-local BufferedImageInfo = require("org.allbinary.media.image.cache.BufferedImageInfo")
-local BufferedImageInfoFactory = require("org.allbinary.media.image.cache.BufferedImageInfoFactory")
-local BufferedImagePoolSingleton = require("org.allbinary.media.image.cache.BufferedImagePoolSingleton")
-local ImageComparisonResult = require("org.allbinary.media.image.comparison.ImageComparisonResult")
-local ImageIOInterface = require("org.allbinary.media.image.io.ImageIOInterface")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local ImageOutputData = java_lazy("org.allbinary.input.automation.ImageOutputData")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local LongUtil = java_lazy("org.allbinary.logic.java.number.LongUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local AutomaticCacheInterface = java_lazy("org.allbinary.logic.util.cache.AutomaticCacheInterface")
+local PoolInterface = java_lazy("org.allbinary.logic.util.cache.PoolInterface")
+local MediaDataFactory = java_lazy("org.allbinary.logic.visual.media.MediaDataFactory")
+local ImagePersistanceUtil = java_lazy("org.allbinary.media.image.ImagePersistanceUtil")
+local BufferedImageCacheable = java_lazy("org.allbinary.media.image.cache.BufferedImageCacheable")
+local BufferedImageInfo = java_lazy("org.allbinary.media.image.cache.BufferedImageInfo")
+local BufferedImageInfoFactory = java_lazy("org.allbinary.media.image.cache.BufferedImageInfoFactory")
+local BufferedImagePoolSingleton = java_lazy("org.allbinary.media.image.cache.BufferedImagePoolSingleton")
+local ImageComparisonResult = java_lazy("org.allbinary.media.image.comparison.ImageComparisonResult")
+local ImageIOInterface = java_lazy("org.allbinary.media.image.io.ImageIOInterface")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local AllMotionRectanglesResultsCacheSingleton = java_lazy("org.allbinary.media.image.comparison.motion.AllMotionRectanglesResultsCacheSingleton")
+local ConsolidatedMotionRectanglesResultsCacheSingleton = java_lazy("org.allbinary.media.image.comparison.motion.ConsolidatedMotionRectanglesResultsCacheSingleton")
+local ConstrainedMotionRectanglesResultsCacheSingleton = java_lazy("org.allbinary.media.image.comparison.motion.ConstrainedMotionRectanglesResultsCacheSingleton")
+local MotionRectangle = java_lazy("org.allbinary.media.image.comparison.motion.MotionRectangle")
+local MotionRectangles = java_lazy("org.allbinary.media.image.comparison.motion.MotionRectangles")
+local MotionRectanglesResultsFrameCacheable = java_lazy("org.allbinary.media.image.comparison.motion.MotionRectanglesResultsFrameCacheable")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
@@ -41,6 +64,47 @@ local function java_new_array(default, size, ...)
     return array
 end
 
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
+    return array
+end
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
 local function java_idiv(a, b)
     local q = a / b
     if q < 0 then return math.ceil(q) end
@@ -48,13 +112,22 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local MotionRectanglesImageInputOutput = {}
+-- class table MotionRectanglesImageInputOutput is declared before the requires
 MotionRectanglesImageInputOutput.__index = MotionRectanglesImageInputOutput
 MotionRectanglesImageInputOutput.className = "MotionRectanglesImageInputOutput"
+MotionRectanglesImageInputOutput.javaClassName = "org.allbinary.media.image.comparison.motion.MotionRectanglesImageInputOutput"
+MotionRectanglesImageInputOutput.java_implements = " ImageIOInterface "
+MotionRectanglesImageInputOutput.java_interfaces = function() return {ImageIOInterface} end
 
 function MotionRectanglesImageInputOutput:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -62,15 +135,20 @@ function MotionRectanglesImageInputOutput:_init_fields()
 end
 
 
-function MotionRectanglesImageInputOutput.new()
+function MotionRectanglesImageInputOutput._jinit(self)
+    MotionRectanglesImageInputOutput._init_fields(self)
+    return self
+end
+
+function MotionRectanglesImageInputOutput.new(...)
     local self = setmetatable({}, MotionRectanglesImageInputOutput)
-    self:_init_fields()
+    MotionRectanglesImageInputOutput._jinit(self, ...)
     return self
 end
 
 
 -- throws Exception
-function MotionRectanglesImageInputOutput:save(frame)
+function MotionRectanglesImageInputOutput:save_j1(frame)
         local commonStrings = CommonStrings.getInstance()
         local motionRectanglesResultsFrameCacheable = (AllMotionRectanglesResultsCacheSingleton.getInstance()):get(frame)
         if motionRectanglesResultsFrameCacheable ~= nil then
@@ -89,8 +167,7 @@ end
 
 
 -- throws Exception
--- Java overloaded method: Lua keeps the last definition
-function MotionRectanglesImageInputOutput:save(motionRectangles, frame)
+function MotionRectanglesImageInputOutput:save_j2(motionRectangles, frame)
         local commonStrings = CommonStrings.getInstance()
         local filePathStringBuffer = StringMaker.new()
         filePathStringBuffer:append(ImageOutputData.SAVE_PATH)
@@ -147,6 +224,13 @@ function MotionRectanglesImageInputOutput:save(motionRectangles, frame)
             imagePersistanceUtil:saveWithImageIO(tostring(filePathStringBuffer3), bufferedImageCacheables[3]:getBufferedImage())
         end
 end
+function MotionRectanglesImageInputOutput:save(...)
+    local count = select("#", ...)
+    if count == 1 then return self:save_j1(...) end
+    if count == 2 then return self:save_j2(...) end
+    error("No method save takes " .. count .. " arguments")
+end
+MotionRectanglesImageInputOutput.save__jdispatcher = MotionRectanglesImageInputOutput.save
 
 return MotionRectanglesImageInputOutput
 

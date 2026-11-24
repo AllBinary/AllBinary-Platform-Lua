@@ -13,7 +13,23 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.configuration.feature
 
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
+local GraphicsFeatureFactory = {}
+package.loaded["org.allbinary.game.configuration.feature.GraphicsFeatureFactory"] = GraphicsFeatureFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local GraphicsFeature = java_lazy("org.allbinary.game.configuration.feature.GraphicsFeature")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -22,13 +38,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local GraphicsFeatureFactory = {}
+-- class table GraphicsFeatureFactory is declared before the requires
 GraphicsFeatureFactory.__index = GraphicsFeatureFactory
 GraphicsFeatureFactory.className = "GraphicsFeatureFactory"
+GraphicsFeatureFactory.javaClassName = "org.allbinary.game.configuration.feature.GraphicsFeatureFactory"
 
 function GraphicsFeatureFactory:_init_fields()
     self.NONE = GraphicsFeature.new(StringUtil.getInstance().NULL_STRING)
@@ -44,17 +67,22 @@ end
 
 
 function GraphicsFeatureFactory.getInstance()
-        return GraphicsFeatureFactory.instance
+        return GraphicsFeatureFactory.instance_f
 end
 
 
-function GraphicsFeatureFactory.new()
-    local self = setmetatable({}, GraphicsFeatureFactory)
-    self:_init_fields()
+function GraphicsFeatureFactory._jinit(self)
+    GraphicsFeatureFactory._init_fields(self)
     return self
 end
 
-GraphicsFeatureFactory.instance = GraphicsFeatureFactory.new()
+function GraphicsFeatureFactory.new(...)
+    local self = setmetatable({}, GraphicsFeatureFactory)
+    GraphicsFeatureFactory._jinit(self, ...)
+    return self
+end
+
+GraphicsFeatureFactory.instance_f = GraphicsFeatureFactory.new()
 
 return GraphicsFeatureFactory
 

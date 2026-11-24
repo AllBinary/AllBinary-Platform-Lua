@@ -13,16 +13,34 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.system.security.licensing
 
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local StringValidationUtil = require("org.allbinary.logic.string.StringValidationUtil")
-local ABHashtable = require("org.allbinary.util.ABHashtable")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
+local AbeClientLicense = {}
+package.loaded["org.allbinary.logic.system.security.licensing.AbeClientLicense"] = AbeClientLicense
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
+local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 local AbeLicenseInterface = require("org.allbinary.logic.system.security.licensing.AbeLicenseInterface")
+local LicenseType = java_lazy("org.allbinary.logic.system.security.licensing.LicenseType")
+local LicenseTypeFactory = java_lazy("org.allbinary.logic.system.security.licensing.LicenseTypeFactory")
 
 local function java_instanceof(object, class)
+    class = java_real(class)
     local metatable = getmetatable(object)
     while metatable do
         if metatable == class then return true end
@@ -39,26 +57,34 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local AbeClientLicense = {}
+-- class table AbeClientLicense is declared before the requires
 AbeClientLicense.__index = AbeClientLicense
 AbeClientLicense.className = "AbeClientLicense"
+AbeClientLicense.javaClassName = "org.allbinary.logic.system.security.licensing.AbeClientLicense"
+AbeClientLicense.java_implements = " AbeLicenseInterface "
+AbeClientLicense.java_interfaces = function() return {AbeLicenseInterface} end
 
 function AbeClientLicense:_init_fields()
-    self.hashtable = nil
-    self.id = nil
-    self.servers = nil
-    self.special = nil
-    self.licenseType = nil
+    if self.hashtable == nil then self.hashtable = nil end
+    if self.id == nil then self.id = nil end
+    if self.servers == nil then self.servers = nil end
+    if self.special == nil then self.special = nil end
+    if self.licenseType == nil then self.licenseType = nil end
 end
 
 
-function AbeClientLicense.new(hashtable)
-    local self = setmetatable({}, AbeClientLicense)
-    self:_init_fields()
+function AbeClientLicense._jinit(self, hashtable)
+    AbeClientLicense._init_fields(self)
         self.hashtable = StdUtil.getInstance():createHashtable()
         local abeClientInformationData = AbeClientInformationData.getInstance()
         local keyValue = hashtable:get(abeClientInformationData.KEY)
@@ -78,6 +104,12 @@ function AbeClientLicense.new(hashtable)
         self:setSpecial(stringUtil:getNonNull(hashtable:get(abeClientInformationData.SPECIAL)))
         local licenseTypeString = stringUtil:getNonNull(hashtable:get(abeClientInformationData.LICENSE_TYPE))
         self.licenseType = LicenseTypeFactory.getInstance():getInstance(licenseTypeString)
+    return self
+end
+
+function AbeClientLicense.new(...)
+    local self = setmetatable({}, AbeClientLicense)
+    AbeClientLicense._jinit(self, ...)
     return self
 end
 

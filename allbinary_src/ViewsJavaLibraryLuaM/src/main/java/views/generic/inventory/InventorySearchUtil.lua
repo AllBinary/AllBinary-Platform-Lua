@@ -13,43 +13,67 @@
 -- Generated Code Do Not Modify
 -- package views.generic.inventory
 
--- local HashMap = require("java.util.HashMap")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local StoreFrontInterface = require("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
-local InventoryData = require("org.allbinary.business.user.commerce.inventory.InventoryData")
-local BasketData = require("org.allbinary.business.user.commerce.inventory.basket.BasketData")
-local BasicItemData = require("org.allbinary.business.user.commerce.inventory.item.BasicItemData")
-local BasicItemView = require("org.allbinary.business.user.commerce.inventory.item.BasicItemView")
-local ItemInterface = require("org.allbinary.business.user.commerce.inventory.item.ItemInterface")
-local InventoryEntity = require("org.allbinary.data.tables.user.commerce.inventory.item.InventoryEntity")
-local InventoryEntityFactory = require("org.allbinary.data.tables.user.commerce.inventory.item.InventoryEntityFactory")
-local ModDomHelper = require("org.allbinary.data.tree.dom.ModDomHelper")
-local XmlDocumentHelper = require("org.allbinary.data.tree.dom.document.XmlDocumentHelper")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local SearchData = require("org.allbinary.logic.control.search.SearchData")
-local SearchParams = require("org.allbinary.logic.control.search.SearchParams")
-local SearchRequest = require("org.allbinary.logic.control.search.SearchRequest")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringValidationUtil = require("org.allbinary.logic.string.StringValidationUtil")
-local Replace = require("org.allbinary.logic.string.regex.replace.Replace")
-local AbeClientInformationInterface = require("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
-local StoreTransformer = require("org.allbinary.logic.visual.transform.StoreTransformer")
-local TransformDocumentInterface = require("org.allbinary.logic.visual.transform.data.TransformDocumentInterface")
-local TransformStoreDocumentFactory = require("org.allbinary.logic.visual.transform.data.TransformStoreDocumentFactory")
-local TransformInfoHttpSearch = require("org.allbinary.logic.visual.transform.info.TransformInfoHttpSearch")
-local TransformInfoInterface = require("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
-local CommonPhoneStrings = require("org.allbinary.string.CommonPhoneStrings")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local Document = require("org.w3c.dom.Document")
-local Node = require("org.w3c.dom.Node")
+local InventorySearchUtil = {}
+package.loaded["views.generic.inventory.InventorySearchUtil"] = InventorySearchUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local StoreFrontInterface = java_lazy("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
+local InventoryData = java_lazy("org.allbinary.business.user.commerce.inventory.InventoryData")
+local BasketData = java_lazy("org.allbinary.business.user.commerce.inventory.basket.BasketData")
+local BasicItemData = java_lazy("org.allbinary.business.user.commerce.inventory.item.BasicItemData")
+local BasicItemView = java_lazy("org.allbinary.business.user.commerce.inventory.item.BasicItemView")
+local ItemInterface = java_lazy("org.allbinary.business.user.commerce.inventory.item.ItemInterface")
+local InventoryEntity = java_lazy("org.allbinary.data.tables.user.commerce.inventory.item.InventoryEntity")
+local InventoryEntityFactory = java_lazy("org.allbinary.data.tables.user.commerce.inventory.item.InventoryEntityFactory")
+local ModDomHelper = java_lazy("org.allbinary.data.tree.dom.ModDomHelper")
+local XmlDocumentHelper = java_lazy("org.allbinary.data.tree.dom.document.XmlDocumentHelper")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local SearchData = java_lazy("org.allbinary.logic.control.search.SearchData")
+local SearchParams = java_lazy("org.allbinary.logic.control.search.SearchParams")
+local SearchRequest = java_lazy("org.allbinary.logic.control.search.SearchRequest")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
+local Replace = java_lazy("org.allbinary.logic.string.regex.replace.Replace")
+local AbeClientInformationInterface = java_lazy("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
+local StoreTransformer = java_lazy("org.allbinary.logic.visual.transform.StoreTransformer")
+local TransformDocumentInterface = java_lazy("org.allbinary.logic.visual.transform.data.TransformDocumentInterface")
+local TransformStoreDocumentFactory = java_lazy("org.allbinary.logic.visual.transform.data.TransformStoreDocumentFactory")
+local TransformInfoHttpSearch = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoHttpSearch")
+local TransformInfoInterface = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
+local CommonPhoneStrings = java_lazy("org.allbinary.string.CommonPhoneStrings")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local Document = java_lazy("org.w3c.dom.Document")
+local Node = java_lazy("org.w3c.dom.Node")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local InventoryColumnUtil = java_lazy("views.generic.inventory.InventoryColumnUtil")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -60,13 +84,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local InventorySearchUtil = {}
+-- class table InventorySearchUtil is declared before the requires
 InventorySearchUtil.__index = InventorySearchUtil
 InventorySearchUtil.className = "InventorySearchUtil"
+InventorySearchUtil.javaClassName = "views.generic.inventory.InventorySearchUtil"
 
 function InventorySearchUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -75,15 +106,18 @@ function InventorySearchUtil:_init_fields()
     self.basicItemData = BasicItemData.getInstance()
 end
 
-function InventorySearchUtil.new()
-    local self = setmetatable({}, InventorySearchUtil)
-    self:_init_fields()
+function InventorySearchUtil._jinit(self)
+    InventorySearchUtil._init_fields(self)
     return self
+end
+
+function InventorySearchUtil.new()
+    return InventorySearchUtil._jinit(setmetatable({}, InventorySearchUtil))
 end
 
 
 function InventorySearchUtil.getInstance()
-        return InventorySearchUtil.instance
+        return InventorySearchUtil.instance_f
 end
 
 
@@ -93,7 +127,7 @@ function InventorySearchUtil:getBasicItemIdColumn(searchRequest)
         local storeFrontInterface = searchRequest:getStoreFront()
         local inventorySearchUtil = InventoryColumnUtil.getInstance()
         local column = inventorySearchUtil:getColumnWhereLike(inventoryEntityInterface, storeFrontInterface:getCategoryPath(), self.basicItemData.ID)
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().PRODUCTSEARCHLOGGING) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRODUCTSEARCHLOGGING) then
             self.logUtil:putF("Number Of Items Found: " .. tostring(column:size()), self, "search")
         end
         local subStoreVector = storeFrontInterface:getSubStores()
@@ -103,7 +137,7 @@ function InventorySearchUtil:getBasicItemIdColumn(searchRequest)
             local substoreIdColumn = inventorySearchUtil:getColumnWhereLike(inventoryEntityInterface, subStore, self.basicItemData.ID)
             column:addAllList(substoreIdColumn)
         end
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().PRODUCTSEARCHLOGGING) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRODUCTSEARCHLOGGING) then
             self.logUtil:putF("Number Of Items Found Including SubStores: " .. tostring(column:size()), self, "search")
         end
         return column
@@ -115,7 +149,7 @@ function InventorySearchUtil:getNoResults(viewDocumentInterface, inventoryNode)
         inventoryNode:appendChild(ModDomHelper.createNameValueNodes(viewDocumentInterface:getDoc(), SearchData.TOTAL_NUMBER_PAGES, self.commonPhoneStrings.ZERO))
         inventoryNode:appendChild(ModDomHelper.createNameValueNodes(viewDocumentInterface:getDoc(), SearchData.TOTAL_NUMBER_ITEMS, self.commonPhoneStrings.ZERO))
         local success = XmlDocumentHelper.toString(viewDocumentInterface:getDoc())
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().PRODUCTSEARCHLOGGING) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRODUCTSEARCHLOGGING) then
             self.logUtil:putF("No Results Xml: " .. success, self, "search")
         end
         return success
@@ -123,7 +157,7 @@ end
 
 
 function InventorySearchUtil:search(abeClientInformation, searchRequest, column)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local inventoryEntityInterface = InventoryEntityFactory.getInstance():getInventoryEntityInstance()
             local searchParams = searchRequest:getParams()
             local startPage = math.tointeger(searchParams:getStartPageInt() // 1)
@@ -133,7 +167,7 @@ function InventorySearchUtil:search(abeClientInformation, searchRequest, column)
             local columnValueHashMap = searchParams:get()
             local keyword = Replace.new("-", CommonSeps.getInstance().SPACE):all(columnValueHashMap:get(self.basicItemData.KEYWORDS))
             if StringValidationUtil.getInstance():isEmpty(keyword) then
-                return nil
+                do return "__jreturn", nil end
             end
             local stringBuffer = StringMaker.new()
             if startPage >= 0 then
@@ -230,21 +264,23 @@ function InventorySearchUtil:search(abeClientInformation, searchRequest, column)
                     local result = self:getNoResults(viewDocumentInterface, inventoryNode)
                     productListingPages[1] = StoreTransformer.new(abeClientInformation, TransformInfoHttpSearch.new(searchRequest)):translate(result)
                 end
-                return productListingPages
+                do return "__jreturn", productListingPages end
             else
-                return nil
+                do return "__jreturn", nil end
             end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().PRODUCTSEARCHLOGGINGERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRODUCTSEARCHLOGGINGERROR) then
                 self.logUtil:put(self.commonStrings.FAILURE, self, "search", e)
             end
             return nil
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
-InventorySearchUtil.instance = InventorySearchUtil.new()
+InventorySearchUtil.instance_f = InventorySearchUtil.new()
 
 return InventorySearchUtil
 

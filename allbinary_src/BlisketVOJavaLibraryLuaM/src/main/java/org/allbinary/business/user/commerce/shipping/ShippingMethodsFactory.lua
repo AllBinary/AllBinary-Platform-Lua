@@ -13,29 +13,44 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.user.commerce.shipping
 
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local DynamicObjectData = require("org.allbinary.business.DynamicObjectData")
-local StoreFrontInterface = require("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
-local BasicWeightShippingModuleView = require("org.allbinary.business.user.commerce.shipping.modules.BasicWeightShippingModuleView")
-local NoShippingModuleView = require("org.allbinary.business.user.commerce.shipping.modules.NoShippingModuleView")
-local ShippingInterface = require("org.allbinary.business.user.commerce.shipping.modules.ShippingInterface")
-local DomNodeHelper = require("org.allbinary.data.tree.dom.DomNodeHelper")
-local DomSearchHelper = require("org.allbinary.data.tree.dom.DomSearchHelper")
-local DomDocumentHelper = require("org.allbinary.data.tree.dom.document.DomDocumentHelper")
-local FREEBLISKET_PATH_GLOBALS = require("org.allbinary.globals.FREEBLISKET_PATH_GLOBALS")
-local URLGLOBALS = require("org.allbinary.globals.URLGLOBALS")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local CryptFileReader = require("org.allbinary.logic.control.crypt.file.CryptFileReader")
-local AbPath = require("org.allbinary.logic.io.path.AbPath")
-local AbPathData = require("org.allbinary.logic.io.path.AbPathData")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local AbeFactory = require("org.allbinary.logic.system.loader.AbeFactory")
-local AbeClientInformationInterface = require("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
-local TransformInfoObjectConfigData = require("org.allbinary.logic.visual.transform.info.objectConfig.TransformInfoObjectConfigData")
-local Document = require("org.w3c.dom.Document")
-local Node = require("org.w3c.dom.Node")
-local NodeList = require("org.w3c.dom.NodeList")
+local ShippingMethodsFactory = {}
+package.loaded["org.allbinary.business.user.commerce.shipping.ShippingMethodsFactory"] = ShippingMethodsFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local DynamicObjectData = java_lazy("org.allbinary.business.DynamicObjectData")
+local StoreFrontInterface = java_lazy("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
+local BasicWeightShippingModuleView = java_lazy("org.allbinary.business.user.commerce.shipping.modules.BasicWeightShippingModuleView")
+local NoShippingModuleView = java_lazy("org.allbinary.business.user.commerce.shipping.modules.NoShippingModuleView")
+local ShippingInterface = java_lazy("org.allbinary.business.user.commerce.shipping.modules.ShippingInterface")
+local DomNodeHelper = java_lazy("org.allbinary.data.tree.dom.DomNodeHelper")
+local DomSearchHelper = java_lazy("org.allbinary.data.tree.dom.DomSearchHelper")
+local DomDocumentHelper = java_lazy("org.allbinary.data.tree.dom.document.DomDocumentHelper")
+local FREEBLISKET_PATH_GLOBALS = java_lazy("org.allbinary.globals.FREEBLISKET_PATH_GLOBALS")
+local URLGLOBALS = java_lazy("org.allbinary.globals.URLGLOBALS")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local CryptFileReader = java_lazy("org.allbinary.logic.control.crypt.file.CryptFileReader")
+local AbPath = java_lazy("org.allbinary.logic.io.path.AbPath")
+local AbPathData = java_lazy("org.allbinary.logic.io.path.AbPathData")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local AbeFactory = java_lazy("org.allbinary.logic.system.loader.AbeFactory")
+local AbeClientInformationInterface = java_lazy("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
+local TransformInfoObjectConfigData = java_lazy("org.allbinary.logic.visual.transform.info.objectConfig.TransformInfoObjectConfigData")
+local Document = java_lazy("org.w3c.dom.Document")
+local Node = java_lazy("org.w3c.dom.Node")
+local NodeList = java_lazy("org.w3c.dom.NodeList")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -44,28 +59,34 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ShippingMethodsFactory = {}
+-- class table ShippingMethodsFactory is declared before the requires
 ShippingMethodsFactory.__index = ShippingMethodsFactory
 ShippingMethodsFactory.className = "ShippingMethodsFactory"
+ShippingMethodsFactory.javaClassName = "org.allbinary.business.user.commerce.shipping.ShippingMethodsFactory"
 
 function ShippingMethodsFactory:_init_fields()
-    self.defaultShippingMethodInterface = nil
-    self.document = nil
-    self.shippingVector = nil
+    if self.defaultShippingMethodInterface == nil then self.defaultShippingMethodInterface = nil end
+    if self.document == nil then self.document = nil end
+    if self.shippingVector == nil then self.shippingVector = nil end
 end
 
 
-function ShippingMethodsFactory.new(abeClientInformation, storeFrontInterface)
-    local self = setmetatable({}, ShippingMethodsFactory)
-    self:_init_fields()
+function ShippingMethodsFactory._jinit(self, abeClientInformation, storeFrontInterface)
+    ShippingMethodsFactory._init_fields(self)
         local stringBuffer = StringMaker.new()
         local sep = AbPathData.getInstance().SEPARATOR
-        stringBuffer:append(self.URLGLOBALS:getMainPath())
-        stringBuffer:append(self.FREEBLISKET_PATH_GLOBALS:getInstance().XSLPATH)
+        stringBuffer:append(URLGLOBALS.getMainPath())
+        stringBuffer:append(FREEBLISKET_PATH_GLOBALS.getInstance().XSLPATH)
         stringBuffer:append(storeFrontInterface:getName())
         stringBuffer:append(sep)
         stringBuffer:append(ShippingMethodsFactory.SHIPPINGMETHODSFILEPATHSTRING)
@@ -93,6 +114,12 @@ function ShippingMethodsFactory.new(abeClientInformation, storeFrontInterface)
             self.shippingVector:add(self.defaultShippingMethodInterface)
             self.shippingVector:add(NoShippingModuleView.new())
         end
+    return self
+end
+
+function ShippingMethodsFactory.new(...)
+    local self = setmetatable({}, ShippingMethodsFactory)
+    ShippingMethodsFactory._jinit(self, ...)
     return self
 end
 

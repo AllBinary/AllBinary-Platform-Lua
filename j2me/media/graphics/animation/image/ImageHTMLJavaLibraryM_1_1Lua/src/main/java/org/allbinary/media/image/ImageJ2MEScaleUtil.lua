@@ -13,18 +13,39 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media.image
 
+local ImageJ2MEScaleUtil = {}
+package.loaded["org.allbinary.media.image.ImageJ2MEScaleUtil"] = ImageJ2MEScaleUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Image = require("javax.microedition.lcdui.Image")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local PlaynImmutableImage = require("org.microemu.device.playn.PlaynImmutableImage")
-local PlaynMutableImage = require("org.microemu.device.playn.PlaynMutableImage")
-local CanvasImage = require("playn.core.CanvasImage")
-local CanvasSurface = require("playn.core.CanvasSurface")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local PlaynImmutableImage = java_lazy("org.microemu.device.playn.PlaynImmutableImage")
+local PlaynMutableImage = java_lazy("org.microemu.device.playn.PlaynMutableImage")
+local CanvasImage = java_lazy("playn.core.CanvasImage")
+local CanvasSurface = java_lazy("playn.core.CanvasSurface")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -35,13 +56,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ImageJ2MEScaleUtil = {}
+-- class table ImageJ2MEScaleUtil is declared before the requires
 ImageJ2MEScaleUtil.__index = ImageJ2MEScaleUtil
 ImageJ2MEScaleUtil.className = "ImageJ2MEScaleUtil"
+ImageJ2MEScaleUtil.javaClassName = "org.allbinary.media.image.ImageJ2MEScaleUtil"
 
 function ImageJ2MEScaleUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -49,13 +77,18 @@ end
 
 
 function ImageJ2MEScaleUtil.getInstance()
-        return ImageJ2MEScaleUtil.instance
+        return ImageJ2MEScaleUtil.instance_f
 end
 
 
-function ImageJ2MEScaleUtil.new()
+function ImageJ2MEScaleUtil._jinit(self)
+    ImageJ2MEScaleUtil._init_fields(self)
+    return self
+end
+
+function ImageJ2MEScaleUtil.new(...)
     local self = setmetatable({}, ImageJ2MEScaleUtil)
-    self:_init_fields()
+    ImageJ2MEScaleUtil._jinit(self, ...)
     return self
 end
 
@@ -91,7 +124,7 @@ function ImageJ2MEScaleUtil:scale(image, width, height)
         return scaledImage
 end
 
-ImageJ2MEScaleUtil.instance = ImageJ2MEScaleUtil.new()
+ImageJ2MEScaleUtil.instance_f = ImageJ2MEScaleUtil.new()
 
 return ImageJ2MEScaleUtil
 

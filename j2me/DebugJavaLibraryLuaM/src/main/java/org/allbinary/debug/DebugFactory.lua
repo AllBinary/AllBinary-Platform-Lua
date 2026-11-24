@@ -13,6 +13,23 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.debug
 
+local DebugFactory = {}
+package.loaded["org.allbinary.debug.DebugFactory"] = DebugFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local DebugInterface = java_lazy("org.allbinary.debug.DebugInterface")
+local NoDebug = java_lazy("org.allbinary.debug.NoDebug")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -21,17 +38,27 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local DebugFactory = {}
+-- class table DebugFactory is declared before the requires
 DebugFactory.__index = DebugFactory
 DebugFactory.className = "DebugFactory"
+DebugFactory.javaClassName = "org.allbinary.debug.DebugFactory"
+
+function DebugFactory._jinit(self)
+    return self
+end
 
 function DebugFactory.new()
-    local self = setmetatable({}, DebugFactory)
-    return self
+    return DebugFactory._jinit(setmetatable({}, DebugFactory))
 end
 
 

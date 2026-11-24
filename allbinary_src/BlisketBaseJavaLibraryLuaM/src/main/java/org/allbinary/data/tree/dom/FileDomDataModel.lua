@@ -13,12 +13,28 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.data.tree.dom
 
--- local HashMap = require("java.util.HashMap")
-local TableMappingInterface = require("org.allbinary.data.tables.TableMappingInterface")
-local AbFile = require("org.allbinary.logic.io.file.AbFile")
-local Document = require("org.w3c.dom.Document")
-local Node = require("org.w3c.dom.Node")
+local FileDomDataModel = {}
+package.loaded["org.allbinary.data.tree.dom.FileDomDataModel"] = FileDomDataModel
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
+local TableMappingInterface = java_lazy("org.allbinary.data.tables.TableMappingInterface")
+local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
+local Document = java_lazy("org.w3c.dom.Document")
+local Node = java_lazy("org.w3c.dom.Node")
 local DomNodeInterface = require("org.allbinary.data.tree.dom.DomNodeInterface")
+local FileTableMapping = java_lazy("org.allbinary.data.tree.dom.FileTableMapping")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -27,23 +43,37 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local FileDomDataModel = {}
+-- class table FileDomDataModel is declared before the requires
 FileDomDataModel.__index = FileDomDataModel
 FileDomDataModel.className = "FileDomDataModel"
+FileDomDataModel.javaClassName = "org.allbinary.data.tree.dom.FileDomDataModel"
+FileDomDataModel.java_implements = " DomNodeInterface "
+FileDomDataModel.java_interfaces = function() return {DomNodeInterface} end
 
 function FileDomDataModel:_init_fields()
-    self.file = nil
+    if self.file == nil then self.file = nil end
 end
 
 
-function FileDomDataModel.new(file)
-    local self = setmetatable({}, FileDomDataModel)
-    self:_init_fields()
+function FileDomDataModel._jinit(self, file)
+    FileDomDataModel._init_fields(self)
         self.file = file
+    return self
+end
+
+function FileDomDataModel.new(...)
+    local self = setmetatable({}, FileDomDataModel)
+    FileDomDataModel._jinit(self, ...)
     return self
 end
 

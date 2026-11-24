@@ -13,26 +13,44 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.communication.http.request
 
--- local HashMap = require("java.util.HashMap")
+local NameSpaceRequestParams = {}
+package.loaded["org.allbinary.logic.communication.http.request.NameSpaceRequestParams"] = NameSpaceRequestParams
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
 -- local Set = require("java.util.Set")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 -- local HttpServletRequest = require("javax.servlet.http.HttpServletRequest")
 -- local PageContext = require("javax.servlet.jsp.PageContext")
-local DomData = require("org.allbinary.data.tree.dom.DomData")
-local DomNodeHelper = require("org.allbinary.data.tree.dom.DomNodeHelper")
-local DomSearchHelper = require("org.allbinary.data.tree.dom.DomSearchHelper")
-local ModDomHelper = require("org.allbinary.data.tree.dom.ModDomHelper")
-local DomDocumentHelper = require("org.allbinary.data.tree.dom.document.DomDocumentHelper")
-local XmlDocumentHelper = require("org.allbinary.data.tree.dom.document.XmlDocumentHelper")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local Document = require("org.w3c.dom.Document")
-local Node = require("org.w3c.dom.Node")
+local DomData = java_lazy("org.allbinary.data.tree.dom.DomData")
+local DomNodeHelper = java_lazy("org.allbinary.data.tree.dom.DomNodeHelper")
+local DomSearchHelper = java_lazy("org.allbinary.data.tree.dom.DomSearchHelper")
+local ModDomHelper = java_lazy("org.allbinary.data.tree.dom.ModDomHelper")
+local DomDocumentHelper = java_lazy("org.allbinary.data.tree.dom.document.DomDocumentHelper")
+local XmlDocumentHelper = java_lazy("org.allbinary.data.tree.dom.document.XmlDocumentHelper")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local Document = java_lazy("org.w3c.dom.Document")
+local Node = java_lazy("org.w3c.dom.Node")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local RequestParams = require("org.allbinary.logic.communication.http.request.RequestParams")
+local NameSpaceRequestParam = java_lazy("org.allbinary.logic.communication.http.request.NameSpaceRequestParam")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -48,6 +66,7 @@ local function java_exception(className, message, cause)
 end
 
 local function java_instanceof(object, class)
+    class = java_real(class)
     local metatable = getmetatable(object)
     while metatable do
         if metatable == class then return true end
@@ -57,6 +76,79 @@ local function java_instanceof(object, class)
     return false
 end
 
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
+
 local function java_idiv(a, b)
     local q = a / b
     if q < 0 then return math.ceil(q) end
@@ -64,56 +156,75 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
 --containing string values and other hashmaps of the like
-local NameSpaceRequestParams = {}
+-- class table NameSpaceRequestParams is declared before the requires
 NameSpaceRequestParams.__index = NameSpaceRequestParams
 NameSpaceRequestParams.className = "NameSpaceRequestParams"
+NameSpaceRequestParams.javaClassName = "org.allbinary.logic.communication.http.request.NameSpaceRequestParams"
 setmetatable(NameSpaceRequestParams, {__index = RequestParams})
 
 function NameSpaceRequestParams:_init_fields()
     self.logUtil = LogUtil.getInstance()
 end
 
-function NameSpaceRequestParams.new(...)
+function NameSpaceRequestParams._jinit(self, ...)
     local count = select("#", ...)
-    if count == 0 then return NameSpaceRequestParams._new0(...)
-    elseif count == 1 then return NameSpaceRequestParams._new1(...)
-    elseif count == 1 then return NameSpaceRequestParams._new1(...)
+    if count == 0 then return NameSpaceRequestParams._new0(self, ...)
+    elseif count == 1 then return NameSpaceRequestParams._new1(self, ...)
     end
+    error("No constructor of NameSpaceRequestParams takes " .. count .. " arguments")
+end
+
+function NameSpaceRequestParams.new(...)
+    local self = setmetatable({}, NameSpaceRequestParams)
+    NameSpaceRequestParams._jinit(self, ...)
+    return self
+end
+
+function NameSpaceRequestParams._new1(self, ...)
+    local java_a1 = ...
+    if true and (java_a1 == nil or java_is(java_a1, "HttpServletRequest")) then return NameSpaceRequestParams._new1_1(self, ...) end
+    return NameSpaceRequestParams._new1_2(self, ...)
 end
 
 
-function NameSpaceRequestParams._new0()
-    local self = setmetatable(RequestParams.new(), NameSpaceRequestParams)
-    self:_init_fields()
+function NameSpaceRequestParams._new0(self)
+    java_super_init(RequestParams, self)
+    NameSpaceRequestParams._init_fields(self)
         -- super(...) made self above
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
             self.logUtil:putF("Constructing empty", self, self.commonStrings.CONSTRUCTOR)
         end
     return self
 end
 
 
-function NameSpaceRequestParams._new1(httpServletRequest)
-    local self = setmetatable(RequestParams.new(httpServletRequest), NameSpaceRequestParams)
-    self:_init_fields()
+function NameSpaceRequestParams._new1_1(self, httpServletRequest)
+    java_super_init(RequestParams, self, httpServletRequest)
+    NameSpaceRequestParams._init_fields(self)
         -- super(...) made self above
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
             self.logUtil:putF("Constructing from HttpServletRequest", self, self.commonStrings.CONSTRUCTOR)
         end
     return self
 end
 
 
-function NameSpaceRequestParams._new1(pageContext)
-    local self = setmetatable(RequestParams.new(pageContext), NameSpaceRequestParams)
-    self:_init_fields()
+function NameSpaceRequestParams._new1_2(self, pageContext)
+    java_super_init(RequestParams, self, pageContext)
+    NameSpaceRequestParams._init_fields(self)
         -- super(...) made self above
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
             self.logUtil:putF("Constructing from PageContext", self, self.commonStrings.CONSTRUCTOR)
         end
     return self
@@ -134,6 +245,7 @@ function NameSpaceRequestParams:createPackageNode(document, packageName, package
         end
         return node
 end
+java_overload(NameSpaceRequestParams, "createPackageNode", 3, function(java_a1, java_a2, java_a3) return true and (java_a1 == nil or java_is(java_a1, "Document")) and (java_a2 == nil or type(java_a2) == "string") and (java_a3 == nil or java_is(java_a3, "HashMap")) end)
 
 
 -- throws Exception
@@ -146,7 +258,7 @@ function NameSpaceRequestParams:createPackageMultiNode(document, nameSpaceReques
         if ((propertyValue < NameSpaceRequestParamData.VALUE and -1) or (propertyValue > NameSpaceRequestParamData.VALUE and 1) or 0) ~= 0 then
             selectedValue = propertyValue
         end
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
             self.logUtil:putF("\nAppending Multinode Element: " .. multiElementPackage .. "[" .. indexValue .. "] " .. selectedValue, self, "createPackageMultiNode")
         end
         local nextNode = ModDomHelper.createNameValueNodes(document, multiElementPackage, selectedValue)
@@ -154,33 +266,35 @@ function NameSpaceRequestParams:createPackageMultiNode(document, nameSpaceReques
         nextNode:appendChild(indexNode)
         return nextNode
 end
+java_overload(NameSpaceRequestParams, "createPackageMultiNode", 4, function(java_a1, java_a2, java_a3, java_a4) return true and (java_a1 == nil or java_is(java_a1, "Document")) and (java_a2 == nil or java_is(java_a2, "NameSpaceRequestParam")) and (java_a3 == nil or type(java_a3) == "string") and (java_a4 == nil or java_is(java_a4, "HashMap")) end)
 
 
 -- throws Exception
 function NameSpaceRequestParams:getRootNode(rootElementPackage, packagePropertiesHashMap, document)
         local rootNode = DomSearchHelper.getNodeNoThrow(rootElementPackage, document:getChildNodes())
         if rootNode == nil then
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
                 self.logUtil:putF("\nAppending Document Root: " .. "\nElementName: " .. rootElementPackage .. "\nProperties: " .. tostring(packagePropertiesHashMap), self, "getRootNode")
             end
             local node = self:createPackageNode(document, rootElementPackage, packagePropertiesHashMap)
             document:appendChild(node)
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
                 self.logUtil:putF("\nAppended Document Created: " .. XmlDocumentHelper.toString(document), self, "getRootNode")
             end
             return node
         else
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
                 self.logUtil:putF("\nUsing Existing Root Node", self, "getRootNode")
             end
             return rootNode
         end
 end
+java_overload(NameSpaceRequestParams, "getRootNode", 3, function(java_a1, java_a2, java_a3) return true and (java_a1 == nil or type(java_a1) == "string") and (java_a2 == nil or java_is(java_a2, "HashMap")) and (java_a3 == nil or java_is(java_a3, "Document")) end)
 
 
 -- throws Exception
 function NameSpaceRequestParams:addNewProperties(document, node, nextPackagePropertiesHashMap)
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
             self.logUtil:putF(tostring(StringMaker.new():append("\nAdding Any New Properties: "):append(tostring(nextPackagePropertiesHashMap)):append("\nto node: "):append(node:getNodeName())), self, "addNewProperties")
         end
         local propertyNameSet = nextPackagePropertiesHashMap:keySet()
@@ -192,17 +306,17 @@ function NameSpaceRequestParams:addNewProperties(document, node, nextPackageProp
             local valueNode = DomSearchHelper.getNodeNoThrow(nextPropertyName, node:getChildNodes())
             if valueNode ~= nil then
                 local existingElementNodeTextNodeValue = DomNodeHelper.getTextNodeValue(valueNode)
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
                     self.logUtil:putF("\nIf property: \"" .. nextPropertyName .. " is the same as:\n" .. "Node: " .. tostring(node:getNodeName()) .. " then: " .. propertyValue .. "==" .. existingElementNodeTextNodeValue, self, "addNewProperties")
                 end
                 if ((propertyValue < existingElementNodeTextNodeValue and -1) or (propertyValue > existingElementNodeTextNodeValue and 1) or 0) ~= 0 then
-                    if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+                    if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
                         self.logUtil:putF("At least one Property from NameSpaceRequest Package was different from Node", self, "addNewProperties")
                     end
-                    error(java_exception("Exception", "Property Modifications Should Not Occur"), 0)
+                    error(require("java.lang.Exception").new("Property Modifications Should Not Occur"), 0)
                 end
             else
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
                     self.logUtil:putF("Adding a new Property: " .. nextPropertyName .. "=" .. propertyValue, self, "addNewProperties")
                 end
                 local newPropertyNode = ModDomHelper.createTextNode(document, nextPropertyName, propertyValue)
@@ -211,11 +325,12 @@ function NameSpaceRequestParams:addNewProperties(document, node, nextPackageProp
         end
         return node
 end
+java_overload(NameSpaceRequestParams, "addNewProperties", 3, function(java_a1, java_a2, java_a3) return true and (java_a1 == nil or java_is(java_a1, "Document")) and (java_a2 == nil or java_is(java_a2, "Node")) and (java_a3 == nil or java_is(java_a3, "HashMap")) end)
 
 
 -- throws Exception
 function NameSpaceRequestParams:isElementValueTextNodeEqual(nextPackagePropertiesHashMap, node)
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
             self.logUtil:putF("\nComparing the value property in: " .. tostring(nextPackagePropertiesHashMap) .. "\nto node child leaves of node: " .. tostring(node:getNodeName()), self, "isElementValueTextNodeEqual")
         end
         local propertyValue = nextPackagePropertiesHashMap:get(DomData.VALUE)
@@ -223,7 +338,7 @@ function NameSpaceRequestParams:isElementValueTextNodeEqual(nextPackagePropertie
         if valueNode ~= nil then
             local existingElementNodeTextNodeValue = DomNodeHelper.getTextNodeValue(valueNode)
             if ((propertyValue < existingElementNodeTextNodeValue and -1) or (propertyValue > existingElementNodeTextNodeValue and 1) or 0) == 0 then
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
                     self.logUtil:putF("Value Node is the same", self, "isElementValueTextNodeEqual")
                 end
                 return true
@@ -233,11 +348,12 @@ function NameSpaceRequestParams:isElementValueTextNodeEqual(nextPackagePropertie
         end
         return false
 end
+java_overload(NameSpaceRequestParams, "isElementValueTextNodeEqual", 2, function(java_a1, java_a2) return true and (java_a1 == nil or java_is(java_a1, "HashMap")) and (java_a2 == nil or java_is(java_a2, "Node")) end)
 
 
 -- throws Exception
 function NameSpaceRequestParams:isElementValueTextNodeUnique(nextPackagePropertiesHashMap, elementNodeVector)
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
             self.logUtil:putF("\nComparing Properties of: " .. tostring(elementNodeVector:size()) .. " Nodes", self, "isElementValueTextNodeUnique")
         end
         local size = elementNodeVector:size()
@@ -249,6 +365,7 @@ function NameSpaceRequestParams:isElementValueTextNodeUnique(nextPackageProperti
         end
         return -1
 end
+java_overload(NameSpaceRequestParams, "isElementValueTextNodeUnique", 2, function(java_a1, java_a2) return true and (java_a1 == nil or java_is(java_a1, "HashMap")) and (java_a2 == nil or java_is(java_a2, "BasicArrayList")) end)
 
 
 -- throws Exception
@@ -258,12 +375,12 @@ function NameSpaceRequestParams:addChildren(document, rootNode, nameSpaceRequest
         local size = packageVector:size()
         for index = 1, size - 1 do
             local nextPackageName = packageVector:get(index)
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
                 self.logUtil:putF(tostring(StringMaker.new():append("\nTrying to Add Child to Node: "):append(node:getNodeName()):append("\nwith new PackageName: "):append(nextPackageName)), self, "addChildren")
             end
             local nextPackagePropertiesHashMap = nameSpaceRequestParam:getPackageProperties(index)
             local elementNodeVector = DomSearchHelper.getAllNodesNoThrow(nextPackageName, node:getChildNodes())
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
                 self.logUtil:putF("\nDocument Contains " .. tostring(elementNodeVector:size()) .. " Node(s) With Same Name", self, "addChildren")
             end
             local isElementValueTextNodeUniqueIndex = self:isElementValueTextNodeUnique(nextPackagePropertiesHashMap, elementNodeVector)
@@ -271,38 +388,39 @@ function NameSpaceRequestParams:addChildren(document, rootNode, nameSpaceRequest
                 local nextNode = self:createPackageNode(document, nextPackageName, nextPackagePropertiesHashMap)
                 node:appendChild(nextNode)
                 node = nextNode
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
                     self.logUtil:putF("\nAppended Package: " .. tostring(node:getNodeName()), self, "addChildren")
                     self.logUtil:putF("\nAppended Document Created: " .. XmlDocumentHelper.toString(document), self, "addChildren")
                 end
             elseif (CommonSeps.getInstance().BRACKET_CLOSE == "" or string.sub(nextPackageName, -#CommonSeps.getInstance().BRACKET_CLOSE) == CommonSeps.getInstance().BRACKET_CLOSE) then
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
                     self.logUtil:putF("Package is MultiNode: just append", self, "addChildren")
                 end
                 local nextNode = self:createPackageMultiNode(document, nameSpaceRequestParam, nextPackageName, nextPackagePropertiesHashMap)
                 node:appendChild(nextNode)
                 node = nextNode
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
                     self.logUtil:putF("\nAppended Multinode Element: " .. XmlDocumentHelper.toString(document), self, "addChildren")
                 end
             else
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
                     self.logUtil:putF("Value Node already exists: Now compare (properties to leaf nodes)", self, "addChildren")
                 end
                 local nodeNameDuplicateNode = elementNodeVector:get(isElementValueTextNodeUniqueIndex)
                 node = self:addNewProperties(document, nodeNameDuplicateNode, nextPackagePropertiesHashMap)
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
                     self.logUtil:putF("\nDuplicate Node Found: Moving to next child ^", self, "addChildre")
                 end
             end
         end
         return document
 end
+java_overload(NameSpaceRequestParams, "addChildren", 3, function(java_a1, java_a2, java_a3) return true and (java_a1 == nil or java_is(java_a1, "Document")) and (java_a2 == nil or java_is(java_a2, "Node")) and (java_a3 == nil or java_is(java_a3, "NameSpaceRequestParam")) end)
 
 
 -- throws Exception
 function NameSpaceRequestParams:addNameSpace(key, value, document)
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
             self.logUtil:putF(tostring(StringMaker.new():append("NameSpace key: "):append(key):append(" Value: "):append(value)), self, "addNameSpace")
         end
         local nameSpaceRequestParam = NameSpaceRequestParam.new(key, value)
@@ -318,6 +436,7 @@ function NameSpaceRequestParams:addNameSpace(key, value, document)
         end
         return document
 end
+java_overload(NameSpaceRequestParams, "addNameSpace", 3, function(java_a1, java_a2, java_a3) return true and (java_a1 == nil or type(java_a1) == "string") and (java_a2 == nil or type(java_a2) == "string") and (java_a3 == nil or java_is(java_a3, "Document")) end)
 
 
 -- throws Exception
@@ -327,20 +446,20 @@ function NameSpaceRequestParams:toHashMap()
         local keys = self:getMap():keySet()
         local keyArray = keys:toArray()
         local keySize = (keyArray.n or #keyArray)
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
             self.logUtil:putF("NameSpace Request Size: " .. tostring(keys:size()), self, "toHashMap")
         end
         for i = 0, keySize - 1 do
             local key = keyArray[i + 1]
             local anyType = self:getMap():get(key)
-            local className = getmetatable(anyType).className
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+            local className = (getmetatable(anyType).javaClassName or getmetatable(anyType).className)
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
                 self.logUtil:putF("Request Param Class: " .. className, self, "toHashMap")
             end
             if java_instanceof(self:getMap():get(key), String) then
                 local value = self:getMap():get(key)
                 if ((string.find(key, NameSpaceRequestParamData.NAME, 1, true) or 0) - 1) < 0 then
-                    if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+                    if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
                         self.logUtil:putF("Not NameSpace key: " .. key .. " Value: " .. value, self, "toHashMap()")
                     end
                     hashMap:put(tostring(key), tostring(value))
@@ -350,7 +469,7 @@ function NameSpaceRequestParams:toHashMap()
             elseif java_instanceof(self:getMap():get(key), table) then
                 local values = self:getMap():get(key)
                 if ((string.find(key, NameSpaceRequestParamData.NAME, 1, true) or 0) - 1) < 0 then
-                    if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+                    if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
                         self.logUtil:putF("Not NameSpace key: " .. key .. " Value: " .. tostring(values[1]), self, "toHashMap()")
                     end
                     hashMap:put(tostring(key), tostring(values[1]))
@@ -359,12 +478,13 @@ function NameSpaceRequestParams:toHashMap()
                 end
             end
         end
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
             self.logUtil:putF("NameSpaceRequestParams: " .. tostring(self:getMap()) .. "\ntoHashMap(): " .. tostring(hashMap) .. "\nDocument Created: " .. XmlDocumentHelper.toString(document), self, "toHashMap()")
         end
         hashMap:put(NameSpaceRequestParamData.DOCUMENT, document)
         return hashMap
 end
+java_overload(NameSpaceRequestParams, "toHashMap", 0)
 
 return NameSpaceRequestParams
 

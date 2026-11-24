@@ -13,28 +13,80 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.visual.transform.info.objectConfig
 
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local DomNodeHelper = require("org.allbinary.data.tree.dom.DomNodeHelper")
-local DomSearchHelper = require("org.allbinary.data.tree.dom.DomSearchHelper")
-local DomDocumentHelper = require("org.allbinary.data.tree.dom.document.DomDocumentHelper")
-local XmlDocumentHelper = require("org.allbinary.data.tree.dom.document.XmlDocumentHelper")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local InputOutputTypeData = require("org.allbinary.logic.io.InputOutputTypeData")
-local OutputTypeData = require("org.allbinary.logic.io.OutputTypeData")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local TransformInfoData = require("org.allbinary.logic.visual.transform.info.TransformInfoData")
-local TransformInfoDomNode = require("org.allbinary.logic.visual.transform.info.TransformInfoDomNode")
-local TransformInfoInterface = require("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
-local TransformInfosData = require("org.allbinary.logic.visual.transform.info.TransformInfosData")
-local XslData = require("org.allbinary.logic.visual.transform.template.XslData")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local Attr = require("org.w3c.dom.Attr")
-local Document = require("org.w3c.dom.Document")
-local NamedNodeMap = require("org.w3c.dom.NamedNodeMap")
-local Node = require("org.w3c.dom.Node")
-local NodeList = require("org.w3c.dom.NodeList")
+local TransformInfoObjectConfig = {}
+package.loaded["org.allbinary.logic.visual.transform.info.objectConfig.TransformInfoObjectConfig"] = TransformInfoObjectConfig
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local DomNodeHelper = java_lazy("org.allbinary.data.tree.dom.DomNodeHelper")
+local DomSearchHelper = java_lazy("org.allbinary.data.tree.dom.DomSearchHelper")
+local DomDocumentHelper = java_lazy("org.allbinary.data.tree.dom.document.DomDocumentHelper")
+local XmlDocumentHelper = java_lazy("org.allbinary.data.tree.dom.document.XmlDocumentHelper")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local InputOutputTypeData = java_lazy("org.allbinary.logic.io.InputOutputTypeData")
+local OutputTypeData = java_lazy("org.allbinary.logic.io.OutputTypeData")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local TransformInfoData = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoData")
+local TransformInfoDomNode = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoDomNode")
+local TransformInfoInterface = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
+local TransformInfosData = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfosData")
+local XslData = java_lazy("org.allbinary.logic.visual.transform.template.XslData")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local Attr = java_lazy("org.w3c.dom.Attr")
+local Document = java_lazy("org.w3c.dom.Document")
+local NamedNodeMap = java_lazy("org.w3c.dom.NamedNodeMap")
+local Node = java_lazy("org.w3c.dom.Node")
+local NodeList = java_lazy("org.w3c.dom.NodeList")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local TransformInfoObjectConfigInterface = require("org.allbinary.logic.visual.transform.info.objectConfig.TransformInfoObjectConfigInterface")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -43,37 +95,52 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local TransformInfoObjectConfig = {}
+-- class table TransformInfoObjectConfig is declared before the requires
 TransformInfoObjectConfig.__index = TransformInfoObjectConfig
 TransformInfoObjectConfig.className = "TransformInfoObjectConfig"
+TransformInfoObjectConfig.javaClassName = "org.allbinary.logic.visual.transform.info.objectConfig.TransformInfoObjectConfig"
+TransformInfoObjectConfig.java_implements = " TransformInfoObjectConfigInterface "
+TransformInfoObjectConfig.java_interfaces = function() return {TransformInfoObjectConfigInterface} end
 
 function TransformInfoObjectConfig:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
-    self.ownerTransformInfoInterface = nil
-    self.document = nil
-    self.outputTypeName = nil
+    if self.ownerTransformInfoInterface == nil then self.ownerTransformInfoInterface = nil end
+    if self.document == nil then self.document = nil end
+    if self.outputTypeName == nil then self.outputTypeName = nil end
+end
+
+function TransformInfoObjectConfig._jinit(self, ...)
+    local count = select("#", ...)
+    if count == 1 then return TransformInfoObjectConfig._new1(self, ...)
+    elseif count == 2 then return TransformInfoObjectConfig._new2(self, ...)
+    elseif count == 3 then return TransformInfoObjectConfig._new3(self, ...)
+    end
+    error("No constructor of TransformInfoObjectConfig takes " .. count .. " arguments")
 end
 
 function TransformInfoObjectConfig.new(...)
-    local count = select("#", ...)
-    if count == 1 then return TransformInfoObjectConfig._new1(...)
-    elseif count == 2 then return TransformInfoObjectConfig._new2(...)
-    elseif count == 3 then return TransformInfoObjectConfig._new3(...)
-    end
+    local self = setmetatable({}, TransformInfoObjectConfig)
+    TransformInfoObjectConfig._jinit(self, ...)
+    return self
 end
 
 
-function TransformInfoObjectConfig._new1(transformInfoInterface)
-    local self = setmetatable({}, TransformInfoObjectConfig)
-    self:_init_fields()
+function TransformInfoObjectConfig._new1(self, transformInfoInterface)
+    TransformInfoObjectConfig._init_fields(self)
         self.ownerTransformInfoInterface = transformInfoInterface
         self:createDocument()
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             local stringBuffer = StringMaker.new()
             stringBuffer:append("TransformInfo: ")
             if self.ownerTransformInfoInterface ~= nil then
@@ -89,16 +156,15 @@ function TransformInfoObjectConfig._new1(transformInfoInterface)
 end
 
 
-function TransformInfoObjectConfig._new2(transformInfoInterface, document)
-    local self = setmetatable({}, TransformInfoObjectConfig)
-    self:_init_fields()
+function TransformInfoObjectConfig._new2(self, transformInfoInterface, document)
+    TransformInfoObjectConfig._init_fields(self)
         self.ownerTransformInfoInterface = transformInfoInterface
         self.document = document
         local node = DomSearchHelper.getNodeNoThrow(OutputTypeData.getInstance().NAME, self:getRootNode():getChildNodes())
         if node ~= nil then
             self:setOutputTypeName(DomNodeHelper.getTextNodeValue(node))
         end
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             local stringBuffer = StringMaker.new()
             stringBuffer:append("TransformInfo: ")
             if self.ownerTransformInfoInterface ~= nil then
@@ -114,16 +180,15 @@ function TransformInfoObjectConfig._new2(transformInfoInterface, document)
 end
 
 
-function TransformInfoObjectConfig._new3(transformInfoInterface, name, type)
-    local self = setmetatable({}, TransformInfoObjectConfig)
-    self:_init_fields()
+function TransformInfoObjectConfig._new3(self, transformInfoInterface, name, type)
+    TransformInfoObjectConfig._init_fields(self)
         self.ownerTransformInfoInterface = transformInfoInterface
         self:createDocument()
         local configNameAttr = self.document:createAttribute(TransformInfoObjectConfigData.getInstance().NAME)
         configNameAttr:setValue(name)
         local objectConfigNode = self.document:getElementsByTagName(TransformInfoObjectConfigData.getInstance().NAME):item(0)
         objectConfigNode:appendChild(configNameAttr)
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             local stringBuffer = StringMaker.new()
             stringBuffer:append("TransformInfo: ")
             if self.ownerTransformInfoInterface ~= nil then
@@ -205,7 +270,7 @@ function TransformInfoObjectConfig:getNodeVector(nodeName)
         if componentsNodeList ~= nil and componentsNodeList:getLength() > 0 then
             local viewNodeVector = DomSearchHelper.getAllNodes(TransformInfoData.getInstance().NAME, componentsNodeList:item(0):getChildNodes())
             local numberOfViews = viewNodeVector:size()
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                 local stringBuffer = StringMaker.new()
                 stringBuffer:append("Number Of ")
                 stringBuffer:append(nodeName)
@@ -220,7 +285,7 @@ end
 
 
 -- throws Exception
-function TransformInfoObjectConfig:getTransformDomNodes(nodeName)
+function TransformInfoObjectConfig:getTransformDomNodes_j1(nodeName)
         local viewVector = BasicArrayListD.new()
         local viewNodeVector = self:getNodeVector(nodeName)
         local size = viewNodeVector:size()
@@ -233,7 +298,7 @@ end
 
 
 -- throws Exception
-function TransformInfoObjectConfig:getTransforms(nodeName)
+function TransformInfoObjectConfig:getTransforms_j1(nodeName)
         local viewVector = BasicArrayListD.new()
         local viewNodeVector = self:getNodeVector(nodeName)
         local size = viewNodeVector:size()
@@ -247,7 +312,7 @@ end
 
 -- throws Exception
 function TransformInfoObjectConfig:getTransformsGroup(group)
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             self.logUtil:putF("Started: " .. group, self, "getTransformsGroup()")
         end
         local viewVector = BasicArrayListD.new()
@@ -268,7 +333,7 @@ function TransformInfoObjectConfig:getTransformsGroup(group)
             end
             local viewNodeVector = DomSearchHelper.getAllNodes(TransformInfoData.getInstance().NAME, componentsNode:getChildNodes())
             local numberOfViews = viewNodeVector:size()
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                 self.logUtil:putF("Number Of Nodes: " .. tostring(numberOfViews), self, "getTransformsGroup()")
             end
             local size = viewNodeVector:size()
@@ -277,7 +342,7 @@ function TransformInfoObjectConfig:getTransformsGroup(group)
                 viewVector:add(TransformInfoDomNode.new(viewNode))
             end
         else
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                 if componentsNodeList == nil then
                     self.logUtil:putF("Number Of Nodes: NULL", self, "getTransformsGroup()")
                 else
@@ -290,17 +355,29 @@ end
 
 
 -- throws Exception
--- Java overloaded method: Lua keeps the last definition
-function TransformInfoObjectConfig:getTransformDomNodes()
+function TransformInfoObjectConfig:getTransformDomNodes_j0()
         return self:getTransformDomNodes(TransformInfosData.getInstance().GROUP)
 end
+function TransformInfoObjectConfig:getTransformDomNodes(...)
+    local count = select("#", ...)
+    if count == 1 then return self:getTransformDomNodes_j1(...) end
+    if count == 0 then return self:getTransformDomNodes_j0(...) end
+    error("No method getTransformDomNodes takes " .. count .. " arguments")
+end
+TransformInfoObjectConfig.getTransformDomNodes__jdispatcher = TransformInfoObjectConfig.getTransformDomNodes
 
 
 -- throws Exception
--- Java overloaded method: Lua keeps the last definition
-function TransformInfoObjectConfig:getTransforms()
+function TransformInfoObjectConfig:getTransforms_j0()
         return self:getTransforms(TransformInfosData.getInstance().NAME)
 end
+function TransformInfoObjectConfig:getTransforms(...)
+    local count = select("#", ...)
+    if count == 1 then return self:getTransforms_j1(...) end
+    if count == 0 then return self:getTransforms_j0(...) end
+    error("No method getTransforms takes " .. count .. " arguments")
+end
+TransformInfoObjectConfig.getTransforms__jdispatcher = TransformInfoObjectConfig.getTransforms
 
 
 -- throws Exception
@@ -353,20 +430,22 @@ end
 
 
 function TransformInfoObjectConfig:toString()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             if self.document ~= nil then
-                return XmlDocumentHelper.toString(self.document)
+                do return "__jreturn", XmlDocumentHelper.toString(self.document) end
             else
-                return nil
+                do return "__jreturn", nil end
             end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEWERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEWERROR) then
                 self.logUtil:putF("DOM Document error", self, self.commonStrings.TOSTRING)
             end
             return nil
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 TransformInfoObjectConfig.__tostring = function(self) return self:toString() end
 

@@ -13,11 +13,27 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.graphics.color
 
-local JsType = require("jsinterop.annotations.JsType")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local JsMethod = require("jsinterop.annotations.JsMethod")
-local JsConstructor = require("jsinterop.annotations.JsConstructor")
-local JsProperty = require("jsinterop.annotations.JsProperty")
+local BasicColor = {}
+package.loaded["org.allbinary.graphics.color.BasicColor"] = BasicColor
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local JsType = java_lazy("jsinterop.annotations.JsType")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local JsMethod = java_lazy("jsinterop.annotations.JsMethod")
+local JsConstructor = java_lazy("jsinterop.annotations.JsConstructor")
+local JsProperty = java_lazy("jsinterop.annotations.JsProperty")
+local BasicColorUtil = java_lazy("org.allbinary.graphics.color.BasicColorUtil")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -26,32 +42,38 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local BasicColor = {}
+-- class table BasicColor is declared before the requires
 BasicColor.__index = BasicColor
 BasicColor.className = "BasicColor"
+BasicColor.javaClassName = "org.allbinary.graphics.color.BasicColor"
 
 function BasicColor:_init_fields()
-    self.name = nil
-    self.value = nil
-    self.redComponent = nil
-    self.greenComponent = nil
-    self.blueComponent = nil
-    self.alphaComponent = nil
-    self.red = nil
-    self.green = nil
-    self.blue = nil
-    self.alpha = nil
+    if self.name_f == nil then self.name_f = nil end
+    if self.value == nil then self.value = nil end
+    if self.redComponent == nil then self.redComponent = nil end
+    if self.greenComponent == nil then self.greenComponent = nil end
+    if self.blueComponent == nil then self.blueComponent = nil end
+    if self.alphaComponent == nil then self.alphaComponent = nil end
+    if self.red == nil then self.red = nil end
+    if self.green == nil then self.green = nil end
+    if self.blue == nil then self.blue = nil end
+    if self.alpha == nil then self.alpha = nil end
 end
 
 
-function BasicColor.new(alphaValue, value, name)
-    local self = setmetatable({}, BasicColor)
-    self:_init_fields()
-        self.name = name
+function BasicColor._jinit(self, alphaValue, value, name)
+    BasicColor._init_fields(self)
+        self.name_f = name
         local tempValue = 0
         local basicColorUtil = BasicColorUtil.getInstance()
         if basicColorUtil.isAlpha then
@@ -76,6 +98,12 @@ function BasicColor.new(alphaValue, value, name)
         self.blue = blueInt
         self.blueComponent = ((blueInt + 0.0)) / 255.0
         self.value = tempValue
+    return self
+end
+
+function BasicColor.new(...)
+    local self = setmetatable({}, BasicColor)
+    BasicColor._jinit(self, ...)
     return self
 end
 
@@ -109,7 +137,7 @@ BasicColor.__tostring = function(self) return self:toString() end
 
 
 function BasicColor:getName()
-        return self.name
+        return self.name_f
 end
 
 

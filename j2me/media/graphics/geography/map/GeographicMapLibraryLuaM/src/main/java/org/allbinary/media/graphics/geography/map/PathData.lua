@@ -13,6 +13,21 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media.graphics.geography.map
 
+local PathData = {}
+package.loaded["org.allbinary.media.graphics.geography.map.PathData"] = PathData
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 
 local function java_idiv(a, b)
     local q = a / b
@@ -21,30 +36,40 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local PathData = {}
+-- class table PathData is declared before the requires
 PathData.__index = PathData
 PathData.className = "PathData"
+PathData.javaClassName = "org.allbinary.media.graphics.geography.map.PathData"
 
 function PathData:_init_fields()
     self.OFFSET = 400
 end
 
-function PathData.new()
-    local self = setmetatable({}, PathData)
-    self:_init_fields()
+function PathData._jinit(self)
+    PathData._init_fields(self)
     return self
+end
+
+function PathData.new()
+    return PathData._jinit(setmetatable({}, PathData))
 end
 
 
 function PathData.getInstance()
-        return PathData.instance
+        return PathData.instance_f
 end
 
-PathData.instance = PathData.new()
+PathData.instance_f = PathData.new()
 
 return PathData
 

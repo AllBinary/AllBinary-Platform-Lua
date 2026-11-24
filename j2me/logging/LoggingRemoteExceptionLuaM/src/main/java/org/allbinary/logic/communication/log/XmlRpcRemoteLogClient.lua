@@ -13,17 +13,33 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.communication.log
 
+local XmlRpcRemoteLogClient = {}
+package.loaded["org.allbinary.logic.communication.log.XmlRpcRemoteLogClient"] = XmlRpcRemoteLogClient
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 -- local IOException = require("java.io.IOException")
-local XmlRpcClient = require("org.apache.xmlrpc.XmlRpcClient")
-local XmlRpcException = require("org.apache.xmlrpc.XmlRpcException")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
+local XmlRpcClient = java_lazy("org.apache.xmlrpc.XmlRpcClient")
+local XmlRpcException = java_lazy("org.apache.xmlrpc.XmlRpcException")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 local XmlRpcAbeClient = require("org.allbinary.logic.communication.xmlrpc.XmlRpcAbeClient")
-local NoCrypt = require("org.allbinary.logic.system.security.crypt.jcehelper.NoCrypt")
-local AbeClientInformationInterface = require("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
-local CommonLabels = require("org.allbinary.string.CommonLabels")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local ABHashtable = require("org.allbinary.util.ABHashtable")
+local NoCrypt = java_lazy("org.allbinary.logic.system.security.crypt.jcehelper.NoCrypt")
+local AbeClientInformationInterface = java_lazy("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
+local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -38,6 +54,79 @@ local function java_exception(className, message, cause)
     return setmetatable(exception, {__tostring = function(self) if self.message ~= nil then return tostring(self.message) end return self.className end})
 end
 
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
+
 local function java_idiv(a, b)
     local q = a / b
     if q < 0 then return math.ceil(q) end
@@ -45,13 +134,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local XmlRpcRemoteLogClient = {}
+-- class table XmlRpcRemoteLogClient is declared before the requires
 XmlRpcRemoteLogClient.__index = XmlRpcRemoteLogClient
 XmlRpcRemoteLogClient.className = "XmlRpcRemoteLogClient"
+XmlRpcRemoteLogClient.javaClassName = "org.allbinary.logic.communication.log.XmlRpcRemoteLogClient"
 setmetatable(XmlRpcRemoteLogClient, {__index = XmlRpcAbeClient})
 
 function XmlRpcRemoteLogClient:_init_fields()
@@ -59,40 +155,49 @@ function XmlRpcRemoteLogClient:_init_fields()
 end
 
 
-function XmlRpcRemoteLogClient.new(clientInfo)
-    local self = setmetatable(XmlRpcAbeClient.new(clientInfo, "SSLLogServ.logUtil"), XmlRpcRemoteLogClient)
-    self:_init_fields()
+function XmlRpcRemoteLogClient._jinit(self, clientInfo)
+    java_super_init(XmlRpcAbeClient, self, clientInfo, "SSLLogServ.logUtil")
+    XmlRpcRemoteLogClient._init_fields(self)
         -- super(...) made self above
+    return self
+end
+
+function XmlRpcRemoteLogClient.new(...)
+    local self = setmetatable({}, XmlRpcRemoteLogClient)
+    XmlRpcRemoteLogClient._jinit(self, ...)
     return self
 end
 
 
 -- throws Exception
 function XmlRpcRemoteLogClient:get(anyType)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local param = BasicArrayListD.new()
             local serverUrl = self:getClientInfo():getLicenseServer(self:getServer())
             local index = serverUrl:lastIndexOf("/")
             serverUrl = string.sub(serverUrl, (0) + 1, index + 1) .. "logservssl.php"
             local xmlRpcClient = XmlRpcClient.new(serverUrl)
             self:setClient(xmlRpcClient)
-            xmlRpcClient:setBasicAuthentication(nil, nil)
+            xmlRpcClient:setBasicAuthentication(StringUtil.getInstance().EMPTY_STRING, StringUtil.getInstance().EMPTY_STRING)
             local hashtable = anyType
             param:add(hashtable)
-            local result = xmlRpcClient:execute(self:getRemoteMethod(), param, self.noCrypt)
+            local result = xmlRpcClient:executeWithCrypt(self:getRemoteMethod(), param, self.noCrypt)
             print(tostring(CommonLabels.getInstance().RESULT_ + CommonSeps.getInstance().NEW_LINE) .. tostring(result))
-            return result
+            do return "__jreturn", result end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             print("IOException Trying Other Servers")
             if not tostring(e):startsWith(self.HOST_NOT_RESOLVED) then
                 return self:tryAnother(anyType)
             else
-                error(java_exception("Exception", self.HOST_NOT_RESOLVED_MSG), 0)
+                error(require("java.lang.Exception").new(self.HOST_NOT_RESOLVED_MSG), 0)
             end
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+java_overload(XmlRpcRemoteLogClient, "get", 1)
 
 return XmlRpcRemoteLogClient
 

@@ -13,15 +13,105 @@
 -- Generated Code Do Not Modify
 -- package views.business.context.modules.storefront.customizer.template.objectConfig
 
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local TransformInfoDomNodeView = require("org.allbinary.logic.visual.transform.info.TransformInfoDomNodeView")
-local TransformInfoInterface = require("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
-local TransformInfosData = require("org.allbinary.logic.visual.transform.info.TransformInfosData")
-local TransformInfoObjectConfigData = require("org.allbinary.logic.visual.transform.info.objectConfig.TransformInfoObjectConfigData")
-local Document = require("org.w3c.dom.Document")
-local Node = require("org.w3c.dom.Node")
-local NodeList = require("org.w3c.dom.NodeList")
+local InsertTemplateCustomizerTransformInfoObjectConfig = {}
+package.loaded["views.business.context.modules.storefront.customizer.template.objectConfig.InsertTemplateCustomizerTransformInfoObjectConfig"] = InsertTemplateCustomizerTransformInfoObjectConfig
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local TransformInfoDomNodeView = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoDomNodeView")
+local TransformInfoInterface = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
+local TransformInfosData = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfosData")
+local TransformInfoObjectConfigData = java_lazy("org.allbinary.logic.visual.transform.info.objectConfig.TransformInfoObjectConfigData")
+local Document = java_lazy("org.w3c.dom.Document")
+local Node = java_lazy("org.w3c.dom.Node")
+local NodeList = java_lazy("org.w3c.dom.NodeList")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local NoTemplateTransformInfoObjectConfig = require("views.business.context.modules.storefront.customizer.template.objectConfig.NoTemplateTransformInfoObjectConfig")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -30,48 +120,62 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local InsertTemplateCustomizerTransformInfoObjectConfig = {}
+-- class table InsertTemplateCustomizerTransformInfoObjectConfig is declared before the requires
 InsertTemplateCustomizerTransformInfoObjectConfig.__index = InsertTemplateCustomizerTransformInfoObjectConfig
 InsertTemplateCustomizerTransformInfoObjectConfig.className = "InsertTemplateCustomizerTransformInfoObjectConfig"
+InsertTemplateCustomizerTransformInfoObjectConfig.javaClassName = "views.business.context.modules.storefront.customizer.template.objectConfig.InsertTemplateCustomizerTransformInfoObjectConfig"
 setmetatable(InsertTemplateCustomizerTransformInfoObjectConfig, {__index = NoTemplateTransformInfoObjectConfig})
 
 function InsertTemplateCustomizerTransformInfoObjectConfig:_init_fields()
     self.logUtil = LogUtil.getInstance()
 end
 
-function InsertTemplateCustomizerTransformInfoObjectConfig.new(...)
+function InsertTemplateCustomizerTransformInfoObjectConfig._jinit(self, ...)
     local count = select("#", ...)
-    if count == 1 then return InsertTemplateCustomizerTransformInfoObjectConfig._new1(...)
-    elseif count == 2 then return InsertTemplateCustomizerTransformInfoObjectConfig._new2(...)
-    elseif count == 3 then return InsertTemplateCustomizerTransformInfoObjectConfig._new3(...)
+    if count == 1 then return InsertTemplateCustomizerTransformInfoObjectConfig._new1(self, ...)
+    elseif count == 2 then return InsertTemplateCustomizerTransformInfoObjectConfig._new2(self, ...)
+    elseif count == 3 then return InsertTemplateCustomizerTransformInfoObjectConfig._new3(self, ...)
     end
+    error("No constructor of InsertTemplateCustomizerTransformInfoObjectConfig takes " .. count .. " arguments")
+end
+
+function InsertTemplateCustomizerTransformInfoObjectConfig.new(...)
+    local self = setmetatable({}, InsertTemplateCustomizerTransformInfoObjectConfig)
+    InsertTemplateCustomizerTransformInfoObjectConfig._jinit(self, ...)
+    return self
 end
 
 
-function InsertTemplateCustomizerTransformInfoObjectConfig._new1(transformInfoInterface)
-    local self = setmetatable(NoTemplateTransformInfoObjectConfig.new(transformInfoInterface), InsertTemplateCustomizerTransformInfoObjectConfig)
-    self:_init_fields()
+function InsertTemplateCustomizerTransformInfoObjectConfig._new1(self, transformInfoInterface)
+    java_super_init(NoTemplateTransformInfoObjectConfig, self, transformInfoInterface)
+    InsertTemplateCustomizerTransformInfoObjectConfig._init_fields(self)
         -- super(...) made self above
     return self
 end
 
 
-function InsertTemplateCustomizerTransformInfoObjectConfig._new2(transformInfoInterface, document)
-    local self = setmetatable(NoTemplateTransformInfoObjectConfig.new(transformInfoInterface, document), InsertTemplateCustomizerTransformInfoObjectConfig)
-    self:_init_fields()
+function InsertTemplateCustomizerTransformInfoObjectConfig._new2(self, transformInfoInterface, document)
+    java_super_init(NoTemplateTransformInfoObjectConfig, self, transformInfoInterface, document)
+    InsertTemplateCustomizerTransformInfoObjectConfig._init_fields(self)
         -- super(...) made self above
         self:setDocument(self:generate(self:toXmlDoc()))
     return self
 end
 
 
-function InsertTemplateCustomizerTransformInfoObjectConfig._new3(transformInfoInterface, name, type)
-    local self = setmetatable(NoTemplateTransformInfoObjectConfig.new(transformInfoInterface, name, type), InsertTemplateCustomizerTransformInfoObjectConfig)
-    self:_init_fields()
+function InsertTemplateCustomizerTransformInfoObjectConfig._new3(self, transformInfoInterface, name, type)
+    java_super_init(NoTemplateTransformInfoObjectConfig, self, transformInfoInterface, name, type)
+    InsertTemplateCustomizerTransformInfoObjectConfig._init_fields(self)
         -- super(...) made self above
         self:setDocument(self:generate(self:toXmlDoc()))
     return self
@@ -80,13 +184,13 @@ end
 
 -- throws Exception
 function InsertTemplateCustomizerTransformInfoObjectConfig:set(aParentViewName)
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             self.logUtil:putF("Setting: " .. aParentViewName, self, "set()")
         end
         local document = self:toXmlDoc()
         local parentComponentsNodeList = document:getElementsByTagName(TransformInfosData.getInstance().NAME)
         if parentComponentsNodeList ~= nil and parentComponentsNodeList:getLength() > 0 then
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                 self.logUtil:putF("Replacing", self, "set()")
             end
             local componentNode = parentComponentsNodeList:item(0):getChildNodes():item(0)
@@ -95,7 +199,7 @@ function InsertTemplateCustomizerTransformInfoObjectConfig:set(aParentViewName)
             end
             parentComponentsNodeList:item(0):appendChild(TransformInfoDomNodeView.new(aParentViewName):toXmlNode(document))
         else
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                 self.logUtil:putF("Setting", self, "set()")
             end
             local objectConfigNode = document:getElementsByTagName(TransformInfoObjectConfigData.getInstance().NAME):item(0)
@@ -105,6 +209,7 @@ function InsertTemplateCustomizerTransformInfoObjectConfig:set(aParentViewName)
             parentComponentsNode:appendChild(transformInfoDomNodeView:toXmlNode(document))
         end
 end
+java_overload(InsertTemplateCustomizerTransformInfoObjectConfig, "set", 1, function(java_a1) return true and (java_a1 == nil or type(java_a1) == "string") end)
 
 return InsertTemplateCustomizerTransformInfoObjectConfig
 

@@ -13,15 +13,103 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.ag.ai.tactical
 
+local BasicRandomAI = {}
+package.loaded["org.allbinary.game.ag.ai.tactical.BasicRandomAI"] = BasicRandomAI
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Canvas = require("javax.microedition.lcdui.Canvas")
 local BasicAI = require("org.allbinary.game.ai.BasicAI")
-local InputProbability = require("org.allbinary.game.ag.ai.InputProbability")
-local GameInput = require("org.allbinary.game.input.GameInput")
-local MyRandomFactory = require("org.allbinary.game.rand.MyRandomFactory")
-local AllBinaryLayer = require("org.allbinary.layer.AllBinaryLayer")
-local AllBinaryLayerManager = require("org.allbinary.layer.AllBinaryLayerManager")
-local Visitor = require("org.allbinary.logic.util.visitor.Visitor")
-local GameTickTimeDelayHelperFactory = require("org.allbinary.time.GameTickTimeDelayHelperFactory")
+local InputProbability = java_lazy("org.allbinary.game.ag.ai.InputProbability")
+local GameInput = java_lazy("org.allbinary.game.input.GameInput")
+local MyRandomFactory = java_lazy("org.allbinary.game.rand.MyRandomFactory")
+local AllBinaryLayer = java_lazy("org.allbinary.layer.AllBinaryLayer")
+local AllBinaryLayerManager = java_lazy("org.allbinary.layer.AllBinaryLayerManager")
+local Visitor = java_lazy("org.allbinary.logic.util.visitor.Visitor")
+local GameTickTimeDelayHelperFactory = java_lazy("org.allbinary.time.GameTickTimeDelayHelperFactory")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -30,30 +118,43 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local BasicRandomAI = {}
+-- class table BasicRandomAI is declared before the requires
 BasicRandomAI.__index = BasicRandomAI
 BasicRandomAI.className = "BasicRandomAI"
+BasicRandomAI.javaClassName = "org.allbinary.game.ag.ai.tactical.BasicRandomAI"
 setmetatable(BasicRandomAI, {__index = BasicAI})
 
 function BasicRandomAI:_init_fields()
     self.i_random = 0
-    self.inputProbability = nil
-    self.visitor = nil
-    self.keyArray = {Canvas.UP, Canvas.DOWN, Canvas.LEFT, Canvas.RIGHT, Canvas.KEY_NUM1, Canvas.KEY_NUM7, Canvas.KEY_NUM9}
+    if self.inputProbability == nil then self.inputProbability = nil end
+    if self.visitor == nil then self.visitor = nil end
+    self.keyArray = {jt = "I", Canvas.UP, Canvas.DOWN, Canvas.LEFT, Canvas.RIGHT, Canvas.KEY_NUM1, Canvas.KEY_NUM7, Canvas.KEY_NUM9}
     self.myRandomFactory = MyRandomFactory.getInstance()
 end
 
 
-function BasicRandomAI.new(ownerLayerInterface, gameInput, inputProbability, visitor)
-    local self = setmetatable(BasicAI.new(ownerLayerInterface, gameInput), BasicRandomAI)
-    self:_init_fields()
+function BasicRandomAI._jinit(self, ownerLayerInterface, gameInput, inputProbability, visitor)
+    java_super_init(BasicAI, self, ownerLayerInterface, gameInput)
+    BasicRandomAI._init_fields(self)
         -- super(...) made self above
         self.inputProbability = inputProbability
         self.visitor = visitor
+    return self
+end
+
+function BasicRandomAI.new(...)
+    local self = setmetatable({}, BasicRandomAI)
+    BasicRandomAI._jinit(self, ...)
     return self
 end
 
@@ -86,6 +187,7 @@ function BasicRandomAI:processAI(allBinaryLayerManager)
             self.visitor:visit(self)
         end
 end
+java_overload(BasicRandomAI, "processAI", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "AllBinaryLayerManager")) end)
 
 return BasicRandomAI
 

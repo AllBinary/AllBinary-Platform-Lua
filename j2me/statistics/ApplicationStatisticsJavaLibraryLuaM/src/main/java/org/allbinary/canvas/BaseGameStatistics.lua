@@ -13,14 +13,29 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.canvas
 
-local PrimitiveLongSingleton = require("org.allbinary.logic.math.PrimitiveLongSingleton")
-local ScaleFactorFactory = require("org.allbinary.logic.math.ScaleFactorFactory")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local GameTickTimeDelayHelper = require("org.allbinary.time.GameTickTimeDelayHelper")
-local GameTickTimeDelayHelperFactory = require("org.allbinary.time.GameTickTimeDelayHelperFactory")
-local TimeDelayHelper = require("org.allbinary.time.TimeDelayHelper")
+local BaseGameStatistics = {}
+package.loaded["org.allbinary.canvas.BaseGameStatistics"] = BaseGameStatistics
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local PrimitiveLongSingleton = java_lazy("org.allbinary.logic.math.PrimitiveLongSingleton")
+local ScaleFactorFactory = java_lazy("org.allbinary.logic.math.ScaleFactorFactory")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local GameTickTimeDelayHelper = java_lazy("org.allbinary.time.GameTickTimeDelayHelper")
+local GameTickTimeDelayHelperFactory = java_lazy("org.allbinary.time.GameTickTimeDelayHelperFactory")
+local TimeDelayHelper = java_lazy("org.allbinary.time.TimeDelayHelper")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -29,19 +44,26 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local BaseGameStatistics = {}
+-- class table BaseGameStatistics is declared before the requires
 BaseGameStatistics.__index = BaseGameStatistics
 BaseGameStatistics.className = "BaseGameStatistics"
+BaseGameStatistics.javaClassName = "org.allbinary.canvas.BaseGameStatistics"
 
 function BaseGameStatistics:_init_fields()
-    self.timeDelayHelper = TimeDelayHelper.new(Integer.MAX_VALUE)
+    self.timeDelayHelper = TimeDelayHelper.new(require("java.lang.Integer").MAX_VALUE)
     self.updateDelayHelper = TimeDelayHelper.new(2000)
-    self.totalRefreshes = 0
-    self.totalFrames = 0
+    if self.totalRefreshes == nil then self.totalRefreshes = 0 end
+    if self.totalFrames == nil then self.totalFrames = 0 end
     self.gameTickTimeDelayHelper = GameTickTimeDelayHelperFactory.getInstance()
     self.DEFAULT_SCALE_FACTOR = ScaleFactorFactory.getInstance().DEFAULT_SCALE_FACTOR
     self.NOT = "Not enough Time to Calculate"
@@ -55,9 +77,14 @@ function BaseGameStatistics:_init_fields()
 end
 
 
-function BaseGameStatistics.new()
+function BaseGameStatistics._jinit(self)
+    BaseGameStatistics._init_fields(self)
+    return self
+end
+
+function BaseGameStatistics.new(...)
     local self = setmetatable({}, BaseGameStatistics)
-    self:_init_fields()
+    BaseGameStatistics._jinit(self, ...)
     return self
 end
 
@@ -69,7 +96,7 @@ function BaseGameStatistics:init()
 end
 
 
-function BaseGameStatistics:add(string)
+function BaseGameStatistics:add(string_)
 end
 
 
@@ -148,12 +175,12 @@ function BaseGameStatistics:toStringArray()
             self.STRING_ARRAY[8] = tostring(self.totalRefreshes)
             self.STRING_ARRAY[10] = tostring(java_idiv(self.totalRefreshes, totalTime))
         else
-            local string = self.EMPTY_STRING
-            self.STRING_ARRAY[2] = string
-            self.STRING_ARRAY[4] = string
-            self.STRING_ARRAY[6] = string
-            self.STRING_ARRAY[8] = string
-            self.STRING_ARRAY[10] = string
+            local string_ = self.EMPTY_STRING
+            self.STRING_ARRAY[2] = string_
+            self.STRING_ARRAY[4] = string_
+            self.STRING_ARRAY[6] = string_
+            self.STRING_ARRAY[8] = string_
+            self.STRING_ARRAY[10] = string_
         end
         return self.STRING_ARRAY
 end

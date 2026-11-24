@@ -13,17 +13,32 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.installer
 
-local PATH_GLOBALS = require("org.allbinary.globals.PATH_GLOBALS")
-local URLGLOBALS = require("org.allbinary.globals.URLGLOBALS")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local AbIOSystem = require("org.allbinary.logic.io.AbIOSystem")
-local AbFile = require("org.allbinary.logic.io.file.AbFile")
-local FileUtil = require("org.allbinary.logic.io.file.FileUtil")
-local Directory = require("org.allbinary.logic.io.file.directory.Directory")
-local AbPath = require("org.allbinary.logic.io.path.AbPath")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
+local InitializeCloud = {}
+package.loaded["org.allbinary.business.installer.InitializeCloud"] = InitializeCloud
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local PATH_GLOBALS = java_lazy("org.allbinary.globals.PATH_GLOBALS")
+local URLGLOBALS = java_lazy("org.allbinary.globals.URLGLOBALS")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local AbIOSystem = java_lazy("org.allbinary.logic.io.AbIOSystem")
+local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
+local FileUtil = java_lazy("org.allbinary.logic.io.file.FileUtil")
+local Directory = java_lazy("org.allbinary.logic.io.file.directory.Directory")
+local AbPath = java_lazy("org.allbinary.logic.io.path.AbPath")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -32,36 +47,48 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local InitializeCloud = {}
+-- class table InitializeCloud is declared before the requires
 InitializeCloud.__index = InitializeCloud
 InitializeCloud.className = "InitializeCloud"
+InitializeCloud.javaClassName = "org.allbinary.business.installer.InitializeCloud"
 
 function InitializeCloud:_init_fields()
     self.logUtil = LogUtil.getInstance()
 end
 
 
-function InitializeCloud.new()
+function InitializeCloud._jinit(self)
+    InitializeCloud._init_fields(self)
+    return self
+end
+
+function InitializeCloud.new(...)
     local self = setmetatable({}, InitializeCloud)
-    self:_init_fields()
+    InitializeCloud._jinit(self, ...)
     return self
 end
 
 
 function InitializeCloud:initialize(cloud, overwriteNewer, overwriteAll, current, total)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             if AbIOSystem.getInstance():isType("com.vobject.appengine.java.io") then
                 local stringBuffer = StringMaker.new()
-                stringBuffer:append(self.URLGLOBALS:getWebappPath())
+                stringBuffer:append(URLGLOBALS.getWebappPath())
                 stringBuffer:append(cloud)
-                stringBuffer:append(self.PATH_GLOBALS:getInstance().DATA_PATH)
+                stringBuffer:append(PATH_GLOBALS.getInstance().DATA_PATH)
                 local path = AbPath.new(tostring(stringBuffer), StringUtil.getInstance().EMPTY_STRING)
                 stringBuffer:delete(0, stringBuffer:length())
-                stringBuffer:append(self.URLGLOBALS:getWebappPath())
+                stringBuffer:append(URLGLOBALS.getWebappPath())
                 local realPath = AbPath.new(tostring(stringBuffer), StringUtil.getInstance().EMPTY_STRING)
                 local file = AbFile.createAbFileFromAbPath(path)
                 local fileBasicArrayList = Directory.getInstance():search(file, true)
@@ -92,13 +119,15 @@ function InitializeCloud:initialize(cloud, overwriteNewer, overwriteAll, current
                 end
                 self.logUtil:putF("Copied Files To Cloud", self, "initialize()")
             end
-            return true
+            do return "__jreturn", true end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put("Unable to copy installer files into cloud", self, "initialize()", e)
             return false
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 InitializeCloud.CLOUD = "cloud/"

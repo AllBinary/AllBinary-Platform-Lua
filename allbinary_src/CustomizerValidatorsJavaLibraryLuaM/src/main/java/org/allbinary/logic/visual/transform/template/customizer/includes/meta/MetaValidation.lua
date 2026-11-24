@@ -13,19 +13,36 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.visual.transform.template.customizer.includes.meta
 
--- local HashMap = require("java.util.HashMap")
-local DomNodeInterface = require("org.allbinary.data.tree.dom.DomNodeInterface")
-local ModDomHelper = require("org.allbinary.data.tree.dom.ModDomHelper")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
+local MetaValidation = {}
+package.loaded["org.allbinary.logic.visual.transform.template.customizer.includes.meta.MetaValidation"] = MetaValidation
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
+local DomNodeInterface = java_lazy("org.allbinary.data.tree.dom.DomNodeInterface")
+local ModDomHelper = java_lazy("org.allbinary.data.tree.dom.ModDomHelper")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local Validation = require("org.allbinary.logic.control.validate.Validation")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local HtmlMetaAttributeData = require("org.allbinary.logic.visual.dhtml.html.head.meta.HtmlMetaAttributeData")
-local HtmlMetaAttributeDataFactory = require("org.allbinary.logic.visual.dhtml.html.head.meta.HtmlMetaAttributeDataFactory")
-local HtmlMetaData = require("org.allbinary.logic.visual.dhtml.html.head.meta.HtmlMetaData")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local Document = require("org.w3c.dom.Document")
-local Node = require("org.w3c.dom.Node")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local HtmlMetaAttributeData = java_lazy("org.allbinary.logic.visual.dhtml.html.head.meta.HtmlMetaAttributeData")
+local HtmlMetaAttributeDataFactory = java_lazy("org.allbinary.logic.visual.dhtml.html.head.meta.HtmlMetaAttributeDataFactory")
+local HtmlMetaData = java_lazy("org.allbinary.logic.visual.dhtml.html.head.meta.HtmlMetaData")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local Document = java_lazy("org.w3c.dom.Document")
+local Node = java_lazy("org.w3c.dom.Node")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -40,6 +57,79 @@ local function java_exception(className, message, cause)
     return setmetatable(exception, {__tostring = function(self) if self.message ~= nil then return tostring(self.message) end return self.className end})
 end
 
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
+
 local function java_idiv(a, b)
     local q = a / b
     if q < 0 then return math.ceil(q) end
@@ -47,102 +137,127 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local MetaValidation = {}
+-- class table MetaValidation is declared before the requires
 MetaValidation.__index = MetaValidation
 MetaValidation.className = "MetaValidation"
+MetaValidation.javaClassName = "org.allbinary.logic.visual.transform.template.customizer.includes.meta.MetaValidation"
 setmetatable(MetaValidation, {__index = Validation})
+MetaValidation.java_implements = " DomNodeInterface "
+MetaValidation.java_interfaces = function() return {DomNodeInterface} end
 
 function MetaValidation:_init_fields()
     self.logUtil = LogUtil.getInstance()
-    self.label = nil
-    self.name = nil
-    self.httpEquiv = nil
-    self.content = nil
+    if self.label == nil then self.label = nil end
+    if self.name_f == nil then self.name_f = nil end
+    if self.httpEquiv == nil then self.httpEquiv = nil end
+    if self.content == nil then self.content = nil end
+end
+
+function MetaValidation._jinit(self, ...)
+    local count = select("#", ...)
+    if count == 4 then return MetaValidation._new4(self, ...)
+    elseif count == 1 then return MetaValidation._new1(self, ...)
+    end
+    error("No constructor of MetaValidation takes " .. count .. " arguments")
 end
 
 function MetaValidation.new(...)
-    local count = select("#", ...)
-    if count == 4 then return MetaValidation._new4(...)
-    elseif count == 1 then return MetaValidation._new1(...)
-    end
+    local self = setmetatable({}, MetaValidation)
+    MetaValidation._jinit(self, ...)
+    return self
 end
 
 
-function MetaValidation._new4(htmlMetaAttributeData, label, attributeValue, contentValue)
-    local self = setmetatable(Validation.new(), MetaValidation)
-    self:_init_fields()
+function MetaValidation._new4(self, htmlMetaAttributeData, label, attributeValue, contentValue)
+    java_super_init(Validation, self)
+    MetaValidation._init_fields(self)
         self.label = label
         if htmlMetaAttributeData:equals(HtmlMetaAttributeDataFactory.getInstance().HTTP_EQUIV) then
             self.httpEquiv = attributeValue
         elseif htmlMetaAttributeData:equals(HtmlMetaAttributeDataFactory.getInstance().NAME) then
-            self.name = attributeValue
+            self.name_f = attributeValue
         end
         self.content = contentValue
     return self
 end
 
 
-function MetaValidation._new1(document)
-    local self = setmetatable(Validation.new(), MetaValidation)
-    self:_init_fields()
-        error(java_exception("Exception", CommonStrings.getInstance().NOT_IMPLEMENTED), 0)
+function MetaValidation._new1(self, document)
+    java_super_init(Validation, self)
+    MetaValidation._init_fields(self)
+        error(require("java.lang.Exception").new(CommonStrings.getInstance().NOT_IMPLEMENTED), 0)
     return self
 end
 
 
 function MetaValidation:isValid()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local valid = true
-            return valid
+            do return "__jreturn", valid end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLTAGSERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put("Failed to validate form", self, self.commonStrings.IS_VALID, e)
             end
             return false
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+java_overload(MetaValidation, "isValid", 0)
 
 
 function MetaValidation:validationInfo()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local stringBuffer = StringMaker.new()
-            return tostring(stringBuffer)
+            do return "__jreturn", tostring(stringBuffer) end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLTAGSERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put("Failed to generate validation error info", self, "validationInfo()", e)
             end
             return "Error Validating Form"
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+java_overload(MetaValidation, "validationInfo", 0)
 
 
 function MetaValidation:toValidationInfoDoc()
         return nil
 end
+java_overload(MetaValidation, "toValidationInfoDoc", 0)
 
 
 function MetaValidation:toValidationInfoNode(document)
         return nil
 end
+java_overload(MetaValidation, "toValidationInfoNode", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "Document")) end)
 
 
 function MetaValidation:toHashMap()
         local hashMap = StdUtil.getInstance():createHashMap()
         local htmlMetaAttributeDataFactory = HtmlMetaAttributeDataFactory.getInstance()
         hashMap:put(tostring(HtmlMetaData.getInstance().LABEL), self.label)
-        hashMap:put(tostring(htmlMetaAttributeDataFactory.NAME), self.name)
+        hashMap:put(tostring(htmlMetaAttributeDataFactory.NAME), self.name_f)
         hashMap:put(tostring(htmlMetaAttributeDataFactory.HTTP_EQUIV), self.httpEquiv)
         hashMap:put(tostring(htmlMetaAttributeDataFactory.CONTENT), self.content)
         return hashMap
 end
+java_overload(MetaValidation, "toHashMap", 0)
 
 
 -- throws Exception
@@ -150,6 +265,7 @@ function MetaValidation:toXmlNode(document)
         local node = ModDomHelper.createNameValueNodes(document, tostring(HtmlMetaData.getInstance().NAME), self:toHashMap())
         return node
 end
+java_overload(MetaValidation, "toXmlNode", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "Document")) end)
 
 return MetaValidation
 

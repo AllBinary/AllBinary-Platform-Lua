@@ -13,16 +13,34 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.category
 
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local CategoryPropertiesInterface = require("org.allbinary.business.category.properties.CategoryPropertiesInterface")
-local CategoryPropertiesView = require("org.allbinary.business.category.properties.CategoryPropertiesView")
-local DomNodeInterface = require("org.allbinary.data.tree.dom.DomNodeInterface")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local InterfaceUtil = require("org.allbinary.logic.java.anyType.InterfaceUtil")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local Document = require("org.w3c.dom.Document")
-local Node = require("org.w3c.dom.Node")
+local CategoryView = {}
+package.loaded["org.allbinary.business.category.CategoryView"] = CategoryView
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local CategoryPropertiesInterface = java_lazy("org.allbinary.business.category.properties.CategoryPropertiesInterface")
+local CategoryPropertiesView = java_lazy("org.allbinary.business.category.properties.CategoryPropertiesView")
+local DomNodeInterface = java_lazy("org.allbinary.data.tree.dom.DomNodeInterface")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local InterfaceUtil = java_lazy("org.allbinary.logic.java.anyType.InterfaceUtil")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local Document = java_lazy("org.w3c.dom.Document")
+local Node = java_lazy("org.w3c.dom.Node")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local CategoryInterface = java_lazy("org.allbinary.business.category.CategoryInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -44,24 +62,38 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local CategoryView = {}
+-- class table CategoryView is declared before the requires
 CategoryView.__index = CategoryView
 CategoryView.className = "CategoryView"
+CategoryView.javaClassName = "org.allbinary.business.category.CategoryView"
+CategoryView.java_implements = " DomNodeInterface "
+CategoryView.java_interfaces = function() return {DomNodeInterface} end
 
 function CategoryView:_init_fields()
     self.logUtil = LogUtil.getInstance()
-    self.categoryInterface = nil
+    if self.categoryInterface == nil then self.categoryInterface = nil end
 end
 
 
-function CategoryView.new(categoryInterface)
-    local self = setmetatable({}, CategoryView)
-    self:_init_fields()
+function CategoryView._jinit(self, categoryInterface)
+    CategoryView._init_fields(self)
         self.categoryInterface = categoryInterface
+    return self
+end
+
+function CategoryView.new(...)
+    local self = setmetatable({}, CategoryView)
+    CategoryView._jinit(self, ...)
     return self
 end
 
@@ -75,7 +107,7 @@ end
 function CategoryView:toXmlNode(document)
         local node = document:createElement(CategoryData.getInstance().NAME)
         local childCategoryVector = self.categoryInterface:getChildNodes()
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().CATEGORY) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().CATEGORY) then
             self.logUtil:putF("Number Of Children: " .. tostring(childCategoryVector:size()), self, "toXmlNode")
         end
         local size = childCategoryVector:size()
@@ -89,7 +121,7 @@ function CategoryView:toXmlNode(document)
                 categoryPropertiesInterface = categoryInterface:getProperties()
             else
                 local isImpl = InterfaceUtil.viewAll(getmetatable(anyType), CommonSeps.getInstance().NEW_LINE)
-                error(java_exception("Exception", "CategoryView found unknown object.\n" .. "Show Testing:" .. isImpl), 0)
+                error(require("java.lang.Exception").new("CategoryView found unknown object.\n" .. "Show Testing:" .. isImpl), 0)
             end
             local childCategoryNode = CategoryPropertiesView.new(categoryPropertiesInterface):toXmlNode(document)
             node:appendChild(childCategoryNode)

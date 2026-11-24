@@ -13,15 +13,30 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.context.modules.storefront.statistics.inventory
 
--- local HashMap = require("java.util.HashMap")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local StoreFrontInterface = require("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
-local ItemInterface = require("org.allbinary.business.user.commerce.inventory.item.ItemInterface")
-local Money = require("org.allbinary.business.user.commerce.money.Money")
-local InventoryEntityFactory = require("org.allbinary.data.tables.user.commerce.inventory.item.InventoryEntityFactory")
-local InventoryEntityInterface = require("org.allbinary.data.tables.user.commerce.inventory.item.InventoryEntityInterface")
-local StdUtil = require("org.allbinary.logic.StdUtil")
+local StoreFrontInventoryStatistics = {}
+package.loaded["org.allbinary.business.context.modules.storefront.statistics.inventory.StoreFrontInventoryStatistics"] = StoreFrontInventoryStatistics
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local StoreFrontInterface = java_lazy("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
+local ItemInterface = java_lazy("org.allbinary.business.user.commerce.inventory.item.ItemInterface")
+local Money = java_lazy("org.allbinary.business.user.commerce.money.Money")
+local InventoryEntityFactory = java_lazy("org.allbinary.data.tables.user.commerce.inventory.item.InventoryEntityFactory")
+local InventoryEntityInterface = java_lazy("org.allbinary.data.tables.user.commerce.inventory.item.InventoryEntityInterface")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
 local StoreFrontInventoryStatisticsInterface = require("org.allbinary.business.context.modules.storefront.statistics.inventory.StoreFrontInventoryStatisticsInterface")
 
 local function java_idiv(a, b)
@@ -31,23 +46,31 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local StoreFrontInventoryStatistics = {}
+-- class table StoreFrontInventoryStatistics is declared before the requires
 StoreFrontInventoryStatistics.__index = StoreFrontInventoryStatistics
 StoreFrontInventoryStatistics.className = "StoreFrontInventoryStatistics"
+StoreFrontInventoryStatistics.javaClassName = "org.allbinary.business.context.modules.storefront.statistics.inventory.StoreFrontInventoryStatistics"
+StoreFrontInventoryStatistics.java_implements = " StoreFrontInventoryStatisticsInterface "
+StoreFrontInventoryStatistics.java_interfaces = function() return {StoreFrontInventoryStatisticsInterface} end
 
 function StoreFrontInventoryStatistics:_init_fields()
-    self.totalNumberOfItems = 0
-    self.totalInventorySaleValueMoney = nil
+    if self.totalNumberOfItems == nil then self.totalNumberOfItems = 0 end
+    if self.totalInventorySaleValueMoney == nil then self.totalInventorySaleValueMoney = nil end
 end
 
 
-function StoreFrontInventoryStatistics.new(storeFrontInterface)
-    local self = setmetatable({}, StoreFrontInventoryStatistics)
-    self:_init_fields()
+function StoreFrontInventoryStatistics._jinit(self, storeFrontInterface)
+    StoreFrontInventoryStatistics._init_fields(self)
         self.totalInventorySaleValueMoney = Money.new()
         local inventoryEntityInterface = InventoryEntityFactory.getInstance():getInventoryEntityInstance()
         local itemVector = inventoryEntityInterface:getItems(storeFrontInterface)
@@ -60,6 +83,12 @@ function StoreFrontInventoryStatistics.new(storeFrontInterface)
             itemPriceMoney:multiply(numberInStock)
             self.totalInventorySaleValueMoney:add(tostring(itemPriceMoney))
         end
+    return self
+end
+
+function StoreFrontInventoryStatistics.new(...)
+    local self = setmetatable({}, StoreFrontInventoryStatistics)
+    StoreFrontInventoryStatistics._jinit(self, ...)
     return self
 end
 

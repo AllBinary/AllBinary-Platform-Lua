@@ -13,6 +13,21 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.visual.media
 
+local MediaTypeData = {}
+package.loaded["org.allbinary.logic.visual.media.MediaTypeData"] = MediaTypeData
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 
 local function java_idiv(a, b)
     local q = a / b
@@ -21,13 +36,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local MediaTypeData = {}
+-- class table MediaTypeData is declared before the requires
 MediaTypeData.__index = MediaTypeData
 MediaTypeData.className = "MediaTypeData"
+MediaTypeData.javaClassName = "org.allbinary.logic.visual.media.MediaTypeData"
 
 function MediaTypeData:_init_fields()
     self.RESIZABLE_MEDIA = "RESIZABLE_MEDIA"
@@ -36,17 +58,22 @@ end
 
 
 function MediaTypeData.getInstance()
-        return MediaTypeData.instance
+        return MediaTypeData.instance_f
 end
 
 
-function MediaTypeData.new()
-    local self = setmetatable({}, MediaTypeData)
-    self:_init_fields()
+function MediaTypeData._jinit(self)
+    MediaTypeData._init_fields(self)
     return self
 end
 
-MediaTypeData.instance = MediaTypeData.new()
+function MediaTypeData.new(...)
+    local self = setmetatable({}, MediaTypeData)
+    MediaTypeData._jinit(self, ...)
+    return self
+end
+
+MediaTypeData.instance_f = MediaTypeData.new()
 
 return MediaTypeData
 

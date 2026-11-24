@@ -13,7 +13,22 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary
 
-local Resource = require("org.eclipse.swt.graphics.Resource")
+local DisposalUtil = {}
+package.loaded["org.allbinary.DisposalUtil"] = DisposalUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local Resource = java_lazy("org.eclipse.swt.graphics.Resource")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -22,22 +37,32 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local DisposalUtil = {}
+-- class table DisposalUtil is declared before the requires
 DisposalUtil.__index = DisposalUtil
 DisposalUtil.className = "DisposalUtil"
+DisposalUtil.javaClassName = "org.allbinary.DisposalUtil"
+
+function DisposalUtil._jinit(self)
+    return self
+end
 
 function DisposalUtil.new()
-    local self = setmetatable({}, DisposalUtil)
-    return self
+    return DisposalUtil._jinit(setmetatable({}, DisposalUtil))
 end
 
 
 function DisposalUtil.getInstance()
-        return DisposalUtil.instance
+        return DisposalUtil.instance_f
 end
 
 
@@ -47,7 +72,7 @@ function DisposalUtil:dispose(resource)
         end
 end
 
-DisposalUtil.instance = DisposalUtil.new()
+DisposalUtil.instance_f = DisposalUtil.new()
 
 return DisposalUtil
 

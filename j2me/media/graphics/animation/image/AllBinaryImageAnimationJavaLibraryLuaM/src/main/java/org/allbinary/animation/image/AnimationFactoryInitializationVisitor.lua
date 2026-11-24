@@ -13,10 +13,25 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.animation.image
 
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local PositionStrings = require("org.allbinary.math.PositionStrings")
-local CommonLabels = require("org.allbinary.string.CommonLabels")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
+local AnimationFactoryInitializationVisitor = {}
+package.loaded["org.allbinary.animation.image.AnimationFactoryInitializationVisitor"] = AnimationFactoryInitializationVisitor
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local PositionStrings = java_lazy("org.allbinary.math.PositionStrings")
+local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -25,27 +40,37 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local AnimationFactoryInitializationVisitor = {}
+-- class table AnimationFactoryInitializationVisitor is declared before the requires
 AnimationFactoryInitializationVisitor.__index = AnimationFactoryInitializationVisitor
 AnimationFactoryInitializationVisitor.className = "AnimationFactoryInitializationVisitor"
+AnimationFactoryInitializationVisitor.javaClassName = "org.allbinary.animation.image.AnimationFactoryInitializationVisitor"
 
 function AnimationFactoryInitializationVisitor:_init_fields()
-    self.width = 0
-    self.height = 0
-    self.dx = 0
-    self.dy = 0
-    self.originalDx = 0
-    self.originalDy = 0
+    if self.width == nil then self.width = 0 end
+    if self.height == nil then self.height = 0 end
+    if self.dx == nil then self.dx = 0 end
+    if self.dy == nil then self.dy = 0 end
+    if self.originalDx == nil then self.originalDx = 0 end
+    if self.originalDy == nil then self.originalDy = 0 end
+end
+
+function AnimationFactoryInitializationVisitor._jinit(self)
+    AnimationFactoryInitializationVisitor._init_fields(self)
+    return self
 end
 
 function AnimationFactoryInitializationVisitor.new()
-    local self = setmetatable({}, AnimationFactoryInitializationVisitor)
-    self:_init_fields()
-    return self
+    return AnimationFactoryInitializationVisitor._jinit(setmetatable({}, AnimationFactoryInitializationVisitor))
 end
 
 

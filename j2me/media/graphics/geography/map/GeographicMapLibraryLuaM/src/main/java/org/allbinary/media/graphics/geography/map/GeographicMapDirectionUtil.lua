@@ -13,10 +13,26 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media.graphics.geography.map
 
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local Direction = require("org.allbinary.direction.Direction")
-local DirectionFactory = require("org.allbinary.direction.DirectionFactory")
-local CellPosition = require("org.allbinary.graphics.CellPosition")
+local GeographicMapDirectionUtil = {}
+package.loaded["org.allbinary.media.graphics.geography.map.GeographicMapDirectionUtil"] = GeographicMapDirectionUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local Direction = java_lazy("org.allbinary.direction.Direction")
+local DirectionFactory = java_lazy("org.allbinary.direction.DirectionFactory")
+local CellPosition = java_lazy("org.allbinary.graphics.CellPosition")
+local GeographicMapCellPosition = java_lazy("org.allbinary.media.graphics.geography.map.GeographicMapCellPosition")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -38,13 +54,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local GeographicMapDirectionUtil = {}
+-- class table GeographicMapDirectionUtil is declared before the requires
 GeographicMapDirectionUtil.__index = GeographicMapDirectionUtil
 GeographicMapDirectionUtil.className = "GeographicMapDirectionUtil"
+GeographicMapDirectionUtil.javaClassName = "org.allbinary.media.graphics.geography.map.GeographicMapDirectionUtil"
 
 function GeographicMapDirectionUtil:_init_fields()
     self.MESSAGE = "Cell Position should have been cached!!!"
@@ -54,13 +77,18 @@ end
 
 
 function GeographicMapDirectionUtil.getInstance()
-        return GeographicMapDirectionUtil.instance
+        return GeographicMapDirectionUtil.instance_f
 end
 
 
-function GeographicMapDirectionUtil.new()
+function GeographicMapDirectionUtil._jinit(self)
+    GeographicMapDirectionUtil._init_fields(self)
+    return self
+end
+
+function GeographicMapDirectionUtil.new(...)
     local self = setmetatable({}, GeographicMapDirectionUtil)
-    self:_init_fields()
+    GeographicMapDirectionUtil._jinit(self, ...)
     return self
 end
 
@@ -83,7 +111,7 @@ function GeographicMapDirectionUtil:getDirectionFromCellPositionToAdjacentCellPo
         elseif fromGeographicMapCellPosition == toGeographicMapCellPosition then
             return directionFactory.NO_DIRECTION
         elseif fromRow == goRow and fromColumn == goColumn then
-            error(java_exception("Exception", self.MESSAGE), 0)
+            error(require("java.lang.Exception").new(self.MESSAGE), 0)
         end
         return directionFactory.NOT_BORDERED_WITH
 end
@@ -123,7 +151,7 @@ function GeographicMapDirectionUtil:getEightDirectionFromCellPositionToAdjacentC
         elseif fromGeographicMapCellPosition == toGeographicMapCellPosition then
             return directionFactory.NO_DIRECTION
         elseif fromRow == goRow and fromColumn == goColumn then
-            error(java_exception("Exception", self.MESSAGE), 0)
+            error(require("java.lang.Exception").new(self.MESSAGE), 0)
         end
         return directionFactory.NOT_BORDERED_WITH
 end
@@ -146,9 +174,9 @@ function GeographicMapDirectionUtil:getDirectionFromCellPositionToCellPosition(f
             return directionFactory.DOWN
         end
         local stringMaker = StringMaker.new()
-        local string = tostring(stringMaker:append(CellPosition.toStringCellPosition(fromGeographicMapCellPosition)):append(" == "):append(CellPosition.toStringCellPosition(toGeographicMapCellPosition)))
+        local string_ = tostring(stringMaker:append(CellPosition.toStringCellPosition(fromGeographicMapCellPosition)):append(" == "):append(CellPosition.toStringCellPosition(toGeographicMapCellPosition)))
         stringMaker:delete(0, stringMaker:length())
-        error(java_exception("Exception", tostring(stringMaker:append("Error: "):append(string))), 0)
+        error(require("java.lang.Exception").new(tostring(stringMaker:append("Error: "):append(string_))), 0)
 end
 
 
@@ -189,10 +217,10 @@ function GeographicMapDirectionUtil:getEightDirectionFromCellPositionToCellPosit
         stringBuffer:append(CellPosition.toStringCellPosition(fromGeographicMapCellPosition))
         stringBuffer:append(self.EQUAL)
         stringBuffer:append(CellPosition.toStringCellPosition(toGeographicMapCellPosition))
-        error(java_exception("Exception", tostring(stringBuffer)), 0)
+        error(require("java.lang.Exception").new(tostring(stringBuffer)), 0)
 end
 
-GeographicMapDirectionUtil.instance = GeographicMapDirectionUtil.new()
+GeographicMapDirectionUtil.instance_f = GeographicMapDirectionUtil.new()
 
 return GeographicMapDirectionUtil
 

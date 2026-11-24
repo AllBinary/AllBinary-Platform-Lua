@@ -13,17 +13,122 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.init
 
--- local HashMap = require("java.util.HashMap")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local UserDbInitInfo = require("org.allbinary.business.init.db.UserDbInitInfo")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local PreLogUtil = require("org.allbinary.logic.communication.log.PreLogUtil")
-local LogConfigTypeFactory = require("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
-local LogConfigTypes = require("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
-local AbPathData = require("org.allbinary.logic.io.path.AbPathData")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
+local InitInfoEntity = {}
+package.loaded["org.allbinary.business.init.InitInfoEntity"] = InitInfoEntity
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local UserDbInitInfo = java_lazy("org.allbinary.business.init.db.UserDbInitInfo")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local AbPathData = java_lazy("org.allbinary.logic.io.path.AbPathData")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local InitSql = require("org.allbinary.business.init.InitSql")
+local InitInfo = java_lazy("org.allbinary.business.init.InitInfo")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
+
+local function java_super(class, name, count)
+    local mangled = name .. "_j" .. count
+    local current = class
+    while type(current) == "table" do
+        local method = rawget(current, mangled)
+        if method ~= nil then return method end
+        method = rawget(current, name)
+        if method ~= nil and method ~= rawget(current, name .. "__jdispatcher") then return method end
+        local parent = getmetatable(current)
+        local index = parent and parent.__index
+        if index == current then index = nil end
+        current = index
+    end
+    return class[name]
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -32,20 +137,27 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local InitInfoEntity = {}
+-- class table InitInfoEntity is declared before the requires
 InitInfoEntity.__index = InitInfoEntity
 InitInfoEntity.className = "InitInfoEntity"
+InitInfoEntity.javaClassName = "org.allbinary.business.init.InitInfoEntity"
 setmetatable(InitInfoEntity, {__index = InitSql})
 
 function InitInfoEntity:_init_fields()
     self.NAME = "InitInfoEntity"
     self.NOTHING = "NOTHING"
     self.tableName = "initdata"
-    self.tableData = nil
+    if self.tableData == nil then self.tableData = nil end
     self.NOT_IN_DB = "Not In DB"
     self.METHOD_GET = "get()"
     self.METHOD_IS = "is()"
@@ -55,9 +167,9 @@ function InitInfoEntity:_init_fields()
 end
 
 
-function InitInfoEntity.new()
-    local self = setmetatable(InitSql.new(UserDbInitInfo.new()), InitInfoEntity)
-    self:_init_fields()
+function InitInfoEntity._jinit(self)
+    java_super_init(InitSql, self, UserDbInitInfo.new())
+    InitInfoEntity._init_fields(self)
         -- super(...) made self above
         local stringBuffer = StringMaker.new()
         stringBuffer:append(self.sqlStrings.CREATE_TABLE)
@@ -79,63 +191,76 @@ function InitInfoEntity.new()
     return self
 end
 
+function InitInfoEntity.new(...)
+    local self = setmetatable({}, InitInfoEntity)
+    InitInfoEntity._jinit(self, ...)
+    return self
+end
+
 
 function InitInfoEntity:get()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local keyAndValue = StdUtil.getInstance():createHashMap()
             keyAndValue:put(self.NOTHING, self.NOTHING)
             local hashMap = self:getRow(keyAndValue)
             if hashMap ~= nil then
                 InitInfo.getInstance():set(hashMap)
-                return true
+                do return "__jreturn", true end
             else
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRELOADER) then
                     PreLogUtil.put(self.NOT_IN_DB, self.NAME, self.METHOD_GET)
                 end
-                return false
+                do return "__jreturn", false end
             end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRELOADERERROR) then
                 PreLogUtil.putOE(self.commonStrings.EXCEPTION, self.NAME, self.METHOD_GET, e)
             end
             return false
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+java_overload(InitInfoEntity, "get", 0)
 
 
 function InitInfoEntity:is()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local keyAndValue = StdUtil.getInstance():createHashMap()
             keyAndValue:put(self.NOTHING, self.NOTHING)
             local hashMap = self:getRow(keyAndValue)
             if hashMap ~= nil then
-                return true
+                do return "__jreturn", true end
             else
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRELOADER) then
                     PreLogUtil.put(self.NOT_IN_DB, self.NAME, self.METHOD_IS)
                 end
-                return false
+                do return "__jreturn", false end
             end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRELOADERERROR) then
                 PreLogUtil.putOE(self.commonStrings.EXCEPTION, self.NAME, self.METHOD_IS, e)
             end
             return false
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+java_overload(InitInfoEntity, "is", 0)
 
 
 function InitInfoEntity:update()
         self:updateWhere(self.NOTHING, self.NOTHING, InitInfo.getInstance():toHashMap())
 end
+java_overload(InitInfoEntity, "update", 0)
 
 
 function InitInfoEntity:add()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local values = BasicArrayListD.new()
             values:add(self.NOTHING)
             values:add(InitInfo.getInstance():getTesting())
@@ -145,15 +270,17 @@ function InitInfoEntity:add()
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRELOADERERROR) then
                 PreLogUtil.putOE(self.commonStrings.EXCEPTION, self.NAME, self.METHOD_ADD, e)
             end
         end
 end
+java_overload(InitInfoEntity, "add", 0)
 
 
 function InitInfoEntity:createTable()
-        if InitSql.createTable(self, self.tableData) then
+        if java_super(InitSql, "createTable", 1)(self, self.tableData) then
             return self.tableName .. self.CREATED_SUCCESS
         else
             local stringBuffer = StringMaker.new()
@@ -163,6 +290,7 @@ function InitInfoEntity:createTable()
             return tostring(stringBuffer)
         end
 end
+java_overload(InitInfoEntity, "createTable", 0)
 
 return InitInfoEntity
 

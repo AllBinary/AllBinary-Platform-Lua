@@ -13,8 +13,23 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.animation.image
 
+local ImageArrayRotationAnimationInfo = {}
+package.loaded["org.allbinary.animation.image.ImageArrayRotationAnimationInfo"] = ImageArrayRotationAnimationInfo
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Image = require("javax.microedition.lcdui.Image")
-local AngleInfo = require("org.allbinary.math.AngleInfo")
+local AngleInfo = java_lazy("org.allbinary.math.AngleInfo")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -23,31 +38,43 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ImageArrayRotationAnimationInfo = {}
+-- class table ImageArrayRotationAnimationInfo is declared before the requires
 ImageArrayRotationAnimationInfo.__index = ImageArrayRotationAnimationInfo
 ImageArrayRotationAnimationInfo.className = "ImageArrayRotationAnimationInfo"
+ImageArrayRotationAnimationInfo.javaClassName = "org.allbinary.animation.image.ImageArrayRotationAnimationInfo"
 
 function ImageArrayRotationAnimationInfo:_init_fields()
-    self.imageArray = nil
-    self.angleIncrement = nil
-    self.totalAngle = nil
-    self.dx = nil
-    self.dy = nil
+    if self.imageArray == nil then self.imageArray = nil end
+    if self.angleIncrement == nil then self.angleIncrement = nil end
+    if self.totalAngle == nil then self.totalAngle = nil end
+    if self.dx == nil then self.dx = nil end
+    if self.dy == nil then self.dy = nil end
 end
 
 
-function ImageArrayRotationAnimationInfo.new(imageArray, angleIncrement, totalAngle, dx, dy)
-    local self = setmetatable({}, ImageArrayRotationAnimationInfo)
-    self:_init_fields()
+function ImageArrayRotationAnimationInfo._jinit(self, imageArray, angleIncrement, totalAngle, dx, dy)
+    ImageArrayRotationAnimationInfo._init_fields(self)
         self.imageArray = imageArray
         self.angleIncrement = angleIncrement
         self.totalAngle = totalAngle
         self.dx = dx
         self.dy = dy
+    return self
+end
+
+function ImageArrayRotationAnimationInfo.new(...)
+    local self = setmetatable({}, ImageArrayRotationAnimationInfo)
+    ImageArrayRotationAnimationInfo._jinit(self, ...)
     return self
 end
 

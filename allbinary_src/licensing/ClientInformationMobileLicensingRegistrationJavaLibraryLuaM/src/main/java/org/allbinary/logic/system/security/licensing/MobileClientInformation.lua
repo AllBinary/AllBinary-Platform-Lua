@@ -13,12 +13,116 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.system.security.licensing
 
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local RegistrationConfiguration = require("org.allbinary.logic.system.security.licensing.registration.RegistrationConfiguration")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local ABHashtable = require("org.allbinary.util.ABHashtable")
+local MobileClientInformation = {}
+package.loaded["org.allbinary.logic.system.security.licensing.MobileClientInformation"] = MobileClientInformation
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local RegistrationConfiguration = java_lazy("org.allbinary.logic.system.security.licensing.registration.RegistrationConfiguration")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
 local AbeClientInformation = require("org.allbinary.logic.system.security.licensing.AbeClientInformation")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
+
+local function java_super(class, name, count)
+    local mangled = name .. "_j" .. count
+    local current = class
+    while type(current) == "table" do
+        local method = rawget(current, mangled)
+        if method ~= nil then return method end
+        method = rawget(current, name)
+        if method ~= nil and method ~= rawget(current, name .. "__jdispatcher") then return method end
+        local parent = getmetatable(current)
+        local index = parent and parent.__index
+        if index == current then index = nil end
+        current = index
+    end
+    return class[name]
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -27,22 +131,29 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local MobileClientInformation = {}
+-- class table MobileClientInformation is declared before the requires
 MobileClientInformation.__index = MobileClientInformation
 MobileClientInformation.className = "MobileClientInformation"
+MobileClientInformation.javaClassName = "org.allbinary.logic.system.security.licensing.MobileClientInformation"
 setmetatable(MobileClientInformation, {__index = AbeClientInformation})
 
 
-function MobileClientInformation.new(name, version, specialName, shortName)
-    local self = setmetatable(AbeClientInformation.new(name, version, tostring(StringMaker.new():append(specialName):append(CommonSeps.getInstance().SPACE):append(PartnerIdentifierFileUtil.getInstance():get())), shortName), MobileClientInformation)
+function MobileClientInformation._jinit(self, name, version, specialName, shortName)
+    java_super_init(AbeClientInformation, self, name, version, tostring(StringMaker.new():append(specialName):append(CommonSeps.getInstance().SPACE):append(PartnerIdentifierFileUtil.getInstance():get())), shortName)
         -- super(...) made self above
-        local string = self:getSpecialName()
-        local number = string.sub(string, (#string - 1) + 1)
-        if Integer.getInteger(number) == nil then
+        local string_ = self:getSpecialName()
+        local number = string.sub(string_, (#string_ - 1) + 1)
+        if require("java.lang.Integer").getInteger(number) == nil then
             self:setHardSale(false)
         end
         local commonStrings = CommonStrings.getInstance()
@@ -54,13 +165,20 @@ function MobileClientInformation.new(name, version, specialName, shortName)
     return self
 end
 
+function MobileClientInformation.new(...)
+    local self = setmetatable({}, MobileClientInformation)
+    MobileClientInformation._jinit(self, ...)
+    return self
+end
+
 
 function MobileClientInformation:toHashtable()
-        local hashtable = AbeClientInformation.toHashtable(self)
+        local hashtable = java_super(AbeClientInformation, "toHashtable", 0)(self)
         local registrationConfiguration = RegistrationConfiguration.getInstance()
         hashtable:put(registrationConfiguration.NAME, registrationConfiguration:getRegistrationCode())
         return hashtable
 end
+java_overload(MobileClientInformation, "toHashtable", 0)
 
 MobileClientInformation.DESC = "Mobile"
 MobileClientInformation.ANDROID_DESC = "Android" .. tostring(MobileClientInformation.DESC)

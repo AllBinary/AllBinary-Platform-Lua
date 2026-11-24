@@ -13,17 +13,42 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.image.gui
 
+local ResizeImageJPanel = {}
+package.loaded["org.allbinary.image.gui.ResizeImageJPanel"] = ResizeImageJPanel
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local BufferedImage = require("java.awt.image.BufferedImage")
 -- local Raster = require("java.awt.image.Raster")
--- local File = require("java.io.File")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local FileWrapperUtil = require("org.allbinary.logic.io.file.FileWrapperUtil")
-local ImagePersistanceUtil = require("org.allbinary.media.image.ImagePersistanceUtil")
-local ImageProcessorInput = require("org.allbinary.media.image.ImageProcessorInput")
-local ImageProcessorInputCompositeInterface = require("org.allbinary.media.image.ImageProcessorInputCompositeInterface")
-local ImageUtil = require("org.allbinary.media.image.ImageUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local JPanel = require("org.allbinary.image.gui.JPanel")
+local File = java_lazy("java.io.File")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local FileWrapperUtil = java_lazy("org.allbinary.logic.io.file.FileWrapperUtil")
+local ImagePersistanceUtil = java_lazy("org.allbinary.media.image.ImagePersistanceUtil")
+local ImageProcessorInput = java_lazy("org.allbinary.media.image.ImageProcessorInput")
+local ImageProcessorInputCompositeInterface = java_lazy("org.allbinary.media.image.ImageProcessorInputCompositeInterface")
+local ImageUtil = java_lazy("org.allbinary.media.image.ImageUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+-- local Dimension = require("java.awt.Dimension")
+-- local ActionEvent = require("java.awt.event.ActionEvent")
+-- local ActionListener = require("java.awt.event.ActionListener")
+-- local DefaultComboBoxModel = require("javax.swing.DefaultComboBoxModel")
+-- local GroupLayout = require("javax.swing.GroupLayout")
+-- local JButton = require("javax.swing.JButton")
+-- local JComboBox = require("javax.swing.JComboBox")
+-- local JLabel = require("javax.swing.JLabel")
+-- local JPanel = require("javax.swing.JPanel")
+-- local JTextField = require("javax.swing.JTextField")
+-- local LayoutStyle = require("javax.swing.LayoutStyle")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
@@ -33,6 +58,85 @@ local function java_new_array(default, size, ...)
     return array
 end
 
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
+    return array
+end
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
+
 local function java_idiv(a, b)
     local q = a / b
     if q < 0 then return math.ceil(q) end
@@ -40,36 +144,45 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ResizeImageJPanel = {}
+-- class table ResizeImageJPanel is declared before the requires
 ResizeImageJPanel.__index = ResizeImageJPanel
 ResizeImageJPanel.className = "ResizeImageJPanel"
+ResizeImageJPanel.javaClassName = "org.allbinary.image.gui.ResizeImageJPanel"
 setmetatable(ResizeImageJPanel, {__index = JPanel})
+ResizeImageJPanel.java_implements = " ImageProcessorInputCompositeInterface "
+ResizeImageJPanel.java_interfaces = function() return {ImageProcessorInputCompositeInterface} end
 
 function ResizeImageJPanel:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
-    self.imageProcessorInput = nil
-    self.aboveJButton = nil
-    self.adjustFor16AboveJButton = nil
-    self.adjustFor16BelowJButton = nil
-    self.floatPercentJTextField = nil
-    self.jComboBox1 = nil
-    self.jLabel1 = nil
-    self.jLabel2 = nil
-    self.jLabel3 = nil
-    self.jTextField1 = nil
-    self.jTextField2 = nil
-    self.updateJButton = nil
+    if self.imageProcessorInput == nil then self.imageProcessorInput = nil end
+    if self.aboveJButton == nil then self.aboveJButton = nil end
+    if self.adjustFor16AboveJButton == nil then self.adjustFor16AboveJButton = nil end
+    if self.adjustFor16BelowJButton == nil then self.adjustFor16BelowJButton = nil end
+    if self.floatPercentJTextField == nil then self.floatPercentJTextField = nil end
+    if self.jComboBox1 == nil then self.jComboBox1 = nil end
+    if self.jLabel1 == nil then self.jLabel1 = nil end
+    if self.jLabel2 == nil then self.jLabel2 = nil end
+    if self.jLabel3 == nil then self.jLabel3 = nil end
+    if self.jTextField1 == nil then self.jTextField1 = nil end
+    if self.jTextField2 == nil then self.jTextField2 = nil end
+    if self.updateJButton == nil then self.updateJButton = nil end
 end
 
 
-function ResizeImageJPanel.new(imageProcessorInput)
-    local self = setmetatable(JPanel.new(), ResizeImageJPanel)
-    self:_init_fields()
+function ResizeImageJPanel._jinit(self, imageProcessorInput)
+    java_super_init(JPanel, self)
+    ResizeImageJPanel._init_fields(self)
         -- super(...) made self above
         self:initComponents()
         self.imageProcessorInput = imageProcessorInput
@@ -88,15 +201,21 @@ function ResizeImageJPanel.new(imageProcessorInput)
     return self
 end
 
+function ResizeImageJPanel.new(...)
+    local self = setmetatable({}, ResizeImageJPanel)
+    ResizeImageJPanel._jinit(self, ...)
+    return self
+end
+
 
 function ResizeImageJPanel:process()
-        (function()
+        ;(function()
             local o = Thread.new and Thread.new() or setmetatable({}, {__index = Thread})
             
 
             function o:run()
                 local logUtil = LogUtil.getInstance()
-                local try_ok, try_error = pcall(function()
+                local try_ok, try_error, try_value = pcall(function()
                     local imageUtil = ImageUtil.getInstance()
                     local percent = tostring(self.jComboBox1:getSelectedItem())
                     local percentAsFloat = tonumber(self.floatPercentJTextField:getText())
@@ -126,22 +245,25 @@ function ResizeImageJPanel:process()
                 end)
                 if not try_ok then
                     local e = try_error
+                    if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
                     logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.RUN, e)
                 end
             end
+            java_overload(o, "run", 0)
             return o
         end)():start()
 end
+java_overload(ResizeImageJPanel, "process", 0)
 
 
 function ResizeImageJPanel:update()
-        (function()
+        ;(function()
             local o = Thread.new and Thread.new() or setmetatable({}, {__index = Thread})
             
 
             function o:run()
                 local logUtil = LogUtil.getInstance()
-                local try_ok, try_error = pcall(function()
+                local try_ok, try_error, try_value = pcall(function()
                     local imageProcessorInput = self:getImageProcessorInput()
                     local size = (imageProcessorInput:getBufferedImageArray().n or #imageProcessorInput:getBufferedImageArray())
                     local bufferedImageArray = imageProcessorInput:getBufferedImageArray()
@@ -155,22 +277,25 @@ function ResizeImageJPanel:update()
                 end)
                 if not try_ok then
                     local e = try_error
+                    if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
                     logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.RUN, e)
                 end
             end
+            java_overload(o, "run", 0)
             return o
         end)():start()
 end
+java_overload(ResizeImageJPanel, "update", 0)
 
 
 function ResizeImageJPanel:updateFor16Above()
-        (function()
+        ;(function()
             local o = Thread.new and Thread.new() or setmetatable({}, {__index = Thread})
             
 
             function o:run()
                 local logUtil = LogUtil.getInstance()
-                local try_ok, try_error = pcall(function()
+                local try_ok, try_error, try_value = pcall(function()
                     local imageProcessorInput = self:getImageProcessorInput()
                     local size = (imageProcessorInput:getBufferedImageArray().n or #imageProcessorInput:getBufferedImageArray())
                     local bufferedImageArray = imageProcessorInput:getBufferedImageArray()
@@ -184,22 +309,25 @@ function ResizeImageJPanel:updateFor16Above()
                 end)
                 if not try_ok then
                     local e = try_error
+                    if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
                     logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.RUN, e)
                 end
             end
+            java_overload(o, "run", 0)
             return o
         end)():start()
 end
+java_overload(ResizeImageJPanel, "updateFor16Above", 0)
 
 
 function ResizeImageJPanel:updateFor16Below()
-        (function()
+        ;(function()
             local o = Thread.new and Thread.new() or setmetatable({}, {__index = Thread})
             
 
             function o:run()
                 local logUtil = LogUtil.getInstance()
-                local try_ok, try_error = pcall(function()
+                local try_ok, try_error, try_value = pcall(function()
                     local imageProcessorInput = self:getImageProcessorInput()
                     local size = (imageProcessorInput:getBufferedImageArray().n or #imageProcessorInput:getBufferedImageArray())
                     local bufferedImageArray = imageProcessorInput:getBufferedImageArray()
@@ -213,22 +341,27 @@ function ResizeImageJPanel:updateFor16Below()
                 end)
                 if not try_ok then
                     local e = try_error
+                    if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
                     logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.RUN, e)
                 end
             end
+            java_overload(o, "run", 0)
             return o
         end)():start()
 end
+java_overload(ResizeImageJPanel, "updateFor16Below", 0)
 
 
 function ResizeImageJPanel:getImageProcessorInput()
         return self.imageProcessorInput
 end
+java_overload(ResizeImageJPanel, "getImageProcessorInput", 0)
 
 
 function ResizeImageJPanel:setImageProcessorInput(imageProcessorInput)
         self.imageProcessorInput = imageProcessorInput
 end
+java_overload(ResizeImageJPanel, "setImageProcessorInput", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ImageProcessorInput")) end)
 
 
 function ResizeImageJPanel:initComponents()
@@ -253,6 +386,7 @@ function ResizeImageJPanel:initComponents()
             function o:actionPerformed(evt)
                 self:aboveJButtonActionPerformed(evt)
             end
+            java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.jLabel2:setText("Width:")
@@ -265,6 +399,7 @@ function ResizeImageJPanel:initComponents()
             function o:actionPerformed(evt)
                 self:updateJButtonActionPerformed(evt)
             end
+            java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.floatPercentJTextField:setText("-1.000000")
@@ -277,6 +412,7 @@ function ResizeImageJPanel:initComponents()
             function o:actionPerformed(evt)
                 self:adjustFor16AboveJButtonActionPerformed(evt)
             end
+            java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.adjustFor16BelowJButton:setText("Adjust for 16 Below")
@@ -287,33 +423,39 @@ function ResizeImageJPanel:initComponents()
             function o:actionPerformed(evt)
                 self:adjustFor16BelowJButtonActionPerformed(evt)
             end
+            java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         local layout = GroupLayout.new(self)
         self:setLayout(layout)
-        layout:setHorizontalGroup(layout:createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING):addGroup(layout:createSequentialGroup():addContainerGap():addGroup(layout:createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING):addComponent(self.jLabel1):addComponent(self.jLabel2):addComponent(self.jLabel3)):addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED):addGroup(layout:createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false):addComponent(self.jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE):addComponent(self.jTextField1):addComponent(self.jTextField2)):addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED):addGroup(layout:createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING):addComponent(self.floatPercentJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE):addComponent(self.adjustFor16AboveJButton):addComponent(self.adjustFor16BelowJButton)):addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)):addGroup(layout:createSequentialGroup():addComponent(self.updateJButton):addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED):addComponent(self.aboveJButton):addGap(0, 250, Short.MAX_VALUE)))
-        layout:setVerticalGroup(layout:createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING):addGroup(layout:createSequentialGroup():addContainerGap():addGroup(layout:createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE):addComponent(self.jLabel1):addComponent(self.jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE):addComponent(self.floatPercentJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)):addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED):addGroup(layout:createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE):addComponent(self.jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE):addComponent(self.jLabel2):addComponent(self.adjustFor16AboveJButton)):addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED):addGroup(layout:createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE):addComponent(self.jLabel3):addComponent(self.jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE):addComponent(self.adjustFor16BelowJButton)):addGap(18, 18, 18):addGroup(layout:createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE):addComponent(self.aboveJButton):addComponent(self.updateJButton)):addContainerGap(175, Short.MAX_VALUE)))
+        layout:setHorizontalGroup(layout:createParallelGroup(GroupLayout.Alignment.LEADING):addGroup(layout:createSequentialGroup():addContainerGap():addGroup(layout:createParallelGroup(GroupLayout.Alignment.LEADING):addComponent(self.jLabel1):addComponent(self.jLabel2):addComponent(self.jLabel3)):addPreferredGap(LayoutStyle.ComponentPlacement.RELATED):addGroup(layout:createParallelGroup(GroupLayout.Alignment.LEADING, false):addComponent(self.jComboBox1, 0, GroupLayout.DEFAULT_SIZE, require("java.lang.Short").MAX_VALUE):addComponent(self.jTextField1):addComponent(self.jTextField2)):addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED):addGroup(layout:createParallelGroup(GroupLayout.Alignment.LEADING):addComponent(self.floatPercentJTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE):addComponent(self.adjustFor16AboveJButton):addComponent(self.adjustFor16BelowJButton)):addContainerGap(GroupLayout.DEFAULT_SIZE, require("java.lang.Short").MAX_VALUE)):addGroup(layout:createSequentialGroup():addComponent(self.updateJButton):addPreferredGap(LayoutStyle.ComponentPlacement.RELATED):addComponent(self.aboveJButton):addGap(0, 250, require("java.lang.Short").MAX_VALUE)))
+        layout:setVerticalGroup(layout:createParallelGroup(GroupLayout.Alignment.LEADING):addGroup(layout:createSequentialGroup():addContainerGap():addGroup(layout:createParallelGroup(GroupLayout.Alignment.BASELINE):addComponent(self.jLabel1):addComponent(self.jComboBox1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE):addComponent(self.floatPercentJTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)):addPreferredGap(LayoutStyle.ComponentPlacement.RELATED):addGroup(layout:createParallelGroup(GroupLayout.Alignment.BASELINE):addComponent(self.jTextField1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE):addComponent(self.jLabel2):addComponent(self.adjustFor16AboveJButton)):addPreferredGap(LayoutStyle.ComponentPlacement.RELATED):addGroup(layout:createParallelGroup(GroupLayout.Alignment.BASELINE):addComponent(self.jLabel3):addComponent(self.jTextField2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE):addComponent(self.adjustFor16BelowJButton)):addGap(18, 18, 18):addGroup(layout:createParallelGroup(GroupLayout.Alignment.BASELINE):addComponent(self.aboveJButton):addComponent(self.updateJButton)):addContainerGap(175, require("java.lang.Short").MAX_VALUE)))
 end
+java_overload(ResizeImageJPanel, "initComponents", 0)
 
 
 function ResizeImageJPanel:aboveJButtonActionPerformed(evt)
         self:process()
 end
+java_overload(ResizeImageJPanel, "aboveJButtonActionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
 
 
 function ResizeImageJPanel:updateJButtonActionPerformed(evt)
         self:update()
 end
+java_overload(ResizeImageJPanel, "updateJButtonActionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
 
 
 function ResizeImageJPanel:adjustFor16AboveJButtonActionPerformed(evt)
         self:updateFor16Above()
 end
+java_overload(ResizeImageJPanel, "adjustFor16AboveJButtonActionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
 
 
 function ResizeImageJPanel:adjustFor16BelowJButtonActionPerformed(evt)
         self:updateFor16Below()
 end
+java_overload(ResizeImageJPanel, "adjustFor16BelowJButtonActionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
 
 return ResizeImageJPanel
 

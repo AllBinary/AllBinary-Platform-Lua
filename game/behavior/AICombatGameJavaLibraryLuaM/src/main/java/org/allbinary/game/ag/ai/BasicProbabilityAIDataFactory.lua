@@ -13,16 +13,37 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.ag.ai
 
+local BasicProbabilityAIDataFactory = {}
+package.loaded["org.allbinary.game.ag.ai.BasicProbabilityAIDataFactory"] = BasicProbabilityAIDataFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Canvas = require("javax.microedition.lcdui.Canvas")
-local SmallIntegerSingletonFactory = require("org.allbinary.logic.math.SmallIntegerSingletonFactory")
-local NoTimeDelayHelper = require("org.allbinary.time.NoTimeDelayHelper")
-local ABHashtable = require("org.allbinary.util.ABHashtable")
+local SmallIntegerSingletonFactory = java_lazy("org.allbinary.logic.math.SmallIntegerSingletonFactory")
+local NoTimeDelayHelper = java_lazy("org.allbinary.time.NoTimeDelayHelper")
+local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -33,17 +54,27 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local BasicProbabilityAIDataFactory = {}
+-- class table BasicProbabilityAIDataFactory is declared before the requires
 BasicProbabilityAIDataFactory.__index = BasicProbabilityAIDataFactory
 BasicProbabilityAIDataFactory.className = "BasicProbabilityAIDataFactory"
+BasicProbabilityAIDataFactory.javaClassName = "org.allbinary.game.ag.ai.BasicProbabilityAIDataFactory"
+
+function BasicProbabilityAIDataFactory._jinit(self)
+    return self
+end
 
 function BasicProbabilityAIDataFactory.new()
-    local self = setmetatable({}, BasicProbabilityAIDataFactory)
-    return self
+    return BasicProbabilityAIDataFactory._jinit(setmetatable({}, BasicProbabilityAIDataFactory))
 end
 
 

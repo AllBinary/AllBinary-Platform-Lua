@@ -1,15 +1,36 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.android
 
-local Activity = require("android.app.Activity")
-local View = require("android.view.View")
-local ViewGroup = require("android.view.ViewGroup")
+local ViewSwapper = {}
+package.loaded["org.allbinary.android.ViewSwapper"] = ViewSwapper
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local Activity = java_lazy("android.app.Activity")
+local View = java_lazy("android.view.View")
+local ViewGroup = java_lazy("android.view.ViewGroup")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -20,28 +41,40 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ViewSwapper = {}
+-- class table ViewSwapper is declared before the requires
 ViewSwapper.__index = ViewSwapper
 ViewSwapper.className = "ViewSwapper"
+ViewSwapper.javaClassName = "org.allbinary.android.ViewSwapper"
 
 function ViewSwapper:_init_fields()
-    self.rootViewId = nil
-    self.activity = nil
+    if self.rootViewId == nil then self.rootViewId = nil end
+    if self.activity == nil then self.activity = nil end
     self.currentMainViewId = -1
     self.mainViewArray = ViewSwapper.NULL_VIEW_ARRAY
     self.topViewArray = ViewSwapper.NULL_VIEW_ARRAY
 end
 
 
-function ViewSwapper.new(activity, rootViewId)
-    local self = setmetatable({}, ViewSwapper)
-    self:_init_fields()
+function ViewSwapper._jinit(self, activity, rootViewId)
+    ViewSwapper._init_fields(self)
         self.activity = activity
         self.rootViewId = rootViewId
+    return self
+end
+
+function ViewSwapper.new(...)
+    local self = setmetatable({}, ViewSwapper)
+    ViewSwapper._jinit(self, ...)
     return self
 end
 

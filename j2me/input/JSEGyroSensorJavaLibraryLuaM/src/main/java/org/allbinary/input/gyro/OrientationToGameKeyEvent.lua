@@ -13,9 +13,24 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.input.gyro
 
-local Features = require("org.allbinary.game.configuration.feature.Features")
-local SensorFeatureFactory = require("org.allbinary.game.configuration.feature.SensorFeatureFactory")
-local Orientation = require("org.allbinary.logic.math.Orientation")
+local OrientationToGameKeyEvent = {}
+package.loaded["org.allbinary.input.gyro.OrientationToGameKeyEvent"] = OrientationToGameKeyEvent
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
+local SensorFeatureFactory = java_lazy("org.allbinary.game.configuration.feature.SensorFeatureFactory")
+local Orientation = java_lazy("org.allbinary.logic.math.Orientation")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -37,28 +52,40 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local OrientationToGameKeyEvent = {}
+-- class table OrientationToGameKeyEvent is declared before the requires
 OrientationToGameKeyEvent.__index = OrientationToGameKeyEvent
 OrientationToGameKeyEvent.className = "OrientationToGameKeyEvent"
+OrientationToGameKeyEvent.javaClassName = "org.allbinary.input.gyro.OrientationToGameKeyEvent"
 
 function OrientationToGameKeyEvent:_init_fields()
-    self.allBinaryGyroSensor = nil
+    if self.allBinaryGyroSensor == nil then self.allBinaryGyroSensor = nil end
     self.MIN = 15
 end
 
 
-function OrientationToGameKeyEvent.new()
-    local self = setmetatable({}, OrientationToGameKeyEvent)
-    self:_init_fields()
+function OrientationToGameKeyEvent._jinit(self)
+    OrientationToGameKeyEvent._init_fields(self)
         if Features.getInstance():isFeature(SensorFeatureFactory.getInstance().NO_ORIENTATION) then
             self.allBinaryGyroSensor = NoGyroSensor.new()
         else
-            error(java_exception("Exception", "Not Such Feature"), 0)
+            error(require("java.lang.Exception").new("Not Such Feature"), 0)
         end
+    return self
+end
+
+function OrientationToGameKeyEvent.new(...)
+    local self = setmetatable({}, OrientationToGameKeyEvent)
+    OrientationToGameKeyEvent._jinit(self, ...)
     return self
 end
 

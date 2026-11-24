@@ -13,9 +13,25 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.image.opengles
 
-local PreLogUtil = require("org.allbinary.logic.communication.log.PreLogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
+local OpenGLImageSpecificFactory = {}
+package.loaded["org.allbinary.image.opengles.OpenGLImageSpecificFactory"] = OpenGLImageSpecificFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local OpenGLImageFactory = java_lazy("org.allbinary.image.opengles.OpenGLImageFactory")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -24,28 +40,38 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local OpenGLImageSpecificFactory = {}
+-- class table OpenGLImageSpecificFactory is declared before the requires
 OpenGLImageSpecificFactory.__index = OpenGLImageSpecificFactory
 OpenGLImageSpecificFactory.className = "OpenGLImageSpecificFactory"
+OpenGLImageSpecificFactory.javaClassName = "org.allbinary.image.opengles.OpenGLImageSpecificFactory"
 
 function OpenGLImageSpecificFactory:_init_fields()
     self.imageFactory = OpenGLImageFactory.NULL_OPENGL_IMAGE_FACTORY
     self.updating = false
 end
 
-function OpenGLImageSpecificFactory.new()
-    local self = setmetatable({}, OpenGLImageSpecificFactory)
-    self:_init_fields()
+function OpenGLImageSpecificFactory._jinit(self)
+    OpenGLImageSpecificFactory._init_fields(self)
     return self
+end
+
+function OpenGLImageSpecificFactory.new()
+    return OpenGLImageSpecificFactory._jinit(setmetatable({}, OpenGLImageSpecificFactory))
 end
 
 
 function OpenGLImageSpecificFactory.getInstance()
-        return OpenGLImageSpecificFactory.instance
+        return OpenGLImageSpecificFactory.instance_f
 end
 
 
@@ -59,7 +85,7 @@ function OpenGLImageSpecificFactory:getImageFactory()
         return self.imageFactory
 end
 
-OpenGLImageSpecificFactory.instance = OpenGLImageSpecificFactory.new()
+OpenGLImageSpecificFactory.instance_f = OpenGLImageSpecificFactory.new()
 
 return OpenGLImageSpecificFactory
 

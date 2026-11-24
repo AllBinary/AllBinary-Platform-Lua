@@ -13,13 +13,28 @@
 -- Generated Code Do Not Modify
 -- package admin.taghelpers
 
-local RequestMapInterface = require("org.allbinary.logic.communication.http.request.RequestMapInterface")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local TransformInterface = require("org.allbinary.logic.visual.transform.TransformInterface")
-local ValidationViewHelper = require("taghelpers.ValidationViewHelper")
-local HelperTag = require("tags.HelperTag")
-local InventoryItemView = require("views.admin.inventory.InventoryItemView")
-local DownloadableInventoryItemView = require("views.admin.inventory.download.DownloadableInventoryItemView")
+local InventoryItemViewParentTagHelper = {}
+package.loaded["admin.taghelpers.InventoryItemViewParentTagHelper"] = InventoryItemViewParentTagHelper
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local RequestMapInterface = java_lazy("org.allbinary.logic.communication.http.request.RequestMapInterface")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local TransformInterface = java_lazy("org.allbinary.logic.visual.transform.TransformInterface")
+local ValidationViewHelper = java_lazy("taghelpers.ValidationViewHelper")
+local HelperTag = java_lazy("tags.HelperTag")
+local InventoryItemView = java_lazy("views.admin.inventory.InventoryItemView")
+local DownloadableInventoryItemView = java_lazy("views.admin.inventory.download.DownloadableInventoryItemView")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -35,6 +50,7 @@ local function java_exception(className, message, cause)
 end
 
 local function java_instanceof(object, class)
+    class = java_real(class)
     local metatable = getmetatable(object)
     while metatable do
         if metatable == class then return true end
@@ -51,22 +67,32 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local InventoryItemViewParentTagHelper = {}
+-- class table InventoryItemViewParentTagHelper is declared before the requires
 InventoryItemViewParentTagHelper.__index = InventoryItemViewParentTagHelper
 InventoryItemViewParentTagHelper.className = "InventoryItemViewParentTagHelper"
+InventoryItemViewParentTagHelper.javaClassName = "admin.taghelpers.InventoryItemViewParentTagHelper"
+
+function InventoryItemViewParentTagHelper._jinit(self)
+    return self
+end
 
 function InventoryItemViewParentTagHelper.new()
-    local self = setmetatable({}, InventoryItemViewParentTagHelper)
-    return self
+    return InventoryItemViewParentTagHelper._jinit(setmetatable({}, InventoryItemViewParentTagHelper))
 end
 
 
 function InventoryItemViewParentTagHelper.getInstance()
-        return InventoryItemViewParentTagHelper.instance
+        return InventoryItemViewParentTagHelper.instance_f
 end
 
 
@@ -80,12 +106,12 @@ function InventoryItemViewParentTagHelper:getInventoryItemView(inventoryTag)
                 local stringBuffer = StringMaker.new()
                 stringBuffer:append("Must have ")
                 stringBuffer:append("InventoryItemView and not: ")
-                stringBuffer:append(getmetatable(inventoryTag:getHelper()).className)
-                error(java_exception("Exception", tostring(stringBuffer)), 0)
+                stringBuffer:append((getmetatable(inventoryTag:getHelper()).javaClassName or getmetatable(inventoryTag:getHelper()).className))
+                error(require("java.lang.Exception").new(tostring(stringBuffer)), 0)
             end
             return viewObject
         else
-            error(java_exception("Exception", "Must have parent tag."), 0)
+            error(require("java.lang.Exception").new("Must have parent tag."), 0)
         end
 end
 
@@ -100,12 +126,12 @@ function InventoryItemViewParentTagHelper:getDownloadableInventoryItemView(inven
                 local stringBuffer = StringMaker.new()
                 stringBuffer:append("Must have ")
                 stringBuffer:append("DownloadableInventoryItemView and not: ")
-                stringBuffer:append(getmetatable(inventoryTag:getHelper()).className)
-                error(java_exception("Exception", tostring(stringBuffer)), 0)
+                stringBuffer:append((getmetatable(inventoryTag:getHelper()).javaClassName or getmetatable(inventoryTag:getHelper()).className))
+                error(require("java.lang.Exception").new(tostring(stringBuffer)), 0)
             end
             return viewObject
         else
-            error(java_exception("Exception", "Must have parent tag."), 0)
+            error(require("java.lang.Exception").new("Must have parent tag."), 0)
         end
 end
 
@@ -120,29 +146,29 @@ function InventoryItemViewParentTagHelper:getRequestMapInterface(inventoryTag)
                 local stringBuffer = StringMaker.new()
                 stringBuffer:append("Must have ")
                 stringBuffer:append("specific TYPE_ID and not: ")
-                stringBuffer:append(getmetatable(inventoryTag:getHelper()).className)
-                error(java_exception("Exception", tostring(stringBuffer)), 0)
+                stringBuffer:append((getmetatable(inventoryTag:getHelper()).javaClassName or getmetatable(inventoryTag:getHelper()).className))
+                error(require("java.lang.Exception").new(tostring(stringBuffer)), 0)
             end
             return viewObject
         else
-            error(java_exception("Exception", "Must have parent tag."), 0)
+            error(require("java.lang.Exception").new("Must have parent tag."), 0)
         end
 end
 
 
 -- throws Exception
 function InventoryItemViewParentTagHelper:checkForValidationViewHelper(helperObject)
-        if not (java_instanceof(helperObject, ValidationViewHelper)) then
+        if not java_instanceof(helperObject, ValidationViewHelper) then
             local stringBuffer = StringMaker.new()
             stringBuffer:append("Must have ")
             stringBuffer:append("ValidationViewHelper")
             stringBuffer:append("and not: ")
-            stringBuffer:append(getmetatable(helperObject).className)
-            error(java_exception("Exception", tostring(stringBuffer)), 0)
+            stringBuffer:append((getmetatable(helperObject).javaClassName or getmetatable(helperObject).className))
+            error(require("java.lang.Exception").new(tostring(stringBuffer)), 0)
         end
 end
 
-InventoryItemViewParentTagHelper.instance = InventoryItemViewParentTagHelper.new()
+InventoryItemViewParentTagHelper.instance_f = InventoryItemViewParentTagHelper.new()
 
 return InventoryItemViewParentTagHelper
 

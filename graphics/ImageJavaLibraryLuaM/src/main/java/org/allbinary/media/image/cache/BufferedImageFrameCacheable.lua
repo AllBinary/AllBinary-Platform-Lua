@@ -13,9 +13,24 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media.image.cache
 
+local BufferedImageFrameCacheable = {}
+package.loaded["org.allbinary.media.image.cache.BufferedImageFrameCacheable"] = BufferedImageFrameCacheable
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local BufferedImage = require("java.awt.image.BufferedImage")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local CacheableInterface = require("org.allbinary.logic.util.cache.CacheableInterface")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local CacheableInterface = java_lazy("org.allbinary.logic.util.cache.CacheableInterface")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -24,25 +39,39 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local BufferedImageFrameCacheable = {}
+-- class table BufferedImageFrameCacheable is declared before the requires
 BufferedImageFrameCacheable.__index = BufferedImageFrameCacheable
 BufferedImageFrameCacheable.className = "BufferedImageFrameCacheable"
+BufferedImageFrameCacheable.javaClassName = "org.allbinary.media.image.cache.BufferedImageFrameCacheable"
+BufferedImageFrameCacheable.java_implements = " CacheableInterface "
+BufferedImageFrameCacheable.java_interfaces = function() return {CacheableInterface} end
 
 function BufferedImageFrameCacheable:_init_fields()
-    self.frame = nil
-    self.bufferedImage = nil
+    if self.frame == nil then self.frame = nil end
+    if self.bufferedImage == nil then self.bufferedImage = nil end
 end
 
 
-function BufferedImageFrameCacheable.new(bufferedImage, frame)
-    local self = setmetatable({}, BufferedImageFrameCacheable)
-    self:_init_fields()
+function BufferedImageFrameCacheable._jinit(self, bufferedImage, frame)
+    BufferedImageFrameCacheable._init_fields(self)
         self.frame = frame
         self:setBufferedImage(bufferedImage)
+    return self
+end
+
+function BufferedImageFrameCacheable.new(...)
+    local self = setmetatable({}, BufferedImageFrameCacheable)
+    BufferedImageFrameCacheable._jinit(self, ...)
     return self
 end
 
@@ -74,7 +103,7 @@ end
 
 function BufferedImageFrameCacheable:toString()
         local stringBuffer = StringMaker.new()
-        stringBuffer:append(getmetatable(self).className)
+        stringBuffer:append((getmetatable(self).javaClassName or getmetatable(self).className))
         stringBuffer:append(" Frame: ")
         stringBuffer:appendlong(self:getFrame())
         return tostring(stringBuffer)

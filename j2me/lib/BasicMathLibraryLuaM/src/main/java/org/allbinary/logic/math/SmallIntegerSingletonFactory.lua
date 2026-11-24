@@ -13,10 +13,25 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.math
 
-local AndroidUtil = require("org.allbinary.AndroidUtil")
-local J2MEUtil = require("org.allbinary.J2MEUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
+local SmallIntegerSingletonFactory = {}
+package.loaded["org.allbinary.logic.math.SmallIntegerSingletonFactory"] = SmallIntegerSingletonFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local AndroidUtil = java_lazy("org.allbinary.AndroidUtil")
+local J2MEUtil = java_lazy("org.allbinary.J2MEUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -39,6 +54,12 @@ local function java_new_array(default, size, ...)
     return array
 end
 
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
+    return array
+end
+
 local function java_idiv(a, b)
     local q = a / b
     if q < 0 then return math.ceil(q) end
@@ -46,13 +67,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local SmallIntegerSingletonFactory = {}
+-- class table SmallIntegerSingletonFactory is declared before the requires
 SmallIntegerSingletonFactory.__index = SmallIntegerSingletonFactory
 SmallIntegerSingletonFactory.className = "SmallIntegerSingletonFactory"
+SmallIntegerSingletonFactory.javaClassName = "org.allbinary.logic.math.SmallIntegerSingletonFactory"
 
 function SmallIntegerSingletonFactory:_init_fields()
     self.NEGATIVE_MAX = 500
@@ -66,7 +94,7 @@ end
 
 
 function SmallIntegerSingletonFactory.getInstance()
-        return SmallIntegerSingletonFactory.instance
+        return SmallIntegerSingletonFactory.instance_f
 end
 
 
@@ -86,7 +114,7 @@ function SmallIntegerSingletonFactory:getMin()
         end
         if self.MIN <= minAllowed then
             local logUtil = LogUtil.getInstance()
-            logUtil:put("This means you loaded the InputFactory before determining the platform input size requirements.", self, "getMin", java_exception("Exception"))
+            logUtil:put("This means you loaded the InputFactory before determining the platform input size requirements.", self, "getMin", require("java.lang.Exception").new())
         end
         return self.MIN
 end
@@ -137,10 +165,15 @@ function SmallIntegerSingletonFactory:init()
 end
 
 
-function SmallIntegerSingletonFactory.new()
-    local self = setmetatable({}, SmallIntegerSingletonFactory)
-    self:_init_fields()
+function SmallIntegerSingletonFactory._jinit(self)
+    SmallIntegerSingletonFactory._init_fields(self)
         self:initWithRange(23, 0)
+    return self
+end
+
+function SmallIntegerSingletonFactory.new(...)
+    local self = setmetatable({}, SmallIntegerSingletonFactory)
+    SmallIntegerSingletonFactory._jinit(self, ...)
     return self
 end
 
@@ -175,7 +208,7 @@ function SmallIntegerSingletonFactory:getString(index)
         return self.STRING_ARRAY[i + 1]
 end
 
-SmallIntegerSingletonFactory.instance = SmallIntegerSingletonFactory.new()
+SmallIntegerSingletonFactory.instance_f = SmallIntegerSingletonFactory.new()
 
 return SmallIntegerSingletonFactory
 

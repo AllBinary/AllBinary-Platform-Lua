@@ -13,20 +13,36 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.init
 
-local TsUtil = require("org.allbinary.TsUtil")
-local PATH_GLOBALS = require("org.allbinary.globals.PATH_GLOBALS")
-local URLGLOBALS = require("org.allbinary.globals.URLGLOBALS")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local AbDataInputStream = require("org.allbinary.logic.io.AbDataInputStream")
-local AbDataOutputStream = require("org.allbinary.logic.io.AbDataOutputStream")
-local AbFileInputStream = require("org.allbinary.logic.io.AbFileInputStream")
-local DataOutputStreamFactory = require("org.allbinary.logic.io.DataOutputStreamFactory")
-local FileStreamFactory = require("org.allbinary.logic.io.FileStreamFactory")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local DatabaseEncoder = require("org.allbinary.logic.system.security.crypt.DatabaseEncoder")
-local WeakCrypt = require("org.allbinary.logic.system.security.crypt.WeakCrypt")
-local CommonLabels = require("org.allbinary.string.CommonLabels")
+local LicenseInitInfoUtil = {}
+package.loaded["org.allbinary.business.init.LicenseInitInfoUtil"] = LicenseInitInfoUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local TsUtil = java_lazy("org.allbinary.TsUtil")
+local PATH_GLOBALS = java_lazy("org.allbinary.globals.PATH_GLOBALS")
+local URLGLOBALS = java_lazy("org.allbinary.globals.URLGLOBALS")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local AbDataInputStream = java_lazy("org.allbinary.logic.io.AbDataInputStream")
+local AbDataOutputStream = java_lazy("org.allbinary.logic.io.AbDataOutputStream")
+local AbFileInputStream = java_lazy("org.allbinary.logic.io.AbFileInputStream")
+local DataOutputStreamFactory = java_lazy("org.allbinary.logic.io.DataOutputStreamFactory")
+local FileStreamFactory = java_lazy("org.allbinary.logic.io.FileStreamFactory")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local DatabaseEncoder = java_lazy("org.allbinary.logic.system.security.crypt.DatabaseEncoder")
+local WeakCrypt = java_lazy("org.allbinary.logic.system.security.crypt.WeakCrypt")
+local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
+local LicenseInitInfo = java_lazy("org.allbinary.business.init.LicenseInitInfo")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -48,13 +64,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local LicenseInitInfoUtil = {}
+-- class table LicenseInitInfoUtil is declared before the requires
 LicenseInitInfoUtil.__index = LicenseInitInfoUtil
 LicenseInitInfoUtil.className = "LicenseInitInfoUtil"
+LicenseInitInfoUtil.javaClassName = "org.allbinary.business.init.LicenseInitInfoUtil"
 
 function LicenseInitInfoUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -65,15 +88,18 @@ function LicenseInitInfoUtil:_init_fields()
     self.filePath = self.stringUtil.EMPTY_STRING
 end
 
-function LicenseInitInfoUtil.new()
-    local self = setmetatable({}, LicenseInitInfoUtil)
-    self:_init_fields()
+function LicenseInitInfoUtil._jinit(self)
+    LicenseInitInfoUtil._init_fields(self)
     return self
+end
+
+function LicenseInitInfoUtil.new()
+    return LicenseInitInfoUtil._jinit(setmetatable({}, LicenseInitInfoUtil))
 end
 
 
 function LicenseInitInfoUtil.getInstance()
-        return LicenseInitInfoUtil.instance
+        return LicenseInitInfoUtil.instance_f
 end
 
 
@@ -85,9 +111,9 @@ end
 -- throws Exception
 function LicenseInitInfoUtil:write(initData)
         if self.filePath == self.stringUtil.EMPTY_STRING then
-            self.filePath = self.URLGLOBALS:getMainPath() + self.PATH_GLOBALS:getInstance().INIT_PATH
+            self.filePath = URLGLOBALS.getMainPath() + PATH_GLOBALS.getInstance().INIT_PATH
         end
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local tsUtil = TsUtil.getInstance()
             local dataOutputStream = DataOutputStreamFactory.getInstance():getInstance(self.filePath, self.INITFILENAME)
             local licenseIdCrypted = tsUtil:getByteArray(WeakCrypt.new(1):encrypt(initData:getLicenseId()))
@@ -102,6 +128,7 @@ function LicenseInitInfoUtil:write(initData)
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put("Command Failed: " .. self.INITFILENAME, self, "write", e)
             FileStreamFactory.getInstance():delete(self.filePath, self.INITFILENAME)
             error(e, 0)
@@ -119,9 +146,9 @@ end
 function LicenseInitInfoUtil:readAgain(initializeCounter)
         local METHOD_NAME = "readAgain"
         if self.filePath == self.stringUtil.EMPTY_STRING then
-            self.filePath = self.URLGLOBALS:getMainPath() + self.PATH_GLOBALS:getInstance().INIT_PATH
+            self.filePath = URLGLOBALS.getMainPath() + PATH_GLOBALS.getInstance().INIT_PATH
         end
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             self.logUtil:putF("LicenseInitInfo File: " .. self.INITFILENAME, self, METHOD_NAME)
             local fileStreamFactory = FileStreamFactory.getInstance()
             local iFile = fileStreamFactory:getFileInputStreamInstance(self.filePath, self.INITFILENAME)
@@ -140,22 +167,25 @@ function LicenseInitInfoUtil:readAgain(initializeCounter)
                     initInfo:setServer(WeakCrypt.new(3):decrypt(licenseServerDecoded), index)
                     self.logUtil:putF(NEXT_FILE .. tostring(initInfo:getServer(index)), self, METHOD_NAME)
                 end
-                return initInfo
+                do return "__jreturn", initInfo end
             else
-                error(java_exception("Exception", "Could Not Load License InitInfo: " .. self.INITFILENAME), 0)
+                error(require("java.lang.Exception").new("Could Not Load License InitInfo: " .. self.INITFILENAME), 0)
             end
         end)
         if not try_ok then
             local e = try_error
-            local try_ok, try_error = pcall(function()
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            local try_ok, try_error, try_value = pcall(function()
                 self.logUtil:put("Command Failed: " .. self.INITFILENAME, self, METHOD_NAME, e)
             end)
             if not try_ok then
                 local e2 = try_error
+                if type(e2) ~= "table" then e2 = require("java.lang.RuntimeException").new(tostring(e2)) end
                 self.logUtil:put("LicenseInitInfo Read Retry: " .. self.INITFILENAME, self, "readAgain()", e2)
             end
-            error(java_exception("Exception", "LicenseInitInfo Read Error: " .. self.INITFILENAME), 0)
+            error(require("java.lang.Exception").new("LicenseInitInfo Read Error: " .. self.INITFILENAME), 0)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
@@ -163,7 +193,7 @@ function LicenseInitInfoUtil:getFilePath()
         return self.filePath
 end
 
-LicenseInitInfoUtil.instance = LicenseInitInfoUtil.new()
+LicenseInitInfoUtil.instance_f = LicenseInitInfoUtil.new()
 
 return LicenseInitInfoUtil
 

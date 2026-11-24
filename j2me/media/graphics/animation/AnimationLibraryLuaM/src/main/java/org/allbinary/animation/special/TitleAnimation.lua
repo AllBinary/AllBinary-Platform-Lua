@@ -13,16 +13,104 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.animation.special
 
+local TitleAnimation = {}
+package.loaded["org.allbinary.animation.special.TitleAnimation"] = TitleAnimation
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Graphics = require("javax.microedition.lcdui.Graphics")
-local AnimationBehavior = require("org.allbinary.animation.AnimationBehavior")
-local IndexedAnimation = require("org.allbinary.animation.IndexedAnimation")
-local IndexedAnimationBehavior = require("org.allbinary.animation.IndexedAnimationBehavior")
-local BasicColor = require("org.allbinary.graphics.color.BasicColor")
-local BasicColorFactory = require("org.allbinary.graphics.color.BasicColorFactory")
-local DisplayInfoSingleton = require("org.allbinary.graphics.displayable.DisplayInfoSingleton")
-local ABSystemWrapper = require("org.allbinary.logic.ABSystemWrapper")
-local PrimitiveIntUtil = require("org.allbinary.logic.math.PrimitiveIntUtil")
+local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
+local IndexedAnimation = java_lazy("org.allbinary.animation.IndexedAnimation")
+local IndexedAnimationBehavior = java_lazy("org.allbinary.animation.IndexedAnimationBehavior")
+local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
+local BasicColorFactory = java_lazy("org.allbinary.graphics.color.BasicColorFactory")
+local DisplayInfoSingleton = java_lazy("org.allbinary.graphics.displayable.DisplayInfoSingleton")
+local ABSystemWrapper = java_lazy("org.allbinary.logic.ABSystemWrapper")
+local PrimitiveIntUtil = java_lazy("org.allbinary.logic.math.PrimitiveIntUtil")
 local SpecialAnimation = require("org.allbinary.animation.special.SpecialAnimation")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -31,28 +119,35 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local TitleAnimation = {}
+-- class table TitleAnimation is declared before the requires
 TitleAnimation.__index = TitleAnimation
 TitleAnimation.className = "TitleAnimation"
+TitleAnimation.javaClassName = "org.allbinary.animation.special.TitleAnimation"
 setmetatable(TitleAnimation, {__index = SpecialAnimation})
 
 function TitleAnimation:_init_fields()
     self.systemWrapper = ABSystemWrapper.getInstance()
-    self.deltaX = 0.0
-    self.deltaY = 0.0
-    self.deltaZ = 0.0
-    self.basicColorArray = nil
-    self.dxArray = nil
-    self.dyArray = nil
-    self.widthP = nil
-    self.animationInterfaceArray = nil
-    self.sizeP = nil
-    self.y = nil
-    self.lastFrameStartTime = nil
+    if self.deltaX == nil then self.deltaX = 0.0 end
+    if self.deltaY == nil then self.deltaY = 0.0 end
+    if self.deltaZ == nil then self.deltaZ = 0.0 end
+    if self.basicColorArray == nil then self.basicColorArray = nil end
+    if self.dxArray == nil then self.dxArray = nil end
+    if self.dyArray == nil then self.dyArray = nil end
+    if self.widthP == nil then self.widthP = nil end
+    if self.animationInterfaceArray == nil then self.animationInterfaceArray = nil end
+    if self.sizeP == nil then self.sizeP = nil end
+    if self.y == nil then self.y = nil end
+    if self.lastFrameStartTime == nil then self.lastFrameStartTime = nil end
     self.displayInfoSingleton = DisplayInfoSingleton.getInstance()
     self.CLEAR_COLOR = BasicColorFactory.getInstance().CLEAR_COLOR
 end
@@ -63,9 +158,9 @@ function TitleAnimation.createAnimation(animationInterfaceArray, basicColorArray
 end
 
 
-function TitleAnimation.new(animationInterfaceArray, basicColorArray, dxArray, dyArray, y, width, animationBehavior)
-    local self = setmetatable(SpecialAnimation.new(animationBehavior), TitleAnimation)
-    self:_init_fields()
+function TitleAnimation._jinit(self, animationInterfaceArray, basicColorArray, dxArray, dyArray, y, width, animationBehavior)
+    java_super_init(SpecialAnimation, self, animationBehavior)
+    TitleAnimation._init_fields(self)
         -- super(...) made self above
         self.lastFrameStartTime = self.systemWrapper:currentTimeMillis()
         self.animationInterfaceArray = animationInterfaceArray
@@ -76,6 +171,12 @@ function TitleAnimation.new(animationInterfaceArray, basicColorArray, dxArray, d
         self.y = y
         self.widthP = width
         self:reset()
+    return self
+end
+
+function TitleAnimation.new(...)
+    local self = setmetatable({}, TitleAnimation)
+    TitleAnimation._jinit(self, ...)
     return self
 end
 
@@ -92,6 +193,7 @@ function TitleAnimation:nextFrame()
             indexedAnimationBehavior.loopIndex = indexedAnimationBehavior.loopIndex + 1
         end
 end
+java_overload(TitleAnimation, "nextFrame", 0)
 
 
 function TitleAnimation:isComplete()
@@ -102,25 +204,30 @@ function TitleAnimation:isComplete()
             return true
         end
 end
+java_overload(TitleAnimation, "isComplete", 0)
 
 
 function TitleAnimation:setSequence(sequence)
 end
+java_overload(TitleAnimation, "setSequence", 1, function(java_a1) return true and (java_a1 == nil or (type(java_a1) == "table" and getmetatable(java_a1) == nil and (java_a1.jt == nil or java_a1.jt == "I") and (java_a1[1] == nil or math.type(java_a1[1]) == "integer"))) end)
 
 
 function TitleAnimation:getSequence()
         return PrimitiveIntUtil.getArrayInstance()
 end
+java_overload(TitleAnimation, "getSequence", 0)
 
 
 function TitleAnimation:getSize()
         return self.animationInterfaceArray[1]:getSize()
 end
+java_overload(TitleAnimation, "getSize", 0)
 
 
 function TitleAnimation:getFrame()
         return self.animationInterfaceArray[1]:getFrame()
 end
+java_overload(TitleAnimation, "getFrame", 0)
 
 
 function TitleAnimation:setFrame(frame)
@@ -128,11 +235,13 @@ function TitleAnimation:setFrame(frame)
             self.animationInterfaceArray[index + 1]:setFrame(frame)
         end
 end
+java_overload(TitleAnimation, "setFrame", 1, function(java_a1) return true and type(java_a1) == "number" end)
 
 
 function TitleAnimation:setLastFrame()
         self:setFrame(self:getSize() - 1)
 end
+java_overload(TitleAnimation, "setLastFrame", 0)
 
 
 function TitleAnimation:reset()
@@ -140,6 +249,7 @@ function TitleAnimation:reset()
         local indexedAnimationBehavior = (self:getAnimationBehavior())
         indexedAnimationBehavior:reset()
 end
+java_overload(TitleAnimation, "reset", 0)
 
 
 function TitleAnimation:previousFrame()
@@ -147,17 +257,19 @@ function TitleAnimation:previousFrame()
             self.animationInterfaceArray[index + 1]:previousFrame()
         end
 end
+java_overload(TitleAnimation, "previousFrame", 0)
 
 
 function TitleAnimation:paintFrameXY(graphics, frame, x, y)
         self:setFrame(frame)
         self:paintXY(graphics, x, y)
 end
+java_overload(TitleAnimation, "paintFrameXY", 4, function(java_a1, java_a2, java_a3, java_a4) return true and (java_a1 == nil or java_is(java_a1, "Graphics")) and type(java_a2) == "number" and type(java_a3) == "number" and type(java_a4) == "number" end)
 
 
 function TitleAnimation:paintXY(graphics, ax, ay)
         local x = 0
-        if self.widthP ~= Integer.MIN_VALUE then
+        if self.widthP ~= require("java.lang.Integer").MIN_VALUE then
             x = ((self.displayInfoSingleton:getLastWidth() - self.widthP) / 2)
         end
         local deltaX = 0
@@ -171,6 +283,7 @@ function TitleAnimation:paintXY(graphics, ax, ay)
             self.animationInterfaceArray[index + 1]:paintXY(graphics, deltaX, deltaY)
         end
 end
+java_overload(TitleAnimation, "paintXY", 3, function(java_a1, java_a2, java_a3) return true and (java_a1 == nil or java_is(java_a1, "Graphics")) and type(java_a2) == "number" and type(java_a3) == "number" end)
 
 return TitleAnimation
 

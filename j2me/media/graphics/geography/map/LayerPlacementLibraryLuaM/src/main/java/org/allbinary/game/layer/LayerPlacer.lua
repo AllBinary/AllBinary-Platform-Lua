@@ -13,15 +13,33 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.layer
 
--- local Enumeration = require("java.util.Enumeration")
-local GPoint = require("org.allbinary.graphics.GPoint")
-local PointFactory = require("org.allbinary.graphics.PointFactory")
-local AllBinaryLayer = require("org.allbinary.layer.AllBinaryLayer")
-local LayerInterfaceFactory = require("org.allbinary.layer.LayerInterfaceFactory")
-local LayerInterfaceVisitor = require("org.allbinary.layer.LayerInterfaceVisitor")
-local ABHashtable = require("org.allbinary.util.ABHashtable")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local EnumerationUtil = require("org.allbinary.util.EnumerationUtil")
+local LayerPlacer = {}
+package.loaded["org.allbinary.game.layer.LayerPlacer"] = LayerPlacer
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local Enumeration = java_lazy("java.util.Enumeration")
+local GPoint = java_lazy("org.allbinary.graphics.GPoint")
+local PointFactory = java_lazy("org.allbinary.graphics.PointFactory")
+local AllBinaryLayer = java_lazy("org.allbinary.layer.AllBinaryLayer")
+local LayerInterfaceFactory = java_lazy("org.allbinary.layer.LayerInterfaceFactory")
+local LayerInterfaceVisitor = java_lazy("org.allbinary.layer.LayerInterfaceVisitor")
+local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local EnumerationUtil = java_lazy("org.allbinary.util.EnumerationUtil")
+local LayerPlacementInterface = java_lazy("org.allbinary.game.layer.LayerPlacementInterface")
+local LayerPlacementType = java_lazy("org.allbinary.game.layer.LayerPlacementType")
+local LayerPlacementTypeFactory = java_lazy("org.allbinary.game.layer.LayerPlacementTypeFactory")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -43,26 +61,38 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local LayerPlacer = {}
+-- class table LayerPlacer is declared before the requires
 LayerPlacer.__index = LayerPlacer
 LayerPlacer.className = "LayerPlacer"
+LayerPlacer.javaClassName = "org.allbinary.game.layer.LayerPlacer"
 
 function LayerPlacer:_init_fields()
     self.enumerationUtil = EnumerationUtil.getInstance()
-    self.layerInterfaceVisitor = nil
-    self.dimension = nil
+    if self.layerInterfaceVisitor == nil then self.layerInterfaceVisitor = nil end
+    if self.dimension == nil then self.dimension = nil end
 end
 
 
-function LayerPlacer.new(layerInterfaceVisitor, dimension)
-    local self = setmetatable({}, LayerPlacer)
-    self:_init_fields()
+function LayerPlacer._jinit(self, layerInterfaceVisitor, dimension)
+    LayerPlacer._init_fields(self)
         self.layerInterfaceVisitor = layerInterfaceVisitor
         self.dimension = dimension
+    return self
+end
+
+function LayerPlacer.new(...)
+    local self = setmetatable({}, LayerPlacer)
+    LayerPlacer._jinit(self, ...)
     return self
 end
 
@@ -119,7 +149,7 @@ function LayerPlacer:getPoint(layerPlacementInterface)
             local y = -height
             return pointFactory:createXY(x, y)
         else
-            error(java_exception("Exception", "PlacementType Not Recognized"), 0)
+            error(require("java.lang.Exception").new("PlacementType Not Recognized"), 0)
         end
 end
 

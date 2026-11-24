@@ -13,16 +13,31 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.physics.velocity
 
-local Direction = require("org.allbinary.direction.Direction")
-local DirectionUtil = require("org.allbinary.direction.DirectionUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local BasicDecimal = require("org.allbinary.logic.math.BasicDecimal")
-local AxisMathVectorUtil = require("org.allbinary.logic.math.vector.AxisMathVectorUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local Angle = require("org.allbinary.math.Angle")
-local PositionStrings = require("org.allbinary.math.PositionStrings")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
+local BasicVelocityProperties = {}
+package.loaded["org.allbinary.game.physics.velocity.BasicVelocityProperties"] = BasicVelocityProperties
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local Direction = java_lazy("org.allbinary.direction.Direction")
+local DirectionUtil = java_lazy("org.allbinary.direction.DirectionUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local BasicDecimal = java_lazy("org.allbinary.logic.math.BasicDecimal")
+local AxisMathVectorUtil = java_lazy("org.allbinary.logic.math.vector.AxisMathVectorUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local Angle = java_lazy("org.allbinary.math.Angle")
+local PositionStrings = java_lazy("org.allbinary.math.PositionStrings")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
 local BasicVelocityInterface = require("org.allbinary.game.physics.velocity.BasicVelocityInterface")
 
 local function java_idiv(a, b)
@@ -32,30 +47,44 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local BasicVelocityProperties = {}
+-- class table BasicVelocityProperties is declared before the requires
 BasicVelocityProperties.__index = BasicVelocityProperties
 BasicVelocityProperties.className = "BasicVelocityProperties"
+BasicVelocityProperties.javaClassName = "org.allbinary.game.physics.velocity.BasicVelocityProperties"
+BasicVelocityProperties.java_implements = " BasicVelocityInterface "
+BasicVelocityProperties.java_interfaces = function() return {BasicVelocityInterface} end
 
 function BasicVelocityProperties:_init_fields()
     self.logUtil = LogUtil.getInstance()
-    self.velocityXBasicDecimal = nil
-    self.velocityYBasicDecimal = nil
-    self.velocityZBasicDecimal = nil
+    if self.velocityXBasicDecimal == nil then self.velocityXBasicDecimal = nil end
+    if self.velocityYBasicDecimal == nil then self.velocityYBasicDecimal = nil end
+    if self.velocityZBasicDecimal == nil then self.velocityZBasicDecimal = nil end
     self.axisMathVectorUtil = AxisMathVectorUtil.getInstance()
     self.directionUtil = DirectionUtil.getInstance()
 end
 
 
-function BasicVelocityProperties.new()
-    local self = setmetatable({}, BasicVelocityProperties)
-    self:_init_fields()
+function BasicVelocityProperties._jinit(self)
+    BasicVelocityProperties._init_fields(self)
         self.velocityXBasicDecimal = BasicDecimal.new(0)
         self.velocityYBasicDecimal = BasicDecimal.new(0)
         self.velocityZBasicDecimal = BasicDecimal.new(0)
+    return self
+end
+
+function BasicVelocityProperties.new(...)
+    local self = setmetatable({}, BasicVelocityProperties)
+    BasicVelocityProperties._jinit(self, ...)
     return self
 end
 

@@ -13,16 +13,31 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.graphics.opengles
 
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local PreLogUtil = require("org.allbinary.logic.communication.log.PreLogUtil")
-local ChangedGameFeatureListener = require("org.allbinary.game.configuration.event.ChangedGameFeatureListener")
-local Feature = require("org.allbinary.game.configuration.feature.Feature")
-local Features = require("org.allbinary.game.configuration.feature.Features")
-local MainFeatureFactory = require("org.allbinary.game.configuration.feature.MainFeatureFactory")
-local NullUtil = require("org.allbinary.logic.NullUtil")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
+local OpenGLConfiguration = {}
+package.loaded["org.allbinary.graphics.opengles.OpenGLConfiguration"] = OpenGLConfiguration
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
+local ChangedGameFeatureListener = java_lazy("org.allbinary.game.configuration.event.ChangedGameFeatureListener")
+local Feature = java_lazy("org.allbinary.game.configuration.feature.Feature")
+local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
+local MainFeatureFactory = java_lazy("org.allbinary.game.configuration.feature.MainFeatureFactory")
+local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -31,13 +46,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local OpenGLConfiguration = {}
+-- class table OpenGLConfiguration is declared before the requires
 OpenGLConfiguration.__index = OpenGLConfiguration
 OpenGLConfiguration.className = "OpenGLConfiguration"
+OpenGLConfiguration.javaClassName = "org.allbinary.graphics.opengles.OpenGLConfiguration"
 
 function OpenGLConfiguration:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -51,16 +73,21 @@ end
 
 
 function OpenGLConfiguration.getInstance()
-        if OpenGLConfiguration.instance == NullUtil.getInstance().NULL_OBJECT then
-            OpenGLConfiguration.instance = OpenGLConfiguration.new()
+        if OpenGLConfiguration.instance_f == NullUtil.getInstance().NULL_OBJECT then
+            OpenGLConfiguration.instance_f = OpenGLConfiguration.new()
         end
-        return OpenGLConfiguration.instance
+        return OpenGLConfiguration.instance_f
 end
 
 
-function OpenGLConfiguration.new()
+function OpenGLConfiguration._jinit(self)
+    OpenGLConfiguration._init_fields(self)
+    return self
+end
+
+function OpenGLConfiguration.new(...)
     local self = setmetatable({}, OpenGLConfiguration)
-    self:_init_fields()
+    OpenGLConfiguration._jinit(self, ...)
     return self
 end
 
@@ -225,7 +252,7 @@ function OpenGLConfiguration:toString()
 end
 OpenGLConfiguration.__tostring = function(self) return self:toString() end
 
-OpenGLConfiguration.instance = NullUtil.getInstance().NULL_OBJECT
+OpenGLConfiguration.instance_f = NullUtil.getInstance().NULL_OBJECT
 
 return OpenGLConfiguration
 

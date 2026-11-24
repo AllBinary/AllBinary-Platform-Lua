@@ -1,13 +1,30 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.util
 
-local JsType = require("jsinterop.annotations.JsType")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local CommonLabels = require("org.allbinary.string.CommonLabels")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local JsMethod = require("jsinterop.annotations.JsMethod")
-local JsConstructor = require("jsinterop.annotations.JsConstructor")
-local JsProperty = require("jsinterop.annotations.JsProperty")
+local BasicArrayList = {}
+package.loaded["org.allbinary.util.BasicArrayList"] = BasicArrayList
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local JsType = java_lazy("jsinterop.annotations.JsType")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local JsMethod = java_lazy("jsinterop.annotations.JsMethod")
+local JsConstructor = java_lazy("jsinterop.annotations.JsConstructor")
+local JsProperty = java_lazy("jsinterop.annotations.JsProperty")
+local ArrayUtil = java_lazy("org.allbinary.util.ArrayUtil")
+local BasicArrayListS = java_lazy("org.allbinary.util.BasicArrayListS")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -29,26 +46,38 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
 --This is a very fast and simple resizable list.
-local BasicArrayList = {}
+-- class table BasicArrayList is declared before the requires
 BasicArrayList.__index = BasicArrayList
 BasicArrayList.className = "BasicArrayList"
+BasicArrayList.javaClassName = "org.allbinary.util.BasicArrayList"
 
 function BasicArrayList:_init_fields()
     self.arrayUtil = ArrayUtil.getInstance()
-    self.objectArray = nil
+    if self.objectArray == nil then self.objectArray = nil end
     self.currentIndex = 0
 end
 
 
-function BasicArrayList.new(objectArray)
-    local self = setmetatable({}, BasicArrayList)
-    self:_init_fields()
+function BasicArrayList._jinit(self, objectArray)
+    BasicArrayList._init_fields(self)
         self.objectArray = objectArray
+    return self
+end
+
+function BasicArrayList.new(...)
+    local self = setmetatable({}, BasicArrayList)
+    BasicArrayList._jinit(self, ...)
     return self
 end
 
@@ -60,7 +89,7 @@ function BasicArrayList:addAt(index, element)
             stringBuffer:appendint(index)
             stringBuffer:append(BasicArrayList.SIZE)
             stringBuffer:appendint(self.currentIndex)
-            error(java_exception("IndexOutOfBoundsException", tostring(stringBuffer)), 0)
+            error(require("java.lang.IndexOutOfBoundsException").new(tostring(stringBuffer)), 0)
         end
         self:ensureCapacity(self.currentIndex + 1)
         table.move(self.objectArray, (index) + 1, (index) + (self.currentIndex - index), (index + 1) + 1, self.objectArray)
@@ -83,7 +112,7 @@ function BasicArrayList:removeAt(index)
             stringBuffer:appendint(index)
             stringBuffer:append(BasicArrayList.SIZE)
             stringBuffer:appendint(self.currentIndex)
-            error(java_exception("IndexOutOfBoundsException", tostring(stringBuffer)), 0)
+            error(require("java.lang.IndexOutOfBoundsException").new(tostring(stringBuffer)), 0)
         end
         local oldValue = self.objectArray[index + 1]
         local numMoved = self.currentIndex - index - 1
@@ -224,7 +253,7 @@ function BasicArrayList:get(index)
             stringBuffer:appendint(index)
             stringBuffer:append(BasicArrayList.SIZE)
             stringBuffer:appendint(self.currentIndex)
-            error(java_exception("IndexOutOfBoundsException", tostring(stringBuffer)), 0)
+            error(require("java.lang.IndexOutOfBoundsException").new(tostring(stringBuffer)), 0)
         end
         return self.objectArray[index + 1]
 end
@@ -237,7 +266,7 @@ function BasicArrayList:set(index, element)
             stringBuffer:appendint(index)
             stringBuffer:append(BasicArrayList.SIZE)
             stringBuffer:appendint(self.currentIndex)
-            error(java_exception("IndexOutOfBoundsException", tostring(stringBuffer)), 0)
+            error(require("java.lang.IndexOutOfBoundsException").new(tostring(stringBuffer)), 0)
         end
         local oldValue = self.objectArray[index + 1]
         self.objectArray[index + 1] = element

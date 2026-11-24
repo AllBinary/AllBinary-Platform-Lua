@@ -13,19 +13,35 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.context.modules.storefront.statistics
 
-local StoreFrontAdvertisementsStatisticsInterface = require("org.allbinary.business.context.modules.storefront.statistics.advertisements.StoreFrontAdvertisementsStatisticsInterface")
-local StoreFrontAdvertisementsStatisticsView = require("org.allbinary.business.context.modules.storefront.statistics.advertisements.StoreFrontAdvertisementsStatisticsView")
-local StoreFrontInventoryStatisticsInterface = require("org.allbinary.business.context.modules.storefront.statistics.inventory.StoreFrontInventoryStatisticsInterface")
-local StoreFrontInventoryStatisticsView = require("org.allbinary.business.context.modules.storefront.statistics.inventory.StoreFrontInventoryStatisticsView")
-local StoreFrontOrdersHistoryStatisticsInterface = require("org.allbinary.business.context.modules.storefront.statistics.orders.history.StoreFrontOrdersHistoryStatisticsInterface")
-local StoreFrontOrdersHistoryStatisticsView = require("org.allbinary.business.context.modules.storefront.statistics.orders.history.StoreFrontOrdersHistoryStatisticsView")
-local StoreFrontUsersStatisticsInterface = require("org.allbinary.business.context.modules.storefront.statistics.users.StoreFrontUsersStatisticsInterface")
-local StoreFrontUsersStatisticsView = require("org.allbinary.business.context.modules.storefront.statistics.users.StoreFrontUsersStatisticsView")
-local UserRole = require("org.allbinary.business.user.role.UserRole")
-local UserRoleFactory = require("org.allbinary.business.user.role.UserRoleFactory")
-local DomNodeInterface = require("org.allbinary.data.tree.dom.DomNodeInterface")
-local Document = require("org.w3c.dom.Document")
-local Node = require("org.w3c.dom.Node")
+local RealTimeStoreFrontStatisticsView = {}
+package.loaded["org.allbinary.business.context.modules.storefront.statistics.RealTimeStoreFrontStatisticsView"] = RealTimeStoreFrontStatisticsView
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local StoreFrontAdvertisementsStatisticsInterface = java_lazy("org.allbinary.business.context.modules.storefront.statistics.advertisements.StoreFrontAdvertisementsStatisticsInterface")
+local StoreFrontAdvertisementsStatisticsView = java_lazy("org.allbinary.business.context.modules.storefront.statistics.advertisements.StoreFrontAdvertisementsStatisticsView")
+local StoreFrontInventoryStatisticsInterface = java_lazy("org.allbinary.business.context.modules.storefront.statistics.inventory.StoreFrontInventoryStatisticsInterface")
+local StoreFrontInventoryStatisticsView = java_lazy("org.allbinary.business.context.modules.storefront.statistics.inventory.StoreFrontInventoryStatisticsView")
+local StoreFrontOrdersHistoryStatisticsInterface = java_lazy("org.allbinary.business.context.modules.storefront.statistics.orders.history.StoreFrontOrdersHistoryStatisticsInterface")
+local StoreFrontOrdersHistoryStatisticsView = java_lazy("org.allbinary.business.context.modules.storefront.statistics.orders.history.StoreFrontOrdersHistoryStatisticsView")
+local StoreFrontUsersStatisticsInterface = java_lazy("org.allbinary.business.context.modules.storefront.statistics.users.StoreFrontUsersStatisticsInterface")
+local StoreFrontUsersStatisticsView = java_lazy("org.allbinary.business.context.modules.storefront.statistics.users.StoreFrontUsersStatisticsView")
+local UserRole = java_lazy("org.allbinary.business.user.role.UserRole")
+local UserRoleFactory = java_lazy("org.allbinary.business.user.role.UserRoleFactory")
+local DomNodeInterface = java_lazy("org.allbinary.data.tree.dom.DomNodeInterface")
+local Document = java_lazy("org.w3c.dom.Document")
+local Node = java_lazy("org.w3c.dom.Node")
+local StoreFrontStatisticsInterface = java_lazy("org.allbinary.business.context.modules.storefront.statistics.StoreFrontStatisticsInterface")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -34,25 +50,39 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local RealTimeStoreFrontStatisticsView = {}
+-- class table RealTimeStoreFrontStatisticsView is declared before the requires
 RealTimeStoreFrontStatisticsView.__index = RealTimeStoreFrontStatisticsView
 RealTimeStoreFrontStatisticsView.className = "RealTimeStoreFrontStatisticsView"
+RealTimeStoreFrontStatisticsView.javaClassName = "org.allbinary.business.context.modules.storefront.statistics.RealTimeStoreFrontStatisticsView"
+RealTimeStoreFrontStatisticsView.java_implements = " DomNodeInterface "
+RealTimeStoreFrontStatisticsView.java_interfaces = function() return {DomNodeInterface} end
 
 function RealTimeStoreFrontStatisticsView:_init_fields()
-    self.storeFrontStatisticsInterface = nil
-    self.userRole = nil
+    if self.storeFrontStatisticsInterface == nil then self.storeFrontStatisticsInterface = nil end
+    if self.userRole == nil then self.userRole = nil end
 end
 
 
-function RealTimeStoreFrontStatisticsView.new(storeFrontStatisticsInterface, userRole)
-    local self = setmetatable({}, RealTimeStoreFrontStatisticsView)
-    self:_init_fields()
+function RealTimeStoreFrontStatisticsView._jinit(self, storeFrontStatisticsInterface, userRole)
+    RealTimeStoreFrontStatisticsView._init_fields(self)
         self.storeFrontStatisticsInterface = storeFrontStatisticsInterface
         self.userRole = userRole
+    return self
+end
+
+function RealTimeStoreFrontStatisticsView.new(...)
+    local self = setmetatable({}, RealTimeStoreFrontStatisticsView)
+    RealTimeStoreFrontStatisticsView._jinit(self, ...)
     return self
 end
 

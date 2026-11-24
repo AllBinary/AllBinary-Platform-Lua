@@ -13,11 +13,62 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.ag.ai
 
-local ArtificialIntelligenceInterface = require("org.allbinary.ai.ArtificialIntelligenceInterface")
-local ArtificialIntelligenceInterfaceFactoryInterface = require("org.allbinary.game.ai.ArtificialIntelligenceInterfaceFactoryInterface")
-local GameInput = require("org.allbinary.game.input.GameInput")
-local AllBinaryLayer = require("org.allbinary.layer.AllBinaryLayer")
-local ABHashtable = require("org.allbinary.util.ABHashtable")
+local NullAIFactory = {}
+package.loaded["org.allbinary.game.ag.ai.NullAIFactory"] = NullAIFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local ArtificialIntelligenceInterface = java_lazy("org.allbinary.ai.ArtificialIntelligenceInterface")
+local ArtificialIntelligenceInterfaceFactoryInterface = java_lazy("org.allbinary.game.ai.ArtificialIntelligenceInterfaceFactoryInterface")
+local GameInput = java_lazy("org.allbinary.game.input.GameInput")
+local AllBinaryLayer = java_lazy("org.allbinary.layer.AllBinaryLayer")
+local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
+local NullAI = java_lazy("org.allbinary.game.ag.ai.NullAI")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -26,17 +77,29 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local NullAIFactory = {}
+-- class table NullAIFactory is declared before the requires
 NullAIFactory.__index = NullAIFactory
 NullAIFactory.className = "NullAIFactory"
+NullAIFactory.javaClassName = "org.allbinary.game.ag.ai.NullAIFactory"
+NullAIFactory.java_implements = " ArtificialIntelligenceInterfaceFactoryInterface "
+NullAIFactory.java_interfaces = function() return {ArtificialIntelligenceInterfaceFactoryInterface} end
+
+function NullAIFactory._jinit(self)
+    return self
+end
 
 function NullAIFactory.new()
-    local self = setmetatable({}, NullAIFactory)
-    return self
+    return NullAIFactory._jinit(setmetatable({}, NullAIFactory))
 end
 
 
@@ -45,7 +108,6 @@ function NullAIFactory:getInstance(hashtable, ownerLayerInterface, gameInput)
 end
 
 
--- Java overloaded method: Lua keeps the last definition
 function NullAIFactory.getInstance()
         return NullAIFactory.NULL_AI
 end

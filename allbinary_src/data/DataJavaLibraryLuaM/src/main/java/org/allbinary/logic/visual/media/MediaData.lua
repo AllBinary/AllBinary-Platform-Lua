@@ -13,8 +13,25 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.visual.media
 
--- local HashMap = require("java.util.HashMap")
-local StdUtil = require("org.allbinary.logic.StdUtil")
+local MediaData = {}
+package.loaded["org.allbinary.logic.visual.media.MediaData"] = MediaData
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local MediaDataFactory = java_lazy("org.allbinary.logic.visual.media.MediaDataFactory")
+local MediaTypeData = java_lazy("org.allbinary.logic.visual.media.MediaTypeData")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -36,34 +53,46 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local MediaData = {}
+-- class table MediaData is declared before the requires
 MediaData.__index = MediaData
 MediaData.className = "MediaData"
+MediaData.javaClassName = "org.allbinary.logic.visual.media.MediaData"
 
 function MediaData:_init_fields()
-    self.name = nil
-    self.type = nil
-    self.extension = nil
+    if self.name_f == nil then self.name_f = nil end
+    if self.type == nil then self.type = nil end
+    if self.extension == nil then self.extension = nil end
 end
 
 
-function MediaData.new(a_Name)
-    local self = setmetatable({}, MediaData)
-    self:_init_fields()
-        self.name = a_Name
-        self.extension = "." .. self.name
+function MediaData._jinit(self, a_Name)
+    MediaData._init_fields(self)
+        self.name_f = a_Name
+        self.extension = "." .. self.name_f
         self.type = MediaTypeData.getInstance().NOT_RESIZABLE_MEDIA
         MediaData.hashMap:put(a_Name, self)
     return self
 end
 
+function MediaData.new(...)
+    local self = setmetatable({}, MediaData)
+    MediaData._jinit(self, ...)
+    return self
+end
+
 
 function MediaData:getName()
-        return self.name
+        return self.name_f
 end
 
 
@@ -97,7 +126,7 @@ function MediaData.get(a_Name)
         if mediaData ~= nil then
             return mediaData
         else
-            error(java_exception("Exception", "No Such MediaData"), 0)
+            error(require("java.lang.Exception").new("No Such MediaData"), 0)
         end
 end
 

@@ -13,6 +13,22 @@
 -- Generated Code Do Not Modify
 -- package org.osgi.framework
 
+local NullServiceReferenceFactory = {}
+package.loaded["org.osgi.framework.NullServiceReferenceFactory"] = NullServiceReferenceFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local NullServiceReference = java_lazy("org.osgi.framework.NullServiceReference")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -21,30 +37,40 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local NullServiceReferenceFactory = {}
+-- class table NullServiceReferenceFactory is declared before the requires
 NullServiceReferenceFactory.__index = NullServiceReferenceFactory
 NullServiceReferenceFactory.className = "NullServiceReferenceFactory"
+NullServiceReferenceFactory.javaClassName = "org.osgi.framework.NullServiceReferenceFactory"
 
 function NullServiceReferenceFactory:_init_fields()
     self.NULL_SERVICE_REFERENCE = NullServiceReference.new()
 end
 
-function NullServiceReferenceFactory.new()
-    local self = setmetatable({}, NullServiceReferenceFactory)
-    self:_init_fields()
+function NullServiceReferenceFactory._jinit(self)
+    NullServiceReferenceFactory._init_fields(self)
     return self
+end
+
+function NullServiceReferenceFactory.new()
+    return NullServiceReferenceFactory._jinit(setmetatable({}, NullServiceReferenceFactory))
 end
 
 
 function NullServiceReferenceFactory.getInstance()
-        return NullServiceReferenceFactory.instance
+        return NullServiceReferenceFactory.instance_f
 end
 
-NullServiceReferenceFactory.instance = NullServiceReferenceFactory.new()
+NullServiceReferenceFactory.instance_f = NullServiceReferenceFactory.new()
 
 return NullServiceReferenceFactory
 

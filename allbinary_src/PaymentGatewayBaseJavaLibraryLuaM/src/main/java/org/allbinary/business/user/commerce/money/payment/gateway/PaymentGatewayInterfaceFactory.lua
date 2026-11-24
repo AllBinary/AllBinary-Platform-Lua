@@ -13,15 +13,67 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.user.commerce.money.payment.gateway
 
--- local HashMap = require("java.util.HashMap")
+local PaymentGatewayInterfaceFactory = {}
+package.loaded["org.allbinary.business.user.commerce.money.payment.gateway.PaymentGatewayInterfaceFactory"] = PaymentGatewayInterfaceFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
 -- local HttpServletRequest = require("javax.servlet.http.HttpServletRequest")
-local BasicPaymentType = require("org.allbinary.business.user.commerce.money.payment.types.BasicPaymentType")
-local BasicPaymentTypeUtil = require("org.allbinary.business.user.commerce.money.payment.types.BasicPaymentTypeUtil")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local RequestParams = require("org.allbinary.logic.communication.http.request.RequestParams")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local BasicPaymentType = java_lazy("org.allbinary.business.user.commerce.money.payment.types.BasicPaymentType")
+local BasicPaymentTypeUtil = java_lazy("org.allbinary.business.user.commerce.money.payment.types.BasicPaymentTypeUtil")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local RequestParams = java_lazy("org.allbinary.logic.communication.http.request.RequestParams")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local PaymentGatewayInterfaceFactoryInterface = require("org.allbinary.business.user.commerce.money.payment.gateway.PaymentGatewayInterfaceFactoryInterface")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -30,48 +82,63 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local PaymentGatewayInterfaceFactory = {}
+-- class table PaymentGatewayInterfaceFactory is declared before the requires
 PaymentGatewayInterfaceFactory.__index = PaymentGatewayInterfaceFactory
 PaymentGatewayInterfaceFactory.className = "PaymentGatewayInterfaceFactory"
+PaymentGatewayInterfaceFactory.javaClassName = "org.allbinary.business.user.commerce.money.payment.gateway.PaymentGatewayInterfaceFactory"
+PaymentGatewayInterfaceFactory.java_implements = " PaymentGatewayInterfaceFactoryInterface "
+PaymentGatewayInterfaceFactory.java_interfaces = function() return {PaymentGatewayInterfaceFactoryInterface} end
 
 function PaymentGatewayInterfaceFactory:_init_fields()
     self.logUtil = LogUtil.getInstance()
 end
 
 
-function PaymentGatewayInterfaceFactory.new()
+function PaymentGatewayInterfaceFactory._jinit(self)
+    PaymentGatewayInterfaceFactory._init_fields(self)
+    return self
+end
+
+function PaymentGatewayInterfaceFactory.new(...)
     local self = setmetatable({}, PaymentGatewayInterfaceFactory)
-    self:_init_fields()
+    PaymentGatewayInterfaceFactory._jinit(self, ...)
     return self
 end
 
 
 -- throws Exception
-function PaymentGatewayInterfaceFactory:getInstance(httpServletRequest)
+function PaymentGatewayInterfaceFactory:getInstance_j1_1(httpServletRequest)
         local commonStrings = CommonStrings.getInstance()
-        local try_ok, try_error = pcall(function()
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().PAYMENT) then
+        local try_ok, try_error, try_value = pcall(function()
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PAYMENT) then
                 self.logUtil:putF("Getting", self, commonStrings.GET_INSTANCE)
             end
-            return self:getInstance(RequestParams.new(httpServletRequest):toHashMap())
+            do return "__jreturn", self:getInstance(RequestParams.new(httpServletRequest):toHashMap()) end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().PAYMENTERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PAYMENTERROR) then
                 self.logUtil:put(commonStrings.EXCEPTION, self, "getInstance(HttpServletRequest)", e)
             end
             error(e, 0)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
 -- throws Exception
--- Java overloaded method: Lua keeps the last definition
-function PaymentGatewayInterfaceFactory:getInstance(paymentType)
+function PaymentGatewayInterfaceFactory:getInstance_j1_2(paymentType)
         local hashMap = StdUtil.getInstance():createHashMap()
         hashMap:put(tostring(PaymentGatewayData.NAME), paymentType:getName())
         return self:getInstance(hashMap)
@@ -79,25 +146,38 @@ end
 
 
 -- throws Exception
--- Java overloaded method: Lua keeps the last definition
-function PaymentGatewayInterfaceFactory:getInstance(hashMap)
+function PaymentGatewayInterfaceFactory:getInstance_j1_3(hashMap)
         local commonStrings = CommonStrings.getInstance()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local gatewayName = hashMap:get(tostring(PaymentGatewayData.NAME))
             local paymentType = BasicPaymentTypeUtil.getInstance():get(gatewayName)
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().PAYMENT) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PAYMENT) then
                 self.logUtil:putF("Getting PaymentGatewayInterface for PaymentType: " .. paymentType:getName() .. " with: " .. tostring(hashMap), self, commonStrings.GET_INSTANCE)
             end
             local paymentGatewayInterfaceFactoryInterface = paymentType:getPaymentGatewayInterfaceFactoryInterface()
-            return paymentGatewayInterfaceFactoryInterface:getInstance(hashMap)
+            do return "__jreturn", paymentGatewayInterfaceFactoryInterface:getInstance(hashMap) end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().PAYMENTERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PAYMENTERROR) then
                 self.logUtil:put(commonStrings.EXCEPTION, self, commonStrings.GET_INSTANCE, e)
             end
             error(e, 0)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
+end
+function PaymentGatewayInterfaceFactory:getInstance(...)
+    local count = select("#", ...)
+    if count == 1 then return self:getInstance_j1(...) end
+    error("No method getInstance takes " .. count .. " arguments")
+end
+PaymentGatewayInterfaceFactory.getInstance__jdispatcher = PaymentGatewayInterfaceFactory.getInstance
+function PaymentGatewayInterfaceFactory:getInstance_j1(...)
+    local java_a1 = ...
+    if true and (java_a1 == nil or java_is(java_a1, "HttpServletRequest")) then return PaymentGatewayInterfaceFactory.getInstance_j1_1(self, ...) end
+    if true and (java_a1 == nil or java_is(java_a1, "BasicPaymentType")) then return PaymentGatewayInterfaceFactory.getInstance_j1_2(self, ...) end
+    return PaymentGatewayInterfaceFactory.getInstance_j1_3(self, ...)
 end
 
 return PaymentGatewayInterfaceFactory

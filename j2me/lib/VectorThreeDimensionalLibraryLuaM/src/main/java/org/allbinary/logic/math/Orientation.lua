@@ -13,7 +13,22 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.math
 
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
+local Orientation = {}
+package.loaded["org.allbinary.logic.math.Orientation"] = Orientation
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -22,13 +37,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local Orientation = {}
+-- class table Orientation is declared before the requires
 Orientation.__index = Orientation
 Orientation.className = "Orientation"
+Orientation.javaClassName = "org.allbinary.logic.math.Orientation"
 
 function Orientation:_init_fields()
     self.yaw = BasicDecimal.new(0)
@@ -45,12 +67,17 @@ function Orientation.getInstance(yaw, pitch, roll)
 end
 
 
-function Orientation.new(yaw, pitch, roll)
-    local self = setmetatable({}, Orientation)
-    self:_init_fields()
+function Orientation._jinit(self, yaw, pitch, roll)
+    Orientation._init_fields(self)
         self.yaw:setint(yaw)
         self.pitch:setint(pitch)
         self.roll:setint(roll)
+    return self
+end
+
+function Orientation.new(...)
+    local self = setmetatable({}, Orientation)
+    Orientation._jinit(self, ...)
     return self
 end
 

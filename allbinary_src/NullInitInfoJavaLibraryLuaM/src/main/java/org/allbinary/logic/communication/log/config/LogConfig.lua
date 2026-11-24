@@ -13,13 +13,63 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.communication.log.config
 
-local EntryData = require("org.allbinary.business.entry.EntryData")
-local DomNodeHelper = require("org.allbinary.data.tree.dom.DomNodeHelper")
-local DomSearchHelper = require("org.allbinary.data.tree.dom.DomSearchHelper")
-local BooleanUtil = require("org.allbinary.logic.java.bool.BooleanUtil")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local Node = require("org.w3c.dom.Node")
+local LogConfig = {}
+package.loaded["org.allbinary.logic.communication.log.config.LogConfig"] = LogConfig
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local EntryData = java_lazy("org.allbinary.business.entry.EntryData")
+local DomNodeHelper = java_lazy("org.allbinary.data.tree.dom.DomNodeHelper")
+local DomSearchHelper = java_lazy("org.allbinary.data.tree.dom.DomSearchHelper")
+local BooleanUtil = java_lazy("org.allbinary.logic.java.bool.BooleanUtil")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local Node = java_lazy("org.w3c.dom.Node")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -28,35 +78,48 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local LogConfig = {}
+-- class table LogConfig is declared before the requires
 LogConfig.__index = LogConfig
 LogConfig.className = "LogConfig"
+LogConfig.javaClassName = "org.allbinary.logic.communication.log.config.LogConfig"
 
 function LogConfig:_init_fields()
-    self.isEnabled = nil
-    self.name = nil
-    self.description = nil
-    self.path = nil
-    self.fileName = nil
+    if self.isEnabled_f == nil then self.isEnabled_f = nil end
+    if self.name_f == nil then self.name_f = nil end
+    if self.description == nil then self.description = nil end
+    if self.path == nil then self.path = nil end
+    if self.fileName == nil then self.fileName = nil end
+end
+
+function LogConfig._jinit(self, ...)
+    local count = select("#", ...)
+    if count == 4 then return LogConfig._new4(self, ...)
+    elseif count == 1 then return LogConfig._new1(self, ...)
+    end
+    error("No constructor of LogConfig takes " .. count .. " arguments")
 end
 
 function LogConfig.new(...)
-    local count = select("#", ...)
-    if count == 4 then return LogConfig._new4(...)
-    elseif count == 1 then return LogConfig._new1(...)
-    end
+    local self = setmetatable({}, LogConfig)
+    LogConfig._jinit(self, ...)
+    return self
 end
 
 
-function LogConfig._new4(aName, aDescription, aPath, aFileName)
-    local self = setmetatable({}, LogConfig)
-    self:_init_fields()
-        self.isEnabled = false
-        self.name = aName
+function LogConfig._new4(self, aName, aDescription, aPath, aFileName)
+    LogConfig._init_fields(self)
+        self.isEnabled_f = false
+        self.name_f = aName
         self.description = aDescription
         self.path = aPath
         self.fileName = aFileName
@@ -64,15 +127,14 @@ function LogConfig._new4(aName, aDescription, aPath, aFileName)
 end
 
 
-function LogConfig._new1(node)
-    local self = setmetatable({}, LogConfig)
-    self:_init_fields()
+function LogConfig._new1(self, node)
+    LogConfig._init_fields(self)
         local enabledValueNode = DomSearchHelper.getNode(EntryData.getInstance().ENABLE, node:getChildNodes())
         local isEnabledString = DomNodeHelper.getTextNodeValue(enabledValueNode)
-        self.isEnabled = BooleanUtil.getInstance():getFromString(isEnabledString)
+        self.isEnabled_f = BooleanUtil.getInstance():getFromString(isEnabledString)
         local logConfigData = LogConfigData.getInstance()
         local nameValueNode = DomSearchHelper.getNode(logConfigData.NAME, node:getChildNodes())
-        self.name = DomNodeHelper.getTextNodeValue(nameValueNode)
+        self.name_f = DomNodeHelper.getTextNodeValue(nameValueNode)
         local descriptionValueNode = DomSearchHelper.getNode(logConfigData.DESCRIPTION, node:getChildNodes())
         self.description = DomNodeHelper.getTextNodeValue(descriptionValueNode)
         local fileValueNode = DomSearchHelper.getNode(logConfigData.FILE, node:getChildNodes())
@@ -82,22 +144,22 @@ end
 
 
 function LogConfig:getName()
-        return self.name
+        return self.name_f
 end
 
 
 function LogConfig:isEnabled()
-        return self.isEnabled
+        return self.isEnabled_f
 end
 
 
 function LogConfig:enable()
-        self.isEnabled = true
+        self.isEnabled_f = true
 end
 
 
 function LogConfig:disable()
-        self.isEnabled = false
+        self.isEnabled_f = false
 end
 
 
@@ -112,7 +174,7 @@ end
 
 
 function LogConfig:setName(value)
-        self.name = value
+        self.name_f = value
 end
 
 

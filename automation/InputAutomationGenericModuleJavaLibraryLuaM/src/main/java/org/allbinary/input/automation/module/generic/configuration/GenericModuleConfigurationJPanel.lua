@@ -13,18 +13,126 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.input.automation.module.generic.configuration
 
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local GenericProfile = require("org.allbinary.input.automation.module.generic.configuration.profile.GenericProfile")
-local GenericProfileDataWorkerType = require("org.allbinary.input.automation.module.generic.configuration.profile.GenericProfileDataWorkerType")
-local GenericProfiles = require("org.allbinary.input.automation.module.generic.configuration.profile.GenericProfiles")
-local GenericProfileActions = require("org.allbinary.input.automation.module.generic.configuration.profile.actions.GenericProfileActions")
-local GenericProfileActionsJPanel = require("org.allbinary.input.automation.module.generic.configuration.profile.actions.GenericProfileActionsJPanel")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local JPanel = require("org.allbinary.input.automation.module.generic.configuration.JPanel")
+local GenericModuleConfigurationJPanel = {}
+package.loaded["org.allbinary.input.automation.module.generic.configuration.GenericModuleConfigurationJPanel"] = GenericModuleConfigurationJPanel
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local GenericProfile = java_lazy("org.allbinary.input.automation.module.generic.configuration.profile.GenericProfile")
+local GenericProfileDataWorkerType = java_lazy("org.allbinary.input.automation.module.generic.configuration.profile.GenericProfileDataWorkerType")
+local GenericProfiles = java_lazy("org.allbinary.input.automation.module.generic.configuration.profile.GenericProfiles")
+local GenericProfileActions = java_lazy("org.allbinary.input.automation.module.generic.configuration.profile.actions.GenericProfileActions")
+local GenericProfileActionsJPanel = java_lazy("org.allbinary.input.automation.module.generic.configuration.profile.actions.GenericProfileActionsJPanel")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+-- local Dimension = require("java.awt.Dimension")
+-- local GridLayout = require("java.awt.GridLayout")
+-- local Insets = require("java.awt.Insets")
+-- local ActionEvent = require("java.awt.event.ActionEvent")
+-- local ActionListener = require("java.awt.event.ActionListener")
+-- local BorderFactory = require("javax.swing.BorderFactory")
+-- local ButtonGroup = require("javax.swing.ButtonGroup")
+-- local GroupLayout = require("javax.swing.GroupLayout")
+-- local JButton = require("javax.swing.JButton")
+-- local JCheckBox = require("javax.swing.JCheckBox")
+-- local JDialog = require("javax.swing.JDialog")
+-- local JLabel = require("javax.swing.JLabel")
+-- local JList = require("javax.swing.JList")
+-- local JPanel = require("javax.swing.JPanel")
+-- local JRadioButton = require("javax.swing.JRadioButton")
+-- local JScrollPane = require("javax.swing.JScrollPane")
+-- local JTabbedPane = require("javax.swing.JTabbedPane")
+-- local JTextField = require("javax.swing.JTextField")
+-- local LayoutStyle = require("javax.swing.LayoutStyle")
+-- local ListSelectionEvent = require("javax.swing.event.ListSelectionEvent")
+-- local ListSelectionListener = require("javax.swing.event.ListSelectionListener")
 local GenericModuleConfigurationInterface = require("org.allbinary.input.automation.module.generic.configuration.GenericModuleConfigurationInterface")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -33,50 +141,65 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local GenericModuleConfigurationJPanel = {}
+-- class table GenericModuleConfigurationJPanel is declared before the requires
 GenericModuleConfigurationJPanel.__index = GenericModuleConfigurationJPanel
 GenericModuleConfigurationJPanel.className = "GenericModuleConfigurationJPanel"
+GenericModuleConfigurationJPanel.javaClassName = "org.allbinary.input.automation.module.generic.configuration.GenericModuleConfigurationJPanel"
 setmetatable(GenericModuleConfigurationJPanel, {__index = JPanel})
+GenericModuleConfigurationJPanel.java_implements = " GenericModuleConfigurationInterface "
+GenericModuleConfigurationJPanel.java_interfaces = function() return {GenericModuleConfigurationInterface} end
 
 function GenericModuleConfigurationJPanel:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.stringUtil = StringUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
-    self.genericProfiles = nil
-    self.selectedGenericProfile = nil
-    self.blankGenericProfileActionsJPanel = nil
-    self.buttonGroup2 = nil
-    self.captureComparisonJCheckBox = nil
-    self.captureMotionAnalysisJCheckBox = nil
-    self.deleteProfileJButton = nil
-    self.genericJTabbedPane = nil
-    self.genericProfilesJList = nil
-    self.genericProfilesJPanel = nil
-    self.genericProfilesJScrollPane = nil
-    self.jLabel1 = nil
-    self.jLabel2 = nil
-    self.jLabel3 = nil
-    self.jPanel1 = nil
-    self.newProfileJButton = nil
-    self.newProfileJDialog = nil
-    self.newProfileNameJLabel = nil
-    self.newProfileNameJTextField = nil
-    self.okNewProfileJButton = nil
-    self.savedCaptureJRadioButton = nil
-    self.screenCaptureJRadioButton = nil
+    if self.genericProfiles == nil then self.genericProfiles = nil end
+    if self.selectedGenericProfile == nil then self.selectedGenericProfile = nil end
+    if self.blankGenericProfileActionsJPanel == nil then self.blankGenericProfileActionsJPanel = nil end
+    if self.buttonGroup2 == nil then self.buttonGroup2 = nil end
+    if self.captureComparisonJCheckBox == nil then self.captureComparisonJCheckBox = nil end
+    if self.captureMotionAnalysisJCheckBox == nil then self.captureMotionAnalysisJCheckBox = nil end
+    if self.deleteProfileJButton == nil then self.deleteProfileJButton = nil end
+    if self.genericJTabbedPane == nil then self.genericJTabbedPane = nil end
+    if self.genericProfilesJList == nil then self.genericProfilesJList = nil end
+    if self.genericProfilesJPanel == nil then self.genericProfilesJPanel = nil end
+    if self.genericProfilesJScrollPane == nil then self.genericProfilesJScrollPane = nil end
+    if self.jLabel1 == nil then self.jLabel1 = nil end
+    if self.jLabel2 == nil then self.jLabel2 = nil end
+    if self.jLabel3 == nil then self.jLabel3 = nil end
+    if self.jPanel1 == nil then self.jPanel1 = nil end
+    if self.newProfileJButton == nil then self.newProfileJButton = nil end
+    if self.newProfileJDialog == nil then self.newProfileJDialog = nil end
+    if self.newProfileNameJLabel == nil then self.newProfileNameJLabel = nil end
+    if self.newProfileNameJTextField == nil then self.newProfileNameJTextField = nil end
+    if self.okNewProfileJButton == nil then self.okNewProfileJButton = nil end
+    if self.savedCaptureJRadioButton == nil then self.savedCaptureJRadioButton = nil end
+    if self.screenCaptureJRadioButton == nil then self.screenCaptureJRadioButton = nil end
 end
 
 
-function GenericModuleConfigurationJPanel.new()
-    local self = setmetatable(JPanel.new(), GenericModuleConfigurationJPanel)
-    self:_init_fields()
+function GenericModuleConfigurationJPanel._jinit(self)
+    java_super_init(JPanel, self)
+    GenericModuleConfigurationJPanel._init_fields(self)
         self:initComponents()
         self:setGenericProfiles(GenericProfiles.new(GenericProfiles.DEFAULT_FILE))
         self:selectFirstElement()
+    return self
+end
+
+function GenericModuleConfigurationJPanel.new(...)
+    local self = setmetatable({}, GenericModuleConfigurationJPanel)
+    GenericModuleConfigurationJPanel._jinit(self, ...)
     return self
 end
 
@@ -112,13 +235,14 @@ function GenericModuleConfigurationJPanel:initComponents()
             function o:actionPerformed(evt)
                 self:okNewProfileJButtonActionPerformed(evt)
             end
+            java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.newProfileNameJLabel:setText("New Profile Name")
         local newProfileJDialogLayout = GroupLayout.new(self.newProfileJDialog:getContentPane())
         self.newProfileJDialog:getContentPane():setLayout(newProfileJDialogLayout)
-        newProfileJDialogLayout:setHorizontalGroup(newProfileJDialogLayout:createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING):addGroup(newProfileJDialogLayout:createSequentialGroup():addGroup(newProfileJDialogLayout:createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING):addGroup(newProfileJDialogLayout:createSequentialGroup():addGap(80, 80, 80):addComponent(self.newProfileNameJLabel)):addGroup(newProfileJDialogLayout:createSequentialGroup():addGap(30, 30, 30):addComponent(self.newProfileNameJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)):addGroup(newProfileJDialogLayout:createSequentialGroup():addGap(100, 100, 100):addComponent(self.okNewProfileJButton))):addContainerGap(35, Short.MAX_VALUE)))
-        newProfileJDialogLayout:setVerticalGroup(newProfileJDialogLayout:createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING):addGroup(newProfileJDialogLayout:createSequentialGroup():addGap(10, 10, 10):addComponent(self.newProfileNameJLabel):addGap(16, 16, 16):addComponent(self.newProfileNameJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE):addGap(20, 20, 20):addComponent(self.okNewProfileJButton)))
+        newProfileJDialogLayout:setHorizontalGroup(newProfileJDialogLayout:createParallelGroup(GroupLayout.Alignment.LEADING):addGroup(newProfileJDialogLayout:createSequentialGroup():addGroup(newProfileJDialogLayout:createParallelGroup(GroupLayout.Alignment.LEADING):addGroup(newProfileJDialogLayout:createSequentialGroup():addGap(80, 80, 80):addComponent(self.newProfileNameJLabel)):addGroup(newProfileJDialogLayout:createSequentialGroup():addGap(30, 30, 30):addComponent(self.newProfileNameJTextField, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE)):addGroup(newProfileJDialogLayout:createSequentialGroup():addGap(100, 100, 100):addComponent(self.okNewProfileJButton))):addContainerGap(35, require("java.lang.Short").MAX_VALUE)))
+        newProfileJDialogLayout:setVerticalGroup(newProfileJDialogLayout:createParallelGroup(GroupLayout.Alignment.LEADING):addGroup(newProfileJDialogLayout:createSequentialGroup():addGap(10, 10, 10):addComponent(self.newProfileNameJLabel):addGap(16, 16, 16):addComponent(self.newProfileNameJTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE):addGap(20, 20, 20):addComponent(self.okNewProfileJButton)))
         self:setLayout(GridLayout.new(1, 0))
         self:setMinimumSize(Dimension.new(400, 300))
         self:setPreferredSize(Dimension.new(700, 700))
@@ -133,6 +257,7 @@ function GenericModuleConfigurationJPanel:initComponents()
             function o:valueChanged(evt)
                 self:genericProfilesJListValueChanged(evt)
             end
+            java_overload(o, "valueChanged", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ListSelectionEvent")) end)
             return o
         end)())
         self.genericProfilesJScrollPane:setViewportView(self.genericProfilesJList)
@@ -145,6 +270,7 @@ function GenericModuleConfigurationJPanel:initComponents()
             function o:actionPerformed(evt)
                 self:newProfileJButtonActionPerformed(evt)
             end
+            java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.deleteProfileJButton:setText("Delete")
@@ -156,12 +282,13 @@ function GenericModuleConfigurationJPanel:initComponents()
             function o:actionPerformed(evt)
                 self:deleteProfileJButtonActionPerformed(evt)
             end
+            java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.jPanel1:setPreferredSize(Dimension.new(1000, 100))
         self.screenCaptureJRadioButton:setText("Screen Captures")
         self.screenCaptureJRadioButton:setToolTipText("Records the screen into memory for logical processing")
-        self.screenCaptureJRadioButton:setBorder(javax.swing.BorderFactory:createEmptyBorder(0, 0, 0, 0))
+        self.screenCaptureJRadioButton:setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0))
         self.screenCaptureJRadioButton:setMargin(Insets.new(0, 0, 0, 0))
         self.screenCaptureJRadioButton:addActionListener((function()
             local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
@@ -170,13 +297,14 @@ function GenericModuleConfigurationJPanel:initComponents()
             function o:actionPerformed(evt)
                 self:screenCaptureJRadioButtonActionPerformed(evt)
             end
+            java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.jLabel1:setText("Profile Options")
         self.jLabel2:setText("Process From:")
         self.savedCaptureJRadioButton:setText("Saved Images")
         self.savedCaptureJRadioButton:setToolTipText("Loads images from files for logical processing.  Usually for debugging your profile actions")
-        self.savedCaptureJRadioButton:setBorder(javax.swing.BorderFactory:createEmptyBorder(0, 0, 0, 0))
+        self.savedCaptureJRadioButton:setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0))
         self.savedCaptureJRadioButton:setMargin(Insets.new(0, 0, 0, 0))
         self.savedCaptureJRadioButton:addActionListener((function()
             local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
@@ -185,11 +313,12 @@ function GenericModuleConfigurationJPanel:initComponents()
             function o:actionPerformed(evt)
                 self:savedCaptureJRadioButtonActionPerformed(evt)
             end
+            java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.captureMotionAnalysisJCheckBox:setText("Motion Analysis")
         self.captureMotionAnalysisJCheckBox:setToolTipText("Uses image comparison and contraints to locate moving objects")
-        self.captureMotionAnalysisJCheckBox:setBorder(javax.swing.BorderFactory:createEmptyBorder(0, 0, 0, 0))
+        self.captureMotionAnalysisJCheckBox:setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0))
         self.captureMotionAnalysisJCheckBox:setMargin(Insets.new(0, 0, 0, 0))
         self.captureMotionAnalysisJCheckBox:addActionListener((function()
             local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
@@ -198,11 +327,12 @@ function GenericModuleConfigurationJPanel:initComponents()
             function o:actionPerformed(evt)
                 self:captureMotionAnalysisJCheckBoxActionPerformed(evt)
             end
+            java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.captureComparisonJCheckBox:setText("Comparison")
         self.captureComparisonJCheckBox:setToolTipText("Compares the last two input images for multi image logic")
-        self.captureComparisonJCheckBox:setBorder(javax.swing.BorderFactory:createEmptyBorder(0, 0, 0, 0))
+        self.captureComparisonJCheckBox:setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0))
         self.captureComparisonJCheckBox:setMargin(Insets.new(0, 0, 0, 0))
         self.captureComparisonJCheckBox:addActionListener((function()
             local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
@@ -211,30 +341,32 @@ function GenericModuleConfigurationJPanel:initComponents()
             function o:actionPerformed(evt)
                 self:captureComparisonJCheckBoxActionPerformed(evt)
             end
+            java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.jLabel3:setText("Image Processing:")
         self.jLabel3:setToolTipText("Turns on/off various extended image processing")
         local jPanel1Layout = GroupLayout.new(self.jPanel1)
         self.jPanel1:setLayout(jPanel1Layout)
-        jPanel1Layout:setHorizontalGroup(jPanel1Layout:createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING):addGroup(jPanel1Layout:createSequentialGroup():addGroup(jPanel1Layout:createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING):addComponent(self.screenCaptureJRadioButton):addComponent(self.jLabel1):addComponent(self.jLabel2):addComponent(self.savedCaptureJRadioButton):addComponent(self.captureMotionAnalysisJCheckBox):addComponent(self.captureComparisonJCheckBox):addComponent(self.jLabel3)):addContainerGap(22, Short.MAX_VALUE)))
-        jPanel1Layout:setVerticalGroup(jPanel1Layout:createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING):addGroup(jPanel1Layout:createSequentialGroup():addComponent(self.jLabel1):addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED):addComponent(self.jLabel2):addGap(7, 7, 7):addComponent(self.screenCaptureJRadioButton):addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED):addComponent(self.savedCaptureJRadioButton):addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED):addComponent(self.jLabel3):addGap(7, 7, 7):addComponent(self.captureComparisonJCheckBox):addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED):addComponent(self.captureMotionAnalysisJCheckBox):addContainerGap(106, Short.MAX_VALUE)))
+        jPanel1Layout:setHorizontalGroup(jPanel1Layout:createParallelGroup(GroupLayout.Alignment.LEADING):addGroup(jPanel1Layout:createSequentialGroup():addGroup(jPanel1Layout:createParallelGroup(GroupLayout.Alignment.LEADING):addComponent(self.screenCaptureJRadioButton):addComponent(self.jLabel1):addComponent(self.jLabel2):addComponent(self.savedCaptureJRadioButton):addComponent(self.captureMotionAnalysisJCheckBox):addComponent(self.captureComparisonJCheckBox):addComponent(self.jLabel3)):addContainerGap(22, require("java.lang.Short").MAX_VALUE)))
+        jPanel1Layout:setVerticalGroup(jPanel1Layout:createParallelGroup(GroupLayout.Alignment.LEADING):addGroup(jPanel1Layout:createSequentialGroup():addComponent(self.jLabel1):addPreferredGap(LayoutStyle.ComponentPlacement.RELATED):addComponent(self.jLabel2):addGap(7, 7, 7):addComponent(self.screenCaptureJRadioButton):addPreferredGap(LayoutStyle.ComponentPlacement.RELATED):addComponent(self.savedCaptureJRadioButton):addPreferredGap(LayoutStyle.ComponentPlacement.RELATED):addComponent(self.jLabel3):addGap(7, 7, 7):addComponent(self.captureComparisonJCheckBox):addPreferredGap(LayoutStyle.ComponentPlacement.RELATED):addComponent(self.captureMotionAnalysisJCheckBox):addContainerGap(106, require("java.lang.Short").MAX_VALUE)))
         local genericProfilesJPanelLayout = GroupLayout.new(self.genericProfilesJPanel)
         self.genericProfilesJPanel:setLayout(genericProfilesJPanelLayout)
-        genericProfilesJPanelLayout:setHorizontalGroup(genericProfilesJPanelLayout:createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING):addGroup(genericProfilesJPanelLayout:createSequentialGroup():addGroup(genericProfilesJPanelLayout:createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING):addGroup(genericProfilesJPanelLayout:createSequentialGroup():addComponent(self.newProfileJButton):addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED):addComponent(self.deleteProfileJButton)):addGroup(genericProfilesJPanelLayout:createSequentialGroup():addComponent(self.genericProfilesJScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE):addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED):addComponent(self.jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE))):addContainerGap()))
-        genericProfilesJPanelLayout:setVerticalGroup(genericProfilesJPanelLayout:createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING):addGroup(genericProfilesJPanelLayout:createSequentialGroup():addGroup(genericProfilesJPanelLayout:createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE):addComponent(self.newProfileJButton):addComponent(self.deleteProfileJButton)):addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED):addGroup(genericProfilesJPanelLayout:createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING):addComponent(self.jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE):addComponent(self.genericProfilesJScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE))))
+        genericProfilesJPanelLayout:setHorizontalGroup(genericProfilesJPanelLayout:createParallelGroup(GroupLayout.Alignment.LEADING):addGroup(genericProfilesJPanelLayout:createSequentialGroup():addGroup(genericProfilesJPanelLayout:createParallelGroup(GroupLayout.Alignment.LEADING):addGroup(genericProfilesJPanelLayout:createSequentialGroup():addComponent(self.newProfileJButton):addPreferredGap(LayoutStyle.ComponentPlacement.RELATED):addComponent(self.deleteProfileJButton)):addGroup(genericProfilesJPanelLayout:createSequentialGroup():addComponent(self.genericProfilesJScrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE):addPreferredGap(LayoutStyle.ComponentPlacement.RELATED):addComponent(self.jPanel1, GroupLayout.DEFAULT_SIZE, 119, require("java.lang.Short").MAX_VALUE))):addContainerGap()))
+        genericProfilesJPanelLayout:setVerticalGroup(genericProfilesJPanelLayout:createParallelGroup(GroupLayout.Alignment.LEADING):addGroup(genericProfilesJPanelLayout:createSequentialGroup():addGroup(genericProfilesJPanelLayout:createParallelGroup(GroupLayout.Alignment.BASELINE):addComponent(self.newProfileJButton):addComponent(self.deleteProfileJButton)):addPreferredGap(LayoutStyle.ComponentPlacement.RELATED):addGroup(genericProfilesJPanelLayout:createParallelGroup(GroupLayout.Alignment.LEADING):addComponent(self.jPanel1, GroupLayout.DEFAULT_SIZE, 246, require("java.lang.Short").MAX_VALUE):addComponent(self.genericProfilesJScrollPane, GroupLayout.DEFAULT_SIZE, 246, require("java.lang.Short").MAX_VALUE))))
         self.genericJTabbedPane:addTab("Profiles", self.genericProfilesJPanel)
         local blankGenericProfileActionsJPanelLayout = GroupLayout.new(self.blankGenericProfileActionsJPanel)
         self.blankGenericProfileActionsJPanel:setLayout(blankGenericProfileActionsJPanelLayout)
-        blankGenericProfileActionsJPanelLayout:setHorizontalGroup(blankGenericProfileActionsJPanelLayout:createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING):addGap(0, 395, Short.MAX_VALUE))
-        blankGenericProfileActionsJPanelLayout:setVerticalGroup(blankGenericProfileActionsJPanelLayout:createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING):addGap(0, 275, Short.MAX_VALUE))
+        blankGenericProfileActionsJPanelLayout:setHorizontalGroup(blankGenericProfileActionsJPanelLayout:createParallelGroup(GroupLayout.Alignment.LEADING):addGap(0, 395, require("java.lang.Short").MAX_VALUE))
+        blankGenericProfileActionsJPanelLayout:setVerticalGroup(blankGenericProfileActionsJPanelLayout:createParallelGroup(GroupLayout.Alignment.LEADING):addGap(0, 275, require("java.lang.Short").MAX_VALUE))
         self.genericJTabbedPane:addTab("Actions", self.blankGenericProfileActionsJPanel)
         self:add(self.genericJTabbedPane)
 end
+java_overload(GenericModuleConfigurationJPanel, "initComponents", 0)
 
 
 function GenericModuleConfigurationJPanel:savedCaptureJRadioButtonActionPerformed(evt)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             if self.savedCaptureJRadioButton:isSelected() then
                 self.logUtil:putF("Selected", self, "savedCaptureJRadioButtonActionPerformed")
                 self:getSelectedGenericProfile():add(GenericProfileDataWorkerType.SAVED_CAPTURE)
@@ -245,13 +377,15 @@ function GenericModuleConfigurationJPanel:savedCaptureJRadioButtonActionPerforme
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put(self.commonStrings.EXCEPTION, self, "savedCaptureJRadioButtonActionPerformed", e)
         end
 end
+java_overload(GenericModuleConfigurationJPanel, "savedCaptureJRadioButtonActionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
 
 
 function GenericModuleConfigurationJPanel:screenCaptureJRadioButtonActionPerformed(evt)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             if self.screenCaptureJRadioButton:isSelected() then
                 self.logUtil:putF("Selected", self, "screenCaptureJRadioButtonActionPerformed")
                 self:getSelectedGenericProfile():add(GenericProfileDataWorkerType.SCREEN_CAPTURE)
@@ -262,13 +396,15 @@ function GenericModuleConfigurationJPanel:screenCaptureJRadioButtonActionPerform
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put(self.commonStrings.EXCEPTION, self, "screenCaptureJRadioButtonActionPerformed", e)
         end
 end
+java_overload(GenericModuleConfigurationJPanel, "screenCaptureJRadioButtonActionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
 
 
 function GenericModuleConfigurationJPanel:captureMotionAnalysisJCheckBoxActionPerformed(evt)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             if self.captureMotionAnalysisJCheckBox:isSelected() then
                 self:getSelectedGenericProfile():add(GenericProfileDataWorkerType.MOTION)
             else
@@ -278,13 +414,15 @@ function GenericModuleConfigurationJPanel:captureMotionAnalysisJCheckBoxActionPe
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put(self.commonStrings.EXCEPTION, self, "captureComparisonJCheckBoxActionPerformed", e)
         end
 end
+java_overload(GenericModuleConfigurationJPanel, "captureMotionAnalysisJCheckBoxActionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
 
 
 function GenericModuleConfigurationJPanel:captureComparisonJCheckBoxActionPerformed(evt)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             if self.captureComparisonJCheckBox:isSelected() then
                 self:getSelectedGenericProfile():add(GenericProfileDataWorkerType.COMPARISON)
             else
@@ -294,9 +432,11 @@ function GenericModuleConfigurationJPanel:captureComparisonJCheckBoxActionPerfor
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put(self.commonStrings.EXCEPTION, self, "captureComparisonJCheckBoxActionPerformed", e)
         end
 end
+java_overload(GenericModuleConfigurationJPanel, "captureComparisonJCheckBoxActionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
 
 
 -- throws Exception
@@ -309,14 +449,15 @@ function GenericModuleConfigurationJPanel:updateProfileUI(profileNameString)
             genericProfileActionsJPanel:setGenericProfileActions(self:getSelectedGenericProfile():getGenericProfileActions())
             genericProfileActionsJPanel:selectFirstElement()
             local layout = self:getBlankGenericProfileActionsJPanel():getLayout()
-            layout:setHorizontalGroup(layout:createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING):addGap(0, 395, Short.MAX_VALUE):addComponent(genericProfileActionsJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            layout:setVerticalGroup(layout:createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING):addGap(0, 256, Short.MAX_VALUE):addComponent(genericProfileActionsJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            layout:setHorizontalGroup(layout:createParallelGroup(GroupLayout.Alignment.LEADING):addGap(0, 395, require("java.lang.Short").MAX_VALUE):addComponent(genericProfileActionsJPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+            layout:setVerticalGroup(layout:createParallelGroup(GroupLayout.Alignment.LEADING):addGap(0, 256, require("java.lang.Short").MAX_VALUE):addComponent(genericProfileActionsJPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
             self:updateProfileOptions()
             self.logUtil:putF("Setting Configuration Profile JPanel", self, "updateProfileUI")
         else
             self.logUtil:putF("Null Configuration Profile", self, "updateProfileUI")
         end
 end
+java_overload(GenericModuleConfigurationJPanel, "updateProfileUI", 1, function(java_a1) return true and (java_a1 == nil or type(java_a1) == "string") end)
 
 
 -- throws Exception
@@ -327,6 +468,7 @@ function GenericModuleConfigurationJPanel:selectFirstElement()
             self:updateProfileUI(self.genericProfilesJList:getModel():getElementAt(0))
         end
 end
+java_overload(GenericModuleConfigurationJPanel, "selectFirstElement", 0)
 
 
 -- throws Exception
@@ -362,52 +504,61 @@ function GenericModuleConfigurationJPanel:updateProfileOptions()
         end
         self.logUtil:putF(self.commonStrings.END, self, "updateProfileOptions")
 end
+java_overload(GenericModuleConfigurationJPanel, "updateProfileOptions", 0)
 
 
 function GenericModuleConfigurationJPanel:getBlankGenericProfileActionsJPanel()
         return self.blankGenericProfileActionsJPanel
 end
+java_overload(GenericModuleConfigurationJPanel, "getBlankGenericProfileActionsJPanel", 0)
 
 
 function GenericModuleConfigurationJPanel:setBlankGenericProfileActionsJPanel(blankGenericProfileActionsJPanel)
         self.blankGenericProfileActionsJPanel = blankGenericProfileActionsJPanel
 end
+java_overload(GenericModuleConfigurationJPanel, "setBlankGenericProfileActionsJPanel", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "JPanel")) end)
 
 
 function GenericModuleConfigurationJPanel:getGenericProfiles()
         return self.genericProfiles
 end
+java_overload(GenericModuleConfigurationJPanel, "getGenericProfiles", 0)
 
 
 function GenericModuleConfigurationJPanel:setGenericProfiles(genericProfiles)
         self.genericProfiles = genericProfiles
 end
+java_overload(GenericModuleConfigurationJPanel, "setGenericProfiles", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "GenericProfiles")) end)
 
 
 function GenericModuleConfigurationJPanel:getSelectedGenericProfile()
         return self.selectedGenericProfile
 end
+java_overload(GenericModuleConfigurationJPanel, "getSelectedGenericProfile", 0)
 
 
 function GenericModuleConfigurationJPanel:setSelectedGenericProfile(selectedGenericProfile)
         self.selectedGenericProfile = selectedGenericProfile
 end
+java_overload(GenericModuleConfigurationJPanel, "setSelectedGenericProfile", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "GenericProfile")) end)
 
 
 function GenericModuleConfigurationJPanel:genericProfilesJListValueChanged(evt)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local profileNameString = self.genericProfilesJList:getSelectedValue()
             self:updateProfileUI(profileNameString)
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put(self.commonStrings.EXCEPTION, self, "genericProfilesJListValueChanged", e)
         end
 end
+java_overload(GenericModuleConfigurationJPanel, "genericProfilesJListValueChanged", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ListSelectionEvent")) end)
 
 
 function GenericModuleConfigurationJPanel:deleteProfileJButtonActionPerformed(evt)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local anyType = self.genericProfilesJList:getSelectedValues()
             for index = 0, (anyType.n or #anyType) - 1 do
                 local nextSelectedValueString = anyType[index + 1]
@@ -417,13 +568,15 @@ function GenericModuleConfigurationJPanel:deleteProfileJButtonActionPerformed(ev
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put(self.commonStrings.EXCEPTION, self, "deleteProfileJButtonActionPerformed", e)
         end
 end
+java_overload(GenericModuleConfigurationJPanel, "deleteProfileJButtonActionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
 
 
 function GenericModuleConfigurationJPanel:okNewProfileJButtonActionPerformed(evt)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local newProfileName = self.newProfileNameJTextField:getText()
             self:getGenericProfiles():add(newProfileName)
             self.genericProfilesJList:setModel(self:getGenericProfiles():getDefaultListModelHelper():getListModel())
@@ -433,14 +586,17 @@ function GenericModuleConfigurationJPanel:okNewProfileJButtonActionPerformed(evt
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put(self.commonStrings.EXCEPTION, self, "okNewProfileJButtonActionPerformed", e)
         end
 end
+java_overload(GenericModuleConfigurationJPanel, "okNewProfileJButtonActionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
 
 
 function GenericModuleConfigurationJPanel:newProfileJButtonActionPerformed(evt)
         self.newProfileJDialog:setVisible(true)
 end
+java_overload(GenericModuleConfigurationJPanel, "newProfileJButtonActionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
 
 return GenericModuleConfigurationJPanel
 

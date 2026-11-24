@@ -6,6 +6,21 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.testgamedemo
 
+local R = {}
+package.loaded["org.allbinary.game.testgamedemo.R"] = R
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 
 local function java_idiv(a, b)
     local q = a / b
@@ -14,41 +29,60 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local R = {}
+-- class table R is declared before the requires
 R.__index = R
 R.className = "R"
+R.javaClassName = "org.allbinary.game.testgamedemo.R"
 local attr = {}
     attr.__index = attr
     attr.className = "attr"
+    attr.javaClassName = "org.allbinary.game.testgamedemo.R$attr"
     R.attr = attr
 
-    function attr.new()
-        local self = setmetatable({}, attr)
+    function attr._jinit(self)
         return self
+    end
+
+    function attr.new()
+        return attr._jinit(setmetatable({}, attr))
     end
 
 local drawable = {}
     drawable.__index = drawable
     drawable.className = "drawable"
+    drawable.javaClassName = "org.allbinary.game.testgamedemo.R$drawable"
     R.drawable = drawable
 
-    function drawable.new()
-        local self = setmetatable({}, drawable)
+    function drawable._jinit(self)
         return self
+    end
+
+    function drawable.new()
+        return drawable._jinit(setmetatable({}, drawable))
     end
 
 local id = {}
     id.__index = id
     id.className = "id"
+    id.javaClassName = "org.allbinary.game.testgamedemo.R$id"
     R.id = id
 
-    function id.new()
-        local self = setmetatable({}, id)
+    function id._jinit(self)
         return self
+    end
+
+    function id.new()
+        return id._jinit(setmetatable({}, id))
     end
 
     R.custom_web_view = 0x7f050000
@@ -60,11 +94,15 @@ local id = {}
 local layout = {}
     layout.__index = layout
     layout.className = "layout"
+    layout.javaClassName = "org.allbinary.game.testgamedemo.R$layout"
     R.layout = layout
 
-    function layout.new()
-        local self = setmetatable({}, layout)
+    function layout._jinit(self)
         return self
+    end
+
+    function layout.new()
+        return layout._jinit(setmetatable({}, layout))
     end
 
     R.webview_layout = 0x7f020000
@@ -72,11 +110,15 @@ local layout = {}
 local raw = {}
     raw.__index = raw
     raw.className = "raw"
+    raw.javaClassName = "org.allbinary.game.testgamedemo.R$raw"
     R.raw = raw
 
-    function raw.new()
-        local self = setmetatable({}, raw)
+    function raw._jinit(self)
         return self
+    end
+
+    function raw.new()
+        return raw._jinit(setmetatable({}, raw))
     end
 
     R.about = 0x7f030000
@@ -115,19 +157,26 @@ local raw = {}
 local string = {}
     string.__index = string
     string.className = "string"
+    string.javaClassName = "org.allbinary.game.testgamedemo.R$string"
     R.string = string
 
-    function string.new()
-        local self = setmetatable({}, string)
+    function string._jinit(self)
         return self
+    end
+
+    function string.new()
+        return string._jinit(setmetatable({}, string))
     end
 
     R.progressbar_in_title_string = 0x7f050001
 
 
-function R.new()
-    local self = setmetatable({}, R)
+function R._jinit(self)
     return self
+end
+
+function R.new()
+    return R._jinit(setmetatable({}, R))
 end
 
 return R

@@ -13,17 +13,68 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.user.commerce.money.payment
 
--- local HashMap = require("java.util.HashMap")
+local Payment = {}
+package.loaded["org.allbinary.business.user.commerce.money.payment.Payment"] = Payment
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
 -- local ServletRequest = require("javax.servlet.ServletRequest")
-local EntryData = require("org.allbinary.business.entry.EntryData")
-local DomNodeInterface = require("org.allbinary.data.tree.dom.DomNodeInterface")
-local ModDomHelper = require("org.allbinary.data.tree.dom.ModDomHelper")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local SuperCrypt = require("org.allbinary.logic.control.crypt.SuperCrypt")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local Document = require("org.w3c.dom.Document")
-local Node = require("org.w3c.dom.Node")
+local EntryData = java_lazy("org.allbinary.business.entry.EntryData")
+local DomNodeInterface = java_lazy("org.allbinary.data.tree.dom.DomNodeInterface")
+local ModDomHelper = java_lazy("org.allbinary.data.tree.dom.ModDomHelper")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local SuperCrypt = java_lazy("org.allbinary.logic.control.crypt.SuperCrypt")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local Document = java_lazy("org.w3c.dom.Document")
+local Node = java_lazy("org.w3c.dom.Node")
+local CreditCardType = java_lazy("org.allbinary.business.user.commerce.money.payment.types.CreditCardType")
 local PaymentInterface = require("org.allbinary.business.user.commerce.money.payment.PaymentInterface")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -32,47 +83,67 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local Payment = {}
+-- class table Payment is declared before the requires
 Payment.__index = Payment
 Payment.className = "Payment"
+Payment.javaClassName = "org.allbinary.business.user.commerce.money.payment.Payment"
+Payment.java_implements = " PaymentInterface DomNodeInterface "
+Payment.java_interfaces = function() return {PaymentInterface, DomNodeInterface} end
 
 function Payment:_init_fields()
-    self.name = nil
-    self.expiration = nil
-    self.encryption = nil
-    self.number = nil
-    self.id = nil
-    self.type = nil
-    self.tenderType = nil
-    self.transactionType = nil
-    self.aba = nil
-    self.account = nil
-    self.accountType = nil
-    self.authorizationCode = nil
-    self.checkNumber = nil
-    self.checkType = nil
-    self.driversLicense = nil
-    self.magneticInkCheckReader = nil
-    self.isDefault = false
+    if self.name_f == nil then self.name_f = nil end
+    if self.expiration == nil then self.expiration = nil end
+    if self.encryption == nil then self.encryption = nil end
+    if self.number == nil then self.number = nil end
+    if self.id == nil then self.id = nil end
+    if self.type == nil then self.type = nil end
+    if self.tenderType == nil then self.tenderType = nil end
+    if self.transactionType == nil then self.transactionType = nil end
+    if self.aba == nil then self.aba = nil end
+    if self.account == nil then self.account = nil end
+    if self.accountType == nil then self.accountType = nil end
+    if self.authorizationCode == nil then self.authorizationCode = nil end
+    if self.checkNumber == nil then self.checkNumber = nil end
+    if self.checkType == nil then self.checkType = nil end
+    if self.driversLicense == nil then self.driversLicense = nil end
+    if self.magneticInkCheckReader == nil then self.magneticInkCheckReader = nil end
+    self.isDefault_f = false
+end
+
+function Payment._jinit(self, ...)
+    local count = select("#", ...)
+    if count == 1 then return Payment._new1(self, ...)
+    elseif count == 0 then return Payment._new0(self, ...)
+    end
+    error("No constructor of Payment takes " .. count .. " arguments")
 end
 
 function Payment.new(...)
-    local count = select("#", ...)
-    if count == 1 then return Payment._new1(...)
-    elseif count == 1 then return Payment._new1(...)
-    elseif count == 0 then return Payment._new0(...)
-    end
+    local self = setmetatable({}, Payment)
+    Payment._jinit(self, ...)
+    return self
+end
+
+function Payment._new1(self, ...)
+    local java_a1 = ...
+    if true and (java_a1 == nil or java_is(java_a1, "HashMap")) then return Payment._new1_1(self, ...) end
+    return Payment._new1_2(self, ...)
 end
 
 
-function Payment._new1(payment)
-    local self = setmetatable({}, Payment)
-    self:_init_fields()
-        self.name = payment:get(PaymentData.NAME)
+function Payment._new1_1(self, payment)
+    Payment._init_fields(self)
+        self.name_f = payment:get(PaymentData.NAME)
         self.type = payment:get(PaymentData.TYPE)
         self.expiration = payment:get(PaymentData.EXPIRATION)
         self.encryption = payment:get(EntryData.getInstance().ENCRYPTION)
@@ -80,9 +151,9 @@ function Payment._new1(payment)
         self.id = payment:get(PaymentData.ID)
         local def = payment:get(EntryData.getInstance().DEFAULT)
         if def ~= nil and ((def < EntryData.getInstance().DEFAULT and -1) or (def > EntryData.getInstance().DEFAULT and 1) or 0) == 0 then
-            self.isDefault = true
+            self.isDefault_f = true
         else
-            self.isDefault = false
+            self.isDefault_f = false
         end
         self.tenderType = payment:get(PaymentData.TENDERTYPE)
         self.transactionType = payment:get(PaymentData.TRANSACTIONTYPE)
@@ -98,10 +169,9 @@ function Payment._new1(payment)
 end
 
 
-function Payment._new1(request)
-    local self = setmetatable({}, Payment)
-    self:_init_fields()
-        self.name = request:getParameter(PaymentData.NAME)
+function Payment._new1_2(self, request)
+    Payment._init_fields(self)
+        self.name_f = request:getParameter(PaymentData.NAME)
         self.type = request:getParameter(PaymentData.TYPE)
         self.expiration = request:getParameter(PaymentData.EXPIRATION)
         self.number = request:getParameter(PaymentData.NUMBER)
@@ -119,9 +189,8 @@ function Payment._new1(request)
 end
 
 
-function Payment._new0()
-    local self = setmetatable({}, Payment)
-    self:_init_fields()
+function Payment._new0(self)
+    Payment._init_fields(self)
     return self
 end
 
@@ -129,7 +198,7 @@ end
 function Payment:isValid()
         local stringUtil = StringUtil.getInstance()
         local aFalse = false
-        if self.name == nil or ((self.name < stringUtil.EMPTY_STRING and -1) or (self.name > stringUtil.EMPTY_STRING and 1) or 0) == 0 then
+        if self.name_f == nil or ((self.name_f < stringUtil.EMPTY_STRING and -1) or (self.name_f > stringUtil.EMPTY_STRING and 1) or 0) == 0 then
             return aFalse
         end
         if self.type == nil or ((self.type < stringUtil.EMPTY_STRING and -1) or (self.type > stringUtil.EMPTY_STRING and 1) or 0) == 0 then
@@ -141,7 +210,7 @@ function Payment:isValid()
         if self.number == nil or ((self.number < stringUtil.EMPTY_STRING and -1) or (self.number > stringUtil.EMPTY_STRING and 1) or 0) == 0 then
             return aFalse
         end
-        if #self.number > org.allbinary.business.user.commerce.money.payment.types.CreditCardType.MAXLEN then
+        if #self.number > CreditCardType.MAXLEN then
             return aFalse
         end
         return true
@@ -194,7 +263,7 @@ end
 
 
 function Payment:setName(value)
-        self.name = value
+        self.name_f = value
 end
 
 
@@ -219,7 +288,7 @@ end
 
 
 function Payment:getName()
-        return self.name
+        return self.name_f
 end
 
 
@@ -303,13 +372,13 @@ end
 
 
 function Payment:isDefault()
-        return self.isDefault
+        return self.isDefault_f
 end
 
 
 function Payment:toHashMap()
         local hashMap = StdUtil.getInstance():createHashMap()
-        hashMap:put(PaymentData.NAME, self.name)
+        hashMap:put(PaymentData.NAME, self.name_f)
         hashMap:put(PaymentData.TYPE, self.type)
         hashMap:put(PaymentData.EXPIRATION, self.expiration)
         hashMap:put(PaymentData.NUMBER, self:getLastFour())
@@ -322,7 +391,7 @@ function Payment:toHashMap()
         hashMap:put(PaymentData.CHECKNUMBER, self.checkNumber)
         hashMap:put(PaymentData.DRIVERSLICENSE, self.driversLicense)
         hashMap:put(PaymentData.MAGNETICINKCHECKREADER, self.magneticInkCheckReader)
-        if self.isDefault then
+        if self.isDefault_f then
             hashMap:put(EntryData.getInstance().DEFAULT, EntryData.getInstance().DEFAULT)
         else
             hashMap:put(EntryData.getInstance().DEFAULT, StringUtil.getInstance().EMPTY_STRING)

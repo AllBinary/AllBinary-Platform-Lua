@@ -13,6 +13,21 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.visual.dhtml.html.head.meta
 
+local HtmlMetaAttributeValuesData = {}
+package.loaded["org.allbinary.logic.visual.dhtml.html.head.meta.HtmlMetaAttributeValuesData"] = HtmlMetaAttributeValuesData
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 
 local function java_idiv(a, b)
     local q = a / b
@@ -21,13 +36,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local HtmlMetaAttributeValuesData = {}
+-- class table HtmlMetaAttributeValuesData is declared before the requires
 HtmlMetaAttributeValuesData.__index = HtmlMetaAttributeValuesData
 HtmlMetaAttributeValuesData.className = "HtmlMetaAttributeValuesData"
+HtmlMetaAttributeValuesData.javaClassName = "org.allbinary.logic.visual.dhtml.html.head.meta.HtmlMetaAttributeValuesData"
 
 function HtmlMetaAttributeValuesData:_init_fields()
     self.ABSTRACT = "abstract"
@@ -37,17 +59,22 @@ end
 
 
 function HtmlMetaAttributeValuesData.getInstance()
-        return HtmlMetaAttributeValuesData.instance
+        return HtmlMetaAttributeValuesData.instance_f
 end
 
 
-function HtmlMetaAttributeValuesData.new()
-    local self = setmetatable({}, HtmlMetaAttributeValuesData)
-    self:_init_fields()
+function HtmlMetaAttributeValuesData._jinit(self)
+    HtmlMetaAttributeValuesData._init_fields(self)
     return self
 end
 
-HtmlMetaAttributeValuesData.instance = HtmlMetaAttributeValuesData.new()
+function HtmlMetaAttributeValuesData.new(...)
+    local self = setmetatable({}, HtmlMetaAttributeValuesData)
+    HtmlMetaAttributeValuesData._jinit(self, ...)
+    return self
+end
+
+HtmlMetaAttributeValuesData.instance_f = HtmlMetaAttributeValuesData.new()
 
 return HtmlMetaAttributeValuesData
 

@@ -13,9 +13,26 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.graphics.j2me.workarea.tools
 
-local StatusFactory = require("org.allbinary.graphics.j2me.StatusFactory")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local ToolFactory = {}
+package.loaded["org.allbinary.graphics.j2me.workarea.tools.ToolFactory"] = ToolFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local StatusFactory = java_lazy("org.allbinary.graphics.j2me.StatusFactory")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local GraphicItemFactory = java_lazy("org.allbinary.graphics.j2me.workarea.tools.GraphicItemFactory")
+local GraphicsItemInterfaceFactoryInterface = java_lazy("org.allbinary.graphics.j2me.workarea.tools.GraphicsItemInterfaceFactoryInterface")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -24,13 +41,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ToolFactory = {}
+-- class table ToolFactory is declared before the requires
 ToolFactory.__index = ToolFactory
 ToolFactory.className = "ToolFactory"
+ToolFactory.javaClassName = "org.allbinary.graphics.j2me.workarea.tools.ToolFactory"
 
 function ToolFactory:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -40,25 +64,29 @@ function ToolFactory:_init_fields()
     self.SELECTED_LABEL = "Selected: "
 end
 
-function ToolFactory.new()
-    local self = setmetatable({}, ToolFactory)
-    self:_init_fields()
+function ToolFactory._jinit(self)
+    ToolFactory._init_fields(self)
     return self
+end
+
+function ToolFactory.new()
+    return ToolFactory._jinit(setmetatable({}, ToolFactory))
 end
 
 
 function ToolFactory.getInstance()
-        return ToolFactory.instance
+        return ToolFactory.instance_f
 end
 
 
 function ToolFactory:setSelectedTool(tool)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             StatusFactory.getInstance():setStatus(self.SELECTED_LABEL .. tool)
             self.tool = tool
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put(self.commonStrings.EXCEPTION, self, "setSelectionTool", e)
         end
 end
@@ -75,7 +103,7 @@ function ToolFactory:getSelectedToolFactory()
         end
 end
 
-ToolFactory.instance = ToolFactory.new()
+ToolFactory.instance_f = ToolFactory.new()
 
 return ToolFactory
 

@@ -13,9 +13,24 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.displayable.canvas
 
-local GameInfo = require("org.allbinary.game.GameInfo")
-local MyCanvas = require("org.allbinary.graphics.displayable.MyCanvas")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
+local EndGameInfo = {}
+package.loaded["org.allbinary.game.displayable.canvas.EndGameInfo"] = EndGameInfo
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local GameInfo = java_lazy("org.allbinary.game.GameInfo")
+local MyCanvas = java_lazy("org.allbinary.graphics.displayable.MyCanvas")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -24,13 +39,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local EndGameInfo = {}
+-- class table EndGameInfo is declared before the requires
 EndGameInfo.__index = EndGameInfo
 EndGameInfo.className = "EndGameInfo"
+EndGameInfo.javaClassName = "org.allbinary.game.displayable.canvas.EndGameInfo"
 
 function EndGameInfo:_init_fields()
     self.NORMAL_GAME_OVER_WIN = "You Won"
@@ -40,10 +62,13 @@ function EndGameInfo:_init_fields()
     self.winStr = self.gameOverStr
 end
 
-function EndGameInfo.new()
-    local self = setmetatable({}, EndGameInfo)
-    self:_init_fields()
+function EndGameInfo._jinit(self)
+    EndGameInfo._init_fields(self)
     return self
+end
+
+function EndGameInfo.new()
+    return EndGameInfo._jinit(setmetatable({}, EndGameInfo))
 end
 
 

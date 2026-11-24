@@ -13,18 +13,72 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.installer
 
--- local HashMap = require("java.util.HashMap")
+local InitializerDatabase = {}
+package.loaded["org.allbinary.business.installer.InitializerDatabase"] = InitializerDatabase
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
 -- local Map = require("java.util.Map")
 -- local Set = require("java.util.Set")
-local DatabaseConnectionInfoInterface = require("org.allbinary.business.init.db.DatabaseConnectionInfoInterface")
-local DbConnectionInfo = require("org.allbinary.business.init.db.DbConnectionInfo")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local StringValidationUtil = require("org.allbinary.logic.string.StringValidationUtil")
-local AbeClientInformationInterface = require("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local DatabaseConnectionInfoInterface = java_lazy("org.allbinary.business.init.db.DatabaseConnectionInfoInterface")
+local DbConnectionInfo = java_lazy("org.allbinary.business.init.db.DbConnectionInfo")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
+local AbeClientInformationInterface = java_lazy("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local DynamicInitDb = java_lazy("org.allbinary.business.installer.DynamicInitDb")
+local InitializerData = java_lazy("org.allbinary.business.installer.InitializerData")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -33,36 +87,54 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local InitializerDatabase = {}
+-- class table InitializerDatabase is declared before the requires
 InitializerDatabase.__index = InitializerDatabase
 InitializerDatabase.className = "InitializerDatabase"
+InitializerDatabase.javaClassName = "org.allbinary.business.installer.InitializerDatabase"
 
 function InitializerDatabase:_init_fields()
     self.logUtil = LogUtil.getInstance()
-    self.adminDbUserName = nil
-    self.adminDbPassword = nil
-    self.adminJdbcDriver = nil
-    self.adminSchema = nil
-    self.adminServer = nil
-    self.adminPort = nil
-    self.initDb = nil
+    if self.adminDbUserName == nil then self.adminDbUserName = nil end
+    if self.adminDbPassword == nil then self.adminDbPassword = nil end
+    if self.adminJdbcDriver == nil then self.adminJdbcDriver = nil end
+    if self.adminSchema == nil then self.adminSchema = nil end
+    if self.adminServer == nil then self.adminServer = nil end
+    if self.adminPort == nil then self.adminPort = nil end
+    if self.initDb == nil then self.initDb = nil end
+end
+
+function InitializerDatabase._jinit(self, ...)
+    local count = select("#", ...)
+    if count == 2 then return InitializerDatabase._new2(self, ...)
+    end
+    error("No constructor of InitializerDatabase takes " .. count .. " arguments")
 end
 
 function InitializerDatabase.new(...)
-    local count = select("#", ...)
-    if count == 2 then return InitializerDatabase._new2(...)
-    elseif count == 2 then return InitializerDatabase._new2(...)
-    end
+    local self = setmetatable({}, InitializerDatabase)
+    InitializerDatabase._jinit(self, ...)
+    return self
+end
+
+function InitializerDatabase._new2(self, ...)
+    local java_a1, java_a2 = ...
+    if true and (java_a1 == nil or java_is(java_a1, "AbeClientInformationInterface")) and (java_a2 == nil or java_is(java_a2, "Map")) then return InitializerDatabase._new2_1(self, ...) end
+    return InitializerDatabase._new2_2(self, ...)
 end
 
 
-function InitializerDatabase._new2(abeClientInformation, map)
-    local self = setmetatable({}, InitializerDatabase)
-    self:_init_fields()
+function InitializerDatabase._new2_1(self, abeClientInformation, map)
+    InitializerDatabase._init_fields(self)
         local stringBuffer = StringMaker.new()
         local hashMap = StdUtil.getInstance():createHashMap()
         local keys = map:keySet()
@@ -84,16 +156,15 @@ function InitializerDatabase._new2(abeClientInformation, map)
 end
 
 
-function InitializerDatabase._new2(abeClientInformation, initHashMap)
-    local self = setmetatable({}, InitializerDatabase)
-    self:_init_fields()
+function InitializerDatabase._new2_2(self, abeClientInformation, initHashMap)
+    InitializerDatabase._init_fields(self)
         self:getFormData(abeClientInformation, initHashMap)
     return self
 end
 
 
 function InitializerDatabase:getFormData(abeClientInformation, hashMap)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local initializerData = InitializerData.getInstance()
             self:setAdminDbUserName(hashMap:get(initializerData.DBUSER))
             self:setAdminDbPassword(hashMap:get(initializerData.DBPASSWORD))
@@ -114,24 +185,27 @@ function InitializerDatabase:getFormData(abeClientInformation, hashMap)
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put("Unable to get form data", self, "getFormData()", e)
         end
 end
 
 
 function InitializerDatabase:isJdbcDriverValid(jdbcDriverClassPathString)
-        local try_ok, try_error = pcall(function()
-            Class.forName(jdbcDriverClassPathString):newInstance()
-            return true
+        local try_ok, try_error, try_value = pcall(function()
+            require((jdbcDriverClassPathString)):newInstance()
+            do return "__jreturn", true end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().PRELOADERERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRELOADERERROR) then
                 local commonStrings = CommonStrings.getInstance()
                 self.logUtil:put(commonStrings.EXCEPTION, self, commonStrings.IS_VALID, e)
             end
             return false
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
@@ -183,41 +257,47 @@ end
 
 
 function InitializerDatabase:createUsers()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             self.initDb:addUsers()
-            return true
+            do return "__jreturn", true end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put("Unable to Create Users", self, "createUsers()", e)
             return false
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
 function InitializerDatabase:createDatabases()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             self.initDb:addDatabases()
-            return true
+            do return "__jreturn", true end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put("Unable to Create Databases", self, "createDatabases()", e)
             return false
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
 function InitializerDatabase:createTables()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             self.initDb:addTables()
-            return true
+            do return "__jreturn", true end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put("Unable to Create Tables", self, "createTables()", e)
             return false
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 

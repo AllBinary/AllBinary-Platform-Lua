@@ -13,18 +13,36 @@
 -- Generated Code Do Not Modify
 -- package admin.taghelpers
 
--- local HashMap = require("java.util.HashMap")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
+local MultipartRequestParamForwardHelper = {}
+package.loaded["admin.taghelpers.MultipartRequestParamForwardHelper"] = MultipartRequestParamForwardHelper
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 -- local PageContext = require("javax.servlet.jsp.PageContext")
-local GLOBALS2 = require("org.allbinary.globals.GLOBALS2")
-local RequestMapInterface = require("org.allbinary.logic.communication.http.request.RequestMapInterface")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringValidationUtil = require("org.allbinary.logic.string.StringValidationUtil")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local HelperTag = require("tags.HelperTag")
+local GLOBALS2 = java_lazy("org.allbinary.globals.GLOBALS2")
+local RequestMapInterface = java_lazy("org.allbinary.logic.communication.http.request.RequestMapInterface")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local HelperTag = java_lazy("tags.HelperTag")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local InventoryItemViewParentTagHelper = java_lazy("admin.taghelpers.InventoryItemViewParentTagHelper")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -33,27 +51,33 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local MultipartRequestParamForwardHelper = {}
+-- class table MultipartRequestParamForwardHelper is declared before the requires
 MultipartRequestParamForwardHelper.__index = MultipartRequestParamForwardHelper
 MultipartRequestParamForwardHelper.className = "MultipartRequestParamForwardHelper"
+MultipartRequestParamForwardHelper.javaClassName = "admin.taghelpers.MultipartRequestParamForwardHelper"
 
 function MultipartRequestParamForwardHelper:_init_fields()
     self.logUtil = LogUtil.getInstance()
-    self.pageContext = nil
-    self.requestMapInterface = nil
-    self.page = nil
-    self.command = nil
-    self.paramVector = nil
+    if self.pageContext == nil then self.pageContext = nil end
+    if self.requestMapInterface == nil then self.requestMapInterface = nil end
+    if self.page == nil then self.page = nil end
+    if self.command == nil then self.command = nil end
+    if self.paramVector == nil then self.paramVector = nil end
 end
 
 
-function MultipartRequestParamForwardHelper.new(parentHelperTag, page, command, paramVector, pageContext)
-    local self = setmetatable({}, MultipartRequestParamForwardHelper)
-    self:_init_fields()
+function MultipartRequestParamForwardHelper._jinit(self, parentHelperTag, page, command, paramVector, pageContext)
+    MultipartRequestParamForwardHelper._init_fields(self)
         self.pageContext = pageContext
         self.page = page
         self.command = command
@@ -62,10 +86,16 @@ function MultipartRequestParamForwardHelper.new(parentHelperTag, page, command, 
     return self
 end
 
+function MultipartRequestParamForwardHelper.new(...)
+    local self = setmetatable({}, MultipartRequestParamForwardHelper)
+    MultipartRequestParamForwardHelper._jinit(self, ...)
+    return self
+end
+
 
 -- throws Exception
 function MultipartRequestParamForwardHelper:forward()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             if self:shouldForward() then
                 local params = self:getParams()
                 local stringBuffer = StringMaker.new()
@@ -76,8 +106,9 @@ function MultipartRequestParamForwardHelper:forward()
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local commonStrings = CommonStrings.getInstance()
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLTAGSERROR) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put(commonStrings.EXCEPTION, self, "forward()", e)
             end
         end
@@ -110,7 +141,7 @@ end
 
 function MultipartRequestParamForwardHelper:shouldForward()
         local hashMap = self.requestMapInterface:getRequestHashMap()
-        local requestCommand = hashMap:get(self.GLOBALS2.ADMINCOMMAND)
+        local requestCommand = hashMap:get(GLOBALS2.ADMINCOMMAND)
         if StringValidationUtil.getInstance():isEmpty(self.command) or (not StringValidationUtil.getInstance():isEmpty(requestCommand) and ((self.command < requestCommand and -1) or (self.command > requestCommand and 1) or 0) == 0) then
             return true
         end

@@ -13,17 +13,68 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.user.commerce.money.payment.gateway
 
--- local HashMap = require("java.util.HashMap")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local StoreFrontData = require("org.allbinary.business.context.modules.storefront.StoreFrontData")
-local EntryData = require("org.allbinary.business.entry.EntryData")
-local UserData = require("org.allbinary.business.user.UserData")
-local PaymentData = require("org.allbinary.business.user.commerce.money.payment.PaymentData")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local SuperCrypt = require("org.allbinary.logic.control.crypt.SuperCrypt")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
+local PaymentGateway = {}
+package.loaded["org.allbinary.business.user.commerce.money.payment.gateway.PaymentGateway"] = PaymentGateway
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local StoreFrontData = java_lazy("org.allbinary.business.context.modules.storefront.StoreFrontData")
+local EntryData = java_lazy("org.allbinary.business.entry.EntryData")
+local UserData = java_lazy("org.allbinary.business.user.UserData")
+local PaymentData = java_lazy("org.allbinary.business.user.commerce.money.payment.PaymentData")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local SuperCrypt = java_lazy("org.allbinary.logic.control.crypt.SuperCrypt")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local PaymentGatewayInterface = require("org.allbinary.business.user.commerce.money.payment.gateway.PaymentGatewayInterface")
+local PaymentGatewayPrimaryKey = java_lazy("org.allbinary.business.user.commerce.money.payment.gateway.PaymentGatewayPrimaryKey")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -32,56 +83,70 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local PaymentGateway = {}
+-- class table PaymentGateway is declared before the requires
 PaymentGateway.__index = PaymentGateway
 PaymentGateway.className = "PaymentGateway"
+PaymentGateway.javaClassName = "org.allbinary.business.user.commerce.money.payment.gateway.PaymentGateway"
+PaymentGateway.java_implements = " PaymentGatewayInterface "
+PaymentGateway.java_interfaces = function() return {PaymentGatewayInterface} end
 
 function PaymentGateway:_init_fields()
-    self.storeName = nil
-    self.name = nil
-    self.enable = nil
-    self.paymentMethod = nil
-    self.mode = nil
-    self.testProtocol = nil
-    self.testServer = nil
-    self.testPort = nil
-    self.testPath = nil
-    self.serverProtocol = nil
-    self.server = nil
-    self.serverPort = nil
-    self.serverPath = nil
-    self.timeout = nil
-    self.userName = nil
-    self.password = nil
-    self.proxyProtocol = nil
-    self.proxyServer = nil
-    self.proxyPort = nil
-    self.proxyPath = nil
-    self.proxyUserName = nil
-    self.proxyPassword = nil
-    self.proxyTimeout = nil
-    self.special1 = nil
-    self.special2 = nil
-    self.special3 = nil
-    self.special4 = nil
-    self.special5 = nil
-    self.special6 = nil
-    self.special7 = nil
-    self.special8 = nil
-    self.special9 = nil
-    self.lastModified = nil
-    self.timeEntered = nil
+    if self.storeName == nil then self.storeName = nil end
+    if self.name_f == nil then self.name_f = nil end
+    if self.enable_f == nil then self.enable_f = nil end
+    if self.paymentMethod == nil then self.paymentMethod = nil end
+    if self.mode == nil then self.mode = nil end
+    if self.testProtocol == nil then self.testProtocol = nil end
+    if self.testServer == nil then self.testServer = nil end
+    if self.testPort == nil then self.testPort = nil end
+    if self.testPath == nil then self.testPath = nil end
+    if self.serverProtocol == nil then self.serverProtocol = nil end
+    if self.server == nil then self.server = nil end
+    if self.serverPort == nil then self.serverPort = nil end
+    if self.serverPath == nil then self.serverPath = nil end
+    if self.timeout == nil then self.timeout = nil end
+    if self.userName == nil then self.userName = nil end
+    if self.password == nil then self.password = nil end
+    if self.proxyProtocol == nil then self.proxyProtocol = nil end
+    if self.proxyServer == nil then self.proxyServer = nil end
+    if self.proxyPort == nil then self.proxyPort = nil end
+    if self.proxyPath == nil then self.proxyPath = nil end
+    if self.proxyUserName == nil then self.proxyUserName = nil end
+    if self.proxyPassword == nil then self.proxyPassword = nil end
+    if self.proxyTimeout == nil then self.proxyTimeout = nil end
+    if self.special1 == nil then self.special1 = nil end
+    if self.special2 == nil then self.special2 = nil end
+    if self.special3 == nil then self.special3 = nil end
+    if self.special4 == nil then self.special4 = nil end
+    if self.special5 == nil then self.special5 = nil end
+    if self.special6 == nil then self.special6 = nil end
+    if self.special7 == nil then self.special7 = nil end
+    if self.special8 == nil then self.special8 = nil end
+    if self.special9 == nil then self.special9 = nil end
+    if self.lastModified == nil then self.lastModified = nil end
+    if self.timeEntered == nil then self.timeEntered = nil end
 end
 
 
-function PaymentGateway.new(hashMap)
-    local self = setmetatable({}, PaymentGateway)
-    self:_init_fields()
+function PaymentGateway._jinit(self, hashMap)
+    PaymentGateway._init_fields(self)
         self:getFormData(hashMap)
+    return self
+end
+
+function PaymentGateway.new(...)
+    local self = setmetatable({}, PaymentGateway)
+    PaymentGateway._jinit(self, ...)
     return self
 end
 
@@ -90,8 +155,8 @@ function PaymentGateway:getFormData(hashMap)
         local stringUtil = StringUtil.getInstance()
         local empty = stringUtil.EMPTY_STRING
         self.storeName = hashMap:get(tostring(StoreFrontData.getInstance().NAME))
-        self.name = hashMap:get(tostring(PaymentGatewayData.NAME))
-        self.enable = stringUtil:getNonNull(hashMap:get(tostring(EntryData.getInstance().ENABLE)))
+        self.name_f = hashMap:get(tostring(PaymentGatewayData.NAME))
+        self.enable_f = stringUtil:getNonNull(hashMap:get(tostring(EntryData.getInstance().ENABLE)))
         self.paymentMethod = stringUtil:getNonNull(hashMap:get(tostring(PaymentData.METHOD)))
         self.mode = stringUtil:getNonNull(hashMap:get(tostring(PaymentGatewayData.MODE)))
         self.testProtocol = stringUtil:getNonNull(hashMap:get(tostring(PaymentGatewayData.TESTPROTOCOL)))
@@ -210,12 +275,12 @@ end
 
 
 function PaymentGateway:getName()
-        return self.name
+        return self.name_f
 end
 
 
 function PaymentGateway:getEnable()
-        return self.enable
+        return self.enable_f
 end
 
 
@@ -375,7 +440,7 @@ end
 
 
 function PaymentGateway:setEnable(value)
-        self.enable = value
+        self.enable_f = value
 end
 
 
@@ -385,7 +450,7 @@ end
 
 
 function PaymentGateway:setName(value)
-        self.name = value
+        self.name_f = value
 end
 
 
@@ -545,16 +610,15 @@ end
 
 
 -- throws Exception
-function PaymentGateway:toHashMap()
+function PaymentGateway:toHashMap_j0()
         return self:toHashMap(true)
 end
 
 
 -- throws Exception
--- Java overloaded method: Lua keeps the last definition
-function PaymentGateway:toHashMap(isEncrypted)
+function PaymentGateway:toHashMap_j1(isEncrypted)
         local paymentGatewayHashMap = StdUtil.getInstance():createHashMap()
-        paymentGatewayHashMap:put(EntryData.getInstance().ENABLE, self.enable)
+        paymentGatewayHashMap:put(EntryData.getInstance().ENABLE, self.enable_f)
         paymentGatewayHashMap:put(tostring(StoreFrontData.getInstance().NAME), self.storeName)
         paymentGatewayHashMap:put(tostring(PaymentGatewayData.NAME), self:getName())
         paymentGatewayHashMap:put(tostring(PaymentData.METHOD), self.paymentMethod)
@@ -607,17 +671,23 @@ function PaymentGateway:toHashMap(isEncrypted)
         paymentGatewayHashMap:put(tostring(EntryData.getInstance().LASTMODIFIED), self.lastModified)
         return paymentGatewayHashMap
 end
+function PaymentGateway:toHashMap(...)
+    local count = select("#", ...)
+    if count == 0 then return self:toHashMap_j0(...) end
+    if count == 1 then return self:toHashMap_j1(...) end
+    error("No method toHashMap takes " .. count .. " arguments")
+end
+PaymentGateway.toHashMap__jdispatcher = PaymentGateway.toHashMap
 
 
-function PaymentGateway:toVector()
+function PaymentGateway:toVector_j0()
         return self:toVector(true)
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function PaymentGateway:toVector(isEncrypted)
+function PaymentGateway:toVector_j1(isEncrypted)
         local updateVector = BasicArrayListD.new()
-        updateVector:add(self.enable)
+        updateVector:add(self.enable_f)
         updateVector:add(self.storeName)
         updateVector:add(self:getName())
         updateVector:add(self.paymentMethod)
@@ -670,6 +740,13 @@ function PaymentGateway:toVector(isEncrypted)
         end
         return updateVector
 end
+function PaymentGateway:toVector(...)
+    local count = select("#", ...)
+    if count == 0 then return self:toVector_j0(...) end
+    if count == 1 then return self:toVector_j1(...) end
+    error("No method toVector takes " .. count .. " arguments")
+end
+PaymentGateway.toVector__jdispatcher = PaymentGateway.toVector
 
 
 -- throws Exception

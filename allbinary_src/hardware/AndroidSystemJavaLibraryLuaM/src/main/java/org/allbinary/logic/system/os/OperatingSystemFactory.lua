@@ -13,10 +13,25 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.system.os
 
-local AndroidOperatingSystemFactory = require("org.allbinary.logic.system.os.android.AndroidOperatingSystemFactory")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local OperatingSystemFactory = {}
+package.loaded["org.allbinary.logic.system.os.OperatingSystemFactory"] = OperatingSystemFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local AndroidOperatingSystemFactory = java_lazy("org.allbinary.logic.system.os.android.AndroidOperatingSystemFactory")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -38,13 +53,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local OperatingSystemFactory = {}
+-- class table OperatingSystemFactory is declared before the requires
 OperatingSystemFactory.__index = OperatingSystemFactory
 OperatingSystemFactory.className = "OperatingSystemFactory"
+OperatingSystemFactory.javaClassName = "org.allbinary.logic.system.os.OperatingSystemFactory"
 
 function OperatingSystemFactory:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -54,20 +76,25 @@ end
 
 
 function OperatingSystemFactory.getInstance()
-        return OperatingSystemFactory.instance
+        return OperatingSystemFactory.instance_f
 end
 
 
-function OperatingSystemFactory.new()
+function OperatingSystemFactory._jinit(self)
+    OperatingSystemFactory._init_fields(self)
+    return self
+end
+
+function OperatingSystemFactory.new(...)
     local self = setmetatable({}, OperatingSystemFactory)
-    self:_init_fields()
+    OperatingSystemFactory._jinit(self, ...)
     return self
 end
 
 
 function OperatingSystemFactory:getOperatingSystemInstance()
         local commonStrings = CommonStrings.getInstance()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local systemProperties = SystemProperties.getInstance()
             local osName = systemProperties:getName()
             if not self.hasDetected then
@@ -81,19 +108,20 @@ function OperatingSystemFactory:getOperatingSystemInstance()
                     self.genericOperatingSystem = AndroidOperatingSystemFactory.getInstance():getOperatingSystemInstance()
                     self.logUtil:putF(tostring(StringMaker.new():append("Operating System Info: "):append(tostring(self.genericOperatingSystem))), self, commonStrings.GET_INSTANCE)
                 else
-                    error(java_exception("Exception", tostring(StringMaker.new():append("OS Not Supported: "):append(osName))), 0)
+                    error(require("java.lang.Exception").new(tostring(StringMaker.new():append("OS Not Supported: "):append(osName))), 0)
                 end
             end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.genericOperatingSystem = NoOperatingSystem.NO_OPERATING_SYSTEM
             self.logUtil:put(commonStrings.EXCEPTION, self, commonStrings.GET_INSTANCE, e)
         end
         return self.genericOperatingSystem
 end
 
-OperatingSystemFactory.instance = OperatingSystemFactory.new()
+OperatingSystemFactory.instance_f = OperatingSystemFactory.new()
 
 return OperatingSystemFactory
 

@@ -13,10 +13,25 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.canvas
 
-local AppletUtil = require("org.allbinary.AppletUtil")
-local J2MEUtil = require("org.allbinary.J2MEUtil")
-local GameCommandsFactory = require("org.allbinary.game.commands.GameCommandsFactory")
-local MyCanvas = require("org.allbinary.graphics.displayable.MyCanvas")
+local CustomGameMenuUtil = {}
+package.loaded["org.allbinary.canvas.CustomGameMenuUtil"] = CustomGameMenuUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local AppletUtil = java_lazy("org.allbinary.AppletUtil")
+local J2MEUtil = java_lazy("org.allbinary.J2MEUtil")
+local GameCommandsFactory = java_lazy("org.allbinary.game.commands.GameCommandsFactory")
+local MyCanvas = java_lazy("org.allbinary.graphics.displayable.MyCanvas")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -25,17 +40,27 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local CustomGameMenuUtil = {}
+-- class table CustomGameMenuUtil is declared before the requires
 CustomGameMenuUtil.__index = CustomGameMenuUtil
 CustomGameMenuUtil.className = "CustomGameMenuUtil"
+CustomGameMenuUtil.javaClassName = "org.allbinary.canvas.CustomGameMenuUtil"
+
+function CustomGameMenuUtil._jinit(self)
+    return self
+end
 
 function CustomGameMenuUtil.new()
-    local self = setmetatable({}, CustomGameMenuUtil)
-    return self
+    return CustomGameMenuUtil._jinit(setmetatable({}, CustomGameMenuUtil))
 end
 
 

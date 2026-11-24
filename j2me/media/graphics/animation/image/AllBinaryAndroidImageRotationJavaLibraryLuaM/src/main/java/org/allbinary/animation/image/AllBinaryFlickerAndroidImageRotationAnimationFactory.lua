@@ -13,16 +13,32 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.animation.image
 
+local AllBinaryFlickerAndroidImageRotationAnimationFactory = {}
+package.loaded["org.allbinary.animation.image.AllBinaryFlickerAndroidImageRotationAnimationFactory"] = AllBinaryFlickerAndroidImageRotationAnimationFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Image = require("javax.microedition.lcdui.Image")
 -- local NullImage = require("javax.microedition.lcdui.NullImage")
-local Animation = require("org.allbinary.animation.Animation")
-local AnimationBehaviorFactory = require("org.allbinary.animation.AnimationBehaviorFactory")
-local AnimationInterfaceFactoryInterface = require("org.allbinary.animation.AnimationInterfaceFactoryInterface")
-local ForcedLogUtil = require("org.allbinary.logic.communication.log.ForcedLogUtil")
-local ImageCopyUtil = require("org.allbinary.media.image.ImageCopyUtil")
-local AngleFactory = require("org.allbinary.math.AngleFactory")
-local AngleInfo = require("org.allbinary.math.AngleInfo")
-local ScaleProperties = require("org.allbinary.media.ScaleProperties")
+local Animation = java_lazy("org.allbinary.animation.Animation")
+local AnimationBehaviorFactory = java_lazy("org.allbinary.animation.AnimationBehaviorFactory")
+local AnimationInterfaceFactoryInterface = java_lazy("org.allbinary.animation.AnimationInterfaceFactoryInterface")
+local ForcedLogUtil = java_lazy("org.allbinary.logic.communication.log.ForcedLogUtil")
+local ImageCopyUtil = java_lazy("org.allbinary.media.image.ImageCopyUtil")
+local AngleFactory = java_lazy("org.allbinary.math.AngleFactory")
+local AngleInfo = java_lazy("org.allbinary.math.AngleInfo")
+local ScaleProperties = java_lazy("org.allbinary.media.ScaleProperties")
+local AllBinaryFlickerAndroidImageRotationAnimation = java_lazy("org.allbinary.animation.image.AllBinaryFlickerAndroidImageRotationAnimation")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -31,27 +47,41 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local AllBinaryFlickerAndroidImageRotationAnimationFactory = {}
+-- class table AllBinaryFlickerAndroidImageRotationAnimationFactory is declared before the requires
 AllBinaryFlickerAndroidImageRotationAnimationFactory.__index = AllBinaryFlickerAndroidImageRotationAnimationFactory
 AllBinaryFlickerAndroidImageRotationAnimationFactory.className = "AllBinaryFlickerAndroidImageRotationAnimationFactory"
+AllBinaryFlickerAndroidImageRotationAnimationFactory.javaClassName = "org.allbinary.animation.image.AllBinaryFlickerAndroidImageRotationAnimationFactory"
+AllBinaryFlickerAndroidImageRotationAnimationFactory.java_implements = " AnimationInterfaceFactoryInterface "
+AllBinaryFlickerAndroidImageRotationAnimationFactory.java_interfaces = function() return {AnimationInterfaceFactoryInterface} end
 
 function AllBinaryFlickerAndroidImageRotationAnimationFactory:_init_fields()
     self.image = NullImage.NULL_IMAGE
-    self.angleIncrement = nil
-    self.animationBehaviorFactory = nil
+    if self.angleIncrement == nil then self.angleIncrement = nil end
+    if self.animationBehaviorFactory == nil then self.animationBehaviorFactory = nil end
 end
 
 
-function AllBinaryFlickerAndroidImageRotationAnimationFactory.new(image, width, height, angleIncrement, animationBehaviorFactory)
-    local self = setmetatable({}, AllBinaryFlickerAndroidImageRotationAnimationFactory)
-    self:_init_fields()
+function AllBinaryFlickerAndroidImageRotationAnimationFactory._jinit(self, image, width, height, angleIncrement, animationBehaviorFactory)
+    AllBinaryFlickerAndroidImageRotationAnimationFactory._init_fields(self)
         self:setImage(image)
         self.angleIncrement = angleIncrement
         self.animationBehaviorFactory = animationBehaviorFactory
+    return self
+end
+
+function AllBinaryFlickerAndroidImageRotationAnimationFactory.new(...)
+    local self = setmetatable({}, AllBinaryFlickerAndroidImageRotationAnimationFactory)
+    AllBinaryFlickerAndroidImageRotationAnimationFactory._jinit(self, ...)
     return self
 end
 

@@ -13,16 +13,33 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.layer.resources
 
-local BaseResourceAnimationInterfaceFactoryInterfaceFactory = require("org.allbinary.animation.resource.BaseResourceAnimationInterfaceFactoryInterfaceFactory")
-local Features = require("org.allbinary.game.configuration.feature.Features")
-local MainFeatureFactory = require("org.allbinary.game.configuration.feature.MainFeatureFactory")
-local GameLayerPlacementInterfaceBasicArrayListFactoryInterfaceFactory = require("org.allbinary.game.layer.GameLayerPlacementInterfaceBasicArrayListFactoryInterfaceFactory")
-local LayerPlacementInterfaceBasicArrayListFactoryInterface = require("org.allbinary.game.layer.LayerPlacementInterfaceBasicArrayListFactoryInterface")
-local ResourceLoadingLevelFactory = require("org.allbinary.game.resource.ResourceLoadingLevelFactory")
-local ImageCache = require("org.allbinary.image.ImageCache")
-local PreLogUtil = require("org.allbinary.logic.communication.log.PreLogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local OnDemandLoader = {}
+package.loaded["org.allbinary.game.layer.resources.OnDemandLoader"] = OnDemandLoader
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local BaseResourceAnimationInterfaceFactoryInterfaceFactory = java_lazy("org.allbinary.animation.resource.BaseResourceAnimationInterfaceFactoryInterfaceFactory")
+local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
+local MainFeatureFactory = java_lazy("org.allbinary.game.configuration.feature.MainFeatureFactory")
+local GameLayerPlacementInterfaceBasicArrayListFactoryInterfaceFactory = java_lazy("org.allbinary.game.layer.GameLayerPlacementInterfaceBasicArrayListFactoryInterfaceFactory")
+local LayerPlacementInterfaceBasicArrayListFactoryInterface = java_lazy("org.allbinary.game.layer.LayerPlacementInterfaceBasicArrayListFactoryInterface")
+local ResourceLoadingLevelFactory = java_lazy("org.allbinary.game.resource.ResourceLoadingLevelFactory")
+local ImageCache = java_lazy("org.allbinary.image.ImageCache")
+local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local OnDemandResources = java_lazy("org.allbinary.game.layer.resources.OnDemandResources")
+local OnDemandResourcesFactory = java_lazy("org.allbinary.game.layer.resources.OnDemandResourcesFactory")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -31,27 +48,39 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local OnDemandLoader = {}
+-- class table OnDemandLoader is declared before the requires
 OnDemandLoader.__index = OnDemandLoader
 OnDemandLoader.className = "OnDemandLoader"
+OnDemandLoader.javaClassName = "org.allbinary.game.layer.resources.OnDemandLoader"
 
 function OnDemandLoader:_init_fields()
-    self.onDemandResourcesFactory = nil
-    self.gameLayerPlacementInterfaceBasicArrayListFactoryInterfaceFactory = nil
-    self.resourceAnimationInterfaceFactoryInterfaceFactory = nil
+    if self.onDemandResourcesFactory == nil then self.onDemandResourcesFactory = nil end
+    if self.gameLayerPlacementInterfaceBasicArrayListFactoryInterfaceFactory == nil then self.gameLayerPlacementInterfaceBasicArrayListFactoryInterfaceFactory = nil end
+    if self.resourceAnimationInterfaceFactoryInterfaceFactory == nil then self.resourceAnimationInterfaceFactoryInterfaceFactory = nil end
 end
 
 
-function OnDemandLoader.new(onDemandResourcesFactory, gameLayerPlacementInterfaceBasicArrayListFactoryInterfaceFactory, resourceAnimationInterfaceFactoryInterfaceFactory)
-    local self = setmetatable({}, OnDemandLoader)
-    self:_init_fields()
+function OnDemandLoader._jinit(self, onDemandResourcesFactory, gameLayerPlacementInterfaceBasicArrayListFactoryInterfaceFactory, resourceAnimationInterfaceFactoryInterfaceFactory)
+    OnDemandLoader._init_fields(self)
         self.onDemandResourcesFactory = onDemandResourcesFactory
         self.gameLayerPlacementInterfaceBasicArrayListFactoryInterfaceFactory = gameLayerPlacementInterfaceBasicArrayListFactoryInterfaceFactory
         self.resourceAnimationInterfaceFactoryInterfaceFactory = resourceAnimationInterfaceFactoryInterfaceFactory
+    return self
+end
+
+function OnDemandLoader.new(...)
+    local self = setmetatable({}, OnDemandLoader)
+    OnDemandLoader._jinit(self, ...)
     return self
 end
 

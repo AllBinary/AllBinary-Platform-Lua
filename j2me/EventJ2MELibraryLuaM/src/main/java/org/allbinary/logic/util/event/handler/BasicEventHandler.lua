@@ -13,18 +13,33 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.util.event.handler
 
-local JsType = require("jsinterop.annotations.JsType")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local AllBinaryEventObject = require("org.allbinary.logic.util.event.AllBinaryEventObject")
-local EventListenerInterface = require("org.allbinary.logic.util.event.EventListenerInterface")
-local EventStrings = require("org.allbinary.logic.util.event.EventStrings")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local JsMethod = require("jsinterop.annotations.JsMethod")
-local JsConstructor = require("jsinterop.annotations.JsConstructor")
-local JsProperty = require("jsinterop.annotations.JsProperty")
+local BasicEventHandler = {}
+package.loaded["org.allbinary.logic.util.event.handler.BasicEventHandler"] = BasicEventHandler
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local JsType = java_lazy("jsinterop.annotations.JsType")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local AllBinaryEventObject = java_lazy("org.allbinary.logic.util.event.AllBinaryEventObject")
+local EventListenerInterface = java_lazy("org.allbinary.logic.util.event.EventListenerInterface")
+local EventStrings = java_lazy("org.allbinary.logic.util.event.EventStrings")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local JsMethod = java_lazy("jsinterop.annotations.JsMethod")
+local JsConstructor = java_lazy("jsinterop.annotations.JsConstructor")
+local JsProperty = java_lazy("jsinterop.annotations.JsProperty")
 local BasicEventHandlerInterface = require("org.allbinary.logic.util.event.handler.BasicEventHandlerInterface")
 
 local function java_idiv(a, b)
@@ -34,26 +49,40 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local BasicEventHandler = {}
+-- class table BasicEventHandler is declared before the requires
 BasicEventHandler.__index = BasicEventHandler
 BasicEventHandler.className = "BasicEventHandler"
+BasicEventHandler.javaClassName = "org.allbinary.logic.util.event.handler.BasicEventHandler"
+BasicEventHandler.java_implements = " BasicEventHandlerInterface "
+BasicEventHandler.java_interfaces = function() return {BasicEventHandlerInterface} end
 
 function BasicEventHandler:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
     self.eventStrings = EventStrings.getInstance()
-    self.eventListenerInterfaceList = nil
+    if self.eventListenerInterfaceList == nil then self.eventListenerInterfaceList = nil end
 end
 
 
-function BasicEventHandler.new()
-    local self = setmetatable({}, BasicEventHandler)
-    self:_init_fields()
+function BasicEventHandler._jinit(self)
+    BasicEventHandler._init_fields(self)
         self.eventListenerInterfaceList = BasicArrayListD.new()
+    return self
+end
+
+function BasicEventHandler.new(...)
+    local self = setmetatable({}, BasicEventHandler)
+    BasicEventHandler._jinit(self, ...)
     return self
 end
 
@@ -112,12 +141,13 @@ function BasicEventHandler:fireEvent(eventObject)
         local eventListenerInterface = nil
         local index = 0
         while index < self.eventListenerInterfaceList:size() do
-            local try_ok, try_error = pcall(function()
+            local try_ok, try_error, try_value = pcall(function()
                 eventListenerInterface = self.eventListenerInterfaceList:get(index)
                 self:process(eventObject, eventListenerInterface)
             end)
             if not try_ok then
                 local e = try_error
+                if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, self.eventStrings.FIRE_EVENT, e)
             end
             index = index + 1
@@ -143,13 +173,14 @@ function BasicEventHandler:toString()
         local eventListenerInterface = nil
         local index = 0
         while index < self.eventListenerInterfaceList:size() do
-            local try_ok, try_error = pcall(function()
+            local try_ok, try_error, try_value = pcall(function()
                 eventListenerInterface = self.eventListenerInterfaceList:get(index)
                 stringBuffer:append(self.eventStrings.LISTENER_LABEL)
                 stringBuffer:append(tostring(eventListenerInterface))
             end)
             if not try_ok then
                 local e = try_error
+                if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.TOSTRING, e)
             end
             index = index + 1

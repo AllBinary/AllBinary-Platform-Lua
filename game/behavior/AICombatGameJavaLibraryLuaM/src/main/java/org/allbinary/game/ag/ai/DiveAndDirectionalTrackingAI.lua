@@ -13,37 +13,141 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.ag.ai
 
+local DiveAndDirectionalTrackingAI = {}
+package.loaded["org.allbinary.game.ag.ai.DiveAndDirectionalTrackingAI"] = DiveAndDirectionalTrackingAI
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Canvas = require("javax.microedition.lcdui.Canvas")
-local ArtificialIntelligenceInterface = require("org.allbinary.ai.ArtificialIntelligenceInterface")
-local Direction = require("org.allbinary.direction.Direction")
-local DirectionFactory = require("org.allbinary.direction.DirectionFactory")
-local DirectionalCompositeInterface = require("org.allbinary.direction.DirectionalCompositeInterface")
-local DirectionalInterface = require("org.allbinary.direction.DirectionalInterface")
+local ArtificialIntelligenceInterface = java_lazy("org.allbinary.ai.ArtificialIntelligenceInterface")
+local Direction = java_lazy("org.allbinary.direction.Direction")
+local DirectionFactory = java_lazy("org.allbinary.direction.DirectionFactory")
+local DirectionalCompositeInterface = java_lazy("org.allbinary.direction.DirectionalCompositeInterface")
+local DirectionalInterface = java_lazy("org.allbinary.direction.DirectionalInterface")
 local BasicAI = require("org.allbinary.game.ai.BasicAI")
-local DestroyedEvent = require("org.allbinary.game.combat.destroy.event.DestroyedEvent")
-local DestroyedEventHandler = require("org.allbinary.game.combat.destroy.event.DestroyedEventHandler")
-local DestroyedEventListenerInterface = require("org.allbinary.game.combat.destroy.event.DestroyedEventListenerInterface")
-local Group = require("org.allbinary.game.identification.Group")
-local GameInput = require("org.allbinary.game.input.GameInput")
-local BasicVelocityProperties = require("org.allbinary.game.physics.velocity.BasicVelocityProperties")
-local VelocityInterfaceCompositeInterface = require("org.allbinary.game.physics.velocity.VelocityInterfaceCompositeInterface")
-local TrackingEvent = require("org.allbinary.game.tracking.TrackingEvent")
-local TrackingEventHandler = require("org.allbinary.game.tracking.TrackingEventHandler")
-local TrackingEventListenerInterface = require("org.allbinary.game.tracking.TrackingEventListenerInterface")
-local AllBinaryLayer = require("org.allbinary.layer.AllBinaryLayer")
-local AllBinaryLayerManager = require("org.allbinary.layer.AllBinaryLayerManager")
-local ForcedLogUtil = require("org.allbinary.logic.communication.log.ForcedLogUtil")
-local MathUtil = require("org.allbinary.logic.math.MathUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local AllBinaryEventObject = require("org.allbinary.logic.util.event.AllBinaryEventObject")
-local EventStrings = require("org.allbinary.logic.util.event.EventStrings")
-local Visitor = require("org.allbinary.logic.util.visitor.Visitor")
-local GameTickTimeDelayHelper = require("org.allbinary.time.GameTickTimeDelayHelper")
-local GameTickTimeDelayHelperFactory = require("org.allbinary.time.GameTickTimeDelayHelperFactory")
-local TimeDelayHelper = require("org.allbinary.time.TimeDelayHelper")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
+local DestroyedEvent = java_lazy("org.allbinary.game.combat.destroy.event.DestroyedEvent")
+local DestroyedEventHandler = java_lazy("org.allbinary.game.combat.destroy.event.DestroyedEventHandler")
+local DestroyedEventListenerInterface = java_lazy("org.allbinary.game.combat.destroy.event.DestroyedEventListenerInterface")
+local Group = java_lazy("org.allbinary.game.identification.Group")
+local GameInput = java_lazy("org.allbinary.game.input.GameInput")
+local BasicVelocityProperties = java_lazy("org.allbinary.game.physics.velocity.BasicVelocityProperties")
+local VelocityInterfaceCompositeInterface = java_lazy("org.allbinary.game.physics.velocity.VelocityInterfaceCompositeInterface")
+local TrackingEvent = java_lazy("org.allbinary.game.tracking.TrackingEvent")
+local TrackingEventHandler = java_lazy("org.allbinary.game.tracking.TrackingEventHandler")
+local TrackingEventListenerInterface = java_lazy("org.allbinary.game.tracking.TrackingEventListenerInterface")
+local AllBinaryLayer = java_lazy("org.allbinary.layer.AllBinaryLayer")
+local AllBinaryLayerManager = java_lazy("org.allbinary.layer.AllBinaryLayerManager")
+local ForcedLogUtil = java_lazy("org.allbinary.logic.communication.log.ForcedLogUtil")
+local MathUtil = java_lazy("org.allbinary.logic.math.MathUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local AllBinaryEventObject = java_lazy("org.allbinary.logic.util.event.AllBinaryEventObject")
+local EventStrings = java_lazy("org.allbinary.logic.util.event.EventStrings")
+local Visitor = java_lazy("org.allbinary.logic.util.visitor.Visitor")
+local GameTickTimeDelayHelper = java_lazy("org.allbinary.time.GameTickTimeDelayHelper")
+local GameTickTimeDelayHelperFactory = java_lazy("org.allbinary.time.GameTickTimeDelayHelperFactory")
+local TimeDelayHelper = java_lazy("org.allbinary.time.TimeDelayHelper")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
+
+local function java_super(class, name, count)
+    local mangled = name .. "_j" .. count
+    local current = class
+    while type(current) == "table" do
+        local method = rawget(current, mangled)
+        if method ~= nil then return method end
+        method = rawget(current, name)
+        if method ~= nil and method ~= rawget(current, name .. "__jdispatcher") then return method end
+        local parent = getmetatable(current)
+        local index = parent and parent.__index
+        if index == current then index = nil end
+        current = index
+    end
+    return class[name]
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -52,14 +156,23 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local DiveAndDirectionalTrackingAI = {}
+-- class table DiveAndDirectionalTrackingAI is declared before the requires
 DiveAndDirectionalTrackingAI.__index = DiveAndDirectionalTrackingAI
 DiveAndDirectionalTrackingAI.className = "DiveAndDirectionalTrackingAI"
+DiveAndDirectionalTrackingAI.javaClassName = "org.allbinary.game.ag.ai.DiveAndDirectionalTrackingAI"
 setmetatable(DiveAndDirectionalTrackingAI, {__index = BasicAI})
+DiveAndDirectionalTrackingAI.java_implements = " TrackingEventListenerInterface DestroyedEventListenerInterface "
+DiveAndDirectionalTrackingAI.java_interfaces = function() return {TrackingEventListenerInterface, DestroyedEventListenerInterface} end
 
 function DiveAndDirectionalTrackingAI:_init_fields()
     self.mathUtil = MathUtil.getInstance()
@@ -67,23 +180,23 @@ function DiveAndDirectionalTrackingAI:_init_fields()
     self.gameTickTimeDelayHelper = GameTickTimeDelayHelperFactory.getInstance()
     self.timeDelayHelper = TimeDelayHelper.new(500)
     self.list = BasicArrayListD.new()
-    self.directionalInterface = nil
-    self.velocityInterface = nil
-    self.directionToKeyMap = {Canvas.LEFT, Canvas.DOWN, Canvas.UP, Canvas.RIGHT}
-    self.initialDropped = false
-    self.diveP = false
+    if self.directionalInterface == nil then self.directionalInterface = nil end
+    if self.velocityInterface == nil then self.velocityInterface = nil end
+    self.directionToKeyMap = {jt = "I", Canvas.LEFT, Canvas.DOWN, Canvas.UP, Canvas.RIGHT}
+    if self.initialDropped == nil then self.initialDropped = false end
+    if self.diveP == nil then self.diveP = false end
     self.directionOfTarget = Direction.getInstance(0)
     self.MIN_DISTANCE = 40
     self.lastTrackingLayerInterface = AllBinaryLayer.NULL_ALLBINARY_LAYER
-    self.artificialIntelligenceInterface = nil
-    self.aiVistor = nil
+    if self.artificialIntelligenceInterface == nil then self.artificialIntelligenceInterface = nil end
+    if self.aiVistor == nil then self.aiVistor = nil end
     self.lastDirection = DirectionFactory.getInstance().NO_DIRECTION
 end
 
 
-function DiveAndDirectionalTrackingAI.new(ownerLayerInterface, artificialIntelligenceInterface, gameInput, visitor)
-    local self = setmetatable(BasicAI.new(ownerLayerInterface, gameInput), DiveAndDirectionalTrackingAI)
-    self:_init_fields()
+function DiveAndDirectionalTrackingAI._jinit(self, ownerLayerInterface, artificialIntelligenceInterface, gameInput, visitor)
+    java_super_init(BasicAI, self, ownerLayerInterface, gameInput)
+    DiveAndDirectionalTrackingAI._init_fields(self)
         -- super(...) made self above
         self.aiVistor = visitor
         self.artificialIntelligenceInterface = artificialIntelligenceInterface
@@ -93,6 +206,12 @@ function DiveAndDirectionalTrackingAI.new(ownerLayerInterface, artificialIntelli
         self.velocityInterface = velocityInterfaceCompositeInterface:getVelocityProperties()
         DestroyedEventHandler.getInstance():addListenerInterface(self)
         self:init()
+    return self
+end
+
+function DiveAndDirectionalTrackingAI.new(...)
+    local self = setmetatable({}, DiveAndDirectionalTrackingAI)
+    DiveAndDirectionalTrackingAI._jinit(self, ...)
     return self
 end
 
@@ -111,6 +230,7 @@ function DiveAndDirectionalTrackingAI:processAI(allBinaryLayerManager)
         end
         self.list:clear()
 end
+java_overload(DiveAndDirectionalTrackingAI, "processAI", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "AllBinaryLayerManager")) end)
 
 
 function DiveAndDirectionalTrackingAI:init()
@@ -118,6 +238,7 @@ function DiveAndDirectionalTrackingAI:init()
         self.directionOfTarget = DirectionFactory.getInstance().NOT_BORDERED_WITH
         TrackingEventHandler.getInstance():addListenerInterface(self)
 end
+java_overload(DiveAndDirectionalTrackingAI, "init", 0)
 
 
 -- throws Exception
@@ -165,6 +286,7 @@ function DiveAndDirectionalTrackingAI:target(allBinaryLayerManager)
             end
         end
 end
+java_overload(DiveAndDirectionalTrackingAI, "target", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "AllBinaryLayerManager")) end)
 
 
 -- throws Exception
@@ -180,6 +302,7 @@ function DiveAndDirectionalTrackingAI:verticalTargeting(x)
             self:setDive()
         end
 end
+java_overload(DiveAndDirectionalTrackingAI, "verticalTargeting", 1, function(java_a1) return true and type(java_a1) == "number" end)
 
 
 -- throws Exception
@@ -195,6 +318,7 @@ function DiveAndDirectionalTrackingAI:horizontalTargeting(y)
             self:setDive()
         end
 end
+java_overload(DiveAndDirectionalTrackingAI, "horizontalTargeting", 1, function(java_a1) return true and type(java_a1) == "number" end)
 
 
 function DiveAndDirectionalTrackingAI:setDive()
@@ -202,6 +326,7 @@ function DiveAndDirectionalTrackingAI:setDive()
         self.velocityInterface:zero()
         TrackingEventHandler.getInstance():removeListener(self)
 end
+java_overload(DiveAndDirectionalTrackingAI, "setDive", 0)
 
 
 -- throws Exception
@@ -210,6 +335,7 @@ function DiveAndDirectionalTrackingAI:moveRight()
         self.directionalInterface:setFrameByDirection(self.lastDirection)
         self.aiVistor:visit(self)
 end
+java_overload(DiveAndDirectionalTrackingAI, "moveRight", 0)
 
 
 -- throws Exception
@@ -218,6 +344,7 @@ function DiveAndDirectionalTrackingAI:moveLeft()
         self.directionalInterface:setFrameByDirection(self.lastDirection)
         self.aiVistor:visit(self)
 end
+java_overload(DiveAndDirectionalTrackingAI, "moveLeft", 0)
 
 
 -- throws Exception
@@ -226,6 +353,7 @@ function DiveAndDirectionalTrackingAI:moveDown()
         self.directionalInterface:setFrameByDirection(self.lastDirection)
         self.aiVistor:visit(self)
 end
+java_overload(DiveAndDirectionalTrackingAI, "moveDown", 0)
 
 
 -- throws Exception
@@ -234,6 +362,7 @@ function DiveAndDirectionalTrackingAI:moveUp()
         self.directionalInterface:setFrameByDirection(self.lastDirection)
         self.aiVistor:visit(self)
 end
+java_overload(DiveAndDirectionalTrackingAI, "moveUp", 0)
 
 
 -- throws Exception
@@ -241,12 +370,14 @@ function DiveAndDirectionalTrackingAI:dive()
         self.directionalInterface:setFrameByDirection(self.directionOfTarget)
         self.aiVistor:visit(self)
 end
+java_overload(DiveAndDirectionalTrackingAI, "dive", 0)
 
 
 -- throws Exception
 function DiveAndDirectionalTrackingAI:attack()
-        BasicAI.processKeyAI(self, Canvas.KEY_NUM1)
+        java_super(BasicAI, "processKeyAI", 1)(self, Canvas.KEY_NUM1)
 end
+java_overload(DiveAndDirectionalTrackingAI, "attack", 0)
 
 
 -- throws Exception
@@ -256,6 +387,7 @@ function DiveAndDirectionalTrackingAI:drop()
             self.aiVistor:visit(self)
         end
 end
+java_overload(DiveAndDirectionalTrackingAI, "drop", 0)
 
 
 function DiveAndDirectionalTrackingAI:isBeyondTarget()
@@ -287,16 +419,19 @@ function DiveAndDirectionalTrackingAI:isBeyondTarget()
             return false
         end
 end
+java_overload(DiveAndDirectionalTrackingAI, "isBeyondTarget", 0)
 
 
 function DiveAndDirectionalTrackingAI:onEvent(eventObject)
         ForcedLogUtil.log(EventStrings.getInstance().PERFORMANCE_MESSAGE, self)
 end
+java_overload(DiveAndDirectionalTrackingAI, "onEvent", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "AllBinaryEventObject")) end)
 
 
 function DiveAndDirectionalTrackingAI:onMovement(trackingEvent)
         self.list:add(trackingEvent)
 end
+java_overload(DiveAndDirectionalTrackingAI, "onMovement", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "TrackingEvent")) end)
 
 
 function DiveAndDirectionalTrackingAI:onDestroyed(destroyedEvent)
@@ -305,19 +440,21 @@ function DiveAndDirectionalTrackingAI:onDestroyed(destroyedEvent)
             DestroyedEventHandler.getInstance():removeListener(self)
         end
 end
+java_overload(DiveAndDirectionalTrackingAI, "onDestroyed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "DestroyedEvent")) end)
 
 
 function DiveAndDirectionalTrackingAI:setLastDirection(lastDirection)
         self.lastDirection = lastDirection
         local value = self:getLastDirection():getValue()
         if value < 4 then
-            BasicAI.setLastKey(self, self.directionToKeyMap[value + 1])
+            java_super(BasicAI, "setLastKey", 1)(self, self.directionToKeyMap[value + 1])
         end
 end
+java_overload(DiveAndDirectionalTrackingAI, "setLastDirection", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "Direction")) end)
 
 
 function DiveAndDirectionalTrackingAI:setLastKey(lastKey)
-        BasicAI.setLastKey(self, lastKey)
+        java_super(BasicAI, "setLastKey", 1)(self, lastKey)
         if self:getLastKey() == Canvas.LEFT then
             self.lastDirection = DirectionFactory.getInstance().LEFT
         elseif self:getLastKey() == Canvas.DOWN then
@@ -328,11 +465,13 @@ function DiveAndDirectionalTrackingAI:setLastKey(lastKey)
             self.lastDirection = DirectionFactory.getInstance().RIGHT
         end
 end
+java_overload(DiveAndDirectionalTrackingAI, "setLastKey", 1, function(java_a1) return true and type(java_a1) == "number" end)
 
 
 function DiveAndDirectionalTrackingAI:getLastDirection()
         return self.lastDirection
 end
+java_overload(DiveAndDirectionalTrackingAI, "getLastDirection", 0)
 
 
 function DiveAndDirectionalTrackingAI:toString()
@@ -342,6 +481,7 @@ function DiveAndDirectionalTrackingAI:toString()
         stringBuffer:append(StringUtil.getInstance():toString(self:getLastDirection()))
         return tostring(stringBuffer)
 end
+java_overload(DiveAndDirectionalTrackingAI, "toString", 0)
 DiveAndDirectionalTrackingAI.__tostring = function(self) return self:toString() end
 
 return DiveAndDirectionalTrackingAI

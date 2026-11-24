@@ -13,42 +13,59 @@
 -- Generated Code Do Not Modify
 -- package views.admin.inventory.listings
 
--- local HashMap = require("java.util.HashMap")
--- local HashSet = require("java.util.HashSet")
+local ProductListing = {}
+package.loaded["views.admin.inventory.listings.ProductListing"] = ProductListing
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
+local HashSet = java_lazy("java.util.HashSet")
 -- local Set = require("java.util.Set")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local StoreFrontInterface = require("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
-local BasicItemData = require("org.allbinary.business.user.commerce.inventory.item.BasicItemData")
-local StoreFrontsEntity = require("org.allbinary.data.tables.context.module.storefronts.StoreFrontsEntity")
-local StaticPagesEntity = require("org.allbinary.data.tables.staticpages.StaticPagesEntity")
-local InventoryEntity = require("org.allbinary.data.tables.user.commerce.inventory.item.InventoryEntity")
-local GLOBALS2 = require("org.allbinary.globals.GLOBALS2")
-local URLGLOBALS = require("org.allbinary.globals.URLGLOBALS")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local SearchParams = require("org.allbinary.logic.control.search.SearchParams")
-local SearchRequest = require("org.allbinary.logic.control.search.SearchRequest")
-local AbDataOutputStream = require("org.allbinary.logic.io.AbDataOutputStream")
-local DataOutputStreamFactory = require("org.allbinary.logic.io.DataOutputStreamFactory")
-local InputOutputTypeData = require("org.allbinary.logic.io.InputOutputTypeData")
-local StreamUtil = require("org.allbinary.logic.io.StreamUtil")
-local AbFile = require("org.allbinary.logic.io.file.AbFile")
-local Directory = require("org.allbinary.logic.io.file.directory.Directory")
-local AbPath = require("org.allbinary.logic.io.path.AbPath")
-local AbPathData = require("org.allbinary.logic.io.path.AbPathData")
-local SpecialCharacterUtil = require("org.allbinary.logic.string.SpecialCharacterUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local Replace = require("org.allbinary.logic.string.regex.replace.Replace")
-local UniqueTokens = require("org.allbinary.logic.string.tokens.UniqueTokens")
-local AbeClientInformationInterface = require("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
-local ServiceClientInformationInterfaceFactory = require("org.allbinary.logic.system.security.licensing.ServiceClientInformationInterfaceFactory")
-local CommonPhoneStrings = require("org.allbinary.string.CommonPhoneStrings")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local InventoryColumnUtil = require("views.generic.inventory.InventoryColumnUtil")
-local InventorySearchUtil = require("views.generic.inventory.InventorySearchUtil")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local StoreFrontInterface = java_lazy("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
+local BasicItemData = java_lazy("org.allbinary.business.user.commerce.inventory.item.BasicItemData")
+local StoreFrontsEntity = java_lazy("org.allbinary.data.tables.context.module.storefronts.StoreFrontsEntity")
+local StaticPagesEntity = java_lazy("org.allbinary.data.tables.staticpages.StaticPagesEntity")
+local InventoryEntity = java_lazy("org.allbinary.data.tables.user.commerce.inventory.item.InventoryEntity")
+local GLOBALS2 = java_lazy("org.allbinary.globals.GLOBALS2")
+local URLGLOBALS = java_lazy("org.allbinary.globals.URLGLOBALS")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local SearchParams = java_lazy("org.allbinary.logic.control.search.SearchParams")
+local SearchRequest = java_lazy("org.allbinary.logic.control.search.SearchRequest")
+local AbDataOutputStream = java_lazy("org.allbinary.logic.io.AbDataOutputStream")
+local DataOutputStreamFactory = java_lazy("org.allbinary.logic.io.DataOutputStreamFactory")
+local InputOutputTypeData = java_lazy("org.allbinary.logic.io.InputOutputTypeData")
+local StreamUtil = java_lazy("org.allbinary.logic.io.StreamUtil")
+local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
+local Directory = java_lazy("org.allbinary.logic.io.file.directory.Directory")
+local AbPath = java_lazy("org.allbinary.logic.io.path.AbPath")
+local AbPathData = java_lazy("org.allbinary.logic.io.path.AbPathData")
+local SpecialCharacterUtil = java_lazy("org.allbinary.logic.string.SpecialCharacterUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local Replace = java_lazy("org.allbinary.logic.string.regex.replace.Replace")
+local UniqueTokens = java_lazy("org.allbinary.logic.string.tokens.UniqueTokens")
+local AbeClientInformationInterface = java_lazy("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
+local ServiceClientInformationInterfaceFactory = java_lazy("org.allbinary.logic.system.security.licensing.ServiceClientInformationInterfaceFactory")
+local CommonPhoneStrings = java_lazy("org.allbinary.string.CommonPhoneStrings")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local InventoryColumnUtil = java_lazy("views.generic.inventory.InventoryColumnUtil")
+local InventorySearchUtil = java_lazy("views.generic.inventory.InventorySearchUtil")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local ProductListingInterface = require("views.admin.inventory.listings.ProductListingInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
@@ -64,6 +81,41 @@ local function java_exception(className, message, cause)
     return setmetatable(exception, {__tostring = function(self) if self.message ~= nil then return tostring(self.message) end return self.className end})
 end
 
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
 local function java_idiv(a, b)
     local q = a / b
     if q < 0 then return math.ceil(q) end
@@ -71,33 +123,47 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ProductListing = {}
+-- class table ProductListing is declared before the requires
 ProductListing.__index = ProductListing
 ProductListing.className = "ProductListing"
+ProductListing.javaClassName = "views.admin.inventory.listings.ProductListing"
+ProductListing.java_implements = " ProductListingInterface "
+ProductListing.java_interfaces = function() return {ProductListingInterface} end
 
 function ProductListing:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.directory = Directory.getInstance()
     self.basicItemData = BasicItemData.getInstance()
-    self.storeFronts = nil
-    self.staticPages = nil
-    self.inventory = nil
-    self.searchRequest = nil
+    if self.storeFronts == nil then self.storeFronts = nil end
+    if self.staticPages == nil then self.staticPages = nil end
+    if self.inventory == nil then self.inventory = nil end
+    if self.searchRequest == nil then self.searchRequest = nil end
     self.INVENTORY = ".InventoryView"
 end
 
 
-function ProductListing.new(searchRequest)
-    local self = setmetatable({}, ProductListing)
-    self:_init_fields()
+function ProductListing._jinit(self, searchRequest)
+    ProductListing._init_fields(self)
         self.searchRequest = searchRequest
         self.storeFronts = StoreFrontsEntity.new()
         self.staticPages = StaticPagesEntity.new()
         self.inventory = InventoryEntity.new()
+    return self
+end
+
+function ProductListing.new(...)
+    local self = setmetatable({}, ProductListing)
+    ProductListing._jinit(self, ...)
     return self
 end
 
@@ -121,7 +187,7 @@ end
 
 -- throws Exception
 function ProductListing:savePage(file, data)
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().STATICPAGEGENERATIONLOGGING) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().STATICPAGEGENERATIONLOGGING) then
             self.logUtil:putF("Creating File: " .. file, self, "generateAll()")
         end
         local newFile = AbFile.createAbFile(file)
@@ -134,11 +200,11 @@ function ProductListing:savePage(file, data)
             idOutData:writeBytes(data)
             idOutData:flush()
             StreamUtil.getInstance():close(idOutData)
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().STATICPAGEGENERATIONLOGGING) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().STATICPAGEGENERATIONLOGGING) then
                 self.logUtil:putF("Wrote Total Bytes: " .. tostring(newFile:length()), self, "generateAll()")
             end
         else
-            error(java_exception("Exception", "Could Not Create: " .. file), 0)
+            error(require("java.lang.Exception").new("Could Not Create: " .. file), 0)
         end
 end
 
@@ -161,7 +227,7 @@ function ProductListing:create(keywordData, keywordFilenameHashMap, vector, stat
             if productListingPages[index + 1] == nil then
                 break
             end
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().STATICPAGEGENERATIONLOGGING) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().STATICPAGEGENERATIONLOGGING) then
                 self.logUtil:putF("Saving Listing: " .. tostring(index), self, "generateAll()")
             end
             local indexStr = StringUtil.getInstance().EMPTY_STRING
@@ -177,7 +243,7 @@ function ProductListing:create(keywordData, keywordFilenameHashMap, vector, stat
             stringBuffer:append(InputOutputTypeData.getInstance().DEFAULT)
             local file = tostring(stringBuffer)
             if not self.directory:create(staticPath) then
-                error(java_exception("Exception", "Could Not Create Directory: " .. tostring(staticPath)), 0)
+                error(require("java.lang.Exception").new("Could Not Create Directory: " .. tostring(staticPath)), 0)
             end
             self:savePage(file, productListingPages[index + 1])
         end
@@ -201,16 +267,16 @@ end
 
 
 -- throws Exception
-function ProductListing:generateAll()
-        local try_ok, try_error = pcall(function()
+function ProductListing:generateAll_j0()
+        local try_ok, try_error, try_value = pcall(function()
             local storeFront = self.searchRequest:getStoreFront()
             local stringBuffer = StringMaker.new()
-            stringBuffer:append(self.URLGLOBALS:getWebappPath())
+            stringBuffer:append(URLGLOBALS.getWebappPath())
             stringBuffer:append(storeFront:getName())
             stringBuffer:append(AbPathData.getInstance().SEPARATOR)
             stringBuffer:append(storeFront:getStaticPath())
             local staticPath = AbPath.new(tostring(stringBuffer), StringUtil.getInstance().EMPTY_STRING)
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().STATICPAGEGENERATIONLOGGING) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().STATICPAGEGENERATIONLOGGING) then
                 self.logUtil:putF("Store Static Pages Path: " .. tostring(staticPath), self, "generateAll()")
             end
             local keywordHashSet = self:getHashSet(storeFront)
@@ -222,7 +288,7 @@ function ProductListing:generateAll()
                 stringBuffer:append("Products For ")
                 stringBuffer:append(storeFront:getName())
                 stringBuffer:append(" Store Not Found")
-                return tostring(stringBuffer)
+                do return "__jreturn", tostring(stringBuffer) end
             end
             local inventorySearchUtil = InventorySearchUtil.getInstance()
             local vector = inventorySearchUtil:getBasicItemIdColumn(self.searchRequest)
@@ -239,22 +305,23 @@ function ProductListing:generateAll()
             stringBuffer:append(" it used packages ")
             stringBuffer:append(storeFront:getPackageLocation())
             stringBuffer:append(self.INVENTORY)
-            return tostring(stringBuffer)
+            do return "__jreturn", tostring(stringBuffer) end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             error(e, 0)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
 -- throws Exception
--- Java overloaded method: Lua keeps the last definition
-function ProductListing:generateAll(storeName)
-        local try_ok, try_error = pcall(function()
+function ProductListing:generateAll_j1(storeName)
+        local try_ok, try_error, try_value = pcall(function()
             local stringBuffer = StringMaker.new()
             if storeName ~= nil then
-                if ((storeName < self.GLOBALS2.GENERATEALLSTORES and -1) or (storeName > self.GLOBALS2.GENERATEALLSTORES and 1) or 0) ~= 0 then
+                if ((storeName < GLOBALS2.GENERATEALLSTORES and -1) or (storeName > GLOBALS2.GENERATEALLSTORES and 1) or 0) ~= 0 then
                     self.searchRequest:setStoreFront(self.storeFronts:getStoreFrontInterface(storeName))
                     stringBuffer:append(self:generateAll())
                     stringBuffer:append("<br />")
@@ -269,16 +336,25 @@ function ProductListing:generateAll(storeName)
                     end
                 end
             else
-                return "Generation Failed No Store Specified<br/>"
+                do return "__jreturn", "Generation Failed No Store Specified<br/>" end
             end
             stringBuffer:append("All Static Pages Generated<br/>")
-            return tostring(stringBuffer)
+            do return "__jreturn", tostring(stringBuffer) end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             error(e, 0)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+function ProductListing:generateAll(...)
+    local count = select("#", ...)
+    if count == 0 then return self:generateAll_j0(...) end
+    if count == 1 then return self:generateAll_j1(...) end
+    error("No method generateAll takes " .. count .. " arguments")
+end
+ProductListing.generateAll__jdispatcher = ProductListing.generateAll
 
 return ProductListing
 

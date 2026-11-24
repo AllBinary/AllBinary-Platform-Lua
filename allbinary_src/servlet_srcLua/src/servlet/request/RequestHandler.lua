@@ -13,15 +13,122 @@
 -- Generated Code Do Not Modify
 -- package servlet.request
 
--- local io = require("java.io")
+local RequestHandler = {}
+package.loaded["servlet.request.RequestHandler"] = RequestHandler
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+-- local PrintWriter = require("java.io.PrintWriter")
+-- local IOException = require("java.io.IOException")
 -- local net = require("java.net")
 -- local servlet = require("javax.servlet")
 -- local http = require("javax.servlet.http")
-local LicensingException = require("org.allbinary.logic.system.security.licensing.LicensingException")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local WorkFlowInterface = require("org.allbinary.logic.control.workflow.WorkFlowInterface")
-local RequestWorkFlowFactory = require("org.allbinary.logic.control.workflow.RequestWorkFlowFactory")
+local LicensingException = java_lazy("org.allbinary.logic.system.security.licensing.LicensingException")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local WorkFlowInterface = java_lazy("org.allbinary.logic.control.workflow.WorkFlowInterface")
+local RequestWorkFlowFactory = java_lazy("org.allbinary.logic.control.workflow.RequestWorkFlowFactory")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local HttpServlet = require("servlet.request.HttpServlet")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
+
+local function java_super(class, name, count)
+    local mangled = name .. "_j" .. count
+    local current = class
+    while type(current) == "table" do
+        local method = rawget(current, mangled)
+        if method ~= nil then return method end
+        method = rawget(current, name)
+        if method ~= nil and method ~= rawget(current, name .. "__jdispatcher") then return method end
+        local parent = getmetatable(current)
+        local index = parent and parent.__index
+        if index == current then index = nil end
+        current = index
+    end
+    return class[name]
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -30,39 +137,52 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local RequestHandler = {}
+-- class table RequestHandler is declared before the requires
 RequestHandler.__index = RequestHandler
 RequestHandler.className = "RequestHandler"
+RequestHandler.javaClassName = "servlet.request.RequestHandler"
 setmetatable(RequestHandler, {__index = HttpServlet})
 
 function RequestHandler:_init_fields()
     self.logUtil = LogUtil.getInstance()
 end
 
-function RequestHandler.new()
-    local self = setmetatable(HttpServlet.new(), RequestHandler)
-    self:_init_fields()
+function RequestHandler._jinit(self)
+    java_super_init(HttpServlet, self)
+    RequestHandler._init_fields(self)
     return self
+end
+
+function RequestHandler.new()
+    return RequestHandler._jinit(setmetatable({}, RequestHandler))
 end
 
 
 -- throws ServletException
 function RequestHandler:init(config)
-        HttpServlet.init(self, config)
+        java_super(HttpServlet, "init", 1)(self, config)
 end
+java_overload(RequestHandler, "init", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ServletConfig")) end)
 
 
 function RequestHandler:destroy()
 end
+java_overload(RequestHandler, "destroy", 0)
 
 
 -- throws ServletException, IOException
 function RequestHandler:processRequest(request, response)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             response:setContentType("text/html")
             local out = response:getWriter()
             local workflowInterface = RequestWorkFlowFactory.getInstance(request, response, self:getServletConfig(), self:getServletContext())
@@ -74,29 +194,34 @@ function RequestHandler:processRequest(request, response)
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SERVLETERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SERVLETERROR) then
                 self.logUtil:put("Servlet LicensingException", self, "processRequest()", e)
             end
             response:sendRedirect(self.abcs.globals.URLGLOBALS.LICENSEERRORPAGE)
         end
 end
+java_overload(RequestHandler, "processRequest", 2, function(java_a1, java_a2) return true and (java_a1 == nil or java_is(java_a1, "HttpServletRequest")) and (java_a2 == nil or java_is(java_a2, "HttpServletResponse")) end)
 
 
 -- throws ServletException, IOException
 function RequestHandler:doGet(request, response)
         self:processRequest(request, response)
 end
+java_overload(RequestHandler, "doGet", 2, function(java_a1, java_a2) return true and (java_a1 == nil or java_is(java_a1, "HttpServletRequest")) and (java_a2 == nil or java_is(java_a2, "HttpServletResponse")) end)
 
 
 -- throws ServletException, IOException
 function RequestHandler:doPost(request, response)
         self:processRequest(request, response)
 end
+java_overload(RequestHandler, "doPost", 2, function(java_a1, java_a2) return true and (java_a1 == nil or java_is(java_a1, "HttpServletRequest")) and (java_a2 == nil or java_is(java_a2, "HttpServletResponse")) end)
 
 
 function RequestHandler:getServletInfo()
         return "WorkFlow Request Handler"
 end
+java_overload(RequestHandler, "getServletInfo", 0)
 
 return RequestHandler
 

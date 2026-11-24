@@ -13,7 +13,23 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.layer.pickup
 
-local Animation = require("org.allbinary.animation.Animation")
+local IconLayerFactory = {}
+package.loaded["org.allbinary.game.layer.pickup.IconLayerFactory"] = IconLayerFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local Animation = java_lazy("org.allbinary.animation.Animation")
+local IconLayer = java_lazy("org.allbinary.game.layer.pickup.IconLayer")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -22,17 +38,27 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local IconLayerFactory = {}
+-- class table IconLayerFactory is declared before the requires
 IconLayerFactory.__index = IconLayerFactory
 IconLayerFactory.className = "IconLayerFactory"
+IconLayerFactory.javaClassName = "org.allbinary.game.layer.pickup.IconLayerFactory"
+
+function IconLayerFactory._jinit(self)
+    return self
+end
 
 function IconLayerFactory.new()
-    local self = setmetatable({}, IconLayerFactory)
-    return self
+    return IconLayerFactory._jinit(setmetatable({}, IconLayerFactory))
 end
 
 

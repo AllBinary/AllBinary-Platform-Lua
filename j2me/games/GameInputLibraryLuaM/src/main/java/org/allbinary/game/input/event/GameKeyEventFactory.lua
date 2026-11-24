@@ -13,17 +13,39 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.input.event
 
-local GameKeyEventSourceInterface = require("org.allbinary.game.input.GameKeyEventSourceInterface")
-local Input = require("org.allbinary.game.input.Input")
-local InputFactory = require("org.allbinary.game.input.InputFactory")
-local NullUtil = require("org.allbinary.logic.NullUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
+local GameKeyEventFactory = {}
+package.loaded["org.allbinary.game.input.event.GameKeyEventFactory"] = GameKeyEventFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local GameKeyEventSourceInterface = java_lazy("org.allbinary.game.input.GameKeyEventSourceInterface")
+local Input = java_lazy("org.allbinary.game.input.Input")
+local InputFactory = java_lazy("org.allbinary.game.input.InputFactory")
+local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local GameKeyEvent = java_lazy("org.allbinary.game.input.event.GameKeyEvent")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -34,13 +56,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local GameKeyEventFactory = {}
+-- class table GameKeyEventFactory is declared before the requires
 GameKeyEventFactory.__index = GameKeyEventFactory
 GameKeyEventFactory.className = "GameKeyEventFactory"
+GameKeyEventFactory.javaClassName = "org.allbinary.game.input.event.GameKeyEventFactory"
 
 function GameKeyEventFactory:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -52,16 +81,21 @@ end
 
 
 function GameKeyEventFactory.getInstance()
-        if GameKeyEventFactory.instance == NullUtil.getInstance().NULL_OBJECT then
-            GameKeyEventFactory.instance = GameKeyEventFactory.new()
+        if GameKeyEventFactory.instance_f == NullUtil.getInstance().NULL_OBJECT then
+            GameKeyEventFactory.instance_f = GameKeyEventFactory.new()
         end
-        return GameKeyEventFactory.instance
+        return GameKeyEventFactory.instance_f
 end
 
 
-function GameKeyEventFactory.new()
+function GameKeyEventFactory._jinit(self)
+    GameKeyEventFactory._init_fields(self)
+    return self
+end
+
+function GameKeyEventFactory.new(...)
     local self = setmetatable({}, GameKeyEventFactory)
-    self:_init_fields()
+    GameKeyEventFactory._jinit(self, ...)
     return self
 end
 
@@ -96,7 +130,7 @@ function GameKeyEventFactory:getInstanceForInput(anyType, input)
         return gameKeyEvent
 end
 
-GameKeyEventFactory.instance = NullUtil.getInstance().NULL_OBJECT
+GameKeyEventFactory.instance_f = NullUtil.getInstance().NULL_OBJECT
 
 return GameKeyEventFactory
 

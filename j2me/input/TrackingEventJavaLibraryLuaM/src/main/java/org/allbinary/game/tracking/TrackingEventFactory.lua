@@ -13,8 +13,25 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.tracking
 
-local AllBinaryEventObject = require("org.allbinary.logic.util.event.AllBinaryEventObject")
-local AllBinaryEventObjectFactoryInterface = require("org.allbinary.logic.util.event.AllBinaryEventObjectFactoryInterface")
+local TrackingEventFactory = {}
+package.loaded["org.allbinary.game.tracking.TrackingEventFactory"] = TrackingEventFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local AllBinaryEventObject = java_lazy("org.allbinary.logic.util.event.AllBinaryEventObject")
+local AllBinaryEventObjectFactoryInterface = java_lazy("org.allbinary.logic.util.event.AllBinaryEventObjectFactoryInterface")
+local TrackingEvent = java_lazy("org.allbinary.game.tracking.TrackingEvent")
+local TrackingEventHandler = java_lazy("org.allbinary.game.tracking.TrackingEventHandler")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -23,17 +40,31 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local TrackingEventFactory = {}
+-- class table TrackingEventFactory is declared before the requires
 TrackingEventFactory.__index = TrackingEventFactory
 TrackingEventFactory.className = "TrackingEventFactory"
+TrackingEventFactory.javaClassName = "org.allbinary.game.tracking.TrackingEventFactory"
+TrackingEventFactory.java_implements = " AllBinaryEventObjectFactoryInterface "
+TrackingEventFactory.java_interfaces = function() return {AllBinaryEventObjectFactoryInterface} end
 
 
-function TrackingEventFactory.new()
+function TrackingEventFactory._jinit(self)
+    return self
+end
+
+function TrackingEventFactory.new(...)
     local self = setmetatable({}, TrackingEventFactory)
+    TrackingEventFactory._jinit(self, ...)
     return self
 end
 

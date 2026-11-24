@@ -13,8 +13,23 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.input
 
+local ABKeyEventWrapper = {}
+package.loaded["org.allbinary.game.input.ABKeyEventWrapper"] = ABKeyEventWrapper
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local KeyEvent = require("java.awt.event.KeyEvent")
-local JsType = require("jsinterop.annotations.JsType")
+local JsType = java_lazy("jsinterop.annotations.JsType")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -23,13 +38,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ABKeyEventWrapper = {}
+-- class table ABKeyEventWrapper is declared before the requires
 ABKeyEventWrapper.__index = ABKeyEventWrapper
 ABKeyEventWrapper.className = "ABKeyEventWrapper"
+ABKeyEventWrapper.javaClassName = "org.allbinary.game.input.ABKeyEventWrapper"
 
 function ABKeyEventWrapper:_init_fields()
     self.VK_ENTER = KeyEvent.VK_ENTER
@@ -223,18 +245,21 @@ function ABKeyEventWrapper:_init_fields()
     self.VK_UNDEFINED = KeyEvent.VK_UNDEFINED
 end
 
-function ABKeyEventWrapper.new()
-    local self = setmetatable({}, ABKeyEventWrapper)
-    self:_init_fields()
+function ABKeyEventWrapper._jinit(self)
+    ABKeyEventWrapper._init_fields(self)
     return self
+end
+
+function ABKeyEventWrapper.new()
+    return ABKeyEventWrapper._jinit(setmetatable({}, ABKeyEventWrapper))
 end
 
 
 function ABKeyEventWrapper.getInstance()
-        return ABKeyEventWrapper.instance
+        return ABKeyEventWrapper.instance_f
 end
 
-ABKeyEventWrapper.instance = ABKeyEventWrapper.new()
+ABKeyEventWrapper.instance_f = ABKeyEventWrapper.new()
 
 return ABKeyEventWrapper
 

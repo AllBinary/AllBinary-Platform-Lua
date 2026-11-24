@@ -13,8 +13,26 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.data.tables.user.commerce.inventory.order
 
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local OrderHistoryEntityFactory = {}
+package.loaded["org.allbinary.data.tables.user.commerce.inventory.order.OrderHistoryEntityFactory"] = OrderHistoryEntityFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local OrderHistoryEntity = java_lazy("org.allbinary.data.tables.user.commerce.inventory.order.OrderHistoryEntity")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -23,34 +41,48 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local OrderHistoryEntityFactory = {}
+-- class table OrderHistoryEntityFactory is declared before the requires
 OrderHistoryEntityFactory.__index = OrderHistoryEntityFactory
 OrderHistoryEntityFactory.className = "OrderHistoryEntityFactory"
+OrderHistoryEntityFactory.javaClassName = "org.allbinary.data.tables.user.commerce.inventory.order.OrderHistoryEntityFactory"
 
 
-function OrderHistoryEntityFactory.new()
+function OrderHistoryEntityFactory._jinit(self)
+    return self
+end
+
+function OrderHistoryEntityFactory.new(...)
     local self = setmetatable({}, OrderHistoryEntityFactory)
+    OrderHistoryEntityFactory._jinit(self, ...)
     return self
 end
 
 
 function OrderHistoryEntityFactory.getInstance()
         local logUtil = LogUtil.getInstance()
-        local try_ok, try_error = pcall(function()
-            return OrderHistoryEntity.new()
+        local try_ok, try_error, try_value = pcall(function()
+            do return "__jreturn", OrderHistoryEntity.new() end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local commonStrings = CommonStrings.getInstance()
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().ENTITYFACTORYERROR) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().ENTITYFACTORYERROR) then
                 logUtil:put(commonStrings.EXCEPTION, "OrderHistoryEntityFactory", commonStrings.GET_INSTANCE, e)
             end
             return nil
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 return OrderHistoryEntityFactory

@@ -13,13 +13,28 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.communication.log.config.type
 
-local DomNodeHelper = require("org.allbinary.data.tree.dom.DomNodeHelper")
-local DomSearchHelper = require("org.allbinary.data.tree.dom.DomSearchHelper")
-local PreLogUtil = require("org.allbinary.logic.communication.log.PreLogUtil")
-local LoggingInitInfo = require("org.allbinary.logic.communication.log.config.LoggingInitInfo")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local Node = require("org.w3c.dom.Node")
+local LogConfigTypes = {}
+package.loaded["org.allbinary.logic.communication.log.config.type.LogConfigTypes"] = LogConfigTypes
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local DomNodeHelper = java_lazy("org.allbinary.data.tree.dom.DomNodeHelper")
+local DomSearchHelper = java_lazy("org.allbinary.data.tree.dom.DomSearchHelper")
+local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
+local LoggingInitInfo = java_lazy("org.allbinary.logic.communication.log.config.LoggingInitInfo")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local Node = java_lazy("org.w3c.dom.Node")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -41,23 +56,35 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local LogConfigTypes = {}
+-- class table LogConfigTypes is declared before the requires
 LogConfigTypes.__index = LogConfigTypes
 LogConfigTypes.className = "LogConfigTypes"
+LogConfigTypes.javaClassName = "org.allbinary.logic.communication.log.config.type.LogConfigTypes"
 
 
-function LogConfigTypes.new()
+function LogConfigTypes._jinit(self)
+    return self
+end
+
+function LogConfigTypes.new(...)
     local self = setmetatable({}, LogConfigTypes)
+    LogConfigTypes._jinit(self, ...)
     return self
 end
 
 
 function LogConfigTypes.init()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             PreLogUtil.put("Initialize LogconfigTypes", "LogConfigTypes", "init()")
             LogConfigTypeFactory.getInstance()
             local loggingInitInfo = LoggingInitInfo.new()
@@ -69,6 +96,7 @@ function LogConfigTypes.init()
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             PreLogUtil.putSE("Unable to initialize LogConfigTypes", "LogConfigTypes", "init()", e)
         end
 end
@@ -91,7 +119,7 @@ function LogConfigTypes.getInstance(node)
                 return logConfigType
             end
         end
-        error(java_exception("Exception", "No Such LogConfigType: " .. name), 0)
+        error(require("java.lang.Exception").new("No Such LogConfigType: " .. name), 0)
 end
 
 LogConfigTypes.JSP_ERROR_NO_FUNCTION = "in JSP Not In Function"

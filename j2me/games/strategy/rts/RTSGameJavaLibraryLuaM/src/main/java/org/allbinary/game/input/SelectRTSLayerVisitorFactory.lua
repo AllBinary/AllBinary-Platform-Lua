@@ -13,8 +13,25 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.input
 
-local Visitor = require("org.allbinary.logic.util.visitor.Visitor")
+local SelectRTSLayerVisitorFactory = {}
+package.loaded["org.allbinary.game.input.SelectRTSLayerVisitorFactory"] = SelectRTSLayerVisitorFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local Visitor = java_lazy("org.allbinary.logic.util.visitor.Visitor")
 local SelectRTSLayerVisitorFactoryInterface = require("org.allbinary.game.input.SelectRTSLayerVisitorFactoryInterface")
+local SelectRTSLayerVisitor = java_lazy("org.allbinary.game.input.SelectRTSLayerVisitor")
+local SelectedRTSLayersPlayerGameInput = java_lazy("org.allbinary.game.input.SelectedRTSLayersPlayerGameInput")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -23,22 +40,36 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local SelectRTSLayerVisitorFactory = {}
+-- class table SelectRTSLayerVisitorFactory is declared before the requires
 SelectRTSLayerVisitorFactory.__index = SelectRTSLayerVisitorFactory
 SelectRTSLayerVisitorFactory.className = "SelectRTSLayerVisitorFactory"
+SelectRTSLayerVisitorFactory.javaClassName = "org.allbinary.game.input.SelectRTSLayerVisitorFactory"
+SelectRTSLayerVisitorFactory.java_implements = " SelectRTSLayerVisitorFactoryInterface "
+SelectRTSLayerVisitorFactory.java_interfaces = function() return {SelectRTSLayerVisitorFactoryInterface} end
 
 
 function SelectRTSLayerVisitorFactory.getInstance()
-        return SelectRTSLayerVisitorFactory.instance
+        return SelectRTSLayerVisitorFactory.instance_f
 end
 
 
-function SelectRTSLayerVisitorFactory.new()
+function SelectRTSLayerVisitorFactory._jinit(self)
+    return self
+end
+
+function SelectRTSLayerVisitorFactory.new(...)
     local self = setmetatable({}, SelectRTSLayerVisitorFactory)
+    SelectRTSLayerVisitorFactory._jinit(self, ...)
     return self
 end
 
@@ -47,7 +78,7 @@ function SelectRTSLayerVisitorFactory:create(selectedRTSLayersPlayerGameInput)
         return SelectRTSLayerVisitor.new()
 end
 
-SelectRTSLayerVisitorFactory.instance = SelectRTSLayerVisitorFactory.new()
+SelectRTSLayerVisitorFactory.instance_f = SelectRTSLayerVisitorFactory.new()
 
 return SelectRTSLayerVisitorFactory
 

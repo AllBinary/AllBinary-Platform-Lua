@@ -13,6 +13,21 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.communication.log.config.type
 
+local LogConfigTypesData = {}
+package.loaded["org.allbinary.logic.communication.log.config.type.LogConfigTypesData"] = LogConfigTypesData
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 
 local function java_idiv(a, b)
     local q = a / b
@@ -21,31 +36,41 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local LogConfigTypesData = {}
+-- class table LogConfigTypesData is declared before the requires
 LogConfigTypesData.__index = LogConfigTypesData
 LogConfigTypesData.className = "LogConfigTypesData"
+LogConfigTypesData.javaClassName = "org.allbinary.logic.communication.log.config.type.LogConfigTypesData"
 
 function LogConfigTypesData:_init_fields()
     self.NAME = "LOG_CONFIG_TYPES_NAME"
     self.DESCRIPTION = "LOG_CONFIG_TYPES_DESCRIPTION"
 end
 
-function LogConfigTypesData.new()
-    local self = setmetatable({}, LogConfigTypesData)
-    self:_init_fields()
+function LogConfigTypesData._jinit(self)
+    LogConfigTypesData._init_fields(self)
     return self
+end
+
+function LogConfigTypesData.new()
+    return LogConfigTypesData._jinit(setmetatable({}, LogConfigTypesData))
 end
 
 
 function LogConfigTypesData.getInstance()
-        return LogConfigTypesData.instance
+        return LogConfigTypesData.instance_f
 end
 
-LogConfigTypesData.instance = LogConfigTypesData.new()
+LogConfigTypesData.instance_f = LogConfigTypesData.new()
 
 return LogConfigTypesData
 

@@ -13,20 +13,43 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media.image
 
+local ImageModifierUtil = {}
+package.loaded["org.allbinary.media.image.ImageModifierUtil"] = ImageModifierUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local BufferedImage = require("java.awt.image.BufferedImage")
 -- local ColorModel = require("java.awt.image.ColorModel")
 -- local WritableRaster = require("java.awt.image.WritableRaster")
 -- local Image = require("javax.microedition.lcdui.Image")
-local Anchor = require("org.allbinary.graphics.Anchor")
-local BasicColor = require("org.allbinary.graphics.color.BasicColor")
-local PreLogUtil = require("org.allbinary.logic.communication.log.PreLogUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local Anchor = java_lazy("org.allbinary.graphics.Anchor")
+local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
+local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local ImageCreationUtil = java_lazy("org.allbinary.media.image.ImageCreationUtil")
+local ImageUtil = java_lazy("org.allbinary.media.image.ImageUtil")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -37,28 +60,38 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ImageModifierUtil = {}
+-- class table ImageModifierUtil is declared before the requires
 ImageModifierUtil.__index = ImageModifierUtil
 ImageModifierUtil.className = "ImageModifierUtil"
+ImageModifierUtil.javaClassName = "org.allbinary.media.image.ImageModifierUtil"
 
 function ImageModifierUtil:_init_fields()
     self.imageUtil = ImageUtil.getInstance()
-    self.colorArray = java_new_array(0, 1)
+    self.colorArray = java_typed_array("I", java_new_array(0, 1))
+end
+
+function ImageModifierUtil._jinit(self)
+    ImageModifierUtil._init_fields(self)
+    return self
 end
 
 function ImageModifierUtil.new()
-    local self = setmetatable({}, ImageModifierUtil)
-    self:_init_fields()
-    return self
+    return ImageModifierUtil._jinit(setmetatable({}, ImageModifierUtil))
 end
 
 
 function ImageModifierUtil.getInstanceOrCreate()
-        return ImageModifierUtil.instance
+        return ImageModifierUtil.instance_f
 end
 
 
@@ -143,7 +176,7 @@ end
 
 
 function ImageModifierUtil:getImageArray(originalImageArray)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local newImageArray = java_new_array(nil, (originalImageArray.n or #originalImageArray))
             local size = (newImageArray.n or #newImageArray)
             local originalImage = nil
@@ -153,14 +186,16 @@ function ImageModifierUtil:getImageArray(originalImageArray)
                 image:getGraphics():drawImage(originalImage, 0, 0, Anchor.TOP_LEFT)
                 newImageArray[index + 1] = image
             end
-            return newImageArray
+            do return "__jreturn", newImageArray end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local commonStrings = CommonStrings.getInstance()
             PreLogUtil.putOE(commonStrings.EXCEPTION, self, "getImageArray", e)
             return originalImageArray
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
@@ -171,7 +206,7 @@ end
 function ImageModifierUtil:reset()
 end
 
-ImageModifierUtil.instance = ImageModifierUtil.new()
+ImageModifierUtil.instance_f = ImageModifierUtil.new()
 
 return ImageModifierUtil
 

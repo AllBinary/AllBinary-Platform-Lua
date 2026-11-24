@@ -13,8 +13,23 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.user.commerce.money.payment.gateway
 
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
+local PaymentGatewayPageData = {}
+package.loaded["org.allbinary.business.user.commerce.money.payment.gateway.PaymentGatewayPageData"] = PaymentGatewayPageData
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -23,30 +38,36 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local PaymentGatewayPageData = {}
+-- class table PaymentGatewayPageData is declared before the requires
 PaymentGatewayPageData.__index = PaymentGatewayPageData
 PaymentGatewayPageData.className = "PaymentGatewayPageData"
+PaymentGatewayPageData.javaClassName = "org.allbinary.business.user.commerce.money.payment.gateway.PaymentGatewayPageData"
 
 function PaymentGatewayPageData:_init_fields()
-    self.MAKEPAYMENT = nil
-    self.CHECKOUT = nil
-    self.SHIPPING = nil
-    self.SHIPPINGADDRESS = nil
-    self.SHIPPINGADDRESSACTION = nil
-    self.BILLINGADDRESS = nil
-    self.PAYMENT = nil
-    self.AUTHORIZE = nil
-    self.FINISH = nil
+    if self.MAKEPAYMENT == nil then self.MAKEPAYMENT = nil end
+    if self.CHECKOUT == nil then self.CHECKOUT = nil end
+    if self.SHIPPING == nil then self.SHIPPING = nil end
+    if self.SHIPPINGADDRESS == nil then self.SHIPPINGADDRESS = nil end
+    if self.SHIPPINGADDRESSACTION == nil then self.SHIPPINGADDRESSACTION = nil end
+    if self.BILLINGADDRESS == nil then self.BILLINGADDRESS = nil end
+    if self.PAYMENT == nil then self.PAYMENT = nil end
+    if self.AUTHORIZE == nil then self.AUTHORIZE = nil end
+    if self.FINISH == nil then self.FINISH = nil end
 end
 
 
-function PaymentGatewayPageData.new(location, paymentMethod)
-    local self = setmetatable({}, PaymentGatewayPageData)
-    self:_init_fields()
+function PaymentGatewayPageData._jinit(self, location, paymentMethod)
+    PaymentGatewayPageData._init_fields(self)
         local paymentMethodString = tostring(PaymentGatewayPageData.NAME) .. paymentMethod
         local stringBuffer = StringMaker.new()
         stringBuffer:append(location)
@@ -93,6 +114,12 @@ function PaymentGatewayPageData.new(location, paymentMethod)
         stringBuffer:append("PaymentFinish")
         stringBuffer:append(PaymentGatewayPageData.EXTENSION)
         self.FINISH = tostring(stringBuffer)
+    return self
+end
+
+function PaymentGatewayPageData.new(...)
+    local self = setmetatable({}, PaymentGatewayPageData)
+    PaymentGatewayPageData._jinit(self, ...)
     return self
 end
 

@@ -13,8 +13,23 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.system.security.licensing
 
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
+local LockableFeatureFactory = {}
+package.loaded["org.allbinary.logic.system.security.licensing.LockableFeatureFactory"] = LockableFeatureFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -23,27 +38,37 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local LockableFeatureFactory = {}
+-- class table LockableFeatureFactory is declared before the requires
 LockableFeatureFactory.__index = LockableFeatureFactory
 LockableFeatureFactory.className = "LockableFeatureFactory"
+LockableFeatureFactory.javaClassName = "org.allbinary.logic.system.security.licensing.LockableFeatureFactory"
 
 function LockableFeatureFactory:_init_fields()
     self.list = BasicArrayListD.new()
 end
 
-function LockableFeatureFactory.new()
-    local self = setmetatable({}, LockableFeatureFactory)
-    self:_init_fields()
+function LockableFeatureFactory._jinit(self)
+    LockableFeatureFactory._init_fields(self)
     return self
+end
+
+function LockableFeatureFactory.new()
+    return LockableFeatureFactory._jinit(setmetatable({}, LockableFeatureFactory))
 end
 
 
 function LockableFeatureFactory.getInstance()
-        return LockableFeatureFactory.instance
+        return LockableFeatureFactory.instance_f
 end
 
 
@@ -51,7 +76,7 @@ function LockableFeatureFactory:getList()
         return self.list
 end
 
-LockableFeatureFactory.instance = LockableFeatureFactory.new()
+LockableFeatureFactory.instance_f = LockableFeatureFactory.new()
 
 return LockableFeatureFactory
 

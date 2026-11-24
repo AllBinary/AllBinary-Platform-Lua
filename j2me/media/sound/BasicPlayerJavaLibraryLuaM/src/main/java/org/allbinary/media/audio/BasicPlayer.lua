@@ -13,21 +13,43 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media.audio
 
+local BasicPlayer = {}
+package.loaded["org.allbinary.media.audio.BasicPlayer"] = BasicPlayer
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Control = require("javax.microedition.media.Control")
 -- local MediaException = require("javax.microedition.media.MediaException")
 -- local Player = require("javax.microedition.media.Player")
 -- local PlayerListener = require("javax.microedition.media.PlayerListener")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 local Controllable2 = require("org.allbinary.media.audio.Controllable2")
+local NullControl = java_lazy("org.allbinary.media.audio.NullControl")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -38,28 +60,42 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
 --BasicPlayerJavaLibrary
-local BasicPlayer = {}
+-- class table BasicPlayer is declared before the requires
 BasicPlayer.__index = BasicPlayer
 BasicPlayer.className = "BasicPlayer"
+BasicPlayer.javaClassName = "org.allbinary.media.audio.BasicPlayer"
+BasicPlayer.java_implements = " Player Controllable2 "
+BasicPlayer.java_interfaces = function() return {Player, Controllable2} end
 
 function BasicPlayer:_init_fields()
     self.commonStrings = CommonStrings.getInstance()
     self.listenersList = BasicArrayListD.new()
-    self.stateP = 0
-    self.loopCountP = 0
+    if self.stateP == nil then self.stateP = 0 end
+    if self.loopCountP == nil then self.loopCountP = 0 end
 end
 
 
-function BasicPlayer.new()
-    local self = setmetatable({}, BasicPlayer)
-    self:_init_fields()
+function BasicPlayer._jinit(self)
+    BasicPlayer._init_fields(self)
         self:setLoopCount(0)
         self:setState(Player.UNREALIZED)
+    return self
+end
+
+function BasicPlayer.new(...)
+    local self = setmetatable({}, BasicPlayer)
+    BasicPlayer._jinit(self, ...)
     return self
 end
 

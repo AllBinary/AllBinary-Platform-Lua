@@ -13,6 +13,21 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.visual.theme
 
+local ThemeInterface = {}
+package.loaded["org.allbinary.logic.visual.theme.ThemeInterface"] = ThemeInterface
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 local TableMappingInterface = require("org.allbinary.data.tables.TableMappingInterface")
 
 local function java_idiv(a, b)
@@ -22,15 +37,23 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
 -- Java interface
-local ThemeInterface = {}
+-- class table ThemeInterface is declared before the requires
 ThemeInterface.__index = ThemeInterface
 ThemeInterface.className = "ThemeInterface"
+ThemeInterface.javaClassName = "org.allbinary.logic.visual.theme.ThemeInterface"
 setmetatable(ThemeInterface, {__index = TableMappingInterface})
+ThemeInterface.java_interfaces = function() return {TableMappingInterface} end
 
 
 function ThemeInterface:getName()

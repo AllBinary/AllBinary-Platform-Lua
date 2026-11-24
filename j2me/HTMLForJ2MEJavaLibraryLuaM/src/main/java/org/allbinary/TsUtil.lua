@@ -13,13 +13,28 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary
 
+local TsUtil = {}
+package.loaded["org.allbinary.TsUtil"] = TsUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Displayable = require("javax.microedition.lcdui.Displayable")
 -- local Form = require("javax.microedition.lcdui.Form")
 -- local InvalidRecordIDException = require("javax.microedition.rms.InvalidRecordIDException")
 -- local RecordStore = require("javax.microedition.rms.RecordStore")
 -- local RecordStoreException = require("javax.microedition.rms.RecordStoreException")
 -- local RecordStoreNotOpenException = require("javax.microedition.rms.RecordStoreNotOpenException")
-local NullUtil = require("org.allbinary.logic.NullUtil")
+local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -42,7 +57,14 @@ local function java_new_array(default, size, ...)
     return array
 end
 
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
+    return array
+end
+
 local function java_instanceof(object, class)
+    class = java_real(class)
     local metatable = getmetatable(object)
     while metatable do
         if metatable == class then return true end
@@ -59,23 +81,43 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
 --HTML
-local TsUtil = {}
+-- class table TsUtil is declared before the requires
 TsUtil.__index = TsUtil
 TsUtil.className = "TsUtil"
+TsUtil.javaClassName = "org.allbinary.TsUtil"
+
+function TsUtil._jinit(self)
+    return self
+end
 
 function TsUtil.new()
-    local self = setmetatable({}, TsUtil)
-    return self
+    return TsUtil._jinit(setmetatable({}, TsUtil))
 end
 
 
 function TsUtil.getInstance()
-        return TsUtil.instance
+        return TsUtil.instance_f
+end
+
+
+function TsUtil:longBitsToDouble(bits)
+        return require("java.lang.Double").longBitsToDouble(bits)
+end
+
+
+function TsUtil:intBitsToFloat(bits)
+        return require("java.lang.Float").intBitsToFloat(bits)
 end
 
 
@@ -86,7 +128,7 @@ end
 
 -- throws InterruptedException
 function TsUtil:waitFor(any, timeoutMillis)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
@@ -95,7 +137,7 @@ function TsUtil:getRecord(anyType, recordId)
         local recordStore = anyType
         local data = nil
         do -- synchronized (self)
-            data = java_new_array(0, recordStore:getRecordSize(recordId))
+            data = java_typed_array("B", java_new_array(0, recordStore:getRecordSize(recordId)))
             recordStore:getRecord(recordId, data, 0)
         end
         return (function() if (data.n or #data) < 1 then return NullUtil.getInstance().NULL_BYTE_ARRAY else return data end end)()
@@ -127,8 +169,8 @@ function TsUtil:toNumber(value)
 end
 
 
-function TsUtil:getByteArray(string)
-        return {string.byte(string, 1, -1)}
+function TsUtil:getByteArray(string_)
+        return {string.byte(string_, 1, -1)}
 end
 
 
@@ -144,7 +186,7 @@ end
 function TsUtil:gc()
 end
 
-TsUtil.instance = TsUtil.new()
+TsUtil.instance_f = TsUtil.new()
 
 return TsUtil
 

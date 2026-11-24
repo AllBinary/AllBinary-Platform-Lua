@@ -13,9 +13,27 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media.graphics.geography.map
 
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local AllBinaryTiledLayer = require("org.allbinary.game.layer.AllBinaryTiledLayer")
-local BasicArrayListS = require("org.allbinary.util.BasicArrayListS")
+local CellPositionsUtil = {}
+package.loaded["org.allbinary.media.graphics.geography.map.CellPositionsUtil"] = CellPositionsUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local AllBinaryTiledLayer = java_lazy("org.allbinary.game.layer.AllBinaryTiledLayer")
+local BasicArrayListS = java_lazy("org.allbinary.util.BasicArrayListS")
+local BasicGeographicMap = java_lazy("org.allbinary.media.graphics.geography.map.BasicGeographicMap")
+local BasicGeographicMapCellPositionFactory = java_lazy("org.allbinary.media.graphics.geography.map.BasicGeographicMapCellPositionFactory")
+local GeographicMapCellPosition = java_lazy("org.allbinary.media.graphics.geography.map.GeographicMapCellPosition")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -24,28 +42,38 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local CellPositionsUtil = {}
+-- class table CellPositionsUtil is declared before the requires
 CellPositionsUtil.__index = CellPositionsUtil
 CellPositionsUtil.className = "CellPositionsUtil"
+CellPositionsUtil.javaClassName = "org.allbinary.media.graphics.geography.map.CellPositionsUtil"
 
 function CellPositionsUtil:_init_fields()
     self.reusableSingleThreadedSurroundingList = BasicArrayListS.new(8)
-    self.surroundArray = {{-1, -1}, {0, -1}, {1, -1}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {-1, 0}}
+    self.surroundArray = {{jt = "I", -1, -1}, {jt = "I", 0, -1}, {jt = "I", 1, -1}, {jt = "I", -1, 1}, {jt = "I", 0, 1}, {jt = "I", 1, 1}, {jt = "I", 1, 0}, {jt = "I", -1, 0}}
+end
+
+function CellPositionsUtil._jinit(self)
+    CellPositionsUtil._init_fields(self)
+    return self
 end
 
 function CellPositionsUtil.new()
-    local self = setmetatable({}, CellPositionsUtil)
-    self:_init_fields()
-    return self
+    return CellPositionsUtil._jinit(setmetatable({}, CellPositionsUtil))
 end
 
 
 function CellPositionsUtil.getInstance()
-        return CellPositionsUtil.instance
+        return CellPositionsUtil.instance_f
 end
 
 
@@ -103,7 +131,7 @@ function CellPositionsUtil:getAllSurroundingAt(geographicMapInterface, layerGeog
         return reusableSurroundingList
 end
 
-CellPositionsUtil.instance = CellPositionsUtil.new()
+CellPositionsUtil.instance_f = CellPositionsUtil.new()
 
 return CellPositionsUtil
 

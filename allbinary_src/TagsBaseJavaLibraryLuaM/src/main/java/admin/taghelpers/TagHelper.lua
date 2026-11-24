@@ -13,7 +13,22 @@
 -- Generated Code Do Not Modify
 -- package admin.taghelpers
 
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local TagHelper = {}
+package.loaded["admin.taghelpers.TagHelper"] = TagHelper
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local TagHelperInterface = require("admin.taghelpers.TagHelperInterface")
 
 local function java_idiv(a, b)
@@ -23,22 +38,34 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local TagHelper = {}
+-- class table TagHelper is declared before the requires
 TagHelper.__index = TagHelper
 TagHelper.className = "TagHelper"
+TagHelper.javaClassName = "admin.taghelpers.TagHelper"
+TagHelper.java_implements = " TagHelperInterface "
+TagHelper.java_interfaces = function() return {TagHelperInterface} end
 
 function TagHelper:_init_fields()
     self.commonStrings = CommonStrings.getInstance()
 end
 
-function TagHelper.new()
-    local self = setmetatable({}, TagHelper)
-    self:_init_fields()
+function TagHelper._jinit(self)
+    TagHelper._init_fields(self)
     return self
+end
+
+function TagHelper.new()
+    return TagHelper._jinit(setmetatable({}, TagHelper))
 end
 
 return TagHelper

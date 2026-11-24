@@ -13,20 +13,37 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.input.motion.gesture
 
-local GPoint = require("org.allbinary.graphics.GPoint")
-local Line = require("org.allbinary.graphics.Line")
-local PointFactory = require("org.allbinary.graphics.PointFactory")
-local MotionGestureConfiguration = require("org.allbinary.input.motion.gesture.configuration.MotionGestureConfiguration")
-local MotionGestureConfigurationFactory = require("org.allbinary.input.motion.gesture.configuration.MotionGestureConfigurationFactory")
-local BasicMotionGesturesHandler = require("org.allbinary.input.motion.gesture.observer.BasicMotionGesturesHandler")
-local MotionEventCircularPool = require("org.allbinary.input.motion.gesture.observer.MotionEventCircularPool")
-local MotionGestureEvent = require("org.allbinary.input.motion.gesture.observer.MotionGestureEvent")
-local MovedMotionGesturesHandler = require("org.allbinary.input.motion.gesture.observer.MovedMotionGesturesHandler")
-local ScrolledMotionGesturesHandler = require("org.allbinary.input.motion.gesture.observer.ScrolledMotionGesturesHandler")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local J2SEMath = require("org.allbinary.logic.math.J2SEMath")
-local BasicEventHandler = require("org.allbinary.logic.util.event.handler.BasicEventHandler")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local MotionGestureRecognizer = {}
+package.loaded["org.allbinary.input.motion.gesture.MotionGestureRecognizer"] = MotionGestureRecognizer
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local GPoint = java_lazy("org.allbinary.graphics.GPoint")
+local Line = java_lazy("org.allbinary.graphics.Line")
+local PointFactory = java_lazy("org.allbinary.graphics.PointFactory")
+local MotionGestureConfiguration = java_lazy("org.allbinary.input.motion.gesture.configuration.MotionGestureConfiguration")
+local MotionGestureConfigurationFactory = java_lazy("org.allbinary.input.motion.gesture.configuration.MotionGestureConfigurationFactory")
+local BasicMotionGesturesHandler = java_lazy("org.allbinary.input.motion.gesture.observer.BasicMotionGesturesHandler")
+local MotionEventCircularPool = java_lazy("org.allbinary.input.motion.gesture.observer.MotionEventCircularPool")
+local MotionGestureEvent = java_lazy("org.allbinary.input.motion.gesture.observer.MotionGestureEvent")
+local MovedMotionGesturesHandler = java_lazy("org.allbinary.input.motion.gesture.observer.MovedMotionGesturesHandler")
+local ScrolledMotionGesturesHandler = java_lazy("org.allbinary.input.motion.gesture.observer.ScrolledMotionGesturesHandler")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local J2SEMath = java_lazy("org.allbinary.logic.math.J2SEMath")
+local BasicEventHandler = java_lazy("org.allbinary.logic.util.event.handler.BasicEventHandler")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local MotionGestureInput = java_lazy("org.allbinary.input.motion.gesture.MotionGestureInput")
+local TouchMotionGestureFactory = java_lazy("org.allbinary.input.motion.gesture.TouchMotionGestureFactory")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -35,13 +52,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local MotionGestureRecognizer = {}
+-- class table MotionGestureRecognizer is declared before the requires
 MotionGestureRecognizer.__index = MotionGestureRecognizer
 MotionGestureRecognizer.className = "MotionGestureRecognizer"
+MotionGestureRecognizer.javaClassName = "org.allbinary.input.motion.gesture.MotionGestureRecognizer"
 
 function MotionGestureRecognizer:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -50,33 +74,39 @@ function MotionGestureRecognizer:_init_fields()
     self.previous = self.origin
     self.intermediate = self.origin
     self.line = Line.new(self.origin, self.origin)
-    self.motionGesturesHandler = nil
-    self.movedMotionGesturesHandler = nil
-    self.scrolledMotionGesturesHandler = nil
-    self.motionEventCircularPool = nil
+    if self.motionGesturesHandler == nil then self.motionGesturesHandler = nil end
+    if self.movedMotionGesturesHandler == nil then self.movedMotionGesturesHandler = nil end
+    if self.scrolledMotionGesturesHandler == nil then self.scrolledMotionGesturesHandler = nil end
+    if self.motionEventCircularPool == nil then self.motionEventCircularPool = nil end
 end
 
 
-function MotionGestureRecognizer.new(id)
-    local self = setmetatable({}, MotionGestureRecognizer)
-    self:_init_fields()
+function MotionGestureRecognizer._jinit(self, id)
+    MotionGestureRecognizer._init_fields(self)
         self.motionEventCircularPool = MotionEventCircularPool.createPool(id)
         local motionGesturesHandler = BasicEventHandler.new()
         local movedMotionGesturesHandler = motionGesturesHandler
         local scrolledMotionGesturesHandler = motionGesturesHandler
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             motionGesturesHandler = BasicMotionGesturesHandler.getInstance()
             movedMotionGesturesHandler = MovedMotionGesturesHandler.getInstance()
             scrolledMotionGesturesHandler = ScrolledMotionGesturesHandler.getInstance()
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local commonStrings = CommonStrings.getInstance()
             self.logUtil:put(commonStrings.EXCEPTION, self, commonStrings.CONSTRUCTOR, e)
         end
         self.motionGesturesHandler = motionGesturesHandler
         self.movedMotionGesturesHandler = movedMotionGesturesHandler
         self.scrolledMotionGesturesHandler = scrolledMotionGesturesHandler
+    return self
+end
+
+function MotionGestureRecognizer.new(...)
+    local self = setmetatable({}, MotionGestureRecognizer)
+    MotionGestureRecognizer._jinit(self, ...)
     return self
 end
 

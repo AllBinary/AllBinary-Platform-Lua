@@ -13,14 +13,29 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.io.file
 
--- local File = require("java.io.File")
+local AbFile = {}
+package.loaded["org.allbinary.logic.io.file.AbFile"] = AbFile
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local File = java_lazy("java.io.File")
 -- local FileFilter = require("java.io.FileFilter")
 -- local FilenameFilter = require("java.io.FilenameFilter")
 -- local IOException = require("java.io.IOException")
 -- local URI = require("java.net.URI")
-local TsUtil = require("org.allbinary.TsUtil")
-local AbPath = require("org.allbinary.logic.io.path.AbPath")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
+local TsUtil = java_lazy("org.allbinary.TsUtil")
+local AbPath = java_lazy("org.allbinary.logic.io.path.AbPath")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local AbFileInterface = require("org.allbinary.logic.io.file.AbFileInterface")
 
 local function java_idiv(a, b)
@@ -30,16 +45,25 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local AbFile = {}
+-- class table AbFile is declared before the requires
 AbFile.__index = AbFile
 AbFile.className = "AbFile"
+AbFile.javaClassName = "org.allbinary.logic.io.file.AbFile"
+AbFile.java_implements = " AbFileInterface "
+AbFile.java_interfaces = function() return {AbFileInterface} end
 
 function AbFile:_init_fields()
-    self.file = nil
+    if self.file == nil then self.file = nil end
 end
 
 
@@ -71,10 +95,15 @@ function AbFile.createAbFileFromRawPath(filePath)
 end
 
 
-function AbFile.new(file)
-    local self = setmetatable({}, AbFile)
-    self:_init_fields()
+function AbFile._jinit(self, file)
+    AbFile._init_fields(self)
         self.file = file
+    return self
+end
+
+function AbFile.new(...)
+    local self = setmetatable({}, AbFile)
+    AbFile._jinit(self, ...)
     return self
 end
 

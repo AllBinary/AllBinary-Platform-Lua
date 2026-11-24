@@ -13,13 +13,30 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.animation
 
-local GPoint = require("org.allbinary.graphics.GPoint")
-local PointFactory = require("org.allbinary.graphics.PointFactory")
-local RandomRotationFactory = require("org.allbinary.graphics.pipeline.RandomRotationFactory")
-local RandomTranslation = require("org.allbinary.graphics.pipeline.RandomTranslation")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local BasicArrayListS = require("org.allbinary.util.BasicArrayListS")
+local VectorExplosionGenerator = {}
+package.loaded["org.allbinary.animation.VectorExplosionGenerator"] = VectorExplosionGenerator
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local GPoint = java_lazy("org.allbinary.graphics.GPoint")
+local PointFactory = java_lazy("org.allbinary.graphics.PointFactory")
+local RandomRotationFactory = java_lazy("org.allbinary.graphics.pipeline.RandomRotationFactory")
+local RandomTranslation = java_lazy("org.allbinary.graphics.pipeline.RandomTranslation")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local BasicArrayListS = java_lazy("org.allbinary.util.BasicArrayListS")
+local VectorAnimationUtil = java_lazy("org.allbinary.animation.VectorAnimationUtil")
+local VectorExplosionType = java_lazy("org.allbinary.animation.VectorExplosionType")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -42,6 +59,47 @@ local function java_new_array(default, size, ...)
     return array
 end
 
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
+    return array
+end
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
 local function java_idiv(a, b)
     local q = a / b
     if q < 0 then return math.ceil(q) end
@@ -49,13 +107,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local VectorExplosionGenerator = {}
+-- class table VectorExplosionGenerator is declared before the requires
 VectorExplosionGenerator.__index = VectorExplosionGenerator
 VectorExplosionGenerator.className = "VectorExplosionGenerator"
+VectorExplosionGenerator.javaClassName = "org.allbinary.animation.VectorExplosionGenerator"
 
 function VectorExplosionGenerator:_init_fields()
     self.RANDOM = VectorExplosionType.new()
@@ -66,13 +131,18 @@ end
 
 
 function VectorExplosionGenerator.getInstance()
-        return VectorExplosionGenerator.instance
+        return VectorExplosionGenerator.instance_f
 end
 
 
-function VectorExplosionGenerator.new()
+function VectorExplosionGenerator._jinit(self)
+    VectorExplosionGenerator._init_fields(self)
+    return self
+end
+
+function VectorExplosionGenerator.new(...)
     local self = setmetatable({}, VectorExplosionGenerator)
-    self:_init_fields()
+    VectorExplosionGenerator._jinit(self, ...)
     return self
 end
 
@@ -92,7 +162,6 @@ end
 
 
 -- throws Exception
--- Java overloaded method: Lua keeps the last definition
 function VectorExplosionGenerator:getInstance(points, howMuch, type)
         local pointsBasicArrayList = self:getInstanceStartFrame(points, howMuch, type, true)
         local tempBasicArrayList = pointsBasicArrayList.objectArray[1]
@@ -103,7 +172,7 @@ end
 
 -- throws Exception
 function VectorExplosionGenerator:getInstanceStartFrame(points, howMuch, type, startFrame)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local pointsBasicArrayList = BasicArrayListS.new(howMuch)
             pointsBasicArrayList:add(self:createPointsBasicArrayList(points))
             local frameIndex = 0
@@ -118,12 +187,14 @@ function VectorExplosionGenerator:getInstanceStartFrame(points, howMuch, type, s
             if not startFrame then
                 pointsBasicArrayList:removeAt(0)
             end
-            return pointsBasicArrayList
+            do return "__jreturn", pointsBasicArrayList end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             error(e, 0)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
@@ -163,7 +234,7 @@ end
 -- throws Exception
 function VectorExplosionGenerator:createPointsBasicArrayList(points)
         if (points.n or #points) == 0 then
-            error(java_exception("Exception", "Not Points Provided"), 0)
+            error(require("java.lang.Exception").new("Not Points Provided"), 0)
         end
         local firstPointBasicArrayList = BasicArrayListS.new((points.n or #points))
         local pointFactory = PointFactory.getInstance()
@@ -173,7 +244,7 @@ function VectorExplosionGenerator:createPointsBasicArrayList(points)
         return firstPointBasicArrayList
 end
 
-VectorExplosionGenerator.instance = VectorExplosionGenerator.new()
+VectorExplosionGenerator.instance_f = VectorExplosionGenerator.new()
 
 return VectorExplosionGenerator
 

@@ -13,7 +13,57 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.graphics.j2me.workarea.canvas
 
-local GPoint = require("org.allbinary.graphics.GPoint")
+local Grid = {}
+package.loaded["org.allbinary.graphics.j2me.workarea.canvas.Grid"] = Grid
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local GPoint = java_lazy("org.allbinary.graphics.GPoint")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -22,55 +72,67 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local Grid = {}
+-- class table Grid is declared before the requires
 Grid.__index = Grid
 Grid.className = "Grid"
+Grid.javaClassName = "org.allbinary.graphics.j2me.workarea.canvas.Grid"
 
 function Grid:_init_fields()
-    self.grid = nil
-    self.isGridOn = true
-    self.isGridPossible = false
+    if self.grid == nil then self.grid = nil end
+    self.isGridOn_f = true
+    self.isGridPossible_f = false
     self.zoom = 3
     self.isChanged = true
 end
 
-function Grid.new(...)
+function Grid._jinit(self, ...)
     local count = select("#", ...)
-    if count == 0 then return Grid._new0(...)
-    elseif count == 1 then return Grid._new1(...)
+    if count == 0 then return Grid._new0(self, ...)
+    elseif count == 1 then return Grid._new1(self, ...)
     end
+    error("No constructor of Grid takes " .. count .. " arguments")
 end
 
-
-function Grid._new0()
+function Grid.new(...)
     local self = setmetatable({}, Grid)
-    self:_init_fields()
+    Grid._jinit(self, ...)
     return self
 end
 
 
-function Grid._new1(grid)
-    local self = setmetatable({}, Grid)
-    self:_init_fields()
+function Grid._new0(self)
+    Grid._init_fields(self)
+    return self
+end
+
+
+function Grid._new1(self, grid)
+    Grid._init_fields(self)
         self.grid = grid.grid
-        self:showGrid(grid.isGridOn)
-        self.isGridPossible = grid.isGridPossible
+        self:showGrid(grid.isGridOn_f)
+        self.isGridPossible_f = grid.isGridPossible_f
         self:setZoom(grid:getZoom())
     return self
 end
 
 
 function Grid:isGridOn()
-        return self.isGridOn
+        return self.isGridOn_f
 end
 
 
 function Grid:isGridPossible()
-        return self.isGridPossible
+        return self.isGridPossible_f
 end
 
 
@@ -85,7 +147,7 @@ end
 
 
 function Grid:showGrid(value)
-        self.isGridOn = value
+        self.isGridOn_f = value
 end
 
 

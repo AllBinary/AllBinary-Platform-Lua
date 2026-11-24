@@ -13,14 +13,29 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.data.resource
 
+local ResourceUtil = {}
+package.loaded["org.allbinary.data.resource.ResourceUtil"] = ResourceUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local ByteArrayInputStream = require("java.io.ByteArrayInputStream")
--- local ByteArrayOutputStream = require("java.io.ByteArrayOutputStream")
+local ByteArrayOutputStream = java_lazy("java.io.ByteArrayOutputStream")
 -- local FileInputStream = require("java.io.FileInputStream")
 -- local InputStream = require("java.io.InputStream")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StreamUtil = require("org.allbinary.logic.io.StreamUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StreamUtil = java_lazy("org.allbinary.logic.io.StreamUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -35,33 +50,17 @@ local function java_exception(className, message, cause)
     return setmetatable(exception, {__tostring = function(self) if self.message ~= nil then return tostring(self.message) end return self.className end})
 end
 
--- Java library java.io.ByteArrayOutputStream
-local function java_byte_array_output_stream()
-    local stream = {buffer = {}}
-    function stream:write(value, offset, length)
-        if type(value) == "table" then
-            local first = (offset or 0) + 1
-            local last = first + (length or #value) - 1
-            for index = first, last do self.buffer[#self.buffer + 1] = string.char(value[index] % 256) end
-        elseif type(value) == "number" then
-            self.buffer[#self.buffer + 1] = string.char(value % 256)
-        else
-            self.buffer[#self.buffer + 1] = tostring(value)
-        end
-    end
-    function stream:toString() return table.concat(self.buffer) end
-    function stream:size() return #table.concat(self.buffer) end
-    function stream:reset() self.buffer = {} end
-    function stream:flush() end
-    function stream:close() end
-    return setmetatable(stream, {__tostring = function(self) return table.concat(self.buffer) end})
-end
-
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -72,14 +71,21 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
 --J2SE - PC
-local ResourceUtil = {}
+-- class table ResourceUtil is declared before the requires
 ResourceUtil.__index = ResourceUtil
 ResourceUtil.className = "ResourceUtil"
+ResourceUtil.javaClassName = "org.allbinary.data.resource.ResourceUtil"
 
 function ResourceUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -89,13 +95,18 @@ end
 
 
 function ResourceUtil.getInstance()
-        return ResourceUtil.instance
+        return ResourceUtil.instance_f
 end
 
 
-function ResourceUtil.new()
+function ResourceUtil._jinit(self)
+    ResourceUtil._init_fields(self)
+    return self
+end
+
+function ResourceUtil.new(...)
     local self = setmetatable({}, ResourceUtil)
-    self:_init_fields()
+    ResourceUtil._jinit(self, ...)
     return self
 end
 
@@ -116,7 +127,7 @@ function ResourceUtil:getResourceAsStream(resource)
         if inputStream == nil then
             inputStream = self:getResourceAsStreamAtStart(resource, 1)
             if inputStream == nil then
-                error(java_exception("Exception", tostring(StringMaker.new():append("Unable to obtain: "):append(resource))), 0)
+                error(require("java.lang.Exception").new(tostring(StringMaker.new():append("Unable to obtain: "):append(resource))), 0)
             end
         end
         return inputStream
@@ -127,8 +138,8 @@ end
 function ResourceUtil:getResourceAsStreamAtStart(resource, startIndex)
         local inputStream = FileInputStream.new(tostring(StringMaker.new():append(self.path):append(resource):append(self.ext)))
         if inputStream ~= nil then
-            local byteArray = java_new_array(0, inputStream:available())
-            StreamUtil.getInstance():getByteArray(inputStream, java_byte_array_output_stream(), byteArray)
+            local byteArray = java_typed_array("B", java_new_array(0, inputStream:available()))
+            StreamUtil.getInstance():getByteArray(inputStream, require("java.io.ByteArrayOutputStream").new(), byteArray)
             return ByteArrayInputStream.new(byteArray)
         end
         return inputStream
@@ -138,7 +149,7 @@ end
 function ResourceUtil:addResource(resource, value)
 end
 
-ResourceUtil.instance = ResourceUtil.new()
+ResourceUtil.instance_f = ResourceUtil.new()
 
 return ResourceUtil
 

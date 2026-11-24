@@ -1,11 +1,61 @@
 -- Generated Code Do Not Modify
 -- package javax.microedition.khronos.opengles
 
+local GL11Ext = {}
+package.loaded["javax.microedition.khronos.opengles.GL11Ext"] = GL11Ext
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Buffer = require("java.nio.Buffer")
 -- local FloatBuffer = require("java.nio.FloatBuffer")
 -- local IntBuffer = require("java.nio.IntBuffer")
 -- local ShortBuffer = require("java.nio.ShortBuffer")
 local GL = require("javax.microedition.khronos.opengles.GL")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -14,15 +64,23 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
 -- Java interface
-local GL11Ext = {}
+-- class table GL11Ext is declared before the requires
 GL11Ext.__index = GL11Ext
 GL11Ext.className = "GL11Ext"
+GL11Ext.javaClassName = "javax.microedition.khronos.opengles.GL11Ext"
 setmetatable(GL11Ext, {__index = GL})
+GL11Ext.java_interfaces = function() return {GL} end
 
 
 function GL11Ext:glTexParameterfv(target, pname, param, offset)
@@ -40,15 +98,21 @@ function GL11Ext:glDrawTexfOES(x, y, z, width, height)
 end
 
 
-function GL11Ext:glDrawTexfvOES(coords, offset)
+function GL11Ext:glDrawTexfvOES_j2(coords, offset)
     error("abstract method glDrawTexfvOES")
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function GL11Ext:glDrawTexfvOES(coords)
+function GL11Ext:glDrawTexfvOES_j1(coords)
     error("abstract method glDrawTexfvOES")
 end
+function GL11Ext:glDrawTexfvOES(...)
+    local count = select("#", ...)
+    if count == 2 then return self:glDrawTexfvOES_j2(...) end
+    if count == 1 then return self:glDrawTexfvOES_j1(...) end
+    error("No method glDrawTexfvOES takes " .. count .. " arguments")
+end
+GL11Ext.glDrawTexfvOES__jdispatcher = GL11Ext.glDrawTexfvOES
 
 
 function GL11Ext:glDrawTexiOES(x, y, z, width, height)
@@ -56,15 +120,21 @@ function GL11Ext:glDrawTexiOES(x, y, z, width, height)
 end
 
 
-function GL11Ext:glDrawTexivOES(coords, offset)
+function GL11Ext:glDrawTexivOES_j2(coords, offset)
     error("abstract method glDrawTexivOES")
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function GL11Ext:glDrawTexivOES(coords)
+function GL11Ext:glDrawTexivOES_j1(coords)
     error("abstract method glDrawTexivOES")
 end
+function GL11Ext:glDrawTexivOES(...)
+    local count = select("#", ...)
+    if count == 2 then return self:glDrawTexivOES_j2(...) end
+    if count == 1 then return self:glDrawTexivOES_j1(...) end
+    error("No method glDrawTexivOES takes " .. count .. " arguments")
+end
+GL11Ext.glDrawTexivOES__jdispatcher = GL11Ext.glDrawTexivOES
 
 
 function GL11Ext:glDrawTexsOES(x, y, z, width, height)
@@ -72,15 +142,21 @@ function GL11Ext:glDrawTexsOES(x, y, z, width, height)
 end
 
 
-function GL11Ext:glDrawTexsvOES(coords, offset)
+function GL11Ext:glDrawTexsvOES_j2(coords, offset)
     error("abstract method glDrawTexsvOES")
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function GL11Ext:glDrawTexsvOES(coords)
+function GL11Ext:glDrawTexsvOES_j1(coords)
     error("abstract method glDrawTexsvOES")
 end
+function GL11Ext:glDrawTexsvOES(...)
+    local count = select("#", ...)
+    if count == 2 then return self:glDrawTexsvOES_j2(...) end
+    if count == 1 then return self:glDrawTexsvOES_j1(...) end
+    error("No method glDrawTexsvOES takes " .. count .. " arguments")
+end
+GL11Ext.glDrawTexsvOES__jdispatcher = GL11Ext.glDrawTexsvOES
 
 
 function GL11Ext:glDrawTexxOES(x, y, z, width, height)
@@ -88,15 +164,21 @@ function GL11Ext:glDrawTexxOES(x, y, z, width, height)
 end
 
 
-function GL11Ext:glDrawTexxvOES(coords, offset)
+function GL11Ext:glDrawTexxvOES_j2(coords, offset)
     error("abstract method glDrawTexxvOES")
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function GL11Ext:glDrawTexxvOES(coords)
+function GL11Ext:glDrawTexxvOES_j1(coords)
     error("abstract method glDrawTexxvOES")
 end
+function GL11Ext:glDrawTexxvOES(...)
+    local count = select("#", ...)
+    if count == 2 then return self:glDrawTexxvOES_j2(...) end
+    if count == 1 then return self:glDrawTexxvOES_j1(...) end
+    error("No method glDrawTexxvOES takes " .. count .. " arguments")
+end
+GL11Ext.glDrawTexxvOES__jdispatcher = GL11Ext.glDrawTexxvOES
 
 
 function GL11Ext:glEnable(cap)
@@ -114,25 +196,45 @@ function GL11Ext:glLoadPaletteFromModelViewMatrixOES()
 end
 
 
-function GL11Ext:glMatrixIndexPointerOES(size, type, stride, pointer)
+function GL11Ext:glMatrixIndexPointerOES_j4_1(size, type, stride, pointer)
     error("abstract method glMatrixIndexPointerOES")
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function GL11Ext:glMatrixIndexPointerOES(size, type, stride, offset)
+function GL11Ext:glMatrixIndexPointerOES_j4_2(size, type, stride, offset)
     error("abstract method glMatrixIndexPointerOES")
 end
+function GL11Ext:glMatrixIndexPointerOES(...)
+    local count = select("#", ...)
+    if count == 4 then return self:glMatrixIndexPointerOES_j4(...) end
+    error("No method glMatrixIndexPointerOES takes " .. count .. " arguments")
+end
+GL11Ext.glMatrixIndexPointerOES__jdispatcher = GL11Ext.glMatrixIndexPointerOES
+function GL11Ext:glMatrixIndexPointerOES_j4(...)
+    local java_a1, java_a2, java_a3, java_a4 = ...
+    if true and math.type(java_a1) == "integer" and math.type(java_a2) == "integer" and math.type(java_a3) == "integer" and (java_a4 == nil or java_is(java_a4, "Buffer")) then return GL11Ext.glMatrixIndexPointerOES_j4_1(self, ...) end
+    return GL11Ext.glMatrixIndexPointerOES_j4_2(self, ...)
+end
 
 
-function GL11Ext:glWeightPointerOES(size, type, stride, pointer)
+function GL11Ext:glWeightPointerOES_j4_1(size, type, stride, pointer)
     error("abstract method glWeightPointerOES")
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function GL11Ext:glWeightPointerOES(size, type, stride, offset)
+function GL11Ext:glWeightPointerOES_j4_2(size, type, stride, offset)
     error("abstract method glWeightPointerOES")
+end
+function GL11Ext:glWeightPointerOES(...)
+    local count = select("#", ...)
+    if count == 4 then return self:glWeightPointerOES_j4(...) end
+    error("No method glWeightPointerOES takes " .. count .. " arguments")
+end
+GL11Ext.glWeightPointerOES__jdispatcher = GL11Ext.glWeightPointerOES
+function GL11Ext:glWeightPointerOES_j4(...)
+    local java_a1, java_a2, java_a3, java_a4 = ...
+    if true and math.type(java_a1) == "integer" and math.type(java_a2) == "integer" and math.type(java_a3) == "integer" and (java_a4 == nil or java_is(java_a4, "Buffer")) then return GL11Ext.glWeightPointerOES_j4_1(self, ...) end
+    return GL11Ext.glWeightPointerOES_j4_2(self, ...)
 end
 
 GL11Ext.GL_MATRIX_INDEX_ARRAY_BUFFER_BINDING_OES = 35742

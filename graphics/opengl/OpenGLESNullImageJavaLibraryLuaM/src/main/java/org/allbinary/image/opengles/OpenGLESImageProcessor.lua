@@ -13,6 +13,21 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.image.opengles
 
+local OpenGLESImageProcessor = {}
+package.loaded["org.allbinary.image.opengles.OpenGLESImageProcessor"] = OpenGLESImageProcessor
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local GL10 = require("javax.microedition.khronos.opengles.GL10")
 
 local function java_idiv(a, b)
@@ -22,22 +37,32 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local OpenGLESImageProcessor = {}
+-- class table OpenGLESImageProcessor is declared before the requires
 OpenGLESImageProcessor.__index = OpenGLESImageProcessor
 OpenGLESImageProcessor.className = "OpenGLESImageProcessor"
+OpenGLESImageProcessor.javaClassName = "org.allbinary.image.opengles.OpenGLESImageProcessor"
+
+function OpenGLESImageProcessor._jinit(self)
+    return self
+end
 
 function OpenGLESImageProcessor.new()
-    local self = setmetatable({}, OpenGLESImageProcessor)
-    return self
+    return OpenGLESImageProcessor._jinit(setmetatable({}, OpenGLESImageProcessor))
 end
 
 
 function OpenGLESImageProcessor.getInstance()
-        return OpenGLESImageProcessor.instance
+        return OpenGLESImageProcessor.instance_f
 end
 
 
@@ -56,7 +81,7 @@ end
 function OpenGLESImageProcessor:colorMask(gl, red, green, blue, alpha)
 end
 
-OpenGLESImageProcessor.instance = OpenGLESImageProcessor.new()
+OpenGLESImageProcessor.instance_f = OpenGLESImageProcessor.new()
 
 return OpenGLESImageProcessor
 

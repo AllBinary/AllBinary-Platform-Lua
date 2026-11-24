@@ -13,11 +13,26 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.user
 
--- local HashMap = require("java.util.HashMap")
-local UserRole = require("org.allbinary.business.user.role.UserRole")
-local UserRoleB = require("org.allbinary.business.user.role.UserRoleB")
-local UserRoleData = require("org.allbinary.business.user.role.UserRoleData")
-local StringValidationUtil = require("org.allbinary.logic.string.StringValidationUtil")
+local CreateUserFactory = {}
+package.loaded["org.allbinary.business.user.CreateUserFactory"] = CreateUserFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
+local UserRole = java_lazy("org.allbinary.business.user.role.UserRole")
+local UserRoleB = java_lazy("org.allbinary.business.user.role.UserRoleB")
+local UserRoleData = java_lazy("org.allbinary.business.user.role.UserRoleData")
+local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -39,17 +54,29 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local CreateUserFactory = {}
+-- class table CreateUserFactory is declared before the requires
 CreateUserFactory.__index = CreateUserFactory
 CreateUserFactory.className = "CreateUserFactory"
+CreateUserFactory.javaClassName = "org.allbinary.business.user.CreateUserFactory"
 
 
-function CreateUserFactory.new()
+function CreateUserFactory._jinit(self)
+    return self
+end
+
+function CreateUserFactory.new(...)
     local self = setmetatable({}, CreateUserFactory)
+    CreateUserFactory._jinit(self, ...)
     return self
 end
 
@@ -62,10 +89,10 @@ function CreateUserFactory.getInstance(hashMap)
                 local role = UserRoleB.getRole(roleString)
                 return role:getUserFactory():getInstance(hashMap)
             else
-                error(java_exception("Exception", "No Role Specified"), 0)
+                error(require("java.lang.Exception").new("No Role Specified"), 0)
             end
         else
-            error(java_exception("Exception", "Null HashMap"), 0)
+            error(require("java.lang.Exception").new("Null HashMap"), 0)
         end
 end
 

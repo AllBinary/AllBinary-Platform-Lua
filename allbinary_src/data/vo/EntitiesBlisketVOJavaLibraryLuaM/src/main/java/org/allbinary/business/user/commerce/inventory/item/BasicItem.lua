@@ -13,21 +13,73 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.user.commerce.inventory.item
 
--- local Calendar = require("java.util.Calendar")
--- local HashMap = require("java.util.HashMap")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local EntryData = require("org.allbinary.business.entry.EntryData")
-local Money = require("org.allbinary.business.user.commerce.money.Money")
-local MoneyException = require("org.allbinary.business.user.commerce.money.MoneyException")
-local ProductIdGenerator = require("org.allbinary.data.generator.ProductIdGenerator")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local StringValidationUtil = require("org.allbinary.logic.string.StringValidationUtil")
-local CommonPhoneStrings = require("org.allbinary.string.CommonPhoneStrings")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local BasicItem = {}
+package.loaded["org.allbinary.business.user.commerce.inventory.item.BasicItem"] = BasicItem
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local Calendar = java_lazy("java.util.Calendar")
+local HashMap = java_lazy("java.util.HashMap")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local EntryData = java_lazy("org.allbinary.business.entry.EntryData")
+local Money = java_lazy("org.allbinary.business.user.commerce.money.Money")
+local MoneyException = java_lazy("org.allbinary.business.user.commerce.money.MoneyException")
+local ProductIdGenerator = java_lazy("org.allbinary.data.generator.ProductIdGenerator")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
+local CommonPhoneStrings = java_lazy("org.allbinary.string.CommonPhoneStrings")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local ItemInterface = require("org.allbinary.business.user.commerce.inventory.item.ItemInterface")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -36,62 +88,77 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local BasicItem = {}
+-- class table BasicItem is declared before the requires
 BasicItem.__index = BasicItem
 BasicItem.className = "BasicItem"
+BasicItem.javaClassName = "org.allbinary.business.user.commerce.inventory.item.BasicItem"
+BasicItem.java_implements = " ItemInterface "
+BasicItem.java_interfaces = function() return {ItemInterface} end
 
 function BasicItem:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
     self.basicItemData = BasicItemData.getInstance()
-    self.itemId = nil
-    self.number = nil
-    self.inBaskets = nil
-    self.weight = nil
-    self.enabled = nil
-    self.newOrUsed = nil
-    self.summary = nil
-    self.distributor = nil
-    self.idUsedByDistributor = nil
-    self.producedBy = nil
-    self.productionDate = nil
-    self.startProductionDate = nil
-    self.description = nil
-    self.keywords = nil
-    self.category = nil
-    self.type = nil
-    self.smallImage = nil
-    self.mediumImage = nil
-    self.largeImage = nil
-    self.price = nil
-    self.comment = nil
-    self.customs = nil
-    self.downloads = nil
-    self.groups = nil
-    self.options = nil
-    self.permissions = nil
-    self.specials = nil
-    self.downloadable = false
-    self.timeEntered = nil
-    self.lastModified = nil
+    if self.itemId == nil then self.itemId = nil end
+    if self.number == nil then self.number = nil end
+    if self.inBaskets == nil then self.inBaskets = nil end
+    if self.weight == nil then self.weight = nil end
+    if self.enabled == nil then self.enabled = nil end
+    if self.newOrUsed == nil then self.newOrUsed = nil end
+    if self.summary == nil then self.summary = nil end
+    if self.distributor == nil then self.distributor = nil end
+    if self.idUsedByDistributor == nil then self.idUsedByDistributor = nil end
+    if self.producedBy == nil then self.producedBy = nil end
+    if self.productionDate == nil then self.productionDate = nil end
+    if self.startProductionDate == nil then self.startProductionDate = nil end
+    if self.description == nil then self.description = nil end
+    if self.keywords == nil then self.keywords = nil end
+    if self.category == nil then self.category = nil end
+    if self.type == nil then self.type = nil end
+    if self.smallImage == nil then self.smallImage = nil end
+    if self.mediumImage == nil then self.mediumImage = nil end
+    if self.largeImage == nil then self.largeImage = nil end
+    if self.price == nil then self.price = nil end
+    if self.comment == nil then self.comment = nil end
+    if self.customs == nil then self.customs = nil end
+    if self.downloads == nil then self.downloads = nil end
+    if self.groups == nil then self.groups = nil end
+    if self.options == nil then self.options = nil end
+    if self.permissions == nil then self.permissions = nil end
+    if self.specials == nil then self.specials = nil end
+    if self.downloadable == nil then self.downloadable = false end
+    if self.timeEntered == nil then self.timeEntered = nil end
+    if self.lastModified == nil then self.lastModified = nil end
+end
+
+function BasicItem._jinit(self, ...)
+    local count = select("#", ...)
+    if count == 1 then return BasicItem._new1(self, ...)
+    elseif count == 0 then return BasicItem._new0(self, ...)
+    end
+    error("No constructor of BasicItem takes " .. count .. " arguments")
 end
 
 function BasicItem.new(...)
-    local count = select("#", ...)
-    if count == 1 then return BasicItem._new1(...)
-    elseif count == 0 then return BasicItem._new0(...)
-    end
+    local self = setmetatable({}, BasicItem)
+    BasicItem._jinit(self, ...)
+    return self
 end
 
 
-function BasicItem._new1(itemHashMap)
-    local self = setmetatable({}, BasicItem)
-    self:_init_fields()
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().PRODUCTSEARCHLOGGING) then
+function BasicItem._new1(self, itemHashMap)
+    BasicItem._init_fields(self)
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRODUCTSEARCHLOGGING) then
             self.logUtil:putF(self.commonStrings.START, self, "Constructor(HashMap)")
         end
         self.itemId = itemHashMap:get(self.basicItemData.ID)
@@ -127,10 +194,9 @@ function BasicItem._new1(itemHashMap)
 end
 
 
-function BasicItem._new0()
-    local self = setmetatable({}, BasicItem)
-    self:_init_fields()
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().PRODUCTSEARCHLOGGING) then
+function BasicItem._new0(self)
+    BasicItem._init_fields(self)
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRODUCTSEARCHLOGGING) then
             self.logUtil:putF(self.commonStrings.START, self, self.commonStrings.CONSTRUCTOR)
         end
         local EMPTY = StringUtil.getInstance().EMPTY_STRING
@@ -481,7 +547,7 @@ end
 
 
 function BasicItem:toHashMap()
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().PRODUCTSEARCHLOGGING) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRODUCTSEARCHLOGGING) then
             self.logUtil:putF(self.commonStrings.START, self, "toHashMap")
         end
         local hashMap = StdUtil.getInstance():createHashMap()
@@ -520,7 +586,7 @@ end
 
 
 function BasicItem:toVector()
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().PRODUCTSEARCHLOGGING) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRODUCTSEARCHLOGGING) then
             self.logUtil:putF(self.commonStrings.START, self, "toVector")
         end
         local values = BasicArrayListD.new()

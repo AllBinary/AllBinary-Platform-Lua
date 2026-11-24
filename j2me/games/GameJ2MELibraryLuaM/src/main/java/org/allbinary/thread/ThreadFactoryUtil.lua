@@ -13,17 +13,32 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.thread
 
-local J2MEUtil = require("org.allbinary.J2MEUtil")
-local RunnableCanvas = require("org.allbinary.canvas.RunnableCanvas")
-local AllBinaryGameCanvas = require("org.allbinary.game.displayable.canvas.AllBinaryGameCanvas")
-local DemoCanvas = require("org.allbinary.game.displayable.canvas.DemoCanvas")
-local GameCanvasRunnableInterface = require("org.allbinary.game.displayable.canvas.GameCanvasRunnableInterface")
-local RunnableCanvasSingleThreadStartRunnable = require("org.allbinary.game.displayable.canvas.RunnableCanvasSingleThreadStartRunnable")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local PreLogUtil = require("org.allbinary.logic.communication.log.PreLogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local ThreadFactoryUtil = {}
+package.loaded["org.allbinary.thread.ThreadFactoryUtil"] = ThreadFactoryUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local J2MEUtil = java_lazy("org.allbinary.J2MEUtil")
+local RunnableCanvas = java_lazy("org.allbinary.canvas.RunnableCanvas")
+local AllBinaryGameCanvas = java_lazy("org.allbinary.game.displayable.canvas.AllBinaryGameCanvas")
+local DemoCanvas = java_lazy("org.allbinary.game.displayable.canvas.DemoCanvas")
+local GameCanvasRunnableInterface = java_lazy("org.allbinary.game.displayable.canvas.GameCanvasRunnableInterface")
+local RunnableCanvasSingleThreadStartRunnable = java_lazy("org.allbinary.game.displayable.canvas.RunnableCanvasSingleThreadStartRunnable")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -32,27 +47,37 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ThreadFactoryUtil = {}
+-- class table ThreadFactoryUtil is declared before the requires
 ThreadFactoryUtil.__index = ThreadFactoryUtil
 ThreadFactoryUtil.className = "ThreadFactoryUtil"
+ThreadFactoryUtil.javaClassName = "org.allbinary.thread.ThreadFactoryUtil"
 
 function ThreadFactoryUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
 end
 
-function ThreadFactoryUtil.new()
-    local self = setmetatable({}, ThreadFactoryUtil)
-    self:_init_fields()
+function ThreadFactoryUtil._jinit(self)
+    ThreadFactoryUtil._init_fields(self)
     return self
+end
+
+function ThreadFactoryUtil.new()
+    return ThreadFactoryUtil._jinit(setmetatable({}, ThreadFactoryUtil))
 end
 
 
 function ThreadFactoryUtil.getInstance()
-        return ThreadFactoryUtil.instance
+        return ThreadFactoryUtil.instance_f
 end
 
 
@@ -80,7 +105,7 @@ function ThreadFactoryUtil:getInstanceType(runnable, type)
                 primaryThreadPool:runTask(runnable)
             end
         end
-        local thread = Thread.new(runnable, tostring(runnable))
+        local thread = require("java.lang.Thread").new(runnable, tostring(runnable))
         self.logUtil:putF(tostring(thread), self, commonStrings.CONSTRUCTOR)
         return thread
 end
@@ -90,7 +115,7 @@ function ThreadFactoryUtil:start(thread)
         thread:start()
 end
 
-ThreadFactoryUtil.instance = ThreadFactoryUtil.new()
+ThreadFactoryUtil.instance_f = ThreadFactoryUtil.new()
 
 return ThreadFactoryUtil
 

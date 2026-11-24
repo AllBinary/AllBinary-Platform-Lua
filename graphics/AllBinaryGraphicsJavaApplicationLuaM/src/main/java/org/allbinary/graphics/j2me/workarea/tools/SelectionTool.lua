@@ -13,20 +13,41 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.graphics.j2me.workarea.tools
 
--- local awt = require("java.awt")
--- local HashMap = require("java.util.HashMap")
+local SelectionTool = {}
+package.loaded["org.allbinary.graphics.j2me.workarea.tools.SelectionTool"] = SelectionTool
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+-- local Color = require("java.awt.Color")
+-- local Graphics = require("java.awt.Graphics")
+local HashMap = java_lazy("java.util.HashMap")
 -- local MutableTreeNode = require("javax.swing.tree.MutableTreeNode")
-local GPoint = require("org.allbinary.graphics.GPoint")
-local PointFactory = require("org.allbinary.graphics.PointFactory")
-local BasicColorFactory = require("org.allbinary.graphics.color.BasicColorFactory")
-local CanvasDom = require("org.allbinary.graphics.j2me.workarea.canvas.CanvasDom")
-local CanvasJPanel = require("org.allbinary.graphics.j2me.workarea.canvas.CanvasJPanel")
-local IntegerDimension = require("org.allbinary.graphics.j2me.workarea.canvas.IntegerDimension")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local RectangleCollisionPointUtil = require("org.allbinary.math.RectangleCollisionPointUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local Node = require("org.w3c.dom.Node")
+local GPoint = java_lazy("org.allbinary.graphics.GPoint")
+local PointFactory = java_lazy("org.allbinary.graphics.PointFactory")
+local BasicColorFactory = java_lazy("org.allbinary.graphics.color.BasicColorFactory")
+local CanvasDom = java_lazy("org.allbinary.graphics.j2me.workarea.canvas.CanvasDom")
+local CanvasJPanel = java_lazy("org.allbinary.graphics.j2me.workarea.canvas.CanvasJPanel")
+local IntegerDimension = java_lazy("org.allbinary.graphics.j2me.workarea.canvas.IntegerDimension")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local RectangleCollisionPointUtil = java_lazy("org.allbinary.math.RectangleCollisionPointUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local Node = java_lazy("org.w3c.dom.Node")
+-- local KeyEvent = require("java.awt.event.KeyEvent")
+-- local MouseEvent = require("java.awt.event.MouseEvent")
 local GraphicItemInterface = require("org.allbinary.graphics.j2me.workarea.tools.GraphicItemInterface")
+local LinesGraphicItem = java_lazy("org.allbinary.graphics.j2me.workarea.tools.LinesGraphicItem")
+local MouseStrings = java_lazy("org.allbinary.graphics.j2me.workarea.tools.MouseStrings")
+local Points = java_lazy("org.allbinary.graphics.j2me.workarea.tools.Points")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -35,30 +56,44 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local SelectionTool = {}
+-- class table SelectionTool is declared before the requires
 SelectionTool.__index = SelectionTool
 SelectionTool.className = "SelectionTool"
+SelectionTool.javaClassName = "org.allbinary.graphics.j2me.workarea.tools.SelectionTool"
+SelectionTool.java_implements = " GraphicItemInterface "
+SelectionTool.java_interfaces = function() return {GraphicItemInterface} end
 
 function SelectionTool:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
-    self.canvasJPanel = nil
+    if self.canvasJPanel == nil then self.canvasJPanel = nil end
     self.active = true
-    self.controlIdDown = false
+    if self.controlIdDown == nil then self.controlIdDown = false end
     self.rectColor = Color.new(math.tointeger(BasicColorFactory.getInstance().RED // 1))
     self.startPoint = PointFactory.getInstance().ZERO_ZERO
     self.endPoint = self.startPoint
 end
 
 
-function SelectionTool.new(canvasJPanel)
-    local self = setmetatable({}, SelectionTool)
-    self:_init_fields()
+function SelectionTool._jinit(self, canvasJPanel)
+    SelectionTool._init_fields(self)
         self.canvasJPanel = canvasJPanel
+    return self
+end
+
+function SelectionTool.new(...)
+    local self = setmetatable({}, SelectionTool)
+    SelectionTool._jinit(self, ...)
     return self
 end
 

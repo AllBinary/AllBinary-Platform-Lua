@@ -1,8 +1,23 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.communication.sql
 
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
+local SqlTypeStrings = {}
+package.loaded["org.allbinary.logic.communication.sql.SqlTypeStrings"] = SqlTypeStrings
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -11,13 +26,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local SqlTypeStrings = {}
+-- class table SqlTypeStrings is declared before the requires
 SqlTypeStrings.__index = SqlTypeStrings
 SqlTypeStrings.className = "SqlTypeStrings"
+SqlTypeStrings.javaClassName = "org.allbinary.logic.communication.sql.SqlTypeStrings"
 
 function SqlTypeStrings:_init_fields()
     self.CHAR_COLUMN = "VARCHAR"
@@ -53,18 +75,21 @@ function SqlTypeStrings:_init_fields()
     self.BLOB_NOT_NULL = " BLOB NOT NULL, "
 end
 
-function SqlTypeStrings.new()
-    local self = setmetatable({}, SqlTypeStrings)
-    self:_init_fields()
+function SqlTypeStrings._jinit(self)
+    SqlTypeStrings._init_fields(self)
     return self
+end
+
+function SqlTypeStrings.new()
+    return SqlTypeStrings._jinit(setmetatable({}, SqlTypeStrings))
 end
 
 
 function SqlTypeStrings.getInstance()
-        return SqlTypeStrings.instance
+        return SqlTypeStrings.instance_f
 end
 
-SqlTypeStrings.instance = SqlTypeStrings.new()
+SqlTypeStrings.instance_f = SqlTypeStrings.new()
 
 return SqlTypeStrings
 

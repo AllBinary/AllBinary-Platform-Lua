@@ -13,15 +13,65 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.communication.http.request
 
--- local Enumeration = require("java.util.Enumeration")
--- local HashMap = require("java.util.HashMap")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
+local AbeHttpRequestInfo = {}
+package.loaded["org.allbinary.logic.communication.http.request.AbeHttpRequestInfo"] = AbeHttpRequestInfo
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local Enumeration = java_lazy("java.util.Enumeration")
+local HashMap = java_lazy("java.util.HashMap")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 -- local HttpServletRequest = require("javax.servlet.http.HttpServletRequest")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -30,37 +80,55 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local AbeHttpRequestInfo = {}
+-- class table AbeHttpRequestInfo is declared before the requires
 AbeHttpRequestInfo.__index = AbeHttpRequestInfo
 AbeHttpRequestInfo.className = "AbeHttpRequestInfo"
+AbeHttpRequestInfo.javaClassName = "org.allbinary.logic.communication.http.request.AbeHttpRequestInfo"
 
 function AbeHttpRequestInfo:_init_fields()
     self.NAME = "AbeHttpRequestInfo"
     self.abeHttpRequestInfoData = AbeHttpRequestInfoData.getInstance()
     self.commonSeps = CommonSeps.getInstance()
-    self.httpUserAgent = nil
-    self.remoteAddress = nil
-    self.remoteHost = nil
-    self.remoteHostByAddr = nil
-    self.remotePort = nil
-    self.requestedFilePath = nil
+    if self.httpUserAgent == nil then self.httpUserAgent = nil end
+    if self.remoteAddress == nil then self.remoteAddress = nil end
+    if self.remoteHost == nil then self.remoteHost = nil end
+    if self.remoteHostByAddr == nil then self.remoteHostByAddr = nil end
+    if self.remotePort == nil then self.remotePort = nil end
+    if self.requestedFilePath == nil then self.requestedFilePath = nil end
+end
+
+function AbeHttpRequestInfo._jinit(self, ...)
+    local count = select("#", ...)
+    if count == 1 then return AbeHttpRequestInfo._new1(self, ...)
+    end
+    error("No constructor of AbeHttpRequestInfo takes " .. count .. " arguments")
 end
 
 function AbeHttpRequestInfo.new(...)
-    local count = select("#", ...)
-    if count == 1 then return AbeHttpRequestInfo._new1(...)
-    elseif count == 1 then return AbeHttpRequestInfo._new1(...)
-    end
+    local self = setmetatable({}, AbeHttpRequestInfo)
+    AbeHttpRequestInfo._jinit(self, ...)
+    return self
+end
+
+function AbeHttpRequestInfo._new1(self, ...)
+    local java_a1 = ...
+    if true and (java_a1 == nil or java_is(java_a1, "HashMap")) then return AbeHttpRequestInfo._new1_1(self, ...) end
+    return AbeHttpRequestInfo._new1_2(self, ...)
 end
 
 
-function AbeHttpRequestInfo._new1(hashMap)
-    local self = setmetatable({}, AbeHttpRequestInfo)
-    self:_init_fields()
+function AbeHttpRequestInfo._new1_1(self, hashMap)
+    AbeHttpRequestInfo._init_fields(self)
         local stringUtil = StringUtil.getInstance()
         self.httpUserAgent = stringUtil:getNonNull(hashMap:get(self.abeHttpRequestInfoData.HTTP_USER_AGENT))
         self.remoteAddress = stringUtil:getNonNull(hashMap:get(self.abeHttpRequestInfoData.REMOTE_ADDRESS))
@@ -72,9 +140,8 @@ function AbeHttpRequestInfo._new1(hashMap)
 end
 
 
-function AbeHttpRequestInfo._new1(httpServletRequest)
-    local self = setmetatable({}, AbeHttpRequestInfo)
-    self:_init_fields()
+function AbeHttpRequestInfo._new1_2(self, httpServletRequest)
+    AbeHttpRequestInfo._init_fields(self)
         local stringUtil = StringUtil.getInstance()
         self.httpUserAgent = stringUtil.EMPTY_STRING
         local enumuration = httpServletRequest:getHeaderNames()

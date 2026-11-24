@@ -13,18 +13,33 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.part
 
+local CountedLayerInterfaceFactoryPart = {}
+package.loaded["org.allbinary.game.part.CountedLayerInterfaceFactoryPart"] = CountedLayerInterfaceFactoryPart
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Font = require("javax.microedition.lcdui.Font")
 -- local Graphics = require("javax.microedition.lcdui.Graphics")
-local Animation = require("org.allbinary.animation.Animation")
-local NullAnimationFactory = require("org.allbinary.animation.NullAnimationFactory")
-local CountedPickedUpLayerInterfaceFactory = require("org.allbinary.game.layer.pickup.CountedPickedUpLayerInterfaceFactory")
-local MyFontProcessor = require("org.allbinary.graphics.font.MyFontProcessor")
-local UpdateMyFontInterface = require("org.allbinary.graphics.font.UpdateMyFontInterface")
-local UpdateMyFontProcessor = require("org.allbinary.graphics.font.UpdateMyFontProcessor")
-local AllBinaryLayer = require("org.allbinary.layer.AllBinaryLayer")
-local NullUtil = require("org.allbinary.logic.NullUtil")
-local PrimitiveLongUtil = require("org.allbinary.logic.math.PrimitiveLongUtil")
-local ABHashtable = require("org.allbinary.util.ABHashtable")
+local Animation = java_lazy("org.allbinary.animation.Animation")
+local NullAnimationFactory = java_lazy("org.allbinary.animation.NullAnimationFactory")
+local CountedPickedUpLayerInterfaceFactory = java_lazy("org.allbinary.game.layer.pickup.CountedPickedUpLayerInterfaceFactory")
+local MyFontProcessor = java_lazy("org.allbinary.graphics.font.MyFontProcessor")
+local UpdateMyFontInterface = java_lazy("org.allbinary.graphics.font.UpdateMyFontInterface")
+local UpdateMyFontProcessor = java_lazy("org.allbinary.graphics.font.UpdateMyFontProcessor")
+local AllBinaryLayer = java_lazy("org.allbinary.layer.AllBinaryLayer")
+local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
+local PrimitiveLongUtil = java_lazy("org.allbinary.logic.math.PrimitiveLongUtil")
+local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
 local PartInterface = require("org.allbinary.game.part.PartInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
@@ -47,31 +62,45 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local CountedLayerInterfaceFactoryPart = {}
+-- class table CountedLayerInterfaceFactoryPart is declared before the requires
 CountedLayerInterfaceFactoryPart.__index = CountedLayerInterfaceFactoryPart
 CountedLayerInterfaceFactoryPart.className = "CountedLayerInterfaceFactoryPart"
+CountedLayerInterfaceFactoryPart.javaClassName = "org.allbinary.game.part.CountedLayerInterfaceFactoryPart"
+CountedLayerInterfaceFactoryPart.java_implements = " PartInterface UpdateMyFontInterface "
+CountedLayerInterfaceFactoryPart.java_interfaces = function() return {PartInterface, UpdateMyFontInterface} end
 
 function CountedLayerInterfaceFactoryPart:_init_fields()
     self.updateMyFontProcessor = UpdateMyFontProcessor.new(self)
     self.myFontProcessor = self.updateMyFontProcessor
     self.animationInterface = NullAnimationFactory.getFactoryInstance():getInstance(0)
-    self.total = 0
+    if self.total == nil then self.total = 0 end
     self.totalString = NullUtil.getInstance().NULL_CHAR_ARRAY
-    self.xOffset = 0
+    if self.xOffset == nil then self.xOffset = 0 end
     self.countedPickedUpLayerInterfaceFactory = CountedPickedUpLayerInterfaceFactory.NULL_COUNTED_PICKUP_LAYER_FACTORY
-    self.primitiveLongUtil = nil
+    if self.primitiveLongUtil == nil then self.primitiveLongUtil = nil end
 end
 
 
-function CountedLayerInterfaceFactoryPart.new(total, countedPickedUpLayerInterfaceFactory)
-    local self = setmetatable({}, CountedLayerInterfaceFactoryPart)
-    self:_init_fields()
+function CountedLayerInterfaceFactoryPart._jinit(self, total, countedPickedUpLayerInterfaceFactory)
+    CountedLayerInterfaceFactoryPart._init_fields(self)
         self.primitiveLongUtil = PrimitiveLongUtil.createPowerOfTen(1000)
         self:init(total, countedPickedUpLayerInterfaceFactory)
+    return self
+end
+
+function CountedLayerInterfaceFactoryPart.new(...)
+    local self = setmetatable({}, CountedLayerInterfaceFactoryPart)
+    CountedLayerInterfaceFactoryPart._jinit(self, ...)
     return self
 end
 
@@ -95,7 +124,7 @@ function CountedLayerInterfaceFactoryPart:getInstance(hashtable, x, y, z)
             self:setTotal(self.total - 1)
             return self:getCountedPickedUpLayerInterfaceFactory():getNextInstance(hashtable, x, y, z)
         else
-            error(java_exception("Exception", "No more left. Could use a listener to automatically remove"), 0)
+            error(require("java.lang.Exception").new("No more left. Could use a listener to automatically remove"), 0)
         end
 end
 

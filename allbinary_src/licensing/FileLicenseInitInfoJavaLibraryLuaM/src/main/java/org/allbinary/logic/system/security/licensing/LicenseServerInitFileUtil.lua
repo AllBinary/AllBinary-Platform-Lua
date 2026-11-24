@@ -13,17 +13,32 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.system.security.licensing
 
+local LicenseServerInitFileUtil = {}
+package.loaded["org.allbinary.logic.system.security.licensing.LicenseServerInitFileUtil"] = LicenseServerInitFileUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local InputStream = require("java.io.InputStream")
 -- local OutputStream = require("java.io.OutputStream")
-local LicenseInitInfoUtil = require("org.allbinary.business.init.LicenseInitInfoUtil")
-local ResourceUtil = require("org.allbinary.data.resource.ResourceUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local FileStreamFactory = require("org.allbinary.logic.io.FileStreamFactory")
-local StreamUtil = require("org.allbinary.logic.io.StreamUtil")
-local FileFactory = require("org.allbinary.logic.io.file.FileFactory")
-local SimpleFileUtil = require("org.allbinary.logic.io.file.SimpleFileUtil")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local LicenseInitInfoUtil = java_lazy("org.allbinary.business.init.LicenseInitInfoUtil")
+local ResourceUtil = java_lazy("org.allbinary.data.resource.ResourceUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local FileStreamFactory = java_lazy("org.allbinary.logic.io.FileStreamFactory")
+local StreamUtil = java_lazy("org.allbinary.logic.io.StreamUtil")
+local FileFactory = java_lazy("org.allbinary.logic.io.file.FileFactory")
+local SimpleFileUtil = java_lazy("org.allbinary.logic.io.file.SimpleFileUtil")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -32,13 +47,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local LicenseServerInitFileUtil = {}
+-- class table LicenseServerInitFileUtil is declared before the requires
 LicenseServerInitFileUtil.__index = LicenseServerInitFileUtil
 LicenseServerInitFileUtil.className = "LicenseServerInitFileUtil"
+LicenseServerInitFileUtil.javaClassName = "org.allbinary.logic.system.security.licensing.LicenseServerInitFileUtil"
 
 function LicenseServerInitFileUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -46,15 +68,18 @@ function LicenseServerInitFileUtil:_init_fields()
     self.NULL_OUTPUT_STREAM = SimpleFileUtil.nullOutputStream()
 end
 
-function LicenseServerInitFileUtil.new()
-    local self = setmetatable({}, LicenseServerInitFileUtil)
-    self:_init_fields()
+function LicenseServerInitFileUtil._jinit(self)
+    LicenseServerInitFileUtil._init_fields(self)
     return self
+end
+
+function LicenseServerInitFileUtil.new()
+    return LicenseServerInitFileUtil._jinit(setmetatable({}, LicenseServerInitFileUtil))
 end
 
 
 function LicenseServerInitFileUtil:init()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local filePath = LicenseInitInfoUtil.getInstance().INITFILENAME
             LicenseInitInfoUtil.getInstance():setFilePath(StringUtil.getInstance().EMPTY_STRING)
             if FileFactory.getInstance():isFile(filePath) then
@@ -65,6 +90,7 @@ function LicenseServerInitFileUtil:init()
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.INIT, e)
         end
 end
@@ -72,7 +98,7 @@ end
 
 function LicenseServerInitFileUtil:write()
         local fileOutputStream = self.NULL_OUTPUT_STREAM
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local resourceUtil = ResourceUtil.getInstance()
             local filePath = LicenseInitInfoUtil.getInstance().INITFILENAME
             local inputStream = resourceUtil:getResourceAsStream(filePath)
@@ -94,6 +120,7 @@ function LicenseServerInitFileUtil:write()
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.INIT, e)
         end
         do -- finally

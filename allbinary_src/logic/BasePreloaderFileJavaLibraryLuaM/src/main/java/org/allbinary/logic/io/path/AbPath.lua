@@ -13,12 +13,28 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.io.path
 
-local FilePathData = require("org.allbinary.logic.io.file.FilePathData")
-local FilePathUtil = require("org.allbinary.logic.io.file.FilePathUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local StringValidationUtil = require("org.allbinary.logic.string.StringValidationUtil")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
+local AbPath = {}
+package.loaded["org.allbinary.logic.io.path.AbPath"] = AbPath
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local FilePathData = java_lazy("org.allbinary.logic.io.file.FilePathData")
+local FilePathUtil = java_lazy("org.allbinary.logic.io.file.FilePathUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local PathUtil = java_lazy("org.allbinary.logic.io.path.PathUtil")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -40,13 +56,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local AbPath = {}
+-- class table AbPath is declared before the requires
 AbPath.__index = AbPath
 AbPath.className = "AbPath"
+AbPath.javaClassName = "org.allbinary.logic.io.path.AbPath"
 
 function AbPath:_init_fields()
     self.commonSeps = CommonSeps.getInstance()
@@ -62,20 +85,21 @@ end
 
 
 function AbPath.createAbPath()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local EMPTY_STRING = StringUtil.getInstance().EMPTY_STRING
-            return AbPath.new(EMPTY_STRING, EMPTY_STRING)
+            do return "__jreturn", AbPath.new(EMPTY_STRING, EMPTY_STRING) end
         end)
         if not try_ok then
             local ex = try_error
-            error(java_exception("RuntimeException"), 0)
+            if type(ex) ~= "table" then ex = require("java.lang.RuntimeException").new(tostring(ex)) end
+            error(require("java.lang.RuntimeException").new(), 0)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
-function AbPath.new(aPath, name)
-    local self = setmetatable({}, AbPath)
-    self:_init_fields()
+function AbPath._jinit(self, aPath, name)
+    AbPath._init_fields(self)
         local stringValidationUtil = StringValidationUtil.getInstance()
         if not stringValidationUtil:isEmpty(aPath) then
             self.schema = self:getSchema(aPath)
@@ -87,6 +111,12 @@ function AbPath.new(aPath, name)
                 self.nameP = name
             end
         end
+    return self
+end
+
+function AbPath.new(...)
+    local self = setmetatable({}, AbPath)
+    AbPath._jinit(self, ...)
     return self
 end
 
@@ -128,7 +158,7 @@ function AbPath:getPathFromPath(aPath)
                     beginIndex = beginIndex + 1
                     self.numberOfSeps = self.numberOfSeps + 1
                     if self.numberOfSeps > 2 then
-                        error(java_exception("Exception", "Should Not Have More Than Two Seps"), 0)
+                        error(require("java.lang.Exception").new("Should Not Have More Than Two Seps"), 0)
                     end
                 end
                 tempPath = string.sub(tempPath, (beginIndex) + 1, #tempPath)

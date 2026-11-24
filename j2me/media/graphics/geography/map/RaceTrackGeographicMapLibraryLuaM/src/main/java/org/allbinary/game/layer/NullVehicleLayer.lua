@@ -13,14 +13,30 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.layer
 
+local NullVehicleLayer = {}
+package.loaded["org.allbinary.game.layer.NullVehicleLayer"] = NullVehicleLayer
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Graphics = require("javax.microedition.lcdui.Graphics")
-local RotationAnimation = require("org.allbinary.animation.RotationAnimation")
-local Group = require("org.allbinary.game.identification.Group")
-local BasicDecimal = require("org.allbinary.logic.math.BasicDecimal")
-local GeographicMapCellHistory = require("org.allbinary.media.graphics.geography.map.GeographicMapCellHistory")
-local GeographicMapCellPositionTracking = require("org.allbinary.media.graphics.geography.map.GeographicMapCellPositionTracking")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
+local RotationAnimation = java_lazy("org.allbinary.animation.RotationAnimation")
+local Group = java_lazy("org.allbinary.game.identification.Group")
+local BasicDecimal = java_lazy("org.allbinary.logic.math.BasicDecimal")
+local GeographicMapCellHistory = java_lazy("org.allbinary.media.graphics.geography.map.GeographicMapCellHistory")
+local GeographicMapCellPositionTracking = java_lazy("org.allbinary.media.graphics.geography.map.GeographicMapCellPositionTracking")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local VehicleLayerInterface = require("org.allbinary.game.layer.VehicleLayerInterface")
+local VehicleProperties = java_lazy("org.allbinary.game.layer.VehicleProperties")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -42,188 +58,200 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local NullVehicleLayer = {}
+-- class table NullVehicleLayer is declared before the requires
 NullVehicleLayer.__index = NullVehicleLayer
 NullVehicleLayer.className = "NullVehicleLayer"
+NullVehicleLayer.javaClassName = "org.allbinary.game.layer.NullVehicleLayer"
+NullVehicleLayer.java_implements = " VehicleLayerInterface "
+NullVehicleLayer.java_interfaces = function() return {VehicleLayerInterface} end
+
+function NullVehicleLayer._jinit(self)
+    return self
+end
 
 function NullVehicleLayer.new()
-    local self = setmetatable({}, NullVehicleLayer)
-    return self
+    return NullVehicleLayer._jinit(setmetatable({}, NullVehicleLayer))
 end
 
 
 function NullVehicleLayer:getName()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:getGroupInterface()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:setPosition(x, y, z)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:getHeight()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:getWidth()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:getHalfHeight()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:getHalfWidth()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:getXP()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:getYP()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:getZP()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:getX2()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:getY2()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:getZ2()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:isVisible()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:moveDXYZ(dx, dy, dz)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:setVisible(visible)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:implmentsTickableInterface()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:implmentsCollidableInterface()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:implmentsGameInputInterface()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:implmentsArtificialIntelligenceCompositeInterface()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:getType()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:getVehicleProperties()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:getGameKeyEventList()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:getSpeedBasicDecimal()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:isReadyForExplosion()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:getRotationAnimationInterface()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:setRotationAnimationInterface(animationInterface)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:isDestroyed()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:isFinish()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:getFinalPosition()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 -- throws Exception
 function NullVehicleLayer:handleFinish()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:getGeographicMapCellPositionTracking()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:getGeographicMapCellHistoryArray()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullVehicleLayer:setGeographicMapCellHistoryArray(geographicMapCellHistory)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 

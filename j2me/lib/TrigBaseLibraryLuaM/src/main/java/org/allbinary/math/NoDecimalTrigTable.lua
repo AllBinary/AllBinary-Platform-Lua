@@ -13,15 +13,33 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.math
 
-local JsType = require("jsinterop.annotations.JsType")
-local PreLogUtil = require("org.allbinary.logic.communication.log.PreLogUtil")
-local MathUtil = require("org.allbinary.logic.math.MathUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local CommonLabels = require("org.allbinary.string.CommonLabels")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local JsMethod = require("jsinterop.annotations.JsMethod")
-local JsConstructor = require("jsinterop.annotations.JsConstructor")
-local JsProperty = require("jsinterop.annotations.JsProperty")
+local NoDecimalTrigTable = {}
+package.loaded["org.allbinary.math.NoDecimalTrigTable"] = NoDecimalTrigTable
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local JsType = java_lazy("jsinterop.annotations.JsType")
+local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
+local MathUtil = java_lazy("org.allbinary.logic.math.MathUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local JsMethod = java_lazy("jsinterop.annotations.JsMethod")
+local JsConstructor = java_lazy("jsinterop.annotations.JsConstructor")
+local JsProperty = java_lazy("jsinterop.annotations.JsProperty")
+local Angle = java_lazy("org.allbinary.math.Angle")
+local AngleFactory = java_lazy("org.allbinary.math.AngleFactory")
+local PositionStrings = java_lazy("org.allbinary.math.PositionStrings")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -44,6 +62,12 @@ local function java_new_array(default, size, ...)
     return array
 end
 
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
+    return array
+end
+
 local function java_idiv(a, b)
     local q = a / b
     if q < 0 then return math.ceil(q) end
@@ -51,36 +75,42 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local NoDecimalTrigTable = {}
+-- class table NoDecimalTrigTable is declared before the requires
 NoDecimalTrigTable.__index = NoDecimalTrigTable
 NoDecimalTrigTable.className = "NoDecimalTrigTable"
+NoDecimalTrigTable.javaClassName = "org.allbinary.math.NoDecimalTrigTable"
 
 function NoDecimalTrigTable:_init_fields()
     self.mathUtil = MathUtil.getInstance()
-    self.noDecimalSin = nil
-    self.noDecimalCos = nil
-    self.noDecimalTan = nil
+    if self.noDecimalSin == nil then self.noDecimalSin = nil end
+    if self.noDecimalCos == nil then self.noDecimalCos = nil end
+    if self.noDecimalTan == nil then self.noDecimalTan = nil end
     self.SCALE = 10000
 end
 
 
 function NoDecimalTrigTable.getInstance()
-        return NoDecimalTrigTable.instance
+        return NoDecimalTrigTable.instance_f
 end
 
 
-function NoDecimalTrigTable.new()
-    local self = setmetatable({}, NoDecimalTrigTable)
-    self:_init_fields()
+function NoDecimalTrigTable._jinit(self)
+    NoDecimalTrigTable._init_fields(self)
         local TOTAL_ANGLE = java_int(AngleFactory.getInstance().TOTAL_ANGLE)
-        local MAX_VALUE = (java_int(Integer.MAX_VALUE))
-        self.noDecimalSin = java_new_array(0, TOTAL_ANGLE)
-        self.noDecimalCos = java_new_array(0, TOTAL_ANGLE)
-        self.noDecimalTan = java_new_array(0, TOTAL_ANGLE + 1)
+        local MAX_VALUE = (java_int(require("java.lang.Integer").MAX_VALUE))
+        self.noDecimalSin = java_typed_array("J", java_new_array(0, TOTAL_ANGLE))
+        self.noDecimalCos = java_typed_array("J", java_new_array(0, TOTAL_ANGLE))
+        self.noDecimalTan = java_typed_array("J", java_new_array(0, TOTAL_ANGLE + 1))
         self.noDecimalSin[1] = 0
         self.noDecimalSin[2] = 174
         self.noDecimalSin[3] = 348
@@ -1165,6 +1195,12 @@ function NoDecimalTrigTable.new()
     return self
 end
 
+function NoDecimalTrigTable.new(...)
+    local self = setmetatable({}, NoDecimalTrigTable)
+    NoDecimalTrigTable._jinit(self, ...)
+    return self
+end
+
 
 function NoDecimalTrigTable:sin(angle)
         return self.noDecimalSin[angle + 1]
@@ -1183,8 +1219,8 @@ end
 
 -- throws Exception
 function NoDecimalTrigTable:antiTan(dx, dy)
-        local MAX_VALUE = (java_int(Integer.MAX_VALUE))
-        local MIN_VALUE = (java_int(Integer.MIN_VALUE))
+        local MAX_VALUE = (java_int(require("java.lang.Integer").MAX_VALUE))
+        local MIN_VALUE = (java_int(require("java.lang.Integer").MIN_VALUE))
         local ratio = (MAX_VALUE - 1)
         if dy ~= 0 then
             local dxl = (dx)
@@ -1235,7 +1271,7 @@ function NoDecimalTrigTable:antiTan(dx, dy)
         stringBuffer:append(CommonSeps.getInstance().SPACE)
         stringBuffer:append(PositionStrings.getInstance().DX_LABEL)
         stringBuffer:appendint(dy)
-        error(java_exception("Exception", tostring(stringBuffer)), 0)
+        error(require("java.lang.Exception").new(tostring(stringBuffer)), 0)
 end
 
 
@@ -1249,12 +1285,12 @@ function NoDecimalTrigTable:antiTanDebug(screenX, screenY, targetX, targetY)
         local targetY2 = -targetY
         local screenX2 = -screenX
         local screenY2 = -screenY
-        local dx = java_new_array(0, 4)
+        local dx = java_typed_array("I", java_new_array(0, 4))
         dx[1] = (screenX - targetX)
         dx[2] = (screenX - targetX2)
         dx[3] = (screenX2 - targetX)
         dx[4] = (screenX2 - targetX2)
-        local dy = java_new_array(0, 4)
+        local dy = java_typed_array("I", java_new_array(0, 4))
         dy[1] = (screenY - targetY)
         dy[2] = (screenY - targetY2)
         dy[3] = (screenY2 - targetY)
@@ -1274,7 +1310,7 @@ function NoDecimalTrigTable:antiTanDebug(screenX, screenY, targetX, targetY)
         return angleOfTarget
 end
 
-NoDecimalTrigTable.instance = NoDecimalTrigTable.new()
+NoDecimalTrigTable.instance_f = NoDecimalTrigTable.new()
 
 return NoDecimalTrigTable
 

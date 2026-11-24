@@ -13,11 +13,29 @@
 -- Generated Code Do Not Modify
 -- package views.admin.inventory.listings
 
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local SearchRequest = require("org.allbinary.logic.control.search.SearchRequest")
-local LicensingException = require("org.allbinary.logic.system.security.licensing.LicensingException")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local InventorySearch = require("views.generic.inventory.InventorySearch")
+local InventoryViewFactory = {}
+package.loaded["views.admin.inventory.listings.InventoryViewFactory"] = InventoryViewFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local SearchRequest = java_lazy("org.allbinary.logic.control.search.SearchRequest")
+local LicensingException = java_lazy("org.allbinary.logic.system.security.licensing.LicensingException")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local InventorySearch = java_lazy("views.generic.inventory.InventorySearch")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local InventoryViewSearchInterface = java_lazy("views.admin.inventory.listings.InventoryViewSearchInterface")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -26,17 +44,29 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local InventoryViewFactory = {}
+-- class table InventoryViewFactory is declared before the requires
 InventoryViewFactory.__index = InventoryViewFactory
 InventoryViewFactory.className = "InventoryViewFactory"
+InventoryViewFactory.javaClassName = "views.admin.inventory.listings.InventoryViewFactory"
 
 
-function InventoryViewFactory.new()
+function InventoryViewFactory._jinit(self)
+    return self
+end
+
+function InventoryViewFactory.new(...)
     local self = setmetatable({}, InventoryViewFactory)
+    InventoryViewFactory._jinit(self, ...)
     return self
 end
 
@@ -44,17 +74,19 @@ end
 -- throws LicensingException
 function InventoryViewFactory.getInstance(searchRequest)
         local logUtil = LogUtil.getInstance()
-        local try_ok, try_error = pcall(function()
-            return InventorySearch.new(searchRequest)
+        local try_ok, try_error, try_value = pcall(function()
+            do return "__jreturn", InventorySearch.new(searchRequest) end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().TAGHELPERFACTORYERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERFACTORYERROR) then
                 local commonStrings = CommonStrings.getInstance()
                 logUtil:put(commonStrings.EXCEPTION, "InventoryViewFactory", "getInstance(SearchRequest)", e)
             end
             return nil
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 return InventoryViewFactory

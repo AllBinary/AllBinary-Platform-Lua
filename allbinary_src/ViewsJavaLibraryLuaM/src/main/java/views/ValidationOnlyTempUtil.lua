@@ -13,10 +13,27 @@
 -- Generated Code Do Not Modify
 -- package views
 
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local ValidationComponentInterface = require("org.allbinary.logic.control.validate.ValidationComponentInterface")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local ValidationOnlyTempUtil = {}
+package.loaded["views.ValidationOnlyTempUtil"] = ValidationOnlyTempUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local ValidationComponentInterface = java_lazy("org.allbinary.logic.control.validate.ValidationComponentInterface")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -25,14 +42,21 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
 --Replace when validation node is added
-local ValidationOnlyTempUtil = {}
+-- class table ValidationOnlyTempUtil is declared before the requires
 ValidationOnlyTempUtil.__index = ValidationOnlyTempUtil
 ValidationOnlyTempUtil.className = "ValidationOnlyTempUtil"
+ValidationOnlyTempUtil.javaClassName = "views.ValidationOnlyTempUtil"
 
 function ValidationOnlyTempUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -40,13 +64,18 @@ end
 
 
 function ValidationOnlyTempUtil.getInstance()
-        return ValidationOnlyTempUtil.instance
+        return ValidationOnlyTempUtil.instance_f
 end
 
 
-function ValidationOnlyTempUtil.new()
+function ValidationOnlyTempUtil._jinit(self)
+    ValidationOnlyTempUtil._init_fields(self)
+    return self
+end
+
+function ValidationOnlyTempUtil.new(...)
     local self = setmetatable({}, ValidationOnlyTempUtil)
-    self:_init_fields()
+    ValidationOnlyTempUtil._jinit(self, ...)
     return self
 end
 
@@ -54,22 +83,24 @@ end
 -- throws Exception
 function ValidationOnlyTempUtil:view(validationComponentInterface)
         local commonStrings = CommonStrings.getInstance()
-        local try_ok, try_error = pcall(function()
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+        local try_ok, try_error, try_value = pcall(function()
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                 self.logUtil:putF("View Name: " .. validationComponentInterface:getTransformInfoInterface():getName(), self, "view()")
             end
-            return StringUtil.getInstance().EMPTY_STRING
+            do return "__jreturn", StringUtil.getInstance().EMPTY_STRING end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEWERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEWERROR) then
                 self.logUtil:put(commonStrings.EXCEPTION, self, "view()", e)
             end
             error(e, 0)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
-ValidationOnlyTempUtil.instance = ValidationOnlyTempUtil.new()
+ValidationOnlyTempUtil.instance_f = ValidationOnlyTempUtil.new()
 
 return ValidationOnlyTempUtil
 

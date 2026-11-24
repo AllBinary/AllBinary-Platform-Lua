@@ -13,10 +13,27 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.graphics.color
 
-local JsType = require("jsinterop.annotations.JsType")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local JsMethod = require("jsinterop.annotations.JsMethod")
-local JsProperty = require("jsinterop.annotations.JsProperty")
+local BasicColorFactory = {}
+package.loaded["org.allbinary.graphics.color.BasicColorFactory"] = BasicColorFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local JsType = java_lazy("jsinterop.annotations.JsType")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local JsMethod = java_lazy("jsinterop.annotations.JsMethod")
+local JsProperty = java_lazy("jsinterop.annotations.JsProperty")
+local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
+local BasicColorUtil = java_lazy("org.allbinary.graphics.color.BasicColorUtil")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -25,13 +42,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local BasicColorFactory = {}
+-- class table BasicColorFactory is declared before the requires
 BasicColorFactory.__index = BasicColorFactory
 BasicColorFactory.className = "BasicColorFactory"
+BasicColorFactory.javaClassName = "org.allbinary.graphics.color.BasicColorFactory"
 
 function BasicColorFactory:_init_fields()
     self.NULL_COLOR = self:createInstanceARGB(255, 255, 255, 255, "null color")
@@ -65,15 +89,18 @@ function BasicColorFactory:_init_fields()
     self.BORDER_COLOR = self.WHITE
 end
 
-function BasicColorFactory.new()
-    local self = setmetatable({}, BasicColorFactory)
-    self:_init_fields()
+function BasicColorFactory._jinit(self)
+    BasicColorFactory._init_fields(self)
     return self
+end
+
+function BasicColorFactory.new()
+    return BasicColorFactory._jinit(setmetatable({}, BasicColorFactory))
 end
 
 
 function BasicColorFactory.getInstance()
-        return BasicColorFactory.instance
+        return BasicColorFactory.instance_f
 end
 
 
@@ -93,11 +120,11 @@ end
 
 
 function BasicColorFactory:createInstanceARGB(alphaValue, r, g, b, name)
-        local ALPHA_MASK = 0xFF000000
+        local ALPHA_MASK = (0xFF000000 - 0x100000000)
         return BasicColor.new(alphaValue, ((alphaValue << 24) & ALPHA_MASK) + ((r << 16) & 0x00FF0000) + ((g << 8) & 0x0000FF00) + (b & 0x000000FF), StringUtil.getInstance().EMPTY_STRING)
 end
 
-BasicColorFactory.instance = BasicColorFactory.new()
+BasicColorFactory.instance_f = BasicColorFactory.new()
 
 return BasicColorFactory
 

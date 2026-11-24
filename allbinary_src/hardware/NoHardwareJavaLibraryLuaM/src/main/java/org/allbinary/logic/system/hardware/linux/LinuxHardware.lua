@@ -13,22 +13,37 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.system.hardware.linux
 
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local HardwareInterface = require("org.allbinary.logic.system.hardware.HardwareInterface")
-local BridgeInterface = require("org.allbinary.logic.system.hardware.components.interfaces.BridgeInterface")
-local CpuInterface = require("org.allbinary.logic.system.hardware.components.interfaces.CpuInterface")
-local EthernetInterface = require("org.allbinary.logic.system.hardware.components.interfaces.EthernetInterface")
-local FireWireInterface = require("org.allbinary.logic.system.hardware.components.interfaces.FireWireInterface")
-local HardDriveControllerInterface = require("org.allbinary.logic.system.hardware.components.interfaces.HardDriveControllerInterface")
-local HardDriveInterface = require("org.allbinary.logic.system.hardware.components.interfaces.HardDriveInterface")
-local HardwareComponentInterface = require("org.allbinary.logic.system.hardware.components.interfaces.HardwareComponentInterface")
-local MachineAccessControlAddressInterface = require("org.allbinary.logic.system.hardware.components.interfaces.MachineAccessControlAddressInterface")
-local MediaInterface = require("org.allbinary.logic.system.hardware.components.interfaces.MediaInterface")
-local MonitorInterface = require("org.allbinary.logic.system.hardware.components.interfaces.MonitorInterface")
-local UsbInterface = require("org.allbinary.logic.system.hardware.components.interfaces.UsbInterface")
-local VideoInterface = require("org.allbinary.logic.system.hardware.components.interfaces.VideoInterface")
-local ABHashtable = require("org.allbinary.util.ABHashtable")
+local LinuxHardware = {}
+package.loaded["org.allbinary.logic.system.hardware.linux.LinuxHardware"] = LinuxHardware
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local HardwareInterface = java_lazy("org.allbinary.logic.system.hardware.HardwareInterface")
+local BridgeInterface = java_lazy("org.allbinary.logic.system.hardware.components.interfaces.BridgeInterface")
+local CpuInterface = java_lazy("org.allbinary.logic.system.hardware.components.interfaces.CpuInterface")
+local EthernetInterface = java_lazy("org.allbinary.logic.system.hardware.components.interfaces.EthernetInterface")
+local FireWireInterface = java_lazy("org.allbinary.logic.system.hardware.components.interfaces.FireWireInterface")
+local HardDriveControllerInterface = java_lazy("org.allbinary.logic.system.hardware.components.interfaces.HardDriveControllerInterface")
+local HardDriveInterface = java_lazy("org.allbinary.logic.system.hardware.components.interfaces.HardDriveInterface")
+local HardwareComponentInterface = java_lazy("org.allbinary.logic.system.hardware.components.interfaces.HardwareComponentInterface")
+local MachineAccessControlAddressInterface = java_lazy("org.allbinary.logic.system.hardware.components.interfaces.MachineAccessControlAddressInterface")
+local MediaInterface = java_lazy("org.allbinary.logic.system.hardware.components.interfaces.MediaInterface")
+local MonitorInterface = java_lazy("org.allbinary.logic.system.hardware.components.interfaces.MonitorInterface")
+local UsbInterface = java_lazy("org.allbinary.logic.system.hardware.components.interfaces.UsbInterface")
+local VideoInterface = java_lazy("org.allbinary.logic.system.hardware.components.interfaces.VideoInterface")
+local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -50,78 +65,92 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local LinuxHardware = {}
+-- class table LinuxHardware is declared before the requires
 LinuxHardware.__index = LinuxHardware
 LinuxHardware.className = "LinuxHardware"
+LinuxHardware.javaClassName = "org.allbinary.logic.system.hardware.linux.LinuxHardware"
+LinuxHardware.java_implements = " HardwareInterface "
+LinuxHardware.java_interfaces = function() return {HardwareInterface} end
 
 
-function LinuxHardware.new()
+function LinuxHardware._jinit(self)
+    return self
+end
+
+function LinuxHardware.new(...)
     local self = setmetatable({}, LinuxHardware)
+    LinuxHardware._jinit(self, ...)
     return self
 end
 
 
 function LinuxHardware:getMultimedia(index)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function LinuxHardware:getBridge(index)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function LinuxHardware:getCpu(index)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function LinuxHardware:getEthernet(index)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function LinuxHardware:getFireWire(index)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function LinuxHardware:getHardDriveController(index)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function LinuxHardware:getHardDrive(index)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function LinuxHardware:getMachineAccessControlAddress(index)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function LinuxHardware:getMonitor(index)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function LinuxHardware:getUsb(index)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function LinuxHardware:getVideo(index)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function LinuxHardware:getComponent(index)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 

@@ -13,9 +13,25 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.input
 
-local PositionStrings = require("org.allbinary.math.PositionStrings")
-local CommonPhoneStrings = require("org.allbinary.string.CommonPhoneStrings")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
+local PCKeyFactory = {}
+package.loaded["org.allbinary.game.input.PCKeyFactory"] = PCKeyFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local PositionStrings = java_lazy("org.allbinary.math.PositionStrings")
+local CommonPhoneStrings = java_lazy("org.allbinary.string.CommonPhoneStrings")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local PCGameKey = java_lazy("org.allbinary.game.input.PCGameKey")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -24,13 +40,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local PCKeyFactory = {}
+-- class table PCKeyFactory is declared before the requires
 PCKeyFactory.__index = PCKeyFactory
 PCKeyFactory.className = "PCKeyFactory"
+PCKeyFactory.javaClassName = "org.allbinary.game.input.PCKeyFactory"
 
 function PCKeyFactory:_init_fields()
     self.keyEventWrapper = ABKeyEventWrapper.getInstance()
@@ -116,10 +139,13 @@ function PCKeyFactory:_init_fields()
     self.BACK_SPACE = PCGameKey.new(self.keyEventWrapper.VK_BACK_SPACE, "Backspace")
 end
 
-function PCKeyFactory.new()
-    local self = setmetatable({}, PCKeyFactory)
-    self:_init_fields()
+function PCKeyFactory._jinit(self)
+    PCKeyFactory._init_fields(self)
     return self
+end
+
+function PCKeyFactory.new()
+    return PCKeyFactory._jinit(setmetatable({}, PCKeyFactory))
 end
 
 

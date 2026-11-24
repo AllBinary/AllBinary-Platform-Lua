@@ -13,17 +13,121 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.animation.image
 
+local ImageArrayBaseRotationAnimation = {}
+package.loaded["org.allbinary.animation.image.ImageArrayBaseRotationAnimation"] = ImageArrayBaseRotationAnimation
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Graphics = require("javax.microedition.lcdui.Graphics")
 -- local Image = require("javax.microedition.lcdui.Image")
 -- local NullImage = require("javax.microedition.lcdui.NullImage")
-local DisposalUtil = require("org.allbinary.DisposalUtil")
-local AnimationBehavior = require("org.allbinary.animation.AnimationBehavior")
+local DisposalUtil = java_lazy("org.allbinary.DisposalUtil")
+local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 local RotationAnimation = require("org.allbinary.animation.RotationAnimation")
-local Anchor = require("org.allbinary.graphics.Anchor")
-local PrimitiveIntUtil = require("org.allbinary.logic.math.PrimitiveIntUtil")
-local AngleInfo = require("org.allbinary.math.AngleInfo")
-local ImageModifierUtil = require("org.allbinary.media.image.ImageModifierUtil")
-local CircularIndexUtil = require("org.allbinary.util.CircularIndexUtil")
+local Anchor = java_lazy("org.allbinary.graphics.Anchor")
+local PrimitiveIntUtil = java_lazy("org.allbinary.logic.math.PrimitiveIntUtil")
+local AngleInfo = java_lazy("org.allbinary.math.AngleInfo")
+local ImageModifierUtil = java_lazy("org.allbinary.media.image.ImageModifierUtil")
+local CircularIndexUtil = java_lazy("org.allbinary.util.CircularIndexUtil")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
+
+local function java_super(class, name, count)
+    local mangled = name .. "_j" .. count
+    local current = class
+    while type(current) == "table" do
+        local method = rawget(current, mangled)
+        if method ~= nil then return method end
+        method = rawget(current, name)
+        if method ~= nil and method ~= rawget(current, name .. "__jdispatcher") then return method end
+        local parent = getmetatable(current)
+        local index = parent and parent.__index
+        if index == current then index = nil end
+        current = index
+    end
+    return class[name]
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -32,32 +136,45 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ImageArrayBaseRotationAnimation = {}
+-- class table ImageArrayBaseRotationAnimation is declared before the requires
 ImageArrayBaseRotationAnimation.__index = ImageArrayBaseRotationAnimation
 ImageArrayBaseRotationAnimation.className = "ImageArrayBaseRotationAnimation"
+ImageArrayBaseRotationAnimation.javaClassName = "org.allbinary.animation.image.ImageArrayBaseRotationAnimation"
 setmetatable(ImageArrayBaseRotationAnimation, {__index = RotationAnimation})
 
 function ImageArrayBaseRotationAnimation:_init_fields()
     self.imageModifierUtil = ImageModifierUtil.getInstanceOrCreate()
-    self.originalImageArray = nil
+    if self.originalImageArray == nil then self.originalImageArray = nil end
     self.imageArray = NullImage.NULL_IMAGE_ARRAY
-    self.currentImage = nil
-    self.totalFrames = 0
+    if self.currentImage == nil then self.currentImage = nil end
+    if self.totalFrames == nil then self.totalFrames = 0 end
     self.anchor = Anchor.TOP_LEFT
 end
 
 
-function ImageArrayBaseRotationAnimation.new(originalImageArray, angleInfo, animationBehavior)
-    local self = setmetatable(RotationAnimation.new(angleInfo, CircularIndexUtil.createInstance(360 / angleInfo:getAngleIncrementInfo():getAngleIncrement()), animationBehavior), ImageArrayBaseRotationAnimation)
-    self:_init_fields()
+function ImageArrayBaseRotationAnimation._jinit(self, originalImageArray, angleInfo, animationBehavior)
+    java_super_init(RotationAnimation, self, angleInfo, CircularIndexUtil.createInstance(360 / angleInfo:getAngleIncrementInfo():getAngleIncrement()), animationBehavior)
+    ImageArrayBaseRotationAnimation._init_fields(self)
         -- super(...) made self above
         self.originalImageArray = originalImageArray
         self:setImageArray(self.imageModifierUtil:getImageArray(originalImageArray))
         self.currentImage = self.imageArray[self.circularIndexUtil:getIndex() + 1]
+    return self
+end
+
+function ImageArrayBaseRotationAnimation.new(...)
+    local self = setmetatable({}, ImageArrayBaseRotationAnimation)
+    ImageArrayBaseRotationAnimation._jinit(self, ...)
     return self
 end
 
@@ -66,49 +183,56 @@ end
 function ImageArrayBaseRotationAnimation:getAnimationSize()
         return self:getSize()
 end
+java_overload(ImageArrayBaseRotationAnimation, "getAnimationSize", 0)
 
 
 function ImageArrayBaseRotationAnimation:setAlpha(alpha)
         if self.alphaP ~= alpha then
-            RotationAnimation.setAlpha(self, alpha)
+            java_super(RotationAnimation, "setAlpha", 1)(self, alpha)
             self.imageModifierUtil:reset()
             local index = self.circularIndexUtil:getIndex()
             self.imageModifierUtil:setAlpha(self.originalImageArray[index + 1], self.imageArray[index + 1], index, self.alphaP)
         end
 end
+java_overload(ImageArrayBaseRotationAnimation, "setAlpha", 1, function(java_a1) return true and type(java_a1) == "number" end)
 
 
 function ImageArrayBaseRotationAnimation:nextRotation()
-        RotationAnimation.nextRotation(self)
+        java_super(RotationAnimation, "nextRotation", 0)(self)
         local index = self.circularIndexUtil:getIndex()
         self.imageModifierUtil:setAlpha(self.originalImageArray[index + 1], self.imageArray[index + 1], index, self.alphaP)
         self.currentImage = self.imageArray[index + 1]
 end
+java_overload(ImageArrayBaseRotationAnimation, "nextRotation", 0)
 
 
 function ImageArrayBaseRotationAnimation:previousRotation()
-        RotationAnimation.previousRotation(self)
+        java_super(RotationAnimation, "previousRotation", 0)(self)
         local index = self.circularIndexUtil:getIndex()
         self.imageModifierUtil:setAlpha(self.originalImageArray[index + 1], self.imageArray[index + 1], index, self.alphaP)
         self.currentImage = self.imageArray[index + 1]
 end
+java_overload(ImageArrayBaseRotationAnimation, "previousRotation", 0)
 
 
 function ImageArrayBaseRotationAnimation:setFrame(index2)
-        RotationAnimation.setFrame(self, index2)
+        java_super(RotationAnimation, "setFrame", 1)(self, index2)
         local index = self.circularIndexUtil:getIndex()
         self.imageModifierUtil:setAlpha(self.originalImageArray[index + 1], self.imageArray[index + 1], index, self.alphaP)
         self.currentImage = self.imageArray[index + 1]
 end
+java_overload(ImageArrayBaseRotationAnimation, "setFrame", 1, function(java_a1) return true and type(java_a1) == "number" end)
 
 
 function ImageArrayBaseRotationAnimation:setSequence(sequence)
 end
+java_overload(ImageArrayBaseRotationAnimation, "setSequence", 1, function(java_a1) return true and (java_a1 == nil or (type(java_a1) == "table" and getmetatable(java_a1) == nil and (java_a1.jt == nil or java_a1.jt == "I") and (java_a1[1] == nil or math.type(java_a1[1]) == "integer"))) end)
 
 
 function ImageArrayBaseRotationAnimation:getSequence()
         return PrimitiveIntUtil.getArrayInstance()
 end
+java_overload(ImageArrayBaseRotationAnimation, "getSequence", 0)
 
 
 function ImageArrayBaseRotationAnimation:setImageArray(imageArray)
@@ -116,11 +240,13 @@ function ImageArrayBaseRotationAnimation:setImageArray(imageArray)
         self.totalFrames = (imageArray.n or #imageArray)
         self.circularIndexUtil = CircularIndexUtil.createInstance(self.totalFrames)
 end
+java_overload(ImageArrayBaseRotationAnimation, "setImageArray", 1, function(java_a1) return true and (java_a1 == nil or (type(java_a1) == "table" and getmetatable(java_a1) == nil and java_a1.jt == nil and (java_a1[1] == nil or type(java_a1[1]) == "table"))) end)
 
 
 function ImageArrayBaseRotationAnimation:paintXY(graphics, x, y)
         graphics:drawImage(self.currentImage, x, y, self.anchor)
 end
+java_overload(ImageArrayBaseRotationAnimation, "paintXY", 3, function(java_a1, java_a2, java_a3) return true and (java_a1 == nil or java_is(java_a1, "Graphics")) and type(java_a2) == "number" and type(java_a3) == "number" end)
 
 
 -- throws Exception
@@ -136,6 +262,7 @@ function ImageArrayBaseRotationAnimation:close()
         end
         disposalUtil:disposeImage(self.currentImage)
 end
+java_overload(ImageArrayBaseRotationAnimation, "close", 0)
 
 
 -- throws Throwable
@@ -151,6 +278,7 @@ function ImageArrayBaseRotationAnimation:finalize()
         end
         disposalUtil:disposeImage(self.currentImage)
 end
+java_overload(ImageArrayBaseRotationAnimation, "finalize", 0)
 
 return ImageArrayBaseRotationAnimation
 

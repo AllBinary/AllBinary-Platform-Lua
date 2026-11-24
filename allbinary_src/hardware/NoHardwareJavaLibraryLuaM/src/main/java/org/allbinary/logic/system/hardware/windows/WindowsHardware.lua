@@ -13,22 +13,37 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.system.hardware.windows
 
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local HardwareInterface = require("org.allbinary.logic.system.hardware.HardwareInterface")
-local BridgeInterface = require("org.allbinary.logic.system.hardware.components.interfaces.BridgeInterface")
-local CpuInterface = require("org.allbinary.logic.system.hardware.components.interfaces.CpuInterface")
-local EthernetInterface = require("org.allbinary.logic.system.hardware.components.interfaces.EthernetInterface")
-local FireWireInterface = require("org.allbinary.logic.system.hardware.components.interfaces.FireWireInterface")
-local HardDriveControllerInterface = require("org.allbinary.logic.system.hardware.components.interfaces.HardDriveControllerInterface")
-local HardDriveInterface = require("org.allbinary.logic.system.hardware.components.interfaces.HardDriveInterface")
-local HardwareComponentInterface = require("org.allbinary.logic.system.hardware.components.interfaces.HardwareComponentInterface")
-local MachineAccessControlAddressInterface = require("org.allbinary.logic.system.hardware.components.interfaces.MachineAccessControlAddressInterface")
-local MediaInterface = require("org.allbinary.logic.system.hardware.components.interfaces.MediaInterface")
-local MonitorInterface = require("org.allbinary.logic.system.hardware.components.interfaces.MonitorInterface")
-local UsbInterface = require("org.allbinary.logic.system.hardware.components.interfaces.UsbInterface")
-local VideoInterface = require("org.allbinary.logic.system.hardware.components.interfaces.VideoInterface")
-local ABHashtable = require("org.allbinary.util.ABHashtable")
+local WindowsHardware = {}
+package.loaded["org.allbinary.logic.system.hardware.windows.WindowsHardware"] = WindowsHardware
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local HardwareInterface = java_lazy("org.allbinary.logic.system.hardware.HardwareInterface")
+local BridgeInterface = java_lazy("org.allbinary.logic.system.hardware.components.interfaces.BridgeInterface")
+local CpuInterface = java_lazy("org.allbinary.logic.system.hardware.components.interfaces.CpuInterface")
+local EthernetInterface = java_lazy("org.allbinary.logic.system.hardware.components.interfaces.EthernetInterface")
+local FireWireInterface = java_lazy("org.allbinary.logic.system.hardware.components.interfaces.FireWireInterface")
+local HardDriveControllerInterface = java_lazy("org.allbinary.logic.system.hardware.components.interfaces.HardDriveControllerInterface")
+local HardDriveInterface = java_lazy("org.allbinary.logic.system.hardware.components.interfaces.HardDriveInterface")
+local HardwareComponentInterface = java_lazy("org.allbinary.logic.system.hardware.components.interfaces.HardwareComponentInterface")
+local MachineAccessControlAddressInterface = java_lazy("org.allbinary.logic.system.hardware.components.interfaces.MachineAccessControlAddressInterface")
+local MediaInterface = java_lazy("org.allbinary.logic.system.hardware.components.interfaces.MediaInterface")
+local MonitorInterface = java_lazy("org.allbinary.logic.system.hardware.components.interfaces.MonitorInterface")
+local UsbInterface = java_lazy("org.allbinary.logic.system.hardware.components.interfaces.UsbInterface")
+local VideoInterface = java_lazy("org.allbinary.logic.system.hardware.components.interfaces.VideoInterface")
+local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -50,78 +65,92 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local WindowsHardware = {}
+-- class table WindowsHardware is declared before the requires
 WindowsHardware.__index = WindowsHardware
 WindowsHardware.className = "WindowsHardware"
+WindowsHardware.javaClassName = "org.allbinary.logic.system.hardware.windows.WindowsHardware"
+WindowsHardware.java_implements = " HardwareInterface "
+WindowsHardware.java_interfaces = function() return {HardwareInterface} end
 
 
-function WindowsHardware.new()
+function WindowsHardware._jinit(self)
+    return self
+end
+
+function WindowsHardware.new(...)
     local self = setmetatable({}, WindowsHardware)
+    WindowsHardware._jinit(self, ...)
     return self
 end
 
 
 function WindowsHardware:getMultimedia(index)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function WindowsHardware:getBridge(index)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function WindowsHardware:getCpu(index)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function WindowsHardware:getEthernet(index)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function WindowsHardware:getFireWire(index)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function WindowsHardware:getHardDriveController(index)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function WindowsHardware:getHardDrive(index)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function WindowsHardware:getMachineAccessControlAddress(index)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function WindowsHardware:getMonitor(index)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function WindowsHardware:getUsb(index)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function WindowsHardware:getVideo(index)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function WindowsHardware:getComponent(index)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 

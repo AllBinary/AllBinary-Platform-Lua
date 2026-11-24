@@ -13,15 +13,33 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.control.workflow
 
--- local HashMap = require("java.util.HashMap")
+local StoreTagWorkFlowFactory = {}
+package.loaded["org.allbinary.logic.control.workflow.StoreTagWorkFlowFactory"] = StoreTagWorkFlowFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
 -- local PageContext = require("javax.servlet.jsp.PageContext")
-local DynamicObjectData = require("org.allbinary.business.DynamicObjectData")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local AbeFactory = require("org.allbinary.logic.system.loader.AbeFactory")
-local AbeClientInformationInterface = require("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
-local LicensingException = require("org.allbinary.logic.system.security.licensing.LicensingException")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local DynamicObjectData = java_lazy("org.allbinary.business.DynamicObjectData")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local AbeFactory = java_lazy("org.allbinary.logic.system.loader.AbeFactory")
+local AbeClientInformationInterface = java_lazy("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
+local LicensingException = java_lazy("org.allbinary.logic.system.security.licensing.LicensingException")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local StoreWorkFlowInterface = java_lazy("org.allbinary.logic.control.workflow.StoreWorkFlowInterface")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
@@ -31,6 +49,47 @@ local function java_new_array(default, size, ...)
     return array
 end
 
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
+    return array
+end
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
 local function java_idiv(a, b)
     local q = a / b
     if q < 0 then return math.ceil(q) end
@@ -38,13 +97,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local StoreTagWorkFlowFactory = {}
+-- class table StoreTagWorkFlowFactory is declared before the requires
 StoreTagWorkFlowFactory.__index = StoreTagWorkFlowFactory
 StoreTagWorkFlowFactory.className = "StoreTagWorkFlowFactory"
+StoreTagWorkFlowFactory.javaClassName = "org.allbinary.logic.control.workflow.StoreTagWorkFlowFactory"
 
 function StoreTagWorkFlowFactory:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -52,28 +118,32 @@ end
 
 
 function StoreTagWorkFlowFactory.getInstance()
-        return StoreTagWorkFlowFactory.instance
+        return StoreTagWorkFlowFactory.instance_f
 end
 
 
-function StoreTagWorkFlowFactory.new()
+function StoreTagWorkFlowFactory._jinit(self)
+    StoreTagWorkFlowFactory._init_fields(self)
+    return self
+end
+
+function StoreTagWorkFlowFactory.new(...)
     local self = setmetatable({}, StoreTagWorkFlowFactory)
-    self:_init_fields()
+    StoreTagWorkFlowFactory._jinit(self, ...)
     return self
 end
 
 
 -- throws Exception, LicensingException
--- Java overloaded method: Lua keeps the last definition
 function StoreTagWorkFlowFactory:getInstance(abeClientInformation, propertiesHashMap, pageContext)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local workFlowClassName = propertiesHashMap:get(DynamicObjectData.NAME)
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().TAGHELPERFACTORY) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERFACTORY) then
                 local stringBuffer = StringMaker.new()
                 stringBuffer:append("Creating WorkFlow: ")
                 stringBuffer:append(workFlowClassName)
                 stringBuffer:append("->")
-                stringBuffer:append(getmetatable(StoreTagWorkFlowFactory.instance).className)
+                stringBuffer:append((getmetatable(StoreTagWorkFlowFactory.instance_f).javaClassName or getmetatable(StoreTagWorkFlowFactory.instance_f).className))
                 local commonStrings = CommonStrings.getInstance()
                 self.logUtil:putF(tostring(stringBuffer), self, commonStrings.GET_INSTANCE)
             end
@@ -83,25 +153,27 @@ function StoreTagWorkFlowFactory:getInstance(abeClientInformation, propertiesHas
             classes[2] = AbeFactory.getInstance():getClass(abeClientInformation, "javax.servlet.jsp.PageContext")
             params[1] = propertiesHashMap
             params[2] = pageContext
-            return AbeFactory.getInstance():getInstance(abeClientInformation, workFlowClassName, classes, params)
+            do return "__jreturn", AbeFactory.getInstance():getInstance(abeClientInformation, workFlowClassName, classes, params) end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().TAGHELPERFACTORYERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERFACTORYERROR) then
                 local workFlowClassName = propertiesHashMap:get(DynamicObjectData.NAME)
                 local stringBuffer = StringMaker.new()
                 stringBuffer:append("Error Creating WorkFlow: ")
                 stringBuffer:append(workFlowClassName)
                 stringBuffer:append("->")
-                stringBuffer:append(getmetatable(StoreTagWorkFlowFactory.instance).className)
+                stringBuffer:append((getmetatable(StoreTagWorkFlowFactory.instance_f).javaClassName or getmetatable(StoreTagWorkFlowFactory.instance_f).className))
                 local commonStrings = CommonStrings.getInstance()
                 self.logUtil:put(tostring(stringBuffer), self, commonStrings.GET_INSTANCE, e)
             end
             error(e, 0)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
-StoreTagWorkFlowFactory.instance = StoreTagWorkFlowFactory.new()
+StoreTagWorkFlowFactory.instance_f = StoreTagWorkFlowFactory.new()
 
 return StoreTagWorkFlowFactory
 

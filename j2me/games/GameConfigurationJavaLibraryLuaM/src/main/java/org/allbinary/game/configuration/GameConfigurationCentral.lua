@@ -13,17 +13,33 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.configuration
 
-local GameConfigurationPersistanceSingleton = require("org.allbinary.game.configuration.persistance.GameConfigurationPersistanceSingleton")
-local KeyValuePersistance = require("org.allbinary.game.configuration.persistance.KeyValuePersistance")
-local NullUtil = require("org.allbinary.logic.NullUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local SmallIntegerSingletonFactory = require("org.allbinary.logic.math.SmallIntegerSingletonFactory")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local AbeClientInformationInterface = require("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local ABHashtable = require("org.allbinary.util.ABHashtable")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
+local GameConfigurationCentral = {}
+package.loaded["org.allbinary.game.configuration.GameConfigurationCentral"] = GameConfigurationCentral
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local GameConfigurationPersistanceSingleton = java_lazy("org.allbinary.game.configuration.persistance.GameConfigurationPersistanceSingleton")
+local KeyValuePersistance = java_lazy("org.allbinary.game.configuration.persistance.KeyValuePersistance")
+local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local SmallIntegerSingletonFactory = java_lazy("org.allbinary.logic.math.SmallIntegerSingletonFactory")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local AbeClientInformationInterface = java_lazy("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local GameConfiguration = java_lazy("org.allbinary.game.configuration.GameConfiguration")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -32,31 +48,38 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local GameConfigurationCentral = {}
+-- class table GameConfigurationCentral is declared before the requires
 GameConfigurationCentral.__index = GameConfigurationCentral
 GameConfigurationCentral.className = "GameConfigurationCentral"
+GameConfigurationCentral.javaClassName = "org.allbinary.game.configuration.GameConfigurationCentral"
 
 function GameConfigurationCentral:_init_fields()
     self.logUtil = LogUtil.getInstance()
-    self.SCALE = nil
-    self.ORIENTATION = nil
-    self.SENSOR_UPDATE_RATE = nil
-    self.VIBRATION = nil
-    self.CHALLENGE_LEVEL = nil
-    self.COLLIDE_DAMAGE = nil
-    self.DURABILITY_CHALLENGE_LEVEL = nil
-    self.SPEED_CHALLENGE_LEVEL = nil
-    self.ATTACK_CHALLENGE_LEVEL = nil
-    self.CONTROL_LEVEL = nil
-    self.PLAYER_INPUT_WAIT = nil
-    self.SPEED = nil
-    self.SOUND_VOLUME = nil
-    self.MAX_GAME_OBJECTS = nil
-    self.MAX_LAYERS = nil
+    if self.SCALE == nil then self.SCALE = nil end
+    if self.ORIENTATION == nil then self.ORIENTATION = nil end
+    if self.SENSOR_UPDATE_RATE == nil then self.SENSOR_UPDATE_RATE = nil end
+    if self.VIBRATION == nil then self.VIBRATION = nil end
+    if self.CHALLENGE_LEVEL == nil then self.CHALLENGE_LEVEL = nil end
+    if self.COLLIDE_DAMAGE == nil then self.COLLIDE_DAMAGE = nil end
+    if self.DURABILITY_CHALLENGE_LEVEL == nil then self.DURABILITY_CHALLENGE_LEVEL = nil end
+    if self.SPEED_CHALLENGE_LEVEL == nil then self.SPEED_CHALLENGE_LEVEL = nil end
+    if self.ATTACK_CHALLENGE_LEVEL == nil then self.ATTACK_CHALLENGE_LEVEL = nil end
+    if self.CONTROL_LEVEL == nil then self.CONTROL_LEVEL = nil end
+    if self.PLAYER_INPUT_WAIT == nil then self.PLAYER_INPUT_WAIT = nil end
+    if self.SPEED == nil then self.SPEED = nil end
+    if self.SOUND_VOLUME == nil then self.SOUND_VOLUME = nil end
+    if self.MAX_GAME_OBJECTS == nil then self.MAX_GAME_OBJECTS = nil end
+    if self.MAX_LAYERS == nil then self.MAX_LAYERS = nil end
     self.gameControlFidelity = 36
 end
 
@@ -69,9 +92,8 @@ function GameConfigurationCentral.getInstance()
 end
 
 
-function GameConfigurationCentral.new()
-    local self = setmetatable({}, GameConfigurationCentral)
-    self:_init_fields()
+function GameConfigurationCentral._jinit(self)
+    GameConfigurationCentral._init_fields(self)
         local smallIntegerSingletonFactory = SmallIntegerSingletonFactory.getInstance()
         self.SCALE = GameConfiguration.new("Scale", smallIntegerSingletonFactory:getAt(2), smallIntegerSingletonFactory:getAt(2), smallIntegerSingletonFactory:getAt(3))
         self.ORIENTATION = GameConfiguration.new("Orientation", smallIntegerSingletonFactory:getAt(0), smallIntegerSingletonFactory:getAt(0), smallIntegerSingletonFactory:getAt(8))
@@ -91,10 +113,16 @@ function GameConfigurationCentral.new()
     return self
 end
 
+function GameConfigurationCentral.new(...)
+    local self = setmetatable({}, GameConfigurationCentral)
+    GameConfigurationCentral._jinit(self, ...)
+    return self
+end
+
 
 function GameConfigurationCentral:load(abeClientInformation)
         local commonStrings = CommonStrings.getInstance()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local smallIntegerSingletonFactory = SmallIntegerSingletonFactory.getInstance()
             local keyValuePersistance = GameConfigurationPersistanceSingleton.getInstance()
             keyValuePersistance:clear()
@@ -111,6 +139,7 @@ function GameConfigurationCentral:load(abeClientInformation)
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put(commonStrings.EXCEPTION, self, commonStrings.LOAD, e)
         end
 end

@@ -13,7 +13,25 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.graphics.j2me.workarea.tools
 
-local Node = require("org.w3c.dom.Node")
+local GraphicItemBuilder = {}
+package.loaded["org.allbinary.graphics.j2me.workarea.tools.GraphicItemBuilder"] = GraphicItemBuilder
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local Node = java_lazy("org.w3c.dom.Node")
+local GraphicItemInterface = java_lazy("org.allbinary.graphics.j2me.workarea.tools.GraphicItemInterface")
+local LinesGraphicItem = java_lazy("org.allbinary.graphics.j2me.workarea.tools.LinesGraphicItem")
+local PointsDomUtil = java_lazy("org.allbinary.graphics.j2me.workarea.tools.PointsDomUtil")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -35,17 +53,29 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local GraphicItemBuilder = {}
+-- class table GraphicItemBuilder is declared before the requires
 GraphicItemBuilder.__index = GraphicItemBuilder
 GraphicItemBuilder.className = "GraphicItemBuilder"
+GraphicItemBuilder.javaClassName = "org.allbinary.graphics.j2me.workarea.tools.GraphicItemBuilder"
 
 
-function GraphicItemBuilder.new()
+function GraphicItemBuilder._jinit(self)
+    return self
+end
+
+function GraphicItemBuilder.new(...)
     local self = setmetatable({}, GraphicItemBuilder)
+    GraphicItemBuilder._jinit(self, ...)
     return self
 end
 
@@ -56,7 +86,7 @@ function GraphicItemBuilder.getInstance(node)
         if ((graphicItemName < PointsDomUtil.getInstance().LINES and -1) or (graphicItemName > PointsDomUtil.getInstance().LINES and 1) or 0) == 0 then
             return LinesGraphicItem.new(node)
         else
-            error(java_exception("Exception", "Graphic Item Does Not Exist: " .. graphicItemName), 0)
+            error(require("java.lang.Exception").new("Graphic Item Does Not Exist: " .. graphicItemName), 0)
         end
 end
 

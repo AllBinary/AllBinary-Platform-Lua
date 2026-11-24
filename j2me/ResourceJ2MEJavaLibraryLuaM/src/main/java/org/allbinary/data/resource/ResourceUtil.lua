@@ -13,11 +13,26 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.data.resource
 
+local ResourceUtil = {}
+package.loaded["org.allbinary.data.resource.ResourceUtil"] = ResourceUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local InputStream = require("java.io.InputStream")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -39,14 +54,21 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
 --J2ME
-local ResourceUtil = {}
+-- class table ResourceUtil is declared before the requires
 ResourceUtil.__index = ResourceUtil
 ResourceUtil.className = "ResourceUtil"
+ResourceUtil.javaClassName = "org.allbinary.data.resource.ResourceUtil"
 
 function ResourceUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -54,13 +76,18 @@ end
 
 
 function ResourceUtil.getInstance()
-        return ResourceUtil.instance
+        return ResourceUtil.instance_f
 end
 
 
-function ResourceUtil.new()
+function ResourceUtil._jinit(self)
+    ResourceUtil._init_fields(self)
+    return self
+end
+
+function ResourceUtil.new(...)
     local self = setmetatable({}, ResourceUtil)
-    self:_init_fields()
+    ResourceUtil._jinit(self, ...)
     return self
 end
 
@@ -113,7 +140,7 @@ function ResourceUtil:getResourceAsStream(resource)
                                                 inputStream = getmetatable(resource):getResourceAsStream(resourcePath)
                                                 if inputStream == nil then
                                                     stringMaker:delete(0, stringMaker:length())
-                                                    error(java_exception("Exception", tostring(stringMaker:append("Unable to obtain: "):append(resource))), 0)
+                                                    error(require("java.lang.Exception").new(tostring(stringMaker:append("Unable to obtain: "):append(resource))), 0)
                                                 end
                                             end
                                         end
@@ -145,7 +172,7 @@ end
 function ResourceUtil:addResource(resource, value)
 end
 
-ResourceUtil.instance = ResourceUtil.new()
+ResourceUtil.instance_f = ResourceUtil.new()
 
 return ResourceUtil
 

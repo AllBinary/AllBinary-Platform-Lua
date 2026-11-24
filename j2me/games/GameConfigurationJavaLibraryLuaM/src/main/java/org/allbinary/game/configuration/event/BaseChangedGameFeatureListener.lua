@@ -13,18 +13,34 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.configuration.event
 
-local Feature = require("org.allbinary.game.configuration.feature.Feature")
-local Features = require("org.allbinary.game.configuration.feature.Features")
-local GameFeatureUtil = require("org.allbinary.game.configuration.feature.GameFeatureUtil")
-local ForcedLogUtil = require("org.allbinary.logic.communication.log.ForcedLogUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local AllBinaryEventObject = require("org.allbinary.logic.util.event.AllBinaryEventObject")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
+local BaseChangedGameFeatureListener = {}
+package.loaded["org.allbinary.game.configuration.event.BaseChangedGameFeatureListener"] = BaseChangedGameFeatureListener
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local Feature = java_lazy("org.allbinary.game.configuration.feature.Feature")
+local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
+local GameFeatureUtil = java_lazy("org.allbinary.game.configuration.feature.GameFeatureUtil")
+local ForcedLogUtil = java_lazy("org.allbinary.logic.communication.log.ForcedLogUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local AllBinaryEventObject = java_lazy("org.allbinary.logic.util.event.AllBinaryEventObject")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 local GameFeatureListenerInterface = require("org.allbinary.game.configuration.event.GameFeatureListenerInterface")
+local GameFeatureEvent = java_lazy("org.allbinary.game.configuration.event.GameFeatureEvent")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -33,13 +49,22 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local BaseChangedGameFeatureListener = {}
+-- class table BaseChangedGameFeatureListener is declared before the requires
 BaseChangedGameFeatureListener.__index = BaseChangedGameFeatureListener
 BaseChangedGameFeatureListener.className = "BaseChangedGameFeatureListener"
+BaseChangedGameFeatureListener.javaClassName = "org.allbinary.game.configuration.event.BaseChangedGameFeatureListener"
+BaseChangedGameFeatureListener.java_implements = " GameFeatureListenerInterface "
+BaseChangedGameFeatureListener.java_interfaces = function() return {GameFeatureListenerInterface} end
 
 function BaseChangedGameFeatureListener:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -48,10 +73,13 @@ function BaseChangedGameFeatureListener:_init_fields()
     self.changed = true
 end
 
-function BaseChangedGameFeatureListener.new()
-    local self = setmetatable({}, BaseChangedGameFeatureListener)
-    self:_init_fields()
+function BaseChangedGameFeatureListener._jinit(self)
+    BaseChangedGameFeatureListener._init_fields(self)
     return self
+end
+
+function BaseChangedGameFeatureListener.new()
+    return BaseChangedGameFeatureListener._jinit(setmetatable({}, BaseChangedGameFeatureListener))
 end
 
 

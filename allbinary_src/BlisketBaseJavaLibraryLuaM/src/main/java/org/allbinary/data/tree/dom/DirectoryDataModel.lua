@@ -13,17 +13,33 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.data.tree.dom
 
-local XmlDocumentHelper = require("org.allbinary.data.tree.dom.document.XmlDocumentHelper")
-local AbFile = require("org.allbinary.logic.io.file.AbFile")
-local Directory = require("org.allbinary.logic.io.file.directory.Directory")
-local TransformInterface = require("org.allbinary.logic.visual.transform.TransformInterface")
-local TransformDocumentFactory = require("org.allbinary.logic.visual.transform.data.TransformDocumentFactory")
-local TransformDocumentInterface = require("org.allbinary.logic.visual.transform.data.TransformDocumentInterface")
-local TransformInfoInterface = require("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local Document = require("org.w3c.dom.Document")
-local Node = require("org.w3c.dom.Node")
+local DirectoryDataModel = {}
+package.loaded["org.allbinary.data.tree.dom.DirectoryDataModel"] = DirectoryDataModel
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local XmlDocumentHelper = java_lazy("org.allbinary.data.tree.dom.document.XmlDocumentHelper")
+local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
+local Directory = java_lazy("org.allbinary.logic.io.file.directory.Directory")
+local TransformInterface = java_lazy("org.allbinary.logic.visual.transform.TransformInterface")
+local TransformDocumentFactory = java_lazy("org.allbinary.logic.visual.transform.data.TransformDocumentFactory")
+local TransformDocumentInterface = java_lazy("org.allbinary.logic.visual.transform.data.TransformDocumentInterface")
+local TransformInfoInterface = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local Document = java_lazy("org.w3c.dom.Document")
+local Node = java_lazy("org.w3c.dom.Node")
 local DomNodeInterface = require("org.allbinary.data.tree.dom.DomNodeInterface")
+local FileDomDataModel = java_lazy("org.allbinary.data.tree.dom.FileDomDataModel")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -32,26 +48,40 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local DirectoryDataModel = {}
+-- class table DirectoryDataModel is declared before the requires
 DirectoryDataModel.__index = DirectoryDataModel
 DirectoryDataModel.className = "DirectoryDataModel"
+DirectoryDataModel.javaClassName = "org.allbinary.data.tree.dom.DirectoryDataModel"
+DirectoryDataModel.java_implements = " DomNodeInterface TransformInterface "
+DirectoryDataModel.java_interfaces = function() return {DomNodeInterface, TransformInterface} end
 
 function DirectoryDataModel:_init_fields()
-    self.fileBasicArrayList = nil
-    self.transformDocumentInterface = nil
+    if self.fileBasicArrayList == nil then self.fileBasicArrayList = nil end
+    if self.transformDocumentInterface == nil then self.transformDocumentInterface = nil end
     self.NO_TYPE = 0
 end
 
 
-function DirectoryDataModel.new(file)
-    local self = setmetatable({}, DirectoryDataModel)
-    self:_init_fields()
+function DirectoryDataModel._jinit(self, file)
+    DirectoryDataModel._init_fields(self)
         self.fileBasicArrayList = Directory.getInstance():search(file)
         self.transformDocumentInterface = TransformDocumentFactory.getInstance()
+    return self
+end
+
+function DirectoryDataModel.new(...)
+    local self = setmetatable({}, DirectoryDataModel)
+    DirectoryDataModel._jinit(self, ...)
     return self
 end
 

@@ -13,6 +13,22 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.ag.ai
 
+local ThrustAIVisitorFactory = {}
+package.loaded["org.allbinary.game.ag.ai.ThrustAIVisitorFactory"] = ThrustAIVisitorFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local ThrustAIVisitor = java_lazy("org.allbinary.game.ag.ai.ThrustAIVisitor")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -21,25 +37,35 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ThrustAIVisitorFactory = {}
+-- class table ThrustAIVisitorFactory is declared before the requires
 ThrustAIVisitorFactory.__index = ThrustAIVisitorFactory
 ThrustAIVisitorFactory.className = "ThrustAIVisitorFactory"
+ThrustAIVisitorFactory.javaClassName = "org.allbinary.game.ag.ai.ThrustAIVisitorFactory"
+
+function ThrustAIVisitorFactory._jinit(self)
+    return self
+end
 
 function ThrustAIVisitorFactory.new()
-    local self = setmetatable({}, ThrustAIVisitorFactory)
-    return self
+    return ThrustAIVisitorFactory._jinit(setmetatable({}, ThrustAIVisitorFactory))
 end
 
 
 function ThrustAIVisitorFactory.getInstance()
-        return ThrustAIVisitorFactory.instance
+        return ThrustAIVisitorFactory.instance_f
 end
 
-ThrustAIVisitorFactory.instance = ThrustAIVisitor.new()
+ThrustAIVisitorFactory.instance_f = ThrustAIVisitor.new()
 
 return ThrustAIVisitorFactory
 

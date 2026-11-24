@@ -13,8 +13,23 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.collision
 
-local CollidableCompositeLayer = require("org.allbinary.game.layer.CollidableCompositeLayer")
-local AllBinaryLayer = require("org.allbinary.layer.AllBinaryLayer")
+local CollisionHelper = {}
+package.loaded["org.allbinary.game.collision.CollisionHelper"] = CollisionHelper
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local CollidableCompositeLayer = java_lazy("org.allbinary.game.layer.CollidableCompositeLayer")
+local AllBinaryLayer = java_lazy("org.allbinary.layer.AllBinaryLayer")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -23,23 +38,35 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local CollisionHelper = {}
+-- class table CollisionHelper is declared before the requires
 CollisionHelper.__index = CollisionHelper
 CollisionHelper.className = "CollisionHelper"
+CollisionHelper.javaClassName = "org.allbinary.game.collision.CollisionHelper"
 
 function CollisionHelper:_init_fields()
-    self.sourceLayerInterface = nil
+    if self.sourceLayerInterface == nil then self.sourceLayerInterface = nil end
 end
 
 
-function CollisionHelper.new(sourceLayerInterface)
-    local self = setmetatable({}, CollisionHelper)
-    self:_init_fields()
+function CollisionHelper._jinit(self, sourceLayerInterface)
+    CollisionHelper._init_fields(self)
         self.sourceLayerInterface = sourceLayerInterface
+    return self
+end
+
+function CollisionHelper.new(...)
+    local self = setmetatable({}, CollisionHelper)
+    CollisionHelper._jinit(self, ...)
     return self
 end
 

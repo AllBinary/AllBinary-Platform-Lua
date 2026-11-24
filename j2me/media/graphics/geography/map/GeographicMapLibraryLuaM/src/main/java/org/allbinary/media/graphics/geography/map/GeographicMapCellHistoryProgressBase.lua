@@ -13,6 +13,21 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media.graphics.geography.map
 
+local GeographicMapCellHistoryProgressBase = {}
+package.loaded["org.allbinary.media.graphics.geography.map.GeographicMapCellHistoryProgressBase"] = GeographicMapCellHistoryProgressBase
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -34,36 +49,48 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local GeographicMapCellHistoryProgressBase = {}
+-- class table GeographicMapCellHistoryProgressBase is declared before the requires
 GeographicMapCellHistoryProgressBase.__index = GeographicMapCellHistoryProgressBase
 GeographicMapCellHistoryProgressBase.className = "GeographicMapCellHistoryProgressBase"
+GeographicMapCellHistoryProgressBase.javaClassName = "org.allbinary.media.graphics.geography.map.GeographicMapCellHistoryProgressBase"
 
 
 function GeographicMapCellHistoryProgressBase.getInstance()
-        return GeographicMapCellHistoryProgressBase.instance
+        return GeographicMapCellHistoryProgressBase.instance_f
 end
 
 
-function GeographicMapCellHistoryProgressBase.new()
+function GeographicMapCellHistoryProgressBase._jinit(self)
+    return self
+end
+
+function GeographicMapCellHistoryProgressBase.new(...)
     local self = setmetatable({}, GeographicMapCellHistoryProgressBase)
+    GeographicMapCellHistoryProgressBase._jinit(self, ...)
     return self
 end
 
 
 function GeographicMapCellHistoryProgressBase:init()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function GeographicMapCellHistoryProgressBase:isAnyProgress()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
-GeographicMapCellHistoryProgressBase.instance = GeographicMapCellHistoryProgressBase.new()
+GeographicMapCellHistoryProgressBase.instance_f = GeographicMapCellHistoryProgressBase.new()
 
 return GeographicMapCellHistoryProgressBase
 

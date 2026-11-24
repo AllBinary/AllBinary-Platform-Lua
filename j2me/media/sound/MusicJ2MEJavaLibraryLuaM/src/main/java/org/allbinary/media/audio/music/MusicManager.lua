@@ -1,24 +1,39 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media.audio.music
 
-local ARunnable = require("org.allbinary.thread.ARunnable")
+local MusicManager = {}
+package.loaded["org.allbinary.media.audio.music.MusicManager"] = MusicManager
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local ARunnable = java_lazy("org.allbinary.thread.ARunnable")
 -- local Player = require("javax.microedition.media.Player")
 -- local PlayerListener = require("javax.microedition.media.PlayerListener")
-local AvianUtil = require("org.allbinary.AvianUtil")
-local PreLogUtil = require("org.allbinary.logic.communication.log.PreLogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local NoSound = require("org.allbinary.media.audio.NoSound")
-local PlayerStateUtil = require("org.allbinary.media.audio.PlayerStateUtil")
-local Sound = require("org.allbinary.media.audio.Sound")
-local CommonLabels = require("org.allbinary.string.CommonLabels")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local GameTickTimeDelayHelper = require("org.allbinary.time.GameTickTimeDelayHelper")
-local GameTickTimeDelayHelperFactory = require("org.allbinary.time.GameTickTimeDelayHelperFactory")
-local TimeDelayHelper = require("org.allbinary.time.TimeDelayHelper")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListUtil = require("org.allbinary.util.BasicArrayListUtil")
+local AvianUtil = java_lazy("org.allbinary.AvianUtil")
+local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local NoSound = java_lazy("org.allbinary.media.audio.NoSound")
+local PlayerStateUtil = java_lazy("org.allbinary.media.audio.PlayerStateUtil")
+local Sound = java_lazy("org.allbinary.media.audio.Sound")
+local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local GameTickTimeDelayHelper = java_lazy("org.allbinary.time.GameTickTimeDelayHelper")
+local GameTickTimeDelayHelperFactory = java_lazy("org.allbinary.time.GameTickTimeDelayHelperFactory")
+local TimeDelayHelper = java_lazy("org.allbinary.time.TimeDelayHelper")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListUtil = java_lazy("org.allbinary.util.BasicArrayListUtil")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -27,6 +42,12 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
@@ -36,25 +57,41 @@ local function java_sleep(milliseconds)
     while os.clock() < finish do end
 end
 
-local MusicManager = {}
+-- class table MusicManager is declared before the requires
 MusicManager.__index = MusicManager
 MusicManager.className = "MusicManager"
+MusicManager.javaClassName = "org.allbinary.media.audio.music.MusicManager"
 --Handle Media ending for Avian
     local MusicManagerPlayerListener = {}
     MusicManagerPlayerListener.__index = MusicManagerPlayerListener
     MusicManagerPlayerListener.className = "MusicManagerPlayerListener"
+    MusicManagerPlayerListener.javaClassName = "org.allbinary.media.audio.music.MusicManager$MusicManagerPlayerListener"
+    MusicManagerPlayerListener.java_implements = " PlayerListener "
+    MusicManagerPlayerListener.java_interfaces = function() return {PlayerListener} end
     MusicManager.MusicManagerPlayerListener = MusicManagerPlayerListener
 
-    function MusicManagerPlayerListener.new()
-        local self = setmetatable({}, MusicManagerPlayerListener)
+    function MusicManagerPlayerListener:_init_fields()
+        if self.musicManager == nil then self.musicManager = nil end
+    end
+    
+
+    function MusicManager._jinit(self, musicManager)
+        MusicManager._init_fields(self)
+            self.musicManager = musicManager
+        return self
+    end
+
+    function MusicManager.new(...)
+        local self = setmetatable({}, MusicManager)
+        MusicManager._jinit(self, ...)
         return self
     end
     
 
     function MusicManager:playerUpdate(player, event, eventData)
-            PreLogUtil.put(event, self, self.commonStrings.PROCESS)
+            PreLogUtil.put(event, self, self.musicManager.commonStrings.PROCESS)
             if event == PlayerListener.END_OF_MEDIA or event == PlayerListener.STOPPED or event == PlayerListener.CLOSED then
-                self:reset()
+                self.musicManager:reset()
             end
     end
 
@@ -66,7 +103,7 @@ function MusicManager:_init_fields()
     self.gameTickTimeDelayHelper = GameTickTimeDelayHelperFactory.getInstance()
     self.playerStateUtil = PlayerStateUtil.getInstance()
     self.timeDelayHelper = TimeDelayHelper.new(0)
-    self.playerListener = MusicManagerPlayerListener.new()
+    self.playerListener = MusicManagerPlayerListener.new(self)
     self.PLAY = "Play "
     self.SONG = " for: "
     self.NEXT_SONG = tostring(CommonLabels.getInstance().NEXT) .. " Song: "
@@ -75,19 +112,24 @@ function MusicManager:_init_fields()
     self.WAITING_FOR_MEDIA_TO_END = "Waiting for media to end"
     self.ALREADY_PLAYING = "Already Playing: "
     self.ALREADY_ENDED = "Last Song already ended: "
-    self.songList = nil
+    if self.songList == nil then self.songList = nil end
     self.currentSongSound = NoSound.getInstance()
     self.nextSongSound = NoSound.getInstance()
-    self.reset = false
-    self.noDuration = false
+    if self.reset_f == nil then self.reset_f = false end
+    if self.noDuration == nil then self.noDuration = false end
     self.stopped = true
 end
 
 
-function MusicManager.new(musicServiceClass, songList)
-    local self = setmetatable({}, MusicManager)
-    self:_init_fields()
+function MusicManager._jinit(self, musicServiceClass, songList)
+    MusicManager._init_fields(self)
         self.songList = songList
+    return self
+end
+
+function MusicManager.new(...)
+    local self = setmetatable({}, MusicManager)
+    MusicManager._jinit(self, ...)
     return self
 end
 
@@ -110,20 +152,20 @@ end
 
 
 function MusicManager:reset()
-        self.reset = true
+        self.reset_f = true
 end
 
 
 function MusicManager:process()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             if self.stopped then
-                return
+                do return "__jreturn" end
             end
             if self.songList:size() == 0 then
-                return
+                do return "__jreturn" end
             end
-            if (self.timeDelayHelper:isTime(self.gameTickTimeDelayHelper.startTime) and not self.noDuration) or self.reset then
-                self.reset = false
+            if (self.timeDelayHelper:isTime(self.gameTickTimeDelayHelper.startTime) and not self.noDuration) or self.reset_f then
+                self.reset_f = false
                 self.noDuration = false
                 local endingCurrentSongSound = self.currentSongSound
                 local nextSongSound = self.nextSongSound
@@ -170,12 +212,14 @@ function MusicManager:process()
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local resource = StringUtil.getInstance().EMPTY_STRING
             if self.currentSongSound ~= NoSound.getInstance() then
                 resource = self.currentSongSound:getResource()
             end
             PreLogUtil.putOE(tostring(self.commonStrings.EXCEPTION_LABEL) .. resource, self, self.commonStrings.PROCESS, e)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
@@ -192,7 +236,7 @@ end
 
 -- throws Exception
 function MusicManager:stop()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local currentSongSound = self.currentSongSound
             if currentSongSound ~= NoSound.getInstance() then
                 self.stopped = true
@@ -204,9 +248,10 @@ function MusicManager:stop()
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local resource = StringUtil.getInstance().EMPTY_STRING
-            if currentSongSound ~= NoSound.getInstance() then
-                resource = currentSongSound:getResource()
+            if self.currentSongSound ~= NoSound.getInstance() then
+                resource = self.currentSongSound:getResource()
             end
             PreLogUtil.putOE(tostring(self.commonStrings.EXCEPTION_LABEL) .. resource, self, self.commonStrings.END, e)
         end

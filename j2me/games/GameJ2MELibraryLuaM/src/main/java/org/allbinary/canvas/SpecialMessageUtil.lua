@@ -13,11 +13,26 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.canvas
 
-local Features = require("org.allbinary.game.configuration.feature.Features")
-local OpenGLFeatureFactory = require("org.allbinary.graphics.opengles.OpenGLFeatureFactory")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local Memory = require("org.allbinary.system.Memory")
+local SpecialMessageUtil = {}
+package.loaded["org.allbinary.canvas.SpecialMessageUtil"] = SpecialMessageUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
+local OpenGLFeatureFactory = java_lazy("org.allbinary.graphics.opengles.OpenGLFeatureFactory")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local Memory = java_lazy("org.allbinary.system.Memory")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -26,17 +41,27 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local SpecialMessageUtil = {}
+-- class table SpecialMessageUtil is declared before the requires
 SpecialMessageUtil.__index = SpecialMessageUtil
 SpecialMessageUtil.className = "SpecialMessageUtil"
+SpecialMessageUtil.javaClassName = "org.allbinary.canvas.SpecialMessageUtil"
+
+function SpecialMessageUtil._jinit(self)
+    return self
+end
 
 function SpecialMessageUtil.new()
-    local self = setmetatable({}, SpecialMessageUtil)
-    return self
+    return SpecialMessageUtil._jinit(setmetatable({}, SpecialMessageUtil))
 end
 
 

@@ -13,32 +13,53 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.input.form
 
-local GroupCommonFactory = require("org.allbinary.game.identification.GroupCommonFactory")
-local RTSLayer = require("org.allbinary.game.layer.RTSLayer")
-local RTSPlayerLayerInterface = require("org.allbinary.game.layer.RTSPlayerLayerInterface")
-local LayerInterfaceFactoryImageItem = require("org.allbinary.game.layer.item.LayerInterfaceFactoryImageItem")
-local ABCustomItem = require("org.allbinary.graphics.form.item.ABCustomItem")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local DirectionFactory = require("org.allbinary.direction.DirectionFactory")
-local Group = require("org.allbinary.game.identification.Group")
-local AllBinaryGameLayerManager = require("org.allbinary.game.layer.AllBinaryGameLayerManager")
-local CollidableDestroyableDamageableLayer = require("org.allbinary.game.layer.special.CollidableDestroyableDamageableLayer")
-local GPoint = require("org.allbinary.graphics.GPoint")
-local ScrollSelectionForm = require("org.allbinary.graphics.form.ScrollSelectionForm")
-local AllBinaryLayerManager = require("org.allbinary.layer.AllBinaryLayerManager")
-local LayerInterfaceFactoryInterface = require("org.allbinary.layer.LayerInterfaceFactoryInterface")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local GeographicMapCellPosition = require("org.allbinary.media.graphics.geography.map.GeographicMapCellPosition")
-local SimpleGeographicMapCellPositionFactory = require("org.allbinary.media.graphics.geography.map.SimpleGeographicMapCellPositionFactory")
-local ABHashtable = require("org.allbinary.util.ABHashtable")
+local RTSFormInput = {}
+package.loaded["org.allbinary.game.input.form.RTSFormInput"] = RTSFormInput
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local GroupCommonFactory = java_lazy("org.allbinary.game.identification.GroupCommonFactory")
+local RTSLayer = java_lazy("org.allbinary.game.layer.RTSLayer")
+local RTSPlayerLayerInterface = java_lazy("org.allbinary.game.layer.RTSPlayerLayerInterface")
+local LayerInterfaceFactoryImageItem = java_lazy("org.allbinary.game.layer.item.LayerInterfaceFactoryImageItem")
+local ABCustomItem = java_lazy("org.allbinary.graphics.form.item.ABCustomItem")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local DirectionFactory = java_lazy("org.allbinary.direction.DirectionFactory")
+local Group = java_lazy("org.allbinary.game.identification.Group")
+local AllBinaryGameLayerManager = java_lazy("org.allbinary.game.layer.AllBinaryGameLayerManager")
+local CollidableDestroyableDamageableLayer = java_lazy("org.allbinary.game.layer.special.CollidableDestroyableDamageableLayer")
+local GPoint = java_lazy("org.allbinary.graphics.GPoint")
+local ScrollSelectionForm = java_lazy("org.allbinary.graphics.form.ScrollSelectionForm")
+local AllBinaryLayerManager = java_lazy("org.allbinary.layer.AllBinaryLayerManager")
+local LayerInterfaceFactoryInterface = java_lazy("org.allbinary.layer.LayerInterfaceFactoryInterface")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local GeographicMapCellPosition = java_lazy("org.allbinary.media.graphics.geography.map.GeographicMapCellPosition")
+local SimpleGeographicMapCellPositionFactory = java_lazy("org.allbinary.media.graphics.geography.map.SimpleGeographicMapCellPositionFactory")
+local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -49,30 +70,36 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local RTSFormInput = {}
+-- class table RTSFormInput is declared before the requires
 RTSFormInput.__index = RTSFormInput
 RTSFormInput.className = "RTSFormInput"
+RTSFormInput.javaClassName = "org.allbinary.game.input.form.RTSFormInput"
 
 function RTSFormInput:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.groupCommonFactory = GroupCommonFactory.getInstance()
     self.hashtable = StdUtil.getInstance():createHashtable()
     self.newUnconstructedRTSLayerInterfaceArray = java_new_array(nil, 7)
-    self.groupInterfaceArray = nil
+    if self.groupInterfaceArray == nil then self.groupInterfaceArray = nil end
     self.selectedGeographicCellPosition = SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION
-    self.stickyItemSelected = false
-    self.selectedStickyItemIndex = 0
+    if self.stickyItemSelected == nil then self.stickyItemSelected = false end
+    if self.selectedStickyItemIndex == nil then self.selectedStickyItemIndex = 0 end
     self.selectedStickyItem = ABCustomItem.getNullInstance()
 end
 
 
-function RTSFormInput.new(groupInterfaceArray)
-    local self = setmetatable({}, RTSFormInput)
-    self:_init_fields()
+function RTSFormInput._jinit(self, groupInterfaceArray)
+    RTSFormInput._init_fields(self)
         local size = (self.newUnconstructedRTSLayerInterfaceArray.n or #self.newUnconstructedRTSLayerInterfaceArray)
         for index = 0, size - 1 do
             self.newUnconstructedRTSLayerInterfaceArray[index + 1] = CollidableDestroyableDamageableLayer.getNullInstance()
@@ -82,6 +109,12 @@ function RTSFormInput.new(groupInterfaceArray)
         if groupInterfaceArray ~= nil then
             self.hashtable:put(self.groupCommonFactory.ID, groupInterfaceArray)
         end
+    return self
+end
+
+function RTSFormInput.new(...)
+    local self = setmetatable({}, RTSFormInput)
+    RTSFormInput._jinit(self, ...)
     return self
 end
 

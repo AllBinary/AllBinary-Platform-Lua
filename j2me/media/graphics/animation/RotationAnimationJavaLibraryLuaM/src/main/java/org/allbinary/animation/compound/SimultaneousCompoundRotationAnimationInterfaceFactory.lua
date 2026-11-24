@@ -13,12 +13,28 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.animation.compound
 
-local Animation = require("org.allbinary.animation.Animation")
-local AnimationBehaviorFactory = require("org.allbinary.animation.AnimationBehaviorFactory")
-local AnimationInterfaceFactoryInterface = require("org.allbinary.animation.AnimationInterfaceFactoryInterface")
-local RotationAnimation = require("org.allbinary.animation.RotationAnimation")
-local ForcedLogUtil = require("org.allbinary.logic.communication.log.ForcedLogUtil")
+local SimultaneousCompoundRotationAnimationInterfaceFactory = {}
+package.loaded["org.allbinary.animation.compound.SimultaneousCompoundRotationAnimationInterfaceFactory"] = SimultaneousCompoundRotationAnimationInterfaceFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local Animation = java_lazy("org.allbinary.animation.Animation")
+local AnimationBehaviorFactory = java_lazy("org.allbinary.animation.AnimationBehaviorFactory")
+local AnimationInterfaceFactoryInterface = java_lazy("org.allbinary.animation.AnimationInterfaceFactoryInterface")
+local RotationAnimation = java_lazy("org.allbinary.animation.RotationAnimation")
+local ForcedLogUtil = java_lazy("org.allbinary.logic.communication.log.ForcedLogUtil")
 local CompoundAnimationInterfaceFactory = require("org.allbinary.animation.compound.CompoundAnimationInterfaceFactory")
+local SimultaneousCompoundRotationAnimation = java_lazy("org.allbinary.animation.compound.SimultaneousCompoundRotationAnimation")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
@@ -28,6 +44,85 @@ local function java_new_array(default, size, ...)
     return array
 end
 
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
+    return array
+end
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
+
 local function java_idiv(a, b)
     local q = a / b
     if q < 0 then return math.ceil(q) end
@@ -35,18 +130,25 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local SimultaneousCompoundRotationAnimationInterfaceFactory = {}
+-- class table SimultaneousCompoundRotationAnimationInterfaceFactory is declared before the requires
 SimultaneousCompoundRotationAnimationInterfaceFactory.__index = SimultaneousCompoundRotationAnimationInterfaceFactory
 SimultaneousCompoundRotationAnimationInterfaceFactory.className = "SimultaneousCompoundRotationAnimationInterfaceFactory"
+SimultaneousCompoundRotationAnimationInterfaceFactory.javaClassName = "org.allbinary.animation.compound.SimultaneousCompoundRotationAnimationInterfaceFactory"
 setmetatable(SimultaneousCompoundRotationAnimationInterfaceFactory, {__index = CompoundAnimationInterfaceFactory})
 
 
-function SimultaneousCompoundRotationAnimationInterfaceFactory.new(basicAnimationInterfaceFactoryInterfaceArray, animationBehaviorFactory)
-    local self = setmetatable(CompoundAnimationInterfaceFactory.new(basicAnimationInterfaceFactoryInterfaceArray, animationBehaviorFactory), SimultaneousCompoundRotationAnimationInterfaceFactory)
+function SimultaneousCompoundRotationAnimationInterfaceFactory._jinit(self, basicAnimationInterfaceFactoryInterfaceArray, animationBehaviorFactory)
+    java_super_init(CompoundAnimationInterfaceFactory, self, basicAnimationInterfaceFactoryInterfaceArray, animationBehaviorFactory)
         -- super(...) made self above
         if animationBehaviorFactory == AnimationBehaviorFactory.getInstance() then
             ForcedLogUtil.log("Using default AnimationBehaviorFactory with IndexedAnimationFactory", self)
@@ -54,15 +156,23 @@ function SimultaneousCompoundRotationAnimationInterfaceFactory.new(basicAnimatio
     return self
 end
 
+function SimultaneousCompoundRotationAnimationInterfaceFactory.new(...)
+    local self = setmetatable({}, SimultaneousCompoundRotationAnimationInterfaceFactory)
+    SimultaneousCompoundRotationAnimationInterfaceFactory._jinit(self, ...)
+    return self
+end
+
 
 function SimultaneousCompoundRotationAnimationInterfaceFactory:createArray(size)
         return java_new_array(nil, size)
 end
+java_overload(SimultaneousCompoundRotationAnimationInterfaceFactory, "createArray", 1, function(java_a1) return true and type(java_a1) == "number" end)
 
 
 function SimultaneousCompoundRotationAnimationInterfaceFactory:createAnimation(animationInterfaceArray)
         return SimultaneousCompoundRotationAnimation.new(animationInterfaceArray, self.animationBehaviorFactory:getOrCreateInstance())
 end
+java_overload(SimultaneousCompoundRotationAnimationInterfaceFactory, "createAnimation", 1, function(java_a1) return true and (java_a1 == nil or (type(java_a1) == "table" and getmetatable(java_a1) == nil and java_a1.jt == nil and (java_a1[1] == nil or type(java_a1[1]) == "table"))) end)
 
 return SimultaneousCompoundRotationAnimationInterfaceFactory
 

@@ -13,10 +13,98 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.animation.vector
 
+local AdjustedCircleAnimation = {}
+package.loaded["org.allbinary.animation.vector.AdjustedCircleAnimation"] = AdjustedCircleAnimation
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Graphics = require("javax.microedition.lcdui.Graphics")
-local AndroidUtil = require("org.allbinary.AndroidUtil")
-local BasicColor = require("org.allbinary.graphics.color.BasicColor")
+local AndroidUtil = java_lazy("org.allbinary.AndroidUtil")
+local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local CircleAnimation = require("org.allbinary.animation.vector.CircleAnimation")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -25,18 +113,25 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local AdjustedCircleAnimation = {}
+-- class table AdjustedCircleAnimation is declared before the requires
 AdjustedCircleAnimation.__index = AdjustedCircleAnimation
 AdjustedCircleAnimation.className = "AdjustedCircleAnimation"
+AdjustedCircleAnimation.javaClassName = "org.allbinary.animation.vector.AdjustedCircleAnimation"
 setmetatable(AdjustedCircleAnimation, {__index = CircleAnimation})
 
 function AdjustedCircleAnimation:_init_fields()
-    self.xAdjustment = 0
-    self.yAdjustment = 0
+    if self.xAdjustment == nil then self.xAdjustment = 0 end
+    if self.yAdjustment == nil then self.yAdjustment = 0 end
 end
 
 
@@ -54,10 +149,16 @@ function AdjustedCircleAnimation.createW(width, height, innerWidth, basicColor)
 end
 
 
-function AdjustedCircleAnimation.new(width, height, basicColor)
-    local self = setmetatable(CircleAnimation.new(width, height, basicColor), AdjustedCircleAnimation)
-    self:_init_fields()
+function AdjustedCircleAnimation._jinit(self, width, height, basicColor)
+    java_super_init(CircleAnimation, self, width, height, basicColor)
+    AdjustedCircleAnimation._init_fields(self)
         -- super(...) made self above
+    return self
+end
+
+function AdjustedCircleAnimation.new(...)
+    local self = setmetatable({}, AdjustedCircleAnimation)
+    AdjustedCircleAnimation._jinit(self, ...)
     return self
 end
 
@@ -66,24 +167,27 @@ function AdjustedCircleAnimation:initXY(xAdjustment, yAdjustment)
         self.xAdjustment = xAdjustment
         self.yAdjustment = yAdjustment
 end
+java_overload(AdjustedCircleAnimation, "initXY", 2, function(java_a1, java_a2) return true and type(java_a1) == "number" and type(java_a2) == "number" end)
 
 
 function AdjustedCircleAnimation:init(innerWidth)
         if AndroidUtil.isAndroid() then
             local widthPortion = (java_idiv(((java_idiv(innerWidth, 3)) * 10), 7))
-            self.xAdjustment = -((((self.width) // (1 << (1)))) - widthPortion)
+            self.xAdjustment = -(((self.width) // (1 << (1)))) - widthPortion
             self.yAdjustment = self.xAdjustment
         else
-            self.xAdjustment = -((((self.width) // (1 << (1)))) - innerWidth)
+            self.xAdjustment = -(((self.width) // (1 << (1)))) - innerWidth
             self.yAdjustment = self.xAdjustment
         end
 end
+java_overload(AdjustedCircleAnimation, "init", 1, function(java_a1) return true and type(java_a1) == "number" end)
 
 
 function AdjustedCircleAnimation:paintXY(graphics, x, y)
         self.basicSetColorUtil:setBasicColorP3(graphics, self:getBasicColorP(), self:getColor())
         graphics:drawArc(x + self.xAdjustment, y + self.yAdjustment, self.width, self.height, 0, self.TOTAL_ANGLE)
 end
+java_overload(AdjustedCircleAnimation, "paintXY", 3, function(java_a1, java_a2, java_a3) return true and (java_a1 == nil or java_is(java_a1, "Graphics")) and type(java_a2) == "number" and type(java_a3) == "number" end)
 
 return AdjustedCircleAnimation
 

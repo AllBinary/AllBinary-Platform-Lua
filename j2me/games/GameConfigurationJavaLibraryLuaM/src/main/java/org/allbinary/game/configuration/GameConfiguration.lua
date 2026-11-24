@@ -13,12 +13,28 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.configuration
 
-local GameFeatureEvent = require("org.allbinary.game.configuration.event.GameFeatureEvent")
-local GameFeatureEventHandler = require("org.allbinary.game.configuration.event.GameFeatureEventHandler")
-local BooleanFactory = require("org.allbinary.logic.java.bool.BooleanFactory")
-local SmallIntegerSingletonFactory = require("org.allbinary.logic.math.SmallIntegerSingletonFactory")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
+local GameConfiguration = {}
+package.loaded["org.allbinary.game.configuration.GameConfiguration"] = GameConfiguration
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local GameFeatureEvent = java_lazy("org.allbinary.game.configuration.event.GameFeatureEvent")
+local GameFeatureEventHandler = java_lazy("org.allbinary.game.configuration.event.GameFeatureEventHandler")
+local BooleanFactory = java_lazy("org.allbinary.logic.java.bool.BooleanFactory")
+local SmallIntegerSingletonFactory = java_lazy("org.allbinary.logic.math.SmallIntegerSingletonFactory")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local GameConfigurationSingleton = java_lazy("org.allbinary.game.configuration.GameConfigurationSingleton")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -27,16 +43,23 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local GameConfiguration = {}
+-- class table GameConfiguration is declared before the requires
 GameConfiguration.__index = GameConfiguration
 GameConfiguration.className = "GameConfiguration"
+GameConfiguration.javaClassName = "org.allbinary.game.configuration.GameConfiguration"
 
 function GameConfiguration:_init_fields()
-    self.name = StringUtil.getInstance().EMPTY_STRING
+    self.name_f = StringUtil.getInstance().EMPTY_STRING
     self.defaultValue = SmallIntegerSingletonFactory.getInstance():getAt(0)
     self.value = GameConfiguration.MIN_VALUE
     self.minValue = self.defaultValue
@@ -45,9 +68,8 @@ function GameConfiguration:_init_fields()
 end
 
 
-function GameConfiguration.new(name, defaultValue, minValue, maxValue)
-    local self = setmetatable({}, GameConfiguration)
-    self:_init_fields()
+function GameConfiguration._jinit(self, name, defaultValue, minValue, maxValue)
+    GameConfiguration._init_fields(self)
         self:setName(name)
         self:setDefaultValue(defaultValue)
         self.value = self:getDefaultValue()
@@ -57,13 +79,19 @@ function GameConfiguration.new(name, defaultValue, minValue, maxValue)
     return self
 end
 
+function GameConfiguration.new(...)
+    local self = setmetatable({}, GameConfiguration)
+    GameConfiguration._jinit(self, ...)
+    return self
+end
+
 
 -- throws Exception
 function GameConfiguration:setValue(value)
         if self.value ~= value then
             local oldValue = self.value
             self.value = value
-            GameFeatureEventHandler.getInstance():fireEvent(GameFeatureEvent.new(self, tostring(StringMaker.new():append(self.name):append(" value: from: "):appendint(java_int(math.tointeger(oldValue // 1))):append(" to "):appendint(java_int(math.tointeger(self.value // 1))))))
+            GameFeatureEventHandler.getInstance():fireEvent(GameFeatureEvent.new(self, tostring(StringMaker.new():append(self.name_f):append(" value: from: "):appendint(java_int(math.tointeger(oldValue // 1))):append(" to "):appendint(java_int(math.tointeger(self.value // 1))))))
         end
 end
 
@@ -94,12 +122,12 @@ end
 
 
 function GameConfiguration:setName(name)
-        self.name = name
+        self.name_f = name
 end
 
 
 function GameConfiguration:getName()
-        return self.name
+        return self.name_f
 end
 
 
@@ -122,7 +150,7 @@ end
 function GameConfiguration:toString()
         local stringBuffer = StringMaker.new()
         stringBuffer:append("Name: ")
-        stringBuffer:append(self.name)
+        stringBuffer:append(self.name_f)
         stringBuffer:append(" Min: ")
         stringBuffer:appendint(java_int(math.tointeger(self:getMinValue() // 1)))
         stringBuffer:append(" Max: ")
@@ -147,7 +175,7 @@ function GameConfiguration:isModifiable()
         return self.modifiable
 end
 
-GameConfiguration.MIN_VALUE = Integer.MIN_VALUE
+GameConfiguration.MIN_VALUE = require("java.lang.Integer").MIN_VALUE
 
 return GameConfiguration
 

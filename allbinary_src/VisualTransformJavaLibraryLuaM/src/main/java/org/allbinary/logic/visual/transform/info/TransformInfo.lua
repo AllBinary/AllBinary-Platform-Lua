@@ -13,39 +13,91 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.visual.transform.info
 
--- local Calendar = require("java.util.Calendar")
--- local HashMap = require("java.util.HashMap")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local StoreFrontData = require("org.allbinary.business.context.modules.storefront.StoreFrontData")
-local EntryData = require("org.allbinary.business.entry.EntryData")
-local DomDocumentHelper = require("org.allbinary.data.tree.dom.document.DomDocumentHelper")
-local XmlDocumentHelper = require("org.allbinary.data.tree.dom.document.XmlDocumentHelper")
-local FREEBLISKET_PATH_GLOBALS = require("org.allbinary.globals.FREEBLISKET_PATH_GLOBALS")
-local URLGLOBALS = require("org.allbinary.globals.URLGLOBALS")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local Encoder = require("org.allbinary.logic.control.crypt.Encoder")
-local CryptFileReader = require("org.allbinary.logic.control.crypt.file.CryptFileReader")
-local OutputTypeData = require("org.allbinary.logic.io.OutputTypeData")
-local AbFilePath = require("org.allbinary.logic.io.path.AbFilePath")
-local AbPath = require("org.allbinary.logic.io.path.AbPath")
-local AbPathData = require("org.allbinary.logic.io.path.AbPathData")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local StringValidationUtil = require("org.allbinary.logic.string.StringValidationUtil")
-local AbeClientInformationInterface = require("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
-local ServiceClientInformationInterfaceFactory = require("org.allbinary.logic.system.security.licensing.ServiceClientInformationInterfaceFactory")
-local TransformInfoDataData = require("org.allbinary.logic.visual.transform.info.data.TransformInfoDataData")
-local TransformInfoObjectConfig = require("org.allbinary.logic.visual.transform.info.objectConfig.TransformInfoObjectConfig")
-local TransformInfoObjectConfigAndManipulatorFactory = require("org.allbinary.logic.visual.transform.info.objectConfig.TransformInfoObjectConfigAndManipulatorFactory")
-local TransformInfoObjectConfigInterface = require("org.allbinary.logic.visual.transform.info.objectConfig.TransformInfoObjectConfigInterface")
-local TransformInfoTemplateData = require("org.allbinary.logic.visual.transform.info.template.TransformInfoTemplateData")
-local TransformInfoObjectData = require("org.allbinary.logic.visual.transform.info.viewObject.TransformInfoObjectData")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local Document = require("org.w3c.dom.Document")
+local TransformInfo = {}
+package.loaded["org.allbinary.logic.visual.transform.info.TransformInfo"] = TransformInfo
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local Calendar = java_lazy("java.util.Calendar")
+local HashMap = java_lazy("java.util.HashMap")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local StoreFrontData = java_lazy("org.allbinary.business.context.modules.storefront.StoreFrontData")
+local EntryData = java_lazy("org.allbinary.business.entry.EntryData")
+local DomDocumentHelper = java_lazy("org.allbinary.data.tree.dom.document.DomDocumentHelper")
+local XmlDocumentHelper = java_lazy("org.allbinary.data.tree.dom.document.XmlDocumentHelper")
+local FREEBLISKET_PATH_GLOBALS = java_lazy("org.allbinary.globals.FREEBLISKET_PATH_GLOBALS")
+local URLGLOBALS = java_lazy("org.allbinary.globals.URLGLOBALS")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local Encoder = java_lazy("org.allbinary.logic.control.crypt.Encoder")
+local CryptFileReader = java_lazy("org.allbinary.logic.control.crypt.file.CryptFileReader")
+local OutputTypeData = java_lazy("org.allbinary.logic.io.OutputTypeData")
+local AbFilePath = java_lazy("org.allbinary.logic.io.path.AbFilePath")
+local AbPath = java_lazy("org.allbinary.logic.io.path.AbPath")
+local AbPathData = java_lazy("org.allbinary.logic.io.path.AbPathData")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
+local AbeClientInformationInterface = java_lazy("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
+local ServiceClientInformationInterfaceFactory = java_lazy("org.allbinary.logic.system.security.licensing.ServiceClientInformationInterfaceFactory")
+local TransformInfoDataData = java_lazy("org.allbinary.logic.visual.transform.info.data.TransformInfoDataData")
+local TransformInfoObjectConfig = java_lazy("org.allbinary.logic.visual.transform.info.objectConfig.TransformInfoObjectConfig")
+local TransformInfoObjectConfigAndManipulatorFactory = java_lazy("org.allbinary.logic.visual.transform.info.objectConfig.TransformInfoObjectConfigAndManipulatorFactory")
+local TransformInfoObjectConfigInterface = java_lazy("org.allbinary.logic.visual.transform.info.objectConfig.TransformInfoObjectConfigInterface")
+local TransformInfoTemplateData = java_lazy("org.allbinary.logic.visual.transform.info.template.TransformInfoTemplateData")
+local TransformInfoObjectData = java_lazy("org.allbinary.logic.visual.transform.info.viewObject.TransformInfoObjectData")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local Document = java_lazy("org.w3c.dom.Document")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local TransformInfoInterface = require("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -54,58 +106,71 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local TransformInfo = {}
+-- class table TransformInfo is declared before the requires
 TransformInfo.__index = TransformInfo
 TransformInfo.className = "TransformInfo"
+TransformInfo.javaClassName = "org.allbinary.logic.visual.transform.info.TransformInfo"
+TransformInfo.java_implements = " TransformInfoInterface "
+TransformInfo.java_interfaces = function() return {TransformInfoInterface} end
 
 function TransformInfo:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
     self.abeClientInformation = ServiceClientInformationInterfaceFactory.getInstance()
-    self.isChild = false
-    self.name = nil
-    self.storeName = nil
-    self.objectFileName = nil
-    self.anyType = nil
-    self.objectConfigFileName = nil
-    self.objectConfigInterface = nil
-    self.template = nil
-    self.templateFileName = nil
-    self.dataFileName = nil
+    self.isChild_f = false
+    if self.name_f == nil then self.name_f = nil end
+    if self.storeName == nil then self.storeName = nil end
+    if self.objectFileName == nil then self.objectFileName = nil end
+    if self.anyType == nil then self.anyType = nil end
+    if self.objectConfigFileName == nil then self.objectConfigFileName = nil end
+    if self.objectConfigInterface == nil then self.objectConfigInterface = nil end
+    if self.template == nil then self.template = nil end
+    if self.templateFileName == nil then self.templateFileName = nil end
+    if self.dataFileName == nil then self.dataFileName = nil end
     self.data = StringUtil.getInstance().EMPTY_STRING
 end
 
-function TransformInfo.new(...)
+function TransformInfo._jinit(self, ...)
     local count = select("#", ...)
-    if count == 0 then return TransformInfo._new0(...)
-    elseif count == 1 then return TransformInfo._new1(...)
-    elseif count == 5 then return TransformInfo._new5(...)
+    if count == 0 then return TransformInfo._new0(self, ...)
+    elseif count == 1 then return TransformInfo._new1(self, ...)
+    elseif count == 5 then return TransformInfo._new5(self, ...)
     end
+    error("No constructor of TransformInfo takes " .. count .. " arguments")
 end
 
-
-function TransformInfo._new0()
+function TransformInfo.new(...)
     local self = setmetatable({}, TransformInfo)
-    self:_init_fields()
+    TransformInfo._jinit(self, ...)
     return self
 end
 
 
-function TransformInfo._new1(name)
-    local self = setmetatable({}, TransformInfo)
-    self:_init_fields()
+function TransformInfo._new0(self)
+    TransformInfo._init_fields(self)
+    return self
+end
+
+
+function TransformInfo._new1(self, name)
+    TransformInfo._init_fields(self)
         self:setName(name)
     return self
 end
 
 
-function TransformInfo._new5(name, objectFileName, objectConfigFileName, templateFileName, dataFileName)
-    local self = setmetatable({}, TransformInfo)
-    self:_init_fields()
+function TransformInfo._new5(self, name, objectFileName, objectConfigFileName, templateFileName, dataFileName)
+    TransformInfo._init_fields(self)
         self:setName(name)
         self:setObjectFile(objectFileName)
         self:setObjectConfigFile(objectConfigFileName)
@@ -121,9 +186,9 @@ function TransformInfo:override(hashMap)
         local stringValidationUtil = StringValidationUtil.getInstance()
         local aName = hashMap:get(transformInfoData.NAME)
         if not stringValidationUtil:isEmpty(aName) then
-            self.name = aName
+            self.name_f = aName
         end
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             local stringBuffer = StringMaker.new()
             stringBuffer:append("TransformInfo properties overridden for: ")
             stringBuffer:append(self:getName())
@@ -140,14 +205,14 @@ function TransformInfo:override(hashMap)
             self.objectFileName = aObjectFileName
         end
         local stringBuffer = StringMaker.new()
-        stringBuffer:append(self.URLGLOBALS:getMainPath())
-        stringBuffer:append(self.FREEBLISKET_PATH_GLOBALS:getInstance().XSLPATH)
+        stringBuffer:append(URLGLOBALS.getMainPath())
+        stringBuffer:append(FREEBLISKET_PATH_GLOBALS.getInstance().XSLPATH)
         stringBuffer:append(self.storeName)
         stringBuffer:append(AbPathData.getInstance().SEPARATOR)
         local fileAbPath = AbPath.new(tostring(stringBuffer), StringUtil.getInstance().EMPTY_STRING)
         local aObject = hashMap:get(transformInfoData.OBJECT)
         if not stringValidationUtil:isEmpty(aObject) then
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                 self.logUtil:putF("TransformInfo override view Object for: " .. self:getName(), self, "override(HashMap hashMap)")
             end
             local fileDataString = CryptFileReader.new(TransformInfoObjectData.getInstance().UNCRYPTED_EXTENSION, TransformInfoObjectData.getInstance().ENCRYPTED_EXTENSION):get(AbPath.new(tostring(fileAbPath), aObject))
@@ -156,14 +221,14 @@ function TransformInfo:override(hashMap)
             end
         end
         if not stringValidationUtil:isEmpty(hashMap:get(transformInfoData.OBJECTCONFIG)) then
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                 self.logUtil:putF("TransformInfo override ObjectConfig for: " .. self:getName(), self, "override(HashMap hashMap)")
             end
             self:setObjectConfig(hashMap:get(transformInfoData.OBJECTCONFIG))
         end
         local objectConfigFileName = hashMap:get(transformInfoData.OBJECTCONFIGFILENAME)
         if not stringValidationUtil:isEmpty(objectConfigFileName) then
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                 self.logUtil:putF("TransformInfo override ObjectConfig File for: " .. self:getName(), self, "override(HashMap hashMap)")
             end
             self:setObjectConfigFile(objectConfigFileName)
@@ -181,7 +246,7 @@ function TransformInfo:override(hashMap)
         end
         local aTemplate = hashMap:get(transformInfoData.TEMPLATE)
         if not stringValidationUtil:isEmpty(aTemplate) then
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                 self.logUtil:putF("TransformInfo override Template for: " .. self:getName(), self, "override(HashMap hashMap)")
             end
             local fileDataString = CryptFileReader.new(TransformInfoTemplateData.getInstance().UNCRYPTED_EXTENSION, TransformInfoTemplateData.getInstance().ENCRYPTED_EXTENSION):get(AbPath.new(tostring(fileAbPath), aTemplate))
@@ -195,7 +260,7 @@ function TransformInfo:override(hashMap)
         end
         local aData = hashMap:get(transformInfoData.DATA)
         if not stringValidationUtil:isEmpty(aData) then
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                 self.logUtil:putF("TransformInfo override Data for: " .. self:getName(), self, "override(HashMap hashMap)")
             end
             local fileDataString = CryptFileReader.new(TransformInfoDataData.getInstance().UNCRYPTED_EXTENSION, TransformInfoDataData.getInstance().ENCRYPTED_EXTENSION):get(AbPath.new(tostring(fileAbPath), aData))
@@ -203,7 +268,7 @@ function TransformInfo:override(hashMap)
                 self.data = fileDataString
             end
         end
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             stringBuffer = StringMaker.new()
             stringBuffer:append("Name: ")
             stringBuffer:append(aName)
@@ -222,7 +287,7 @@ function TransformInfo:override(hashMap)
             stringBuffer:append("->TransformInfo")
             self.logUtil:putF(tostring(stringBuffer), self, "TransformInfoInterface(HashMap)")
         end
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().TAGHELPERFACTORY) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERFACTORY) then
             self.logUtil:putF(self:log(), self, "override")
         end
 end
@@ -231,7 +296,7 @@ end
 function TransformInfo:log()
         local stringBuffer = StringMaker.new()
         stringBuffer:append("Name: ")
-        stringBuffer:append(self.name)
+        stringBuffer:append(self.name_f)
         stringBuffer:append("\nObject File: ")
         stringBuffer:append(self.objectFileName)
         stringBuffer:append("\nObject Config File Path: ")
@@ -251,7 +316,7 @@ end
 
 
 function TransformInfo:setName(value)
-        self.name = value
+        self.name_f = value
 end
 
 
@@ -316,7 +381,7 @@ end
 
 
 function TransformInfo:getName()
-        return self.name
+        return self.name_f
 end
 
 
@@ -367,10 +432,10 @@ function TransformInfo:getData()
         local stringValidationUtil = StringValidationUtil.getInstance()
         local dataFileString = self:getDataFile()
         if not stringValidationUtil:isEmpty(dataFileString) then
-            local try_ok, try_error = pcall(function()
+            local try_ok, try_error, try_value = pcall(function()
                 local fileData = CryptFileReader.new(TransformInfoDataData.getInstance().UNCRYPTED_EXTENSION, TransformInfoDataData.getInstance().ENCRYPTED_EXTENSION):get(self:getDataFilePath())
                 if not stringValidationUtil:isEmpty(self.data) then
-                    if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEW) then
+                    if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                         self.logUtil:putF("Data File overriding existing data: " .. tostring(self:getDataFilePath()), self, "getData()")
                     end
                 end
@@ -378,26 +443,27 @@ function TransformInfo:getData()
             end)
             if not try_ok then
                 local e = try_error
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEWERROR) then
+                if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEWERROR) then
                     self.logUtil:put("Could Not Load Data from: " .. tostring(self:getDataFile()), self, "getData()", e)
                 end
             end
         end
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             if not stringValidationUtil:isEmpty(self.data) then
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEWERROR) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEWERROR) then
                     self.logUtil:putF("Data: " .. XmlDocumentHelper.toString(DomDocumentHelper.create(self.data)), self, "getData()")
                 end
             else
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEWERROR) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEWERROR) then
                     local stringBuffer = StringMaker.new()
                     stringBuffer:append("Name: ")
-                    stringBuffer:append(self.name)
+                    stringBuffer:append(self.name_f)
                     stringBuffer:append("\nEmpty Data For: ")
                     stringBuffer:append(dataFileString)
                     stringBuffer:append("\nPath: ")
                     stringBuffer:append(self:getDataFilePath():toFileSystemString())
-                    if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEWERROR) then
+                    if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEWERROR) then
                         self.logUtil:putF(tostring(stringBuffer), self, "getData()")
                     end
                 end
@@ -405,7 +471,8 @@ function TransformInfo:getData()
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEWERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEWERROR) then
                 self.logUtil:put("Could Not Preview Data: " .. self.data, self, "getData()", e)
             end
         end
@@ -418,7 +485,7 @@ function TransformInfo:getDataDocument()
         local localData = self:getData()
         local stringValidationUtil = StringValidationUtil.getInstance()
         if stringValidationUtil:isEmpty(localData) then
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VIEWERROR) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEWERROR) then
                 self.logUtil:putF("No Data So Creating New Document", self, "getDataDocument()")
             end
             return DomDocumentHelper.create()
@@ -437,7 +504,7 @@ end
 function TransformInfo:toHashMap()
         local transformInfoData = TransformInfoData.getInstance()
         local hashMap = StdUtil.getInstance():createHashMap()
-        hashMap:put(transformInfoData.NAME, self.name)
+        hashMap:put(transformInfoData.NAME, self.name_f)
         hashMap:put(StoreFrontData.getInstance().NAME, self.storeName)
         hashMap:put(transformInfoData.OBJECTFILENAME, self.objectFileName)
         hashMap:put(transformInfoData.OBJECT, self.anyType)
@@ -456,7 +523,7 @@ end
 
 function TransformInfo:toVector()
         local vector = BasicArrayListD.new()
-        vector:add(self.name)
+        vector:add(self.name_f)
         vector:add(self.storeName)
         vector:add(self.objectFileName)
         vector:add(self.anyType)
@@ -480,12 +547,12 @@ end
 
 
 function TransformInfo:setChild()
-        self.isChild = true
+        self.isChild_f = true
 end
 
 
 function TransformInfo:isChild()
-        return self.isChild
+        return self.isChild_f
 end
 
 

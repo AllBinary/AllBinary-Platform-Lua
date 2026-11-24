@@ -13,6 +13,21 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media.graphics.geography.pathfinding
 
+local PathFindingNodeCostInfoData = {}
+package.loaded["org.allbinary.media.graphics.geography.pathfinding.PathFindingNodeCostInfoData"] = PathFindingNodeCostInfoData
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 
 local function java_idiv(a, b)
     local q = a / b
@@ -21,32 +36,44 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local PathFindingNodeCostInfoData = {}
+-- class table PathFindingNodeCostInfoData is declared before the requires
 PathFindingNodeCostInfoData.__index = PathFindingNodeCostInfoData
 PathFindingNodeCostInfoData.className = "PathFindingNodeCostInfoData"
+PathFindingNodeCostInfoData.javaClassName = "org.allbinary.media.graphics.geography.pathfinding.PathFindingNodeCostInfoData"
 
 function PathFindingNodeCostInfoData:_init_fields()
-    self.MAX_TOTAL_COST = Integer.MAX_VALUE
-    self.MAX_NODE_COST = Integer.MAX_VALUE / 10000
+    self.MAX_TOTAL_COST = require("java.lang.Integer").MAX_VALUE
+    self.MAX_NODE_COST = require("java.lang.Integer").MAX_VALUE / 10000
 end
 
 
 function PathFindingNodeCostInfoData.getInstance()
-        return PathFindingNodeCostInfoData.instance
+        return PathFindingNodeCostInfoData.instance_f
 end
 
 
-function PathFindingNodeCostInfoData.new()
-    local self = setmetatable({}, PathFindingNodeCostInfoData)
-    self:_init_fields()
+function PathFindingNodeCostInfoData._jinit(self)
+    PathFindingNodeCostInfoData._init_fields(self)
     return self
 end
 
-PathFindingNodeCostInfoData.instance = PathFindingNodeCostInfoData.new()
+function PathFindingNodeCostInfoData.new(...)
+    local self = setmetatable({}, PathFindingNodeCostInfoData)
+    PathFindingNodeCostInfoData._jinit(self, ...)
+    return self
+end
+
+PathFindingNodeCostInfoData.instance_f = PathFindingNodeCostInfoData.new()
 
 return PathFindingNodeCostInfoData
 

@@ -13,13 +13,29 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.system.os.android
 
-local TsUtil = require("org.allbinary.TsUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local GenericOperatingSystem = require("org.allbinary.logic.system.os.GenericOperatingSystem")
-local NoOperatingSystem = require("org.allbinary.logic.system.os.NoOperatingSystem")
-local OperatingSystems = require("org.allbinary.logic.system.os.OperatingSystems")
-local SystemProperties = require("org.allbinary.logic.system.os.SystemProperties")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local AndroidOperatingSystemFactory = {}
+package.loaded["org.allbinary.logic.system.os.android.AndroidOperatingSystemFactory"] = AndroidOperatingSystemFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local TsUtil = java_lazy("org.allbinary.TsUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local GenericOperatingSystem = java_lazy("org.allbinary.logic.system.os.GenericOperatingSystem")
+local NoOperatingSystem = java_lazy("org.allbinary.logic.system.os.NoOperatingSystem")
+local OperatingSystems = java_lazy("org.allbinary.logic.system.os.OperatingSystems")
+local SystemProperties = java_lazy("org.allbinary.logic.system.os.SystemProperties")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local AndroidOS = java_lazy("org.allbinary.logic.system.os.android.AndroidOS")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -41,13 +57,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local AndroidOperatingSystemFactory = {}
+-- class table AndroidOperatingSystemFactory is declared before the requires
 AndroidOperatingSystemFactory.__index = AndroidOperatingSystemFactory
 AndroidOperatingSystemFactory.className = "AndroidOperatingSystemFactory"
+AndroidOperatingSystemFactory.javaClassName = "org.allbinary.logic.system.os.android.AndroidOperatingSystemFactory"
 
 function AndroidOperatingSystemFactory:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -56,20 +79,25 @@ end
 
 
 function AndroidOperatingSystemFactory.getInstance()
-        return AndroidOperatingSystemFactory.instance
+        return AndroidOperatingSystemFactory.instance_f
 end
 
 
-function AndroidOperatingSystemFactory.new()
+function AndroidOperatingSystemFactory._jinit(self)
+    AndroidOperatingSystemFactory._init_fields(self)
+    return self
+end
+
+function AndroidOperatingSystemFactory.new(...)
     local self = setmetatable({}, AndroidOperatingSystemFactory)
-    self:_init_fields()
+    AndroidOperatingSystemFactory._jinit(self, ...)
     return self
 end
 
 
 -- throws Exception
 function AndroidOperatingSystemFactory:getOperatingSystemInstance()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local GenericOperatingSystem = nil
             local systemProperties = SystemProperties.getInstance()
             local osName = systemProperties:getName()
@@ -79,20 +107,22 @@ function AndroidOperatingSystemFactory:getOperatingSystemInstance()
                 if OperatingSystems.getInstance():isUnknownSpecificOSAllowed() then
                     GenericOperatingSystem = AndroidOS.new()
                 else
-                    error(java_exception("Exception", "Specific Android OS Not Supported: " .. osName), 0)
+                    error(require("java.lang.Exception").new("Specific Android OS Not Supported: " .. osName), 0)
                 end
             end
-            return GenericOperatingSystem
+            do return "__jreturn", GenericOperatingSystem end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local commonStrings = CommonStrings.getInstance()
             self.logUtil:put("Failed to get OperatingSystem returning NoOperatingSystem", self, commonStrings.GET_INSTANCE, e)
             return NoOperatingSystem.NO_OPERATING_SYSTEM
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
-AndroidOperatingSystemFactory.instance = AndroidOperatingSystemFactory.new()
+AndroidOperatingSystemFactory.instance_f = AndroidOperatingSystemFactory.new()
 
 return AndroidOperatingSystemFactory
 

@@ -13,16 +13,106 @@
 -- Generated Code Do Not Modify
 -- package tags
 
+local ModifyTag = {}
+package.loaded["tags.ModifyTag"] = ModifyTag
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Method = require("java.lang.reflect.Method")
 -- local HttpServletRequest = require("javax.servlet.http.HttpServletRequest")
 -- local JspTagException = require("javax.servlet.jsp.JspTagException")
-local TagHelperFactoryInterface = require("admin.taghelpers.TagHelperFactoryInterface")
-local AbResponseHandler = require("org.allbinary.logic.communication.http.request.AbResponseHandler")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local LicensingException = require("org.allbinary.logic.system.security.licensing.LicensingException")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local TagHelperFactoryInterface = java_lazy("admin.taghelpers.TagHelperFactoryInterface")
+local AbResponseHandler = java_lazy("org.allbinary.logic.communication.http.request.AbResponseHandler")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local LicensingException = java_lazy("org.allbinary.logic.system.security.licensing.LicensingException")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local HelperTag = require("tags.HelperTag")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -31,13 +121,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ModifyTag = {}
+-- class table ModifyTag is declared before the requires
 ModifyTag.__index = ModifyTag
 ModifyTag.className = "ModifyTag"
+ModifyTag.javaClassName = "tags.ModifyTag"
 setmetatable(ModifyTag, {__index = HelperTag})
 
 function ModifyTag:_init_fields()
@@ -45,78 +142,93 @@ function ModifyTag:_init_fields()
 end
 
 
-function ModifyTag.new(tagHelperFactoryInterface)
-    local self = setmetatable(HelperTag.new(tagHelperFactoryInterface), ModifyTag)
-    self:_init_fields()
+function ModifyTag._jinit(self, tagHelperFactoryInterface)
+    java_super_init(HelperTag, self, tagHelperFactoryInterface)
+    ModifyTag._init_fields(self)
         -- super(...) made self above
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().JSPTAG) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAG) then
             self.logUtil:putF(self.commonStrings.START, self, self.commonStrings.CONSTRUCTOR)
         end
+    return self
+end
+
+function ModifyTag.new(...)
+    local self = setmetatable({}, ModifyTag)
+    ModifyTag._jinit(self, ...)
     return self
 end
 
 
 -- throws LicensingException
 function ModifyTag:insert()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local helperClass = getmetatable(self:getHelper())
             local method = helperClass:getMethod("insert", nil)
             local result = method:invoke(self:getHelper(), nil)
-            return result
+            do return "__jreturn", result end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local error = "Failed to insert"
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLTAGSERROR) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "insert()", e)
             end
             return error
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+java_overload(ModifyTag, "insert", 0)
 
 
 -- throws LicensingException
 function ModifyTag:delete()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local helperClass = getmetatable(self:getHelper())
             local method = helperClass:getMethod(self.commonStrings.delete, nil)
             local result = method:invoke(self:getHelper(), nil)
-            return result
+            do return "__jreturn", result end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local error = "Failed to delete"
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLTAGSERROR) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "delete()", e)
             end
             return error
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+java_overload(ModifyTag, "delete", 0)
 
 
 -- throws LicensingException
 function ModifyTag:update()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local helperClass = getmetatable(self:getHelper())
             local method = helperClass:getMethod("update", nil)
             local result = method:invoke(self:getHelper(), nil)
-            return result
+            do return "__jreturn", result end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local error = "Failed to update"
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLTAGSERROR) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "update()", e)
             end
             return error
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+java_overload(ModifyTag, "update", 0)
 
 
 -- throws JspTagException
 function ModifyTag:doStartTag()
-        local try_ok, try_error = pcall(function()
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().JSPTAG) then
+        local try_ok, try_error, try_value = pcall(function()
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAG) then
                 local request = self.pageContext:getRequest()
                 local stringBuffer = StringMaker.new()
                 stringBuffer:append("Command: ")
@@ -125,36 +237,39 @@ function ModifyTag:doStartTag()
                 stringBuffer:append(request:getRequestURI())
                 self.logUtil:putF(tostring(stringBuffer), self, self.tagStrings.DO_START_TAG)
             end
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().JSPTAG) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAG) then
             end
             if self:getCommand() ~= nil then
                 self:setHelper()
                 local commonStrings = CommonStrings.getInstance()
                 if self:getCommand():compareTo(commonStrings.INSERT) == 0 then
                     local output = self:insert()
-                    if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().JSPTAGEXTRAOUTPUT) then
+                    if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAGEXTRAOUTPUT) then
                         self.pageContext:getOut():print(output .. "<br />")
                     end
                 elseif self:getCommand():compareTo(commonStrings.DELETE) == 0 then
                     local output = self:delete()
-                    if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().JSPTAGEXTRAOUTPUT) then
+                    if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAGEXTRAOUTPUT) then
                         self.pageContext:getOut():print(output .. "<br />")
                     end
                 elseif self:getCommand():compareTo(commonStrings.UPDATE) == 0 then
                     local output = self:update()
-                    if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().JSPTAGEXTRAOUTPUT) then
+                    if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAGEXTRAOUTPUT) then
                         self.pageContext:getOut():print(output .. "<br />")
                     end
                 end
             end
-            return self.EVAL_BODY_INCLUDE
+            do return "__jreturn", self.EVAL_BODY_INCLUDE end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             AbResponseHandler.sendJspTagLicensingRedirect(self.pageContext, e)
             return self.SKIP_BODY
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+java_overload(ModifyTag, "doStartTag", 0)
 
 return ModifyTag
 

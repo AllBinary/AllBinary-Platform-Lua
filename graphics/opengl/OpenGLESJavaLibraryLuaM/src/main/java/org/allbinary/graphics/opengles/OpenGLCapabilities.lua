@@ -13,22 +13,37 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.graphics.opengles
 
+local OpenGLCapabilities = {}
+package.loaded["org.allbinary.graphics.opengles.OpenGLCapabilities"] = OpenGLCapabilities
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local GL10 = require("javax.microedition.khronos.opengles.GL10")
 -- local GL11 = require("javax.microedition.khronos.opengles.GL11")
-local AndroidUtil = require("org.allbinary.AndroidUtil")
-local OpenGLESGL10ImageFactory = require("org.allbinary.image.opengles.OpenGLESGL10ImageFactory")
-local OpenGLESGL11VBOImageFactory = require("org.allbinary.image.opengles.OpenGLESGL11VBOImageFactory")
-local OpenGLImageSpecificFactory = require("org.allbinary.image.opengles.OpenGLImageSpecificFactory")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local Tokenizer = require("org.allbinary.logic.string.tokens.Tokenizer")
-local PreLogUtil = require("org.allbinary.logic.communication.log.PreLogUtil")
-local Features = require("org.allbinary.game.configuration.feature.Features")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
+local AndroidUtil = java_lazy("org.allbinary.AndroidUtil")
+local OpenGLESGL10ImageFactory = java_lazy("org.allbinary.image.opengles.OpenGLESGL10ImageFactory")
+local OpenGLESGL11VBOImageFactory = java_lazy("org.allbinary.image.opengles.OpenGLESGL11VBOImageFactory")
+local OpenGLImageSpecificFactory = java_lazy("org.allbinary.image.opengles.OpenGLImageSpecificFactory")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local Tokenizer = java_lazy("org.allbinary.logic.string.tokens.Tokenizer")
+local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
+local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
@@ -38,7 +53,14 @@ local function java_new_array(default, size, ...)
     return array
 end
 
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
+    return array
+end
+
 local function java_instanceof(object, class)
+    class = java_real(class)
     local metatable = getmetatable(object)
     while metatable do
         if metatable == class then return true end
@@ -55,13 +77,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local OpenGLCapabilities = {}
+-- class table OpenGLCapabilities is declared before the requires
 OpenGLCapabilities.__index = OpenGLCapabilities
 OpenGLCapabilities.className = "OpenGLCapabilities"
+OpenGLCapabilities.javaClassName = "org.allbinary.graphics.opengles.OpenGLCapabilities"
 
 function OpenGLCapabilities:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -74,7 +103,7 @@ function OpenGLCapabilities:_init_fields()
     self.glRenderer = self.stringUtil.EMPTY_STRING
     self.glVendor = self.stringUtil.EMPTY_STRING
     self.glExtensions = self.stringUtil.EMPTY_STRING
-    self.possiblyAccelerated = false
+    if self.possiblyAccelerated == nil then self.possiblyAccelerated = false end
     self.acceleratedString = self.stringUtil.EMPTY_STRING
     self.maxTextureSize = 64
     self.VERSION_1_0 = "1.0"
@@ -89,22 +118,27 @@ function OpenGLCapabilities:_init_fields()
     self.GL_EXT_GPU_SHADER4 = "GL_EXT_gpu_shader4"
     self.glVersion = self.glVersionString
     self.glInstanceVersion = self.VERSION_UNK
-    self.glExtensionDrawTexture = false
-    self.glThreedDrawTexture = false
-    self.glExtensionGPUShader4 = false
-    self.glExtensionGPUShader100 = false
-    self.vertexBufferObjectSupport = false
+    if self.glExtensionDrawTexture == nil then self.glExtensionDrawTexture = false end
+    if self.glThreedDrawTexture == nil then self.glThreedDrawTexture = false end
+    if self.glExtensionGPUShader4 == nil then self.glExtensionGPUShader4 = false end
+    if self.glExtensionGPUShader100 == nil then self.glExtensionGPUShader100 = false end
+    if self.vertexBufferObjectSupport == nil then self.vertexBufferObjectSupport = false end
 end
 
 
 function OpenGLCapabilities.getInstance()
-        return OpenGLCapabilities.instance
+        return OpenGLCapabilities.instance_f
 end
 
 
-function OpenGLCapabilities.new()
+function OpenGLCapabilities._jinit(self)
+    OpenGLCapabilities._init_fields(self)
+    return self
+end
+
+function OpenGLCapabilities.new(...)
     local self = setmetatable({}, OpenGLCapabilities)
-    self:_init_fields()
+    OpenGLCapabilities._jinit(self, ...)
     return self
 end
 
@@ -120,18 +154,18 @@ end
 
 function OpenGLCapabilities:initCapabilities(gl)
         local METHOD_NAME = "initGLCapabilities"
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local features = Features.getInstance()
             local openGLFeatureFactory = OpenGLFeatureFactory.getInstance()
             local openGLImageSpecificFactory = OpenGLImageSpecificFactory.getInstance()
             local stringBuffer = StringMaker.new()
-            self.glVersionString = gl:glGetString(self.GL10.GL_VERSION)
+            self.glVersionString = gl:glGetString(GL10.GL_VERSION)
             local GL_SHADING_LANGUAGE_VERSION = 0x8b8c
             self.glShaderVersionString = gl:glGetString(GL_SHADING_LANGUAGE_VERSION)
             if self.glShaderVersionString == nil then
                 self.glShaderVersionString = self.stringUtil.EMPTY_STRING
             end
-            local try_ok, try_error = pcall(function()
+            local try_ok, try_error, try_value = pcall(function()
                 if self.glShaderVersionString ~= nil and ((string.find(self.glShaderVersionString, ".", 1, true) or 0) - 1) >= 0 then
                     local startIndex = self.glShaderVersionString:lastIndexOf(" ")
                     if startIndex >= 0 then
@@ -142,12 +176,13 @@ function OpenGLCapabilities:initCapabilities(gl)
             end)
             if not try_ok then
                 local e = try_error
+                if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
                 local commonStrings = CommonStrings.getInstance()
                 self.logUtil:put(commonStrings.EXCEPTION, self, METHOD_NAME, e)
             end
-            self.glRenderer = gl:glGetString(self.GL10.GL_RENDERER)
-            self.glVendor = gl:glGetString(self.GL10.GL_VENDOR)
-            self.glExtensions = gl:glGetString(self.GL10.GL_EXTENSIONS)
+            self.glRenderer = gl:glGetString(GL10.GL_RENDERER)
+            self.glVendor = gl:glGetString(GL10.GL_VENDOR)
+            self.glExtensions = gl:glGetString(GL10.GL_EXTENSIONS)
             if ((string.find(self.glExtensions, self.GL_EXT_GPU_SHADER_100, 1, true) or 0) - 1) >= 0 then
                 self.glExtensionGPUShader100 = true
             else
@@ -217,13 +252,14 @@ function OpenGLCapabilities:initCapabilities(gl)
                 PreLogUtil.put(tostring(stringBuffer), self, METHOD_NAME)
                 openGLImageSpecificFactory:setImageFactory(OpenGLESGL10ImageFactory.new())
             end
-            local maxTextureSizeArray = java_new_array(0, 1)
-            gl:glGetIntegerv(self.GL10.GL_MAX_TEXTURE_SIZE, maxTextureSizeArray, 0)
+            local maxTextureSizeArray = java_typed_array("I", java_new_array(0, 1))
+            gl:glGetIntegerv(GL10.GL_MAX_TEXTURE_SIZE, maxTextureSizeArray, 0)
             self.maxTextureSize = maxTextureSizeArray[1]
             self.initialized = true
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local commonStrings = CommonStrings.getInstance()
             self.logUtil:put(commonStrings.EXCEPTION, self, METHOD_NAME, e)
         end
@@ -324,7 +360,7 @@ function OpenGLCapabilities:toString()
         stringBuffer:appendint(self.maxTextureSize)
         stringBuffer:append(commonSeps.NEW_LINE)
         stringBuffer:append(" GL_EXTENSIONS: ")
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local tokenizer = Tokenizer.new(commonSeps.SPACE)
             local list = tokenizer:getTokensFromString(self.glExtensions, BasicArrayListD.new())
             local size = list:size()
@@ -335,6 +371,7 @@ function OpenGLCapabilities:toString()
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local commonStrings = CommonStrings.getInstance()
             PreLogUtil.putOE(commonStrings.EXCEPTION, self, commonStrings.TOSTRING, e)
         end
@@ -342,7 +379,7 @@ function OpenGLCapabilities:toString()
 end
 OpenGLCapabilities.__tostring = function(self) return self:toString() end
 
-OpenGLCapabilities.instance = OpenGLCapabilities.new()
+OpenGLCapabilities.instance_f = OpenGLCapabilities.new()
 
 return OpenGLCapabilities
 

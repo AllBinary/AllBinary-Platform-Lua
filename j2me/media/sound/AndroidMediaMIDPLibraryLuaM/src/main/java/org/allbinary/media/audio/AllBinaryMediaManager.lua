@@ -13,18 +13,35 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media.audio
 
+local AllBinaryMediaManager = {}
+package.loaded["org.allbinary.media.audio.AllBinaryMediaManager"] = AllBinaryMediaManager
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local IOException = require("java.io.IOException")
 -- local InputStream = require("java.io.InputStream")
 -- local MediaException = require("javax.microedition.media.MediaException")
 -- local Player = require("javax.microedition.media.Player")
-local TsUtil = require("org.allbinary.TsUtil")
-local Features = require("org.allbinary.game.configuration.feature.Features")
-local GameFeatureFactory = require("org.allbinary.game.configuration.feature.GameFeatureFactory")
-local ProgressCanvasFactory = require("org.allbinary.graphics.canvas.transition.progress.ProgressCanvasFactory")
-local ABSystemWrapper = require("org.allbinary.logic.ABSystemWrapper")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local CommonLabels = require("org.allbinary.string.CommonLabels")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local TsUtil = java_lazy("org.allbinary.TsUtil")
+local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
+local GameFeatureFactory = java_lazy("org.allbinary.game.configuration.feature.GameFeatureFactory")
+local ProgressCanvasFactory = java_lazy("org.allbinary.graphics.canvas.transition.progress.ProgressCanvasFactory")
+local ABSystemWrapper = java_lazy("org.allbinary.logic.ABSystemWrapper")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local AndroidMediaPlayerWrapper = java_lazy("org.allbinary.media.audio.AndroidMediaPlayerWrapper")
+local MediaPlayerUtil = java_lazy("org.allbinary.media.audio.MediaPlayerUtil")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -40,6 +57,7 @@ local function java_exception(className, message, cause)
 end
 
 local function java_instanceof(object, class)
+    class = java_real(class)
     local metatable = getmetatable(object)
     while metatable do
         if metatable == class then return true end
@@ -56,18 +74,30 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
 --AndroidMediaMIDPLibrary
-local AllBinaryMediaManager = {}
+-- class table AllBinaryMediaManager is declared before the requires
 AllBinaryMediaManager.__index = AllBinaryMediaManager
 AllBinaryMediaManager.className = "AllBinaryMediaManager"
+AllBinaryMediaManager.javaClassName = "org.allbinary.media.audio.AllBinaryMediaManager"
 
 
-function AllBinaryMediaManager.new()
+function AllBinaryMediaManager._jinit(self)
+    return self
+end
+
+function AllBinaryMediaManager.new(...)
     local self = setmetatable({}, AllBinaryMediaManager)
+    AllBinaryMediaManager._jinit(self, ...)
     return self
 end
 
@@ -119,7 +149,7 @@ function AllBinaryMediaManager.shutdown(soundsFactoryInterface)
                             androidMediaPlayerWrapper = player2
                             MediaPlayerUtil.getInstance():waitForMediaPlayer(androidMediaPlayerWrapper:getMediaPlayer())
                         else
-                            error(java_exception("Exception", "Unknown Property Player: " .. getmetatable(player).className), 0)
+                            error(require("java.lang.Exception").new("Unknown Property Player: " .. (getmetatable(player).javaClassName or getmetatable(player).className)), 0)
                         end
                     end
                 end
@@ -138,14 +168,16 @@ function AllBinaryMediaManager.createPlayer(resource)
         AllBinaryMediaManager.mostUsedTotal = AllBinaryMediaManager.mostUsedTotal + 1
         local logUtil = LogUtil.getInstance()
         if Features.getInstance():isFeature(GameFeatureFactory.getInstance().SOUND) then
-            local try_ok, try_error = pcall(function()
-                return AndroidMediaPlayerWrapper.new(resource)
+            local try_ok, try_error, try_value = pcall(function()
+                do return "__jreturn", AndroidMediaPlayerWrapper.new(resource) end
             end)
             if not try_ok then
                 local e = try_error
+                if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
                 logUtil:put("Could not create AndroidMediaPlayerWrapper using NoPlayer at " .. tostring(CommonLabels.getInstance().TOTAL_LABEL) .. tostring(AllBinaryMediaManager.mostUsedTotal), AllBinaryMediaManager.THIS, "createPlayer", e)
                 return NoPlayer.NO_PLAYER
             end
+            if try_ok and try_error == "__jreturn" then return try_value end
         else
             return NoPlayer.NO_PLAYER
         end

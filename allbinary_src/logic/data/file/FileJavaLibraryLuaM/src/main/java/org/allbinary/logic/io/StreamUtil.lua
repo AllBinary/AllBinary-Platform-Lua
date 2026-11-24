@@ -13,12 +13,27 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.io
 
--- local ByteArrayOutputStream = require("java.io.ByteArrayOutputStream")
+local StreamUtil = {}
+package.loaded["org.allbinary.logic.io.StreamUtil"] = StreamUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local ByteArrayOutputStream = java_lazy("java.io.ByteArrayOutputStream")
 -- local Closeable = require("java.io.Closeable")
 -- local InputStream = require("java.io.InputStream")
 -- local OutputStream = require("java.io.OutputStream")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -27,13 +42,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local StreamUtil = {}
+-- class table StreamUtil is declared before the requires
 StreamUtil.__index = StreamUtil
 StreamUtil.className = "StreamUtil"
+StreamUtil.javaClassName = "org.allbinary.logic.io.StreamUtil"
 
 function StreamUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -41,13 +63,18 @@ end
 
 
 function StreamUtil.getInstance()
-        return StreamUtil.instance
+        return StreamUtil.instance_f
 end
 
 
-function StreamUtil.new()
+function StreamUtil._jinit(self)
+    StreamUtil._init_fields(self)
+    return self
+end
+
+function StreamUtil.new(...)
     local self = setmetatable({}, StreamUtil)
-    self:_init_fields()
+    StreamUtil._jinit(self, ...)
     return self
 end
 
@@ -70,36 +97,40 @@ end
 -- throws Exception
 function StreamUtil:getByteArray(inputStream, outputStream2, byteArray)
         local outputStream = outputStream2
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             self:get(inputStream, outputStream, byteArray)
-            return outputStream:toByteArray()
+            do return "__jreturn", outputStream:toByteArray() end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             error(e, 0)
         end
         do -- finally
             self:close(outputStream)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
 function StreamUtil:close(closeable)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             if closeable ~= nil then
                 closeable:close()
             end
-            return true
+            do return "__jreturn", true end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local commonStrings = CommonStrings.getInstance()
             self.logUtil:put(commonStrings.EXCEPTION, self, commonStrings.CLOSE, e)
             return false
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
-StreamUtil.instance = StreamUtil.new()
+StreamUtil.instance_f = StreamUtil.new()
 
 return StreamUtil
 

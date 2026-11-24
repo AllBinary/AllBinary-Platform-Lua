@@ -13,6 +13,22 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.layer
 
+local SensorActionFactory = {}
+package.loaded["org.allbinary.game.layer.SensorActionFactory"] = SensorActionFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local SensorAction = java_lazy("org.allbinary.game.layer.SensorAction")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -21,13 +37,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local SensorActionFactory = {}
+-- class table SensorActionFactory is declared before the requires
 SensorActionFactory.__index = SensorActionFactory
 SensorActionFactory.className = "SensorActionFactory"
+SensorActionFactory.javaClassName = "org.allbinary.game.layer.SensorActionFactory"
 
 function SensorActionFactory:_init_fields()
     self.ATTACK = SensorAction.new("Attack")
@@ -36,17 +59,22 @@ end
 
 
 function SensorActionFactory.getInstance()
-        return SensorActionFactory.instance
+        return SensorActionFactory.instance_f
 end
 
 
-function SensorActionFactory.new()
-    local self = setmetatable({}, SensorActionFactory)
-    self:_init_fields()
+function SensorActionFactory._jinit(self)
+    SensorActionFactory._init_fields(self)
     return self
 end
 
-SensorActionFactory.instance = SensorActionFactory.new()
+function SensorActionFactory.new(...)
+    local self = setmetatable({}, SensorActionFactory)
+    SensorActionFactory._jinit(self, ...)
+    return self
+end
+
+SensorActionFactory.instance_f = SensorActionFactory.new()
 
 return SensorActionFactory
 

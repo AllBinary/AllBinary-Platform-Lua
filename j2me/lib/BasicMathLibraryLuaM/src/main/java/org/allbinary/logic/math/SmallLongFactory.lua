@@ -13,12 +13,33 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.math
 
+local SmallLongFactory = {}
+package.loaded["org.allbinary.logic.math.SmallLongFactory"] = SmallLongFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -29,13 +50,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local SmallLongFactory = {}
+-- class table SmallLongFactory is declared before the requires
 SmallLongFactory.__index = SmallLongFactory
 SmallLongFactory.className = "SmallLongFactory"
+SmallLongFactory.javaClassName = "org.allbinary.logic.math.SmallLongFactory"
 
 function SmallLongFactory:_init_fields()
     self.NEGATIVE_MAX = 500
@@ -49,7 +77,7 @@ end
 
 
 function SmallLongFactory.getInstance()
-        return SmallLongFactory.instance
+        return SmallLongFactory.instance_f
 end
 
 
@@ -86,9 +114,14 @@ function SmallLongFactory:init()
 end
 
 
-function SmallLongFactory.new()
+function SmallLongFactory._jinit(self)
+    SmallLongFactory._init_fields(self)
+    return self
+end
+
+function SmallLongFactory.new(...)
     local self = setmetatable({}, SmallLongFactory)
-    self:_init_fields()
+    SmallLongFactory._jinit(self, ...)
     return self
 end
 
@@ -109,7 +142,7 @@ function SmallLongFactory:getString(index)
         return self.STRING_ARRAY[i + 1]
 end
 
-SmallLongFactory.instance = SmallLongFactory.new()
+SmallLongFactory.instance_f = SmallLongFactory.new()
 
 return SmallLongFactory
 

@@ -13,10 +13,26 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.configuration
 
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local ABHashtable = require("org.allbinary.util.ABHashtable")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
+local GameConfigurationSingleton = {}
+package.loaded["org.allbinary.game.configuration.GameConfigurationSingleton"] = GameConfigurationSingleton
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local GameConfiguration = java_lazy("org.allbinary.game.configuration.GameConfiguration")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -25,17 +41,24 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local GameConfigurationSingleton = {}
+-- class table GameConfigurationSingleton is declared before the requires
 GameConfigurationSingleton.__index = GameConfigurationSingleton
 GameConfigurationSingleton.className = "GameConfigurationSingleton"
+GameConfigurationSingleton.javaClassName = "org.allbinary.game.configuration.GameConfigurationSingleton"
 
 function GameConfigurationSingleton:_init_fields()
-    self.list = nil
-    self.hashtable = nil
+    if self.list == nil then self.list = nil end
+    if self.hashtable == nil then self.hashtable = nil end
 end
 
 
@@ -44,11 +67,16 @@ function GameConfigurationSingleton.getInstance()
 end
 
 
-function GameConfigurationSingleton.new()
-    local self = setmetatable({}, GameConfigurationSingleton)
-    self:_init_fields()
+function GameConfigurationSingleton._jinit(self)
+    GameConfigurationSingleton._init_fields(self)
         self.list = BasicArrayListD.new()
         self.hashtable = StdUtil.getInstance():createHashtable()
+    return self
+end
+
+function GameConfigurationSingleton.new(...)
+    local self = setmetatable({}, GameConfigurationSingleton)
+    GameConfigurationSingleton._jinit(self, ...)
     return self
 end
 

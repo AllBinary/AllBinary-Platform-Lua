@@ -13,26 +13,41 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.graphics.opengles
 
+local OpenGLConfiguration = {}
+package.loaded["org.allbinary.graphics.opengles.OpenGLConfiguration"] = OpenGLConfiguration
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Closeable = require("java.io.Closeable")
 -- local DataInputStream = require("java.io.DataInputStream")
 -- local InputStream = require("java.io.InputStream")
 -- local OutputStream = require("java.io.OutputStream")
-local TsUtil = require("org.allbinary.TsUtil")
-local AbDataOutputStream = require("org.allbinary.logic.io.AbDataOutputStream")
-local FileStreamFactory = require("org.allbinary.logic.io.FileStreamFactory")
-local StreamUtil = require("org.allbinary.logic.io.StreamUtil")
-local FileFactory = require("org.allbinary.logic.io.file.FileFactory")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local PreLogUtil = require("org.allbinary.logic.communication.log.PreLogUtil")
-local ChangedGameFeatureListener = require("org.allbinary.game.configuration.event.ChangedGameFeatureListener")
-local Feature = require("org.allbinary.game.configuration.feature.Feature")
-local Features = require("org.allbinary.game.configuration.feature.Features")
-local MainFeatureFactory = require("org.allbinary.game.configuration.feature.MainFeatureFactory")
-local NullUtil = require("org.allbinary.logic.NullUtil")
-local NullCloseable = require("org.allbinary.logic.io.NullCloseable")
+local TsUtil = java_lazy("org.allbinary.TsUtil")
+local AbDataOutputStream = java_lazy("org.allbinary.logic.io.AbDataOutputStream")
+local FileStreamFactory = java_lazy("org.allbinary.logic.io.FileStreamFactory")
+local StreamUtil = java_lazy("org.allbinary.logic.io.StreamUtil")
+local FileFactory = java_lazy("org.allbinary.logic.io.file.FileFactory")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
+local ChangedGameFeatureListener = java_lazy("org.allbinary.game.configuration.event.ChangedGameFeatureListener")
+local Feature = java_lazy("org.allbinary.game.configuration.feature.Feature")
+local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
+local MainFeatureFactory = java_lazy("org.allbinary.game.configuration.feature.MainFeatureFactory")
+local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
+local NullCloseable = java_lazy("org.allbinary.logic.io.NullCloseable")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -54,13 +69,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local OpenGLConfiguration = {}
+-- class table OpenGLConfiguration is declared before the requires
 OpenGLConfiguration.__index = OpenGLConfiguration
 OpenGLConfiguration.className = "OpenGLConfiguration"
+OpenGLConfiguration.javaClassName = "org.allbinary.graphics.opengles.OpenGLConfiguration"
 
 function OpenGLConfiguration:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -76,17 +98,16 @@ end
 
 
 function OpenGLConfiguration.getInstance()
-        if OpenGLConfiguration.instance == NullUtil.getInstance().NULL_OBJECT then
-            OpenGLConfiguration.instance = OpenGLConfiguration.new()
+        if OpenGLConfiguration.instance_f == NullUtil.getInstance().NULL_OBJECT then
+            OpenGLConfiguration.instance_f = OpenGLConfiguration.new()
         end
-        return OpenGLConfiguration.instance
+        return OpenGLConfiguration.instance_f
 end
 
 
-function OpenGLConfiguration.new()
-    local self = setmetatable({}, OpenGLConfiguration)
-    self:_init_fields()
-        local try_ok, try_error = pcall(function()
+function OpenGLConfiguration._jinit(self)
+    OpenGLConfiguration._init_fields(self)
+        local try_ok, try_error, try_value = pcall(function()
             if FileFactory.getInstance():isFile(self.FILE) then
                 self:read()
             else
@@ -95,8 +116,15 @@ function OpenGLConfiguration.new()
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.CONSTRUCTOR, e)
         end
+    return self
+end
+
+function OpenGLConfiguration.new(...)
+    local self = setmetatable({}, OpenGLConfiguration)
+    OpenGLConfiguration._jinit(self, ...)
     return self
 end
 
@@ -113,7 +141,7 @@ function OpenGLConfiguration:read()
         elseif openGLValue == 1 then
             self:setOpenGL(true)
         else
-            error(java_exception("Exception", "Invalid OpenGL Setting"), 0)
+            error(require("java.lang.Exception").new("Invalid OpenGL Setting"), 0)
         end
         local version = dataInputStream:readUTF()
         if self.tsUtil:compareTo(version, openGLFeatureFactory.OPENGL_AUTO_SELECT:getName()) == 0 then
@@ -121,7 +149,7 @@ function OpenGLConfiguration:read()
         elseif self.tsUtil:compareTo(version, openGLFeatureFactory.OPENGL_MINIMUM:getName()) == 0 then
             self:setVersionSelector(openGLFeatureFactory.OPENGL_MINIMUM)
         else
-            error(java_exception("Exception", "OpenGLConfiguration: Error reading version selector: " .. version), 0)
+            error(require("java.lang.Exception").new("OpenGLConfiguration: Error reading version selector: " .. version), 0)
         end
         local type = dataInputStream:readUTF()
         if self.tsUtil:compareTo(type, openGLFeatureFactory.OPENGL_AS_GAME_THREAD:getName()) == 0 then
@@ -129,7 +157,7 @@ function OpenGLConfiguration:read()
         elseif self.tsUtil:compareTo(type, openGLFeatureFactory.OPENGL_AND_GAME_HAVE_DIFFERENT_THREADS:getName()) == 0 then
             self:setType(openGLFeatureFactory.OPENGL_AND_GAME_HAVE_DIFFERENT_THREADS)
         else
-            error(java_exception("Exception", "OpenGLConfiguration: Error reading image color"), 0)
+            error(require("java.lang.Exception").new("OpenGLConfiguration: Error reading image color"), 0)
         end
         local imageColor = dataInputStream:readUTF()
         if self.tsUtil:compareTo(imageColor, openGLFeatureFactory.IMAGE_COLOR_DEPTH_4444:getName()) == 0 then
@@ -139,7 +167,7 @@ function OpenGLConfiguration:read()
         elseif self.tsUtil:compareTo(imageColor, openGLFeatureFactory.IMAGE_COLOR_DEPTH_4444:getName()) == 0 then
             self:setImageColor(openGLFeatureFactory.IMAGE_COLOR_DEPTH_4444)
         else
-            error(java_exception("Exception", "OpenGLConfiguration: Error reading image color: " .. tostring(imageColor)), 0)
+            error(require("java.lang.Exception").new("OpenGLConfiguration: Error reading image color: " .. tostring(imageColor)), 0)
         end
         local color = dataInputStream:readUTF()
         if self.tsUtil:compareTo(color, openGLFeatureFactory.OPENGL_COLOR_DEPTH_4444:getName()) == 0 then
@@ -149,7 +177,7 @@ function OpenGLConfiguration:read()
         elseif self.tsUtil:compareTo(color, openGLFeatureFactory.OPENGL_COLOR_DEPTH_8888:getName()) == 0 then
             self:setColor(openGLFeatureFactory.OPENGL_COLOR_DEPTH_8888)
         else
-            error(java_exception("Exception", "OpenGLConfiguration: Error reading color: " .. tostring(color)), 0)
+            error(require("java.lang.Exception").new("OpenGLConfiguration: Error reading color: " .. tostring(color)), 0)
         end
         PreLogUtil.put("Read Configuration: " .. tostring(self), self, "read")
 end
@@ -158,7 +186,7 @@ end
 -- throws Exception
 function OpenGLConfiguration:write()
         local closeable = NullCloseable.NULL_CLOSEABLE
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             PreLogUtil.put("Write Configuration: " .. tostring(self), self, "write")
             local fileInputStreamFactory = FileStreamFactory.getInstance()
             local fileOutputStream = fileInputStreamFactory:getFileOutputStreamInstance(StringUtil.getInstance().EMPTY_STRING, self.FILE)
@@ -177,6 +205,7 @@ function OpenGLConfiguration:write()
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             error(e, 0)
         end
         do -- finally
@@ -349,7 +378,7 @@ function OpenGLConfiguration:toString()
 end
 OpenGLConfiguration.__tostring = function(self) return self:toString() end
 
-OpenGLConfiguration.instance = NullUtil.getInstance().NULL_OBJECT
+OpenGLConfiguration.instance_f = NullUtil.getInstance().NULL_OBJECT
 
 return OpenGLConfiguration
 

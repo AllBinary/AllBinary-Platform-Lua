@@ -1,7 +1,60 @@
 -- Generated Code Do Not Modify
 -- package javax.microedition.khronos.opengles
 
+local GL11 = {}
+package.loaded["javax.microedition.khronos.opengles.GL11"] = GL11
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+-- local Buffer = require("java.nio.Buffer")
+-- local FloatBuffer = require("java.nio.FloatBuffer")
+-- local IntBuffer = require("java.nio.IntBuffer")
 local GL10 = require("javax.microedition.khronos.opengles.GL10")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -10,15 +63,23 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
 -- Java interface
-local GL11 = {}
+-- class table GL11 is declared before the requires
 GL11.__index = GL11
 GL11.className = "GL11"
+GL11.javaClassName = "javax.microedition.khronos.opengles.GL11"
 setmetatable(GL11, {__index = GL10})
+GL11.java_interfaces = function() return {GL10} end
 
 
 function GL11:glBindBuffer(target, buffer)
@@ -36,15 +97,21 @@ function GL11:glBufferSubData(target, offset, size, data)
 end
 
 
-function GL11:glClipPlanef(plane, equation, offset)
+function GL11:glClipPlanef_j3(plane, equation, offset)
     error("abstract method glClipPlanef")
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function GL11:glClipPlanef(plane, equation)
+function GL11:glClipPlanef_j2(plane, equation)
     error("abstract method glClipPlanef")
 end
+function GL11:glClipPlanef(...)
+    local count = select("#", ...)
+    if count == 3 then return self:glClipPlanef_j3(...) end
+    if count == 2 then return self:glClipPlanef_j2(...) end
+    error("No method glClipPlanef takes " .. count .. " arguments")
+end
+GL11.glClipPlanef__jdispatcher = GL11.glClipPlanef
 
 
 function GL11:glColor4ub(red, green, blue, alpha)
@@ -57,15 +124,21 @@ function GL11:glColorPointer(size, type, stride, offset)
 end
 
 
-function GL11:glDeleteBuffers(n, buffers, offset)
+function GL11:glDeleteBuffers_j3(n, buffers, offset)
     error("abstract method glDeleteBuffers")
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function GL11:glDeleteBuffers(n, buffers)
+function GL11:glDeleteBuffers_j2(n, buffers)
     error("abstract method glDeleteBuffers")
 end
+function GL11:glDeleteBuffers(...)
+    local count = select("#", ...)
+    if count == 3 then return self:glDeleteBuffers_j3(...) end
+    if count == 2 then return self:glDeleteBuffers_j2(...) end
+    error("No method glDeleteBuffers takes " .. count .. " arguments")
+end
+GL11.glDeleteBuffers__jdispatcher = GL11.glDeleteBuffers
 
 
 function GL11:glDrawElements(mode, count, type, offset)
@@ -73,103 +146,157 @@ function GL11:glDrawElements(mode, count, type, offset)
 end
 
 
-function GL11:glGenBuffers(n, buffers, offset)
+function GL11:glGenBuffers_j3(n, buffers, offset)
     error("abstract method glGenBuffers")
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function GL11:glGenBuffers(n, buffers)
+function GL11:glGenBuffers_j2(n, buffers)
     error("abstract method glGenBuffers")
 end
+function GL11:glGenBuffers(...)
+    local count = select("#", ...)
+    if count == 3 then return self:glGenBuffers_j3(...) end
+    if count == 2 then return self:glGenBuffers_j2(...) end
+    error("No method glGenBuffers takes " .. count .. " arguments")
+end
+GL11.glGenBuffers__jdispatcher = GL11.glGenBuffers
 
 
-function GL11:glGetBufferParameteriv(target, pname, params, offset)
+function GL11:glGetBufferParameteriv_j4(target, pname, params, offset)
     error("abstract method glGetBufferParameteriv")
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function GL11:glGetBufferParameteriv(target, pname, params)
+function GL11:glGetBufferParameteriv_j3(target, pname, params)
     error("abstract method glGetBufferParameteriv")
 end
+function GL11:glGetBufferParameteriv(...)
+    local count = select("#", ...)
+    if count == 4 then return self:glGetBufferParameteriv_j4(...) end
+    if count == 3 then return self:glGetBufferParameteriv_j3(...) end
+    error("No method glGetBufferParameteriv takes " .. count .. " arguments")
+end
+GL11.glGetBufferParameteriv__jdispatcher = GL11.glGetBufferParameteriv
 
 
-function GL11:glGetClipPlanef(pname, eqn, offset)
+function GL11:glGetClipPlanef_j3(pname, eqn, offset)
     error("abstract method glGetClipPlanef")
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function GL11:glGetClipPlanef(pname, eqn)
+function GL11:glGetClipPlanef_j2(pname, eqn)
     error("abstract method glGetClipPlanef")
 end
+function GL11:glGetClipPlanef(...)
+    local count = select("#", ...)
+    if count == 3 then return self:glGetClipPlanef_j3(...) end
+    if count == 2 then return self:glGetClipPlanef_j2(...) end
+    error("No method glGetClipPlanef takes " .. count .. " arguments")
+end
+GL11.glGetClipPlanef__jdispatcher = GL11.glGetClipPlanef
 
 
-function GL11:glGetFloatv(pname, params, offset)
+function GL11:glGetFloatv_j3(pname, params, offset)
     error("abstract method glGetFloatv")
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function GL11:glGetFloatv(pname, params)
+function GL11:glGetFloatv_j2(pname, params)
     error("abstract method glGetFloatv")
 end
+function GL11:glGetFloatv(...)
+    local count = select("#", ...)
+    if count == 3 then return self:glGetFloatv_j3(...) end
+    if count == 2 then return self:glGetFloatv_j2(...) end
+    error("No method glGetFloatv takes " .. count .. " arguments")
+end
+GL11.glGetFloatv__jdispatcher = GL11.glGetFloatv
 
 
-function GL11:glGetLightfv(light, pname, params, offset)
+function GL11:glGetLightfv_j4(light, pname, params, offset)
     error("abstract method glGetLightfv")
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function GL11:glGetLightfv(light, pname, params)
+function GL11:glGetLightfv_j3(light, pname, params)
     error("abstract method glGetLightfv")
 end
+function GL11:glGetLightfv(...)
+    local count = select("#", ...)
+    if count == 4 then return self:glGetLightfv_j4(...) end
+    if count == 3 then return self:glGetLightfv_j3(...) end
+    error("No method glGetLightfv takes " .. count .. " arguments")
+end
+GL11.glGetLightfv__jdispatcher = GL11.glGetLightfv
 
 
-function GL11:glGetMaterialfv(face, pname, params, offset)
+function GL11:glGetMaterialfv_j4(face, pname, params, offset)
     error("abstract method glGetMaterialfv")
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function GL11:glGetMaterialfv(face, pname, params)
+function GL11:glGetMaterialfv_j3(face, pname, params)
     error("abstract method glGetMaterialfv")
 end
+function GL11:glGetMaterialfv(...)
+    local count = select("#", ...)
+    if count == 4 then return self:glGetMaterialfv_j4(...) end
+    if count == 3 then return self:glGetMaterialfv_j3(...) end
+    error("No method glGetMaterialfv takes " .. count .. " arguments")
+end
+GL11.glGetMaterialfv__jdispatcher = GL11.glGetMaterialfv
 
 
-function GL11:glGetTexEnviv(env, pname, params, offset)
+function GL11:glGetTexEnviv_j4(env, pname, params, offset)
     error("abstract method glGetTexEnviv")
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function GL11:glGetTexEnviv(env, pname, params)
+function GL11:glGetTexEnviv_j3(env, pname, params)
     error("abstract method glGetTexEnviv")
 end
+function GL11:glGetTexEnviv(...)
+    local count = select("#", ...)
+    if count == 4 then return self:glGetTexEnviv_j4(...) end
+    if count == 3 then return self:glGetTexEnviv_j3(...) end
+    error("No method glGetTexEnviv takes " .. count .. " arguments")
+end
+GL11.glGetTexEnviv__jdispatcher = GL11.glGetTexEnviv
 
 
-function GL11:glGetTexParameterfv(target, pname, params, offset)
+function GL11:glGetTexParameterfv_j4(target, pname, params, offset)
     error("abstract method glGetTexParameterfv")
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function GL11:glGetTexParameterfv(target, pname, params)
+function GL11:glGetTexParameterfv_j3(target, pname, params)
     error("abstract method glGetTexParameterfv")
 end
+function GL11:glGetTexParameterfv(...)
+    local count = select("#", ...)
+    if count == 4 then return self:glGetTexParameterfv_j4(...) end
+    if count == 3 then return self:glGetTexParameterfv_j3(...) end
+    error("No method glGetTexParameterfv takes " .. count .. " arguments")
+end
+GL11.glGetTexParameterfv__jdispatcher = GL11.glGetTexParameterfv
 
 
-function GL11:glGetTexParameteriv(target, pname, params, offset)
+function GL11:glGetTexParameteriv_j4(target, pname, params, offset)
     error("abstract method glGetTexParameteriv")
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function GL11:glGetTexParameteriv(target, pname, params)
+function GL11:glGetTexParameteriv_j3(target, pname, params)
     error("abstract method glGetTexParameteriv")
 end
+function GL11:glGetTexParameteriv(...)
+    local count = select("#", ...)
+    if count == 4 then return self:glGetTexParameteriv_j4(...) end
+    if count == 3 then return self:glGetTexParameteriv_j3(...) end
+    error("No method glGetTexParameteriv takes " .. count .. " arguments")
+end
+GL11.glGetTexParameteriv__jdispatcher = GL11.glGetTexParameteriv
 
 
 function GL11:glIsBuffer(buffer)
@@ -197,15 +324,21 @@ function GL11:glPointParameterf(pname, param)
 end
 
 
-function GL11:glPointParameterfv(pname, params, offset)
+function GL11:glPointParameterfv_j3(pname, params, offset)
     error("abstract method glPointParameterfv")
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function GL11:glPointParameterfv(pname, params)
+function GL11:glPointParameterfv_j2(pname, params)
     error("abstract method glPointParameterfv")
 end
+function GL11:glPointParameterfv(...)
+    local count = select("#", ...)
+    if count == 3 then return self:glPointParameterfv_j3(...) end
+    if count == 2 then return self:glPointParameterfv_j2(...) end
+    error("No method glPointParameterfv takes " .. count .. " arguments")
+end
+GL11.glPointParameterfv__jdispatcher = GL11.glPointParameterfv
 
 
 function GL11:glTexCoordPointer(size, type, stride, offset)
@@ -218,26 +351,38 @@ function GL11:glTexEnvi(target, pname, param)
 end
 
 
-function GL11:glTexEnviv(target, pname, params, offset)
+function GL11:glTexEnviv_j4(target, pname, params, offset)
     error("abstract method glTexEnviv")
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function GL11:glTexEnviv(target, pname, params)
+function GL11:glTexEnviv_j3(target, pname, params)
     error("abstract method glTexEnviv")
 end
+function GL11:glTexEnviv(...)
+    local count = select("#", ...)
+    if count == 4 then return self:glTexEnviv_j4(...) end
+    if count == 3 then return self:glTexEnviv_j3(...) end
+    error("No method glTexEnviv takes " .. count .. " arguments")
+end
+GL11.glTexEnviv__jdispatcher = GL11.glTexEnviv
 
 
-function GL11:glTexParameterfv(target, pname, params, offset)
+function GL11:glTexParameterfv_j4(target, pname, params, offset)
     error("abstract method glTexParameterfv")
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function GL11:glTexParameterfv(target, pname, params)
+function GL11:glTexParameterfv_j3(target, pname, params)
     error("abstract method glTexParameterfv")
 end
+function GL11:glTexParameterfv(...)
+    local count = select("#", ...)
+    if count == 4 then return self:glTexParameterfv_j4(...) end
+    if count == 3 then return self:glTexParameterfv_j3(...) end
+    error("No method glTexParameterfv takes " .. count .. " arguments")
+end
+GL11.glTexParameterfv__jdispatcher = GL11.glTexParameterfv
 
 
 function GL11:glTexParameteri(target, pname, param)
@@ -245,15 +390,21 @@ function GL11:glTexParameteri(target, pname, param)
 end
 
 
-function GL11:glTexParameteriv(target, pname, params, offset)
+function GL11:glTexParameteriv_j4(target, pname, params, offset)
     error("abstract method glTexParameteriv")
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function GL11:glTexParameteriv(target, pname, params)
+function GL11:glTexParameteriv_j3(target, pname, params)
     error("abstract method glTexParameteriv")
 end
+function GL11:glTexParameteriv(...)
+    local count = select("#", ...)
+    if count == 4 then return self:glTexParameteriv_j4(...) end
+    if count == 3 then return self:glTexParameteriv_j3(...) end
+    error("No method glTexParameteriv takes " .. count .. " arguments")
+end
+GL11.glTexParameteriv__jdispatcher = GL11.glTexParameteriv
 
 
 function GL11:glVertexPointer(size, type, stride, offset)

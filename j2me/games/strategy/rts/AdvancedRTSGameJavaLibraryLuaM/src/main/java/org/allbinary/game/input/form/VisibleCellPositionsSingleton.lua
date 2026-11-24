@@ -13,26 +13,47 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.input.form
 
+local VisibleCellPositionsSingleton = {}
+package.loaded["org.allbinary.game.input.form.VisibleCellPositionsSingleton"] = VisibleCellPositionsSingleton
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local SimpleTiledLayer = require("javax.microedition.lcdui.game.SimpleTiledLayer")
 -- local Graphics = require("javax.microedition.lcdui.Graphics")
-local RTSLayerEvent = require("org.allbinary.game.layer.RTSLayerEvent")
-local BuildingEventListenerInterface = require("org.allbinary.game.layer.building.event.BuildingEventListenerInterface")
-local LocalPlayerBuildingEventHandler = require("org.allbinary.game.layer.building.event.LocalPlayerBuildingEventHandler")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local ForcedLogUtil = require("org.allbinary.logic.communication.log.ForcedLogUtil")
-local CellPosition = require("org.allbinary.graphics.CellPosition")
-local ScrollMapEvent = require("org.allbinary.layer.event.ScrollMapEvent")
-local ScrollMapEventHandler = require("org.allbinary.layer.event.ScrollMapEventHandler")
-local ScrollMapEventListenerInterface = require("org.allbinary.layer.event.ScrollMapEventListenerInterface")
-local NullUtil = require("org.allbinary.logic.NullUtil")
-local AllBinaryEventObject = require("org.allbinary.logic.util.event.AllBinaryEventObject")
-local EventStrings = require("org.allbinary.logic.util.event.EventStrings")
+local RTSLayerEvent = java_lazy("org.allbinary.game.layer.RTSLayerEvent")
+local BuildingEventListenerInterface = java_lazy("org.allbinary.game.layer.building.event.BuildingEventListenerInterface")
+local LocalPlayerBuildingEventHandler = java_lazy("org.allbinary.game.layer.building.event.LocalPlayerBuildingEventHandler")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local ForcedLogUtil = java_lazy("org.allbinary.logic.communication.log.ForcedLogUtil")
+local CellPosition = java_lazy("org.allbinary.graphics.CellPosition")
+local ScrollMapEvent = java_lazy("org.allbinary.layer.event.ScrollMapEvent")
+local ScrollMapEventHandler = java_lazy("org.allbinary.layer.event.ScrollMapEventHandler")
+local ScrollMapEventListenerInterface = java_lazy("org.allbinary.layer.event.ScrollMapEventListenerInterface")
+local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
+local AllBinaryEventObject = java_lazy("org.allbinary.logic.util.event.AllBinaryEventObject")
+local EventStrings = java_lazy("org.allbinary.logic.util.event.EventStrings")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -43,13 +64,22 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local VisibleCellPositionsSingleton = {}
+-- class table VisibleCellPositionsSingleton is declared before the requires
 VisibleCellPositionsSingleton.__index = VisibleCellPositionsSingleton
 VisibleCellPositionsSingleton.className = "VisibleCellPositionsSingleton"
+VisibleCellPositionsSingleton.javaClassName = "org.allbinary.game.input.form.VisibleCellPositionsSingleton"
+VisibleCellPositionsSingleton.java_implements = " BuildingEventListenerInterface ScrollMapEventListenerInterface "
+VisibleCellPositionsSingleton.java_interfaces = function() return {BuildingEventListenerInterface, ScrollMapEventListenerInterface} end
 
 function VisibleCellPositionsSingleton:_init_fields()
     self.stationaryVisibleCellPositions = NullUtil.getInstance().NULL_SHORT_ARRAY_ARRAY
@@ -58,20 +88,25 @@ function VisibleCellPositionsSingleton:_init_fields()
     self.ALL_VISIBLE_TILEDLAYER = SimpleTiledLayer.new(0, 0, 0, 0)
     self.simpleTiledLayer = self.ALL_VISIBLE_TILEDLAYER
     self.paintSimpleTiledLayer = self.ALL_VISIBLE_TILEDLAYER
-    self.currentIndex = 0
+    if self.currentIndex == nil then self.currentIndex = 0 end
 end
 
 
 function VisibleCellPositionsSingleton.getInstance()
-        return VisibleCellPositionsSingleton.instance
+        return VisibleCellPositionsSingleton.instance_f
 end
 
 
-function VisibleCellPositionsSingleton.new()
-    local self = setmetatable({}, VisibleCellPositionsSingleton)
-    self:_init_fields()
+function VisibleCellPositionsSingleton._jinit(self)
+    VisibleCellPositionsSingleton._init_fields(self)
         LocalPlayerBuildingEventHandler.getInstance():addListenerInterface(self)
         ScrollMapEventHandler.getInstance():addListenerInterface(self)
+    return self
+end
+
+function VisibleCellPositionsSingleton.new(...)
+    local self = setmetatable({}, VisibleCellPositionsSingleton)
+    VisibleCellPositionsSingleton._jinit(self, ...)
     return self
 end
 
@@ -184,7 +219,7 @@ function VisibleCellPositionsSingleton:getSimpleTiledLayer()
         return self.simpleTiledLayer
 end
 
-VisibleCellPositionsSingleton.instance = VisibleCellPositionsSingleton.new()
+VisibleCellPositionsSingleton.instance_f = VisibleCellPositionsSingleton.new()
 
 return VisibleCellPositionsSingleton
 

@@ -13,8 +13,23 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.communication.log
 
-local NullUtil = require("org.allbinary.logic.NullUtil")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
+local LogFactory = {}
+package.loaded["org.allbinary.logic.communication.log.LogFactory"] = LogFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -36,28 +51,38 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
 --NoPlatform
-local LogFactory = {}
+-- class table LogFactory is declared before the requires
 LogFactory.__index = LogFactory
 LogFactory.className = "LogFactory"
+LogFactory.javaClassName = "org.allbinary.logic.communication.log.LogFactory"
+
+function LogFactory._jinit(self)
+    return self
+end
 
 function LogFactory.new()
-    local self = setmetatable({}, LogFactory)
-    return self
+    return LogFactory._jinit(setmetatable({}, LogFactory))
 end
 
 
 function LogFactory.getInstance(specialMessage, anyType, functionName, exception)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function LogFactory.getInstanceF(specialMessage, anyType, functionName)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 LogFactory.LOG = Log.new(StringUtil.getInstance().EMPTY_STRING, NullUtil.getInstance().NULL_OBJECT, StringUtil.getInstance().EMPTY_STRING, NullUtil.getInstance().NULL_OBJECT)

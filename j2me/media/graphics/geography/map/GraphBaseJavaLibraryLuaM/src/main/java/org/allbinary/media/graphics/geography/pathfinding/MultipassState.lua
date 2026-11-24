@@ -13,6 +13,21 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media.graphics.geography.pathfinding
 
+local MultipassState = {}
+package.loaded["org.allbinary.media.graphics.geography.pathfinding.MultipassState"] = MultipassState
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 
 local function java_idiv(a, b)
     local q = a / b
@@ -21,24 +36,34 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local MultipassState = {}
+-- class table MultipassState is declared before the requires
 MultipassState.__index = MultipassState
 MultipassState.className = "MultipassState"
+MultipassState.javaClassName = "org.allbinary.media.graphics.geography.pathfinding.MultipassState"
 
 function MultipassState:_init_fields()
-    self.step = 0
-    self.iteration = 0
-    self.iteration2 = 0
+    if self.step == nil then self.step = 0 end
+    if self.iteration == nil then self.iteration = 0 end
+    if self.iteration2 == nil then self.iteration2 = 0 end
+end
+
+function MultipassState._jinit(self)
+    MultipassState._init_fields(self)
+    return self
 end
 
 function MultipassState.new()
-    local self = setmetatable({}, MultipassState)
-    self:_init_fields()
-    return self
+    return MultipassState._jinit(setmetatable({}, MultipassState))
 end
 
 return MultipassState

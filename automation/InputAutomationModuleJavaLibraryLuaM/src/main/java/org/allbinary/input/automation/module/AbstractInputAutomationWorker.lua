@@ -13,14 +13,29 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.input.automation.module
 
-local CaptureWorkerInterface = require("org.allbinary.input.media.image.capture.CaptureWorkerInterface")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local ImageComparisonWorker = require("org.allbinary.media.image.comparison.ImageComparisonWorker")
-local MotionRectanglesWorker = require("org.allbinary.media.image.comparison.motion.MotionRectanglesWorker")
-local CommonLabels = require("org.allbinary.string.CommonLabels")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local RunnableInterface = require("org.allbinary.thread.RunnableInterface")
-local TimeDelayHelper = require("org.allbinary.time.TimeDelayHelper")
+local AbstractInputAutomationWorker = {}
+package.loaded["org.allbinary.input.automation.module.AbstractInputAutomationWorker"] = AbstractInputAutomationWorker
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local CaptureWorkerInterface = java_lazy("org.allbinary.input.media.image.capture.CaptureWorkerInterface")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local ImageComparisonWorker = java_lazy("org.allbinary.media.image.comparison.ImageComparisonWorker")
+local MotionRectanglesWorker = java_lazy("org.allbinary.media.image.comparison.motion.MotionRectanglesWorker")
+local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local RunnableInterface = java_lazy("org.allbinary.thread.RunnableInterface")
+local TimeDelayHelper = java_lazy("org.allbinary.time.TimeDelayHelper")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -42,6 +57,12 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
@@ -51,26 +72,34 @@ local function java_sleep(milliseconds)
     while os.clock() < finish do end
 end
 
-local AbstractInputAutomationWorker = {}
+-- class table AbstractInputAutomationWorker is declared before the requires
 AbstractInputAutomationWorker.__index = AbstractInputAutomationWorker
 AbstractInputAutomationWorker.className = "AbstractInputAutomationWorker"
+AbstractInputAutomationWorker.javaClassName = "org.allbinary.input.automation.module.AbstractInputAutomationWorker"
+AbstractInputAutomationWorker.java_implements = " RunnableInterface "
+AbstractInputAutomationWorker.java_interfaces = function() return {RunnableInterface} end
 
 function AbstractInputAutomationWorker:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
-    self.index = 0
-    self.running = false
-    self.inputAutomationActionInterface = nil
-    self.captureWorkerInterface = nil
-    self.imageComparisonWorker = nil
-    self.motionRectanglesWorker = nil
-    self.captureThread = nil
+    if self.index == nil then self.index = 0 end
+    if self.running == nil then self.running = false end
+    if self.inputAutomationActionInterface == nil then self.inputAutomationActionInterface = nil end
+    if self.captureWorkerInterface == nil then self.captureWorkerInterface = nil end
+    if self.imageComparisonWorker == nil then self.imageComparisonWorker = nil end
+    if self.motionRectanglesWorker == nil then self.motionRectanglesWorker = nil end
+    if self.captureThread == nil then self.captureThread = nil end
 end
 
 
-function AbstractInputAutomationWorker.new(inputAutomationActionInterface)
+function AbstractInputAutomationWorker._jinit(self, inputAutomationActionInterface)
+    AbstractInputAutomationWorker._init_fields(self)
+    return self
+end
+
+function AbstractInputAutomationWorker.new(...)
     local self = setmetatable({}, AbstractInputAutomationWorker)
-    self:_init_fields()
+    AbstractInputAutomationWorker._jinit(self, ...)
     return self
 end
 
@@ -101,7 +130,7 @@ end
 -- throws Exception
 function AbstractInputAutomationWorker:startDataWorkers()
         if not self:isAnyDataWorkerRunning() then
-            self.captureThread = Thread.new(self:getCaptureWorker())
+            self.captureThread = require("java.lang.Thread").new(self:getCaptureWorker())
             self.logUtil:putF("Starting CaptureWorkers - Need more images - Thread State: " .. tostring(self.captureThread:getState()), self, "startCaptureWorkers")
             self.captureThread:start()
         end
@@ -125,12 +154,12 @@ end
 
 -- throws Exception
 function AbstractInputAutomationWorker:process()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function AbstractInputAutomationWorker:run()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             self.logUtil:putF(self.commonStrings.START, self, self.commonStrings.RUN)
             self:setRunning(true)
             local timeHelper = TimeDelayHelper.new(1000)
@@ -146,6 +175,7 @@ function AbstractInputAutomationWorker:run()
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.RUN, e)
         end
 end

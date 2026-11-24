@@ -1,18 +1,39 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.util
 
-local JsType = require("jsinterop.annotations.JsType")
-local MathUtil = require("org.allbinary.logic.math.MathUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local JsMethod = require("jsinterop.annotations.JsMethod")
+local ArrayUtil = {}
+package.loaded["org.allbinary.util.ArrayUtil"] = ArrayUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local JsType = java_lazy("jsinterop.annotations.JsType")
+local MathUtil = java_lazy("org.allbinary.logic.math.MathUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local JsMethod = java_lazy("jsinterop.annotations.JsMethod")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -23,27 +44,37 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ArrayUtil = {}
+-- class table ArrayUtil is declared before the requires
 ArrayUtil.__index = ArrayUtil
 ArrayUtil.className = "ArrayUtil"
+ArrayUtil.javaClassName = "org.allbinary.util.ArrayUtil"
 
 function ArrayUtil:_init_fields()
     self.mathUtil = MathUtil.getInstance()
 end
 
-function ArrayUtil.new()
-    local self = setmetatable({}, ArrayUtil)
-    self:_init_fields()
+function ArrayUtil._jinit(self)
+    ArrayUtil._init_fields(self)
     return self
+end
+
+function ArrayUtil.new()
+    return ArrayUtil._jinit(setmetatable({}, ArrayUtil))
 end
 
 
 function ArrayUtil.getInstance()
-        return ArrayUtil.instance
+        return ArrayUtil.instance_f
 end
 
 
@@ -60,28 +91,28 @@ end
 
 
 function ArrayUtil:copyOfbyte(original, newLength)
-        local copy = java_new_array(0, newLength)
+        local copy = java_typed_array("B", java_new_array(0, newLength))
         table.move(original, (0) + 1, (0) + (self.mathUtil:min((original.n or #original), newLength)), (0) + 1, copy)
         return copy
 end
 
 
 function ArrayUtil:copyOfshort(original, newLength)
-        local copy = java_new_array(0, newLength)
+        local copy = java_typed_array("S", java_new_array(0, newLength))
         table.move(original, (0) + 1, (0) + (self.mathUtil:min((original.n or #original), newLength)), (0) + 1, copy)
         return copy
 end
 
 
 function ArrayUtil:copyOfint(original, newLength)
-        local copy = java_new_array(0, newLength)
+        local copy = java_typed_array("I", java_new_array(0, newLength))
         table.move(original, (0) + 1, (0) + (self.mathUtil:min((original.n or #original), newLength)), (0) + 1, copy)
         return copy
 end
 
 
 function ArrayUtil:copyOflong(original, newLength)
-        local copy = java_new_array(0, newLength)
+        local copy = java_typed_array("J", java_new_array(0, newLength))
         table.move(original, (0) + 1, (0) + (self.mathUtil:min((original.n or #original), newLength)), (0) + 1, copy)
         return copy
 end
@@ -95,14 +126,14 @@ end
 
 
 function ArrayUtil:copyOffloat(original, newLength)
-        local copy = java_new_array(0.0, newLength)
+        local copy = java_typed_array("F", java_new_array(0.0, newLength))
         table.move(original, (0) + 1, (0) + (self.mathUtil:min((original.n or #original), newLength)), (0) + 1, copy)
         return copy
 end
 
 
 function ArrayUtil:copyOfdouble(original, newLength)
-        local copy = java_new_array(0.0, newLength)
+        local copy = java_typed_array("D", java_new_array(0.0, newLength))
         table.move(original, (0) + 1, (0) + (self.mathUtil:min((original.n or #original), newLength)), (0) + 1, copy)
         return copy
 end
@@ -183,7 +214,7 @@ function ArrayUtil:toStringFromByteArray(byteArray)
         return tostring(stringBuffer)
 end
 
-ArrayUtil.instance = ArrayUtil.new()
+ArrayUtil.instance_f = ArrayUtil.new()
 
 return ArrayUtil
 

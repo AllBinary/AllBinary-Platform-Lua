@@ -13,36 +13,53 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.layer.unit
 
-local J2MEUtil = require("org.allbinary.J2MEUtil")
-local Features = require("org.allbinary.game.configuration.feature.Features")
+local UnitWaypointBehavior2 = {}
+package.loaded["org.allbinary.game.layer.unit.UnitWaypointBehavior2"] = UnitWaypointBehavior2
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local J2MEUtil = java_lazy("org.allbinary.J2MEUtil")
+local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
 local SteeringVisitor = require("org.allbinary.game.layer.SteeringVisitor")
-local AdvancedRTSGameLayer = require("org.allbinary.game.layer.AdvancedRTSGameLayer")
-local MultipassWaypointPathRunnable = require("org.allbinary.game.layer.MultipassWaypointPathRunnable")
-local RTSLayer = require("org.allbinary.game.layer.RTSLayer")
-local WaypointPathRunnable = require("org.allbinary.game.layer.WaypointPathRunnable")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local PathFindingLayerInterface = require("org.allbinary.game.layer.PathFindingLayerInterface")
-local WaypointPathRunnableBase = require("org.allbinary.game.layer.WaypointPathRunnableBase")
-local CollidableDestroyableDamageableLayer = require("org.allbinary.game.layer.special.CollidableDestroyableDamageableLayer")
-local WaypointBase = require("org.allbinary.game.layer.waypoint.WaypointBase")
-local TrackingEventHandler = require("org.allbinary.game.tracking.TrackingEventHandler")
-local GPoint = require("org.allbinary.graphics.GPoint")
-local BasicColorFactory = require("org.allbinary.graphics.color.BasicColorFactory")
-local AllBinaryLayer = require("org.allbinary.layer.AllBinaryLayer")
-local AllBinaryLayerManager = require("org.allbinary.layer.AllBinaryLayerManager")
-local NullUtil = require("org.allbinary.logic.NullUtil")
-local BooleanFactory = require("org.allbinary.logic.java.bool.BooleanFactory")
-local LayerDistanceUtil = require("org.allbinary.math.LayerDistanceUtil")
-local GeographicMapCellPosition = require("org.allbinary.media.graphics.geography.map.GeographicMapCellPosition")
-local SimpleGeographicMapCellPositionFactory = require("org.allbinary.media.graphics.geography.map.SimpleGeographicMapCellPositionFactory")
-local PathFindingThreadPool = require("org.allbinary.thread.PathFindingThreadPool")
-local ThreadPool = require("org.allbinary.thread.ThreadPool")
-local TimeDelayHelper = require("org.allbinary.time.TimeDelayHelper")
+local AdvancedRTSGameLayer = java_lazy("org.allbinary.game.layer.AdvancedRTSGameLayer")
+local MultipassWaypointPathRunnable = java_lazy("org.allbinary.game.layer.MultipassWaypointPathRunnable")
+local RTSLayer = java_lazy("org.allbinary.game.layer.RTSLayer")
+local WaypointPathRunnable = java_lazy("org.allbinary.game.layer.WaypointPathRunnable")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local PathFindingLayerInterface = java_lazy("org.allbinary.game.layer.PathFindingLayerInterface")
+local WaypointPathRunnableBase = java_lazy("org.allbinary.game.layer.WaypointPathRunnableBase")
+local CollidableDestroyableDamageableLayer = java_lazy("org.allbinary.game.layer.special.CollidableDestroyableDamageableLayer")
+local WaypointBase = java_lazy("org.allbinary.game.layer.waypoint.WaypointBase")
+local TrackingEventHandler = java_lazy("org.allbinary.game.tracking.TrackingEventHandler")
+local GPoint = java_lazy("org.allbinary.graphics.GPoint")
+local BasicColorFactory = java_lazy("org.allbinary.graphics.color.BasicColorFactory")
+local AllBinaryLayer = java_lazy("org.allbinary.layer.AllBinaryLayer")
+local AllBinaryLayerManager = java_lazy("org.allbinary.layer.AllBinaryLayerManager")
+local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
+local BooleanFactory = java_lazy("org.allbinary.logic.java.bool.BooleanFactory")
+local LayerDistanceUtil = java_lazy("org.allbinary.math.LayerDistanceUtil")
+local GeographicMapCellPosition = java_lazy("org.allbinary.media.graphics.geography.map.GeographicMapCellPosition")
+local SimpleGeographicMapCellPositionFactory = java_lazy("org.allbinary.media.graphics.geography.map.SimpleGeographicMapCellPositionFactory")
+local PathFindingThreadPool = java_lazy("org.allbinary.thread.PathFindingThreadPool")
+local ThreadPool = java_lazy("org.allbinary.thread.ThreadPool")
+local TimeDelayHelper = java_lazy("org.allbinary.time.TimeDelayHelper")
 local UnitWaypointBehavior = require("org.allbinary.game.layer.unit.UnitWaypointBehavior")
+local UnitLayer = java_lazy("org.allbinary.game.layer.unit.UnitLayer")
+local UnitWaypointStrings = java_lazy("org.allbinary.game.layer.unit.UnitWaypointStrings")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -57,6 +74,95 @@ local function java_exception(className, message, cause)
     return setmetatable(exception, {__tostring = function(self) if self.message ~= nil then return tostring(self.message) end return self.className end})
 end
 
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
+
+local function java_super(class, name, count)
+    local mangled = name .. "_j" .. count
+    local current = class
+    while type(current) == "table" do
+        local method = rawget(current, mangled)
+        if method ~= nil then return method end
+        method = rawget(current, name)
+        if method ~= nil and method ~= rawget(current, name .. "__jdispatcher") then return method end
+        local parent = getmetatable(current)
+        local index = parent and parent.__index
+        if index == current then index = nil end
+        current = index
+    end
+    return class[name]
+end
+
 local function java_idiv(a, b)
     local q = a / b
     if q < 0 then return math.ceil(q) end
@@ -64,17 +170,25 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local UnitWaypointBehavior2 = {}
+-- class table UnitWaypointBehavior2 is declared before the requires
 UnitWaypointBehavior2.__index = UnitWaypointBehavior2
 UnitWaypointBehavior2.className = "UnitWaypointBehavior2"
+UnitWaypointBehavior2.javaClassName = "org.allbinary.game.layer.unit.UnitWaypointBehavior2"
 setmetatable(UnitWaypointBehavior2, {__index = UnitWaypointBehavior})
 local BuildingSteeringVisitor = {}
     BuildingSteeringVisitor.__index = BuildingSteeringVisitor
     BuildingSteeringVisitor.className = "BuildingSteeringVisitor"
+    BuildingSteeringVisitor.javaClassName = "org.allbinary.game.layer.unit.UnitWaypointBehavior2$BuildingSteeringVisitor"
     setmetatable(BuildingSteeringVisitor, {__index = SteeringVisitor})
     UnitWaypointBehavior2.BuildingSteeringVisitor = BuildingSteeringVisitor
 
@@ -82,16 +196,20 @@ local BuildingSteeringVisitor = {}
         self.positionList = BasicArrayListD.new()
     end
 
-    function BuildingSteeringVisitor.new()
-        local self = setmetatable(SteeringVisitor.new(), BuildingSteeringVisitor)
-        self:_init_fields()
+    function BuildingSteeringVisitor._jinit(self)
+        java_super_init(SteeringVisitor, self)
+        BuildingSteeringVisitor._init_fields(self)
         return self
+    end
+
+    function BuildingSteeringVisitor.new()
+        return BuildingSteeringVisitor._jinit(setmetatable({}, BuildingSteeringVisitor))
     end
     
 
     function UnitWaypointBehavior2:visit(anyType)
             local logUtil = LogUtil.getInstance()
-            local try_ok, try_error = pcall(function()
+            local try_ok, try_error, try_value = pcall(function()
                 if self:getList():size() > 0 then
                     local allbinaryLayer = self:getList():get(0)
                     local cellPosition = self:getPositionList():get(0)
@@ -99,24 +217,28 @@ local BuildingSteeringVisitor = {}
                     if clear then
                         self:getList():clear()
                         self.positionList:clear()
-                        return NullUtil.getInstance().NULL_OBJECT
+                        do return "__jreturn", NullUtil.getInstance().NULL_OBJECT end
                     end
-                    return BooleanFactory.getInstance().FALSE
+                    do return "__jreturn", BooleanFactory.getInstance().FALSE end
                 end
-                return NullUtil.getInstance().NULL_OBJECT
+                do return "__jreturn", NullUtil.getInstance().NULL_OBJECT end
             end)
             if not try_ok then
                 local e = try_error
+                if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
                 local commonStrings = CommonStrings.getInstance()
                 logUtil:put(commonStrings.EXCEPTION, self, "visit", e)
                 return NullUtil.getInstance().NULL_OBJECT
             end
+            if try_ok and try_error == "__jreturn" then return try_value end
     end
+    java_overload(UnitWaypointBehavior2, "visit", 1)
     
 
     function UnitWaypointBehavior2:getPositionList()
             return self.positionList
     end
+    java_overload(UnitWaypointBehavior2, "getPositionList", 0)
 
 
 function UnitWaypointBehavior2:_init_fields()
@@ -125,23 +247,23 @@ function UnitWaypointBehavior2:_init_fields()
     self.basicColorFactory = BasicColorFactory.getInstance()
     self.layerDistanceUtil = LayerDistanceUtil.getInstance()
     self.pathFindingThreadPool = PathFindingThreadPool.getInstance()
-    self.progressTimeDelayHelper = nil
-    self.wanderPathsList = nil
-    self.waypointPathRunnable = nil
+    if self.progressTimeDelayHelper == nil then self.progressTimeDelayHelper = nil end
+    if self.wanderPathsList == nil then self.wanderPathsList = nil end
+    if self.waypointPathRunnable == nil then self.waypointPathRunnable = nil end
     self.sensorRange = 0
     self.closeRange = 0
     self.nextUnvisitedPathGeographicMapCellPosition = SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION
     self.afterNextUnvisitedPathGeographicMapCellPosition = SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION
-    self.waitingOnTargetPath = false
-    self.waitingOnWaypointPath = false
+    if self.waitingOnTargetPath == nil then self.waitingOnTargetPath = false end
+    if self.waitingOnWaypointPath == nil then self.waitingOnWaypointPath = false end
     self.targetWithoutCachedPathLayerInterface = CollidableDestroyableDamageableLayer.getNullInstance()
     self.buildingSteeringVisitor = BuildingSteeringVisitor.new()
 end
 
 
-function UnitWaypointBehavior2.new(ownerAdvancedRTSGameLayer, fakeWaypoint)
-    local self = setmetatable(UnitWaypointBehavior.new(ownerAdvancedRTSGameLayer, fakeWaypoint), UnitWaypointBehavior2)
-    self:_init_fields()
+function UnitWaypointBehavior2._jinit(self, ownerAdvancedRTSGameLayer, fakeWaypoint)
+    java_super_init(UnitWaypointBehavior, self, ownerAdvancedRTSGameLayer, fakeWaypoint)
+    UnitWaypointBehavior2._init_fields(self)
         -- super(...) made self above
         self.progressTimeDelayHelper = TimeDelayHelper.new(5000)
         self.wanderPathsList = BasicArrayListD.new()
@@ -150,18 +272,26 @@ function UnitWaypointBehavior2.new(ownerAdvancedRTSGameLayer, fakeWaypoint)
     return self
 end
 
+function UnitWaypointBehavior2.new(...)
+    local self = setmetatable({}, UnitWaypointBehavior2)
+    UnitWaypointBehavior2._jinit(self, ...)
+    return self
+end
+
 
 function UnitWaypointBehavior2:initRange(weaponRange)
-        UnitWaypointBehavior.initRange(self, weaponRange)
+        java_super(UnitWaypointBehavior, "initRange", 1)(self, weaponRange)
         self.closeRange = weaponRange
         self.sensorRange = weaponRange * 4
         self.associatedAdvancedRTSGameLayer.waypoint2LogHelperP:initRange(self.associatedAdvancedRTSGameLayer, self.closeRange, self.sensorRange)
 end
+java_overload(UnitWaypointBehavior2, "initRange", 1, function(java_a1) return true and type(java_a1) == "number" end)
 
 
 function UnitWaypointBehavior2:getNextUnvisitedPathGeographicMapCellPosition()
         return self.nextUnvisitedPathGeographicMapCellPosition
 end
+java_overload(UnitWaypointBehavior2, "getNextUnvisitedPathGeographicMapCellPosition", 0)
 
 
 function UnitWaypointBehavior2:isRunning()
@@ -171,6 +301,7 @@ function UnitWaypointBehavior2:isRunning()
             return false
         end
 end
+java_overload(UnitWaypointBehavior2, "isRunning", 0)
 
 
 -- throws Exception
@@ -183,7 +314,7 @@ function UnitWaypointBehavior2:processTick(allBinaryLayerManager)
                 elseif self.waitingOnWaypointPath then
                     self:setWaypointPath(self.waypointPathRunnable:getTargetLayer())
                 else
-                    error(java_exception("Exception", "Should not happen"), 0)
+                    error(require("java.lang.Exception").new("Should not happen"), 0)
                 end
             else
                 return
@@ -206,6 +337,7 @@ function UnitWaypointBehavior2:processTick(allBinaryLayerManager)
             return
         end
 end
+java_overload(UnitWaypointBehavior2, "processTick", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "AllBinaryLayerManager")) end)
 
 
 -- throws Exception
@@ -217,6 +349,7 @@ function UnitWaypointBehavior2:onEnemyMovement(layerInterface)
             self:processPossibleTarget(layerInterface, anotherTargetDistance)
         end
 end
+java_overload(UnitWaypointBehavior2, "onEnemyMovement", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "AdvancedRTSGameLayer")) end)
 
 
 -- throws Exception
@@ -232,6 +365,7 @@ function UnitWaypointBehavior2:processPossibleTarget(layerInterface, anotherTarg
             self:setTarget(layerInterface, anotherTargetDistance)
         end
 end
+java_overload(UnitWaypointBehavior2, "processPossibleTarget", 2, function(java_a1, java_a2) return true and (java_a1 == nil or java_is(java_a1, "AdvancedRTSGameLayer")) and type(java_a2) == "number" end)
 
 
 -- throws Exception
@@ -246,6 +380,7 @@ function UnitWaypointBehavior2:teleportIfNoProgress()
             end
         end
 end
+java_overload(UnitWaypointBehavior2, "teleportIfNoProgress", 0)
 
 
 -- throws Exception
@@ -270,6 +405,7 @@ function UnitWaypointBehavior2:setTarget(layerInterface, anotherTargetDistance)
             end
         end
 end
+java_overload(UnitWaypointBehavior2, "setTarget", 2, function(java_a1, java_a2) return true and (java_a1 == nil or java_is(java_a1, "AdvancedRTSGameLayer")) and type(java_a2) == "number" end)
 
 
 -- throws Exception
@@ -288,14 +424,16 @@ function UnitWaypointBehavior2:setTargetPath()
             end
         end
 end
+java_overload(UnitWaypointBehavior2, "setTargetPath", 0)
 
 
 -- throws Exception
 function UnitWaypointBehavior2:setGeographicMapCellHistoryPath(geographicMapCellPositionBasicArrayList)
         self:setCurrentPathGeographicMapCellPosition(SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION)
         self.nextUnvisitedPathGeographicMapCellPosition = SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION
-        UnitWaypointBehavior.setGeographicMapCellHistoryPath(self, geographicMapCellPositionBasicArrayList)
+        java_super(UnitWaypointBehavior, "setGeographicMapCellHistoryPath", 1)(self, geographicMapCellPositionBasicArrayList)
 end
+java_overload(UnitWaypointBehavior2, "setGeographicMapCellHistoryPath", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "BasicArrayList")) end)
 
 
 -- throws Exception
@@ -334,6 +472,7 @@ function UnitWaypointBehavior2:processWaypoint()
             end
         end
 end
+java_overload(UnitWaypointBehavior2, "processWaypoint", 0)
 
 
 -- throws Exception
@@ -349,6 +488,7 @@ function UnitWaypointBehavior2:wander()
         self:updateCurrentPathGeographicMapCellPosition()
         self.associatedAdvancedRTSGameLayer:trackTo(self.unitWaypointStrings.NEXT_PATH_NODE)
 end
+java_overload(UnitWaypointBehavior2, "wander", 0)
 
 
 function UnitWaypointBehavior2:visitIfAtMidPoint(geographicMapCellPosition)
@@ -383,6 +523,7 @@ function UnitWaypointBehavior2:visitIfAtMidPoint(geographicMapCellPosition)
         end
         return false
 end
+java_overload(UnitWaypointBehavior2, "visitIfAtMidPoint", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "GeographicMapCellPosition")) end)
 
 
 -- throws Exception
@@ -403,6 +544,7 @@ function UnitWaypointBehavior2:processTargetList()
         end
         self:getPossibleTargetList():clear()
 end
+java_overload(UnitWaypointBehavior2, "processTargetList", 0)
 
 
 -- throws Exception
@@ -439,6 +581,7 @@ function UnitWaypointBehavior2:processTargeting()
             end
         end
 end
+java_overload(UnitWaypointBehavior2, "processTargeting", 0)
 
 
 function UnitWaypointBehavior2:updateCurrentPathGeographicMapCellPosition()
@@ -450,13 +593,14 @@ function UnitWaypointBehavior2:updateCurrentPathGeographicMapCellPosition()
             self.progressTimeDelayHelper:setStartTimeTNT()
         end
 end
+java_overload(UnitWaypointBehavior2, "updateCurrentPathGeographicMapCellPosition", 0)
 
 
 -- throws Exception
 function UnitWaypointBehavior2:setWaypointPath(waypointLayer)
         if self.waypointPathsListP:size() ~= 0 then
             self:setCurrentTargetLayerInterface(waypointLayer)
-            local MAX = Integer.MAX_VALUE
+            local MAX = require("java.lang.Integer").MAX_VALUE
             self:setCurrentTargetDistance(MAX)
             self:setRandomGeographicMapCellHistory(self.waypointPathsListP)
         else
@@ -465,19 +609,21 @@ function UnitWaypointBehavior2:setWaypointPath(waypointLayer)
             self:removeWaypoint(waypointLayer, self.unitWaypointStrings.ALREADY_THERE)
         end
 end
+java_overload(UnitWaypointBehavior2, "setWaypointPath", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "AdvancedRTSGameLayer")) end)
 
 
 -- throws Exception
 function UnitWaypointBehavior2:runWaypointPathTask(waypointLayer)
         self:setWaypointPathsList(UnitWaypointBehavior2.runningWaypointPathList)
         if self.waypointPathRunnable:isRunning() then
-            error(java_exception("Exception", "Should never be running here"), 0)
+            error(require("java.lang.Exception").new("Should never be running here"), 0)
         end
         self.waypointPathRunnable:setRunning(true)
         self.waypointPathRunnable:setUnitLayer(self.associatedAdvancedRTSGameLayer)
         self.waypointPathRunnable:setTargetLayer(waypointLayer)
         self.pathFindingThreadPool:runTask(self.waypointPathRunnable)
 end
+java_overload(UnitWaypointBehavior2, "runWaypointPathTask", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "AdvancedRTSGameLayer")) end)
 
 
 -- throws Exception
@@ -490,6 +636,7 @@ function UnitWaypointBehavior2:removeWaypoint(waypointLayer, reason)
             self:clearTarget()
         end
 end
+java_overload(UnitWaypointBehavior2, "removeWaypoint", 2, function(java_a1, java_a2) return true and (java_a1 == nil or java_is(java_a1, "RTSLayer")) and (java_a2 == nil or type(java_a2) == "string") end)
 
 
 -- throws Exception
@@ -497,10 +644,11 @@ function UnitWaypointBehavior2:clearTarget()
         self.associatedAdvancedRTSGameLayer.waypoint2LogHelperP:clearTarget(self.associatedAdvancedRTSGameLayer)
         self:setCurrentTargetLayerInterface(CollidableDestroyableDamageableLayer.getNullInstance())
         self:setTrackingWaypoint(false)
-        local MAX = Integer.MAX_VALUE
+        local MAX = require("java.lang.Integer").MAX_VALUE
         self:setCurrentTargetDistance(MAX)
         TrackingEventHandler.getInstance():fireEvent(self.associatedAdvancedRTSGameLayer:getTrackingEvent())
 end
+java_overload(UnitWaypointBehavior2, "clearTarget", 0)
 
 
 function UnitWaypointBehavior2:isWaypointListEmptyOrOnlyTargets()
@@ -516,16 +664,19 @@ function UnitWaypointBehavior2:isWaypointListEmptyOrOnlyTargets()
         end
         return true
 end
+java_overload(UnitWaypointBehavior2, "isWaypointListEmptyOrOnlyTargets", 0)
 
 
 function UnitWaypointBehavior2:isCloseRange(layerInterface, targetDistance)
         return targetDistance < self.closeRange + layerInterface:getHalfHeight()
 end
+java_overload(UnitWaypointBehavior2, "isCloseRange", 2, function(java_a1, java_a2) return true and (java_a1 == nil or java_is(java_a1, "AdvancedRTSGameLayer")) and type(java_a2) == "number" end)
 
 
 function UnitWaypointBehavior2:isInSensorRange(layerInterface, targetDistance)
         return targetDistance < self.sensorRange + layerInterface:getHalfHeight()
 end
+java_overload(UnitWaypointBehavior2, "isInSensorRange", 2, function(java_a1, java_a2) return true and (java_a1 == nil or java_is(java_a1, "CollidableDestroyableDamageableLayer")) and type(java_a2) == "number" end)
 
 
 function UnitWaypointBehavior2:getCurrentTargetingStateString()
@@ -541,18 +692,20 @@ function UnitWaypointBehavior2:getCurrentTargetingStateString()
         end
         return tostring(stringBuffer)
 end
+java_overload(UnitWaypointBehavior2, "getCurrentTargetingStateString", 0)
 
 
 -- throws Exception
 function UnitWaypointBehavior2:addWaypointFromUser(advancedRTSGameLayer)
         if advancedRTSGameLayer:isDestroyed() then
-            error(java_exception("Exception", "Trying to add a dead: " .. tostring(advancedRTSGameLayer)), 0)
+            error(require("java.lang.Exception").new("Trying to add a dead: " .. tostring(advancedRTSGameLayer)), 0)
         end
         self.associatedAdvancedRTSGameLayer.waypoint2LogHelperP:addWaypointFromUser(self.associatedAdvancedRTSGameLayer, advancedRTSGameLayer)
         self.targetList:clear()
         self.targetList:add(advancedRTSGameLayer)
         self:clearTarget()
 end
+java_overload(UnitWaypointBehavior2, "addWaypointFromUser", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "AdvancedRTSGameLayer")) end)
 
 
 -- throws Exception
@@ -565,12 +718,14 @@ function UnitWaypointBehavior2:addBuildingChase(allbinaryLayer, cellPosition)
             self:getSteeringVisitorList():add(self.buildingSteeringVisitor)
         end
 end
+java_overload(UnitWaypointBehavior2, "addBuildingChase", 2, function(java_a1, java_a2) return true and (java_a1 == nil or java_is(java_a1, "AllBinaryLayer")) and (java_a2 == nil or java_is(java_a2, "GeographicMapCellPosition")) end)
 
 
 -- throws Exception
 function UnitWaypointBehavior2:buildingChase(allbinaryLayer, cellPosition)
         return self.associatedAdvancedRTSGameLayer:buildingChase(allbinaryLayer, cellPosition)
 end
+java_overload(UnitWaypointBehavior2, "buildingChase", 2, function(java_a1, java_a2) return true and (java_a1 == nil or java_is(java_a1, "AllBinaryLayer")) and (java_a2 == nil or java_is(java_a2, "GeographicMapCellPosition")) end)
 
 UnitWaypointBehavior2.runningWaypointPathList = BasicArrayListD.new()
 UnitWaypointBehavior2.TARGET_DISTANCE = "Target Distance"

@@ -13,12 +13,28 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.system.security.crypt
 
-local TsUtil = require("org.allbinary.TsUtil")
-local PreLogUtil = require("org.allbinary.logic.communication.log.PreLogUtil")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local AbCrypt = require("org.allbinary.logic.system.security.crypt.jcehelper.AbCrypt")
-local KeySpecFactory = require("org.allbinary.logic.system.security.crypt.jcehelper.KeySpecFactory")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local WeakCrypt = {}
+package.loaded["org.allbinary.logic.system.security.crypt.WeakCrypt"] = WeakCrypt
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local TsUtil = java_lazy("org.allbinary.TsUtil")
+local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local AbCrypt = java_lazy("org.allbinary.logic.system.security.crypt.jcehelper.AbCrypt")
+local KeySpecFactory = java_lazy("org.allbinary.logic.system.security.crypt.jcehelper.KeySpecFactory")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local DatabaseEncoder = java_lazy("org.allbinary.logic.system.security.crypt.DatabaseEncoder")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -27,13 +43,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local WeakCrypt = {}
+-- class table WeakCrypt is declared before the requires
 WeakCrypt.__index = WeakCrypt
 WeakCrypt.className = "WeakCrypt"
+WeakCrypt.javaClassName = "org.allbinary.logic.system.security.crypt.WeakCrypt"
 
 function WeakCrypt:_init_fields()
     self.tsUtil = TsUtil.getInstance()
@@ -41,44 +64,54 @@ function WeakCrypt:_init_fields()
 end
 
 
-function WeakCrypt.new(key)
-    local self = setmetatable({}, WeakCrypt)
-    self:_init_fields()
-        local try_ok, try_error = pcall(function()
+function WeakCrypt._jinit(self, key)
+    WeakCrypt._init_fields(self)
+        local try_ok, try_error, try_value = pcall(function()
             self.abCrypt:init(WeakCrypt.keys[key + 1])
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local commonStrings = CommonStrings.getInstance()
             PreLogUtil.putOE(commonStrings.EXCEPTION, self, "SuperCrypt(key)", e)
         end
     return self
 end
 
+function WeakCrypt.new(...)
+    local self = setmetatable({}, WeakCrypt)
+    WeakCrypt._jinit(self, ...)
+    return self
+end
+
 
 function WeakCrypt:encrypt(value)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local crypted = self.abCrypt:encrypt(self.tsUtil:getByteArray(value))
-            return DatabaseEncoder.encode(crypted)
+            do return "__jreturn", DatabaseEncoder.encode(crypted) end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             PreLogUtil.putOE("Encrypt Failed", self, "encrypt", e)
             return StringUtil.getInstance().EMPTY_STRING
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
 function WeakCrypt:decrypt(value)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local decrypted = self.abCrypt:decrypt(DatabaseEncoder.decode(value))
-            return string.char(table.unpack(decrypted))
+            do return "__jreturn", string.char(table.unpack(decrypted)) end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             PreLogUtil.putOE("decrypt Failed", self, "decrypt", e)
             return StringUtil.getInstance().EMPTY_STRING
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 WeakCrypt.keys = {"qwres6qewrupoi1132790jfahleavi89398", "143uk32lngf8675gt1tv9214uvt924ut9u9", "12kvjlvlkv11445v12951v512v9m51295v1", "gampipoiupg4g43y5u238tu2485u20u0932", "a93u5uu02s2d2g3259u4395u409u093u9vu", "nlkxzj90je3mln9l8l89qjf0j3v50j23r9j", "2lk5fn5j23nr8f0233vq35n23jn58vhy843", "9q24334m598t092tkn2iv0982456n425j9g", "5m9uvmt9436243m5v34g09d43i52ki35g99", "n123lr1iubiu2br32lv32rbu23b32ub2rlb", "va0u0iovji2ojpvj2oij22poiu4ov2uv28v", "bkk80gn2v9uc902340ut209pcup0u09utc9", "mn32m32neee23c42fn32nf3mf2n3fn2m3fm", "zcxpozo3423voizupovsijevnv3n33o33n3", "v0345324thv93h03893893vh893v8h3vhzz", "v8na898v8wyef9ty39yv98yaw39yeeyf8ye", "45zd36d34jg09434hfshp8uj9sy8s7cyr78", "b098yy0908vdvh983b2lb327980a76s5e5e", "v90y9v9p8y3r98pagsdgsagyr6y3985yhfh", "vblkzhhzp8yvzi8u4t9856456zy3rv8a388", "da7696023rgf28dssfa98asd879hg32hewe", "afo7d6ffkjb3jr3i34gb24ytuvu3jr3uryf", "4gijvqo8vq984hv984hj5j3511h832hf833"}

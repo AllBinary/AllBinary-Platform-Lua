@@ -13,7 +13,22 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.installer
 
--- local HashMap = require("java.util.HashMap")
+local Portion = {}
+package.loaded["org.allbinary.business.installer.Portion"] = Portion
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -22,25 +37,37 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local Portion = {}
+-- class table Portion is declared before the requires
 Portion.__index = Portion
 Portion.className = "Portion"
+Portion.javaClassName = "org.allbinary.business.installer.Portion"
 
 function Portion:_init_fields()
-    self.current = nil
-    self.total = nil
+    if self.current == nil then self.current = nil end
+    if self.total == nil then self.total = nil end
 end
 
 
-function Portion.new(hashMap)
-    local self = setmetatable({}, Portion)
-    self:_init_fields()
+function Portion._jinit(self, hashMap)
+    Portion._init_fields(self)
         self.current = hashMap:get("current")
         self.total = hashMap:get("total")
+    return self
+end
+
+function Portion.new(...)
+    local self = setmetatable({}, Portion)
+    Portion._jinit(self, ...)
     return self
 end
 

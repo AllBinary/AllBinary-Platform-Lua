@@ -13,9 +13,27 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.globals
 
-local DomNodeInterface = require("org.allbinary.data.tree.dom.DomNodeInterface")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local UrlGlobalsViewFactory = {}
+package.loaded["org.allbinary.globals.UrlGlobalsViewFactory"] = UrlGlobalsViewFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local DomNodeInterface = java_lazy("org.allbinary.data.tree.dom.DomNodeInterface")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local UrlGlobalsView = java_lazy("org.allbinary.globals.UrlGlobalsView")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -24,34 +42,48 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local UrlGlobalsViewFactory = {}
+-- class table UrlGlobalsViewFactory is declared before the requires
 UrlGlobalsViewFactory.__index = UrlGlobalsViewFactory
 UrlGlobalsViewFactory.className = "UrlGlobalsViewFactory"
+UrlGlobalsViewFactory.javaClassName = "org.allbinary.globals.UrlGlobalsViewFactory"
 
 
-function UrlGlobalsViewFactory.new()
+function UrlGlobalsViewFactory._jinit(self)
+    return self
+end
+
+function UrlGlobalsViewFactory.new(...)
     local self = setmetatable({}, UrlGlobalsViewFactory)
+    UrlGlobalsViewFactory._jinit(self, ...)
     return self
 end
 
 
 function UrlGlobalsViewFactory.getInstance()
         local logUtil = LogUtil.getInstance()
-        local try_ok, try_error = pcall(function()
-            return UrlGlobalsView.new()
+        local try_ok, try_error, try_value = pcall(function()
+            do return "__jreturn", UrlGlobalsView.new() end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local commonStrings = CommonStrings.getInstance()
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().FACTORYERROR) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().FACTORYERROR) then
                 logUtil:put(commonStrings.EXCEPTION, "GlobalsViewFactory", commonStrings.GET_INSTANCE, e)
             end
             return nil
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 return UrlGlobalsViewFactory

@@ -13,23 +13,40 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.user.commerce.inventory.order.status
 
-local StoreFrontFactory = require("org.allbinary.business.context.modules.storefront.StoreFrontFactory")
-local StoreFrontInterface = require("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
-local UserInterface = require("org.allbinary.business.user.UserInterface")
-local OrderHistory = require("org.allbinary.business.user.commerce.inventory.order.OrderHistory")
-local UserEntityFactory = require("org.allbinary.data.tables.user.UserEntityFactory")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local UserEmailEventNameData = require("org.allbinary.logic.communication.smtp.event.UserEmailEventNameData")
-local UserEmailEventHandler = require("org.allbinary.logic.communication.smtp.event.handler.UserEmailEventHandler")
-local AdminUserEmailEventHandlerSingletons = require("org.allbinary.logic.communication.smtp.event.handler.factory.AdminUserEmailEventHandlerSingletons")
-local StoreAdminUserEmailEventHandlerSingletons = require("org.allbinary.logic.communication.smtp.event.handler.factory.StoreAdminUserEmailEventHandlerSingletons")
-local UserEmailEventHandlerSingletons = require("org.allbinary.logic.communication.smtp.event.handler.factory.UserEmailEventHandlerSingletons")
-local AdminEmailInfo = require("org.allbinary.logic.communication.smtp.info.AdminEmailInfo")
-local BasicEmailInfo = require("org.allbinary.logic.communication.smtp.info.BasicEmailInfo")
-local EmailInfo = require("org.allbinary.logic.communication.smtp.info.EmailInfo")
-local StoreEmailInfo = require("org.allbinary.logic.communication.smtp.info.StoreEmailInfo")
-local AbeClientInformationInterface = require("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local OrderStatusEmail = {}
+package.loaded["org.allbinary.business.user.commerce.inventory.order.status.OrderStatusEmail"] = OrderStatusEmail
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local StoreFrontFactory = java_lazy("org.allbinary.business.context.modules.storefront.StoreFrontFactory")
+local StoreFrontInterface = java_lazy("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
+local UserInterface = java_lazy("org.allbinary.business.user.UserInterface")
+local OrderHistory = java_lazy("org.allbinary.business.user.commerce.inventory.order.OrderHistory")
+local UserEntityFactory = java_lazy("org.allbinary.data.tables.user.UserEntityFactory")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local UserEmailEventNameData = java_lazy("org.allbinary.logic.communication.smtp.event.UserEmailEventNameData")
+local UserEmailEventHandler = java_lazy("org.allbinary.logic.communication.smtp.event.handler.UserEmailEventHandler")
+local AdminUserEmailEventHandlerSingletons = java_lazy("org.allbinary.logic.communication.smtp.event.handler.factory.AdminUserEmailEventHandlerSingletons")
+local StoreAdminUserEmailEventHandlerSingletons = java_lazy("org.allbinary.logic.communication.smtp.event.handler.factory.StoreAdminUserEmailEventHandlerSingletons")
+local UserEmailEventHandlerSingletons = java_lazy("org.allbinary.logic.communication.smtp.event.handler.factory.UserEmailEventHandlerSingletons")
+local AdminEmailInfo = java_lazy("org.allbinary.logic.communication.smtp.info.AdminEmailInfo")
+local BasicEmailInfo = java_lazy("org.allbinary.logic.communication.smtp.info.BasicEmailInfo")
+local EmailInfo = java_lazy("org.allbinary.logic.communication.smtp.info.EmailInfo")
+local StoreEmailInfo = java_lazy("org.allbinary.logic.communication.smtp.info.StoreEmailInfo")
+local AbeClientInformationInterface = java_lazy("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -38,32 +55,44 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local OrderStatusEmail = {}
+-- class table OrderStatusEmail is declared before the requires
 OrderStatusEmail.__index = OrderStatusEmail
 OrderStatusEmail.className = "OrderStatusEmail"
+OrderStatusEmail.javaClassName = "org.allbinary.business.user.commerce.inventory.order.status.OrderStatusEmail"
 
 function OrderStatusEmail:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
-    self.abeClientInformation = nil
-    self.orderHistory = nil
-    self.storeFrontInterface = nil
-    self.user = nil
+    if self.abeClientInformation == nil then self.abeClientInformation = nil end
+    if self.orderHistory == nil then self.orderHistory = nil end
+    if self.storeFrontInterface == nil then self.storeFrontInterface = nil end
+    if self.user == nil then self.user = nil end
 end
 
 
-function OrderStatusEmail.new(abeClientInformation, orderHistory)
-    local self = setmetatable({}, OrderStatusEmail)
-    self:_init_fields()
+function OrderStatusEmail._jinit(self, abeClientInformation, orderHistory)
+    OrderStatusEmail._init_fields(self)
         self.abeClientInformation = abeClientInformation
         self.orderHistory = orderHistory
         local storeName = orderHistory:getStoreName()
         self.storeFrontInterface = StoreFrontFactory.getInstance(storeName)
         self.user = UserEntityFactory.getInstance():getUser(orderHistory:getUserName())
+    return self
+end
+
+function OrderStatusEmail.new(...)
+    local self = setmetatable({}, OrderStatusEmail)
+    OrderStatusEmail._jinit(self, ...)
     return self
 end
 
@@ -77,8 +106,8 @@ end
 
 -- throws Exception
 function OrderStatusEmail:notifyStoreAdmin()
-        local try_ok, try_error = pcall(function()
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().EMAILLOGGING) then
+        local try_ok, try_error, try_value = pcall(function()
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().EMAILLOGGING) then
                 self.logUtil:putF("Order Email", self, "emailStoreAdmin")
             end
             local adminEmailSubject = "Order " .. tostring(self.orderHistory:getStatus()) .. " Attempt"
@@ -95,7 +124,8 @@ function OrderStatusEmail:notifyStoreAdmin()
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().EMAILLOGGINGERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().EMAILLOGGINGERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "emailAdmin", e)
             end
         end
@@ -104,8 +134,8 @@ end
 
 -- throws Exception
 function OrderStatusEmail:notifyUser()
-        local try_ok, try_error = pcall(function()
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().EMAILLOGGING) then
+        local try_ok, try_error, try_value = pcall(function()
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().EMAILLOGGING) then
                 self.logUtil:putF("Email User", self, "notifyUser()")
             end
             local subject = "Order " .. tostring(self.orderHistory:getStatus()) .. " Attempt"
@@ -118,7 +148,8 @@ function OrderStatusEmail:notifyUser()
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().EMAILLOGGINGERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().EMAILLOGGINGERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "notifyUser", e)
             end
             error(e, 0)

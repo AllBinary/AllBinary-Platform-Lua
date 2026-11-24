@@ -13,16 +13,32 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.input.mapping
 
-local Input = require("org.allbinary.game.input.Input")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local CommonLabels = require("org.allbinary.string.CommonLabels")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local ABHashtable = require("org.allbinary.util.ABHashtable")
+local InputMapping = {}
+package.loaded["org.allbinary.game.input.mapping.InputMapping"] = InputMapping
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local Input = java_lazy("org.allbinary.game.input.Input")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
+local InputToGameKeyMapping = java_lazy("org.allbinary.game.input.mapping.InputToGameKeyMapping")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -44,13 +60,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local InputMapping = {}
+-- class table InputMapping is declared before the requires
 InputMapping.__index = InputMapping
 InputMapping.className = "InputMapping"
+InputMapping.javaClassName = "org.allbinary.game.input.mapping.InputMapping"
 
 function InputMapping:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -60,9 +83,14 @@ function InputMapping:_init_fields()
 end
 
 
-function InputMapping.new()
+function InputMapping._jinit(self)
+    InputMapping._init_fields(self)
+    return self
+end
+
+function InputMapping.new(...)
     local self = setmetatable({}, InputMapping)
-    self:_init_fields()
+    InputMapping._jinit(self, ...)
     return self
 end
 
@@ -119,7 +147,7 @@ end
 
 -- throws Exception
 function InputMapping:addMapping(inputToGameKeyMapping)
-        error(java_exception("Exception", self.commonStrings.NOT_IMPLEMENTED), 0)
+        error(require("java.lang.Exception").new(self.commonStrings.NOT_IMPLEMENTED), 0)
 end
 
 

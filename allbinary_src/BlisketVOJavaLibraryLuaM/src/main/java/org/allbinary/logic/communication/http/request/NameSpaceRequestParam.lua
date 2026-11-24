@@ -13,14 +13,31 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.communication.http.request
 
--- local HashMap = require("java.util.HashMap")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local Tokenizer = require("org.allbinary.logic.string.tokens.Tokenizer")
-local HtmlNameMathData = require("org.allbinary.logic.visual.dhtml.html.name.HtmlNameMathData")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
+local NameSpaceRequestParam = {}
+package.loaded["org.allbinary.logic.communication.http.request.NameSpaceRequestParam"] = NameSpaceRequestParam
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local Tokenizer = java_lazy("org.allbinary.logic.string.tokens.Tokenizer")
+local HtmlNameMathData = java_lazy("org.allbinary.logic.visual.dhtml.html.name.HtmlNameMathData")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -42,36 +59,42 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local NameSpaceRequestParam = {}
+-- class table NameSpaceRequestParam is declared before the requires
 NameSpaceRequestParam.__index = NameSpaceRequestParam
 NameSpaceRequestParam.className = "NameSpaceRequestParam"
+NameSpaceRequestParam.javaClassName = "org.allbinary.logic.communication.http.request.NameSpaceRequestParam"
 
 function NameSpaceRequestParam:_init_fields()
     self.logUtil = LogUtil.getInstance()
-    self.nameSpaceVector = nil
-    self.nameSpacePropertiesHashMap = nil
-    self.value = nil
+    if self.nameSpaceVector == nil then self.nameSpaceVector = nil end
+    if self.nameSpacePropertiesHashMap == nil then self.nameSpacePropertiesHashMap = nil end
+    if self.value == nil then self.value = nil end
 end
 
 
-function NameSpaceRequestParam.new(nameSpace, value)
-    local self = setmetatable({}, NameSpaceRequestParam)
-    self:_init_fields()
+function NameSpaceRequestParam._jinit(self, nameSpace, value)
+    NameSpaceRequestParam._init_fields(self)
         self.nameSpaceVector = BasicArrayListD.new()
         self.nameSpacePropertiesHashMap = StdUtil.getInstance():createHashMap()
         self.value = value
         local beginIndex = ((string.find(nameSpace, NameSpaceRequestParamData.NAME, 1, true) or 0) - 1)
         if beginIndex < 0 then
-            error(java_exception("Exception", "Not a NameSpaceRequest"), 0)
+            error(require("java.lang.Exception").new("Not a NameSpaceRequest"), 0)
         end
         local packages = string.sub(nameSpace, (beginIndex + NameSpaceRequestParamData.NAME:length() + NameSpaceRequestParamData.SEP:length()) + 1)
         local sepTokenizer = Tokenizer.new(NameSpaceRequestParamData.SEP)
         local nameSpaceWithPropertiesVector = sepTokenizer:getTokensFromString(packages, BasicArrayListD.new())
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
             self.logUtil:putF("\nSep Tokens: " .. tostring(nameSpaceWithPropertiesVector), self, "NameSpaceRequestParam()")
         end
         local nameSpaceAndPropertiesTokenizer = Tokenizer.new(NameSpaceRequestParamData.PROPERTIES)
@@ -83,13 +106,13 @@ function NameSpaceRequestParam.new(nameSpace, value)
             local nameSpaceWithProperties = nameSpaceWithPropertiesVector:get((function() local value = index index = value + 1 return value end)())
             list:clear()
             local nameSpaceAndPropertiesVector = nameSpaceAndPropertiesTokenizer:getTokensFromString(nameSpaceWithProperties, list)
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
                 self.logUtil:putF("\nPackageName and PackageName Properties Tokens: " .. tostring(nameSpaceAndPropertiesVector), self, "NameSpaceRequestParam()")
             end
             if nameSpaceAndPropertiesVector:size() > 0 then
                 local packageName = nameSpaceAndPropertiesVector:get(0)
                 if packageName == nil then
-                    error(java_exception("Exception", "Package Name Is Null"), 0)
+                    error(require("java.lang.Exception").new("Package Name Is Null"), 0)
                 end
                 self.nameSpaceVector:add(packageName)
                 if nameSpaceAndPropertiesVector:size() > 1 then
@@ -100,15 +123,21 @@ function NameSpaceRequestParam.new(nameSpace, value)
                 packageIndex = packageIndex + 1
             end
         end
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
             self.logUtil:putF("NameSpace: " .. tostring(self.nameSpaceVector), self, "NameSpaceRequestParam()")
         end
     return self
 end
 
+function NameSpaceRequestParam.new(...)
+    local self = setmetatable({}, NameSpaceRequestParam)
+    NameSpaceRequestParam._jinit(self, ...)
+    return self
+end
+
 
 function NameSpaceRequestParam:getPackages()
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
             self.logUtil:putF("NameSpace: " .. tostring(self.nameSpaceVector), self, "getPackages()")
         end
         return self.nameSpaceVector
@@ -120,7 +149,7 @@ function NameSpaceRequestParam:getPackageProperties(packageIndex)
         if packagePropertiesHashMap == nil then
             packagePropertiesHashMap = StdUtil.getInstance():createHashMap()
         end
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
             self.logUtil:putF("Package Properties: " .. tostring(packagePropertiesHashMap), self, "getPackagesProperties()")
         end
         return packagePropertiesHashMap
@@ -128,7 +157,7 @@ end
 
 
 function NameSpaceRequestParam:getValue()
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
             self.logUtil:putF("\nValue: " .. self.value, self, "getValue()")
         end
         return self.value
@@ -153,7 +182,7 @@ function NameSpaceRequestParam:generatePackagePropertiesHashMap(properties)
                 local propertyName = propertyNameValueVector:get((function() local value = index2 index2 = value + 1 return value end)())
                 if propertyNameValueVector:size() > 1 then
                     local propertyValue = propertyNameValueVector:get((function() local value = index2 index2 = value + 1 return value end)())
-                    if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().HTTPREQUEST) then
+                    if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
                         self.logUtil:putF("\nProperty Name: " .. propertyName .. "\nProperty Value: " .. propertyValue, self, "generatePackagePropertiesHashMap()")
                     end
                     packagePropertiesHashMap:put(propertyName, propertyValue)

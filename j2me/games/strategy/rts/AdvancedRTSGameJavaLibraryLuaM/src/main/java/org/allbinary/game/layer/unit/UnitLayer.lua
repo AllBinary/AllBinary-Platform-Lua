@@ -13,117 +13,135 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.layer.unit
 
+local UnitLayer = {}
+package.loaded["org.allbinary.game.layer.unit.UnitLayer"] = UnitLayer
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Canvas = require("javax.microedition.lcdui.Canvas")
 -- local Graphics = require("javax.microedition.lcdui.Graphics")
-local J2MEUtil = require("org.allbinary.J2MEUtil")
-local ExplosionBasicSound = require("org.allbinary.ag.weapon.media.audio.ExplosionBasicSound")
-local Animation = require("org.allbinary.animation.Animation")
-local AnimationInterfaceFactoryInterface = require("org.allbinary.animation.AnimationInterfaceFactoryInterface")
-local FeaturedAnimationInterfaceFactoryInterfaceFactory = require("org.allbinary.animation.FeaturedAnimationInterfaceFactoryInterfaceFactory")
-local IndexedAnimation = require("org.allbinary.animation.IndexedAnimation")
-local NullAnimationFactory = require("org.allbinary.animation.NullAnimationFactory")
-local NullIndexedAnimationFactory = require("org.allbinary.animation.NullIndexedAnimationFactory")
-local ProceduralAnimationInterfaceFactoryInterface = require("org.allbinary.animation.ProceduralAnimationInterfaceFactoryInterface")
-local RotationAnimation = require("org.allbinary.animation.RotationAnimation")
-local CaptionAnimationHelper = require("org.allbinary.animation.caption.CaptionAnimationHelper")
-local CaptionAnimationHelperBase = require("org.allbinary.animation.caption.CaptionAnimationHelperBase")
-local AdjustedCircleAnimation = require("org.allbinary.animation.vector.AdjustedCircleAnimation")
-local Direction = require("org.allbinary.direction.Direction")
-local DamageFloaters = require("org.allbinary.game.combat.damage.DamageFloaters")
-local PtsDamageFloaters = require("org.allbinary.game.combat.damage.PtsDamageFloaters")
-local WeaponProperties = require("org.allbinary.game.combat.weapon.WeaponProperties")
-local Features = require("org.allbinary.game.configuration.feature.Features")
-local GameFeatureFactory = require("org.allbinary.game.configuration.feature.GameFeatureFactory")
-local BasicHudFactory = require("org.allbinary.game.graphics.hud.BasicHudFactory")
-local Health = require("org.allbinary.game.health.Health")
-local HealthBar = require("org.allbinary.game.health.HealthBar")
-local HealthBarTwodAnimation = require("org.allbinary.game.health.HealthBarTwodAnimation")
-local Group = require("org.allbinary.game.identification.Group")
-local GroupCommonFactory = require("org.allbinary.game.identification.GroupCommonFactory")
-local GameKeyEvent = require("org.allbinary.game.input.event.GameKeyEvent")
-local GameKeyEventFactory = require("org.allbinary.game.input.event.GameKeyEventFactory")
-local GameKeyEventUtil = require("org.allbinary.game.input.event.GameKeyEventUtil")
-local VisibleCellPositionsSingleton = require("org.allbinary.game.input.form.VisibleCellPositionsSingleton")
-local WaypointRTSFormInput = require("org.allbinary.game.input.form.WaypointRTSFormInput")
+local J2MEUtil = java_lazy("org.allbinary.J2MEUtil")
+local ExplosionBasicSound = java_lazy("org.allbinary.ag.weapon.media.audio.ExplosionBasicSound")
+local Animation = java_lazy("org.allbinary.animation.Animation")
+local AnimationInterfaceFactoryInterface = java_lazy("org.allbinary.animation.AnimationInterfaceFactoryInterface")
+local FeaturedAnimationInterfaceFactoryInterfaceFactory = java_lazy("org.allbinary.animation.FeaturedAnimationInterfaceFactoryInterfaceFactory")
+local IndexedAnimation = java_lazy("org.allbinary.animation.IndexedAnimation")
+local NullAnimationFactory = java_lazy("org.allbinary.animation.NullAnimationFactory")
+local NullIndexedAnimationFactory = java_lazy("org.allbinary.animation.NullIndexedAnimationFactory")
+local ProceduralAnimationInterfaceFactoryInterface = java_lazy("org.allbinary.animation.ProceduralAnimationInterfaceFactoryInterface")
+local RotationAnimation = java_lazy("org.allbinary.animation.RotationAnimation")
+local CaptionAnimationHelper = java_lazy("org.allbinary.animation.caption.CaptionAnimationHelper")
+local CaptionAnimationHelperBase = java_lazy("org.allbinary.animation.caption.CaptionAnimationHelperBase")
+local AdjustedCircleAnimation = java_lazy("org.allbinary.animation.vector.AdjustedCircleAnimation")
+local Direction = java_lazy("org.allbinary.direction.Direction")
+local DamageFloaters = java_lazy("org.allbinary.game.combat.damage.DamageFloaters")
+local PtsDamageFloaters = java_lazy("org.allbinary.game.combat.damage.PtsDamageFloaters")
+local WeaponProperties = java_lazy("org.allbinary.game.combat.weapon.WeaponProperties")
+local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
+local GameFeatureFactory = java_lazy("org.allbinary.game.configuration.feature.GameFeatureFactory")
+local BasicHudFactory = java_lazy("org.allbinary.game.graphics.hud.BasicHudFactory")
+local Health = java_lazy("org.allbinary.game.health.Health")
+local HealthBar = java_lazy("org.allbinary.game.health.HealthBar")
+local HealthBarTwodAnimation = java_lazy("org.allbinary.game.health.HealthBarTwodAnimation")
+local Group = java_lazy("org.allbinary.game.identification.Group")
+local GroupCommonFactory = java_lazy("org.allbinary.game.identification.GroupCommonFactory")
+local GameKeyEvent = java_lazy("org.allbinary.game.input.event.GameKeyEvent")
+local GameKeyEventFactory = java_lazy("org.allbinary.game.input.event.GameKeyEventFactory")
+local GameKeyEventUtil = java_lazy("org.allbinary.game.input.event.GameKeyEventUtil")
+local VisibleCellPositionsSingleton = java_lazy("org.allbinary.game.input.form.VisibleCellPositionsSingleton")
+local WaypointRTSFormInput = java_lazy("org.allbinary.game.input.form.WaypointRTSFormInput")
 local AdvancedRTSGameLayer = require("org.allbinary.game.layer.AdvancedRTSGameLayer")
-local AdvancedRTSProperties = require("org.allbinary.game.layer.AdvancedRTSProperties")
-local AllBinaryGameLayerManager = require("org.allbinary.game.layer.AllBinaryGameLayerManager")
-local AllBinaryTiledLayer = require("org.allbinary.game.layer.AllBinaryTiledLayer")
-local CaptionResources = require("org.allbinary.game.layer.CaptionResources")
-local LinePathRelativeAnimation = require("org.allbinary.game.layer.LinePathRelativeAnimation")
-local PathAnimation = require("org.allbinary.game.layer.PathAnimation")
-local PathFindingLayerInterface = require("org.allbinary.game.layer.PathFindingLayerInterface")
-local RTSLayer2LogHelper = require("org.allbinary.game.layer.RTSLayer2LogHelper")
-local RTSLayer2SelectedLogHelper = require("org.allbinary.game.layer.RTSLayer2SelectedLogHelper")
-local RTSLayerEvent = require("org.allbinary.game.layer.RTSLayerEvent")
-local RTSLayerHudPaintable = require("org.allbinary.game.layer.RTSLayerHudPaintable")
-local RTSLayerLogHelper = require("org.allbinary.game.layer.RTSLayerLogHelper")
-local RTSLayerSelectedLogHelper = require("org.allbinary.game.layer.RTSLayerSelectedLogHelper")
-local RTSPlayerLayerInterface = require("org.allbinary.game.layer.RTSPlayerLayerInterface")
-local SelectionHudPaintable = require("org.allbinary.game.layer.SelectionHudPaintable")
-local SensorActionFactory = require("org.allbinary.game.layer.SensorActionFactory")
-local SteeringVisitor = require("org.allbinary.game.layer.SteeringVisitor")
-local TiledLayerUtil = require("org.allbinary.game.layer.TiledLayerUtil")
-local VehicleFrictionProperties = require("org.allbinary.game.layer.VehicleFrictionProperties")
-local VehicleProperties = require("org.allbinary.game.layer.VehicleProperties")
-local WaypointBehaviorBase = require("org.allbinary.game.layer.WaypointBehaviorBase")
-local BuildingLayer = require("org.allbinary.game.layer.building.BuildingLayer")
-local BuildingEventHandler = require("org.allbinary.game.layer.building.event.BuildingEventHandler")
-local BuildingEventListenerInterface = require("org.allbinary.game.layer.building.event.BuildingEventListenerInterface")
-local CapitalEvent = require("org.allbinary.game.layer.capital.event.CapitalEvent")
-local CapitalEventHandlerFactory = require("org.allbinary.game.layer.capital.event.CapitalEventHandlerFactory")
-local LayerPartialCellPositionsUtil = require("org.allbinary.game.layer.geographic.map.LayerPartialCellPositionsUtil")
-local SpecialDownGameInputProcessor = require("org.allbinary.game.layer.special.SpecialDownGameInputProcessor")
-local SpecialFireGameInputProcessor = require("org.allbinary.game.layer.special.SpecialFireGameInputProcessor")
-local SpecialLeftGameInputProcessor = require("org.allbinary.game.layer.special.SpecialLeftGameInputProcessor")
-local SpecialRightGameInputProcessor = require("org.allbinary.game.layer.special.SpecialRightGameInputProcessor")
-local SpecialUpGameInputProcessor = require("org.allbinary.game.layer.special.SpecialUpGameInputProcessor")
-local MultipassNoCacheWaypoint = require("org.allbinary.game.layer.waypoint.MultipassNoCacheWaypoint")
-local NoCacheWaypoint = require("org.allbinary.game.layer.waypoint.NoCacheWaypoint")
-local WaypointBase = require("org.allbinary.game.layer.waypoint.WaypointBase")
-local WaypointEventHandlerFactory = require("org.allbinary.game.layer.waypoint.event.WaypointEventHandlerFactory")
-local RemoteInfo = require("org.allbinary.game.multiplayer.layer.RemoteInfo")
-local BasicWeaponPart = require("org.allbinary.game.part.weapon.BasicWeaponPart")
-local SalvoInterface = require("org.allbinary.game.part.weapon.SalvoInterface")
-local VelocityProperties = require("org.allbinary.game.physics.velocity.VelocityProperties")
-local TrackingEvent = require("org.allbinary.game.tracking.TrackingEvent")
-local TrackingEventHandler = require("org.allbinary.game.tracking.TrackingEventHandler")
-local TrackingEventListenerInterface = require("org.allbinary.game.tracking.TrackingEventListenerInterface")
-local CellPositionFactory = require("org.allbinary.graphics.CellPositionFactory")
-local GPoint = require("org.allbinary.graphics.GPoint")
-local Rectangle = require("org.allbinary.graphics.Rectangle")
-local BasicColorFactory = require("org.allbinary.graphics.color.BasicColorFactory")
-local NullPaintable = require("org.allbinary.graphics.paint.NullPaintable")
-local Paintable = require("org.allbinary.graphics.paint.Paintable")
-local AllBinaryLayer = require("org.allbinary.layer.AllBinaryLayer")
-local AllBinaryLayerManager = require("org.allbinary.layer.AllBinaryLayerManager")
-local Layer = require("org.allbinary.layer.Layer")
-local LayerInterfaceFactoryInterface = require("org.allbinary.layer.LayerInterfaceFactoryInterface")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local BasicDecimal = require("org.allbinary.logic.math.BasicDecimal")
-local SmallIntegerSingletonFactory = require("org.allbinary.logic.math.SmallIntegerSingletonFactory")
-local AngleFactory = require("org.allbinary.math.AngleFactory")
-local AngleInfo = require("org.allbinary.math.AngleInfo")
-local FrameUtil = require("org.allbinary.math.FrameUtil")
-local LayerDistanceUtil = require("org.allbinary.math.LayerDistanceUtil")
-local NamedAngle = require("org.allbinary.math.NamedAngle")
-local AttackSound = require("org.allbinary.media.audio.AttackSound")
-local SecondaryPlayerQueueFactory = require("org.allbinary.media.audio.SecondaryPlayerQueueFactory")
-local Sound = require("org.allbinary.media.audio.Sound")
-local BasicGeographicMap = require("org.allbinary.media.graphics.geography.map.BasicGeographicMap")
-local BasicGeographicMapCellPositionFactory = require("org.allbinary.media.graphics.geography.map.BasicGeographicMapCellPositionFactory")
-local GeographicMapCellHistory = require("org.allbinary.media.graphics.geography.map.GeographicMapCellHistory")
-local GeographicMapCellPosition = require("org.allbinary.media.graphics.geography.map.GeographicMapCellPosition")
-local GeographicMapCompositeInterface = require("org.allbinary.media.graphics.geography.map.GeographicMapCompositeInterface")
-local SimpleGeographicMapCellPositionFactory = require("org.allbinary.media.graphics.geography.map.SimpleGeographicMapCellPositionFactory")
-local DropCellPositionHistory = require("org.allbinary.media.graphics.geography.map.drop.DropCellPositionHistory")
-local RaceTrackGeographicMap = require("org.allbinary.media.graphics.geography.map.racetrack.RaceTrackGeographicMap")
-local CommonPhoneStrings = require("org.allbinary.string.CommonPhoneStrings")
-local ABHashtable = require("org.allbinary.util.ABHashtable")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local BasicArrayListS = require("org.allbinary.util.BasicArrayListS")
-local ViewPositionBase = require("org.allbinary.view.ViewPositionBase")
+local AdvancedRTSProperties = java_lazy("org.allbinary.game.layer.AdvancedRTSProperties")
+local AllBinaryGameLayerManager = java_lazy("org.allbinary.game.layer.AllBinaryGameLayerManager")
+local AllBinaryTiledLayer = java_lazy("org.allbinary.game.layer.AllBinaryTiledLayer")
+local LayerCaptionResources = java_lazy("org.allbinary.game.layer.LayerCaptionResources")
+local LinePathRelativeAnimation = java_lazy("org.allbinary.game.layer.LinePathRelativeAnimation")
+local PathAnimation = java_lazy("org.allbinary.game.layer.PathAnimation")
+local PathFindingLayerInterface = java_lazy("org.allbinary.game.layer.PathFindingLayerInterface")
+local RTSLayer2LogHelper = java_lazy("org.allbinary.game.layer.RTSLayer2LogHelper")
+local RTSLayer2SelectedLogHelper = java_lazy("org.allbinary.game.layer.RTSLayer2SelectedLogHelper")
+local RTSLayerEvent = java_lazy("org.allbinary.game.layer.RTSLayerEvent")
+local RTSLayerHudPaintable = java_lazy("org.allbinary.game.layer.RTSLayerHudPaintable")
+local RTSLayerLogHelper = java_lazy("org.allbinary.game.layer.RTSLayerLogHelper")
+local RTSLayerSelectedLogHelper = java_lazy("org.allbinary.game.layer.RTSLayerSelectedLogHelper")
+local RTSPlayerLayerInterface = java_lazy("org.allbinary.game.layer.RTSPlayerLayerInterface")
+local SelectionHudPaintable = java_lazy("org.allbinary.game.layer.SelectionHudPaintable")
+local SensorActionFactory = java_lazy("org.allbinary.game.layer.SensorActionFactory")
+local SteeringVisitor = java_lazy("org.allbinary.game.layer.SteeringVisitor")
+local TiledLayerUtil = java_lazy("org.allbinary.game.layer.TiledLayerUtil")
+local VehicleFrictionProperties = java_lazy("org.allbinary.game.layer.VehicleFrictionProperties")
+local VehicleProperties = java_lazy("org.allbinary.game.layer.VehicleProperties")
+local WaypointBehaviorBase = java_lazy("org.allbinary.game.layer.WaypointBehaviorBase")
+local BuildingLayer = java_lazy("org.allbinary.game.layer.building.BuildingLayer")
+local BuildingEventHandler = java_lazy("org.allbinary.game.layer.building.event.BuildingEventHandler")
+local BuildingEventListenerInterface = java_lazy("org.allbinary.game.layer.building.event.BuildingEventListenerInterface")
+local CapitalEvent = java_lazy("org.allbinary.game.layer.capital.event.CapitalEvent")
+local CapitalEventHandlerFactory = java_lazy("org.allbinary.game.layer.capital.event.CapitalEventHandlerFactory")
+local LayerPartialCellPositionsUtil = java_lazy("org.allbinary.game.layer.geographic.map.LayerPartialCellPositionsUtil")
+local SpecialDownGameInputProcessor = java_lazy("org.allbinary.game.layer.special.SpecialDownGameInputProcessor")
+local SpecialFireGameInputProcessor = java_lazy("org.allbinary.game.layer.special.SpecialFireGameInputProcessor")
+local SpecialLeftGameInputProcessor = java_lazy("org.allbinary.game.layer.special.SpecialLeftGameInputProcessor")
+local SpecialRightGameInputProcessor = java_lazy("org.allbinary.game.layer.special.SpecialRightGameInputProcessor")
+local SpecialUpGameInputProcessor = java_lazy("org.allbinary.game.layer.special.SpecialUpGameInputProcessor")
+local MultipassNoCacheWaypoint = java_lazy("org.allbinary.game.layer.waypoint.MultipassNoCacheWaypoint")
+local NoCacheWaypoint = java_lazy("org.allbinary.game.layer.waypoint.NoCacheWaypoint")
+local WaypointBase = java_lazy("org.allbinary.game.layer.waypoint.WaypointBase")
+local WaypointEventHandlerFactory = java_lazy("org.allbinary.game.layer.waypoint.event.WaypointEventHandlerFactory")
+local RemoteInfo = java_lazy("org.allbinary.game.multiplayer.layer.RemoteInfo")
+local BasicWeaponPart = java_lazy("org.allbinary.game.part.weapon.BasicWeaponPart")
+local SalvoInterface = java_lazy("org.allbinary.game.part.weapon.SalvoInterface")
+local VelocityProperties = java_lazy("org.allbinary.game.physics.velocity.VelocityProperties")
+local TrackingEvent = java_lazy("org.allbinary.game.tracking.TrackingEvent")
+local TrackingEventHandler = java_lazy("org.allbinary.game.tracking.TrackingEventHandler")
+local TrackingEventListenerInterface = java_lazy("org.allbinary.game.tracking.TrackingEventListenerInterface")
+local CellPositionFactory = java_lazy("org.allbinary.graphics.CellPositionFactory")
+local GPoint = java_lazy("org.allbinary.graphics.GPoint")
+local Rectangle = java_lazy("org.allbinary.graphics.Rectangle")
+local BasicColorFactory = java_lazy("org.allbinary.graphics.color.BasicColorFactory")
+local NullPaintable = java_lazy("org.allbinary.graphics.paint.NullPaintable")
+local Paintable = java_lazy("org.allbinary.graphics.paint.Paintable")
+local AllBinaryLayer = java_lazy("org.allbinary.layer.AllBinaryLayer")
+local AllBinaryLayerManager = java_lazy("org.allbinary.layer.AllBinaryLayerManager")
+local Layer = java_lazy("org.allbinary.layer.Layer")
+local LayerInterfaceFactoryInterface = java_lazy("org.allbinary.layer.LayerInterfaceFactoryInterface")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local BasicDecimal = java_lazy("org.allbinary.logic.math.BasicDecimal")
+local SmallIntegerSingletonFactory = java_lazy("org.allbinary.logic.math.SmallIntegerSingletonFactory")
+local AngleFactory = java_lazy("org.allbinary.math.AngleFactory")
+local AngleInfo = java_lazy("org.allbinary.math.AngleInfo")
+local FrameUtil = java_lazy("org.allbinary.math.FrameUtil")
+local LayerDistanceUtil = java_lazy("org.allbinary.math.LayerDistanceUtil")
+local NamedAngle = java_lazy("org.allbinary.math.NamedAngle")
+local AttackSound = java_lazy("org.allbinary.media.audio.AttackSound")
+local SecondaryPlayerQueueFactory = java_lazy("org.allbinary.media.audio.SecondaryPlayerQueueFactory")
+local Sound = java_lazy("org.allbinary.media.audio.Sound")
+local BasicGeographicMap = java_lazy("org.allbinary.media.graphics.geography.map.BasicGeographicMap")
+local BasicGeographicMapCellPositionFactory = java_lazy("org.allbinary.media.graphics.geography.map.BasicGeographicMapCellPositionFactory")
+local GeographicMapCellHistory = java_lazy("org.allbinary.media.graphics.geography.map.GeographicMapCellHistory")
+local GeographicMapCellPosition = java_lazy("org.allbinary.media.graphics.geography.map.GeographicMapCellPosition")
+local GeographicMapCompositeInterface = java_lazy("org.allbinary.media.graphics.geography.map.GeographicMapCompositeInterface")
+local SimpleGeographicMapCellPositionFactory = java_lazy("org.allbinary.media.graphics.geography.map.SimpleGeographicMapCellPositionFactory")
+local DropCellPositionHistory = java_lazy("org.allbinary.media.graphics.geography.map.drop.DropCellPositionHistory")
+local RaceTrackGeographicMap = java_lazy("org.allbinary.media.graphics.geography.map.racetrack.RaceTrackGeographicMap")
+local CommonPhoneStrings = java_lazy("org.allbinary.string.CommonPhoneStrings")
+local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local BasicArrayListS = java_lazy("org.allbinary.util.BasicArrayListS")
+local ViewPositionBase = java_lazy("org.allbinary.view.ViewPositionBase")
+local CollidableUnitBehavior = java_lazy("org.allbinary.game.layer.unit.CollidableUnitBehavior")
+local UnitWaypointBehavior = java_lazy("org.allbinary.game.layer.unit.UnitWaypointBehavior")
+local UnitWaypointBehavior2 = java_lazy("org.allbinary.game.layer.unit.UnitWaypointBehavior2")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -138,6 +156,95 @@ local function java_exception(className, message, cause)
     return setmetatable(exception, {__tostring = function(self) if self.message ~= nil then return tostring(self.message) end return self.className end})
 end
 
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
+
+local function java_super(class, name, count)
+    local mangled = name .. "_j" .. count
+    local current = class
+    while type(current) == "table" do
+        local method = rawget(current, mangled)
+        if method ~= nil then return method end
+        method = rawget(current, name)
+        if method ~= nil and method ~= rawget(current, name .. "__jdispatcher") then return method end
+        local parent = getmetatable(current)
+        local index = parent and parent.__index
+        if index == current then index = nil end
+        current = index
+    end
+    return class[name]
+end
+
 local function java_idiv(a, b)
     local q = a / b
     if q < 0 then return math.ceil(q) end
@@ -145,14 +252,23 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local UnitLayer = {}
+-- class table UnitLayer is declared before the requires
 UnitLayer.__index = UnitLayer
 UnitLayer.className = "UnitLayer"
+UnitLayer.javaClassName = "org.allbinary.game.layer.unit.UnitLayer"
 setmetatable(UnitLayer, {__index = AdvancedRTSGameLayer})
+UnitLayer.java_implements = " BuildingEventListenerInterface TrackingEventListenerInterface "
+UnitLayer.java_interfaces = function() return {BuildingEventListenerInterface, TrackingEventListenerInterface} end
 
 function UnitLayer:_init_fields()
     self.basicColorFactory = BasicColorFactory.getInstance()
@@ -161,26 +277,26 @@ function UnitLayer:_init_fields()
     self.layerDistanceUtil = LayerDistanceUtil.getInstance()
     self.angleFactory = AngleFactory.getInstance()
     self.cellPositionFactory = CellPositionFactory.getInstance()
-    self.maxResourceLoad = nil
-    self.vehicleProperties = nil
+    if self.maxResourceLoad == nil then self.maxResourceLoad = nil end
+    if self.vehicleProperties == nil then self.vehicleProperties = nil end
     self.accelerationBasicDecimal = BasicDecimal.new(1600)
     self.decelerationBasicDecimal = BasicDecimal.new(-1000)
-    self.trackingEvent = nil
-    self.damageFloaters = nil
-    self.damageFloatersPaintableInterface = nil
-    self.healthBar = nil
-    self.moveSoundInterface = nil
-    self.initResourceAnimation = nil
+    if self.trackingEvent == nil then self.trackingEvent = nil end
+    if self.damageFloaters == nil then self.damageFloaters = nil end
+    if self.damageFloatersPaintableInterface == nil then self.damageFloatersPaintableInterface = nil end
+    if self.healthBar == nil then self.healthBar = nil end
+    if self.moveSoundInterface == nil then self.moveSoundInterface = nil end
+    if self.initResourceAnimation == nil then self.initResourceAnimation = nil end
     self.resourceAnimation = NullIndexedAnimationFactory.getFactoryInstance():getInstance(0)
-    self.initPathAnimation = nil
+    if self.initPathAnimation == nil then self.initPathAnimation = nil end
     self.pathAnimation = NullAnimationFactory.getFactoryInstance():getInstance(0)
-    self.captionAnimationHelper = CaptionAnimationHelper.new(FeaturedAnimationInterfaceFactoryInterfaceFactory.getInstance():get(CaptionResources.getInstance().RESOURCE):getInstance(0), -23, -25, 6, 0)
-    self.decalAnimation = nil
-    self.waypointLayerInterfaceFactoryInterface = nil
+    self.captionAnimationHelper = CaptionAnimationHelper.new(FeaturedAnimationInterfaceFactoryInterfaceFactory.getInstance():get(LayerCaptionResources.getInstance().RESOURCE):getInstance(0), -23, -25, 6, 0)
+    if self.decalAnimation == nil then self.decalAnimation = nil end
+    if self.waypointLayerInterfaceFactoryInterface == nil then self.waypointLayerInterfaceFactoryInterface = nil end
     self.resourceLoad = 0
-    self.weaponRange = 0
+    if self.weaponRange == nil then self.weaponRange = 0 end
     self.rtsLogHelper = RTSLayerLogHelper.getInstance()
-    self.rotationAnimationInterfaceP = nil
+    if self.rotationAnimationInterfaceP == nil then self.rotationAnimationInterfaceP = nil end
     self.movementAngle = self.angleFactory.NOT_ANGLE
     self.steeringInsideGeographicMapCellPosition = SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION
     self.sensorGeographicMapCellPositionList = BasicArrayListD.new()
@@ -188,9 +304,9 @@ function UnitLayer:_init_fields()
 end
 
 
-function UnitLayer.new(remoteInfo, parentLayer, advancedRTSProperties, groupInterface, rootName, name, vehicleProperties, healthInterface, maxResourceLoad, moveSoundInterface, waypointLayerInterfaceFactoryInterface, animationInterfaceFactoryInterface, emptyAnimationInterfaceFactoryInterface, baseAnimationInterfaceFactoryInterface, buildAnimationInterfaceFactoryInterface, verticleBuildAnimationInterfaceFactoryInterface, decalAnimationInterfaceFactoryInterface, resourceAnimationInterfaceFactoryInterface, proceduralAnimationInterfaceFactoryInterface, rectangle, direction, x, y, z, viewPosition)
-    local self = setmetatable(AdvancedRTSGameLayer.new(remoteInfo, parentLayer, advancedRTSProperties, groupInterface, rootName, name, healthInterface, WaypointRTSFormInput.new(groupInterface, true), animationInterfaceFactoryInterface, emptyAnimationInterfaceFactoryInterface, baseAnimationInterfaceFactoryInterface, buildAnimationInterfaceFactoryInterface, verticleBuildAnimationInterfaceFactoryInterface, proceduralAnimationInterfaceFactoryInterface, rectangle, x, y, viewPosition), UnitLayer)
-    self:_init_fields()
+function UnitLayer._jinit(self, remoteInfo, parentLayer, advancedRTSProperties, groupInterface, rootName, name, vehicleProperties, healthInterface, maxResourceLoad, moveSoundInterface, waypointLayerInterfaceFactoryInterface, animationInterfaceFactoryInterface, emptyAnimationInterfaceFactoryInterface, baseAnimationInterfaceFactoryInterface, buildAnimationInterfaceFactoryInterface, verticleBuildAnimationInterfaceFactoryInterface, decalAnimationInterfaceFactoryInterface, resourceAnimationInterfaceFactoryInterface, proceduralAnimationInterfaceFactoryInterface, rectangle, direction, x, y, z, viewPosition)
+    java_super_init(AdvancedRTSGameLayer, self, remoteInfo, parentLayer, advancedRTSProperties, groupInterface, rootName, name, healthInterface, WaypointRTSFormInput.new(groupInterface, true), animationInterfaceFactoryInterface, emptyAnimationInterfaceFactoryInterface, baseAnimationInterfaceFactoryInterface, buildAnimationInterfaceFactoryInterface, verticleBuildAnimationInterfaceFactoryInterface, proceduralAnimationInterfaceFactoryInterface, rectangle, x, y, viewPosition)
+    UnitLayer._init_fields(self)
         -- super(...) made self above
         self:setCollidableInferface(CollidableUnitBehavior.new(true))
         self.waypointLayerInterfaceFactoryInterface = waypointLayerInterfaceFactoryInterface
@@ -221,12 +337,19 @@ function UnitLayer.new(remoteInfo, parentLayer, advancedRTSProperties, groupInte
     return self
 end
 
+function UnitLayer.new(...)
+    local self = setmetatable({}, UnitLayer)
+    UnitLayer._jinit(self, ...)
+    return self
+end
+
 
 -- throws Exception
 function UnitLayer:setAllBinaryGameLayerManager(allBinaryGameLayerManager)
-        AdvancedRTSGameLayer.setAllBinaryGameLayerManager(self, allBinaryGameLayerManager)
+        java_super(AdvancedRTSGameLayer, "setAllBinaryGameLayerManager", 1)(self, allBinaryGameLayerManager)
         self.initPathAnimation:setAllBinaryGameLayerManager(allBinaryGameLayerManager)
 end
+java_overload(UnitLayer, "setAllBinaryGameLayerManager", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "AllBinaryGameLayerManager")) end)
 
 
 -- throws Exception
@@ -239,14 +362,15 @@ function UnitLayer:updateWaypointBehavior(geographicMapInterface)
         local features = Features.getInstance()
         local waypoint = (function() if J2MEUtil.isHTML() then return MultipassNoCacheWaypoint.new(self, AttackSound.getInstance()) else return NoCacheWaypoint.new(self, AttackSound.getInstance()) end end)()
         self:getWaypointBehavior():setWaypoint(waypoint)
-        AdvancedRTSGameLayer.updateWaypointBehavior(self, geographicMapInterface)
+        java_super(AdvancedRTSGameLayer, "updateWaypointBehavior", 1)(self, geographicMapInterface)
         self:initRangeHack()
 end
+java_overload(UnitLayer, "updateWaypointBehavior", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "BasicGeographicMap")) end)
 
 
 -- throws Exception
 function UnitLayer:construct(rtsPlayerLayerInterface)
-        AdvancedRTSGameLayer.construct(self, rtsPlayerLayerInterface)
+        java_super(AdvancedRTSGameLayer, "construct", 1)(self, rtsPlayerLayerInterface)
         TrackingEventHandler.getInstance():addListenerInterface(self)
         WaypointEventHandlerFactory.getInstance(self:getGroupInterface()[1]):addListenerInterface(self:getUnitWaypointBehavior())
         BuildingEventHandler.getInstance():addListenerInterface(self)
@@ -254,6 +378,7 @@ function UnitLayer:construct(rtsPlayerLayerInterface)
         self:updateSensorGeographicMapCellPositionList()
         self:getUnitWaypointBehavior():setLastPathGeographicMapCellPosition(self:getUnitWaypointBehavior():getCurrentPathGeographicMapCellPosition())
 end
+java_overload(UnitLayer, "construct", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "RTSPlayerLayerInterface")) end)
 
 
 -- throws Exception
@@ -296,47 +421,52 @@ function UnitLayer:updateSensorGeographicMapCellPositionList()
             end
         end
 end
+java_overload(UnitLayer, "updateSensorGeographicMapCellPositionList", 0)
 
 
 function UnitLayer:getSensorGeographicMapCellPositionList()
         return self.sensorGeographicMapCellPositionList
 end
+java_overload(UnitLayer, "getSensorGeographicMapCellPositionList", 0)
 
 
 function UnitLayer:select()
         self.pathAnimation = self.initPathAnimation
-        AdvancedRTSGameLayer.select(self)
+        java_super(AdvancedRTSGameLayer, "select", 0)(self)
 end
+java_overload(UnitLayer, "select", 0)
 
 
 function UnitLayer:deselect()
         self.pathAnimation = NullAnimationFactory.getFactoryInstance():getInstance(0)
-        AdvancedRTSGameLayer.deselect(self)
+        java_super(AdvancedRTSGameLayer, "deselect", 0)(self)
 end
+java_overload(UnitLayer, "deselect", 0)
 
 
 function UnitLayer:setSelected(selected)
-        AdvancedRTSGameLayer.setSelected(self, selected)
+        java_super(AdvancedRTSGameLayer, "setSelected", 1)(self, selected)
         if selected then
-            if self.debug then
+            if self.debug_f then
                 self.rtsLogHelper = RTSLayerSelectedLogHelper.getInstance()
             end
             self.rtsLayer2LogHelper = RTSLayer2SelectedLogHelper.getInstance()
         else
-            if self.debug then
+            if self.debug_f then
                 self.rtsLogHelper = RTSLayerLogHelper.getInstance()
             end
             self.rtsLayer2LogHelper = RTSLayer2LogHelper.getInstance()
         end
 end
+java_overload(UnitLayer, "setSelected", 1, function(java_a1) return true and type(java_a1) == "boolean" end)
 
 
 -- throws Exception
 function UnitLayer:setClosestGeographicMapCellHistory(pathsList)
         self.rtsLogHelper:setClosestGeographicMapCellHistory(self, pathsList)
         local closestIndex = -1
-        local shortestDistance = Integer.MAX_VALUE
-        local currentDistance = Integer.MAX_VALUE
+        local shortestDistance = require("java.lang.Integer").MAX_VALUE
+        local currentDistance = require("java.lang.Integer").MAX_VALUE
         for index = pathsList:size() - 1, 0, -1 do
             local geographicMapCellPositionBasicArrayList = pathsList:get(index)
             local geographicMapCellPosition = geographicMapCellPositionBasicArrayList:get(geographicMapCellPositionBasicArrayList:size() - 1)
@@ -352,16 +482,18 @@ function UnitLayer:setClosestGeographicMapCellHistory(pathsList)
             self:teleportTo(geographicMapCellPosition)
         end
 end
+java_overload(UnitLayer, "setClosestGeographicMapCellHistory", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "BasicArrayList")) end)
 
 
 -- throws Exception
 function UnitLayer:init(geographicMapCellHistory, geographicMapCellPositionBasicArrayList)
         geographicMapCellHistory:trackAll(geographicMapCellPositionBasicArrayList)
 end
+java_overload(UnitLayer, "init", 2, function(java_a1, java_a2) return true and (java_a1 == nil or java_is(java_a1, "GeographicMapCellHistory")) and (java_a2 == nil or java_is(java_a2, "BasicArrayList")) end)
 
 
 function UnitLayer:onMovement(trackingEvent)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local layerInterface = trackingEvent:getLayerInterface()
             if layerInterface:getGroupInterface()[1] ~= self:getGroupInterface()[1] then
                 self:getUnitWaypointBehavior():getPossibleTargetList():add(layerInterface)
@@ -370,9 +502,11 @@ function UnitLayer:onMovement(trackingEvent)
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put(self.commonStrings.EXCEPTION, self, "onMovement", e)
         end
 end
+java_overload(UnitLayer, "onMovement", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "TrackingEvent")) end)
 
 
 -- throws Exception
@@ -382,6 +516,7 @@ function UnitLayer:onMovementFound(trackingEvent)
             self:getUnitWaypointBehavior():getPossibleTargetList():add(layerInterface)
         end
 end
+java_overload(UnitLayer, "onMovementFound", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "TrackingEvent")) end)
 
 
 function UnitLayer:initRangeHack()
@@ -394,6 +529,7 @@ function UnitLayer:initRangeHack()
         self:getUnitWaypointBehavior():initRange(self.weaponRange)
         self.fireTimeHelper.delay = (java_int(weaponProperties:getReloadTime()))
 end
+java_overload(UnitLayer, "initRangeHack", 0)
 
 
 -- throws Exception
@@ -417,17 +553,19 @@ function UnitLayer:processBuiltTick(allBinaryLayerManager)
                 self:setReadyForExplosion(true)
             end
         else
-            AdvancedRTSGameLayer.processBuiltTick(self, allBinaryLayerManager)
+            java_super(AdvancedRTSGameLayer, "processBuiltTick", 1)(self, allBinaryLayerManager)
         end
         self.captionAnimationHelper:tick()
         self:getUnitWaypointBehavior():processTick(allBinaryLayerManager)
 end
+java_overload(UnitLayer, "processBuiltTick", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "AllBinaryLayerManager")) end)
 
 
 function UnitLayer:teleportTo(geographicMapCellPosition)
         local point = geographicMapCellPosition:getMidPoint()
         self:setPosition(point:getX() - self:getHalfWidth(), point:getY() - self:getHalfHeight(), self.z)
 end
+java_overload(UnitLayer, "teleportTo", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "GeographicMapCellPosition")) end)
 
 
 -- throws Exception
@@ -437,10 +575,11 @@ function UnitLayer:getCurrentGeographicMapCellPosition()
         local geographicMapCellPosition = geographicMapInterface:getCellPositionAtXY(self.x + self:getHalfWidth(), self.y + self:getHalfHeight())
         local raceTrackGeographicMap = geographicMapInterface
         if not raceTrackGeographicMap:isValid(geographicMapCellPosition) then
-            error(java_exception("Exception", "Position is not really on the map: " .. tostring(geographicMapCellPosition)), 0)
+            error(require("java.lang.Exception").new("Position is not really on the map: " .. tostring(geographicMapCellPosition)), 0)
         end
         return geographicMapCellPosition
 end
+java_overload(UnitLayer, "getCurrentGeographicMapCellPosition", 0)
 
 
 -- throws Exception
@@ -451,6 +590,7 @@ function UnitLayer:fire(layerManager, gameKeyEvent)
             self:reload()
         end
 end
+java_overload(UnitLayer, "fire", 2, function(java_a1, java_a2) return true and (java_a1 == nil or java_is(java_a1, "AllBinaryLayerManager")) and (java_a2 == nil or java_is(java_a2, "GameKeyEvent")) end)
 
 
 -- throws Exception
@@ -459,6 +599,7 @@ function UnitLayer:left()
         self.decalAnimation:previousRotation()
         self.rotationAnimationInterfaceP:previousRotation()
 end
+java_overload(UnitLayer, "left", 0)
 
 
 -- throws Exception
@@ -467,6 +608,7 @@ function UnitLayer:right()
         self.decalAnimation:nextRotation()
         self.rotationAnimationInterfaceP:nextRotation()
 end
+java_overload(UnitLayer, "right", 0)
 
 
 function UnitLayer:down()
@@ -475,6 +617,7 @@ function UnitLayer:down()
             self:accelerate(self.decelerationBasicDecimal)
         end
 end
+java_overload(UnitLayer, "down", 0)
 
 
 function UnitLayer:up()
@@ -483,6 +626,7 @@ function UnitLayer:up()
             self:accelerate(self.accelerationBasicDecimal)
         end
 end
+java_overload(UnitLayer, "up", 0)
 
 
 function UnitLayer:initInputProcessors()
@@ -492,8 +636,9 @@ function UnitLayer:initInputProcessors()
         self.inputProcessorArray[Canvas.KEY_POUND + 1] = self.inputProcessorArray[Canvas.KEY_NUM0 + 1]
         self.inputProcessorArray[Canvas.DOWN + 1] = SpecialDownGameInputProcessor.new(self)
         self.inputProcessorArray[Canvas.UP + 1] = SpecialUpGameInputProcessor.new(self)
-        AdvancedRTSGameLayer.initInputProcessors(self)
+        java_super(AdvancedRTSGameLayer, "initInputProcessors", 0)(self)
 end
+java_overload(UnitLayer, "initInputProcessors", 0)
 
 
 -- throws Exception
@@ -509,11 +654,13 @@ function UnitLayer:processInput(layerManager)
         self:groundFriction()
         self:move()
 end
+java_overload(UnitLayer, "processInput", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "AllBinaryLayerManager")) end)
 
 
 function UnitLayer:accelerate(accelerate)
         self:getVehicleProperties():getVelocityProperties():addVelocityi(accelerate:getUnscaled(), java_int(self.rotationAnimationInterfaceP:getAngleInfoP():getAngle()), 90)
 end
+java_overload(UnitLayer, "accelerate", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "BasicDecimal")) end)
 
 
 -- throws Exception
@@ -524,25 +671,29 @@ function UnitLayer:fireAll(layerManager)
         local salvoInterface = self:getPartInterfaceArray()[1]
         salvoInterface:process(layerManager, angle, 90)
 end
+java_overload(UnitLayer, "fireAll", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "AllBinaryLayerManager")) end)
 
 
 function UnitLayer:downgrade()
         if self:getLevel() > 1 then
-            AdvancedRTSGameLayer.downgrade(self)
+            java_super(AdvancedRTSGameLayer, "downgrade", 0)(self)
         end
 end
+java_overload(UnitLayer, "downgrade", 0)
 
 
 function UnitLayer:upgrade()
-        AdvancedRTSGameLayer.upgrade(self)
+        java_super(AdvancedRTSGameLayer, "upgrade", 0)(self)
         self:initRangeHack()
 end
+java_overload(UnitLayer, "upgrade", 0)
 
 
 function UnitLayer:groundFriction()
         local vehicleFrictionProperties = self:getVehicleProperties():getVehicleFrictionProperties()
         self:getVehicleProperties():getVehicleFrictionProperties():friction(self:getVehicleProperties():getVelocityProperties(), vehicleFrictionProperties:getTireFrictionNominator())
 end
+java_overload(UnitLayer, "groundFriction", 0)
 
 
 -- throws Exception
@@ -555,6 +706,7 @@ function UnitLayer:trackTo(reason)
         self.rtsLogHelper:trackTo(self, nextUnvisitedPathGeographicMapCellPosition, dx, dy, reason)
         self:trackToDXY(dx, dy)
 end
+java_overload(UnitLayer, "trackTo", 1, function(java_a1) return true and (java_a1 == nil or type(java_a1) == "string") end)
 
 
 -- throws Exception
@@ -562,6 +714,7 @@ function UnitLayer:trackToDXY(dx, dy)
         local angleOfTarget = 0
         self:trackToDXYTargetAngle(dx, dy, angleOfTarget)
 end
+java_overload(UnitLayer, "trackToDXY", 2, function(java_a1, java_a2) return true and type(java_a1) == "number" and type(java_a2) == "number" end)
 
 
 -- throws Exception
@@ -631,6 +784,7 @@ function UnitLayer:turnTo(dx, dy, targetAngle)
             return false
         end
 end
+java_overload(UnitLayer, "turnTo", 3, function(java_a1, java_a2, java_a3) return true and type(java_a1) == "number" and type(java_a2) == "number" and type(java_a3) == "number" end)
 
 
 function UnitLayer:handleDeltalX(dx, dy)
@@ -645,6 +799,7 @@ function UnitLayer:handleDeltalX(dx, dy)
         end
         self.rtsLogHelper:handle(self, self.movementAngle)
 end
+java_overload(UnitLayer, "handleDeltalX", 2, function(java_a1, java_a2) return true and type(java_a1) == "number" and type(java_a2) == "number" end)
 
 
 function UnitLayer:handleDeltalY(dx, dy)
@@ -659,6 +814,7 @@ function UnitLayer:handleDeltalY(dx, dy)
         end
         self.rtsLogHelper:handle(self, self.movementAngle)
 end
+java_overload(UnitLayer, "handleDeltalY", 2, function(java_a1, java_a2) return true and type(java_a1) == "number" and type(java_a2) == "number" end)
 
 
 -- throws Exception
@@ -677,6 +833,7 @@ function UnitLayer:trackToDXYTargetAngle(dx, dy, targetAngle)
             self:fireOrMove()
         end
 end
+java_overload(UnitLayer, "trackToDXYTargetAngle", 3, function(java_a1, java_a2, java_a3) return true and type(java_a1) == "number" and type(java_a2) == "number" and type(java_a3) == "number" end)
 
 
 -- throws Exception
@@ -696,10 +853,11 @@ function UnitLayer:fireOrMove()
             TrackingEventHandler.getInstance():fireEvent(self:getTrackingEvent())
         end
 end
+java_overload(UnitLayer, "fireOrMove", 0)
 
 
 function UnitLayer:move()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local velocityProperties = self:getVehicleProperties():getVelocityProperties()
             local velocityXScaled = java_int(velocityProperties:getVelocityXBasicDecimalP():getScaled())
             local velocityYScaled = java_int(velocityProperties:getVelocityYBasicDecimalP():getScaled())
@@ -735,9 +893,11 @@ function UnitLayer:move()
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put(self.commonStrings.EXCEPTION, self, "move", e)
         end
 end
+java_overload(UnitLayer, "move", 0)
 
 
 function UnitLayer:allStop()
@@ -745,11 +905,12 @@ function UnitLayer:allStop()
         velocityProperties:getVelocityXBasicDecimalP():setint(0)
         velocityProperties:getVelocityYBasicDecimalP():setint(0)
 end
+java_overload(UnitLayer, "allStop", 0)
 
 
 function UnitLayer:paint(graphics)
         if self:isVisible() then
-            AdvancedRTSGameLayer.paint(self, graphics)
+            java_super(AdvancedRTSGameLayer, "paint", 1)(self, graphics)
             local viewPosition = self:getViewPosition()
             local viewX = viewPosition:getX()
             local viewY = viewPosition:getY()
@@ -763,6 +924,7 @@ function UnitLayer:paint(graphics)
             self.resourceAnimation:paintXY(graphics, viewX, viewY)
         end
 end
+java_overload(UnitLayer, "paint", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "Graphics")) end)
 
 
 -- throws Exception
@@ -770,33 +932,37 @@ function UnitLayer:onBuildingEvent(event)
         local buildingLayer = event:getRtsLayer()
         self:getUnitWaypointBehavior():moveAwayFromBuilding(buildingLayer)
 end
+java_overload(UnitLayer, "onBuildingEvent", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "RTSLayerEvent")) end)
 
 
 function UnitLayer:getVehicleProperties()
         return self.vehicleProperties
 end
+java_overload(UnitLayer, "getVehicleProperties", 0)
 
 
 -- throws Exception
 function UnitLayer:damage(damage, damageType)
-        AdvancedRTSGameLayer.damage(self, damage, damageType)
+        java_super(AdvancedRTSGameLayer, "damage", 2)(self, damage, damageType)
         self.damageFloaters:add(damage)
         if damage > 0 then
             self:getHealthInterface():damage(damage)
         end
 end
+java_overload(UnitLayer, "damage", 2, function(java_a1, java_a2) return true and type(java_a1) == "number" and type(java_a2) == "number" end)
 
 
 -- throws Exception
 function UnitLayer:getDamage(damageType)
         return 0
 end
+java_overload(UnitLayer, "getDamage", 1, function(java_a1) return true and type(java_a1) == "number" end)
 
 
 -- throws Exception
 function UnitLayer:setDestroyed(destroyed)
         self.logUtil:putF(self.commonStrings.START, self, "setDestroyed")
-        AdvancedRTSGameLayer.setDestroyed(self, destroyed)
+        java_super(AdvancedRTSGameLayer, "setDestroyed", 1)(self, destroyed)
         if self:isDestroyed() then
             WaypointEventHandlerFactory.getInstance(self:getGroupInterface()[1]):removeListener(self:getUnitWaypointBehavior())
             TrackingEventHandler.getInstance():removeListener(self)
@@ -819,17 +985,20 @@ function UnitLayer:setDestroyed(destroyed)
             end
         end
 end
+java_overload(UnitLayer, "setDestroyed", 1, function(java_a1) return true and type(java_a1) == "boolean" end)
 
 
 function UnitLayer:getLoad()
         return self.resourceLoad
 end
+java_overload(UnitLayer, "getLoad", 0)
 
 
 -- throws Exception
 function UnitLayer:clearResourceAnimation()
         self.resourceAnimation = NullIndexedAnimationFactory.getFactoryInstance():getInstance(0)
 end
+java_overload(UnitLayer, "clearResourceAnimation", 0)
 
 
 -- throws Exception
@@ -841,11 +1010,13 @@ function UnitLayer:setLoad(resource)
         end
         self.resourceLoad = resource
 end
+java_overload(UnitLayer, "setLoad", 1, function(java_a1) return true and type(java_a1) == "number" end)
 
 
 function UnitLayer:addLoad(resource)
         self.resourceLoad = self.resourceLoad + (resource)
 end
+java_overload(UnitLayer, "addLoad", 1, function(java_a1) return true and type(java_a1) == "number" end)
 
 
 -- throws Exception
@@ -856,6 +1027,7 @@ function UnitLayer:handleCost(ownerLayer)
             self:setLoad(0)
         end
 end
+java_overload(UnitLayer, "handleCost", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "PathFindingLayerInterface")) end)
 
 
 function UnitLayer:createHudPaintable()
@@ -864,17 +1036,20 @@ function UnitLayer:createHudPaintable()
         rtsLayerHudPaintable:setRtsLayer(self)
         return rtsLayerHudPaintable
 end
+java_overload(UnitLayer, "createHudPaintable", 0)
 
 
 function UnitLayer:getHudPaintable()
         local rtsLayerHudPaintable = RTSLayerHudPaintable.getInstance()
         return rtsLayerHudPaintable
 end
+java_overload(UnitLayer, "getHudPaintable", 0)
 
 
 function UnitLayer:getType()
-        return UnitLayer.getStaticType()
+        return 1
 end
+java_overload(UnitLayer, "getType", 0)
 
 
 function UnitLayer.getStaticType()
@@ -885,26 +1060,31 @@ end
 function UnitLayer:getUnitWaypointBehavior()
         return self:getWaypointBehavior()
 end
+java_overload(UnitLayer, "getUnitWaypointBehavior", 0)
 
 
 function UnitLayer:getTrackingEvent()
         return self.trackingEvent
 end
+java_overload(UnitLayer, "getTrackingEvent", 0)
 
 
 function UnitLayer:getCaptionAnimationHelper()
         return self.captionAnimationHelper
 end
+java_overload(UnitLayer, "getCaptionAnimationHelper", 0)
 
 
 function UnitLayer:isSelfUpgradeable()
         return false
 end
+java_overload(UnitLayer, "isSelfUpgradeable", 0)
 
 
 function UnitLayer:getMaxResourceLoad()
         return self.maxResourceLoad
 end
+java_overload(UnitLayer, "getMaxResourceLoad", 0)
 
 
 function UnitLayer.getPartialpositionlist()

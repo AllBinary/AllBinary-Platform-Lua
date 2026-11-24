@@ -13,7 +13,22 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.math
 
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
+local PrimitiveLongSingleton = {}
+package.loaded["org.allbinary.logic.math.PrimitiveLongSingleton"] = PrimitiveLongSingleton
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -36,6 +51,12 @@ local function java_new_array(default, size, ...)
     return array
 end
 
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
+    return array
+end
+
 local function java_idiv(a, b)
     local q = a / b
     if q < 0 then return math.ceil(q) end
@@ -43,31 +64,41 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local PrimitiveLongSingleton = {}
+-- class table PrimitiveLongSingleton is declared before the requires
 PrimitiveLongSingleton.__index = PrimitiveLongSingleton
 PrimitiveLongSingleton.className = "PrimitiveLongSingleton"
+PrimitiveLongSingleton.javaClassName = "org.allbinary.logic.math.PrimitiveLongSingleton"
 
 function PrimitiveLongSingleton:_init_fields()
     self.UNK = {"U", "n", "k"}
-    self.NUMBER_ARRAY = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+    self.NUMBER_ARRAY = {jt = "B", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
     self.NUMBER_CHAR_ARRAY = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
     self.NUMBER_CHAR_ARRAYS = {{"0"}, {"1"}, {"2"}, {"3"}, {"4"}, {"5"}, {"6"}, {"7"}, {"8"}, {"9"}}
     self.ZERO = {self.NUMBER_CHAR_ARRAY[1]}
 end
 
-function PrimitiveLongSingleton.new()
-    local self = setmetatable({}, PrimitiveLongSingleton)
-    self:_init_fields()
+function PrimitiveLongSingleton._jinit(self)
+    PrimitiveLongSingleton._init_fields(self)
     return self
+end
+
+function PrimitiveLongSingleton.new()
+    return PrimitiveLongSingleton._jinit(setmetatable({}, PrimitiveLongSingleton))
 end
 
 
 function PrimitiveLongSingleton.getInstance()
-        return PrimitiveLongSingleton.instance
+        return PrimitiveLongSingleton.instance_f
 end
 
 
@@ -79,10 +110,10 @@ function PrimitiveLongSingleton:getNumberFromChar(numberAsChar)
                 return self.NUMBER_ARRAY[index + 1]
             end
         end
-        error(java_exception("Exception", tostring(StringMaker.new():append("numberAsChar was not in array: "):appendchar(numberAsChar))), 0)
+        error(require("java.lang.Exception").new(tostring(StringMaker.new():append("numberAsChar was not in array: "):appendchar(numberAsChar))), 0)
 end
 
-PrimitiveLongSingleton.instance = PrimitiveLongSingleton.new()
+PrimitiveLongSingleton.instance_f = PrimitiveLongSingleton.new()
 
 return PrimitiveLongSingleton
 

@@ -13,22 +13,44 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.graphics.form.item
 
+local CommandTextItemArrayFactory = {}
+package.loaded["org.allbinary.graphics.form.item.CommandTextItemArrayFactory"] = CommandTextItemArrayFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Command = require("javax.microedition.lcdui.Command")
 -- local ImageItem = require("javax.microedition.lcdui.ImageItem")
-local BasicColor = require("org.allbinary.graphics.color.BasicColor")
-local DisplayInfoSingleton = require("org.allbinary.graphics.displayable.DisplayInfoSingleton")
-local ScreenInfo = require("org.allbinary.graphics.form.ScreenInfo")
-local VectorUtil = require("org.allbinary.logic.VectorUtil")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local Visitor = require("org.allbinary.logic.util.visitor.Visitor")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
+local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
+local DisplayInfoSingleton = java_lazy("org.allbinary.graphics.displayable.DisplayInfoSingleton")
+local ScreenInfo = java_lazy("org.allbinary.graphics.form.ScreenInfo")
+local VectorUtil = java_lazy("org.allbinary.logic.VectorUtil")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local Visitor = java_lazy("org.allbinary.logic.util.visitor.Visitor")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local CommandTextItem = java_lazy("org.allbinary.graphics.form.item.CommandTextItem")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -39,24 +61,36 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local CommandTextItemArrayFactory = {}
+-- class table CommandTextItemArrayFactory is declared before the requires
 CommandTextItemArrayFactory.__index = CommandTextItemArrayFactory
 CommandTextItemArrayFactory.className = "CommandTextItemArrayFactory"
+CommandTextItemArrayFactory.javaClassName = "org.allbinary.graphics.form.item.CommandTextItemArrayFactory"
 
 function CommandTextItemArrayFactory:_init_fields()
     self.list = BasicArrayListD.new()
-    self.visitorInterface = nil
+    if self.visitorInterface == nil then self.visitorInterface = nil end
 end
 
 
-function CommandTextItemArrayFactory.new(visitorInterface)
-    local self = setmetatable({}, CommandTextItemArrayFactory)
-    self:_init_fields()
+function CommandTextItemArrayFactory._jinit(self, visitorInterface)
+    CommandTextItemArrayFactory._init_fields(self)
         self.visitorInterface = visitorInterface
+    return self
+end
+
+function CommandTextItemArrayFactory.new(...)
+    local self = setmetatable({}, CommandTextItemArrayFactory)
+    CommandTextItemArrayFactory._jinit(self, ...)
     return self
 end
 

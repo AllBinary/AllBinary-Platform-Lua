@@ -13,11 +13,26 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.advertisement.campaign
 
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local AdvertisementInterface = require("org.allbinary.business.advertisement.AdvertisementInterface")
-local AdvertisementsInterface = require("org.allbinary.business.advertisement.AdvertisementsInterface")
-local AdvertisementSearchInterface = require("org.allbinary.business.advertisement.search.AdvertisementSearchInterface")
+local AdvertisementCampaigns = {}
+package.loaded["org.allbinary.business.advertisement.campaign.AdvertisementCampaigns"] = AdvertisementCampaigns
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local AdvertisementInterface = java_lazy("org.allbinary.business.advertisement.AdvertisementInterface")
+local AdvertisementsInterface = java_lazy("org.allbinary.business.advertisement.AdvertisementsInterface")
+local AdvertisementSearchInterface = java_lazy("org.allbinary.business.advertisement.search.AdvertisementSearchInterface")
 local AdvertisementCampaignsInterface = require("org.allbinary.business.advertisement.campaign.AdvertisementCampaignsInterface")
 
 local function java_idiv(a, b)
@@ -27,23 +42,37 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local AdvertisementCampaigns = {}
+-- class table AdvertisementCampaigns is declared before the requires
 AdvertisementCampaigns.__index = AdvertisementCampaigns
 AdvertisementCampaigns.className = "AdvertisementCampaigns"
+AdvertisementCampaigns.javaClassName = "org.allbinary.business.advertisement.campaign.AdvertisementCampaigns"
+AdvertisementCampaigns.java_implements = " AdvertisementCampaignsInterface "
+AdvertisementCampaigns.java_interfaces = function() return {AdvertisementCampaignsInterface} end
 
 function AdvertisementCampaigns:_init_fields()
-    self.advertisementsVector = nil
+    if self.advertisementsVector == nil then self.advertisementsVector = nil end
 end
 
 
-function AdvertisementCampaigns.new(vector)
-    local self = setmetatable({}, AdvertisementCampaigns)
-    self:_init_fields()
+function AdvertisementCampaigns._jinit(self, vector)
+    AdvertisementCampaigns._init_fields(self)
         self.advertisementsVector = self.advertisementsVector
+    return self
+end
+
+function AdvertisementCampaigns.new(...)
+    local self = setmetatable({}, AdvertisementCampaigns)
+    AdvertisementCampaigns._jinit(self, ...)
     return self
 end
 

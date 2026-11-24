@@ -1,8 +1,23 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.control.crypt.file
 
-local AbPath = require("org.allbinary.logic.io.path.AbPath")
-local Document = require("org.w3c.dom.Document")
+local CryptFileWriter = {}
+package.loaded["org.allbinary.logic.control.crypt.file.CryptFileWriter"] = CryptFileWriter
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local AbPath = java_lazy("org.allbinary.logic.io.path.AbPath")
+local Document = java_lazy("org.w3c.dom.Document")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -11,17 +26,29 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local CryptFileWriter = {}
+-- class table CryptFileWriter is declared before the requires
 CryptFileWriter.__index = CryptFileWriter
 CryptFileWriter.className = "CryptFileWriter"
+CryptFileWriter.javaClassName = "org.allbinary.logic.control.crypt.file.CryptFileWriter"
 
 
-function CryptFileWriter.new(decryptedExtension, encryptedExtension)
+function CryptFileWriter._jinit(self, decryptedExtension, encryptedExtension)
+    return self
+end
+
+function CryptFileWriter.new(...)
     local self = setmetatable({}, CryptFileWriter)
+    CryptFileWriter._jinit(self, ...)
     return self
 end
 

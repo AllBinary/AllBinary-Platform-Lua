@@ -13,18 +13,33 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.input.automation.module.osgi
 
-local BundleActivator = require("org.osgi.framework.BundleActivator")
-local BundleContext = require("org.osgi.framework.BundleContext")
-local ServiceFactory = require("org.osgi.framework.ServiceFactory")
-local ServiceReference = require("org.osgi.framework.ServiceReference")
-local InputAutomationModuleServiceInterface = require("bundle.input.automation.module.InputAutomationModuleServiceInterface")
-local InputAutomationConfigurationModuleChangeListener = require("bundle.input.automation.module.configuration.InputAutomationConfigurationModuleChangeListener")
-local InputAutomationConfigurationModuleChangeEvent = require("org.allbinary.input.automation.configuration.InputAutomationConfigurationModuleChangeEvent")
-local InputAutomationConfigurationUtil = require("org.allbinary.input.automation.configuration.InputAutomationConfigurationUtil")
-local InputAutomationModuleFactoryInterface = require("org.allbinary.input.automation.module.InputAutomationModuleFactoryInterface")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local OSGIActivatorUtil = require("org.allbinary.osgi.OSGIActivatorUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local InputAutomationModuleBundleActivator = {}
+package.loaded["org.allbinary.input.automation.module.osgi.InputAutomationModuleBundleActivator"] = InputAutomationModuleBundleActivator
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local BundleActivator = java_lazy("org.osgi.framework.BundleActivator")
+local BundleContext = java_lazy("org.osgi.framework.BundleContext")
+local ServiceFactory = java_lazy("org.osgi.framework.ServiceFactory")
+local ServiceReference = java_lazy("org.osgi.framework.ServiceReference")
+local InputAutomationModuleServiceInterface = java_lazy("bundle.input.automation.module.InputAutomationModuleServiceInterface")
+local InputAutomationConfigurationModuleChangeListener = java_lazy("bundle.input.automation.module.configuration.InputAutomationConfigurationModuleChangeListener")
+local InputAutomationConfigurationModuleChangeEvent = java_lazy("org.allbinary.input.automation.configuration.InputAutomationConfigurationModuleChangeEvent")
+local InputAutomationConfigurationUtil = java_lazy("org.allbinary.input.automation.configuration.InputAutomationConfigurationUtil")
+local InputAutomationModuleFactoryInterface = java_lazy("org.allbinary.input.automation.module.InputAutomationModuleFactoryInterface")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local OSGIActivatorUtil = java_lazy("org.allbinary.osgi.OSGIActivatorUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -46,33 +61,47 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local InputAutomationModuleBundleActivator = {}
+-- class table InputAutomationModuleBundleActivator is declared before the requires
 InputAutomationModuleBundleActivator.__index = InputAutomationModuleBundleActivator
 InputAutomationModuleBundleActivator.className = "InputAutomationModuleBundleActivator"
+InputAutomationModuleBundleActivator.javaClassName = "org.allbinary.input.automation.module.osgi.InputAutomationModuleBundleActivator"
+InputAutomationModuleBundleActivator.java_implements = " BundleActivator "
+InputAutomationModuleBundleActivator.java_interfaces = function() return {BundleActivator} end
 
 function InputAutomationModuleBundleActivator:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
-    self.inputAutomationModuleInterface = nil
-    self.serviceFactory = nil
+    if self.inputAutomationModuleInterface == nil then self.inputAutomationModuleInterface = nil end
+    if self.serviceFactory == nil then self.serviceFactory = nil end
 end
 
 
-function InputAutomationModuleBundleActivator.new()
-    local self = setmetatable({}, InputAutomationModuleBundleActivator)
-    self:_init_fields()
+function InputAutomationModuleBundleActivator._jinit(self)
+    InputAutomationModuleBundleActivator._init_fields(self)
         self:init()
+    return self
+end
+
+function InputAutomationModuleBundleActivator.new(...)
+    local self = setmetatable({}, InputAutomationModuleBundleActivator)
+    InputAutomationModuleBundleActivator._jinit(self, ...)
     return self
 end
 
 
 -- throws Exception
 function InputAutomationModuleBundleActivator:init()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
@@ -82,7 +111,7 @@ function InputAutomationModuleBundleActivator:getInputAutomationConfigurationMod
         if serviceReference ~= nil then
             local inputAutomationConfigurationModuleChangeListener = context:getService(serviceReference)
             if inputAutomationConfigurationModuleChangeListener == nil then
-                error(java_exception("Exception", "No Service For ServiceReference"), 0)
+                error(require("java.lang.Exception").new("No Service For ServiceReference"), 0)
             end
             return inputAutomationConfigurationModuleChangeListener
         else
@@ -93,7 +122,7 @@ end
 
 
 function InputAutomationModuleBundleActivator:addModules(context)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             self.logUtil:putF(self.commonStrings.START, self, "addModules")
             local inputAutomationConfigurationModuleChangeListener = self:getInputAutomationConfigurationModuleChangeListener(context)
             if inputAutomationConfigurationModuleChangeListener ~= nil then
@@ -105,6 +134,7 @@ function InputAutomationModuleBundleActivator:addModules(context)
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:putF(self.commonStrings.EXCEPTION, self, "addModules")
         end
 end
@@ -117,7 +147,7 @@ end
 
 
 function InputAutomationModuleBundleActivator:removeModules(context)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             self.logUtil:putF(self.commonStrings.START, self, "removeModules")
             local inputAutomationConfigurationModuleChangeListener = self:getInputAutomationConfigurationModuleChangeListener(context)
             if inputAutomationConfigurationModuleChangeListener ~= nil then
@@ -129,6 +159,7 @@ function InputAutomationModuleBundleActivator:removeModules(context)
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:putF(self.commonStrings.EXCEPTION, self, "removeModules")
         end
 end

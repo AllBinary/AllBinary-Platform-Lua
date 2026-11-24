@@ -13,21 +13,37 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.configuration.feature
 
+local GameFeatureFormUtil = {}
+package.loaded["org.allbinary.game.configuration.feature.GameFeatureFormUtil"] = GameFeatureFormUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local ChoiceGroup = require("javax.microedition.lcdui.ChoiceGroup")
 -- local Item = require("javax.microedition.lcdui.Item")
 -- local NullImage = require("javax.microedition.lcdui.NullImage")
-local GameConfigurationGauge = require("org.allbinary.game.configuration.GameConfigurationGauge")
-local GameConfigurationUtil = require("org.allbinary.game.configuration.GameConfigurationUtil")
-local CommandForm = require("org.allbinary.graphics.displayable.screen.CommandForm")
-local MEUtil = require("org.allbinary.logic.MEUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local ABHashtable = require("org.allbinary.util.ABHashtable")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local HashtableUtil = require("org.allbinary.util.HashtableUtil")
+local MIDPUtil = java_lazy("org.allbinary.MIDPUtil")
+local GameConfigurationGauge = java_lazy("org.allbinary.game.configuration.GameConfigurationGauge")
+local GameConfigurationUtil = java_lazy("org.allbinary.game.configuration.GameConfigurationUtil")
+local CommandForm = java_lazy("org.allbinary.graphics.displayable.screen.CommandForm")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local HashtableUtil = java_lazy("org.allbinary.util.HashtableUtil")
 
 local function java_instanceof(object, class)
+    class = java_real(class)
     local metatable = getmetatable(object)
     while metatable do
         if metatable == class then return true end
@@ -44,28 +60,38 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local GameFeatureFormUtil = {}
+-- class table GameFeatureFormUtil is declared before the requires
 GameFeatureFormUtil.__index = GameFeatureFormUtil
 GameFeatureFormUtil.className = "GameFeatureFormUtil"
+GameFeatureFormUtil.javaClassName = "org.allbinary.game.configuration.feature.GameFeatureFormUtil"
 
 function GameFeatureFormUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
-    self.meUtil = MEUtil.getInstance()
+    self.meUtil = MIDPUtil.getInstance()
+end
+
+function GameFeatureFormUtil._jinit(self)
+    GameFeatureFormUtil._init_fields(self)
+    return self
 end
 
 function GameFeatureFormUtil.new()
-    local self = setmetatable({}, GameFeatureFormUtil)
-    self:_init_fields()
-    return self
+    return GameFeatureFormUtil._jinit(setmetatable({}, GameFeatureFormUtil))
 end
 
 
 function GameFeatureFormUtil.getInstance()
-        return GameFeatureFormUtil.instance
+        return GameFeatureFormUtil.instance_f
 end
 
 
@@ -119,7 +145,7 @@ function GameFeatureFormUtil:setDefault(form)
         end
 end
 
-GameFeatureFormUtil.instance = GameFeatureFormUtil.new()
+GameFeatureFormUtil.instance_f = GameFeatureFormUtil.new()
 
 return GameFeatureFormUtil
 

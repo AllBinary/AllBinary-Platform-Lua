@@ -13,14 +13,31 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.init
 
-local ChangedGameFeatureListener = require("org.allbinary.game.configuration.event.ChangedGameFeatureListener")
-local GameInitializedEvent = require("org.allbinary.game.configuration.event.GameInitializedEvent")
-local GameInitializedEventHandler = require("org.allbinary.game.configuration.event.GameInitializedEventHandler")
-local Features = require("org.allbinary.game.configuration.feature.Features")
-local MainFeatureFactory = require("org.allbinary.game.configuration.feature.MainFeatureFactory")
-local ResourceLoadingLevelFactory = require("org.allbinary.game.resource.ResourceLoadingLevelFactory")
-local MyCanvas = require("org.allbinary.graphics.displayable.MyCanvas")
-local AbeClientInformationInterface = require("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
+local GameInitializationUtil = {}
+package.loaded["org.allbinary.game.init.GameInitializationUtil"] = GameInitializationUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local ChangedGameFeatureListener = java_lazy("org.allbinary.game.configuration.event.ChangedGameFeatureListener")
+local GameInitializedEvent = java_lazy("org.allbinary.game.configuration.event.GameInitializedEvent")
+local GameInitializedEventHandler = java_lazy("org.allbinary.game.configuration.event.GameInitializedEventHandler")
+local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
+local MainFeatureFactory = java_lazy("org.allbinary.game.configuration.feature.MainFeatureFactory")
+local ResourceLoadingLevelFactory = java_lazy("org.allbinary.game.resource.ResourceLoadingLevelFactory")
+local MyCanvas = java_lazy("org.allbinary.graphics.displayable.MyCanvas")
+local AbeClientInformationInterface = java_lazy("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
+local BasicBuildGameInitializerFactory = java_lazy("org.allbinary.game.init.BasicBuildGameInitializerFactory")
+local GameInitializationInterface = java_lazy("org.allbinary.game.init.GameInitializationInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -42,22 +59,32 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local GameInitializationUtil = {}
+-- class table GameInitializationUtil is declared before the requires
 GameInitializationUtil.__index = GameInitializationUtil
 GameInitializationUtil.className = "GameInitializationUtil"
+GameInitializationUtil.javaClassName = "org.allbinary.game.init.GameInitializationUtil"
 
 function GameInitializationUtil:_init_fields()
     self.EVENT = GameInitializedEvent.new(self)
 end
 
-function GameInitializationUtil.new()
-    local self = setmetatable({}, GameInitializationUtil)
-    self:_init_fields()
+function GameInitializationUtil._jinit(self)
+    GameInitializationUtil._init_fields(self)
     return self
+end
+
+function GameInitializationUtil.new()
+    return GameInitializationUtil._jinit(setmetatable({}, GameInitializationUtil))
 end
 
 
@@ -74,7 +101,7 @@ function GameInitializationUtil:initDemo(abeClientInformation, canvas, gameIniti
                 gameInitializationInterface:init(abeClientInformation, canvas:getCustomCommandListener(), resourceLoadingLevelFactory.LOAD_EARLY:getLevel())
                 self.EVENT:setResourceLoadingLevel(resourceLoadingLevelFactory.LOAD_EARLY)
             else
-                error(java_exception("Exception", "No Loading Feature Available"), 0)
+                error(require("java.lang.Exception").new("No Loading Feature Available"), 0)
             end
             GameInitializedEventHandler.getInstance():fireEvent(self.EVENT)
         end
@@ -95,10 +122,10 @@ end
 
 
 function GameInitializationUtil.getInstance()
-        return GameInitializationUtil.instance
+        return GameInitializationUtil.instance_f
 end
 
-GameInitializationUtil.instance = GameInitializationUtil.new()
+GameInitializationUtil.instance_f = GameInitializationUtil.new()
 
 return GameInitializationUtil
 

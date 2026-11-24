@@ -13,9 +13,26 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.control.workflow
 
+local WorkFlowWrapper = {}
+package.loaded["org.allbinary.logic.control.workflow.WorkFlowWrapper"] = WorkFlowWrapper
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Method = require("java.lang.reflect.Method")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local WorkFlowInterface = require("org.allbinary.logic.control.workflow.WorkFlowInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
@@ -38,25 +55,39 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local WorkFlowWrapper = {}
+-- class table WorkFlowWrapper is declared before the requires
 WorkFlowWrapper.__index = WorkFlowWrapper
 WorkFlowWrapper.className = "WorkFlowWrapper"
+WorkFlowWrapper.javaClassName = "org.allbinary.logic.control.workflow.WorkFlowWrapper"
+WorkFlowWrapper.java_implements = " WorkFlowInterface "
+WorkFlowWrapper.java_interfaces = function() return {WorkFlowInterface} end
 
 function WorkFlowWrapper:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
-    self.anyType = nil
+    if self.anyType == nil then self.anyType = nil end
 end
 
 
-function WorkFlowWrapper.new(anyType)
-    local self = setmetatable({}, WorkFlowWrapper)
-    self:_init_fields()
+function WorkFlowWrapper._jinit(self, anyType)
+    WorkFlowWrapper._init_fields(self)
         self.anyType = anyType
+    return self
+end
+
+function WorkFlowWrapper.new(...)
+    local self = setmetatable({}, WorkFlowWrapper)
+    WorkFlowWrapper._jinit(self, ...)
     return self
 end
 
@@ -68,58 +99,64 @@ end
 
 -- throws Exception
 function WorkFlowWrapper:getName()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local helperClass = getmetatable(self.anyType)
             local method = helperClass:getMethod("getName", nil)
             local result = method:invoke(self.anyType, nil)
-            return result
+            do return "__jreturn", result end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local error = "Reflection Exception"
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLTAGSERROR) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "getName()", e)
             end
-            error(java_exception("Exception", error), 0)
+            error(require("java.lang.Exception").new(error), 0)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
 -- throws Exception
 function WorkFlowWrapper:getStoreName()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local helperClass = getmetatable(self.anyType)
             local method = helperClass:getMethod("getStoreName", nil)
             local result = method:invoke(self.anyType, nil)
-            return result
+            do return "__jreturn", result end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local error = "Reflection Exception"
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLTAGSERROR) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "getStoreName()", e)
             end
-            error(java_exception("Exception", error), 0)
+            error(require("java.lang.Exception").new(error), 0)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
 -- throws Exception
 function WorkFlowWrapper:process()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local helperClass = getmetatable(self.anyType)
             local method = helperClass:getMethod(self.commonStrings.PROCESS, nil)
             local result = method:invoke(self.anyType, nil)
-            return result
+            do return "__jreturn", result end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local error = "Reflection Exception"
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLTAGSERROR) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.PROCESS, e)
             end
-            error(java_exception("Exception", error), 0)
+            error(require("java.lang.Exception").new(error), 0)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 return WorkFlowWrapper

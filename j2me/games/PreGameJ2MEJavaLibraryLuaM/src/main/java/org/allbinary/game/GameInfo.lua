@@ -13,13 +13,34 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game
 
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local CommonLabels = require("org.allbinary.string.CommonLabels")
-local ABHashtable = require("org.allbinary.util.ABHashtable")
+local GameInfo = {}
+package.loaded["org.allbinary.game.GameInfo"] = GameInfo
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
+local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
+local GameInfoData = java_lazy("org.allbinary.game.GameInfoData")
+local GameMode = java_lazy("org.allbinary.game.GameMode")
+local GameType = java_lazy("org.allbinary.game.GameType")
+local GameTypeFactory = java_lazy("org.allbinary.game.GameTypeFactory")
+local PlayerType = java_lazy("org.allbinary.game.PlayerType")
+local PlayerTypesFactory = java_lazy("org.allbinary.game.PlayerTypesFactory")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -28,36 +49,48 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local GameInfo = {}
+-- class table GameInfo is declared before the requires
 GameInfo.__index = GameInfo
 GameInfo.className = "GameInfo"
+GameInfo.javaClassName = "org.allbinary.game.GameInfo"
 
 function GameInfo:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.gameInfoData = GameInfoData.getInstance()
-    self.gameType = nil
-    self.gameMode = nil
-    self.playerType = nil
-    self.highestLevel = 0
-    self.currentLevel = nil
+    if self.gameType == nil then self.gameType = nil end
+    if self.gameMode == nil then self.gameMode = nil end
+    if self.playerType == nil then self.playerType = nil end
+    if self.highestLevel == nil then self.highestLevel = 0 end
+    if self.currentLevel == nil then self.currentLevel = nil end
     self.NEW_LEVEL = "New Level: "
     self.SET_CURRENT_LEVEL = "setCurrentLevel"
     self.NEXT_GAME_LEVEL = "nextGameLevel"
 end
 
 
-function GameInfo.new(gameType, gameMode, playerType, highestLevel, currentLevel)
-    local self = setmetatable({}, GameInfo)
-    self:_init_fields()
+function GameInfo._jinit(self, gameType, gameMode, playerType, highestLevel, currentLevel)
+    GameInfo._init_fields(self)
         self.gameType = gameType
         self.gameMode = gameMode
         self:setHighestLevel(highestLevel)
         self.currentLevel = currentLevel
         self.playerType = playerType
+    return self
+end
+
+function GameInfo.new(...)
+    local self = setmetatable({}, GameInfo)
+    GameInfo._jinit(self, ...)
     return self
 end
 

@@ -13,8 +13,23 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.globals
 
-local AbPathData = require("org.allbinary.logic.io.path.AbPathData")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
+local FREEBLISKET_PATH_GLOBALS = {}
+package.loaded["org.allbinary.globals.FREEBLISKET_PATH_GLOBALS"] = FREEBLISKET_PATH_GLOBALS
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local AbPathData = java_lazy("org.allbinary.logic.io.path.AbPathData")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -23,38 +38,44 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local FREEBLISKET_PATH_GLOBALS = {}
+-- class table FREEBLISKET_PATH_GLOBALS is declared before the requires
 FREEBLISKET_PATH_GLOBALS.__index = FREEBLISKET_PATH_GLOBALS
 FREEBLISKET_PATH_GLOBALS.className = "FREEBLISKET_PATH_GLOBALS"
+FREEBLISKET_PATH_GLOBALS.javaClassName = "org.allbinary.globals.FREEBLISKET_PATH_GLOBALS"
 
 function FREEBLISKET_PATH_GLOBALS:_init_fields()
-    self.INSTALLPATH = nil
-    self.XSLPATH = nil
+    if self.INSTALLPATH == nil then self.INSTALLPATH = nil end
+    if self.XSLPATH == nil then self.XSLPATH = nil end
     self.TEMPLATEPATH = "template" .. tostring(AbPathData.getInstance().SEPARATOR)
     self.STYLEPATH = self.TEMPLATEPATH .. "style" .. tostring(AbPathData.getInstance().SEPARATOR)
     self.THEMEPATH = self.STYLEPATH .. "theme" .. tostring(AbPathData.getInstance().SEPARATOR)
     self.DBINITPATH = tostring(self.PATH_GLOBALS:getInstance().INIT_PATH) .. "db" .. tostring(AbPathData.getInstance().SEPARATOR)
     self.LINEDATAPATH = tostring(self.PATH_GLOBALS:getInstance().INIT_PATH) .. "lineData" .. tostring(AbPathData.getInstance().SEPARATOR)
-    self.CONFIGURATIONPATH = nil
-    self.USERCONFIGURATIONPATH = nil
-    self.CONTEXTCONFIGURATIONPATH = nil
+    if self.CONFIGURATIONPATH == nil then self.CONFIGURATIONPATH = nil end
+    if self.USERCONFIGURATIONPATH == nil then self.USERCONFIGURATIONPATH = nil end
+    if self.CONTEXTCONFIGURATIONPATH == nil then self.CONTEXTCONFIGURATIONPATH = nil end
     self.LICENSEERRORPAGE = "LicensingError.jsp"
     self.ERRORPAGE = "Error.jsp"
 end
 
 
 function FREEBLISKET_PATH_GLOBALS.getInstance()
-        return self.FREEBLISKET_PATH_GLOBALS.instance
+        return FREEBLISKET_PATH_GLOBALS.instance_f
 end
 
 
-function FREEBLISKET_PATH_GLOBALS.new()
-    local self = setmetatable({}, FREEBLISKET_PATH_GLOBALS)
-    self:_init_fields()
+function FREEBLISKET_PATH_GLOBALS._jinit(self)
+    FREEBLISKET_PATH_GLOBALS._init_fields(self)
         local stringBuffer = StringMaker.new()
         stringBuffer:append("install")
         stringBuffer:append(AbPathData.getInstance().SEPARATOR)
@@ -83,7 +104,13 @@ function FREEBLISKET_PATH_GLOBALS.new()
     return self
 end
 
-FREEBLISKET_PATH_GLOBALS.instance = FREEBLISKET_PATH_GLOBALS.new()
+function FREEBLISKET_PATH_GLOBALS.new(...)
+    local self = setmetatable({}, FREEBLISKET_PATH_GLOBALS)
+    FREEBLISKET_PATH_GLOBALS._jinit(self, ...)
+    return self
+end
+
+FREEBLISKET_PATH_GLOBALS.instance_f = FREEBLISKET_PATH_GLOBALS.new()
 
 return FREEBLISKET_PATH_GLOBALS
 

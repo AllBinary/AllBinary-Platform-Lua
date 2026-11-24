@@ -13,10 +13,26 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.combat.damage
 
-local CollidableCompositeLayer = require("org.allbinary.game.layer.CollidableCompositeLayer")
-local CollidableDestroyableDamageableLayer = require("org.allbinary.game.layer.special.CollidableDestroyableDamageableLayer")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
+local DamageUtil = {}
+package.loaded["org.allbinary.game.combat.damage.DamageUtil"] = DamageUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local CollidableCompositeLayer = java_lazy("org.allbinary.game.layer.CollidableCompositeLayer")
+local CollidableDestroyableDamageableLayer = java_lazy("org.allbinary.game.layer.special.CollidableDestroyableDamageableLayer")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local DamageableInterface = java_lazy("org.allbinary.game.combat.damage.DamageableInterface")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -25,13 +41,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local DamageUtil = {}
+-- class table DamageUtil is declared before the requires
 DamageUtil.__index = DamageUtil
 DamageUtil.className = "DamageUtil"
+DamageUtil.javaClassName = "org.allbinary.game.combat.damage.DamageUtil"
 
 function DamageUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -40,13 +63,18 @@ end
 
 
 function DamageUtil.getInstance()
-        return DamageUtil.instance
+        return DamageUtil.instance_f
 end
 
 
-function DamageUtil.new()
+function DamageUtil._jinit(self)
+    DamageUtil._init_fields(self)
+    return self
+end
+
+function DamageUtil.new(...)
     local self = setmetatable({}, DamageUtil)
-    self:_init_fields()
+    DamageUtil._jinit(self, ...)
     return self
 end
 
@@ -73,7 +101,7 @@ function DamageUtil:debugDamage(collidableInterfaceCompositeInterface1, collidab
         end
 end
 
-DamageUtil.instance = DamageUtil.new()
+DamageUtil.instance_f = DamageUtil.new()
 
 return DamageUtil
 

@@ -13,25 +13,43 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.communication.sql
 
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
+local AbSqlTableUtil = {}
+package.loaded["org.allbinary.logic.communication.sql.AbSqlTableUtil"] = AbSqlTableUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 -- local ResultSet = require("java.sql.ResultSet")
 -- local ResultSetMetaData = require("java.sql.ResultSetMetaData")
--- local Calendar = require("java.util.Calendar")
-local Portion = require("org.allbinary.business.installer.Portion")
-local AbFileOutputStream = require("org.allbinary.logic.io.AbFileOutputStream")
-local BufferedLineReader = require("org.allbinary.logic.io.BufferedLineReader")
-local StreamUtil = require("org.allbinary.logic.io.StreamUtil")
-local AbFile = require("org.allbinary.logic.io.file.AbFile")
-local FileUtil = require("org.allbinary.logic.io.file.FileUtil")
-local Directory = require("org.allbinary.logic.io.file.directory.Directory")
-local AbPath = require("org.allbinary.logic.io.path.AbPath")
-local AbPathData = require("org.allbinary.logic.io.path.AbPathData")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local PATH_GLOBALS = require("org.allbinary.globals.PATH_GLOBALS")
+local Calendar = java_lazy("java.util.Calendar")
+local Portion = java_lazy("org.allbinary.business.installer.Portion")
+local AbFileOutputStream = java_lazy("org.allbinary.logic.io.AbFileOutputStream")
+local BufferedLineReader = java_lazy("org.allbinary.logic.io.BufferedLineReader")
+local StreamUtil = java_lazy("org.allbinary.logic.io.StreamUtil")
+local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
+local FileUtil = java_lazy("org.allbinary.logic.io.file.FileUtil")
+local Directory = java_lazy("org.allbinary.logic.io.file.directory.Directory")
+local AbPath = java_lazy("org.allbinary.logic.io.path.AbPath")
+local AbPathData = java_lazy("org.allbinary.logic.io.path.AbPathData")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local PATH_GLOBALS = java_lazy("org.allbinary.globals.PATH_GLOBALS")
 -- local OutputStream = require("java.io.OutputStream")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local URLGLOBALS = java_lazy("org.allbinary.globals.URLGLOBALS")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -40,13 +58,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local AbSqlTableUtil = {}
+-- class table AbSqlTableUtil is declared before the requires
 AbSqlTableUtil.__index = AbSqlTableUtil
 AbSqlTableUtil.className = "AbSqlTableUtil"
+AbSqlTableUtil.javaClassName = "org.allbinary.logic.communication.sql.AbSqlTableUtil"
 
 function AbSqlTableUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -77,22 +102,25 @@ function AbSqlTableUtil:_init_fields()
     self.sqlStrings = SqlStrings.getInstance()
 end
 
-function AbSqlTableUtil.new()
-    local self = setmetatable({}, AbSqlTableUtil)
-    self:_init_fields()
+function AbSqlTableUtil._jinit(self)
+    AbSqlTableUtil._init_fields(self)
     return self
+end
+
+function AbSqlTableUtil.new()
+    return AbSqlTableUtil._jinit(setmetatable({}, AbSqlTableUtil))
 end
 
 
 function AbSqlTableUtil.getInstance()
-        return AbSqlTableUtil.instance
+        return AbSqlTableUtil.instance_f
 end
 
 
 function AbSqlTableUtil:getOutputStream(backupPath, tableName)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local fileName = tableName .. self.EXTENSION
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGING) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                 self.logUtil:putF(self.SAVING .. tableName, self, self.METHOD_GET_OUTPUT_STREAM)
             end
             local backupFilePath = AbPath.new(backupPath, fileName)
@@ -103,20 +131,22 @@ function AbSqlTableUtil:getOutputStream(backupPath, tableName)
             end
             backupFile:createNewFile()
             local outputStream = AbFileOutputStream.new(backupFile)
-            return outputStream
+            do return "__jreturn", outputStream end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGINGERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
                 self.logUtil:put("Create File", self, self.METHOD_GET_OUTPUT_STREAM, e)
             end
             return nil
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
 function AbSqlTableUtil:backupFile(path, backupPath, tableName)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local calendar = Calendar.getInstance()
             local timeLong = calendar:getTimeInMillis()
             local time = tostring(timeLong)
@@ -126,7 +156,7 @@ function AbSqlTableUtil:backupFile(path, backupPath, tableName)
             stringBuffer:append(AbPathData.getInstance().SEPARATOR)
             stringBuffer:append(time)
             local backupAbPath = AbPath.new(tostring(stringBuffer))
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGING) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                 stringBuffer:delete(0, stringBuffer:length())
                 stringBuffer:append(self.SAVING_BACKUP_PATH)
                 stringBuffer:append(backupAbPath:toFileSystemString())
@@ -138,15 +168,17 @@ function AbSqlTableUtil:backupFile(path, backupPath, tableName)
             local backupFileBak = AbFile.createAbFile(backupAbPath:toFileSystemString())
             backupFileBak:createNewFile()
             FileUtil.getInstance():copy(path, backupAbPath)
-            return true
+            do return "__jreturn", true end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGINGERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, self.METHOD_BACKUP_FILE, e)
             end
             return false
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
@@ -174,19 +206,19 @@ end
 
 function AbSqlTableUtil:backupTable(abSqlTable)
         local tableName = abSqlTable:getTableName()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local count = 0
             local sqlStatement = tostring(self.sqlStrings.SELECT_ALL_FROM) .. tableName
-            local path = org.allbinary.globals.URLGLOBALS:getMainPath() + self.PATH_GLOBALS:getInstance().BACKUP_PATH
+            local path = URLGLOBALS.getMainPath() + PATH_GLOBALS.getInstance().BACKUP_PATH
             if not Directory.create(AbPath.new(path)) then
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGING) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                     self.logUtil:putF(self.ERROR_CREATING .. tostring(path), self, self.METHOD_BACKUP_TABLE)
                 end
             end
             local rset = abSqlTable:executeSQLStatement(sqlStatement)
             local rsmd = rset:getMetaData()
             local colNum = rsmd:getColumnCount()
-            local QUERY_START = tostring(StringBuilder.new():append(self.sqlStrings.INSERT_INTO):append(tableName):append(self.sqlStrings.VALUES))
+            local QUERY_START = tostring(require("java.lang.StringBuilder").new():append(self.sqlStrings.INSERT_INTO):append(tableName):append(self.sqlStrings.VALUES))
             local stringBuffer = StringMaker.new()
             local outputStream = self:getOutputStream(path, tableName)
             while rset:next() do
@@ -200,32 +232,34 @@ function AbSqlTableUtil:backupTable(abSqlTable)
                 stringBuffer:append(rset:getString(colNum))
                 stringBuffer:append(self.END)
                 local sqlStatementLine = tostring(stringBuffer)
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGING) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                     self.logUtil:putF(self.APPENDING .. sqlStatementLine, self, self.METHOD_BACKUP_TABLE)
                 end
                 outputStream:write({string.byte(sqlStatementLine, 1, -1)})
             end
             StreamUtil.getInstance():close(outputStream)
-            return self.TABLE_LABEL .. tableName .. self.BACKUP_SUCCESS
+            do return "__jreturn", self.TABLE_LABEL .. tableName .. self.BACKUP_SUCCESS end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGINGERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
                 self.logUtil:put("Backup Table Failed\nSQL Statement", self, self.METHOD_BACKUP_TABLE, e)
             end
             return self.TABLE_LABEL .. tableName .. " Backup Failed"
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
 function AbSqlTableUtil:restoreTable(abSqlTable, portion)
         local tableName = abSqlTable:getTableName()
-        local try_ok, try_error = pcall(function()
-            local path = org.allbinary.globals.URLGLOBALS:getMainPath() + self.PATH_GLOBALS:getInstance().BACKUP_PATH
+        local try_ok, try_error, try_value = pcall(function()
+            local path = URLGLOBALS.getMainPath() + PATH_GLOBALS.getInstance().BACKUP_PATH
             local current = math.tointeger(portion:getCurrent() // 1)
             if current == 0 then
                 if Directory.create(AbPath.new(path)) then
-                    if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGING) then
+                    if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                         self.logUtil:putF(self.ERROR_CREATING .. tostring(path), self, self.METHOD_RESTORE_TABLE)
                     end
                 end
@@ -246,12 +280,13 @@ function AbSqlTableUtil:restoreTable(abSqlTable, portion)
             stringBuffer:append(start)
             stringBuffer:append(self.DASH)
             stringBuffer:append(end_)
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGING) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                 self.logUtil:putF(tostring(stringBuffer), self, self.METHOD_RESTORE_TABLE)
             end
             bufferedLineReader:readUpToLines(start)
             local line = self.stringUtil.EMPTY_STRING
-            while bufferedLineReader:getCurrent() < end_ and ((function() line = bufferedLineReader:readLine() return line end)()) ~= nil do
+            while bufferedLineReader:getCurrent() < end_ and bufferedLineReader:ready() do
+                line = bufferedLineReader:readLine()
                 if #line > 1 then
                     abSqlTable:executeSQLStatement(line)
                 end
@@ -260,11 +295,12 @@ function AbSqlTableUtil:restoreTable(abSqlTable, portion)
             stringBuffer:append(self.TABLE_LABEL)
             stringBuffer:append(tableName)
             stringBuffer:append(self.PORTION_RESTORED)
-            return tostring(stringBuffer)
+            do return "__jreturn", tostring(stringBuffer) end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLLOGGINGERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
                 self.logUtil:put("Restore Table Failed\nSQL Statement", self, self.METHOD_RESTORE_TABLE, e)
             end
             local stringBuffer = StringMaker.new()
@@ -273,9 +309,10 @@ function AbSqlTableUtil:restoreTable(abSqlTable, portion)
             stringBuffer:append(" Restoration Failed")
             return tostring(stringBuffer)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
-AbSqlTableUtil.instance = AbSqlTableUtil.new()
+AbSqlTableUtil.instance_f = AbSqlTableUtil.new()
 
 return AbSqlTableUtil
 

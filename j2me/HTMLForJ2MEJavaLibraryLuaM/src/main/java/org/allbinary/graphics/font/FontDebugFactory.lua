@@ -13,6 +13,21 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.graphics.font
 
+local FontDebugFactory = {}
+package.loaded["org.allbinary.graphics.font.FontDebugFactory"] = FontDebugFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Font = require("javax.microedition.lcdui.Font")
 -- local Graphics = require("javax.microedition.lcdui.Graphics")
 
@@ -23,22 +38,32 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local FontDebugFactory = {}
+-- class table FontDebugFactory is declared before the requires
 FontDebugFactory.__index = FontDebugFactory
 FontDebugFactory.className = "FontDebugFactory"
+FontDebugFactory.javaClassName = "org.allbinary.graphics.font.FontDebugFactory"
+
+function FontDebugFactory._jinit(self)
+    return self
+end
 
 function FontDebugFactory.new()
-    local self = setmetatable({}, FontDebugFactory)
-    return self
+    return FontDebugFactory._jinit(setmetatable({}, FontDebugFactory))
 end
 
 
 function FontDebugFactory.getInstance()
-        return FontDebugFactory.instance
+        return FontDebugFactory.instance_f
 end
 
 
@@ -46,7 +71,7 @@ function FontDebugFactory:setFont(font, graphics)
         graphics:setFont(font)
 end
 
-FontDebugFactory.instance = FontDebugFactory.new()
+FontDebugFactory.instance_f = FontDebugFactory.new()
 
 return FontDebugFactory
 

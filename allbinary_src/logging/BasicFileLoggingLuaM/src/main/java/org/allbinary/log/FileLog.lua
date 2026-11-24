@@ -13,16 +13,66 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.log
 
+local FileLog = {}
+package.loaded["org.allbinary.log.FileLog"] = FileLog
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local BufferedReader = require("java.io.BufferedReader")
 -- local BufferedWriter = require("java.io.BufferedWriter")
--- local File = require("java.io.File")
+local File = java_lazy("java.io.File")
 -- local FileReader = require("java.io.FileReader")
 -- local FileWriter = require("java.io.FileWriter")
 -- local RandomAccessFile = require("java.io.RandomAccessFile")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local LogFormatUtil = require("org.allbinary.logic.communication.log.LogFormatUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local LogFormatUtil = java_lazy("org.allbinary.logic.communication.log.LogFormatUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -31,23 +81,35 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local FileLog = {}
+-- class table FileLog is declared before the requires
 FileLog.__index = FileLog
 FileLog.className = "FileLog"
+FileLog.javaClassName = "org.allbinary.log.FileLog"
 
 
-function FileLog.new()
+function FileLog._jinit(self)
+    return self
+end
+
+function FileLog.new(...)
     local self = setmetatable({}, FileLog)
+    FileLog._jinit(self, ...)
     return self
 end
 
 
 function FileLog.createLogFile()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             FileLog.logFile = File.new(FileLog.logPath, FileLog.fileName)
             if not FileLog.firstTime then
                 FileLog.fileOut = BufferedWriter.new(FileWriter.new(FileLog.logFile))
@@ -58,18 +120,20 @@ function FileLog.createLogFile()
                 FileLog.fileOut = BufferedWriter.new(FileWriter.new(raFile:getFD()))
             end
             local canWrite = FileLog.logFile:canWrite()
-            return canWrite
+            do return "__jreturn", canWrite end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             print("Error Creating Log: " .. tostring(e))
             return false
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
 function FileLog.createLogFileBackup()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local stringMaker = StringMaker.new()
             FileLog.logFileBak = File.new(FileLog.logPath, tostring(stringMaker:append(FileLog.backupFileName):append(CommonSeps.getInstance().PERIOD):appendint(FileLog.backupIndex)))
             while FileLog.logFileBak:isFile() do
@@ -80,7 +144,8 @@ function FileLog.createLogFileBackup()
             local line = ""
             local tmpOut = BufferedWriter.new(FileWriter.new(FileLog.logFileBak))
             local tmpIn = BufferedReader.new(FileReader.new(FileLog.logFile))
-            while ((function() line = tmpIn:readLine() return line end)()) ~= nil do
+            while tmpIn:ready() do
+                line = tmpIn:readLine()
                 tmpOut:write(line, 0, #line)
                 tmpOut:newLine()
             end
@@ -88,34 +153,35 @@ function FileLog.createLogFileBackup()
             tmpOut:close()
             tmpIn:close()
             FileLog.logFile:delete()
-            return true
+            do return "__jreturn", true end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             print("Error Creating Backup: " .. tostring(e))
             return false
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
-function FileLog.put(specialMessage, anyType, functionName)
+function FileLog.put_j3_1(specialMessage, anyType, functionName)
         return FileLog.put(specialMessage, anyType, functionName, nil)
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function FileLog.put(specialMessage, anyType, functionName, exception)
-        local try_ok, try_error = pcall(function()
+function FileLog.put_j4_1(specialMessage, anyType, functionName, exception)
+        local try_ok, try_error, try_value = pcall(function()
             if FileLog.firstTime == true then
                 FileLog.createLogFileBackup()
                 if FileLog.createLogFile() == false then
-                    return tostring("Log File Creation Error")
+                    do return "__jreturn", tostring("Log File Creation Error") end
                 end
             end
             local length = FileLog.logFile:length()
             if length > FileLog.logLength then
-                if not (FileLog.createLogFileBackup()) or FileLog.createLogFile() == false then
-                    return tostring("Couldn't Create a Backup file")
+                if not FileLog.createLogFileBackup() or FileLog.createLogFile() == false then
+                    do return "__jreturn", tostring("Couldn't Create a Backup file") end
                 end
             end
             local className = tostring(FileLog.stringUtil.NULL_STRING)
@@ -125,41 +191,41 @@ function FileLog.put(specialMessage, anyType, functionName, exception)
             if specialMessage == nil then
                 specialMessage = tostring(FileLog.stringUtil.NULL_STRING)
             end
-            if getmetatable(anyType).className ~= nil then
-                className = tostring(getmetatable(anyType).className)
+            if (getmetatable(anyType).javaClassName or getmetatable(anyType).className) ~= nil then
+                className = tostring((getmetatable(anyType).javaClassName or getmetatable(anyType).className))
             end
             local message = LogFormatUtil.getInstance():get(className, functionName, specialMessage, exception)
             FileLog.fileOut:write(message, 0, #message)
             FileLog.fileOut:newLine()
             FileLog.fileOut:flush()
-            return tostring(tostring(FileLog.ORG_ALLBINARY) .. message)
+            do return "__jreturn", tostring(tostring(FileLog.ORG_ALLBINARY) .. message) end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             return tostring("Error: " .. tostring(e))
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function FileLog.put(specialMessage, className, functionName)
+function FileLog.put_j3_2(specialMessage, className, functionName)
         return FileLog.put(specialMessage, className, functionName, nil)
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function FileLog.put(specialMessage, className, functionName, exception)
-        local try_ok, try_error = pcall(function()
+function FileLog.put_j4_2(specialMessage, className, functionName, exception)
+        local try_ok, try_error, try_value = pcall(function()
             if FileLog.firstTime == true then
                 FileLog.createLogFileBackup()
                 if FileLog.createLogFile() == false then
-                    return tostring("Log File Creation Error")
+                    do return "__jreturn", tostring("Log File Creation Error") end
                 end
             end
             local length = FileLog.logFile:length()
             if length > FileLog.logLength then
-                if not (FileLog.createLogFileBackup()) or FileLog.createLogFile() == false then
-                    return tostring("Couldn't Create a Backup file")
+                if not FileLog.createLogFileBackup() or FileLog.createLogFile() == false then
+                    do return "__jreturn", tostring("Couldn't Create a Backup file") end
                 end
             end
             if functionName == nil then
@@ -172,12 +238,31 @@ function FileLog.put(specialMessage, className, functionName, exception)
             FileLog.fileOut:write(message, 0, #message)
             FileLog.fileOut:newLine()
             FileLog.fileOut:flush()
-            return tostring(tostring(FileLog.ORG_ALLBINARY) .. message)
+            do return "__jreturn", tostring(tostring(FileLog.ORG_ALLBINARY) .. message) end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             return tostring("Error: " .. tostring(e))
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
+end
+function FileLog.put(...)
+    local count = select("#", ...)
+    if count == 3 then return FileLog.put_j3(...) end
+    if count == 4 then return FileLog.put_j4(...) end
+    error("No method put takes " .. count .. " arguments")
+end
+FileLog.put__jdispatcher = FileLog.put
+function FileLog.put_j3(...)
+    local java_a1, java_a2, java_a3 = ...
+    if true and (java_a1 == nil or type(java_a1) == "string") and (java_a2 == nil or type(java_a2) == "string") and (java_a3 == nil or type(java_a3) == "string") then return FileLog.put_j3_2(...) end
+    return FileLog.put_j3_1(...)
+end
+function FileLog.put_j4(...)
+    local java_a1, java_a2, java_a3, java_a4 = ...
+    if true and (java_a1 == nil or type(java_a1) == "string") and (java_a2 == nil or type(java_a2) == "string") and (java_a3 == nil or type(java_a3) == "string") and (java_a4 == nil or java_is(java_a4, "Exception")) then return FileLog.put_j4_2(...) end
+    return FileLog.put_j4_1(...)
 end
 
 

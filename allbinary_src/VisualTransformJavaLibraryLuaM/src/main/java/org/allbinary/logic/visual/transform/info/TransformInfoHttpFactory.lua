@@ -13,14 +13,33 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.visual.transform.info
 
--- local HashMap = require("java.util.HashMap")
+local TransformInfoHttpFactory = {}
+package.loaded["org.allbinary.logic.visual.transform.info.TransformInfoHttpFactory"] = TransformInfoHttpFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
 -- local PageContext = require("javax.servlet.jsp.PageContext")
-local StoreFrontFactory = require("org.allbinary.business.context.modules.storefront.StoreFrontFactory")
-local StoreFrontInterface = require("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
-local WeblisketSession = require("org.allbinary.logic.communication.http.request.session.WeblisketSession")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringValidationUtil = require("org.allbinary.logic.string.StringValidationUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local StoreFrontFactory = java_lazy("org.allbinary.business.context.modules.storefront.StoreFrontFactory")
+local StoreFrontInterface = java_lazy("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
+local WeblisketSession = java_lazy("org.allbinary.logic.communication.http.request.session.WeblisketSession")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local TransformInfoHttpContext = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoHttpContext")
+local TransformInfoHttpStore = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoHttpStore")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -42,17 +61,29 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local TransformInfoHttpFactory = {}
+-- class table TransformInfoHttpFactory is declared before the requires
 TransformInfoHttpFactory.__index = TransformInfoHttpFactory
 TransformInfoHttpFactory.className = "TransformInfoHttpFactory"
+TransformInfoHttpFactory.javaClassName = "org.allbinary.logic.visual.transform.info.TransformInfoHttpFactory"
 
 
-function TransformInfoHttpFactory.new()
+function TransformInfoHttpFactory._jinit(self)
+    return self
+end
+
+function TransformInfoHttpFactory.new(...)
     local self = setmetatable({}, TransformInfoHttpFactory)
+    TransformInfoHttpFactory._jinit(self, ...)
     return self
 end
 
@@ -60,27 +91,29 @@ end
 -- throws Exception
 function TransformInfoHttpFactory.getInstance(propertiesHashMap, pageContext)
         local logUtil = LogUtil.getInstance()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local weblisketSession = WeblisketSession.new(propertiesHashMap, pageContext)
             if not StringValidationUtil.getInstance():isEmpty(weblisketSession:getStoreName()) then
                 local storeFrontInterface = StoreFrontFactory.getInstance(weblisketSession:getStoreName())
                 if storeFrontInterface ~= nil then
-                    return TransformInfoHttpStore.new(storeFrontInterface, propertiesHashMap, pageContext)
+                    do return "__jreturn", TransformInfoHttpStore.new(storeFrontInterface, propertiesHashMap, pageContext) end
                 else
-                    error(java_exception("Exception", "No StoreFront with: " .. tostring(weblisketSession:getStoreName())), 0)
+                    error(require("java.lang.Exception").new("No StoreFront with: " .. tostring(weblisketSession:getStoreName())), 0)
                 end
             else
-                return TransformInfoHttpContext.new(propertiesHashMap, pageContext)
+                do return "__jreturn", TransformInfoHttpContext.new(propertiesHashMap, pageContext) end
             end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().TAGHELPERFACTORYERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERFACTORYERROR) then
                 local commonStrings = CommonStrings.getInstance()
                 logUtil:put(commonStrings.EXCEPTION, "TransformInfoFactory", commonStrings.GET_INSTANCE, e)
             end
             error(e, 0)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 return TransformInfoHttpFactory

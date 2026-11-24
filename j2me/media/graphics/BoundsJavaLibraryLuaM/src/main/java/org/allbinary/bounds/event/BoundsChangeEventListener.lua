@@ -13,7 +13,23 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.bounds.event
 
+local BoundsChangeEventListener = {}
+package.loaded["org.allbinary.bounds.event.BoundsChangeEventListener"] = BoundsChangeEventListener
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 local EventListenerInterface = require("org.allbinary.logic.util.event.EventListenerInterface")
+local BoundsChangeEvent = java_lazy("org.allbinary.bounds.event.BoundsChangeEvent")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -22,15 +38,23 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
 -- Java interface
-local BoundsChangeEventListener = {}
+-- class table BoundsChangeEventListener is declared before the requires
 BoundsChangeEventListener.__index = BoundsChangeEventListener
 BoundsChangeEventListener.className = "BoundsChangeEventListener"
+BoundsChangeEventListener.javaClassName = "org.allbinary.bounds.event.BoundsChangeEventListener"
 setmetatable(BoundsChangeEventListener, {__index = EventListenerInterface})
+BoundsChangeEventListener.java_interfaces = function() return {EventListenerInterface} end
 
 
 function BoundsChangeEventListener:onBoundsChangeEvent(boundsChangeEvent)

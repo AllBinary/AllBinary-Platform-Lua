@@ -13,18 +13,35 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.user.password
 
--- local HashMap = require("java.util.HashMap")
--- local Random = require("java.util.Random")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local EntryData = require("org.allbinary.business.entry.EntryData")
-local UserData = require("org.allbinary.business.user.UserData")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local SuperCrypt = require("org.allbinary.logic.control.crypt.SuperCrypt")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local StringValidationUtil = require("org.allbinary.logic.string.StringValidationUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local Password = {}
+package.loaded["org.allbinary.business.user.password.Password"] = Password
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
+local Random = java_lazy("java.util.Random")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local EntryData = java_lazy("org.allbinary.business.entry.EntryData")
+local UserData = java_lazy("org.allbinary.business.user.UserData")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local SuperCrypt = java_lazy("org.allbinary.logic.control.crypt.SuperCrypt")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -33,24 +50,36 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local Password = {}
+-- class table Password is declared before the requires
 Password.__index = Password
 Password.className = "Password"
+Password.javaClassName = "org.allbinary.business.user.password.Password"
 
 function Password:_init_fields()
     self.logUtil = LogUtil.getInstance()
-    self.password = nil
+    if self.password == nil then self.password = nil end
 end
 
 
-function Password.new(password)
-    local self = setmetatable({}, Password)
-    self:_init_fields()
+function Password._jinit(self, password)
+    Password._init_fields(self)
         self.password = password
+    return self
+end
+
+function Password.new(...)
+    local self = setmetatable({}, Password)
+    Password._jinit(self, ...)
     return self
 end
 
@@ -67,26 +96,28 @@ end
 
 function Password:isValid()
         local commonStrings = CommonStrings.getInstance()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local valid = true
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VALIDATION) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VALIDATION) then
                 self.logUtil:putF("Password: " .. self.password, self, commonStrings.IS_VALID)
             end
             if not StringValidationUtil.getInstance():isValidRequired(self.password, 6, UserData.MAXLEN) then
-                if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VALIDATION) then
+                if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VALIDATION) then
                     self.logUtil:putF("Password is invalid", self, commonStrings.IS_VALID)
                 end
                 valid = false
             end
-            return valid
+            do return "__jreturn", valid end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().VALIDATIONERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VALIDATIONERROR) then
                 self.logUtil:put("Failed to validate form", "Password", commonStrings.IS_VALID, e)
             end
             return false
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 

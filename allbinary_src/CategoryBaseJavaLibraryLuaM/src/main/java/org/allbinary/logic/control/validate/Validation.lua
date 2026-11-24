@@ -13,9 +13,24 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.control.validate
 
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local Document = require("org.w3c.dom.Document")
-local Node = require("org.w3c.dom.Node")
+local Validation = {}
+package.loaded["org.allbinary.logic.control.validate.Validation"] = Validation
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local Document = java_lazy("org.w3c.dom.Document")
+local Node = java_lazy("org.w3c.dom.Node")
 local ValidationInterface = require("org.allbinary.logic.control.validate.ValidationInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
@@ -38,46 +53,58 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local Validation = {}
+-- class table Validation is declared before the requires
 Validation.__index = Validation
 Validation.className = "Validation"
+Validation.javaClassName = "org.allbinary.logic.control.validate.Validation"
+Validation.java_implements = " ValidationInterface "
+Validation.java_interfaces = function() return {ValidationInterface} end
 
 function Validation:_init_fields()
     self.commonStrings = CommonStrings.getInstance()
 end
 
-function Validation.new()
-    local self = setmetatable({}, Validation)
-    self:_init_fields()
+function Validation._jinit(self)
+    Validation._init_fields(self)
     return self
+end
+
+function Validation.new()
+    return Validation._jinit(setmetatable({}, Validation))
 end
 
 
 -- throws Exception
 function Validation:isValid()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 -- throws Exception
 function Validation:toValidationInfoNode(document)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 -- throws Exception
 function Validation:toValidationInfoDoc()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 -- throws Exception
 function Validation:validationInfo()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 return Validation

@@ -13,8 +13,24 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.communication.log.config
 
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
+local LoggingInitInfo = {}
+package.loaded["org.allbinary.logic.communication.log.config.LoggingInitInfo"] = LoggingInitInfo
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local LogConfig = java_lazy("org.allbinary.logic.communication.log.config.LogConfig")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -36,28 +52,41 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local LoggingInitInfo = {}
+-- class table LoggingInitInfo is declared before the requires
 LoggingInitInfo.__index = LoggingInitInfo
 LoggingInitInfo.className = "LoggingInitInfo"
+LoggingInitInfo.javaClassName = "org.allbinary.logic.communication.log.config.LoggingInitInfo"
 
 
-function LoggingInitInfo.new()
+function LoggingInitInfo._jinit(self)
+    return self
+end
+
+function LoggingInitInfo.new(...)
     local self = setmetatable({}, LoggingInitInfo)
+    LoggingInitInfo._jinit(self, ...)
     return self
 end
 
 
 -- throws Exception
 function LoggingInitInfo.write()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             LoggingInitInfo.hasRead = false
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             error(e, 0)
         end
 end
@@ -65,10 +94,11 @@ end
 
 -- throws Exception
 function LoggingInitInfo.read()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             error(e, 0)
         end
 end
@@ -85,20 +115,22 @@ function LoggingInitInfo.updateIfNeeded()
             LoggingInitInfo.read()
             LoggingInitInfo.hasRead = true
             if LoggingInitInfo.logConfigInfoList == nil then
-                error(java_exception("Exception", "Read Failed"), 0)
+                error(require("java.lang.Exception").new("Read Failed"), 0)
             end
         end
 end
 
 
 function LoggingInitInfo:isValid()
-        local try_ok, try_error = pcall(function()
-            return true
+        local try_ok, try_error, try_value = pcall(function()
+            do return "__jreturn", true end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             return false
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
@@ -137,13 +169,15 @@ end
 
 
 function LoggingInitInfo:toString()
-        local try_ok, try_error = pcall(function()
-            return nil
+        local try_ok, try_error, try_value = pcall(function()
+            do return "__jreturn", nil end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             return "Error"
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 LoggingInitInfo.__tostring = function(self) return self:toString() end
 

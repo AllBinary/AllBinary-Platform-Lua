@@ -13,34 +13,51 @@
 -- Generated Code Do Not Modify
 -- package admin.taghelpers
 
--- local HashMap = require("java.util.HashMap")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
+local QuoteHelper = {}
+package.loaded["admin.taghelpers.QuoteHelper"] = QuoteHelper
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 -- local PageContext = require("javax.servlet.jsp.PageContext")
-local StoreFront = require("org.allbinary.business.context.modules.storefront.StoreFront")
-local StoreFrontData = require("org.allbinary.business.context.modules.storefront.StoreFrontData")
-local StoreFrontFactory = require("org.allbinary.business.context.modules.storefront.StoreFrontFactory")
-local StoreFrontInterface = require("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
-local Portion = require("org.allbinary.business.installer.Portion")
-local UserInterface = require("org.allbinary.business.user.UserInterface")
-local QuoteRequest = require("org.allbinary.business.user.quoterequest.QuoteRequest")
-local UserEntityFactory = require("org.allbinary.data.tables.user.UserEntityFactory")
-local QuoteRequestEntity = require("org.allbinary.data.tables.user.quoterequest.QuoteRequestEntity")
-local QuoteRequestEntityFactory = require("org.allbinary.data.tables.user.quoterequest.QuoteRequestEntityFactory")
-local WeblisketSession = require("org.allbinary.logic.communication.http.request.session.WeblisketSession")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local UserEmailEventNameData = require("org.allbinary.logic.communication.smtp.event.UserEmailEventNameData")
-local UserEmailEventHandler = require("org.allbinary.logic.communication.smtp.event.handler.UserEmailEventHandler")
-local AdminUserEmailEventHandlerSingletons = require("org.allbinary.logic.communication.smtp.event.handler.factory.AdminUserEmailEventHandlerSingletons")
-local StoreAdminUserEmailEventHandlerSingletons = require("org.allbinary.logic.communication.smtp.event.handler.factory.StoreAdminUserEmailEventHandlerSingletons")
-local UserEmailEventHandlerSingletons = require("org.allbinary.logic.communication.smtp.event.handler.factory.UserEmailEventHandlerSingletons")
-local BasicEmailInfo = require("org.allbinary.logic.communication.smtp.info.BasicEmailInfo")
-local EmailInfo = require("org.allbinary.logic.communication.smtp.info.EmailInfo")
-local StoreEmailInfo = require("org.allbinary.logic.communication.smtp.info.StoreEmailInfo")
-local AbSqlTableUtil = require("org.allbinary.logic.communication.sql.AbSqlTableUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local AbeClientInformationInterface = require("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
-local ServiceClientInformationInterfaceFactory = require("org.allbinary.logic.system.security.licensing.ServiceClientInformationInterfaceFactory")
+local StoreFront = java_lazy("org.allbinary.business.context.modules.storefront.StoreFront")
+local StoreFrontData = java_lazy("org.allbinary.business.context.modules.storefront.StoreFrontData")
+local StoreFrontFactory = java_lazy("org.allbinary.business.context.modules.storefront.StoreFrontFactory")
+local StoreFrontInterface = java_lazy("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
+local Portion = java_lazy("org.allbinary.business.installer.Portion")
+local UserInterface = java_lazy("org.allbinary.business.user.UserInterface")
+local QuoteRequest = java_lazy("org.allbinary.business.user.quoterequest.QuoteRequest")
+local UserEntityFactory = java_lazy("org.allbinary.data.tables.user.UserEntityFactory")
+local QuoteRequestEntity = java_lazy("org.allbinary.data.tables.user.quoterequest.QuoteRequestEntity")
+local QuoteRequestEntityFactory = java_lazy("org.allbinary.data.tables.user.quoterequest.QuoteRequestEntityFactory")
+local WeblisketSession = java_lazy("org.allbinary.logic.communication.http.request.session.WeblisketSession")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local UserEmailEventNameData = java_lazy("org.allbinary.logic.communication.smtp.event.UserEmailEventNameData")
+local UserEmailEventHandler = java_lazy("org.allbinary.logic.communication.smtp.event.handler.UserEmailEventHandler")
+local AdminUserEmailEventHandlerSingletons = java_lazy("org.allbinary.logic.communication.smtp.event.handler.factory.AdminUserEmailEventHandlerSingletons")
+local StoreAdminUserEmailEventHandlerSingletons = java_lazy("org.allbinary.logic.communication.smtp.event.handler.factory.StoreAdminUserEmailEventHandlerSingletons")
+local UserEmailEventHandlerSingletons = java_lazy("org.allbinary.logic.communication.smtp.event.handler.factory.UserEmailEventHandlerSingletons")
+local BasicEmailInfo = java_lazy("org.allbinary.logic.communication.smtp.info.BasicEmailInfo")
+local EmailInfo = java_lazy("org.allbinary.logic.communication.smtp.info.EmailInfo")
+local StoreEmailInfo = java_lazy("org.allbinary.logic.communication.smtp.info.StoreEmailInfo")
+local AbSqlTableUtil = java_lazy("org.allbinary.logic.communication.sql.AbSqlTableUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local AbeClientInformationInterface = java_lazy("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
+local ServiceClientInformationInterfaceFactory = java_lazy("org.allbinary.logic.system.security.licensing.ServiceClientInformationInterfaceFactory")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local BasicTable = require("admin.taghelpers.BasicTable")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
@@ -56,6 +73,79 @@ local function java_exception(className, message, cause)
     return setmetatable(exception, {__tostring = function(self) if self.message ~= nil then return tostring(self.message) end return self.className end})
 end
 
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
+
 local function java_idiv(a, b)
     local q = a / b
     if q < 0 then return math.ceil(q) end
@@ -63,27 +153,34 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local QuoteHelper = {}
+-- class table QuoteHelper is declared before the requires
 QuoteHelper.__index = QuoteHelper
 QuoteHelper.className = "QuoteHelper"
+QuoteHelper.javaClassName = "admin.taghelpers.QuoteHelper"
 setmetatable(QuoteHelper, {__index = BasicTable})
 
 function QuoteHelper:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.abeClientInformation = ServiceClientInformationInterfaceFactory.getInstance()
-    self.weblisketSession = nil
-    self.storeFrontInterface = nil
-    self.portion = nil
+    if self.weblisketSession == nil then self.weblisketSession = nil end
+    if self.storeFrontInterface == nil then self.storeFrontInterface = nil end
+    if self.portion == nil then self.portion = nil end
 end
 
 
-function QuoteHelper.new(hashMap, pageContext)
-    local self = setmetatable(BasicTable.new(), QuoteHelper)
-    self:_init_fields()
+function QuoteHelper._jinit(self, hashMap, pageContext)
+    java_super_init(BasicTable, self)
+    QuoteHelper._init_fields(self)
         local storeName = hashMap:get(StoreFrontData.getInstance().NAME)
         if storeName ~= nil then
             self.storeFrontInterface = StoreFrontFactory.getInstance(storeName)
@@ -92,6 +189,12 @@ function QuoteHelper.new(hashMap, pageContext)
         end
         self.weblisketSession = WeblisketSession.new(hashMap, pageContext)
         self.portion = Portion.new(hashMap)
+    return self
+end
+
+function QuoteHelper.new(...)
+    local self = setmetatable({}, QuoteHelper)
+    QuoteHelper._jinit(self, ...)
     return self
 end
 
@@ -110,6 +213,7 @@ function QuoteHelper:emailUser(quoteRequest)
         local userEmailEventHandler = UserEmailEventHandlerSingletons.getInstance():getInstance(self.abeClientInformation, UserEmailEventNameData.QUOTEREQUEST, user)
         userEmailEventHandler:receiveEmailInfo(UserEmailEventNameData.QUOTEREQUEST, emailInfo)
 end
+java_overload(QuoteHelper, "emailUser", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "QuoteRequest")) end)
 
 
 -- throws Exception
@@ -136,11 +240,12 @@ function QuoteHelper:emailAdmins(quoteRequest)
         storeAdminUserEmailEventHandler:receiveEmailInfo(UserEmailEventNameData.QUOTEREQUEST, emailInfo)
         adminUserEmailEventHandler:receiveEmailInfo(UserEmailEventNameData.QUOTEREQUEST, emailInfo)
 end
+java_overload(QuoteHelper, "emailAdmins", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "QuoteRequest")) end)
 
 
 -- throws Exception
 function QuoteHelper:email()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local quoteRequestEntity = QuoteRequestEntityFactory.getInstance():getQuoteRequestEntityInstance()
             local userName = self.weblisketSession:getUserName()
             local vector = quoteRequestEntity:getIds(userName)
@@ -156,97 +261,112 @@ function QuoteHelper:email()
             if quoteRequest ~= nil then
                 self:emailUser(quoteRequest)
                 self:emailAdmins(quoteRequest)
-                return "Thank You For Your Business.<p/>"
+                do return "__jreturn", "Thank You For Your Business.<p/>" end
             else
-                error(java_exception("Exception", "No Quote Request"), 0)
+                error(require("java.lang.Exception").new("No Quote Request"), 0)
             end
         end)
         if not try_ok then
             local e = try_error
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().EMAILLOGGINGERROR) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().EMAILLOGGINGERROR) then
                 self.logUtil:put(self.commonStrings.FAILURE, self, "email", e)
             end
             return "Thank You For Your Business.<p>"
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+java_overload(QuoteHelper, "email", 0)
 
 
 function QuoteHelper:drop()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local success = QuoteRequestEntityFactory.getInstance():getQuoteRequestEntityInstance():dropTable()
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLTAGS) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGS) then
                 self.logUtil:putF(success, self, self.commonStrings.DROP)
             end
-            return success
+            do return "__jreturn", success end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local error = "Failed to drop QuoteRequest table"
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLTAGSERROR) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.DROP, e)
             end
             return error
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+java_overload(QuoteHelper, "drop", 0)
 
 
 function QuoteHelper:create()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local success = QuoteRequestEntityFactory.getInstance():getQuoteRequestEntityInstance():createTable()
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLTAGS) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGS) then
                 self.logUtil:putF(success, self, "create()")
             end
-            return success
+            do return "__jreturn", success end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local error = "Failed to create new QuoteRequest table"
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLTAGSERROR) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "create()", e)
             end
             return error
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+java_overload(QuoteHelper, "create", 0)
 
 
 function QuoteHelper:restore()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local success = "Restore Successful"
             local result = AbSqlTableUtil.getInstance():restoreTable(QuoteRequestEntityFactory.getInstance():getQuoteRequestEntityInstance(), self.portion)
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLTAGS) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGS) then
                 self.logUtil:putF(success, self, "restore()")
             end
-            return result
+            do return "__jreturn", result end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local error = "Failed to restore backup"
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLTAGSERROR) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "restore()", e)
             end
             return error
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+java_overload(QuoteHelper, "restore", 0)
 
 
 function QuoteHelper:backup()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local success = "Restore Successful"
             local result = AbSqlTableUtil.getInstance():backupTable(QuoteRequestEntityFactory.getInstance():getQuoteRequestEntityInstance())
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLTAGS) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGS) then
                 self.logUtil:putF(success, self, "backup()")
             end
-            return result
+            do return "__jreturn", result end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local error = "Failed to make backup"
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLTAGSERROR) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "backup()", e)
             end
             return error
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
+java_overload(QuoteHelper, "backup", 0)
 
 return QuoteHelper
 

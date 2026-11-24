@@ -13,16 +13,69 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.input.automation.module.generic.configuration.profile
 
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local DomNodeHelper = require("org.allbinary.data.tree.dom.DomNodeHelper")
-local ModDomHelper = require("org.allbinary.data.tree.dom.ModDomHelper")
-local GenericProfileActions = require("org.allbinary.input.automation.module.generic.configuration.profile.actions.GenericProfileActions")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local Document = require("org.w3c.dom.Document")
-local Node = require("org.w3c.dom.Node")
-local NodeList = require("org.w3c.dom.NodeList")
+local GenericProfile = {}
+package.loaded["org.allbinary.input.automation.module.generic.configuration.profile.GenericProfile"] = GenericProfile
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local DomNodeHelper = java_lazy("org.allbinary.data.tree.dom.DomNodeHelper")
+local ModDomHelper = java_lazy("org.allbinary.data.tree.dom.ModDomHelper")
+local GenericProfileActions = java_lazy("org.allbinary.input.automation.module.generic.configuration.profile.actions.GenericProfileActions")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local Document = java_lazy("org.w3c.dom.Document")
+local Node = java_lazy("org.w3c.dom.Node")
+local NodeList = java_lazy("org.w3c.dom.NodeList")
+local GenericProfileData = java_lazy("org.allbinary.input.automation.module.generic.configuration.profile.GenericProfileData")
+local GenericProfileDataWorkerData = java_lazy("org.allbinary.input.automation.module.generic.configuration.profile.GenericProfileDataWorkerData")
+local GenericProfileDataWorkerType = java_lazy("org.allbinary.input.automation.module.generic.configuration.profile.GenericProfileDataWorkerType")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -31,32 +84,50 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local GenericProfile = {}
+-- class table GenericProfile is declared before the requires
 GenericProfile.__index = GenericProfile
 GenericProfile.className = "GenericProfile"
+GenericProfile.javaClassName = "org.allbinary.input.automation.module.generic.configuration.profile.GenericProfile"
 
 function GenericProfile:_init_fields()
     self.logUtil = LogUtil.getInstance()
-    self.name = nil
-    self.vector = nil
-    self.genericProfileActions = nil
+    if self.name_f == nil then self.name_f = nil end
+    if self.vector == nil then self.vector = nil end
+    if self.genericProfileActions == nil then self.genericProfileActions = nil end
+end
+
+function GenericProfile._jinit(self, ...)
+    local count = select("#", ...)
+    if count == 1 then return GenericProfile._new1(self, ...)
+    end
+    error("No constructor of GenericProfile takes " .. count .. " arguments")
 end
 
 function GenericProfile.new(...)
-    local count = select("#", ...)
-    if count == 1 then return GenericProfile._new1(...)
-    elseif count == 1 then return GenericProfile._new1(...)
-    end
+    local self = setmetatable({}, GenericProfile)
+    GenericProfile._jinit(self, ...)
+    return self
+end
+
+function GenericProfile._new1(self, ...)
+    local java_a1 = ...
+    if true and (java_a1 == nil or java_is(java_a1, "Node")) then return GenericProfile._new1_1(self, ...) end
+    return GenericProfile._new1_2(self, ...)
 end
 
 
-function GenericProfile._new1(node)
-    local self = setmetatable({}, GenericProfile)
-    self:_init_fields()
+function GenericProfile._new1_1(self, node)
+    GenericProfile._init_fields(self)
         self:setName(DomNodeHelper.getTextNodeValue(node))
         self.vector = BasicArrayListD.new()
         local nodeList = node:getChildNodes()
@@ -73,9 +144,8 @@ function GenericProfile._new1(node)
 end
 
 
-function GenericProfile._new1(name)
-    local self = setmetatable({}, GenericProfile)
-    self:_init_fields()
+function GenericProfile._new1_2(self, name)
+    GenericProfile._init_fields(self)
         self:setName(name)
         self.vector = BasicArrayListD.new()
     return self
@@ -101,7 +171,7 @@ end
 
 -- throws Exception
 function GenericProfile:toXmlNode(document)
-        local node = ModDomHelper.createTextNode(document, GenericProfileData.NAME, self.name)
+        local node = ModDomHelper.createTextNode(document, GenericProfileData.NAME, self.name_f)
         local size = self.vector:size()
         for index = 0, size - 1 do
             local genericProfileDataWorkerType = self.vector:get(index)
@@ -112,12 +182,12 @@ end
 
 
 function GenericProfile:getName()
-        return self.name
+        return self.name_f
 end
 
 
 function GenericProfile:setName(name)
-        self.name = name
+        self.name_f = name
 end
 
 

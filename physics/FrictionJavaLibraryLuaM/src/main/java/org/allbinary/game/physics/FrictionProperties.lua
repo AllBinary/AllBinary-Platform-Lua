@@ -13,9 +13,24 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.physics
 
-local FrictionData = require("org.allbinary.game.physics.friction.FrictionData")
-local DragVelocityBehavior = require("org.allbinary.game.physics.velocity.DragVelocityBehavior")
-local VelocityProperties = require("org.allbinary.game.physics.velocity.VelocityProperties")
+local FrictionProperties = {}
+package.loaded["org.allbinary.game.physics.FrictionProperties"] = FrictionProperties
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local FrictionData = java_lazy("org.allbinary.game.physics.friction.FrictionData")
+local DragVelocityBehavior = java_lazy("org.allbinary.game.physics.velocity.DragVelocityBehavior")
+local VelocityProperties = java_lazy("org.allbinary.game.physics.velocity.VelocityProperties")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -24,23 +39,35 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local FrictionProperties = {}
+-- class table FrictionProperties is declared before the requires
 FrictionProperties.__index = FrictionProperties
 FrictionProperties.className = "FrictionProperties"
+FrictionProperties.javaClassName = "org.allbinary.game.physics.FrictionProperties"
 
 
-function FrictionProperties.new()
+function FrictionProperties._jinit(self)
+    return self
+end
+
+function FrictionProperties.new(...)
     local self = setmetatable({}, FrictionProperties)
+    FrictionProperties._jinit(self, ...)
     return self
 end
 
 
 function FrictionProperties:friction(velocityProperties, nominator)
-        DragVelocityBehavior.instance:reduce(velocityProperties, nominator, FrictionData.getFrictionDenominator())
+        DragVelocityBehavior.instance_f:reduce(velocityProperties, nominator, FrictionData.getFrictionDenominator())
 end
 
 return FrictionProperties

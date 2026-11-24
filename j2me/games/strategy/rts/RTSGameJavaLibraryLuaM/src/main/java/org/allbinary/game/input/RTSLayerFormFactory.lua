@@ -13,8 +13,23 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.input
 
-local RTSLayer = require("org.allbinary.game.layer.RTSLayer")
-local ScrollSelectionForm = require("org.allbinary.graphics.form.ScrollSelectionForm")
+local RTSLayerFormFactory = {}
+package.loaded["org.allbinary.game.input.RTSLayerFormFactory"] = RTSLayerFormFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local RTSLayer = java_lazy("org.allbinary.game.layer.RTSLayer")
+local ScrollSelectionForm = java_lazy("org.allbinary.graphics.form.ScrollSelectionForm")
 local RTSLayerFormFactoryInterface = require("org.allbinary.game.input.RTSLayerFormFactoryInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
@@ -37,22 +52,34 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local RTSLayerFormFactory = {}
+-- class table RTSLayerFormFactory is declared before the requires
 RTSLayerFormFactory.__index = RTSLayerFormFactory
 RTSLayerFormFactory.className = "RTSLayerFormFactory"
+RTSLayerFormFactory.javaClassName = "org.allbinary.game.input.RTSLayerFormFactory"
+RTSLayerFormFactory.java_implements = " RTSLayerFormFactoryInterface "
+RTSLayerFormFactory.java_interfaces = function() return {RTSLayerFormFactoryInterface} end
+
+function RTSLayerFormFactory._jinit(self)
+    return self
+end
 
 function RTSLayerFormFactory.new()
-    local self = setmetatable({}, RTSLayerFormFactory)
-    return self
+    return RTSLayerFormFactory._jinit(setmetatable({}, RTSLayerFormFactory))
 end
 
 
 function RTSLayerFormFactory:getInstance(rtsLayer)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 return RTSLayerFormFactory

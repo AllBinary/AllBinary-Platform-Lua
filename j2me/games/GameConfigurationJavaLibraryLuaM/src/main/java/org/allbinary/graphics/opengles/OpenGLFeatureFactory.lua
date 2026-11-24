@@ -13,6 +13,22 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.graphics.opengles
 
+local OpenGLFeatureFactory = {}
+package.loaded["org.allbinary.graphics.opengles.OpenGLFeatureFactory"] = OpenGLFeatureFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local OpenGLFeature = java_lazy("org.allbinary.graphics.opengles.OpenGLFeature")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -21,13 +37,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local OpenGLFeatureFactory = {}
+-- class table OpenGLFeatureFactory is declared before the requires
 OpenGLFeatureFactory.__index = OpenGLFeatureFactory
 OpenGLFeatureFactory.className = "OpenGLFeatureFactory"
+OpenGLFeatureFactory.javaClassName = "org.allbinary.graphics.opengles.OpenGLFeatureFactory"
 
 function OpenGLFeatureFactory:_init_fields()
     self.OPENGL_OPTIONS = OpenGLFeature.new("OpenGL Options")
@@ -56,17 +79,22 @@ end
 
 
 function OpenGLFeatureFactory.getInstance()
-        return OpenGLFeatureFactory.instance
+        return OpenGLFeatureFactory.instance_f
 end
 
 
-function OpenGLFeatureFactory.new()
-    local self = setmetatable({}, OpenGLFeatureFactory)
-    self:_init_fields()
+function OpenGLFeatureFactory._jinit(self)
+    OpenGLFeatureFactory._init_fields(self)
     return self
 end
 
-OpenGLFeatureFactory.instance = OpenGLFeatureFactory.new()
+function OpenGLFeatureFactory.new(...)
+    local self = setmetatable({}, OpenGLFeatureFactory)
+    OpenGLFeatureFactory._jinit(self, ...)
+    return self
+end
+
+OpenGLFeatureFactory.instance_f = OpenGLFeatureFactory.new()
 
 return OpenGLFeatureFactory
 

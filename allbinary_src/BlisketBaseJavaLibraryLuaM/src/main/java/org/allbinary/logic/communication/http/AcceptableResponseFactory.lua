@@ -13,6 +13,22 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.communication.http
 
+local AcceptableResponseFactory = {}
+package.loaded["org.allbinary.logic.communication.http.AcceptableResponseFactory"] = AcceptableResponseFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local AcceptableResponse = java_lazy("org.allbinary.logic.communication.http.AcceptableResponse")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -21,13 +37,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local AcceptableResponseFactory = {}
+-- class table AcceptableResponseFactory is declared before the requires
 AcceptableResponseFactory.__index = AcceptableResponseFactory
 AcceptableResponseFactory.className = "AcceptableResponseFactory"
+AcceptableResponseFactory.javaClassName = "org.allbinary.logic.communication.http.AcceptableResponseFactory"
 
 function AcceptableResponseFactory:_init_fields()
     self.HTML = AcceptableResponse.new("text/html", "html", 0)
@@ -35,18 +58,21 @@ function AcceptableResponseFactory:_init_fields()
     self.VXML = AcceptableResponse.new("text/vxml", "vxml", 2)
 end
 
-function AcceptableResponseFactory.new()
-    local self = setmetatable({}, AcceptableResponseFactory)
-    self:_init_fields()
+function AcceptableResponseFactory._jinit(self)
+    AcceptableResponseFactory._init_fields(self)
     return self
+end
+
+function AcceptableResponseFactory.new()
+    return AcceptableResponseFactory._jinit(setmetatable({}, AcceptableResponseFactory))
 end
 
 
 function AcceptableResponseFactory.getInstance()
-        return AcceptableResponseFactory.instance
+        return AcceptableResponseFactory.instance_f
 end
 
-AcceptableResponseFactory.instance = AcceptableResponseFactory.new()
+AcceptableResponseFactory.instance_f = AcceptableResponseFactory.new()
 
 return AcceptableResponseFactory
 

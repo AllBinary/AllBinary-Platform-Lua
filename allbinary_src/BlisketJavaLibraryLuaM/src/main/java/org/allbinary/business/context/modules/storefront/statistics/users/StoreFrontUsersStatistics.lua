@@ -13,16 +13,31 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.context.modules.storefront.statistics.users
 
--- local HashMap = require("java.util.HashMap")
+local StoreFrontUsersStatistics = {}
+package.loaded["org.allbinary.business.context.modules.storefront.statistics.users.StoreFrontUsersStatistics"] = StoreFrontUsersStatistics
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
 -- local Set = require("java.util.Set")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local StoreFrontInterface = require("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
-local UserInterface = require("org.allbinary.business.user.UserInterface")
-local UserRole = require("org.allbinary.business.user.role.UserRole")
-local UserEntityFactory = require("org.allbinary.data.tables.user.UserEntityFactory")
-local UserEntityInterface = require("org.allbinary.data.tables.user.UserEntityInterface")
-local StdUtil = require("org.allbinary.logic.StdUtil")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local StoreFrontInterface = java_lazy("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
+local UserInterface = java_lazy("org.allbinary.business.user.UserInterface")
+local UserRole = java_lazy("org.allbinary.business.user.role.UserRole")
+local UserEntityFactory = java_lazy("org.allbinary.data.tables.user.UserEntityFactory")
+local UserEntityInterface = java_lazy("org.allbinary.data.tables.user.UserEntityInterface")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
 local StoreFrontUsersStatisticsInterface = require("org.allbinary.business.context.modules.storefront.statistics.users.StoreFrontUsersStatisticsInterface")
 
 local function java_idiv(a, b)
@@ -32,23 +47,31 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local StoreFrontUsersStatistics = {}
+-- class table StoreFrontUsersStatistics is declared before the requires
 StoreFrontUsersStatistics.__index = StoreFrontUsersStatistics
 StoreFrontUsersStatistics.className = "StoreFrontUsersStatistics"
+StoreFrontUsersStatistics.javaClassName = "org.allbinary.business.context.modules.storefront.statistics.users.StoreFrontUsersStatistics"
+StoreFrontUsersStatistics.java_implements = " StoreFrontUsersStatisticsInterface "
+StoreFrontUsersStatistics.java_interfaces = function() return {StoreFrontUsersStatisticsInterface} end
 
 function StoreFrontUsersStatistics:_init_fields()
-    self.totalNumberOfUsers = nil
-    self.totalUsersByRoleHashMap = nil
+    if self.totalNumberOfUsers == nil then self.totalNumberOfUsers = nil end
+    if self.totalUsersByRoleHashMap == nil then self.totalUsersByRoleHashMap = nil end
 end
 
 
-function StoreFrontUsersStatistics.new(storeFrontInterface)
-    local self = setmetatable({}, StoreFrontUsersStatistics)
-    self:_init_fields()
+function StoreFrontUsersStatistics._jinit(self, storeFrontInterface)
+    StoreFrontUsersStatistics._init_fields(self)
         self.totalUsersByRoleHashMap = StdUtil.getInstance():createHashMap()
         local userEntityInterface = UserEntityFactory.getInstance()
         local userVector = userEntityInterface:getCustomers()
@@ -60,6 +83,12 @@ function StoreFrontUsersStatistics.new(storeFrontInterface)
             local currentNumberOfUsersForRole = self:getNewTotal(nextUserRole)
             self.totalUsersByRoleHashMap:put(nextUserRole, currentNumberOfUsersForRole)
         end
+    return self
+end
+
+function StoreFrontUsersStatistics.new(...)
+    local self = setmetatable({}, StoreFrontUsersStatistics)
+    StoreFrontUsersStatistics._jinit(self, ...)
     return self
 end
 

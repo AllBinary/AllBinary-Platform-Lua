@@ -13,6 +13,21 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.system.hardware.components.linux
 
+local CpuInfo = {}
+package.loaded["org.allbinary.logic.system.hardware.components.linux.CpuInfo"] = CpuInfo
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 
 local function java_idiv(a, b)
     local q = a / b
@@ -21,29 +36,41 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local CpuInfo = {}
+-- class table CpuInfo is declared before the requires
 CpuInfo.__index = CpuInfo
 CpuInfo.className = "CpuInfo"
+CpuInfo.javaClassName = "org.allbinary.logic.system.hardware.components.linux.CpuInfo"
 
 function CpuInfo:_init_fields()
-    self.name = nil
+    if self.name_f == nil then self.name_f = nil end
 end
 
 
-function CpuInfo.new(name)
+function CpuInfo._jinit(self, name)
+    CpuInfo._init_fields(self)
+        self.name_f = name
+    return self
+end
+
+function CpuInfo.new(...)
     local self = setmetatable({}, CpuInfo)
-    self:_init_fields()
-        self.name = name
+    CpuInfo._jinit(self, ...)
     return self
 end
 
 
 function CpuInfo:toString()
-        return self.name
+        return self.name_f
 end
 CpuInfo.__tostring = function(self) return self:toString() end
 

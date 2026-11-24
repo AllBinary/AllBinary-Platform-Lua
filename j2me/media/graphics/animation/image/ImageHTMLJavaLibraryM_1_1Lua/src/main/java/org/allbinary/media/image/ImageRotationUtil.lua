@@ -13,11 +13,27 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media.image
 
+local ImageRotationUtil = {}
+package.loaded["org.allbinary.media.image.ImageRotationUtil"] = ImageRotationUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Image = require("javax.microedition.lcdui.Image")
-local PlaynImmutableImage = require("org.microemu.device.playn.PlaynImmutableImage")
-local PlaynMutableImage = require("org.microemu.device.playn.PlaynMutableImage")
-local CanvasImage = require("playn.core.CanvasImage")
-local CanvasSurface = require("playn.core.CanvasSurface")
+local PlaynImmutableImage = java_lazy("org.microemu.device.playn.PlaynImmutableImage")
+local PlaynMutableImage = java_lazy("org.microemu.device.playn.PlaynMutableImage")
+local CanvasImage = java_lazy("playn.core.CanvasImage")
+local CanvasSurface = java_lazy("playn.core.CanvasSurface")
+local ImageCreationUtil = java_lazy("org.allbinary.media.image.ImageCreationUtil")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -39,22 +55,34 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ImageRotationUtil = {}
+-- class table ImageRotationUtil is declared before the requires
 ImageRotationUtil.__index = ImageRotationUtil
 ImageRotationUtil.className = "ImageRotationUtil"
+ImageRotationUtil.javaClassName = "org.allbinary.media.image.ImageRotationUtil"
 
 
 function ImageRotationUtil.getInstance()
-        return ImageRotationUtil.instance
+        return ImageRotationUtil.instance_f
 end
 
 
-function ImageRotationUtil.new()
+function ImageRotationUtil._jinit(self)
+    return self
+end
+
+function ImageRotationUtil.new(...)
     local self = setmetatable({}, ImageRotationUtil)
+    ImageRotationUtil._jinit(self, ...)
     return self
 end
 
@@ -114,12 +142,12 @@ function ImageRotationUtil:createRotatedImage(originalImage, rotationInDegrees)
         local image = ImageCreationUtil.getInstance():createImageWH(originalImage:getWidth(), originalImage:getHeight())
         local rotatedImage = self:rotateImage(originalImage, image, rotationInDegrees)
         if rotatedImage == nil then
-            error(java_exception("Exception", "Not Mutable"), 0)
+            error(require("java.lang.Exception").new("Not Mutable"), 0)
         end
         return rotatedImage
 end
 
-ImageRotationUtil.instance = ImageRotationUtil.new()
+ImageRotationUtil.instance_f = ImageRotationUtil.new()
 
 return ImageRotationUtil
 

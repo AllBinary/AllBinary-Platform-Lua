@@ -13,17 +13,36 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.layer
 
-local CaptionAnimationHelperBase = require("org.allbinary.animation.caption.CaptionAnimationHelperBase")
-local Group = require("org.allbinary.game.identification.Group")
-local Waypoint2LogHelper = require("org.allbinary.game.layer.waypoint.Waypoint2LogHelper")
-local WaypointLogHelper = require("org.allbinary.game.layer.waypoint.WaypointLogHelper")
-local WaypointRunnableLogHelper = require("org.allbinary.game.layer.waypoint.WaypointRunnableLogHelper")
-local TrackingEvent = require("org.allbinary.game.tracking.TrackingEvent")
-local AllBinaryLayer = require("org.allbinary.layer.AllBinaryLayer")
-local GeographicMapCellHistory = require("org.allbinary.media.graphics.geography.map.GeographicMapCellHistory")
-local GeographicMapCellPosition = require("org.allbinary.media.graphics.geography.map.GeographicMapCellPosition")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
+local NullPathFindingLayer = {}
+package.loaded["org.allbinary.game.layer.NullPathFindingLayer"] = NullPathFindingLayer
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local CaptionAnimationHelperBase = java_lazy("org.allbinary.animation.caption.CaptionAnimationHelperBase")
+local Group = java_lazy("org.allbinary.game.identification.Group")
+local Waypoint2LogHelper = java_lazy("org.allbinary.game.layer.waypoint.Waypoint2LogHelper")
+local WaypointLogHelper = java_lazy("org.allbinary.game.layer.waypoint.WaypointLogHelper")
+local WaypointRunnableLogHelper = java_lazy("org.allbinary.game.layer.waypoint.WaypointRunnableLogHelper")
+local TrackingEvent = java_lazy("org.allbinary.game.tracking.TrackingEvent")
+local AllBinaryLayer = java_lazy("org.allbinary.layer.AllBinaryLayer")
+local GeographicMapCellHistory = java_lazy("org.allbinary.media.graphics.geography.map.GeographicMapCellHistory")
+local GeographicMapCellPosition = java_lazy("org.allbinary.media.graphics.geography.map.GeographicMapCellPosition")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local PathFindingLayerInterface = require("org.allbinary.game.layer.PathFindingLayerInterface")
+local GeographicMapCellPositionAreaBase = java_lazy("org.allbinary.game.layer.GeographicMapCellPositionAreaBase")
+local RTSLayer2LogHelper = java_lazy("org.allbinary.game.layer.RTSLayer2LogHelper")
+local SelectionHudPaintable = java_lazy("org.allbinary.game.layer.SelectionHudPaintable")
+local WaypointBehaviorBase = java_lazy("org.allbinary.game.layer.WaypointBehaviorBase")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -45,200 +64,212 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local NullPathFindingLayer = {}
+-- class table NullPathFindingLayer is declared before the requires
 NullPathFindingLayer.__index = NullPathFindingLayer
 NullPathFindingLayer.className = "NullPathFindingLayer"
+NullPathFindingLayer.javaClassName = "org.allbinary.game.layer.NullPathFindingLayer"
+NullPathFindingLayer.java_implements = " PathFindingLayerInterface "
+NullPathFindingLayer.java_interfaces = function() return {PathFindingLayerInterface} end
+
+function NullPathFindingLayer._jinit(self)
+    return self
+end
 
 function NullPathFindingLayer.new()
-    local self = setmetatable({}, NullPathFindingLayer)
-    return self
+    return NullPathFindingLayer._jinit(setmetatable({}, NullPathFindingLayer))
 end
 
 
 function NullPathFindingLayer:getName()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 -- throws Exception
 function NullPathFindingLayer:getEndGeographicMapCellPositionList()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullPathFindingLayer:shouldHandleStartSameAsEnd()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullPathFindingLayer:getGeographicMapCellPositionArea()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullPathFindingLayer:getHudPaintable()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 -- throws Exception
 function NullPathFindingLayer:handleCost(ownerLayer)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullPathFindingLayer:getParentLayer()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullPathFindingLayer:getRTSLayer2LogHelper()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 -- throws Exception
 function NullPathFindingLayer:setTarget(targetGameLayer)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 -- throws Exception
 function NullPathFindingLayer:init(geographicMapCellHistory, geographicMapCellPositionBasicArrayList)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullPathFindingLayer:getMoveOutOfBuildAreaPath(geographicMapCellPosition)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 -- throws Exception
 function NullPathFindingLayer:setClosestGeographicMapCellHistory(pathsList)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullPathFindingLayer:teleportTo(geographicMapCellPosition)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 -- throws Exception
 function NullPathFindingLayer:setLoad(resource)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 -- throws Exception
 function NullPathFindingLayer:getSurroundingGeographicMapCellPositionList()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullPathFindingLayer:isSelected()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullPathFindingLayer:shouldAddWaypointFromBuilding()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullPathFindingLayer:isShowMoreCaptionStates()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 -- throws Exception
 function NullPathFindingLayer:trackTo(reason)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 -- throws Exception
 function NullPathFindingLayer:trackToDXY(dx, dy)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 -- throws Exception
 function NullPathFindingLayer:buildingChase(allbinaryLayer, cellPosition)
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullPathFindingLayer:getTrackingEvent()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullPathFindingLayer:allStop()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullPathFindingLayer:isWaypointListEmptyOrOnlyTargets()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 -- throws Exception
 function NullPathFindingLayer:getCurrentGeographicMapCellPosition()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 -- throws Exception
 function NullPathFindingLayer:getTopLeftGeographicMapCellPosition()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullPathFindingLayer:getCaptionAnimationHelper()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullPathFindingLayer:getWaypointBehavior()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullPathFindingLayer:getWaypointLogHelper()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullPathFindingLayer:getWaypoint2LogHelper()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullPathFindingLayer:getWaypointRunnableLogHelper()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullPathFindingLayer:getGroupInterface()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 -- throws Exception
 function NullPathFindingLayer:isDestroyed()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function NullPathFindingLayer:getSourceId()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 NullPathFindingLayer.NULL_PATH_FINDING_LAYER = NullPathFindingLayer.new()

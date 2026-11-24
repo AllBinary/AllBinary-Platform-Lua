@@ -13,7 +13,22 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary
 
--- local HashMap = require("java.util.HashMap")
+local J2SEUtil = {}
+package.loaded["org.allbinary.J2SEUtil"] = J2SEUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
 -- local Map = require("java.util.Map")
 -- local Set = require("java.util.Set")
 
@@ -24,23 +39,33 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
 --HTMLForJ2ME
-local J2SEUtil = {}
+-- class table J2SEUtil is declared before the requires
 J2SEUtil.__index = J2SEUtil
 J2SEUtil.className = "J2SEUtil"
+J2SEUtil.javaClassName = "org.allbinary.J2SEUtil"
+
+function J2SEUtil._jinit(self)
+    return self
+end
 
 function J2SEUtil.new()
-    local self = setmetatable({}, J2SEUtil)
-    return self
+    return J2SEUtil._jinit(setmetatable({}, J2SEUtil))
 end
 
 
 function J2SEUtil.getInstance()
-        return J2SEUtil.instance
+        return J2SEUtil.instance_f
 end
 
 
@@ -61,7 +86,7 @@ function J2SEUtil:getSetAsArray(set)
         return objectArray
 end
 
-J2SEUtil.instance = J2SEUtil.new()
+J2SEUtil.instance_f = J2SEUtil.new()
 
 return J2SEUtil
 

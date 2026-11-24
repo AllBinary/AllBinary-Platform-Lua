@@ -13,11 +13,26 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.content
 
+local CommandUriAction = {}
+package.loaded["org.allbinary.content.CommandUriAction"] = CommandUriAction
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Command = require("javax.microedition.lcdui.Command")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local ABHashtable = require("org.allbinary.util.ABHashtable")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -26,13 +41,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local CommandUriAction = {}
+-- class table CommandUriAction is declared before the requires
 CommandUriAction.__index = CommandUriAction
 CommandUriAction.className = "CommandUriAction"
+CommandUriAction.javaClassName = "org.allbinary.content.CommandUriAction"
 
 function CommandUriAction:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -40,15 +62,18 @@ function CommandUriAction:_init_fields()
     self.hashtable = StdUtil.getInstance():createHashtable()
 end
 
-function CommandUriAction.new()
-    local self = setmetatable({}, CommandUriAction)
-    self:_init_fields()
+function CommandUriAction._jinit(self)
+    CommandUriAction._init_fields(self)
     return self
+end
+
+function CommandUriAction.new()
+    return CommandUriAction._jinit(setmetatable({}, CommandUriAction))
 end
 
 
 function CommandUriAction.getInstance()
-        return CommandUriAction.instance
+        return CommandUriAction.instance_f
 end
 
 
@@ -58,10 +83,11 @@ end
 
 
 function CommandUriAction:process(command)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.PROCESS, e)
         end
 end
@@ -72,7 +98,7 @@ function CommandUriAction:getIntent(command)
         return self.intent
 end
 
-CommandUriAction.instance = CommandUriAction.new()
+CommandUriAction.instance_f = CommandUriAction.new()
 
 return CommandUriAction
 

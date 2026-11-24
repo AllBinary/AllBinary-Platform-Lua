@@ -13,9 +13,24 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.time
 
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local CommonLabels = require("org.allbinary.string.CommonLabels")
+local TimeDelayHelper = {}
+package.loaded["org.allbinary.time.TimeDelayHelper"] = TimeDelayHelper
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -24,26 +39,38 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local TimeDelayHelper = {}
+-- class table TimeDelayHelper is declared before the requires
 TimeDelayHelper.__index = TimeDelayHelper
 TimeDelayHelper.className = "TimeDelayHelper"
+TimeDelayHelper.javaClassName = "org.allbinary.time.TimeDelayHelper"
 
 function TimeDelayHelper:_init_fields()
     self.startTime = -1
-    self.elapsedTimeAtPause = Long.MIN_VALUE
-    self.delay = nil
+    self.elapsedTimeAtPause = require("java.lang.Long").MIN_VALUE
+    if self.delay == nil then self.delay = nil end
 end
 
 
-function TimeDelayHelper.new(delay)
-    local self = setmetatable({}, TimeDelayHelper)
-    self:_init_fields()
+function TimeDelayHelper._jinit(self, delay)
+    TimeDelayHelper._init_fields(self)
         self.delay = delay
         self:setStartTimeTNT()
+    return self
+end
+
+function TimeDelayHelper.new(...)
+    local self = setmetatable({}, TimeDelayHelper)
+    TimeDelayHelper._jinit(self, ...)
     return self
 end
 
@@ -139,14 +166,14 @@ end
 
 function TimeDelayHelper:pause()
         self.elapsedTimeAtPause = self:getElapsedTNT()
-        self.startTime = Long.MAX_VALUE
+        self.startTime = require("java.lang.Long").MAX_VALUE
 end
 
 
 function TimeDelayHelper:resume()
-        if self.elapsedTimeAtPause ~= Long.MIN_VALUE then
+        if self.elapsedTimeAtPause ~= require("java.lang.Long").MIN_VALUE then
             self.startTime = math.floor(os.time() * 1000) + self.elapsedTimeAtPause
-            self.elapsedTimeAtPause = Long.MIN_VALUE
+            self.elapsedTimeAtPause = require("java.lang.Long").MIN_VALUE
             self:setStartTimeTNT()
             return true
         end

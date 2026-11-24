@@ -13,14 +13,29 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.ag.layer.hud.basic.notification
 
-local GameNotificationEvent = require("org.allbinary.game.layer.hud.event.GameNotificationEvent")
-local BasicColor = require("org.allbinary.graphics.color.BasicColor")
-local BasicColorFactory = require("org.allbinary.graphics.color.BasicColorFactory")
-local NullUtil = require("org.allbinary.logic.NullUtil")
-local BooleanFactory = require("org.allbinary.logic.java.bool.BooleanFactory")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
+local GameNotification = {}
+package.loaded["org.allbinary.game.ag.layer.hud.basic.notification.GameNotification"] = GameNotification
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local GameNotificationEvent = java_lazy("org.allbinary.game.layer.hud.event.GameNotificationEvent")
+local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
+local BasicColorFactory = java_lazy("org.allbinary.graphics.color.BasicColorFactory")
+local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
+local BooleanFactory = java_lazy("org.allbinary.logic.java.bool.BooleanFactory")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -29,13 +44,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local GameNotification = {}
+-- class table GameNotification is declared before the requires
 GameNotification.__index = GameNotification
 GameNotification.className = "GameNotification"
+GameNotification.javaClassName = "org.allbinary.game.ag.layer.hud.basic.notification.GameNotification"
 
 function GameNotification:_init_fields()
     self.stringList = BasicArrayListD.new()
@@ -43,16 +65,19 @@ function GameNotification:_init_fields()
     self.colorList = BasicArrayListD.new()
 end
 
-function GameNotification.new()
-    local self = setmetatable({}, GameNotification)
-    self:_init_fields()
+function GameNotification._jinit(self)
+    GameNotification._init_fields(self)
     return self
 end
 
+function GameNotification.new()
+    return GameNotification._jinit(setmetatable({}, GameNotification))
+end
 
-function GameNotification:add(string, seconds, basicColor)
-        if not self.stringList:contains(string) then
-            self.stringList:add(string)
+
+function GameNotification:add(string_, seconds, basicColor)
+        if not self.stringList:contains(string_) then
+            self.stringList:add(string_)
             self.timeList:add(seconds)
             self.colorList:add(basicColor)
         end

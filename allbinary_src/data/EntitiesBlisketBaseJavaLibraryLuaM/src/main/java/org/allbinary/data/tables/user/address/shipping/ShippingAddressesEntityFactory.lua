@@ -13,9 +13,62 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.data.tables.user.address.shipping
 
-local StreetAddressesEntity = require("org.allbinary.data.tables.user.address.StreetAddressesEntity")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local ShippingAddressesEntityFactory = {}
+package.loaded["org.allbinary.data.tables.user.address.shipping.ShippingAddressesEntityFactory"] = ShippingAddressesEntityFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local StreetAddressesEntity = java_lazy("org.allbinary.data.tables.user.address.StreetAddressesEntity")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local ShippingAddressesEntity = java_lazy("org.allbinary.data.tables.user.address.shipping.ShippingAddressesEntity")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -24,13 +77,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ShippingAddressesEntityFactory = {}
+-- class table ShippingAddressesEntityFactory is declared before the requires
 ShippingAddressesEntityFactory.__index = ShippingAddressesEntityFactory
 ShippingAddressesEntityFactory.className = "ShippingAddressesEntityFactory"
+ShippingAddressesEntityFactory.javaClassName = "org.allbinary.data.tables.user.address.shipping.ShippingAddressesEntityFactory"
 
 function ShippingAddressesEntityFactory:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -38,33 +98,39 @@ end
 
 
 function ShippingAddressesEntityFactory.getInstance()
-        return ShippingAddressesEntityFactory.instance
+        return ShippingAddressesEntityFactory.instance_f
 end
 
 
-function ShippingAddressesEntityFactory.new()
+function ShippingAddressesEntityFactory._jinit(self)
+    ShippingAddressesEntityFactory._init_fields(self)
+    return self
+end
+
+function ShippingAddressesEntityFactory.new(...)
     local self = setmetatable({}, ShippingAddressesEntityFactory)
-    self:_init_fields()
+    ShippingAddressesEntityFactory._jinit(self, ...)
     return self
 end
 
 
--- Java overloaded method: Lua keeps the last definition
 function ShippingAddressesEntityFactory:getInstance(userName)
-        local try_ok, try_error = pcall(function()
-            return ShippingAddressesEntity.new(userName)
+        local try_ok, try_error, try_value = pcall(function()
+            do return "__jreturn", ShippingAddressesEntity.new(userName) end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local commonStrings = CommonStrings.getInstance()
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().ENTITYFACTORYERROR) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().ENTITYFACTORYERROR) then
                 self.logUtil:put(commonStrings.EXCEPTION, self, "getShippingAddressesEntityInstance()", e)
             end
             return nil
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
-ShippingAddressesEntityFactory.instance = ShippingAddressesEntityFactory.new()
+ShippingAddressesEntityFactory.instance_f = ShippingAddressesEntityFactory.new()
 
 return ShippingAddressesEntityFactory
 

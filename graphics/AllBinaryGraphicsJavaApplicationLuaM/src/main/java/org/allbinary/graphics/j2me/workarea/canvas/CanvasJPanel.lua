@@ -13,45 +13,158 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.graphics.j2me.workarea.canvas
 
--- local awt = require("java.awt")
--- local HashMap = require("java.util.HashMap")
+local CanvasJPanel = {}
+package.loaded["org.allbinary.graphics.j2me.workarea.canvas.CanvasJPanel"] = CanvasJPanel
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+-- local Color = require("java.awt.Color")
+-- local Dimension = require("java.awt.Dimension")
+-- local Graphics = require("java.awt.Graphics")
+local HashMap = java_lazy("java.util.HashMap")
 -- local DefaultMutableTreeNode = require("javax.swing.tree.DefaultMutableTreeNode")
 -- local MutableTreeNode = require("javax.swing.tree.MutableTreeNode")
-local VectorExplosionGenerator = require("org.allbinary.animation.VectorExplosionGenerator")
-local VectorMirrorGenerator = require("org.allbinary.animation.VectorMirrorGenerator")
-local VectorCenterGenerator = require("org.allbinary.animation.vector.VectorCenterGenerator")
-local GameInputStrings = require("org.allbinary.game.input.GameInputStrings")
-local GPoint = require("org.allbinary.graphics.GPoint")
-local PointFactory = require("org.allbinary.graphics.PointFactory")
-local BasicColorFactory = require("org.allbinary.graphics.color.BasicColorFactory")
-local GraphicsException = require("org.allbinary.graphics.j2me.GraphicsException")
-local StatusFactory = require("org.allbinary.graphics.j2me.StatusFactory")
-local WorkAreaJTreeJPanel = require("org.allbinary.graphics.j2me.workarea.WorkAreaJTreeJPanel")
-local GraphicItemFactory = require("org.allbinary.graphics.j2me.workarea.tools.GraphicItemFactory")
-local GraphicItemInterface = require("org.allbinary.graphics.j2me.workarea.tools.GraphicItemInterface")
-local LinesGraphicItem = require("org.allbinary.graphics.j2me.workarea.tools.LinesGraphicItem")
-local MouseStrings = require("org.allbinary.graphics.j2me.workarea.tools.MouseStrings")
-local Points = require("org.allbinary.graphics.j2me.workarea.tools.Points")
-local ToolFactory = require("org.allbinary.graphics.j2me.workarea.tools.ToolFactory")
-local MyGraphicItemEvent = require("org.allbinary.graphics.j2me.workarea.tools.event.MyGraphicItemEvent")
-local MyGraphicItemEventListener = require("org.allbinary.graphics.j2me.workarea.tools.event.MyGraphicItemEventListener")
-local MyGraphicItemEventService = require("org.allbinary.graphics.j2me.workarea.tools.event.MyGraphicItemEventService")
-local RandomRotationFactory = require("org.allbinary.graphics.pipeline.RandomRotationFactory")
-local LOGGING = require("org.allbinary.log.LOGGING")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local GuiLog = require("org.allbinary.logic.communication.log.GuiLog")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local PositionStrings = require("org.allbinary.math.PositionStrings")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local Node = require("org.w3c.dom.Node")
-local JPanel = require("org.allbinary.graphics.j2me.workarea.canvas.JPanel")
-local MouseListener = require("org.allbinary.graphics.j2me.workarea.canvas.MouseListener")
-local MouseMotionListener = require("org.allbinary.graphics.j2me.workarea.canvas.MouseMotionListener")
-local KeyListener = require("org.allbinary.graphics.j2me.workarea.canvas.KeyListener")
+local VectorExplosionGenerator = java_lazy("org.allbinary.animation.VectorExplosionGenerator")
+local VectorMirrorGenerator = java_lazy("org.allbinary.animation.VectorMirrorGenerator")
+local VectorCenterGenerator = java_lazy("org.allbinary.animation.vector.VectorCenterGenerator")
+local GameInputStrings = java_lazy("org.allbinary.game.input.GameInputStrings")
+local GPoint = java_lazy("org.allbinary.graphics.GPoint")
+local PointFactory = java_lazy("org.allbinary.graphics.PointFactory")
+local BasicColorFactory = java_lazy("org.allbinary.graphics.color.BasicColorFactory")
+local GraphicsException = java_lazy("org.allbinary.graphics.j2me.GraphicsException")
+local StatusFactory = java_lazy("org.allbinary.graphics.j2me.StatusFactory")
+local WorkAreaJTreeJPanel = java_lazy("org.allbinary.graphics.j2me.workarea.WorkAreaJTreeJPanel")
+local GraphicItemFactory = java_lazy("org.allbinary.graphics.j2me.workarea.tools.GraphicItemFactory")
+local GraphicItemInterface = java_lazy("org.allbinary.graphics.j2me.workarea.tools.GraphicItemInterface")
+local LinesGraphicItem = java_lazy("org.allbinary.graphics.j2me.workarea.tools.LinesGraphicItem")
+local MouseStrings = java_lazy("org.allbinary.graphics.j2me.workarea.tools.MouseStrings")
+local Points = java_lazy("org.allbinary.graphics.j2me.workarea.tools.Points")
+local ToolFactory = java_lazy("org.allbinary.graphics.j2me.workarea.tools.ToolFactory")
+local MyGraphicItemEvent = java_lazy("org.allbinary.graphics.j2me.workarea.tools.event.MyGraphicItemEvent")
+local MyGraphicItemEventListener = java_lazy("org.allbinary.graphics.j2me.workarea.tools.event.MyGraphicItemEventListener")
+local MyGraphicItemEventService = java_lazy("org.allbinary.graphics.j2me.workarea.tools.event.MyGraphicItemEventService")
+local RandomRotationFactory = java_lazy("org.allbinary.graphics.pipeline.RandomRotationFactory")
+local LOGGING = java_lazy("org.allbinary.log.LOGGING")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local GuiLog = java_lazy("org.allbinary.logic.communication.log.GuiLog")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local PositionStrings = java_lazy("org.allbinary.math.PositionStrings")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local Node = java_lazy("org.w3c.dom.Node")
+-- local GridLayout = require("java.awt.GridLayout")
+-- local KeyEvent = require("java.awt.event.KeyEvent")
+-- local KeyListener = require("java.awt.event.KeyListener")
+-- local MouseEvent = require("java.awt.event.MouseEvent")
+-- local MouseListener = require("java.awt.event.MouseListener")
+-- local MouseMotionListener = require("java.awt.event.MouseMotionListener")
+-- local JPanel = require("javax.swing.JPanel")
+local CanvasDom = java_lazy("org.allbinary.graphics.j2me.workarea.canvas.CanvasDom")
+local CanvasTreeLabel = java_lazy("org.allbinary.graphics.j2me.workarea.canvas.CanvasTreeLabel")
+local Grid = java_lazy("org.allbinary.graphics.j2me.workarea.canvas.Grid")
+local IntegerDimension = java_lazy("org.allbinary.graphics.j2me.workarea.canvas.IntegerDimension")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
+local function java_super_init(base, self, ...)
+    local init = rawget(base, "_jinit")
+    if init ~= nil then return init(self, ...) end
+    if base.new ~= nil then
+        local object = base.new(...)
+        if type(object) == "table" then
+            for key, value in pairs(object) do if rawget(self, key) == nil then self[key] = value end end
+        end
+    end
+end
+
+local function java_overload(class, name, count, test)
+    local parent = getmetatable(class)
+    local base = parent and parent.__index
+    if type(base) ~= "table" or base == class then return end
+    local override = rawget(class, name)
+    local mangled = name .. "_j" .. count
+    -- an inherited overload with the same count and other parameter types (Control.drawBackground(hDC, rect, pixel, tx, ty)
+    -- and Canvas.drawBackground(gc, x, y, width, height)) is called when the arguments do not match the override
+    local typed = function(self, ...)
+        if test == nil or test(...) then return override(self, ...) end
+        local inherited = base[mangled]
+        if inherited == nil then local plain = base[name] if plain ~= nil and plain ~= base[name .. "__jdispatcher"] then inherited = plain end end
+        if inherited == nil or inherited == override then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[mangled] = typed
+    -- the inherited method is looked up at the call: the base class can still be loading (require cycle)
+    local dispatcher = function(self, ...)
+        if select("#", ...) == count then return typed(self, ...) end
+        local inherited = base[name]
+        if inherited == nil then return override(self, ...) end
+        return inherited(self, ...)
+    end
+    class[name] = dispatcher
+    class[name .. "__jdispatcher"] = dispatcher
+end
+
+local function java_super(class, name, count)
+    local mangled = name .. "_j" .. count
+    local current = class
+    while type(current) == "table" do
+        local method = rawget(current, mangled)
+        if method ~= nil then return method end
+        method = rawget(current, name)
+        if method ~= nil and method ~= rawget(current, name .. "__jdispatcher") then return method end
+        local parent = getmetatable(current)
+        local index = parent and parent.__index
+        if index == current then index = nil end
+        current = index
+    end
+    return class[name]
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -60,42 +173,58 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local CanvasJPanel = {}
+-- class table CanvasJPanel is declared before the requires
 CanvasJPanel.__index = CanvasJPanel
 CanvasJPanel.className = "CanvasJPanel"
+CanvasJPanel.javaClassName = "org.allbinary.graphics.j2me.workarea.canvas.CanvasJPanel"
 setmetatable(CanvasJPanel, {__index = JPanel})
+CanvasJPanel.java_implements = " MouseListener MouseMotionListener KeyListener MyGraphicItemEventListener "
+CanvasJPanel.java_interfaces = function() return {MouseListener, MouseMotionListener, KeyListener, MyGraphicItemEventListener} end
 
 function CanvasJPanel:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.guiLog = GuiLog.getInstance()
     self.gameInputStrings = GameInputStrings.getInstance()
     self.selectedTool = nil
-    self.graphicItemHashMap = nil
-    self.canvasDimension = nil
+    if self.graphicItemHashMap == nil then self.graphicItemHashMap = nil end
+    if self.canvasDimension == nil then self.canvasDimension = nil end
     self.angle = 0.0
-    self.canvasTreeNode = nil
-    self.frameLabel = nil
-    self.workAreaJTreeJPanel = nil
-    self.grid = nil
+    if self.canvasTreeNode == nil then self.canvasTreeNode = nil end
+    if self.frameLabel == nil then self.frameLabel = nil end
+    if self.workAreaJTreeJPanel == nil then self.workAreaJTreeJPanel = nil end
+    if self.grid == nil then self.grid = nil end
+end
+
+function CanvasJPanel._jinit(self, ...)
+    local count = select("#", ...)
+    if count == 4 then return CanvasJPanel._new4(self, ...)
+    elseif count == 3 then return CanvasJPanel._new3(self, ...)
+    end
+    error("No constructor of CanvasJPanel takes " .. count .. " arguments")
 end
 
 function CanvasJPanel.new(...)
-    local count = select("#", ...)
-    if count == 4 then return CanvasJPanel._new4(...)
-    elseif count == 3 then return CanvasJPanel._new3(...)
-    end
+    local self = setmetatable({}, CanvasJPanel)
+    CanvasJPanel._jinit(self, ...)
+    return self
 end
 
 
-function CanvasJPanel._new4(workAreaJTreeJPanel, dimension, x, y)
-    local self = setmetatable(JPanel.new(), CanvasJPanel)
-    self:_init_fields()
+function CanvasJPanel._new4(self, workAreaJTreeJPanel, dimension, x, y)
+    java_super_init(JPanel, self)
+    CanvasJPanel._init_fields(self)
         self.grid = Grid.new()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             self.workAreaJTreeJPanel = workAreaJTreeJPanel
             self:initComponents()
             self:initMyComponents()
@@ -104,7 +233,8 @@ function CanvasJPanel._new4(workAreaJTreeJPanel, dimension, x, y)
         end)
         if not try_ok then
             local e = try_error
-            if self.LOGGING:contains(self.LOGGING.GRAPHICSCREATION) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LOGGING.contains(LOGGING.GRAPHICSCREATION) then
                 self.guiLog:put("Constructor Error", self, "contructor", e)
             end
         end
@@ -112,11 +242,11 @@ function CanvasJPanel._new4(workAreaJTreeJPanel, dimension, x, y)
 end
 
 
-function CanvasJPanel._new3(workAreaJTreeJPanel, dimension, canvasDom)
-    local self = setmetatable(JPanel.new(), CanvasJPanel)
-    self:_init_fields()
+function CanvasJPanel._new3(self, workAreaJTreeJPanel, dimension, canvasDom)
+    java_super_init(JPanel, self)
+    CanvasJPanel._init_fields(self)
         self.grid = Grid.new(canvasDom:getGrid())
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             self.workAreaJTreeJPanel = workAreaJTreeJPanel
             self:initComponents()
             self:initMyComponents()
@@ -137,7 +267,8 @@ function CanvasJPanel._new3(workAreaJTreeJPanel, dimension, canvasDom)
         end)
         if not try_ok then
             local e = try_error
-            if self.LOGGING:contains(self.LOGGING.GRAPHICSCREATION) then
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+            if LOGGING.contains(LOGGING.GRAPHICSCREATION) then
                 self.guiLog:put("Constructor Error", self, "contructor", e)
             end
         end
@@ -160,48 +291,51 @@ function CanvasJPanel:initMyComponents()
         self:addMouseMotionListener(self)
         MyGraphicItemEventService.addListener(self)
 end
+java_overload(CanvasJPanel, "initMyComponents", 0)
 
 
 function CanvasJPanel:getTreeNode()
         return self.canvasTreeNode
 end
+java_overload(CanvasJPanel, "getTreeNode", 0)
 
 
 function CanvasJPanel:initComponents()
         self:setLayout(GridLayout.new(1, 1))
 end
+java_overload(CanvasJPanel, "initComponents", 0)
 
 
 -- throws Exception
 function CanvasJPanel:setCanvasSize(x, y)
-        self.grid.isGridPossible = true
+        self.grid.isGridPossible_f = true
         if x <= 0 then
-            self.grid.isGridPossible = false
+            self.grid.isGridPossible_f = false
             error(GraphicsException.new("X Size Error: " .. tostring(x), self, "setWorkAreaSize"), 0)
         end
         if y <= 0 then
-            self.grid.isGridPossible = false
+            self.grid.isGridPossible_f = false
             error(GraphicsException.new("Y Size Error: " .. tostring(y), self, "setWorkAreaSize"), 0)
         end
         if x > self:getWidth() then
-            self.grid.isGridPossible = false
+            self.grid.isGridPossible_f = false
         end
         if y > self:getHeight() then
-            self.grid.isGridPossible = false
+            self.grid.isGridPossible_f = false
         end
         self:setCanvasDimension(IntegerDimension.new(x, y))
         self.grid.isChanged = true
 end
+java_overload(CanvasJPanel, "setCanvasSize", 2, function(java_a1, java_a2) return true and type(java_a1) == "number" and type(java_a2) == "number" end)
 
 
-function CanvasJPanel:setGrid(point)
+function CanvasJPanel:setGrid_j1(point)
         self:setGrid(point:getX(), point:getY())
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function CanvasJPanel:setGrid(xSize, ySize)
-        local try_ok, try_error = pcall(function()
+function CanvasJPanel:setGrid_j2(xSize, ySize)
+        local try_ok, try_error, try_value = pcall(function()
             if xSize >= self:getCanvasDimension():getWidth() / 2 or xSize < 1 then
                 error(GraphicsException.new("X Size Error: " .. tostring(xSize) .. " WorkArea X: " .. tostring(self:getCanvasDimension():getWidth()), self, "setGrid"), 0)
             end
@@ -213,8 +347,16 @@ function CanvasJPanel:setGrid(xSize, ySize)
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
         end
 end
+function CanvasJPanel:setGrid(...)
+    local count = select("#", ...)
+    if count == 1 then return self:setGrid_j1(...) end
+    if count == 2 then return self:setGrid_j2(...) end
+    error("No method setGrid takes " .. count .. " arguments")
+end
+CanvasJPanel.setGrid__jdispatcher = CanvasJPanel.setGrid
 
 
 -- throws Exception
@@ -224,21 +366,25 @@ function CanvasJPanel:setDefaultGrid()
         self:setGrid(1, 1)
         self.grid.isChanged = true
 end
+java_overload(CanvasJPanel, "setDefaultGrid", 0)
 
 
 function CanvasJPanel:getAngle()
         return self.angle
 end
+java_overload(CanvasJPanel, "getAngle", 0)
 
 
 function CanvasJPanel:setAngle(angle)
         self.angle = angle
 end
+java_overload(CanvasJPanel, "setAngle", 1, function(java_a1) return true and type(java_a1) == "number" end)
 
 
 function CanvasJPanel:addAngle(angle)
         self:setAngle(self.angle + angle)
 end
+java_overload(CanvasJPanel, "addAngle", 1, function(java_a1) return true and type(java_a1) == "number" end)
 
 
 function CanvasJPanel:explodeAll()
@@ -271,6 +417,7 @@ function CanvasJPanel:explodeAll()
         self.workAreaJTreeJPanel:expand()
         self.workAreaJTreeJPanel:repaint()
 end
+java_overload(CanvasJPanel, "explodeAll", 0)
 
 
 -- throws Exception
@@ -288,6 +435,7 @@ function CanvasJPanel:explode(howMuch, explosionType)
         end
         self:repaint()
 end
+java_overload(CanvasJPanel, "explode", 2, function(java_a1, java_a2) return true and type(java_a1) == "number" and type(java_a2) == "number" end)
 
 
 -- throws Exception
@@ -304,6 +452,7 @@ function CanvasJPanel:mirror()
         end
         self:repaint()
 end
+java_overload(CanvasJPanel, "mirror", 0)
 
 
 -- throws Exception
@@ -311,10 +460,11 @@ function CanvasJPanel:center()
         VectorCenterGenerator.new():transform(self:getGraphicItemHashMap())
         self:repaint()
 end
+java_overload(CanvasJPanel, "center", 0)
 
 
 function CanvasJPanel:setNewTool()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             StatusFactory.getInstance():setStatus("Tool Selected")
             self.selectedTool = ToolFactory.getInstance():getSelectedToolFactory():getInstance(self)
             local newNode = self.selectedTool:getTreeNode()
@@ -326,8 +476,10 @@ function CanvasJPanel:setNewTool()
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
         end
 end
+java_overload(CanvasJPanel, "setNewTool", 0)
 
 
 -- throws Exception
@@ -336,6 +488,7 @@ function CanvasJPanel:duplicateGraphicItem(graphicItem)
         self:getGraphicItemHashMap():put(graphicItemClone:getTreeNode(), graphicItemClone)
         self.canvasTreeNode:add(graphicItemClone:getTreeNode())
 end
+java_overload(CanvasJPanel, "duplicateGraphicItem", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "GraphicItemInterface")) end)
 
 
 -- throws Exception
@@ -348,11 +501,13 @@ function CanvasJPanel:duplicateGraphicItemHashMap(hashMap)
             self:duplicateGraphicItem(graphicItem)
         end
 end
+java_overload(CanvasJPanel, "duplicateGraphicItemHashMap", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "HashMap")) end)
 
 
 function CanvasJPanel:getGraphicItemHashMap()
         return self.graphicItemHashMap
 end
+java_overload(CanvasJPanel, "getGraphicItemHashMap", 0)
 
 
 function CanvasJPanel:getXPixelsPerWorkAreaPixel()
@@ -363,6 +518,7 @@ function CanvasJPanel:getXPixelsPerWorkAreaPixel()
             return x
         end
 end
+java_overload(CanvasJPanel, "getXPixelsPerWorkAreaPixel", 0)
 
 
 function CanvasJPanel:getYPixelsPerWorkAreaPixel()
@@ -373,11 +529,13 @@ function CanvasJPanel:getYPixelsPerWorkAreaPixel()
             return y
         end
 end
+java_overload(CanvasJPanel, "getYPixelsPerWorkAreaPixel", 0)
 
 
 function CanvasJPanel:getSelectedTool()
         return self.selectedTool
 end
+java_overload(CanvasJPanel, "getSelectedTool", 0)
 
 
 function CanvasJPanel:drawItems(graphics)
@@ -389,6 +547,7 @@ function CanvasJPanel:drawItems(graphics)
             item:paint(graphics, angleDouble, self:getCanvasDimension(), self:getXPixelsPerWorkAreaPixel(), self:getYPixelsPerWorkAreaPixel())
         end
 end
+java_overload(CanvasJPanel, "drawItems", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "Graphics")) end)
 
 
 function CanvasJPanel:drawGrid(graphics)
@@ -406,14 +565,15 @@ function CanvasJPanel:drawGrid(graphics)
             graphics:drawLine(value, yUpper, value, yLower)
         end
 end
+java_overload(CanvasJPanel, "drawGrid", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "Graphics")) end)
 
 
 function CanvasJPanel:paint(graphics)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             if self:getGrid().isChanged then
                 graphics:setColor(CanvasJPanel.backgroundColor)
                 graphics:fillRect(0, 0, self:getWidth(), self:getHeight())
-                if self:getGrid():getZoom() > 2 and self:getGrid().isGridOn and self:getGrid().isGridPossible then
+                if self:getGrid():getZoom() > 2 and self:getGrid().isGridOn_f and self:getGrid().isGridPossible_f then
                     self:setDefaultGrid()
                     self:drawGrid(graphics)
                 end
@@ -424,27 +584,32 @@ function CanvasJPanel:paint(graphics)
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
         end
 end
+java_overload(CanvasJPanel, "paint", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "Graphics")) end)
 
 
 function CanvasJPanel:repaint()
         if self.grid ~= nil then
             self.grid.isChanged = true
         end
-        JPanel.repaint(self)
+        java_super(JPanel, "repaint", 0)(self)
 end
+java_overload(CanvasJPanel, "repaint", 0)
 
 
 -- throws Exception
 function CanvasJPanel:toDom()
         return CanvasDom.new(self):toDom()
 end
+java_overload(CanvasJPanel, "toDom", 0)
 
 
 function CanvasJPanel:changed()
         self.grid.isChanged = true
 end
+java_overload(CanvasJPanel, "changed", 0)
 
 
 function CanvasJPanel:mouseClicked(mouseEvent)
@@ -465,16 +630,19 @@ function CanvasJPanel:mouseClicked(mouseEvent)
         self.workAreaJTreeJPanel:expand()
         self.workAreaJTreeJPanel:repaint()
 end
+java_overload(CanvasJPanel, "mouseClicked", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
 
 
 function CanvasJPanel:mouseEntered(mouseEvent)
         StatusFactory.getInstance():setStatusNoLog(self:logMouseEvent(mouseEvent))
 end
+java_overload(CanvasJPanel, "mouseEntered", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
 
 
 function CanvasJPanel:mouseExited(mouseEvent)
         StatusFactory.getInstance():setStatusNoLog(self:logMouseEvent(mouseEvent))
 end
+java_overload(CanvasJPanel, "mouseExited", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
 
 
 function CanvasJPanel:mousePressed(mouseEvent)
@@ -487,6 +655,7 @@ function CanvasJPanel:mousePressed(mouseEvent)
         self.grid.isChanged = true
         self:repaint()
 end
+java_overload(CanvasJPanel, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
 
 
 function CanvasJPanel:mouseReleased(mouseEvent)
@@ -499,6 +668,7 @@ function CanvasJPanel:mouseReleased(mouseEvent)
         self.grid.isChanged = true
         self:repaint()
 end
+java_overload(CanvasJPanel, "mouseReleased", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
 
 
 function CanvasJPanel:mouseDragged(mouseEvent)
@@ -511,6 +681,7 @@ function CanvasJPanel:mouseDragged(mouseEvent)
         self.grid.isChanged = true
         self:repaint()
 end
+java_overload(CanvasJPanel, "mouseDragged", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
 
 
 function CanvasJPanel:mouseMoved(mouseEvent)
@@ -523,6 +694,7 @@ function CanvasJPanel:mouseMoved(mouseEvent)
         self.grid.isChanged = true
         self:repaint()
 end
+java_overload(CanvasJPanel, "mouseMoved", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
 
 
 function CanvasJPanel:logMouseEvent(mouseEvent)
@@ -534,11 +706,12 @@ function CanvasJPanel:logMouseEvent(mouseEvent)
         stringBuffer:appendint(java_int(mouseEvent:getY() / self:getYPixelsPerWorkAreaPixel()))
         return tostring(stringBuffer)
 end
+java_overload(CanvasJPanel, "logMouseEvent", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
 
 
 function CanvasJPanel:keyPressed(keyEvent)
         StatusFactory.getInstance():setStatus("Key Pressed")
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local graphicItemArray = self.graphicItemHashMap:keySet():toArray()
             local size = (graphicItemArray.n or #graphicItemArray)
             for index = 0, size - 1 do
@@ -559,6 +732,7 @@ function CanvasJPanel:keyPressed(keyEvent)
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local commonStrings = CommonStrings.getInstance()
             self.logUtil:put(commonStrings.EXCEPTION, self, self.gameInputStrings.KEY_PRESSED, e)
         end
@@ -572,14 +746,17 @@ function CanvasJPanel:keyPressed(keyEvent)
         self.grid.isChanged = true
         self:repaint()
 end
+java_overload(CanvasJPanel, "keyPressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "KeyEvent")) end)
 
 
 function CanvasJPanel:keyReleased(keyEvent)
 end
+java_overload(CanvasJPanel, "keyReleased", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "KeyEvent")) end)
 
 
 function CanvasJPanel:keyTyped(keyEvent)
 end
+java_overload(CanvasJPanel, "keyTyped", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "KeyEvent")) end)
 
 
 function CanvasJPanel:delete(evt)
@@ -588,6 +765,7 @@ function CanvasJPanel:delete(evt)
         self.workAreaJTreeJPanel:expand()
         self.workAreaJTreeJPanel:repaint()
 end
+java_overload(CanvasJPanel, "delete", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MyGraphicItemEvent")) end)
 
 
 function CanvasJPanel:deselect(evt)
@@ -598,6 +776,7 @@ function CanvasJPanel:deselect(evt)
             self.workAreaJTreeJPanel:repaint()
         end
 end
+java_overload(CanvasJPanel, "deselect", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MyGraphicItemEvent")) end)
 
 
 function CanvasJPanel:highlight(evt)
@@ -608,10 +787,11 @@ function CanvasJPanel:highlight(evt)
             self.workAreaJTreeJPanel:repaint()
         end
 end
+java_overload(CanvasJPanel, "highlight", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MyGraphicItemEvent")) end)
 
 
 -- throws Exception
-function CanvasJPanel:duplicate()
+function CanvasJPanel:duplicate_j0()
         local newCanvasJPanel = CanvasJPanel.new(self.workAreaJTreeJPanel, self:getSize(), self:getCanvasDimension():getWidth(), self:getCanvasDimension():getHeight())
         newCanvasJPanel:setGrid(self:getGrid():getGrid())
         newCanvasJPanel:setAngle(self:getAngle())
@@ -624,8 +804,7 @@ end
 
 
 -- throws Exception
--- Java overloaded method: Lua keeps the last definition
-function CanvasJPanel:duplicate(event)
+function CanvasJPanel:duplicate_j1(event)
         local treeNode = event:getTreeNode()
         local graphicItem = self:getGraphicItemHashMap():get(treeNode)
         if graphicItem ~= nil then
@@ -635,6 +814,13 @@ function CanvasJPanel:duplicate(event)
             self.workAreaJTreeJPanel:repaint()
         end
 end
+function CanvasJPanel:duplicate(...)
+    local count = select("#", ...)
+    if count == 0 then return self:duplicate_j0(...) end
+    if count == 1 then return self:duplicate_j1(...) end
+    error("No method duplicate takes " .. count .. " arguments")
+end
+CanvasJPanel.duplicate__jdispatcher = CanvasJPanel.duplicate
 
 
 function CanvasJPanel:rotate(event)
@@ -644,21 +830,25 @@ function CanvasJPanel:rotate(event)
             graphicItem:addAngle(event:getAngle())
         end
 end
+java_overload(CanvasJPanel, "rotate", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MyGraphicItemEvent")) end)
 
 
 function CanvasJPanel:getCanvasDimension()
         return self.canvasDimension
 end
+java_overload(CanvasJPanel, "getCanvasDimension", 0)
 
 
 function CanvasJPanel:setCanvasDimension(canvasDimension)
         self.canvasDimension = canvasDimension
 end
+java_overload(CanvasJPanel, "setCanvasDimension", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "IntegerDimension")) end)
 
 
 function CanvasJPanel:getGrid()
         return self.grid
 end
+java_overload(CanvasJPanel, "getGrid", 0)
 
 CanvasJPanel.frame = 0
 CanvasJPanel.gridColor = Color.new(math.tointeger(BasicColorFactory.getInstance().WHITE // 1))

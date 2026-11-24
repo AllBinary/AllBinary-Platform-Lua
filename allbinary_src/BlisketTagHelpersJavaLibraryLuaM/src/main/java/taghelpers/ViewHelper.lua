@@ -13,17 +13,34 @@
 -- Generated Code Do Not Modify
 -- package taghelpers
 
--- local HashMap = require("java.util.HashMap")
+local ViewHelper = {}
+package.loaded["taghelpers.ViewHelper"] = ViewHelper
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
 -- local PageContext = require("javax.servlet.jsp.PageContext")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local AbeClientInformationInterface = require("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
-local ServiceClientInformationInterfaceFactory = require("org.allbinary.logic.system.security.licensing.ServiceClientInformationInterfaceFactory")
-local TransformFactory = require("org.allbinary.logic.visual.transform.TransformFactory")
-local TransformInterface = require("org.allbinary.logic.visual.transform.TransformInterface")
-local TransformDocumentInterface = require("org.allbinary.logic.visual.transform.data.TransformDocumentInterface")
-local TransformInfoInterface = require("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local Document = require("org.w3c.dom.Document")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local AbeClientInformationInterface = java_lazy("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
+local ServiceClientInformationInterfaceFactory = java_lazy("org.allbinary.logic.system.security.licensing.ServiceClientInformationInterfaceFactory")
+local TransformFactory = java_lazy("org.allbinary.logic.visual.transform.TransformFactory")
+local TransformInterface = java_lazy("org.allbinary.logic.visual.transform.TransformInterface")
+local TransformDocumentInterface = java_lazy("org.allbinary.logic.visual.transform.data.TransformDocumentInterface")
+local TransformInfoInterface = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local Document = java_lazy("org.w3c.dom.Document")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -45,27 +62,41 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ViewHelper = {}
+-- class table ViewHelper is declared before the requires
 ViewHelper.__index = ViewHelper
 ViewHelper.className = "ViewHelper"
+ViewHelper.javaClassName = "taghelpers.ViewHelper"
+ViewHelper.java_implements = " TransformInterface "
+ViewHelper.java_interfaces = function() return {TransformInterface} end
 
 function ViewHelper:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
     self.abeClientInformation = ServiceClientInformationInterfaceFactory.getInstance()
-    self.componentInterface = nil
+    if self.componentInterface == nil then self.componentInterface = nil end
     self.NO_TYPE = 0
 end
 
 
-function ViewHelper.new(hashMap, pageContext)
-    local self = setmetatable({}, ViewHelper)
-    self:_init_fields()
+function ViewHelper._jinit(self, hashMap, pageContext)
+    ViewHelper._init_fields(self)
         self.componentInterface = TransformFactory.getInstance():getInstance(self.abeClientInformation, hashMap, pageContext)
+    return self
+end
+
+function ViewHelper.new(...)
+    local self = setmetatable({}, ViewHelper)
+    ViewHelper._jinit(self, ...)
     return self
 end
 
@@ -77,39 +108,42 @@ end
 
 -- throws Exception
 function ViewHelper:view()
-        local try_ok, try_error = pcall(function()
-            return self.componentInterface:view()
+        local try_ok, try_error, try_value = pcall(function()
+            do return "__jreturn", self.componentInterface:view() end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local error = "Failed to View: "
             if self.componentInterface ~= nil then
-                error = error .. tostring(getmetatable(self.componentInterface).className)
+                error = error .. tostring((getmetatable(self.componentInterface).javaClassName or getmetatable(self.componentInterface).className))
             else
                 error = error .. tostring("Unknown")
             end
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLTAGSERROR) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "view()", e)
             end
             error(e, 0)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
 -- throws Exception
 function ViewHelper:toXmlDoc()
-        local try_ok, try_error = pcall(function()
-            error(java_exception("Exception", "Hmm: " .. tostring(self.componentInterface:getTransformDocumentInterface():getDoc())), 0)
+        local try_ok, try_error, try_value = pcall(function()
+            error(require("java.lang.Exception").new("Hmm: " .. tostring(self.componentInterface:getTransformDocumentInterface():getDoc())), 0)
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local error = "Failed to View: "
             if self.componentInterface ~= nil then
-                error = error .. tostring(getmetatable(self.componentInterface).className)
+                error = error .. tostring((getmetatable(self.componentInterface).javaClassName or getmetatable(self.componentInterface).className))
             else
                 error = error .. tostring("Unknown")
             end
-            if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().SQLTAGSERROR) then
+            if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "view()", e)
             end
             error(e, 0)

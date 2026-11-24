@@ -13,10 +13,25 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.android.input
 
-local VirtualKeyboardEvent = require("org.allbinary.input.event.VirtualKeyboardEvent")
-local ForcedLogUtil = require("org.allbinary.logic.communication.log.ForcedLogUtil")
-local AllBinaryEventObject = require("org.allbinary.logic.util.event.AllBinaryEventObject")
-local EventStrings = require("org.allbinary.logic.util.event.EventStrings")
+local VirtualKeyboard = {}
+package.loaded["org.allbinary.android.input.VirtualKeyboard"] = VirtualKeyboard
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local VirtualKeyboardEvent = java_lazy("org.allbinary.input.event.VirtualKeyboardEvent")
+local ForcedLogUtil = java_lazy("org.allbinary.logic.communication.log.ForcedLogUtil")
+local AllBinaryEventObject = java_lazy("org.allbinary.logic.util.event.AllBinaryEventObject")
+local EventStrings = java_lazy("org.allbinary.logic.util.event.EventStrings")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -25,17 +40,27 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local VirtualKeyboard = {}
+-- class table VirtualKeyboard is declared before the requires
 VirtualKeyboard.__index = VirtualKeyboard
 VirtualKeyboard.className = "VirtualKeyboard"
+VirtualKeyboard.javaClassName = "org.allbinary.android.input.VirtualKeyboard"
+
+function VirtualKeyboard._jinit(self)
+    return self
+end
 
 function VirtualKeyboard.new()
-    local self = setmetatable({}, VirtualKeyboard)
-    return self
+    return VirtualKeyboard._jinit(setmetatable({}, VirtualKeyboard))
 end
 
 

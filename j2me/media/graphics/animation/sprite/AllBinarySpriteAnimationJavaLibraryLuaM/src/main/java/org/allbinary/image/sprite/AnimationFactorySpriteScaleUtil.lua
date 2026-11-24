@@ -13,19 +13,34 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.image.sprite
 
+local AnimationFactorySpriteScaleUtil = {}
+package.loaded["org.allbinary.image.sprite.AnimationFactorySpriteScaleUtil"] = AnimationFactorySpriteScaleUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Image = require("javax.microedition.lcdui.Image")
 -- local Sprite = require("javax.microedition.lcdui.game.Sprite")
-local SpriteFactory = require("org.allbinary.game.layer.SpriteFactory")
-local OpenGLUtil = require("org.allbinary.graphics.opengles.OpenGLUtil")
-local ImageCache = require("org.allbinary.image.ImageCache")
-local ImageCacheFactory = require("org.allbinary.image.ImageCacheFactory")
-local OpenGLESImageExclusionUtil = require("org.allbinary.image.opengles.OpenGLESImageExclusionUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local J2SEMath = require("org.allbinary.logic.math.J2SEMath")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local ImageScaleUtil = require("org.allbinary.media.image.ImageScaleUtil")
-local CommonLabels = require("org.allbinary.string.CommonLabels")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local SpriteFactory = java_lazy("org.allbinary.game.layer.SpriteFactory")
+local OpenGLUtil = java_lazy("org.allbinary.graphics.opengles.OpenGLUtil")
+local ImageCache = java_lazy("org.allbinary.image.ImageCache")
+local ImageCacheFactory = java_lazy("org.allbinary.image.ImageCacheFactory")
+local OpenGLESImageExclusionUtil = java_lazy("org.allbinary.image.opengles.OpenGLESImageExclusionUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local J2SEMath = java_lazy("org.allbinary.logic.math.J2SEMath")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local ImageScaleUtil = java_lazy("org.allbinary.media.image.ImageScaleUtil")
+local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -34,13 +49,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local AnimationFactorySpriteScaleUtil = {}
+-- class table AnimationFactorySpriteScaleUtil is declared before the requires
 AnimationFactorySpriteScaleUtil.__index = AnimationFactorySpriteScaleUtil
 AnimationFactorySpriteScaleUtil.className = "AnimationFactorySpriteScaleUtil"
+AnimationFactorySpriteScaleUtil.javaClassName = "org.allbinary.image.sprite.AnimationFactorySpriteScaleUtil"
 
 function AnimationFactorySpriteScaleUtil:_init_fields()
     self.imageCache = ImageCacheFactory.getInstance()
@@ -50,15 +72,18 @@ function AnimationFactorySpriteScaleUtil:_init_fields()
     self.openGLESImageExclusionUtil = OpenGLESImageExclusionUtil.getInstance()
 end
 
-function AnimationFactorySpriteScaleUtil.new()
-    local self = setmetatable({}, AnimationFactorySpriteScaleUtil)
-    self:_init_fields()
+function AnimationFactorySpriteScaleUtil._jinit(self)
+    AnimationFactorySpriteScaleUtil._init_fields(self)
     return self
+end
+
+function AnimationFactorySpriteScaleUtil.new()
+    return AnimationFactorySpriteScaleUtil._jinit(setmetatable({}, AnimationFactorySpriteScaleUtil))
 end
 
 
 function AnimationFactorySpriteScaleUtil.getInstance()
-        return AnimationFactorySpriteScaleUtil.instance
+        return AnimationFactorySpriteScaleUtil.instance_f
 end
 
 
@@ -100,7 +125,7 @@ function AnimationFactorySpriteScaleUtil:createImage(image, width, height, scale
         return sprite
 end
 
-AnimationFactorySpriteScaleUtil.instance = AnimationFactorySpriteScaleUtil.new()
+AnimationFactorySpriteScaleUtil.instance_f = AnimationFactorySpriteScaleUtil.new()
 
 return AnimationFactorySpriteScaleUtil
 

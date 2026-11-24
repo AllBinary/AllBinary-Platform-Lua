@@ -13,43 +13,36 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.io.file
 
--- local ByteArrayOutputStream = require("java.io.ByteArrayOutputStream")
+local SimpleFileUtil = {}
+package.loaded["org.allbinary.logic.io.file.SimpleFileUtil"] = SimpleFileUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local ByteArrayOutputStream = java_lazy("java.io.ByteArrayOutputStream")
 -- local InputStream = require("java.io.InputStream")
 -- local OutputStream = require("java.io.OutputStream")
 -- local Reader = require("java.io.Reader")
 -- local Writer = require("java.io.Writer")
-local NullUtil = require("org.allbinary.logic.NullUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local NullOutputStream = require("org.allbinary.logic.io.NullOutputStream")
-local NullReader = require("org.allbinary.logic.io.NullReader")
-local NullWriter = require("org.allbinary.logic.io.NullWriter")
-local StreamUtil = require("org.allbinary.logic.io.StreamUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-
--- Java library java.io.ByteArrayOutputStream
-local function java_byte_array_output_stream()
-    local stream = {buffer = {}}
-    function stream:write(value, offset, length)
-        if type(value) == "table" then
-            local first = (offset or 0) + 1
-            local last = first + (length or #value) - 1
-            for index = first, last do self.buffer[#self.buffer + 1] = string.char(value[index] % 256) end
-        elseif type(value) == "number" then
-            self.buffer[#self.buffer + 1] = string.char(value % 256)
-        else
-            self.buffer[#self.buffer + 1] = tostring(value)
-        end
-    end
-    function stream:toString() return table.concat(self.buffer) end
-    function stream:size() return #table.concat(self.buffer) end
-    function stream:reset() self.buffer = {} end
-    function stream:flush() end
-    function stream:close() end
-    return setmetatable(stream, {__tostring = function(self) return table.concat(self.buffer) end})
-end
+local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local NullOutputStream = java_lazy("org.allbinary.logic.io.NullOutputStream")
+local NullReader = java_lazy("org.allbinary.logic.io.NullReader")
+local NullWriter = java_lazy("org.allbinary.logic.io.NullWriter")
+local StreamUtil = java_lazy("org.allbinary.logic.io.StreamUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -58,13 +51,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local SimpleFileUtil = {}
+-- class table SimpleFileUtil is declared before the requires
 SimpleFileUtil.__index = SimpleFileUtil
 SimpleFileUtil.className = "SimpleFileUtil"
+SimpleFileUtil.javaClassName = "org.allbinary.logic.io.file.SimpleFileUtil"
 
 function SimpleFileUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -75,15 +75,18 @@ function SimpleFileUtil:_init_fields()
     self.streamUtil = StreamUtil.getInstance()
 end
 
-function SimpleFileUtil.new()
-    local self = setmetatable({}, SimpleFileUtil)
-    self:_init_fields()
+function SimpleFileUtil._jinit(self)
+    SimpleFileUtil._init_fields(self)
     return self
+end
+
+function SimpleFileUtil.new()
+    return SimpleFileUtil._jinit(setmetatable({}, SimpleFileUtil))
 end
 
 
 function SimpleFileUtil.getInstance()
-        return SimpleFileUtil.instance
+        return SimpleFileUtil.instance_f
 end
 
 
@@ -113,13 +116,14 @@ function SimpleFileUtil:loadFileAsListReturnLine(inputStream, max, byteArray1, i
             return stringList
         end
         local byteArray = self.nullUtil.NULL_BYTE_ARRAY
-        local try_ok, try_error = pcall(function()
-            local outputStream2 = java_byte_array_output_stream()
+        local try_ok, try_error, try_value = pcall(function()
+            local outputStream2 = require("java.io.ByteArrayOutputStream").new(max)
             byteArray = self.streamUtil:getByteArray(inputStream, outputStream2, byteArray1)
             self.streamUtil:close(inputStream)
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.streamUtil:close(inputStream)
             self.logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.ADD, e)
         end
@@ -159,7 +163,7 @@ function SimpleFileUtil:createStringFromArrayOfStrings(stringArray)
         return tostring(stringMaker)
 end
 
-SimpleFileUtil.instance = SimpleFileUtil.new()
+SimpleFileUtil.instance_f = SimpleFileUtil.new()
 
 return SimpleFileUtil
 

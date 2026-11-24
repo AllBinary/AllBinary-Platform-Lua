@@ -13,15 +13,30 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.bundle.logic.preloader
 
-local BundleActivator = require("org.osgi.framework.BundleActivator")
-local BundleContext = require("org.osgi.framework.BundleContext")
-local ServiceReference = require("org.osgi.framework.ServiceReference")
-local ServiceRegistration = require("org.osgi.framework.ServiceRegistration")
-local CryptServiceFactory = require("org.allbinary.bundle.logic.system.loader.CryptServiceFactory")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local ABHashtable = require("org.allbinary.util.ABHashtable")
+local AllBinaryPreloaderActivator = {}
+package.loaded["org.allbinary.bundle.logic.preloader.AllBinaryPreloaderActivator"] = AllBinaryPreloaderActivator
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local BundleActivator = java_lazy("org.osgi.framework.BundleActivator")
+local BundleContext = java_lazy("org.osgi.framework.BundleContext")
+local ServiceReference = java_lazy("org.osgi.framework.ServiceReference")
+local ServiceRegistration = java_lazy("org.osgi.framework.ServiceRegistration")
+local CryptServiceFactory = java_lazy("org.allbinary.bundle.logic.system.loader.CryptServiceFactory")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -43,13 +58,22 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local AllBinaryPreloaderActivator = {}
+-- class table AllBinaryPreloaderActivator is declared before the requires
 AllBinaryPreloaderActivator.__index = AllBinaryPreloaderActivator
 AllBinaryPreloaderActivator.className = "AllBinaryPreloaderActivator"
+AllBinaryPreloaderActivator.javaClassName = "org.allbinary.bundle.logic.preloader.AllBinaryPreloaderActivator"
+AllBinaryPreloaderActivator.java_implements = " BundleActivator "
+AllBinaryPreloaderActivator.java_interfaces = function() return {BundleActivator} end
 
 function AllBinaryPreloaderActivator:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -57,9 +81,14 @@ function AllBinaryPreloaderActivator:_init_fields()
 end
 
 
-function AllBinaryPreloaderActivator.new()
+function AllBinaryPreloaderActivator._jinit(self)
+    AllBinaryPreloaderActivator._init_fields(self)
+    return self
+end
+
+function AllBinaryPreloaderActivator.new(...)
     local self = setmetatable({}, AllBinaryPreloaderActivator)
-    self:_init_fields()
+    AllBinaryPreloaderActivator._jinit(self, ...)
     return self
 end
 
@@ -71,13 +100,14 @@ end
 
 -- throws Exception
 function AllBinaryPreloaderActivator:start(context)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             self.logUtil:putF(self.commonStrings.START, self, "start")
             AllBinaryPreloaderActivator.context = context
             self:registerAsService()
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put(self.commonStrings.EXCEPTION, self, "start", e)
             error(e, 0)
         end
@@ -91,7 +121,7 @@ function AllBinaryPreloaderActivator:registerAsService()
         local serviceReference = serviceRegistration:getReference()
         serviceReference = AllBinaryPreloaderActivator.context:getServiceReference(AllBinaryPreloaderActivator.CRYPT_REGISTRY_NAME)
         if serviceReference == nil then
-            error(java_exception("Exception", "No Such Service Reference"), 0)
+            error(require("java.lang.Exception").new("No Such Service Reference"), 0)
         end
 end
 

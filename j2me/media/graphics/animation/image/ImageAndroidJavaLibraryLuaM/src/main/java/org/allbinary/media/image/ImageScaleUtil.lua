@@ -13,18 +13,33 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media.image
 
-local Bitmap = require("android.graphics.Bitmap")
-local Canvas = require("android.graphics.Canvas")
-local Matrix = require("android.graphics.Matrix")
+local ImageScaleUtil = {}
+package.loaded["org.allbinary.media.image.ImageScaleUtil"] = ImageScaleUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local Bitmap = java_lazy("android.graphics.Bitmap")
+local Canvas = java_lazy("android.graphics.Canvas")
+local Matrix = java_lazy("android.graphics.Matrix")
 -- local Image = require("javax.microedition.lcdui.Image")
 -- local NullImage = require("javax.microedition.lcdui.NullImage")
-local Anchor = require("org.allbinary.graphics.Anchor")
-local ImageCache = require("org.allbinary.image.ImageCache")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local AndroidImageInterface = require("org.microemu.android.device.AndroidImageInterface")
+local Anchor = java_lazy("org.allbinary.graphics.Anchor")
+local ImageCache = java_lazy("org.allbinary.image.ImageCache")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local AndroidImageInterface = java_lazy("org.microemu.android.device.AndroidImageInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -46,13 +61,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ImageScaleUtil = {}
+-- class table ImageScaleUtil is declared before the requires
 ImageScaleUtil.__index = ImageScaleUtil
 ImageScaleUtil.className = "ImageScaleUtil"
+ImageScaleUtil.javaClassName = "org.allbinary.media.image.ImageScaleUtil"
 
 function ImageScaleUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -66,13 +88,18 @@ end
 
 
 function ImageScaleUtil.getInstance()
-        return ImageScaleUtil.instance
+        return ImageScaleUtil.instance_f
 end
 
 
-function ImageScaleUtil.new()
+function ImageScaleUtil._jinit(self)
+    ImageScaleUtil._init_fields(self)
+    return self
+end
+
+function ImageScaleUtil.new(...)
     local self = setmetatable({}, ImageScaleUtil)
-    self:_init_fields()
+    ImageScaleUtil._jinit(self, ...)
     return self
 end
 
@@ -125,7 +152,7 @@ end
 function ImageScaleUtil:getScaledImage(imageCache, originalImage, scaleX, scaleY, width, height, cached)
         local image = NullImage.NULL_IMAGE
         if cached then
-            image = imageCache:get(getmetatable(self).className, width, height)
+            image = imageCache:get((getmetatable(self).javaClassName or getmetatable(self).className), width, height)
         else
             image = imageCache:get(self.commonStrings.CREATE_IMAGE, width, height)
         end
@@ -135,7 +162,7 @@ function ImageScaleUtil:getScaledImage(imageCache, originalImage, scaleX, scaleY
             image:getGraphics():drawImage(originalImage, 0, 0, self.anchor)
             return image
         else
-            error(java_exception("Exception", "Not Mutable"), 0)
+            error(require("java.lang.Exception").new("Not Mutable"), 0)
         end
 end
 
@@ -146,7 +173,7 @@ function ImageScaleUtil:scale(image, matrix, scaleX, scaleY)
         canvas:concat(matrix)
 end
 
-ImageScaleUtil.instance = ImageScaleUtil.new()
+ImageScaleUtil.instance_f = ImageScaleUtil.new()
 
 return ImageScaleUtil
 

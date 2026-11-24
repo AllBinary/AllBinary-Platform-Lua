@@ -13,17 +13,32 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.animation.resource
 
-local BasicAnimationInterfaceFactoryInterface = require("org.allbinary.animation.BasicAnimationInterfaceFactoryInterface")
-local NullAnimationFactory = require("org.allbinary.animation.NullAnimationFactory")
-local ResourceLoadingLevelFactory = require("org.allbinary.game.resource.ResourceLoadingLevelFactory")
-local Rectangle = require("org.allbinary.graphics.Rectangle")
-local RectangleFactory = require("org.allbinary.graphics.RectangleFactory")
-local ImageCache = require("org.allbinary.image.ImageCache")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local ABHashtable = require("org.allbinary.util.ABHashtable")
+local BaseResourceAnimationInterfaceFactoryInterfaceFactory = {}
+package.loaded["org.allbinary.animation.resource.BaseResourceAnimationInterfaceFactoryInterfaceFactory"] = BaseResourceAnimationInterfaceFactoryInterfaceFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local BasicAnimationInterfaceFactoryInterface = java_lazy("org.allbinary.animation.BasicAnimationInterfaceFactoryInterface")
+local NullAnimationFactory = java_lazy("org.allbinary.animation.NullAnimationFactory")
+local ResourceLoadingLevelFactory = java_lazy("org.allbinary.game.resource.ResourceLoadingLevelFactory")
+local Rectangle = java_lazy("org.allbinary.graphics.Rectangle")
+local RectangleFactory = java_lazy("org.allbinary.graphics.RectangleFactory")
+local ImageCache = java_lazy("org.allbinary.image.ImageCache")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
 local FeatureResourceAnimationInterfaceFactoryInterface = require("org.allbinary.animation.resource.FeatureResourceAnimationInterfaceFactoryInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
@@ -46,38 +61,52 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local BaseResourceAnimationInterfaceFactoryInterfaceFactory = {}
+-- class table BaseResourceAnimationInterfaceFactoryInterfaceFactory is declared before the requires
 BaseResourceAnimationInterfaceFactoryInterfaceFactory.__index = BaseResourceAnimationInterfaceFactoryInterfaceFactory
 BaseResourceAnimationInterfaceFactoryInterfaceFactory.className = "BaseResourceAnimationInterfaceFactoryInterfaceFactory"
+BaseResourceAnimationInterfaceFactoryInterfaceFactory.javaClassName = "org.allbinary.animation.resource.BaseResourceAnimationInterfaceFactoryInterfaceFactory"
+BaseResourceAnimationInterfaceFactoryInterfaceFactory.java_implements = " FeatureResourceAnimationInterfaceFactoryInterface "
+BaseResourceAnimationInterfaceFactoryInterfaceFactory.java_interfaces = function() return {FeatureResourceAnimationInterfaceFactoryInterface} end
 
 function BaseResourceAnimationInterfaceFactoryInterfaceFactory:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
-    self.hashtable = nil
-    self.rectangleHashtable = nil
-    self.rectangleArrayOfArraysHashtable = nil
-    self.name = nil
-    self.initialized = false
+    if self.hashtable == nil then self.hashtable = nil end
+    if self.rectangleHashtable == nil then self.rectangleHashtable = nil end
+    if self.rectangleArrayOfArraysHashtable == nil then self.rectangleArrayOfArraysHashtable = nil end
+    if self.name_f == nil then self.name_f = nil end
+    if self.initialized == nil then self.initialized = false end
 end
 
 
-function BaseResourceAnimationInterfaceFactoryInterfaceFactory.new(name, hashtable, rectangleHashtable, rectangleArrayHashtable)
-    local self = setmetatable({}, BaseResourceAnimationInterfaceFactoryInterfaceFactory)
-    self:_init_fields()
+function BaseResourceAnimationInterfaceFactoryInterfaceFactory._jinit(self, name, hashtable, rectangleHashtable, rectangleArrayHashtable)
+    BaseResourceAnimationInterfaceFactoryInterfaceFactory._init_fields(self)
         self.hashtable = hashtable
         self.rectangleHashtable = rectangleHashtable
         self.rectangleArrayOfArraysHashtable = rectangleArrayHashtable
-        self.name = name
+        self.name_f = name
+    return self
+end
+
+function BaseResourceAnimationInterfaceFactoryInterfaceFactory.new(...)
+    local self = setmetatable({}, BaseResourceAnimationInterfaceFactoryInterfaceFactory)
+    BaseResourceAnimationInterfaceFactoryInterfaceFactory._jinit(self, ...)
     return self
 end
 
 
 function BaseResourceAnimationInterfaceFactoryInterfaceFactory:getName()
-        return self.name
+        return self.name_f
 end
 
 
@@ -97,7 +126,7 @@ end
 -- throws Exception
 function BaseResourceAnimationInterfaceFactoryInterfaceFactory:add(resource, animationInterfaceFactoryInterface)
         if self.hashtable:containsKey(resource) then
-            error(java_exception("Exception", tostring(StringMaker.new():append("Resource Already Created: "):append(resource))), 0)
+            error(require("java.lang.Exception").new(tostring(StringMaker.new():append("Resource Already Created: "):append(resource))), 0)
         end
         self.hashtable:put(resource, animationInterfaceFactoryInterface)
 end
@@ -163,7 +192,7 @@ end
 
 
 function BaseResourceAnimationInterfaceFactoryInterfaceFactory:toString()
-        return tostring(StringMaker.new():append(getmetatable(self).className):append(CommonSeps.getInstance().SEMICOLON):append(CommonSeps.getInstance().SPACE):append(self.name))
+        return tostring(StringMaker.new():append((getmetatable(self).javaClassName or getmetatable(self).className)):append(CommonSeps.getInstance().SEMICOLON):append(CommonSeps.getInstance().SPACE):append(self.name_f))
 end
 BaseResourceAnimationInterfaceFactoryInterfaceFactory.__tostring = function(self) return self:toString() end
 

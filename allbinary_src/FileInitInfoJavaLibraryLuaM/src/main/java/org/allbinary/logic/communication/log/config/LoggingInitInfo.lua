@@ -13,19 +13,35 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.communication.log.config
 
-local DomSearchHelper = require("org.allbinary.data.tree.dom.DomSearchHelper")
-local DomDocumentHelper = require("org.allbinary.data.tree.dom.document.DomDocumentHelper")
-local XmlDocumentHelper = require("org.allbinary.data.tree.dom.document.XmlDocumentHelper")
-local PATH_GLOBALS = require("org.allbinary.globals.PATH_GLOBALS")
-local URLGLOBALS = require("org.allbinary.globals.URLGLOBALS")
-local AbFileLocalInputStream = require("org.allbinary.logic.io.AbFileLocalInputStream")
-local AbFile = require("org.allbinary.logic.io.file.AbFile")
-local AbPath = require("org.allbinary.logic.io.path.AbPath")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local Document = require("org.w3c.dom.Document")
-local Node = require("org.w3c.dom.Node")
-local NodeList = require("org.w3c.dom.NodeList")
+local LoggingInitInfo = {}
+package.loaded["org.allbinary.logic.communication.log.config.LoggingInitInfo"] = LoggingInitInfo
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local DomSearchHelper = java_lazy("org.allbinary.data.tree.dom.DomSearchHelper")
+local DomDocumentHelper = java_lazy("org.allbinary.data.tree.dom.document.DomDocumentHelper")
+local XmlDocumentHelper = java_lazy("org.allbinary.data.tree.dom.document.XmlDocumentHelper")
+local PATH_GLOBALS = java_lazy("org.allbinary.globals.PATH_GLOBALS")
+local URLGLOBALS = java_lazy("org.allbinary.globals.URLGLOBALS")
+local AbFileLocalInputStream = java_lazy("org.allbinary.logic.io.AbFileLocalInputStream")
+local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
+local AbPath = java_lazy("org.allbinary.logic.io.path.AbPath")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local Document = java_lazy("org.w3c.dom.Document")
+local Node = java_lazy("org.w3c.dom.Node")
+local NodeList = java_lazy("org.w3c.dom.NodeList")
+local LogConfig = java_lazy("org.allbinary.logic.communication.log.config.LogConfig")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -47,24 +63,36 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local LoggingInitInfo = {}
+-- class table LoggingInitInfo is declared before the requires
 LoggingInitInfo.__index = LoggingInitInfo
 LoggingInitInfo.className = "LoggingInitInfo"
+LoggingInitInfo.javaClassName = "org.allbinary.logic.communication.log.config.LoggingInitInfo"
 
 
-function LoggingInitInfo.new()
+function LoggingInitInfo._jinit(self)
+    return self
+end
+
+function LoggingInitInfo.new(...)
     local self = setmetatable({}, LoggingInitInfo)
+    LoggingInitInfo._jinit(self, ...)
     return self
 end
 
 
 -- throws Exception
 function LoggingInitInfo.getDoc()
-        local path = self.URLGLOBALS:getWebappPath() + LoggingInitInfo.PACKAGE
+        local path = URLGLOBALS.getWebappPath() + LoggingInitInfo.PACKAGE
         local FILEABPATH = AbPath.new(path, LoggingInitInfo.INITFILENAME)
         local file = AbFile.createAbFileFromAbPath(FILEABPATH)
         local document = DomDocumentHelper.create(AbFileLocalInputStream.new(file))
@@ -74,11 +102,12 @@ end
 
 -- throws Exception
 function LoggingInitInfo.write()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             LoggingInitInfo.hasRead = false
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             error(e, 0)
         end
 end
@@ -86,7 +115,7 @@ end
 
 -- throws Exception
 function LoggingInitInfo.read()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local document = LoggingInitInfo.getDoc()
             local logConfigsNodeList = document:getElementsByTagName(LogConfigsData.getInstance().NAME)
             local logConfigsNode = logConfigsNodeList:item(0)
@@ -101,6 +130,7 @@ function LoggingInitInfo.read()
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             error(e, 0)
         end
 end
@@ -117,20 +147,22 @@ function LoggingInitInfo.updateIfNeeded()
             LoggingInitInfo.read()
             LoggingInitInfo.hasRead = true
             if LoggingInitInfo.logConfigInfoList == nil then
-                error(java_exception("Exception", "Read Failed"), 0)
+                error(require("java.lang.Exception").new("Read Failed"), 0)
             end
         end
 end
 
 
 function LoggingInitInfo:isValid()
-        local try_ok, try_error = pcall(function()
-            return true
+        local try_ok, try_error, try_value = pcall(function()
+            do return "__jreturn", true end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             return false
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
@@ -185,19 +217,21 @@ end
 
 
 function LoggingInitInfo:toString()
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local document = LoggingInitInfo.getDoc()
-            return XmlDocumentHelper.toString(document)
+            do return "__jreturn", XmlDocumentHelper.toString(document) end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             return "Error"
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 LoggingInitInfo.__tostring = function(self) return self:toString() end
 
 LoggingInitInfo.INITFILENAME = "logConfig.xml"
-LoggingInitInfo.PACKAGE = self.PATH_GLOBALS:getInstance().INIT_PATH
+LoggingInitInfo.PACKAGE = PATH_GLOBALS.getInstance().INIT_PATH
 LoggingInitInfo.logConfigInfoList = nil
 LoggingInitInfo.hasRead = false
 

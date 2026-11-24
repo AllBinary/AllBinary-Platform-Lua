@@ -13,11 +13,61 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.device
 
+local NullGL10 = {}
+package.loaded["org.allbinary.device.NullGL10"] = NullGL10
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local GL10 = require("javax.microedition.khronos.opengles.GL10")
 -- local Buffer = require("java.nio.Buffer")
 -- local FloatBuffer = require("java.nio.FloatBuffer")
 -- local IntBuffer = require("java.nio.IntBuffer")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -26,17 +76,29 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local NullGL10 = {}
+-- class table NullGL10 is declared before the requires
 NullGL10.__index = NullGL10
 NullGL10.className = "NullGL10"
+NullGL10.javaClassName = "org.allbinary.device.NullGL10"
+NullGL10.java_implements = " GL10 "
+NullGL10.java_interfaces = function() return {GL10} end
+
+function NullGL10._jinit(self)
+    return self
+end
 
 function NullGL10.new()
-    local self = setmetatable({}, NullGL10)
-    return self
+    return NullGL10._jinit(setmetatable({}, NullGL10))
 end
 
 
@@ -125,15 +187,21 @@ function NullGL10:glCullFace(mode)
 end
 
 
-function NullGL10:glDeleteTextures(n, textures, offset)
+function NullGL10:glDeleteTextures_j3(n, textures, offset)
         return
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function NullGL10:glDeleteTextures(n, textures)
+function NullGL10:glDeleteTextures_j2(n, textures)
         return
 end
+function NullGL10:glDeleteTextures(...)
+    local count = select("#", ...)
+    if count == 3 then return self:glDeleteTextures_j3(...) end
+    if count == 2 then return self:glDeleteTextures_j2(...) end
+    error("No method glDeleteTextures takes " .. count .. " arguments")
+end
+NullGL10.glDeleteTextures__jdispatcher = NullGL10.glDeleteTextures
 
 
 function NullGL10:glDepthFunc(func)
@@ -196,15 +264,21 @@ function NullGL10:glFogf(pname, param)
 end
 
 
-function NullGL10:glFogfv(pname, params, offset)
+function NullGL10:glFogfv_j3(pname, params, offset)
         return
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function NullGL10:glFogfv(pname, params)
+function NullGL10:glFogfv_j2(pname, params)
         return
 end
+function NullGL10:glFogfv(...)
+    local count = select("#", ...)
+    if count == 3 then return self:glFogfv_j3(...) end
+    if count == 2 then return self:glFogfv_j2(...) end
+    error("No method glFogfv takes " .. count .. " arguments")
+end
+NullGL10.glFogfv__jdispatcher = NullGL10.glFogfv
 
 
 function NullGL10:glFrontFace(mode)
@@ -217,15 +291,21 @@ function NullGL10:glFrustumf(left, right, bottom, top, zNear, zFar)
 end
 
 
-function NullGL10:glGenTextures(n, textures, offset)
+function NullGL10:glGenTextures_j3(n, textures, offset)
         return
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function NullGL10:glGenTextures(n, textures)
+function NullGL10:glGenTextures_j2(n, textures)
         return
 end
+function NullGL10:glGenTextures(...)
+    local count = select("#", ...)
+    if count == 3 then return self:glGenTextures_j3(...) end
+    if count == 2 then return self:glGenTextures_j2(...) end
+    error("No method glGenTextures takes " .. count .. " arguments")
+end
+NullGL10.glGenTextures__jdispatcher = NullGL10.glGenTextures
 
 
 function NullGL10:glGetError()
@@ -233,15 +313,21 @@ function NullGL10:glGetError()
 end
 
 
-function NullGL10:glGetIntegerv(pname, params, offset)
+function NullGL10:glGetIntegerv_j3(pname, params, offset)
         return
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function NullGL10:glGetIntegerv(pname, params)
+function NullGL10:glGetIntegerv_j2(pname, params)
         return
 end
+function NullGL10:glGetIntegerv(...)
+    local count = select("#", ...)
+    if count == 3 then return self:glGetIntegerv_j3(...) end
+    if count == 2 then return self:glGetIntegerv_j2(...) end
+    error("No method glGetIntegerv takes " .. count .. " arguments")
+end
+NullGL10.glGetIntegerv__jdispatcher = NullGL10.glGetIntegerv
 
 
 function NullGL10:glGetString(name)
@@ -259,15 +345,21 @@ function NullGL10:glLightModelf(pname, param)
 end
 
 
-function NullGL10:glLightModelfv(pname, params, offset)
+function NullGL10:glLightModelfv_j3(pname, params, offset)
         return
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function NullGL10:glLightModelfv(pname, params)
+function NullGL10:glLightModelfv_j2(pname, params)
         return
 end
+function NullGL10:glLightModelfv(...)
+    local count = select("#", ...)
+    if count == 3 then return self:glLightModelfv_j3(...) end
+    if count == 2 then return self:glLightModelfv_j2(...) end
+    error("No method glLightModelfv takes " .. count .. " arguments")
+end
+NullGL10.glLightModelfv__jdispatcher = NullGL10.glLightModelfv
 
 
 function NullGL10:glLightf(light, pname, param)
@@ -275,15 +367,21 @@ function NullGL10:glLightf(light, pname, param)
 end
 
 
-function NullGL10:glLightfv(light, pname, params, offset)
+function NullGL10:glLightfv_j4(light, pname, params, offset)
         return
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function NullGL10:glLightfv(light, pname, params)
+function NullGL10:glLightfv_j3(light, pname, params)
         return
 end
+function NullGL10:glLightfv(...)
+    local count = select("#", ...)
+    if count == 4 then return self:glLightfv_j4(...) end
+    if count == 3 then return self:glLightfv_j3(...) end
+    error("No method glLightfv takes " .. count .. " arguments")
+end
+NullGL10.glLightfv__jdispatcher = NullGL10.glLightfv
 
 
 function NullGL10:glLineWidth(width)
@@ -296,15 +394,21 @@ function NullGL10:glLoadIdentity()
 end
 
 
-function NullGL10:glLoadMatrixf(m, offset)
+function NullGL10:glLoadMatrixf_j2(m, offset)
         return
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function NullGL10:glLoadMatrixf(m)
+function NullGL10:glLoadMatrixf_j1(m)
         return
 end
+function NullGL10:glLoadMatrixf(...)
+    local count = select("#", ...)
+    if count == 2 then return self:glLoadMatrixf_j2(...) end
+    if count == 1 then return self:glLoadMatrixf_j1(...) end
+    error("No method glLoadMatrixf takes " .. count .. " arguments")
+end
+NullGL10.glLoadMatrixf__jdispatcher = NullGL10.glLoadMatrixf
 
 
 function NullGL10:glLogicOp(opcode)
@@ -317,15 +421,21 @@ function NullGL10:glMaterialf(face, pname, param)
 end
 
 
-function NullGL10:glMaterialfv(face, pname, params, offset)
+function NullGL10:glMaterialfv_j4(face, pname, params, offset)
         return
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function NullGL10:glMaterialfv(face, pname, params)
+function NullGL10:glMaterialfv_j3(face, pname, params)
         return
 end
+function NullGL10:glMaterialfv(...)
+    local count = select("#", ...)
+    if count == 4 then return self:glMaterialfv_j4(...) end
+    if count == 3 then return self:glMaterialfv_j3(...) end
+    error("No method glMaterialfv takes " .. count .. " arguments")
+end
+NullGL10.glMaterialfv__jdispatcher = NullGL10.glMaterialfv
 
 
 function NullGL10:glMatrixMode(mode)
@@ -333,15 +443,21 @@ function NullGL10:glMatrixMode(mode)
 end
 
 
-function NullGL10:glMultMatrixf(m, offset)
+function NullGL10:glMultMatrixf_j2(m, offset)
         return
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function NullGL10:glMultMatrixf(m)
+function NullGL10:glMultMatrixf_j1(m)
         return
 end
+function NullGL10:glMultMatrixf(...)
+    local count = select("#", ...)
+    if count == 2 then return self:glMultMatrixf_j2(...) end
+    if count == 1 then return self:glMultMatrixf_j1(...) end
+    error("No method glMultMatrixf takes " .. count .. " arguments")
+end
+NullGL10.glMultMatrixf__jdispatcher = NullGL10.glMultMatrixf
 
 
 function NullGL10:glMultiTexCoord4f(target, s, t, r, q)
@@ -454,15 +570,21 @@ function NullGL10:glTexEnvf(target, pname, param)
 end
 
 
-function NullGL10:glTexEnvfv(target, pname, params, offset)
+function NullGL10:glTexEnvfv_j4(target, pname, params, offset)
         return
 end
 
 
--- Java overloaded method: Lua keeps the last definition
-function NullGL10:glTexEnvfv(target, pname, params)
+function NullGL10:glTexEnvfv_j3(target, pname, params)
         return
 end
+function NullGL10:glTexEnvfv(...)
+    local count = select("#", ...)
+    if count == 4 then return self:glTexEnvfv_j4(...) end
+    if count == 3 then return self:glTexEnvfv_j3(...) end
+    error("No method glTexEnvfv takes " .. count .. " arguments")
+end
+NullGL10.glTexEnvfv__jdispatcher = NullGL10.glTexEnvfv
 
 
 function NullGL10:glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels)

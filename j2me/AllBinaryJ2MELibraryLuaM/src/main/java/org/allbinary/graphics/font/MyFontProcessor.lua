@@ -13,6 +13,21 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.graphics.font
 
+local MyFontProcessor = {}
+package.loaded["org.allbinary.graphics.font.MyFontProcessor"] = MyFontProcessor
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Font = require("javax.microedition.lcdui.Font")
 -- local Graphics = require("javax.microedition.lcdui.Graphics")
 
@@ -23,17 +38,27 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local MyFontProcessor = {}
+-- class table MyFontProcessor is declared before the requires
 MyFontProcessor.__index = MyFontProcessor
 MyFontProcessor.className = "MyFontProcessor"
+MyFontProcessor.javaClassName = "org.allbinary.graphics.font.MyFontProcessor"
+
+function MyFontProcessor._jinit(self)
+    return self
+end
 
 function MyFontProcessor.new()
-    local self = setmetatable({}, MyFontProcessor)
-    return self
+    return MyFontProcessor._jinit(setmetatable({}, MyFontProcessor))
 end
 
 
@@ -48,14 +73,14 @@ end
 
 
 function MyFontProcessor.getInstance()
-        return MyFontProcessor.instance
+        return MyFontProcessor.instance_f
 end
 
 
 function MyFontProcessor:process(graphics)
 end
 
-MyFontProcessor.instance = MyFontProcessor.new()
+MyFontProcessor.instance_f = MyFontProcessor.new()
 
 return MyFontProcessor
 

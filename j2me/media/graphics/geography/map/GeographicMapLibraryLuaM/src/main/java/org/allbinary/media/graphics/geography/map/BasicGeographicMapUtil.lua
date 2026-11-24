@@ -13,8 +13,25 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media.graphics.geography.map
 
-local Layer = require("org.allbinary.layer.Layer")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
+local BasicGeographicMapUtil = {}
+package.loaded["org.allbinary.media.graphics.geography.map.BasicGeographicMapUtil"] = BasicGeographicMapUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local Layer = java_lazy("org.allbinary.layer.Layer")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local BasicGeographicMap = java_lazy("org.allbinary.media.graphics.geography.map.BasicGeographicMap")
+local GeographicMapCellPosition = java_lazy("org.allbinary.media.graphics.geography.map.GeographicMapCellPosition")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -37,6 +54,12 @@ local function java_new_array(default, size, ...)
     return array
 end
 
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
+    return array
+end
+
 local function java_idiv(a, b)
     local q = a / b
     if q < 0 then return math.ceil(q) end
@@ -44,27 +67,37 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local BasicGeographicMapUtil = {}
+-- class table BasicGeographicMapUtil is declared before the requires
 BasicGeographicMapUtil.__index = BasicGeographicMapUtil
 BasicGeographicMapUtil.className = "BasicGeographicMapUtil"
+BasicGeographicMapUtil.javaClassName = "org.allbinary.media.graphics.geography.map.BasicGeographicMapUtil"
 
 function BasicGeographicMapUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
 end
 
-function BasicGeographicMapUtil.new()
-    local self = setmetatable({}, BasicGeographicMapUtil)
-    self:_init_fields()
+function BasicGeographicMapUtil._jinit(self)
+    BasicGeographicMapUtil._init_fields(self)
     return self
+end
+
+function BasicGeographicMapUtil.new()
+    return BasicGeographicMapUtil._jinit(setmetatable({}, BasicGeographicMapUtil))
 end
 
 
 function BasicGeographicMapUtil.getInstance()
-        return BasicGeographicMapUtil.instance
+        return BasicGeographicMapUtil.instance_f
 end
 
 
@@ -82,7 +115,7 @@ function BasicGeographicMapUtil:getBorderingRow(direction, oldGeographicMapCellP
             elseif switch_value == 3 then
                 return oldGeographicMapCellPosition:getRow() - LOCATION_CHANGE
             else
-                error(java_exception("Exception", "Only Four Directions"), 0)
+                error(require("java.lang.Exception").new("Only Four Directions"), 0)
             end
         end
 end
@@ -102,7 +135,7 @@ function BasicGeographicMapUtil:getBorderingColumn(direction, oldGeographicMapCe
             elseif switch_value == 3 then
                 return oldGeographicMapCellPosition:getColumn()
             else
-                error(java_exception("Exception", "Only Four Directions"), 0)
+                error(require("java.lang.Exception").new("Only Four Directions"), 0)
             end
         end
 end
@@ -168,7 +201,7 @@ function BasicGeographicMapUtil:setPosition(geographicMapInterfaceArray, x, y)
         end
 end
 
-BasicGeographicMapUtil.instance = BasicGeographicMapUtil.new()
+BasicGeographicMapUtil.instance_f = BasicGeographicMapUtil.new()
 
 return BasicGeographicMapUtil
 

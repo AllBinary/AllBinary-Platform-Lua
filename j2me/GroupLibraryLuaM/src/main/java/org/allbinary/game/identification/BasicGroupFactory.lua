@@ -13,7 +13,23 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.identification
 
-local NullUtil = require("org.allbinary.logic.NullUtil")
+local BasicGroupFactory = {}
+package.loaded["org.allbinary.game.identification.BasicGroupFactory"] = BasicGroupFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
+local Group = java_lazy("org.allbinary.game.identification.Group")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -22,13 +38,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local BasicGroupFactory = {}
+-- class table BasicGroupFactory is declared before the requires
 BasicGroupFactory.__index = BasicGroupFactory
 BasicGroupFactory.className = "BasicGroupFactory"
+BasicGroupFactory.javaClassName = "org.allbinary.game.identification.BasicGroupFactory"
 
 function BasicGroupFactory:_init_fields()
     self.NAME = "GROUP_NAME"
@@ -43,21 +66,24 @@ function BasicGroupFactory:_init_fields()
     self.NONE_ARRAY = {self.NONE}
 end
 
-function BasicGroupFactory.new()
-    local self = setmetatable({}, BasicGroupFactory)
-    self:_init_fields()
+function BasicGroupFactory._jinit(self)
+    BasicGroupFactory._init_fields(self)
     return self
+end
+
+function BasicGroupFactory.new()
+    return BasicGroupFactory._jinit(setmetatable({}, BasicGroupFactory))
 end
 
 
 function BasicGroupFactory.getInstance()
-        if BasicGroupFactory.instance == NullUtil.getInstance().NULL_OBJECT then
-            BasicGroupFactory.instance = BasicGroupFactory.new()
+        if BasicGroupFactory.instance_f == NullUtil.getInstance().NULL_OBJECT then
+            BasicGroupFactory.instance_f = BasicGroupFactory.new()
         end
-        return BasicGroupFactory.instance
+        return BasicGroupFactory.instance_f
 end
 
-BasicGroupFactory.instance = NullUtil.getInstance().NULL_OBJECT
+BasicGroupFactory.instance_f = NullUtil.getInstance().NULL_OBJECT
 
 return BasicGroupFactory
 

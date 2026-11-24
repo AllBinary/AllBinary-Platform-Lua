@@ -13,8 +13,23 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media.graphics.geography.pathfinding
 
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local CommonLabels = require("org.allbinary.string.CommonLabels")
+local PathFindingNodeCostInfo = {}
+package.loaded["org.allbinary.media.graphics.geography.pathfinding.PathFindingNodeCostInfo"] = PathFindingNodeCostInfo
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
 -- java.lang.Comparable has no Lua module
 local Comparable = {}
 
@@ -38,28 +53,42 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local PathFindingNodeCostInfo = {}
+-- class table PathFindingNodeCostInfo is declared before the requires
 PathFindingNodeCostInfo.__index = PathFindingNodeCostInfo
 PathFindingNodeCostInfo.className = "PathFindingNodeCostInfo"
+PathFindingNodeCostInfo.javaClassName = "org.allbinary.media.graphics.geography.pathfinding.PathFindingNodeCostInfo"
+PathFindingNodeCostInfo.java_implements = " Comparable "
+PathFindingNodeCostInfo.java_interfaces = function() return {Comparable} end
 
 function PathFindingNodeCostInfo:_init_fields()
     self.pathFindingNodeCostInfoData = PathFindingNodeCostInfoData.getInstance()
-    self.costFromStartP = nil
-    self.costToEndP = nil
-    self.totalCostP = 0
+    if self.costFromStartP == nil then self.costFromStartP = nil end
+    if self.costToEndP == nil then self.costToEndP = nil end
+    if self.totalCostP == nil then self.totalCostP = 0 end
 end
 
 
-function PathFindingNodeCostInfo.new(costFromStart, costToGoal)
-    local self = setmetatable({}, PathFindingNodeCostInfo)
-    self:_init_fields()
+function PathFindingNodeCostInfo._jinit(self, costFromStart, costToGoal)
+    PathFindingNodeCostInfo._init_fields(self)
         self.costFromStartP = costFromStart
         self.costToEndP = costToGoal
         self:setCalculatedTotalCost()
+    return self
+end
+
+function PathFindingNodeCostInfo.new(...)
+    local self = setmetatable({}, PathFindingNodeCostInfo)
+    PathFindingNodeCostInfo._jinit(self, ...)
     return self
 end
 
@@ -78,7 +107,7 @@ end
 function PathFindingNodeCostInfo:setCalculatedTotalCost()
         self.totalCostP = self.costFromStartP + self.costToEndP
         if self.totalCostP > self.pathFindingNodeCostInfoData.MAX_NODE_COST then
-            error(java_exception("Exception", "Max Cost Exceeded"), 0)
+            error(require("java.lang.Exception").new("Max Cost Exceeded"), 0)
         end
 end
 
@@ -94,13 +123,18 @@ end
 
 
 function PathFindingNodeCostInfo:compareTo(pathFindingNodeCostInfo)
-        return java.lang.Long:compare(self.totalCostP, pathFindingNodeCostInfo.totalCostP)
+        if self.totalCostP < pathFindingNodeCostInfo.totalCostP then
+            return -1
+        elseif self.totalCostP > pathFindingNodeCostInfo.totalCostP then
+            return 1
+        end
+        return 0
 end
 
 
 function PathFindingNodeCostInfo:toString()
         local stringBuffer = StringMaker.new()
-        stringBuffer:append(getmetatable(self).className)
+        stringBuffer:append((getmetatable(self).javaClassName or getmetatable(self).className))
         stringBuffer:append(CommonLabels.getInstance().COLON_SEP)
         stringBuffer:append("CostFromStart: ")
         stringBuffer:appendlong(self.costFromStartP)

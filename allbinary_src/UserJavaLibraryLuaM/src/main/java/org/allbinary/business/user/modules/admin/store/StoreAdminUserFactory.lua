@@ -13,9 +13,60 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.user.modules.admin.store
 
--- local HashMap = require("java.util.HashMap")
-local UserFactoryInterface = require("org.allbinary.business.user.UserFactoryInterface")
-local UserInterface = require("org.allbinary.business.user.UserInterface")
+local StoreAdminUserFactory = {}
+package.loaded["org.allbinary.business.user.modules.admin.store.StoreAdminUserFactory"] = StoreAdminUserFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
+local UserFactoryInterface = java_lazy("org.allbinary.business.user.UserFactoryInterface")
+local UserInterface = java_lazy("org.allbinary.business.user.UserInterface")
+local StoreAdminUser = java_lazy("org.allbinary.business.user.modules.admin.store.StoreAdminUser")
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
 
 local function java_idiv(a, b)
     local q = a / b
@@ -24,32 +75,52 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local StoreAdminUserFactory = {}
+-- class table StoreAdminUserFactory is declared before the requires
 StoreAdminUserFactory.__index = StoreAdminUserFactory
 StoreAdminUserFactory.className = "StoreAdminUserFactory"
+StoreAdminUserFactory.javaClassName = "org.allbinary.business.user.modules.admin.store.StoreAdminUserFactory"
+StoreAdminUserFactory.java_implements = " UserFactoryInterface "
+StoreAdminUserFactory.java_interfaces = function() return {UserFactoryInterface} end
 
 
-function StoreAdminUserFactory.new()
+function StoreAdminUserFactory._jinit(self)
+    return self
+end
+
+function StoreAdminUserFactory.new(...)
     local self = setmetatable({}, StoreAdminUserFactory)
+    StoreAdminUserFactory._jinit(self, ...)
     return self
 end
 
 
 -- throws Exception
-function StoreAdminUserFactory:getInstance()
+function StoreAdminUserFactory:getInstance_j0()
         return StoreAdminUser.new()
 end
 
 
 -- throws Exception
--- Java overloaded method: Lua keeps the last definition
-function StoreAdminUserFactory:getInstance(hashMap)
+function StoreAdminUserFactory:getInstance_j1(hashMap)
         return StoreAdminUser.new(hashMap)
 end
+function StoreAdminUserFactory:getInstance(...)
+    local count = select("#", ...)
+    if count == 0 then return self:getInstance_j0(...) end
+    if count == 1 then return self:getInstance_j1(...) end
+    error("No method getInstance takes " .. count .. " arguments")
+end
+StoreAdminUserFactory.getInstance__jdispatcher = StoreAdminUserFactory.getInstance
 
 return StoreAdminUserFactory
 

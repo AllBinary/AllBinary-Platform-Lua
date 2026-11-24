@@ -13,6 +13,21 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.java.anyType.clazz.loader
 
+local ClassLoaderUtil = {}
+package.loaded["org.allbinary.logic.java.anyType.clazz.loader.ClassLoaderUtil"] = ClassLoaderUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -34,17 +49,29 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ClassLoaderUtil = {}
+-- class table ClassLoaderUtil is declared before the requires
 ClassLoaderUtil.__index = ClassLoaderUtil
 ClassLoaderUtil.className = "ClassLoaderUtil"
+ClassLoaderUtil.javaClassName = "org.allbinary.logic.java.anyType.clazz.loader.ClassLoaderUtil"
 
 
-function ClassLoaderUtil.new()
+function ClassLoaderUtil._jinit(self)
+    return self
+end
+
+function ClassLoaderUtil.new(...)
     local self = setmetatable({}, ClassLoaderUtil)
+    ClassLoaderUtil._jinit(self, ...)
     return self
 end
 
@@ -53,9 +80,9 @@ end
 function ClassLoaderUtil.getName(anyType)
         local classLoader = getmetatable(anyType):getClassLoader()
         if classLoader ~= nil then
-            return "ClassLoader: " .. getmetatable(classLoader).className
+            return "ClassLoader: " .. (getmetatable(classLoader).javaClassName or getmetatable(classLoader).className)
         end
-        error(java_exception("Exception", "Unable to get ClassLoader"), 0)
+        error(require("java.lang.Exception").new("Unable to get ClassLoader"), 0)
 end
 
 return ClassLoaderUtil

@@ -1,7 +1,22 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.input.analog
 
-local CustomGPoint = require("org.allbinary.graphics.CustomGPoint")
+local AnalogLocationInput = {}
+package.loaded["org.allbinary.game.input.analog.AnalogLocationInput"] = AnalogLocationInput
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local CustomGPoint = java_lazy("org.allbinary.graphics.CustomGPoint")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -10,28 +25,40 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local AnalogLocationInput = {}
+-- class table AnalogLocationInput is declared before the requires
 AnalogLocationInput.__index = AnalogLocationInput
 AnalogLocationInput.className = "AnalogLocationInput"
+AnalogLocationInput.javaClassName = "org.allbinary.game.input.analog.AnalogLocationInput"
 
 function AnalogLocationInput:_init_fields()
-    self.playerId = nil
-    self.customGPoint = nil
-    self.rz = 0
-    self.rightTrigger = 0
-    self.leftTrigger = 0
+    if self.playerId == nil then self.playerId = nil end
+    if self.customGPoint == nil then self.customGPoint = nil end
+    if self.rz == nil then self.rz = 0 end
+    if self.rightTrigger == nil then self.rightTrigger = 0 end
+    if self.leftTrigger == nil then self.leftTrigger = 0 end
 end
 
 
-function AnalogLocationInput.new(playerId)
-    local self = setmetatable({}, AnalogLocationInput)
-    self:_init_fields()
+function AnalogLocationInput._jinit(self, playerId)
+    AnalogLocationInput._init_fields(self)
         self.playerId = playerId
         self.customGPoint = CustomGPoint.new(0, 0, 0)
+    return self
+end
+
+function AnalogLocationInput.new(...)
+    local self = setmetatable({}, AnalogLocationInput)
+    AnalogLocationInput._jinit(self, ...)
     return self
 end
 

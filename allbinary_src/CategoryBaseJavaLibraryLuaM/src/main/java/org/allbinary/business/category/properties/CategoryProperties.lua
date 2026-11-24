@@ -13,23 +13,40 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.business.category.properties
 
--- local HashMap = require("java.util.HashMap")
-local CategoryData = require("org.allbinary.business.category.CategoryData")
-local CategoryInterface = require("org.allbinary.business.category.CategoryInterface")
-local CategoryUtil = require("org.allbinary.business.category.CategoryUtil")
-local CategoryHierarchyInterface = require("org.allbinary.business.category.hierarchy.CategoryHierarchyInterface")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local AbSqlData = require("org.allbinary.logic.communication.sql.AbSqlData")
-local AbPath = require("org.allbinary.logic.io.path.AbPath")
-local AbPathData = require("org.allbinary.logic.io.path.AbPathData")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local StringValidationUtil = require("org.allbinary.logic.string.StringValidationUtil")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local Document = require("org.w3c.dom.Document")
-local Node = require("org.w3c.dom.Node")
+local CategoryProperties = {}
+package.loaded["org.allbinary.business.category.properties.CategoryProperties"] = CategoryProperties
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
+local CategoryData = java_lazy("org.allbinary.business.category.CategoryData")
+local CategoryInterface = java_lazy("org.allbinary.business.category.CategoryInterface")
+local CategoryUtil = java_lazy("org.allbinary.business.category.CategoryUtil")
+local CategoryHierarchyInterface = java_lazy("org.allbinary.business.category.hierarchy.CategoryHierarchyInterface")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local AbSqlData = java_lazy("org.allbinary.logic.communication.sql.AbSqlData")
+local AbPath = java_lazy("org.allbinary.logic.io.path.AbPath")
+local AbPathData = java_lazy("org.allbinary.logic.io.path.AbPathData")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local Document = java_lazy("org.w3c.dom.Document")
+local Node = java_lazy("org.w3c.dom.Node")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local CategoryPropertiesInterface = require("org.allbinary.business.category.properties.CategoryPropertiesInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
@@ -45,6 +62,41 @@ local function java_exception(className, message, cause)
     return setmetatable(exception, {__tostring = function(self) if self.message ~= nil then return tostring(self.message) end return self.className end})
 end
 
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
 local function java_idiv(a, b)
     local q = a / b
     if q < 0 then return math.ceil(q) end
@@ -52,47 +104,65 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local CategoryProperties = {}
+-- class table CategoryProperties is declared before the requires
 CategoryProperties.__index = CategoryProperties
 CategoryProperties.className = "CategoryProperties"
+CategoryProperties.javaClassName = "org.allbinary.business.category.properties.CategoryProperties"
+CategoryProperties.java_implements = " CategoryPropertiesInterface "
+CategoryProperties.java_interfaces = function() return {CategoryPropertiesInterface} end
 
 function CategoryProperties:_init_fields()
     self.logUtil = LogUtil.getInstance()
-    self.category = nil
+    if self.category == nil then self.category = nil end
+end
+
+function CategoryProperties._jinit(self, ...)
+    local count = select("#", ...)
+    if count == 1 then return CategoryProperties._new1(self, ...)
+    end
+    error("No constructor of CategoryProperties takes " .. count .. " arguments")
 end
 
 function CategoryProperties.new(...)
-    local count = select("#", ...)
-    if count == 1 then return CategoryProperties._new1(...)
-    elseif count == 1 then return CategoryProperties._new1(...)
-    elseif count == 1 then return CategoryProperties._new1(...)
-    end
+    local self = setmetatable({}, CategoryProperties)
+    CategoryProperties._jinit(self, ...)
+    return self
+end
+
+function CategoryProperties._new1(self, ...)
+    local java_a1 = ...
+    if true and (java_a1 == nil or type(java_a1) == "string") then return CategoryProperties._new1_1(self, ...) end
+    if true and (java_a1 == nil or java_is(java_a1, "Node")) then return CategoryProperties._new1_2(self, ...) end
+    return CategoryProperties._new1_3(self, ...)
 end
 
 
-function CategoryProperties._new1(name)
-    local self = setmetatable({}, CategoryProperties)
-    self:_init_fields()
+function CategoryProperties._new1_1(self, name)
+    CategoryProperties._init_fields(self)
         self.category = name
     return self
 end
 
 
-function CategoryProperties._new1(node)
-    local self = setmetatable({}, CategoryProperties)
-    self:_init_fields()
+function CategoryProperties._new1_2(self, node)
+    CategoryProperties._init_fields(self)
         self.category = CategoryUtil.getNameFromNode(node)
     return self
 end
 
 
-function CategoryProperties._new1(categoryPropertiesHashMap)
-    local self = setmetatable({}, CategoryProperties)
-    self:_init_fields()
+function CategoryProperties._new1_3(self, categoryPropertiesHashMap)
+    CategoryProperties._init_fields(self)
         self.category = tostring(categoryPropertiesHashMap:get(CategoryData.getInstance().NAME))
     return self
 end
@@ -142,7 +212,7 @@ function CategoryProperties:getPath(categoryHierarchyInterface)
                 nextParentCategoryInterface = nextParentCategoryInterface:getHierarchy():getParent()
                 depthIndex = depthIndex + 1
                 if depthIndex > CategoryProperties.MAXDEPTH then
-                    error(java_exception("Exception", "Probably Major Error"), 0)
+                    error(require("java.lang.Exception").new("Probably Major Error"), 0)
                 end
             end
         end
@@ -153,7 +223,7 @@ function CategoryProperties:getPath(categoryHierarchyInterface)
             pathStringBuffer:append(list:get(index))
         end
         pathStringBuffer:append(abPathData.SEPARATOR)
-        if org.allbinary.logic.communication.log.config.type.LogConfigTypes.LOGGING:contains(org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory:getInstance().CATEGORY) then
+        if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().CATEGORY) then
             self.logUtil:putF("path = " .. tostring(pathStringBuffer), self, "getPath")
         end
         return AbPath.new(tostring(pathStringBuffer), StringUtil.getInstance().EMPTY_STRING)
@@ -167,7 +237,7 @@ end
 
 -- throws Exception
 function CategoryProperties:getWebAppPath()
-        error(java_exception("Exception", "Not Root"), 0)
+        error(require("java.lang.Exception").new("Not Root"), 0)
 end
 
 

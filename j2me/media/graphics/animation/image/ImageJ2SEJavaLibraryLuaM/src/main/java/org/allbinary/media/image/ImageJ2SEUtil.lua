@@ -13,6 +13,21 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media.image
 
+local ImageJ2SEUtil = {}
+package.loaded["org.allbinary.media.image.ImageJ2SEUtil"] = ImageJ2SEUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Color = require("java.awt.Color")
 
 local function java_idiv(a, b)
@@ -22,30 +37,40 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ImageJ2SEUtil = {}
+-- class table ImageJ2SEUtil is declared before the requires
 ImageJ2SEUtil.__index = ImageJ2SEUtil
 ImageJ2SEUtil.className = "ImageJ2SEUtil"
+ImageJ2SEUtil.javaClassName = "org.allbinary.media.image.ImageJ2SEUtil"
 
 function ImageJ2SEUtil:_init_fields()
     self.TRANSPARENT_COLOR = Color.new(0, 0, 0, 0)
 end
 
-function ImageJ2SEUtil.new()
-    local self = setmetatable({}, ImageJ2SEUtil)
-    self:_init_fields()
+function ImageJ2SEUtil._jinit(self)
+    ImageJ2SEUtil._init_fields(self)
     return self
+end
+
+function ImageJ2SEUtil.new()
+    return ImageJ2SEUtil._jinit(setmetatable({}, ImageJ2SEUtil))
 end
 
 
 function ImageJ2SEUtil.getInstance()
-        return ImageJ2SEUtil.instance
+        return ImageJ2SEUtil.instance_f
 end
 
-ImageJ2SEUtil.instance = ImageJ2SEUtil.new()
+ImageJ2SEUtil.instance_f = ImageJ2SEUtil.new()
 
 return ImageJ2SEUtil
 

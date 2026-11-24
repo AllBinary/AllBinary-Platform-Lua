@@ -13,13 +13,28 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.string.tokens
 
--- local HashSet = require("java.util.HashSet")
-local AbPathData = require("org.allbinary.logic.io.path.AbPathData")
-local Replace = require("org.allbinary.logic.string.regex.replace.Replace")
-local CommonPhoneStrings = require("org.allbinary.string.CommonPhoneStrings")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
+local UniqueTokens = {}
+package.loaded["org.allbinary.logic.string.tokens.UniqueTokens"] = UniqueTokens
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashSet = java_lazy("java.util.HashSet")
+local AbPathData = java_lazy("org.allbinary.logic.io.path.AbPathData")
+local Replace = java_lazy("org.allbinary.logic.string.regex.replace.Replace")
+local CommonPhoneStrings = java_lazy("org.allbinary.string.CommonPhoneStrings")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -28,22 +43,28 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local UniqueTokens = {}
+-- class table UniqueTokens is declared before the requires
 UniqueTokens.__index = UniqueTokens
 UniqueTokens.className = "UniqueTokens"
+UniqueTokens.javaClassName = "org.allbinary.logic.string.tokens.UniqueTokens"
 
 function UniqueTokens:_init_fields()
     self.specialCharacters = BasicArrayListD.new()
 end
 
 
-function UniqueTokens.new()
-    local self = setmetatable({}, UniqueTokens)
-    self:_init_fields()
+function UniqueTokens._jinit(self)
+    UniqueTokens._init_fields(self)
         self.specialCharacters:add("!")
         self.specialCharacters:add("@")
         self.specialCharacters:add(CommonPhoneStrings.getInstance().POUND)
@@ -71,10 +92,16 @@ function UniqueTokens.new()
     return self
 end
 
+function UniqueTokens.new(...)
+    local self = setmetatable({}, UniqueTokens)
+    UniqueTokens._jinit(self, ...)
+    return self
+end
+
 
 -- throws Exception
 function UniqueTokens:getWhithoutDashesAndSkipNumberOnlyTokens(stringVector)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             local hashSet = HashSet.new()
             local index = 0
             local commonSeps = CommonSeps.getInstance()
@@ -102,24 +129,28 @@ function UniqueTokens:getWhithoutDashesAndSkipNumberOnlyTokens(stringVector)
                 end
                 index = index + 1
             end
-            return hashSet
+            do return "__jreturn", hashSet end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             error(e, 0)
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 
 function UniqueTokens:numberOnly(subCleaningString)
-        local try_ok, try_error = pcall(function()
+        local try_ok, try_error, try_value = pcall(function()
             math.tointeger(tonumber(subCleaningString))
-            return true
+            do return "__jreturn", true end
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             return false
         end
+        if try_ok and try_error == "__jreturn" then return try_value end
 end
 
 

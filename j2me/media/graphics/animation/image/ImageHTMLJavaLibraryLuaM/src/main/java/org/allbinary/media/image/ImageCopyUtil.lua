@@ -13,13 +13,29 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media.image
 
+local ImageCopyUtil = {}
+package.loaded["org.allbinary.media.image.ImageCopyUtil"] = ImageCopyUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Graphics = require("javax.microedition.lcdui.Graphics")
 -- local Image = require("javax.microedition.lcdui.Image")
-local Anchor = require("org.allbinary.graphics.Anchor")
-local BasicColorFactory = require("org.allbinary.graphics.color.BasicColorFactory")
-local BasicColorSetUtil = require("org.allbinary.graphics.color.BasicColorSetUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
+local Anchor = java_lazy("org.allbinary.graphics.Anchor")
+local BasicColorFactory = java_lazy("org.allbinary.graphics.color.BasicColorFactory")
+local BasicColorSetUtil = java_lazy("org.allbinary.graphics.color.BasicColorSetUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local ImageCreationUtil = java_lazy("org.allbinary.media.image.ImageCreationUtil")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -41,13 +57,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ImageCopyUtil = {}
+-- class table ImageCopyUtil is declared before the requires
 ImageCopyUtil.__index = ImageCopyUtil
 ImageCopyUtil.className = "ImageCopyUtil"
+ImageCopyUtil.javaClassName = "org.allbinary.media.image.ImageCopyUtil"
 
 function ImageCopyUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
@@ -57,13 +80,18 @@ end
 
 
 function ImageCopyUtil.getInstance()
-        return ImageCopyUtil.instance
+        return ImageCopyUtil.instance_f
 end
 
 
-function ImageCopyUtil.new()
+function ImageCopyUtil._jinit(self)
+    ImageCopyUtil._init_fields(self)
+    return self
+end
+
+function ImageCopyUtil.new(...)
     local self = setmetatable({}, ImageCopyUtil)
-    self:_init_fields()
+    ImageCopyUtil._jinit(self, ...)
     return self
 end
 
@@ -81,7 +109,7 @@ function ImageCopyUtil:createImage(originalImage)
             image:getGraphics():drawImage(originalImage, 0, 0, self.anchor)
             return image
         else
-            error(java_exception("Exception", "Not Mutable"), 0)
+            error(require("java.lang.Exception").new("Not Mutable"), 0)
         end
 end
 
@@ -106,11 +134,11 @@ function ImageCopyUtil:createImageScale(originalImage, canvasScale, resize)
             graphics:drawImage(originalImage, halfWidthDelta, halfHeightDelta, self.anchor)
             return image
         else
-            error(java_exception("Exception", "Not Mutable"), 0)
+            error(require("java.lang.Exception").new("Not Mutable"), 0)
         end
 end
 
-ImageCopyUtil.instance = ImageCopyUtil.new()
+ImageCopyUtil.instance_f = ImageCopyUtil.new()
 
 return ImageCopyUtil
 

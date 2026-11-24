@@ -13,25 +13,44 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.input.automation.module.generic.configuration.profile.actions
 
+local GenericProfileActions = {}
+package.loaded["org.allbinary.input.automation.module.generic.configuration.profile.actions.GenericProfileActions"] = GenericProfileActions
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local DataOutputStream = require("java.io.DataOutputStream")
--- local File = require("java.io.File")
+local File = java_lazy("java.io.File")
 -- local FileInputStream = require("java.io.FileInputStream")
 -- local FileOutputStream = require("java.io.FileOutputStream")
--- local HashMap = require("java.util.HashMap")
+local HashMap = java_lazy("java.util.HashMap")
 -- local Set = require("java.util.Set")
-local DomNodeInterface = require("org.allbinary.data.tree.dom.DomNodeInterface")
-local DomDocumentHelper = require("org.allbinary.data.tree.dom.document.DomDocumentHelper")
-local XmlDocumentHelper = require("org.allbinary.data.tree.dom.document.XmlDocumentHelper")
-local DomDocumentMappingInterface = require("org.allbinary.data.tree.dom.document.mapping.DomDocumentMappingInterface")
-local DefaultListModelHelper = require("org.allbinary.input.automation.module.DefaultListModelHelper")
-local GenericProfiles = require("org.allbinary.input.automation.module.generic.configuration.profile.GenericProfiles")
-local StdUtil = require("org.allbinary.logic.StdUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local CommonDataFileStrings = require("org.allbinary.logic.io.file.CommonDataFileStrings")
-local AbPath = require("org.allbinary.logic.io.path.AbPath")
-local Document = require("org.w3c.dom.Document")
-local Node = require("org.w3c.dom.Node")
-local NodeList = require("org.w3c.dom.NodeList")
+local DomNodeInterface = java_lazy("org.allbinary.data.tree.dom.DomNodeInterface")
+local DomDocumentHelper = java_lazy("org.allbinary.data.tree.dom.document.DomDocumentHelper")
+local XmlDocumentHelper = java_lazy("org.allbinary.data.tree.dom.document.XmlDocumentHelper")
+local DomDocumentMappingInterface = java_lazy("org.allbinary.data.tree.dom.document.mapping.DomDocumentMappingInterface")
+local DefaultListModelHelper = java_lazy("org.allbinary.input.automation.module.DefaultListModelHelper")
+local GenericProfiles = java_lazy("org.allbinary.input.automation.module.generic.configuration.profile.GenericProfiles")
+local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local CommonDataFileStrings = java_lazy("org.allbinary.logic.io.file.CommonDataFileStrings")
+local AbPath = java_lazy("org.allbinary.logic.io.path.AbPath")
+local Document = java_lazy("org.w3c.dom.Document")
+local Node = java_lazy("org.w3c.dom.Node")
+local NodeList = java_lazy("org.w3c.dom.NodeList")
+local GenericProfileAction = java_lazy("org.allbinary.input.automation.module.generic.configuration.profile.actions.GenericProfileAction")
+local GenericProfileActionData = java_lazy("org.allbinary.input.automation.module.generic.configuration.profile.actions.GenericProfileActionData")
+local GenericProfileActionsData = java_lazy("org.allbinary.input.automation.module.generic.configuration.profile.actions.GenericProfileActionsData")
+local GenericProfileActionsJPanel = java_lazy("org.allbinary.input.automation.module.generic.configuration.profile.actions.GenericProfileActionsJPanel")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -54,6 +73,47 @@ local function java_new_array(default, size, ...)
     return array
 end
 
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
+    return array
+end
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
+    end
+    return false
+end
+
 local function java_idiv(a, b)
     local q = a / b
     if q < 0 then return math.ceil(q) end
@@ -61,35 +121,55 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local GenericProfileActions = {}
+-- class table GenericProfileActions is declared before the requires
 GenericProfileActions.__index = GenericProfileActions
 GenericProfileActions.className = "GenericProfileActions"
+GenericProfileActions.javaClassName = "org.allbinary.input.automation.module.generic.configuration.profile.actions.GenericProfileActions"
+GenericProfileActions.java_implements = " DomNodeInterface DomDocumentMappingInterface "
+GenericProfileActions.java_interfaces = function() return {DomNodeInterface, DomDocumentMappingInterface} end
 
 function GenericProfileActions:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonFileStrings = CommonDataFileStrings.getInstance()
-    self.name = nil
-    self.genericProfileActionsJPanel = nil
-    self.actionsDefaultListModelHelper = nil
-    self.hashMap = nil
+    if self.name_f == nil then self.name_f = nil end
+    if self.genericProfileActionsJPanel == nil then self.genericProfileActionsJPanel = nil end
+    if self.actionsDefaultListModelHelper == nil then self.actionsDefaultListModelHelper = nil end
+    if self.hashMap == nil then self.hashMap = nil end
+end
+
+function GenericProfileActions._jinit(self, ...)
+    local count = select("#", ...)
+    if count == 2 then return GenericProfileActions._new2(self, ...)
+    elseif count == 3 then return GenericProfileActions._new3(self, ...)
+    end
+    error("No constructor of GenericProfileActions takes " .. count .. " arguments")
 end
 
 function GenericProfileActions.new(...)
-    local count = select("#", ...)
-    if count == 2 then return GenericProfileActions._new2(...)
-    elseif count == 3 then return GenericProfileActions._new3(...)
-    elseif count == 3 then return GenericProfileActions._new3(...)
-    end
+    local self = setmetatable({}, GenericProfileActions)
+    GenericProfileActions._jinit(self, ...)
+    return self
+end
+
+function GenericProfileActions._new3(self, ...)
+    local java_a1, java_a2, java_a3 = ...
+    if true and (java_a1 == nil or java_is(java_a1, "GenericProfileActionsJPanel")) and (java_a2 == nil or java_is(java_a2, "AbPath")) and (java_a3 == nil or type(java_a3) == "string") then return GenericProfileActions._new3_1(self, ...) end
+    return GenericProfileActions._new3_2(self, ...)
 end
 
 
-function GenericProfileActions._new2(genericProfileActionsJPanel, name)
-    local self = setmetatable({}, GenericProfileActions)
-    self:_init_fields()
+function GenericProfileActions._new2(self, genericProfileActionsJPanel, name)
+    GenericProfileActions._init_fields(self)
         self:setName(name)
         self:init(genericProfileActionsJPanel)
         self:load()
@@ -97,9 +177,8 @@ function GenericProfileActions._new2(genericProfileActionsJPanel, name)
 end
 
 
-function GenericProfileActions._new3(genericProfileActionsJPanel, abPath, name)
-    local self = setmetatable({}, GenericProfileActions)
-    self:_init_fields()
+function GenericProfileActions._new3_1(self, genericProfileActionsJPanel, abPath, name)
+    GenericProfileActions._init_fields(self)
         self:setName(name)
         self:init(genericProfileActionsJPanel)
         self:load()
@@ -107,9 +186,8 @@ function GenericProfileActions._new3(genericProfileActionsJPanel, abPath, name)
 end
 
 
-function GenericProfileActions._new3(genericProfileActionsJPanel, fileInputStream, name)
-    local self = setmetatable({}, GenericProfileActions)
-    self:_init_fields()
+function GenericProfileActions._new3_2(self, genericProfileActionsJPanel, fileInputStream, name)
+    GenericProfileActions._init_fields(self)
         self:setName(name)
         self:init(genericProfileActionsJPanel)
         self:fileInit(fileInputStream)
@@ -153,7 +231,7 @@ end
 
 -- throws Exception
 function GenericProfileActions:fileInit(fileInputStream)
-        local bytes = java_new_array(0, 100000)
+        local bytes = java_typed_array("B", java_new_array(0, 100000))
         local length = fileInputStream:read(bytes)
         local data = string.char(table.unpack(bytes))
         local endIndex = data:lastIndexOf(">")
@@ -166,7 +244,7 @@ function GenericProfileActions:fileInit(fileInputStream)
             if nodeList ~= nil then
                 self:initActions(nodeList)
             else
-                error(java_exception("Exception", tostring(GenericProfileActionData.NAME) .. " Name Node Node Children"), 0)
+                error(require("java.lang.Exception").new(tostring(GenericProfileActionData.NAME) .. " Name Node Node Children"), 0)
             end
         end
         self.logUtil:putF("Loaded: " .. tostring(self:getHashMap():size()) .. " Configuration Profile Action(s)", self, "Contructor")
@@ -183,7 +261,7 @@ function GenericProfileActions:initActions(nodeList)
                 self:getHashMap():put(genericConfigurationProfileAction:getName(), genericConfigurationProfileAction)
                 self:getDefaultListModelHelper():add(genericConfigurationProfileAction:getName())
             else
-                error(java_exception("Exception", tostring(GenericProfileActionData.NAME) .. " Node Null"), 0)
+                error(require("java.lang.Exception").new(tostring(GenericProfileActionData.NAME) .. " Node Null"), 0)
             end
         end
 end
@@ -194,8 +272,8 @@ function GenericProfileActions:getDefaultListModelHelper()
 end
 
 
-function GenericProfileActions:getAction(string)
-        return self:getHashMap():get(string)
+function GenericProfileActions:getAction(string_)
+        return self:getHashMap():get(string_)
 end
 
 
@@ -270,12 +348,12 @@ end
 
 
 function GenericProfileActions:getName()
-        return self.name
+        return self.name_f
 end
 
 
 function GenericProfileActions:setName(name)
-        self.name = name
+        self.name_f = name
 end
 
 GenericProfileActions.DEFAULT_PROFILE_ACTIONS_PATH = tostring(GenericProfiles.DEFAULT_PROFILES_PATH) .. "actions/"

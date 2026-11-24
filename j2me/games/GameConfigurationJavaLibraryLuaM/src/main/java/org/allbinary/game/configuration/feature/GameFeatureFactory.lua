@@ -13,6 +13,23 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.configuration.feature
 
+local GameFeatureFactory = {}
+package.loaded["org.allbinary.game.configuration.feature.GameFeatureFactory"] = GameFeatureFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local Feature = java_lazy("org.allbinary.game.configuration.feature.Feature")
+local GameFeature = java_lazy("org.allbinary.game.configuration.feature.GameFeature")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -21,13 +38,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local GameFeatureFactory = {}
+-- class table GameFeatureFactory is declared before the requires
 GameFeatureFactory.__index = GameFeatureFactory
 GameFeatureFactory.className = "GameFeatureFactory"
+GameFeatureFactory.javaClassName = "org.allbinary.game.configuration.feature.GameFeatureFactory"
 
 function GameFeatureFactory:_init_fields()
     self.SOUND = GameFeature.new("Sound")
@@ -50,17 +74,22 @@ end
 
 
 function GameFeatureFactory.getInstance()
-        return GameFeatureFactory.instance
+        return GameFeatureFactory.instance_f
 end
 
 
-function GameFeatureFactory.new()
-    local self = setmetatable({}, GameFeatureFactory)
-    self:_init_fields()
+function GameFeatureFactory._jinit(self)
+    GameFeatureFactory._init_fields(self)
     return self
 end
 
-GameFeatureFactory.instance = GameFeatureFactory.new()
+function GameFeatureFactory.new(...)
+    local self = setmetatable({}, GameFeatureFactory)
+    GameFeatureFactory._jinit(self, ...)
+    return self
+end
+
+GameFeatureFactory.instance_f = GameFeatureFactory.new()
 
 return GameFeatureFactory
 

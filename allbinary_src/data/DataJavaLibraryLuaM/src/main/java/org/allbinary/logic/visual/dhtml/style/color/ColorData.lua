@@ -13,6 +13,21 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.visual.dhtml.style.color
 
+local ColorData = {}
+package.loaded["org.allbinary.logic.visual.dhtml.style.color.ColorData"] = ColorData
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 
 local function java_idiv(a, b)
     local q = a / b
@@ -21,13 +36,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ColorData = {}
+-- class table ColorData is declared before the requires
 ColorData.__index = ColorData
 ColorData.className = "ColorData"
+ColorData.javaClassName = "org.allbinary.logic.visual.dhtml.style.color.ColorData"
 
 function ColorData:_init_fields()
     self.NAME = "COLOR_NAME"
@@ -35,17 +57,22 @@ end
 
 
 function ColorData.getInstance()
-        return ColorData.instance
+        return ColorData.instance_f
 end
 
 
-function ColorData.new()
-    local self = setmetatable({}, ColorData)
-    self:_init_fields()
+function ColorData._jinit(self)
+    ColorData._init_fields(self)
     return self
 end
 
-ColorData.instance = ColorData.new()
+function ColorData.new(...)
+    local self = setmetatable({}, ColorData)
+    ColorData._jinit(self, ...)
+    return self
+end
+
+ColorData.instance_f = ColorData.new()
 
 return ColorData
 

@@ -13,8 +13,24 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.input.motion.gesture
 
-local InputFactory = require("org.allbinary.game.input.InputFactory")
-local NullUtil = require("org.allbinary.logic.NullUtil")
+local TouchMotionGestureFactory = {}
+package.loaded["org.allbinary.input.motion.gesture.TouchMotionGestureFactory"] = TouchMotionGestureFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local InputFactory = java_lazy("org.allbinary.game.input.InputFactory")
+local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
+local MotionGestureInput = java_lazy("org.allbinary.input.motion.gesture.MotionGestureInput")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -23,43 +39,49 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local TouchMotionGestureFactory = {}
+-- class table TouchMotionGestureFactory is declared before the requires
 TouchMotionGestureFactory.__index = TouchMotionGestureFactory
 TouchMotionGestureFactory.className = "TouchMotionGestureFactory"
+TouchMotionGestureFactory.javaClassName = "org.allbinary.input.motion.gesture.TouchMotionGestureFactory"
 
 function TouchMotionGestureFactory:_init_fields()
-    self.LEFT = nil
-    self.RIGHT = nil
-    self.UP = nil
-    self.DOWN = nil
-    self.PRESSED = nil
-    self.RELEASED = nil
-    self.DIAGONAL_DOWN_RIGHT = nil
-    self.DIAGONAL_DOWN_LEFT = nil
-    self.DIAGONAL_UP_RIGHT = nil
-    self.DIAGONAL_UP_LEFT = nil
-    self.SCROLL_UP = nil
-    self.SCROLL_DOWN = nil
-    self.NO_MOTION = nil
-    self.LAST_MOTION = nil
+    if self.LEFT == nil then self.LEFT = nil end
+    if self.RIGHT == nil then self.RIGHT = nil end
+    if self.UP == nil then self.UP = nil end
+    if self.DOWN == nil then self.DOWN = nil end
+    if self.PRESSED == nil then self.PRESSED = nil end
+    if self.RELEASED == nil then self.RELEASED = nil end
+    if self.DIAGONAL_DOWN_RIGHT == nil then self.DIAGONAL_DOWN_RIGHT = nil end
+    if self.DIAGONAL_DOWN_LEFT == nil then self.DIAGONAL_DOWN_LEFT = nil end
+    if self.DIAGONAL_UP_RIGHT == nil then self.DIAGONAL_UP_RIGHT = nil end
+    if self.DIAGONAL_UP_LEFT == nil then self.DIAGONAL_UP_LEFT = nil end
+    if self.SCROLL_UP == nil then self.SCROLL_UP = nil end
+    if self.SCROLL_DOWN == nil then self.SCROLL_DOWN = nil end
+    if self.NO_MOTION == nil then self.NO_MOTION = nil end
+    if self.LAST_MOTION == nil then self.LAST_MOTION = nil end
 end
 
 
 function TouchMotionGestureFactory.getInstance()
-        if TouchMotionGestureFactory.instance == NullUtil.getInstance().NULL_OBJECT then
-            TouchMotionGestureFactory.instance = TouchMotionGestureFactory.new()
+        if TouchMotionGestureFactory.instance_f == NullUtil.getInstance().NULL_OBJECT then
+            TouchMotionGestureFactory.instance_f = TouchMotionGestureFactory.new()
         end
-        return TouchMotionGestureFactory.instance
+        return TouchMotionGestureFactory.instance_f
 end
 
 
-function TouchMotionGestureFactory.new()
-    local self = setmetatable({}, TouchMotionGestureFactory)
-    self:_init_fields()
+function TouchMotionGestureFactory._jinit(self)
+    TouchMotionGestureFactory._init_fields(self)
         local MAX = InputFactory.getInstance().MAX
         self.LEFT = MotionGestureInput.new(MAX - 3, "Left Touch")
         self.RIGHT = MotionGestureInput.new(MAX - 4, "Right Touch")
@@ -78,7 +100,13 @@ function TouchMotionGestureFactory.new()
     return self
 end
 
-TouchMotionGestureFactory.instance = NullUtil.getInstance().NULL_OBJECT
+function TouchMotionGestureFactory.new(...)
+    local self = setmetatable({}, TouchMotionGestureFactory)
+    TouchMotionGestureFactory._jinit(self, ...)
+    return self
+end
+
+TouchMotionGestureFactory.instance_f = NullUtil.getInstance().NULL_OBJECT
 
 return TouchMotionGestureFactory
 

@@ -19,6 +19,8 @@ if [ "$#" -ge 5 ] && [ -n "$5" ]; then
     dependency_dir="$(cygpath -u "$5")"
 fi
 fail_on_missing_dependency="${6:-true}"
+# The hand written Java library modules (require("java.util.Vector"), allbinary_java) are also found in the runtime folder
+runtime_dir="$(cygpath -u "${7:-G:/mnt/bc/mydev/worklua/j2me/J2SEForLuaLibraryLuaM/src/main/java}")"
 
 if [ ! -d "$source_dir" ]; then
     echo "No Lua sources: $source_dir"
@@ -58,7 +60,7 @@ while IFS= read -r line; do
         code="${code#*"${BASH_REMATCH[0]}"}"
         if [ -z "${module_found[$module]+set}" ]; then
             module_path="${module//.//}.lua"
-            if [ -f "$source_dir/$module_path" ] || { [ -n "$dependency_dir" ] && [ -f "$dependency_dir/$module_path" ]; }; then
+            if [ -f "$source_dir/$module_path" ] || { [ -n "$dependency_dir" ] && [ -f "$dependency_dir/$module_path" ]; } || [ -f "$runtime_dir/$module_path" ]; then
                 module_found[$module]=1
             else
                 module_found[$module]=0

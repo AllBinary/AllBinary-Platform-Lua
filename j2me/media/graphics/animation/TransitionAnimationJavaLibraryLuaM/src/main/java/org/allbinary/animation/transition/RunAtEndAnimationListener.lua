@@ -13,6 +13,21 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.animation.transition
 
+local RunAtEndAnimationListener = {}
+package.loaded["org.allbinary.animation.transition.RunAtEndAnimationListener"] = RunAtEndAnimationListener
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 local AnimationListenerInterface = require("org.allbinary.animation.transition.AnimationListenerInterface")
 
 local function java_idiv(a, b)
@@ -22,23 +37,37 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local RunAtEndAnimationListener = {}
+-- class table RunAtEndAnimationListener is declared before the requires
 RunAtEndAnimationListener.__index = RunAtEndAnimationListener
 RunAtEndAnimationListener.className = "RunAtEndAnimationListener"
+RunAtEndAnimationListener.javaClassName = "org.allbinary.animation.transition.RunAtEndAnimationListener"
+RunAtEndAnimationListener.java_implements = " AnimationListenerInterface "
+RunAtEndAnimationListener.java_interfaces = function() return {AnimationListenerInterface} end
 
 function RunAtEndAnimationListener:_init_fields()
-    self.runnable = nil
+    if self.runnable == nil then self.runnable = nil end
 end
 
 
-function RunAtEndAnimationListener.new(runnable)
-    local self = setmetatable({}, RunAtEndAnimationListener)
-    self:_init_fields()
+function RunAtEndAnimationListener._jinit(self, runnable)
+    RunAtEndAnimationListener._init_fields(self)
         self.runnable = runnable
+    return self
+end
+
+function RunAtEndAnimationListener.new(...)
+    local self = setmetatable({}, RunAtEndAnimationListener)
+    RunAtEndAnimationListener._jinit(self, ...)
     return self
 end
 

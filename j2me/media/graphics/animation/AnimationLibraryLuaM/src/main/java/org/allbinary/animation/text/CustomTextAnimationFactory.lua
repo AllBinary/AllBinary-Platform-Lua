@@ -13,14 +13,31 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.animation.text
 
+local CustomTextAnimationFactory = {}
+package.loaded["org.allbinary.animation.text.CustomTextAnimationFactory"] = CustomTextAnimationFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Font = require("javax.microedition.lcdui.Font")
-local Animation = require("org.allbinary.animation.Animation")
-local AnimationBehaviorFactory = require("org.allbinary.animation.AnimationBehaviorFactory")
-local AnimationInterfaceFactoryInterface = require("org.allbinary.animation.AnimationInterfaceFactoryInterface")
-local BasicColor = require("org.allbinary.graphics.color.BasicColor")
-local BasicColorFactory = require("org.allbinary.graphics.color.BasicColorFactory")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local ScaleProperties = require("org.allbinary.media.ScaleProperties")
+local Animation = java_lazy("org.allbinary.animation.Animation")
+local AnimationBehaviorFactory = java_lazy("org.allbinary.animation.AnimationBehaviorFactory")
+local AnimationInterfaceFactoryInterface = java_lazy("org.allbinary.animation.AnimationInterfaceFactoryInterface")
+local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
+local BasicColorFactory = java_lazy("org.allbinary.graphics.color.BasicColorFactory")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local ScaleProperties = java_lazy("org.allbinary.media.ScaleProperties")
+local AdjustCustomTextAnimation = java_lazy("org.allbinary.animation.text.AdjustCustomTextAnimation")
+local CustomTextAnimation = java_lazy("org.allbinary.animation.text.CustomTextAnimation")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -29,24 +46,33 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local CustomTextAnimationFactory = {}
+-- class table CustomTextAnimationFactory is declared before the requires
 CustomTextAnimationFactory.__index = CustomTextAnimationFactory
 CustomTextAnimationFactory.className = "CustomTextAnimationFactory"
+CustomTextAnimationFactory.javaClassName = "org.allbinary.animation.text.CustomTextAnimationFactory"
+CustomTextAnimationFactory.java_implements = " AnimationInterfaceFactoryInterface "
+CustomTextAnimationFactory.java_interfaces = function() return {AnimationInterfaceFactoryInterface} end
 
 function CustomTextAnimationFactory:_init_fields()
     self.logUtil = LogUtil.getInstance()
-    self.animationBehaviorFactory = nil
+    if self.animationBehaviorFactory == nil then self.animationBehaviorFactory = nil end
     self.basicColor = BasicColorFactory.getInstance().BLACK
-    self.text = nil
-    self.initScaleHeight = nil
+    if self.text == nil then self.text = nil end
+    if self.initScaleHeight == nil then self.initScaleHeight = nil end
     self.dx = 0
     self.dy = 0
-    self.font = nil
-    self.scaleProperties = nil
+    if self.font == nil then self.font = nil end
+    if self.scaleProperties == nil then self.scaleProperties = nil end
 end
 
 
@@ -58,15 +84,20 @@ function CustomTextAnimationFactory.createDXY(text, fontSize, dx, dy, animationB
 end
 
 
-function CustomTextAnimationFactory.new(text, fontSize, animationBehaviorFactory)
-    local self = setmetatable({}, CustomTextAnimationFactory)
-    self:_init_fields()
+function CustomTextAnimationFactory._jinit(self, text, fontSize, animationBehaviorFactory)
+    CustomTextAnimationFactory._init_fields(self)
         self.scaleProperties = ScaleProperties.new()
         self.text = text
         self.scaleProperties.scaleHeight = fontSize - (java_idiv(fontSize, 4))
         self.initScaleHeight = self.scaleProperties.scaleHeight
         self.animationBehaviorFactory = animationBehaviorFactory
         self.font = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, self.initScaleHeight)
+    return self
+end
+
+function CustomTextAnimationFactory.new(...)
+    local self = setmetatable({}, CustomTextAnimationFactory)
+    CustomTextAnimationFactory._jinit(self, ...)
     return self
 end
 

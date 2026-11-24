@@ -13,12 +13,27 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.layer
 
+local SpriteFactory = {}
+package.loaded["org.allbinary.game.layer.SpriteFactory"] = SpriteFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Image = require("javax.microedition.lcdui.Image")
 -- local Sprite = require("javax.microedition.lcdui.game.Sprite")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local SpriteFactoryInterface = require("org.allbinary.game.layer.SpriteFactoryInterface")
 
 local function java_idiv(a, b)
@@ -28,27 +43,39 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local SpriteFactory = {}
+-- class table SpriteFactory is declared before the requires
 SpriteFactory.__index = SpriteFactory
 SpriteFactory.className = "SpriteFactory"
+SpriteFactory.javaClassName = "org.allbinary.game.layer.SpriteFactory"
+SpriteFactory.java_implements = " SpriteFactoryInterface "
+SpriteFactory.java_interfaces = function() return {SpriteFactoryInterface} end
 
 function SpriteFactory:_init_fields()
     self.logUtil = LogUtil.getInstance()
 end
 
-function SpriteFactory.new()
-    local self = setmetatable({}, SpriteFactory)
-    self:_init_fields()
+function SpriteFactory._jinit(self)
+    SpriteFactory._init_fields(self)
     return self
+end
+
+function SpriteFactory.new()
+    return SpriteFactory._jinit(setmetatable({}, SpriteFactory))
 end
 
 
 function SpriteFactory.getInstance()
-        return SpriteFactory.instance
+        return SpriteFactory.instance_f
 end
 
 
@@ -56,7 +83,7 @@ function SpriteFactory:createSprite(image, frameWidth, frameHeight)
         return Sprite.new(image, frameWidth, frameHeight)
 end
 
-SpriteFactory.instance = SpriteFactory.new()
+SpriteFactory.instance_f = SpriteFactory.new()
 
 return SpriteFactory
 

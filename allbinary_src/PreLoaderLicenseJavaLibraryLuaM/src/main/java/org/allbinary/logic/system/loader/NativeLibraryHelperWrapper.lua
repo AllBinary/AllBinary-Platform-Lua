@@ -13,15 +13,37 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.logic.system.loader
 
+local NativeLibraryHelperWrapper = {}
+package.loaded["org.allbinary.logic.system.loader.NativeLibraryHelperWrapper"] = NativeLibraryHelperWrapper
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 -- local Constructor = require("java.lang.reflect.Constructor")
 -- local Method = require("java.lang.reflect.Method")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local NativeLibraryClassLoader = java_lazy("org.allbinary.logic.system.loader.NativeLibraryClassLoader")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
     for index = 1, size do
         if select("#", ...) > 0 then array[index] = java_new_array(default, ...) else array[index] = default end
     end
+    return array
+end
+
+-- JNI element code (I, J, S, B, F, D) of a primitive array for the overload type dispatch
+local function java_typed_array(code, array)
+    array.jt = code
     return array
 end
 
@@ -32,25 +54,37 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local NativeLibraryHelperWrapper = {}
+-- class table NativeLibraryHelperWrapper is declared before the requires
 NativeLibraryHelperWrapper.__index = NativeLibraryHelperWrapper
 NativeLibraryHelperWrapper.className = "NativeLibraryHelperWrapper"
+NativeLibraryHelperWrapper.javaClassName = "org.allbinary.logic.system.loader.NativeLibraryHelperWrapper"
 
 function NativeLibraryHelperWrapper:_init_fields()
-    self.libraryName = nil
-    self.loader = nil
-    self.anyType = nil
+    if self.libraryName == nil then self.libraryName = nil end
+    if self.loader == nil then self.loader = nil end
+    if self.anyType == nil then self.anyType = nil end
 end
 
 
-function NativeLibraryHelperWrapper.new(libraryName)
-    local self = setmetatable({}, NativeLibraryHelperWrapper)
-    self:_init_fields()
+function NativeLibraryHelperWrapper._jinit(self, libraryName)
+    NativeLibraryHelperWrapper._init_fields(self)
         self:setLibraryName(libraryName)
+    return self
+end
+
+function NativeLibraryHelperWrapper.new(...)
+    local self = setmetatable({}, NativeLibraryHelperWrapper)
+    NativeLibraryHelperWrapper._jinit(self, ...)
     return self
 end
 

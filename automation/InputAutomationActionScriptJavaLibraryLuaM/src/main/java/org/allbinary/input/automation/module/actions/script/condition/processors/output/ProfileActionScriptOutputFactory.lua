@@ -13,8 +13,26 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.input.automation.module.actions.script.condition.processors.output
 
-local DomSearchHelper = require("org.allbinary.data.tree.dom.DomSearchHelper")
-local Node = require("org.w3c.dom.Node")
+local ProfileActionScriptOutputFactory = {}
+package.loaded["org.allbinary.input.automation.module.actions.script.condition.processors.output.ProfileActionScriptOutputFactory"] = ProfileActionScriptOutputFactory
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local DomSearchHelper = java_lazy("org.allbinary.data.tree.dom.DomSearchHelper")
+local Node = java_lazy("org.w3c.dom.Node")
+local ImageActionScriptOutput = java_lazy("org.allbinary.input.automation.module.actions.script.condition.processors.output.ImageActionScriptOutput")
+local ImageActionScriptOutputData = java_lazy("org.allbinary.input.automation.module.actions.script.condition.processors.output.ImageActionScriptOutputData")
+local ProfileActionScriptOutputInterface = java_lazy("org.allbinary.input.automation.module.actions.script.condition.processors.output.ProfileActionScriptOutputInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -36,17 +54,29 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ProfileActionScriptOutputFactory = {}
+-- class table ProfileActionScriptOutputFactory is declared before the requires
 ProfileActionScriptOutputFactory.__index = ProfileActionScriptOutputFactory
 ProfileActionScriptOutputFactory.className = "ProfileActionScriptOutputFactory"
+ProfileActionScriptOutputFactory.javaClassName = "org.allbinary.input.automation.module.actions.script.condition.processors.output.ProfileActionScriptOutputFactory"
 
 
-function ProfileActionScriptOutputFactory.new()
+function ProfileActionScriptOutputFactory._jinit(self)
+    return self
+end
+
+function ProfileActionScriptOutputFactory.new(...)
     local self = setmetatable({}, ProfileActionScriptOutputFactory)
+    ProfileActionScriptOutputFactory._jinit(self, ...)
     return self
 end
 
@@ -57,7 +87,7 @@ function ProfileActionScriptOutputFactory.getInstance(node)
         if DomSearchHelper.getNodeNoThrow(ImageActionScriptOutputData.NAME, node:getChildNodes()) ~= nil then
             profileActionScriptOutputInterface = ImageActionScriptOutput.new(node)
         else
-            error(java_exception("Exception", "No Such ActionScript Output"), 0)
+            error(require("java.lang.Exception").new("No Such ActionScript Output"), 0)
         end
         return profileActionScriptOutputInterface
 end

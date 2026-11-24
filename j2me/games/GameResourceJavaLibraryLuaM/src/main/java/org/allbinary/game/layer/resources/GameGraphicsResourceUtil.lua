@@ -13,16 +13,31 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.layer.resources
 
-local Features = require("org.allbinary.game.configuration.feature.Features")
-local GraphicsFeature = require("org.allbinary.game.configuration.feature.GraphicsFeature")
-local GraphicsFeatureFactory = require("org.allbinary.game.configuration.feature.GraphicsFeatureFactory")
-local CanvasStrings = require("org.allbinary.graphics.displayable.CanvasStrings")
-local OpenGLFeatureUtil = require("org.allbinary.graphics.opengles.OpenGLFeatureUtil")
-local NullUtil = require("org.allbinary.logic.NullUtil")
-local LogUtil = require("org.allbinary.logic.communication.log.LogUtil")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local GameGraphicsResourceUtil = {}
+package.loaded["org.allbinary.game.layer.resources.GameGraphicsResourceUtil"] = GameGraphicsResourceUtil
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
+local GraphicsFeature = java_lazy("org.allbinary.game.configuration.feature.GraphicsFeature")
+local GraphicsFeatureFactory = java_lazy("org.allbinary.game.configuration.feature.GraphicsFeatureFactory")
+local CanvasStrings = java_lazy("org.allbinary.graphics.displayable.CanvasStrings")
+local OpenGLFeatureUtil = java_lazy("org.allbinary.graphics.opengles.OpenGLFeatureUtil")
+local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
+local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -44,41 +59,54 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local GameGraphicsResourceUtil = {}
+-- class table GameGraphicsResourceUtil is declared before the requires
 GameGraphicsResourceUtil.__index = GameGraphicsResourceUtil
 GameGraphicsResourceUtil.className = "GameGraphicsResourceUtil"
+GameGraphicsResourceUtil.javaClassName = "org.allbinary.game.layer.resources.GameGraphicsResourceUtil"
 
 function GameGraphicsResourceUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.SPRITE = "_sprite"
     self.QUARTER = "_quarter"
-    self.name = StringUtil.getInstance().EMPTY_STRING
+    self.name_f = StringUtil.getInstance().EMPTY_STRING
 end
 
 
 function GameGraphicsResourceUtil.getInstance()
-        if GameGraphicsResourceUtil.instance == NullUtil.getInstance().NULL_OBJECT then
-            GameGraphicsResourceUtil.instance = GameGraphicsResourceUtil.new()
+        if GameGraphicsResourceUtil.instance_f == NullUtil.getInstance().NULL_OBJECT then
+            GameGraphicsResourceUtil.instance_f = GameGraphicsResourceUtil.new()
         end
-        return GameGraphicsResourceUtil.instance
+        return GameGraphicsResourceUtil.instance_f
 end
 
 
-function GameGraphicsResourceUtil.new()
-    local self = setmetatable({}, GameGraphicsResourceUtil)
-    self:_init_fields()
-        local try_ok, try_error = pcall(function()
-            self.name = self:getString()
+function GameGraphicsResourceUtil._jinit(self)
+    GameGraphicsResourceUtil._init_fields(self)
+        local try_ok, try_error, try_value = pcall(function()
+            self.name_f = self:getString()
         end)
         if not try_ok then
             local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local commonStrings = CommonStrings.getInstance()
             self.logUtil:put(commonStrings.EXCEPTION, self, commonStrings.CONSTRUCTOR, e)
         end
+    return self
+end
+
+function GameGraphicsResourceUtil.new(...)
+    local self = setmetatable({}, GameGraphicsResourceUtil)
+    GameGraphicsResourceUtil._jinit(self, ...)
     return self
 end
 
@@ -116,22 +144,22 @@ function GameGraphicsResourceUtil:getStringForFeature(graphicsFeature)
                 stringBuffer:append(self.QUARTER)
                 stringBuffer:append(self.SPRITE)
             else
-                error(java_exception("Exception", "None/Unknown Sub Image Resource Type Specified"), 0)
+                error(require("java.lang.Exception").new("None/Unknown Sub Image Resource Type Specified"), 0)
             end
         elseif OpenGLFeatureUtil.getInstance():isAnyThreed() then
             stringBuffer:append(CanvasStrings.getInstance().OBJ_MODEL)
         else
-            error(java_exception("Exception", "None/Unknown Main Image Resource Type Specified"), 0)
+            error(require("java.lang.Exception").new("None/Unknown Main Image Resource Type Specified"), 0)
         end
         return tostring(stringBuffer)
 end
 
 
 function GameGraphicsResourceUtil:getName()
-        return self.name
+        return self.name_f
 end
 
-GameGraphicsResourceUtil.instance = NullUtil.getInstance().NULL_OBJECT
+GameGraphicsResourceUtil.instance_f = NullUtil.getInstance().NULL_OBJECT
 
 return GameGraphicsResourceUtil
 

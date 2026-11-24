@@ -13,6 +13,21 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.input.automation.actions.script.condition.processors.input
 
+local KeyboardActionScriptInputInterface = {}
+package.loaded["org.allbinary.input.automation.actions.script.condition.processors.input.KeyboardActionScriptInputInterface"] = KeyboardActionScriptInputInterface
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
 local ProfileActionScriptInputInterface = require("org.allbinary.input.automation.actions.script.condition.processors.input.ProfileActionScriptInputInterface")
 
 local function java_idiv(a, b)
@@ -22,15 +37,23 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
 -- Java interface
-local KeyboardActionScriptInputInterface = {}
+-- class table KeyboardActionScriptInputInterface is declared before the requires
 KeyboardActionScriptInputInterface.__index = KeyboardActionScriptInputInterface
 KeyboardActionScriptInputInterface.className = "KeyboardActionScriptInputInterface"
+KeyboardActionScriptInputInterface.javaClassName = "org.allbinary.input.automation.actions.script.condition.processors.input.KeyboardActionScriptInputInterface"
 setmetatable(KeyboardActionScriptInputInterface, {__index = ProfileActionScriptInputInterface})
+KeyboardActionScriptInputInterface.java_interfaces = function() return {ProfileActionScriptInputInterface} end
 
 
 function KeyboardActionScriptInputInterface:getDelayBetweenKeys()

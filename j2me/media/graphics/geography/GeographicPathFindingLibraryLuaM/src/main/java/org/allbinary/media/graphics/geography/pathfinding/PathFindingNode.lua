@@ -13,12 +13,27 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.media.graphics.geography.pathfinding
 
-local NullUtil = require("org.allbinary.logic.NullUtil")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local StringMaker = require("org.allbinary.logic.string.StringMaker")
-local GeographicMapCellPosition = require("org.allbinary.media.graphics.geography.map.GeographicMapCellPosition")
-local SimpleGeographicMapCellPositionFactory = require("org.allbinary.media.graphics.geography.map.SimpleGeographicMapCellPositionFactory")
-local CommonLabels = require("org.allbinary.string.CommonLabels")
+local PathFindingNode = {}
+package.loaded["org.allbinary.media.graphics.geography.pathfinding.PathFindingNode"] = PathFindingNode
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local GeographicMapCellPosition = java_lazy("org.allbinary.media.graphics.geography.map.GeographicMapCellPosition")
+local SimpleGeographicMapCellPositionFactory = java_lazy("org.allbinary.media.graphics.geography.map.SimpleGeographicMapCellPositionFactory")
+local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -40,13 +55,20 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local PathFindingNode = {}
+-- class table PathFindingNode is declared before the requires
 PathFindingNode.__index = PathFindingNode
 PathFindingNode.className = "PathFindingNode"
+PathFindingNode.javaClassName = "org.allbinary.media.graphics.geography.pathfinding.PathFindingNode"
 
 function PathFindingNode:_init_fields()
     self.parent = NullUtil.getInstance().NULL_OBJECT
@@ -54,14 +76,19 @@ function PathFindingNode:_init_fields()
 end
 
 
-function PathFindingNode.new(parent, geographicMapCellPosition)
-    local self = setmetatable({}, PathFindingNode)
-    self:_init_fields()
+function PathFindingNode._jinit(self, parent, geographicMapCellPosition)
+    PathFindingNode._init_fields(self)
         self.parent = parent
         self:setGeographicMapCellPositionP(geographicMapCellPosition)
         if self.geographicMapCellPosition == SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION then
-            error(java_exception("Exception", "No GeographicMapCellPosition"), 0)
+            error(require("java.lang.Exception").new("No GeographicMapCellPosition"), 0)
         end
+    return self
+end
+
+function PathFindingNode.new(...)
+    local self = setmetatable({}, PathFindingNode)
+    PathFindingNode._jinit(self, ...)
     return self
 end
 
@@ -78,7 +105,7 @@ end
 
 function PathFindingNode:toString()
         local stringBuffer = StringMaker.new()
-        stringBuffer:append(getmetatable(self).className)
+        stringBuffer:append((getmetatable(self).javaClassName or getmetatable(self).className))
         stringBuffer:append(CommonLabels.getInstance().COLON_SEP)
         stringBuffer:append(" Path: ")
         stringBuffer:append(tostring(self.geographicMapCellPosition))

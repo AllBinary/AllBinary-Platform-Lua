@@ -13,9 +13,25 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.game.layer.pickup
 
-local Animation = require("org.allbinary.animation.Animation")
-local AllBinaryLayer = require("org.allbinary.layer.AllBinaryLayer")
+local PickedUpLayerInterfaceFactoryBase = {}
+package.loaded["org.allbinary.game.layer.pickup.PickedUpLayerInterfaceFactoryBase"] = PickedUpLayerInterfaceFactoryBase
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local Animation = java_lazy("org.allbinary.animation.Animation")
+local AllBinaryLayer = java_lazy("org.allbinary.layer.AllBinaryLayer")
 local PickedUpLayerInterfaceFactoryInterface = require("org.allbinary.game.layer.pickup.PickedUpLayerInterfaceFactoryInterface")
+local PickedUpLayerType = java_lazy("org.allbinary.game.layer.pickup.PickedUpLayerType")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -37,32 +53,44 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local PickedUpLayerInterfaceFactoryBase = {}
+-- class table PickedUpLayerInterfaceFactoryBase is declared before the requires
 PickedUpLayerInterfaceFactoryBase.__index = PickedUpLayerInterfaceFactoryBase
 PickedUpLayerInterfaceFactoryBase.className = "PickedUpLayerInterfaceFactoryBase"
+PickedUpLayerInterfaceFactoryBase.javaClassName = "org.allbinary.game.layer.pickup.PickedUpLayerInterfaceFactoryBase"
+PickedUpLayerInterfaceFactoryBase.java_implements = " PickedUpLayerInterfaceFactoryInterface "
+PickedUpLayerInterfaceFactoryBase.java_interfaces = function() return {PickedUpLayerInterfaceFactoryInterface} end
+
+function PickedUpLayerInterfaceFactoryBase._jinit(self)
+    return self
+end
 
 function PickedUpLayerInterfaceFactoryBase.new()
-    local self = setmetatable({}, PickedUpLayerInterfaceFactoryBase)
-    return self
+    return PickedUpLayerInterfaceFactoryBase._jinit(setmetatable({}, PickedUpLayerInterfaceFactoryBase))
 end
 
 
 function PickedUpLayerInterfaceFactoryBase:getIconLayer()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function PickedUpLayerInterfaceFactoryBase:getAnimationInterface()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 
 function PickedUpLayerInterfaceFactoryBase:getPickedUpLayerType()
-        error(java_exception("RuntimeException"), 0)
+        error(require("java.lang.RuntimeException").new(), 0)
 end
 
 PickedUpLayerInterfaceFactoryBase.NULL_PICKED_UP_LAYER_FACTORY_BASE = PickedUpLayerInterfaceFactoryBase.new()

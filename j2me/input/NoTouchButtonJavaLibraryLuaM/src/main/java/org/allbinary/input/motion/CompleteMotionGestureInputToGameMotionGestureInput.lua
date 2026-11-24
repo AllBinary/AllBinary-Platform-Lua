@@ -13,8 +13,23 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.input.motion
 
-local PreLogUtil = require("org.allbinary.logic.communication.log.PreLogUtil")
-local CommonStrings = require("org.allbinary.string.CommonStrings")
+local CompleteMotionGestureInputToGameMotionGestureInput = {}
+package.loaded["org.allbinary.input.motion.CompleteMotionGestureInputToGameMotionGestureInput"] = CompleteMotionGestureInputToGameMotionGestureInput
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
+local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -23,27 +38,37 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local CompleteMotionGestureInputToGameMotionGestureInput = {}
+-- class table CompleteMotionGestureInputToGameMotionGestureInput is declared before the requires
 CompleteMotionGestureInputToGameMotionGestureInput.__index = CompleteMotionGestureInputToGameMotionGestureInput
 CompleteMotionGestureInputToGameMotionGestureInput.className = "CompleteMotionGestureInputToGameMotionGestureInput"
+CompleteMotionGestureInputToGameMotionGestureInput.javaClassName = "org.allbinary.input.motion.CompleteMotionGestureInputToGameMotionGestureInput"
 
 function CompleteMotionGestureInputToGameMotionGestureInput:_init_fields()
     self.commonStrings = CommonStrings.getInstance()
 end
 
-function CompleteMotionGestureInputToGameMotionGestureInput.new()
-    local self = setmetatable({}, CompleteMotionGestureInputToGameMotionGestureInput)
-    self:_init_fields()
+function CompleteMotionGestureInputToGameMotionGestureInput._jinit(self)
+    CompleteMotionGestureInputToGameMotionGestureInput._init_fields(self)
     return self
+end
+
+function CompleteMotionGestureInputToGameMotionGestureInput.new()
+    return CompleteMotionGestureInputToGameMotionGestureInput._jinit(setmetatable({}, CompleteMotionGestureInputToGameMotionGestureInput))
 end
 
 
 function CompleteMotionGestureInputToGameMotionGestureInput.getInstance()
-        return CompleteMotionGestureInputToGameMotionGestureInput.instance
+        return CompleteMotionGestureInputToGameMotionGestureInput.instance_f
 end
 
 
@@ -51,7 +76,7 @@ function CompleteMotionGestureInputToGameMotionGestureInput:init()
         PreLogUtil.put("No Touch Button = No Compound Motion Gestures", self, self.commonStrings.INIT)
 end
 
-CompleteMotionGestureInputToGameMotionGestureInput.instance = CompleteMotionGestureInputToGameMotionGestureInput.new()
+CompleteMotionGestureInputToGameMotionGestureInput.instance_f = CompleteMotionGestureInputToGameMotionGestureInput.new()
 
 return CompleteMotionGestureInputToGameMotionGestureInput
 

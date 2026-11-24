@@ -13,15 +13,30 @@
 -- Generated Code Do Not Modify
 -- package org.allbinary.data.tree.dom
 
--- local HashMap = require("java.util.HashMap")
+local ModDomHelper = {}
+package.loaded["org.allbinary.data.tree.dom.ModDomHelper"] = ModDomHelper
+
+require("java.lang.String")
+local function java_lazy(name)
+    return setmetatable({}, {__jmodule = name,
+        __index = function(_, key) return require(name)[key] end,
+        __newindex = function(_, key, value) require(name)[key] = value end})
+end
+local function java_real(class)
+    local metatable = type(class) == "table" and getmetatable(class)
+    if metatable and rawget(metatable, "__jmodule") then return require(metatable.__jmodule) end
+    return class
+end
+
+local HashMap = java_lazy("java.util.HashMap")
 -- local Set = require("java.util.Set")
-local BasicArrayList = require("org.allbinary.util.BasicArrayList")
-local BasicArrayListD = require("org.allbinary.util.BasicArrayListD")
-local ClassUtil = require("org.allbinary.logic.java.anyType.clazz.ClassUtil")
-local StringUtil = require("org.allbinary.logic.string.StringUtil")
-local CommonSeps = require("org.allbinary.string.CommonSeps")
-local Document = require("org.w3c.dom.Document")
-local Node = require("org.w3c.dom.Node")
+local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local ClassUtil = java_lazy("org.allbinary.logic.java.anyType.clazz.ClassUtil")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local Document = java_lazy("org.w3c.dom.Document")
+local Node = java_lazy("org.w3c.dom.Node")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -37,11 +52,47 @@ local function java_exception(className, message, cause)
 end
 
 local function java_instanceof(object, class)
+    class = java_real(class)
     local metatable = getmetatable(object)
     while metatable do
         if metatable == class then return true end
         local parent = getmetatable(metatable)
         metatable = parent and parent.__index
+    end
+    return false
+end
+
+-- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
+local function java_is_interface(interface, name, depth)
+    interface = java_real(interface)
+    if type(interface) ~= "table" or depth > 32 then return false end
+    if rawget(interface, "className") == name then return true end
+    local interfaces = rawget(interface, "java_interfaces")
+    if interfaces ~= nil then
+        for _, each in pairs(interfaces()) do if java_is_interface(each, name, depth + 1) then return true end end
+    end
+    local parent = getmetatable(interface)
+    return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
+end
+
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    while type(class) == "table" do
+        class = java_real(class)
+        if rawget(class, "className") == name then return true end
+        local implements = rawget(class, "java_implements")
+        if implements ~= nil and string.find(implements, " " .. name .. " ", 1, true) then return true end
+        local interfaces = rawget(class, "java_interfaces")
+        if interfaces ~= nil then
+            for _, each in pairs(interfaces()) do if java_is_interface(each, name, 0) then return true end end
+        end
+        local parent = getmetatable(class)
+        if parent ~= nil then class = parent.__index
+        else
+            local index = rawget(class, "__index")
+            if index ~= class then class = index else class = nil end
+        end
     end
     return false
 end
@@ -53,17 +104,29 @@ local function java_idiv(a, b)
 end
 
 local function java_int(value)
+    -- a char (1 character string) whose type the converter did not know: (byte) name.charAt(i)
+    if type(value) == "string" then
+        local ok, code = pcall(utf8.codepoint, value)
+        if ok and code ~= nil then return code end
+        return string.byte(value) or 0
+    end
     if value < 0 then return math.tointeger(math.ceil(value)) end
     return math.tointeger(math.floor(value))
 end
 
-local ModDomHelper = {}
+-- class table ModDomHelper is declared before the requires
 ModDomHelper.__index = ModDomHelper
 ModDomHelper.className = "ModDomHelper"
+ModDomHelper.javaClassName = "org.allbinary.data.tree.dom.ModDomHelper"
 
 
-function ModDomHelper.new()
+function ModDomHelper._jinit(self)
+    return self
+end
+
+function ModDomHelper.new(...)
     local self = setmetatable({}, ModDomHelper)
+    ModDomHelper._jinit(self, ...)
     return self
 end
 
@@ -96,7 +159,7 @@ end
 
 
 -- throws Exception
-function ModDomHelper.createNameValueNodes(document, elementName, nameText, valueText)
+function ModDomHelper.createNameValueNodes_j4_1(document, elementName, nameText, valueText)
         local newNode = document:createElement(elementName)
         newNode:appendChild(ModDomHelper.createNameNode(document, nameText))
         newNode:appendChild(ModDomHelper.createValueNode(document, valueText))
@@ -105,15 +168,14 @@ end
 
 
 -- throws Exception
--- Java overloaded method: Lua keeps the last definition
-function ModDomHelper.createNameValueNodes(document, elementNameAndNameText, valueText)
+function ModDomHelper.createNameValueNodes_j3_1(document, elementNameAndNameText, valueText)
         local newNode = ModDomHelper.createNameValueNodes(document, elementNameAndNameText, elementNameAndNameText, valueText)
         return newNode
 end
 
 
 -- throws Exception
-function ModDomHelper.createNameValueIndexNodes(document, elementNameAndNameText, index, valueText)
+function ModDomHelper.createNameValueIndexNodes_j4_1(document, elementNameAndNameText, index, valueText)
         local newNode = ModDomHelper.createNameValueNodes(document, elementNameAndNameText, valueText)
         newNode:appendChild(ModDomHelper.createIndexNode(document, index))
         return newNode
@@ -121,16 +183,14 @@ end
 
 
 -- throws Exception
--- Java overloaded method: Lua keeps the last definition
-function ModDomHelper.createNameValueNodes(document, rootNode, hashMap)
+function ModDomHelper.createNameValueNodes_j3_2(document, rootNode, hashMap)
         local node = document:createElement(rootNode)
         return ModDomHelper.createNameValueNodes(document, node, hashMap)
 end
 
 
 -- throws Exception
--- Java overloaded method: Lua keeps the last definition
-function ModDomHelper.createNameValueNodes(document, node, hashMap)
+function ModDomHelper.createNameValueNodes_j3_3(document, node, hashMap)
         local stringUtil = StringUtil.getInstance()
         local keySet = hashMap:keySet()
         local keyArray = keySet:toArray()
@@ -148,7 +208,7 @@ function ModDomHelper.createNameValueNodes(document, node, hashMap)
             elseif java_instanceof(anyType, HashMap) then
                 node:appendChild(ModDomHelper.createNameValueNodes(document, name, hashMap))
             else
-                error(java_exception("Exception", "HashMap value is the wrong instance and is: " .. tostring(ClassUtil.viewAll(anyType, CommonSeps.getInstance().NEW_LINE))), 0)
+                error(require("java.lang.Exception").new("HashMap value is the wrong instance and is: " .. tostring(ClassUtil.viewAll(anyType, CommonSeps.getInstance().NEW_LINE))), 0)
             end
         end
         return node
@@ -156,8 +216,7 @@ end
 
 
 -- throws Exception
--- Java overloaded method: Lua keeps the last definition
-function ModDomHelper.createNameValueNodes(document, rootNodeName, duplicateNodeName, valueVector)
+function ModDomHelper.createNameValueNodes_j4_2(document, rootNodeName, duplicateNodeName, valueVector)
         local stringUtil = StringUtil.getInstance()
         local node = document:createElement(rootNodeName)
         local size = valueVector:size()
@@ -167,11 +226,28 @@ function ModDomHelper.createNameValueNodes(document, rootNodeName, duplicateNode
         end
         return node
 end
+function ModDomHelper.createNameValueNodes(...)
+    local count = select("#", ...)
+    if count == 4 then return ModDomHelper.createNameValueNodes_j4(...) end
+    if count == 3 then return ModDomHelper.createNameValueNodes_j3(...) end
+    error("No method createNameValueNodes takes " .. count .. " arguments")
+end
+ModDomHelper.createNameValueNodes__jdispatcher = ModDomHelper.createNameValueNodes
+function ModDomHelper.createNameValueNodes_j4(...)
+    local java_a1, java_a2, java_a3, java_a4 = ...
+    if true and (java_a1 == nil or java_is(java_a1, "Document")) and (java_a2 == nil or type(java_a2) == "string") and (java_a3 == nil or type(java_a3) == "string") and (java_a4 == nil or type(java_a4) == "string") then return ModDomHelper.createNameValueNodes_j4_1(...) end
+    return ModDomHelper.createNameValueNodes_j4_2(...)
+end
+function ModDomHelper.createNameValueNodes_j3(...)
+    local java_a1, java_a2, java_a3 = ...
+    if true and (java_a1 == nil or java_is(java_a1, "Document")) and (java_a2 == nil or type(java_a2) == "string") and (java_a3 == nil or type(java_a3) == "string") then return ModDomHelper.createNameValueNodes_j3_1(...) end
+    if true and (java_a1 == nil or java_is(java_a1, "Document")) and (java_a2 == nil or type(java_a2) == "string") and (java_a3 == nil or java_is(java_a3, "HashMap")) then return ModDomHelper.createNameValueNodes_j3_2(...) end
+    return ModDomHelper.createNameValueNodes_j3_3(...)
+end
 
 
 -- throws Exception
--- Java overloaded method: Lua keeps the last definition
-function ModDomHelper.createNameValueIndexNodes(document, rootNodeName, duplicateNodeName, valueVector)
+function ModDomHelper.createNameValueIndexNodes_j4_2(document, rootNodeName, duplicateNodeName, valueVector)
         local stringUtil = StringUtil.getInstance()
         local node = document:createElement(rootNodeName)
         local size = valueVector:size()
@@ -181,18 +257,28 @@ function ModDomHelper.createNameValueIndexNodes(document, rootNodeName, duplicat
         end
         return node
 end
+function ModDomHelper.createNameValueIndexNodes(...)
+    local count = select("#", ...)
+    if count == 4 then return ModDomHelper.createNameValueIndexNodes_j4(...) end
+    error("No method createNameValueIndexNodes takes " .. count .. " arguments")
+end
+ModDomHelper.createNameValueIndexNodes__jdispatcher = ModDomHelper.createNameValueIndexNodes
+function ModDomHelper.createNameValueIndexNodes_j4(...)
+    local java_a1, java_a2, java_a3, java_a4 = ...
+    if true and (java_a1 == nil or java_is(java_a1, "Document")) and (java_a2 == nil or type(java_a2) == "string") and math.type(java_a3) == "integer" and (java_a4 == nil or type(java_a4) == "string") then return ModDomHelper.createNameValueIndexNodes_j4_1(...) end
+    return ModDomHelper.createNameValueIndexNodes_j4_2(...)
+end
 
 
 -- throws Exception
-function ModDomHelper.createNodeWithValueNodes(document, rootNode, hashMap)
+function ModDomHelper.createNodeWithValueNodes_j3_1(document, rootNode, hashMap)
         local node = document:createElement(rootNode)
         return ModDomHelper.createNodeWithValueNodes(document, node, hashMap)
 end
 
 
 -- throws Exception
--- Java overloaded method: Lua keeps the last definition
-function ModDomHelper.createNodeWithValueNodes(document, node, hashMap)
+function ModDomHelper.createNodeWithValueNodes_j3_2(document, node, hashMap)
         local stringUtil = StringUtil.getInstance()
         local keySet = hashMap:keySet()
         local keyArray = keySet:toArray()
@@ -204,6 +290,17 @@ function ModDomHelper.createNodeWithValueNodes(document, node, hashMap)
             node:appendChild(ModDomHelper.createTextNode(document, name, value))
         end
         return node
+end
+function ModDomHelper.createNodeWithValueNodes(...)
+    local count = select("#", ...)
+    if count == 3 then return ModDomHelper.createNodeWithValueNodes_j3(...) end
+    error("No method createNodeWithValueNodes takes " .. count .. " arguments")
+end
+ModDomHelper.createNodeWithValueNodes__jdispatcher = ModDomHelper.createNodeWithValueNodes
+function ModDomHelper.createNodeWithValueNodes_j3(...)
+    local java_a1, java_a2, java_a3 = ...
+    if true and (java_a1 == nil or java_is(java_a1, "Document")) and (java_a2 == nil or type(java_a2) == "string") and (java_a3 == nil or java_is(java_a3, "HashMap")) then return ModDomHelper.createNodeWithValueNodes_j3_1(...) end
+    return ModDomHelper.createNodeWithValueNodes_j3_2(...)
 end
 
 return ModDomHelper
