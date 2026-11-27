@@ -39,6 +39,7 @@ local MyFontProcessor = java_lazy("org.allbinary.graphics.font.MyFontProcessor")
 local UpdateMyFontInterface = java_lazy("org.allbinary.graphics.font.UpdateMyFontInterface")
 local UpdateMyFontProcessor = java_lazy("org.allbinary.graphics.font.UpdateMyFontProcessor")
 local PrimitiveLongUtil = java_lazy("org.allbinary.logic.math.PrimitiveLongUtil")
+local RTSInterface = java_lazy("org.allbinary.game.layer.RTSInterface")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

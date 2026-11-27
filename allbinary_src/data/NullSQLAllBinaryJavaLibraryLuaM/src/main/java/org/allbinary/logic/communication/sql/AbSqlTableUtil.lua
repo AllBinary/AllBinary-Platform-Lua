@@ -33,6 +33,8 @@ local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local AbSqlTable = java_lazy("org.allbinary.logic.communication.sql.AbSqlTable")
+local SqlStrings = java_lazy("org.allbinary.logic.communication.sql.SqlStrings")
 
 local function java_idiv(a, b)
     local q = a / b

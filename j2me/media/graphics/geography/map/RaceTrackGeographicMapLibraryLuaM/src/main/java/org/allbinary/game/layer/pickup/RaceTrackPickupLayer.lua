@@ -39,6 +39,7 @@ local AllBinaryLayer = java_lazy("org.allbinary.layer.AllBinaryLayer")
 local ViewPosition = java_lazy("org.allbinary.view.ViewPosition")
 local ViewPositionEventHandler = java_lazy("org.allbinary.view.event.ViewPositionEventHandler")
 local PickupLayer = require("org.allbinary.game.layer.pickup.PickupLayer")
+local CountedPickedUpLayerInterfaceFactory = java_lazy("org.allbinary.game.layer.pickup.CountedPickedUpLayerInterfaceFactory")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

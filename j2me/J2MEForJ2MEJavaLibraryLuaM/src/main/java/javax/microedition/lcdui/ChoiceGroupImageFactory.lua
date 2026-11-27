@@ -29,6 +29,7 @@ local function java_real(class)
 end
 
 local MIDPUtil = java_lazy("org.allbinary.MIDPUtil")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 
 local function java_idiv(a, b)
     local q = a / b

@@ -34,6 +34,7 @@ local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
 local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local AbPathData = java_lazy("org.allbinary.logic.io.path.AbPathData")
 local PathUtil = java_lazy("org.allbinary.logic.io.path.PathUtil")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.

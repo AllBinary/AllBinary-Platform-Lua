@@ -35,6 +35,7 @@ local StoreFrontInterface = java_lazy("org.allbinary.business.context.modules.st
 local ModDomHelper = java_lazy("org.allbinary.data.tree.dom.ModDomHelper")
 local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
+local SearchData = java_lazy("org.allbinary.logic.control.search.SearchData")
 local SearchParams = java_lazy("org.allbinary.logic.control.search.SearchParams")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend

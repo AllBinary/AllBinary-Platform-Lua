@@ -40,6 +40,7 @@ local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local GlobalsData = java_lazy("org.allbinary.logic.visual.transform.template.customizer.includes.globals.GlobalsData")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

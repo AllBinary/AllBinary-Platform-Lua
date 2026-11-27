@@ -40,6 +40,7 @@ local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
+local RequestData = java_lazy("org.allbinary.logic.communication.http.request.RequestData")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

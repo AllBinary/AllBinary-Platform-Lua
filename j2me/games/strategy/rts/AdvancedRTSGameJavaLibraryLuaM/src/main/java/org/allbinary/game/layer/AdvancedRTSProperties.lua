@@ -36,6 +36,7 @@ local TickableInterface = java_lazy("org.allbinary.game.tick.TickableInterface")
 local AllBinaryNoVibration = java_lazy("org.allbinary.media.AllBinaryNoVibration")
 local AllBinaryVibration = java_lazy("org.allbinary.media.AllBinaryVibration")
 local AllBinaryVibrationME = java_lazy("org.allbinary.media.AllBinaryVibrationME")
+local WaypointBehaviorBase = java_lazy("org.allbinary.game.layer.WaypointBehaviorBase")
 
 local function java_idiv(a, b)
     local q = a / b

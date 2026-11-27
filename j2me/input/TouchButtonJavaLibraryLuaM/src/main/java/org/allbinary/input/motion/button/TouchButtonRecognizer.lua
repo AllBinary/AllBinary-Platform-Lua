@@ -41,6 +41,9 @@ local CurrentlyPressedTouchButtonSingleton = java_lazy("org.allbinary.input.moti
 local MultitouchReleaseHelper = java_lazy("org.allbinary.input.motion.button.MultitouchReleaseHelper")
 local ReleaseHelper = java_lazy("org.allbinary.input.motion.button.ReleaseHelper")
 local TouchButton = java_lazy("org.allbinary.input.motion.button.TouchButton")
+local TouchButtonFactory = java_lazy("org.allbinary.input.motion.button.TouchButtonFactory")
+local TouchButtonInput = java_lazy("org.allbinary.input.motion.button.TouchButtonInput")
+local TouchScreenFactory = java_lazy("org.allbinary.input.motion.button.TouchScreenFactory")
 
 local function java_idiv(a, b)
     local q = a / b

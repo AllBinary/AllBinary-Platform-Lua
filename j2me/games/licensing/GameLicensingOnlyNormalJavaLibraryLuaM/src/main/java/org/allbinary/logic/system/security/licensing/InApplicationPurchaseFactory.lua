@@ -21,6 +21,7 @@ local function java_real(class)
 end
 
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local LockableFeature = java_lazy("org.allbinary.logic.system.security.licensing.LockableFeature")
 
 local function java_idiv(a, b)
     local q = a / b

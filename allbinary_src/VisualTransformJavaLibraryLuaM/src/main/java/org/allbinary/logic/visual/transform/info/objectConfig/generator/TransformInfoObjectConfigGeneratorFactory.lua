@@ -35,7 +35,9 @@ local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local TransformInfoObjectConfigGeneratorFactoryInterface = require("org.allbinary.logic.visual.transform.info.objectConfig.generator.TransformInfoObjectConfigGeneratorFactoryInterface")
+local BasicGenerator = java_lazy("org.allbinary.logic.visual.transform.info.objectConfig.generator.BasicGenerator")
 local StoreFileGenerator = java_lazy("org.allbinary.logic.visual.transform.info.objectConfig.generator.StoreFileGenerator")
+local TransformInfoObjectConfigGenerator = java_lazy("org.allbinary.logic.visual.transform.info.objectConfig.generator.TransformInfoObjectConfigGenerator")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

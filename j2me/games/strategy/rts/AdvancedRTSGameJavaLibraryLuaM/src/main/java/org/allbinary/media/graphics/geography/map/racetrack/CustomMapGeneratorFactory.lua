@@ -30,6 +30,8 @@ end
 
 local CustomMapGeneratorBaseFactory = require("org.allbinary.media.graphics.geography.map.racetrack.CustomMapGeneratorBaseFactory")
 local CustomMapGenerator = java_lazy("org.allbinary.media.graphics.geography.map.racetrack.CustomMapGenerator")
+local CustomMapGeneratorBase = java_lazy("org.allbinary.media.graphics.geography.map.racetrack.CustomMapGeneratorBase")
+local RaceTrackGeographicMap = java_lazy("org.allbinary.media.graphics.geography.map.racetrack.RaceTrackGeographicMap")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

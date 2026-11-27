@@ -32,6 +32,7 @@ local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local HighScoresHelperBaseInterface = require("org.allbinary.game.score.HighScoresHelperBaseInterface")
+local HighScores = java_lazy("org.allbinary.game.score.HighScores")
 local LastFetchHighScoresFactory = java_lazy("org.allbinary.game.score.LastFetchHighScoresFactory")
 local NullHighScoresSingletonFactory = java_lazy("org.allbinary.game.score.NullHighScoresSingletonFactory")
 

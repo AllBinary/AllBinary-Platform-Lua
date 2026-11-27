@@ -44,6 +44,8 @@ local WizardWebStoreAdminUserFactory = java_lazy("org.allbinary.business.user.mo
 local WorkflowEditorWebStoreAdminUserFactory = java_lazy("org.allbinary.business.user.modules.admin.store.web.workflow.editor.WorkflowEditorWebStoreAdminUserFactory")
 local SubscriberUserFactory = java_lazy("org.allbinary.business.user.modules.customer.subscriber.SubscriberUserFactory")
 local WholesaleUserFactory = java_lazy("org.allbinary.business.user.modules.customer.wholesale.WholesaleUserFactory")
+local BasicUserRoleFactory = java_lazy("org.allbinary.business.user.role.BasicUserRoleFactory")
+local UserRole = java_lazy("org.allbinary.business.user.role.UserRole")
 local UserRoleB = java_lazy("org.allbinary.business.user.role.UserRoleB")
 
 local function java_idiv(a, b)

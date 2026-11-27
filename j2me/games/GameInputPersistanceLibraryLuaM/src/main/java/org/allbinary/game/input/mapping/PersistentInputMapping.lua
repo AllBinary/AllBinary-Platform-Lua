@@ -44,6 +44,7 @@ local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local EnumerationUtil = java_lazy("org.allbinary.util.EnumerationUtil")
+local InputToGameKeyMapping = java_lazy("org.allbinary.game.input.mapping.InputToGameKeyMapping")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

@@ -37,6 +37,7 @@ local ClientInformationFactory = java_lazy("org.allbinary.logic.system.security.
 local PrimaryThreadPool = java_lazy("org.allbinary.thread.PrimaryThreadPool")
 local ThreadPool = java_lazy("org.allbinary.thread.ThreadPool")
 local AllBinaryMidlet = require("org.allbinary.midlet.AllBinaryMidlet")
+local ExitRunnable = java_lazy("org.allbinary.midlet.ExitRunnable")
 local MidletExitProcessorFactory = java_lazy("org.allbinary.midlet.MidletExitProcessorFactory")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend

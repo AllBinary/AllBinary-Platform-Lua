@@ -31,6 +31,7 @@ end
 local GameInfo = java_lazy("org.allbinary.game.GameInfo")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local HighScoresBase = require("org.allbinary.game.score.HighScoresBase")
+local HighScores = java_lazy("org.allbinary.game.score.HighScores")
 local HighScoresHelperBase = java_lazy("org.allbinary.game.score.HighScoresHelperBase")
 local HighScoresHelperBaseInterface = java_lazy("org.allbinary.game.score.HighScoresHelperBaseInterface")
 local HighScoresResultsListener = java_lazy("org.allbinary.game.score.HighScoresResultsListener")

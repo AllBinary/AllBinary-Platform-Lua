@@ -34,6 +34,7 @@ local AnimationInterfaceFactoryInterface = java_lazy("org.allbinary.animation.An
 local ImageCacheFactory = java_lazy("org.allbinary.image.ImageCacheFactory")
 local ForcedLogUtil = java_lazy("org.allbinary.logic.communication.log.ForcedLogUtil")
 local ScaleProperties = java_lazy("org.allbinary.media.ScaleProperties")
+local BaseImageAnimationFactory = java_lazy("org.allbinary.animation.image.BaseImageAnimationFactory")
 local LazyImageRotationAnimation = java_lazy("org.allbinary.animation.image.LazyImageRotationAnimation")
 
 local function java_idiv(a, b)

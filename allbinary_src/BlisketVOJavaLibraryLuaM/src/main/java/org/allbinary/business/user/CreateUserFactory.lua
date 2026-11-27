@@ -33,6 +33,7 @@ local UserRole = java_lazy("org.allbinary.business.user.role.UserRole")
 local UserRoleB = java_lazy("org.allbinary.business.user.role.UserRoleB")
 local UserRoleData = java_lazy("org.allbinary.business.user.role.UserRoleData")
 local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
+local UserInterface = java_lazy("org.allbinary.business.user.UserInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

@@ -56,6 +56,7 @@ local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 local ABSystemWrapper = java_lazy("org.allbinary.logic.ABSystemWrapper")
 local ImageCacheBase = require("org.allbinary.image.ImageCacheBase")
+local ImageFactory = java_lazy("org.allbinary.image.ImageFactory")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -187,10 +188,10 @@ local NotHTMLProcessor = {}
     end
     
 
-    function ImageCache:process()
+    function NotHTMLProcessor:process()
             self.concurrentImageLoadingProcessor:runTask()
     end
-    java_overload(ImageCache, "process", 0)
+    java_overload(NotHTMLProcessor, "process", 0)
 
 local NotHTMLEndProcessor = {}
     NotHTMLEndProcessor.__index = NotHTMLEndProcessor
@@ -209,11 +210,11 @@ local NotHTMLEndProcessor = {}
     end
     
 
-    function ImageCache:process()
+    function NotHTMLEndProcessor:process()
             local progressCanvas = ProgressCanvasFactory.getInstance()
             progressCanvas:endIfPaintedSinceStart()
     end
-    java_overload(ImageCache, "process", 0)
+    java_overload(NotHTMLEndProcessor, "process", 0)
 
 local HTMLEndProcessor = {}
     HTMLEndProcessor.__index = HTMLEndProcessor
@@ -232,7 +233,7 @@ local HTMLEndProcessor = {}
     end
     
 
-    function ImageCache:process()
+    function HTMLEndProcessor:process()
             local size = self.gdResources.currentLayoutRequiredTotal
             if size == 0 then
                 local progressCanvas = ProgressCanvasFactory.getInstance()
@@ -243,7 +244,7 @@ local HTMLEndProcessor = {}
                 self.endProcessor = NotHTMLEndProcessor.new()
             end
     end
-    java_overload(ImageCache, "process", 0)
+    java_overload(HTMLEndProcessor, "process", 0)
 
 local FirstProcessor = {}
     FirstProcessor.__index = FirstProcessor
@@ -262,10 +263,10 @@ local FirstProcessor = {}
     end
     
 
-    function ImageCache:process()
+    function FirstProcessor:process()
             self:firstProcess()
     end
-    java_overload(ImageCache, "process", 0)
+    java_overload(FirstProcessor, "process", 0)
 
 
 function ImageCache:_init_fields()

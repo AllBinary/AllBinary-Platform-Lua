@@ -36,6 +36,7 @@ local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
 local NodeList = java_lazy("org.w3c.dom.NodeList")
 local FtpConfiguration = java_lazy("org.allbinary.logic.communication.ftp.configuration.FtpConfiguration")
+local FtpConfigurationData = java_lazy("org.allbinary.logic.communication.ftp.configuration.FtpConfigurationData")
 local FtpConfigurationInterface = java_lazy("org.allbinary.logic.communication.ftp.configuration.FtpConfigurationInterface")
 local FtpConfigurationMapping = java_lazy("org.allbinary.logic.communication.ftp.configuration.FtpConfigurationMapping")
 

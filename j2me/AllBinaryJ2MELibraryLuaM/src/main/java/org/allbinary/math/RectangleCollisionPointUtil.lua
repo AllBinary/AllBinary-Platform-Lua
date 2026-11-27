@@ -30,6 +30,7 @@ end
 
 local GPoint = java_lazy("org.allbinary.graphics.GPoint")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local RectangleCollisionUtil = java_lazy("org.allbinary.math.RectangleCollisionUtil")
 
 local function java_idiv(a, b)
     local q = a / b

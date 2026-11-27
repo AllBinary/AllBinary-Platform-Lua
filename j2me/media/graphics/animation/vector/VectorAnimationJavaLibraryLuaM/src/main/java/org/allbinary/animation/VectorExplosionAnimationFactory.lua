@@ -31,6 +31,9 @@ end
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local BasicColorFactory = java_lazy("org.allbinary.graphics.color.BasicColorFactory")
 local ProceduralAnimationInterfaceFactoryInterface = require("org.allbinary.animation.ProceduralAnimationInterfaceFactoryInterface")
+local Animation = java_lazy("org.allbinary.animation.Animation")
+local AnimationBehaviorFactory = java_lazy("org.allbinary.animation.AnimationBehaviorFactory")
+local VectorAnimationInterface = java_lazy("org.allbinary.animation.VectorAnimationInterface")
 local VectorExplosionGenerator = java_lazy("org.allbinary.animation.VectorExplosionGenerator")
 local VectorRotationAnimation = java_lazy("org.allbinary.animation.VectorRotationAnimation")
 

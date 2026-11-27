@@ -39,6 +39,7 @@ local LicensingException = java_lazy("org.allbinary.logic.system.security.licens
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local WorkFlowInterface = java_lazy("org.allbinary.logic.control.workflow.WorkFlowInterface")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}

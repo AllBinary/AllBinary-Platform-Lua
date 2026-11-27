@@ -38,6 +38,7 @@ local TransformInfoInterface = java_lazy("org.allbinary.logic.visual.transform.i
 local TransformInfoObjectFactory = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoObjectFactory")
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local TransformTemplateInterface = java_lazy("org.allbinary.logic.visual.transform.template.TransformTemplateInterface")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

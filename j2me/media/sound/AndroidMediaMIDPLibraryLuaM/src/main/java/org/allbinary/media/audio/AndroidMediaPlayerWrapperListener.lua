@@ -135,7 +135,7 @@ local MediaPlayerOnBufferingUpdateListener = {}
     end
     
 
-    function AndroidMediaPlayerWrapperListener:onBufferingUpdate(mediaPlayer, i)
+    function MediaPlayerOnBufferingUpdateListener:onBufferingUpdate(mediaPlayer, i)
     end
 
 local MediaPlayerOnPreparedListener = {}
@@ -155,7 +155,7 @@ local MediaPlayerOnPreparedListener = {}
     end
     
 
-    function AndroidMediaPlayerWrapperListener:onPrepared(mp)
+    function MediaPlayerOnPreparedListener:onPrepared(mp)
     end
 
 local MediaPlayerOnErrorListener = {}
@@ -175,7 +175,7 @@ local MediaPlayerOnErrorListener = {}
     end
     
 
-    function AndroidMediaPlayerWrapperListener:onError(mp, what, extra)
+    function MediaPlayerOnErrorListener:onError(mp, what, extra)
             return false
     end
 
@@ -196,7 +196,7 @@ local MediaPlayerOnCompletionListener = {}
     end
     
 
-    function AndroidMediaPlayerWrapperListener:onCompletion(mp)
+    function MediaPlayerOnCompletionListener:onCompletion(mp)
     end
 
 local AndroidMediaPlayerOnBufferingUpdateListener = {}
@@ -212,26 +212,26 @@ local AndroidMediaPlayerOnBufferingUpdateListener = {}
     end
     
 
-    function AndroidMediaPlayerWrapperListener._jinit(self, androidMediaPlayerWrapperListener)
+    function AndroidMediaPlayerOnBufferingUpdateListener._jinit(self, androidMediaPlayerWrapperListener)
         java_super_init(MediaPlayerOnBufferingUpdateListener, self)
-        AndroidMediaPlayerWrapperListener._init_fields(self)
+        AndroidMediaPlayerOnBufferingUpdateListener._init_fields(self)
             self.androidMediaPlayerWrapperListener = androidMediaPlayerWrapperListener
         return self
     end
 
-    function AndroidMediaPlayerWrapperListener.new(...)
-        local self = setmetatable({}, AndroidMediaPlayerWrapperListener)
-        AndroidMediaPlayerWrapperListener._jinit(self, ...)
+    function AndroidMediaPlayerOnBufferingUpdateListener.new(...)
+        local self = setmetatable({}, AndroidMediaPlayerOnBufferingUpdateListener)
+        AndroidMediaPlayerOnBufferingUpdateListener._jinit(self, ...)
         return self
     end
     
 
-    function AndroidMediaPlayerWrapperListener:onBufferingUpdate(mediaPlayer, i)
+    function AndroidMediaPlayerOnBufferingUpdateListener:onBufferingUpdate(mediaPlayer, i)
             local logUtil = LogUtil.getInstance()
             logUtil:putF(tostring(StringMaker.new():append("Update buffer: "):appendint(i):append("%")), self, self.ON_BUFFERING_UPDATE)
             self.androidMediaPlayerWrapperListener.androidMediaPlayerWrapper:update(PlayerListener.DEVICE_UNAVAILABLE)
     end
-    java_overload(AndroidMediaPlayerWrapperListener, "onBufferingUpdate", 2, function(java_a1, java_a2) return true and (java_a1 == nil or java_is(java_a1, "MediaPlayer")) and type(java_a2) == "number" end)
+    java_overload(AndroidMediaPlayerOnBufferingUpdateListener, "onBufferingUpdate", 2, function(java_a1, java_a2) return true and (java_a1 == nil or java_is(java_a1, "MediaPlayer")) and type(java_a2) == "number" end)
 
 local AndroidMediaPlayerOnPreparedListener = {}
     AndroidMediaPlayerOnPreparedListener.__index = AndroidMediaPlayerOnPreparedListener
@@ -246,27 +246,27 @@ local AndroidMediaPlayerOnPreparedListener = {}
     end
     
 
-    function AndroidMediaPlayerWrapperListener._jinit(self, androidMediaPlayerWrapperListener)
+    function AndroidMediaPlayerOnPreparedListener._jinit(self, androidMediaPlayerWrapperListener)
         java_super_init(MediaPlayerOnPreparedListener, self)
-        AndroidMediaPlayerWrapperListener._init_fields(self)
+        AndroidMediaPlayerOnPreparedListener._init_fields(self)
             self.androidMediaPlayerWrapperListener = androidMediaPlayerWrapperListener
         return self
     end
 
-    function AndroidMediaPlayerWrapperListener.new(...)
-        local self = setmetatable({}, AndroidMediaPlayerWrapperListener)
-        AndroidMediaPlayerWrapperListener._jinit(self, ...)
+    function AndroidMediaPlayerOnPreparedListener.new(...)
+        local self = setmetatable({}, AndroidMediaPlayerOnPreparedListener)
+        AndroidMediaPlayerOnPreparedListener._jinit(self, ...)
         return self
     end
     
 
-    function AndroidMediaPlayerWrapperListener:onPrepared(mp)
+    function AndroidMediaPlayerOnPreparedListener:onPrepared(mp)
             local logUtil = LogUtil.getInstance()
             local commonStrings = CommonStrings.getInstance()
             logUtil:putF(commonStrings.START, self, self.ON_PREPARE)
             self.androidMediaPlayerWrapperListener.androidMediaPlayerWrapper:update(PlayerListener.DEVICE_AVAILABLE)
     end
-    java_overload(AndroidMediaPlayerWrapperListener, "onPrepared", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MediaPlayer")) end)
+    java_overload(AndroidMediaPlayerOnPreparedListener, "onPrepared", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MediaPlayer")) end)
 
 local AndroidMediaPlayerOnErrorListener = {}
     AndroidMediaPlayerOnErrorListener.__index = AndroidMediaPlayerOnErrorListener
@@ -281,27 +281,27 @@ local AndroidMediaPlayerOnErrorListener = {}
     end
     
 
-    function AndroidMediaPlayerWrapperListener._jinit(self, androidMediaPlayerWrapperListener)
+    function AndroidMediaPlayerOnErrorListener._jinit(self, androidMediaPlayerWrapperListener)
         java_super_init(MediaPlayerOnErrorListener, self)
-        AndroidMediaPlayerWrapperListener._init_fields(self)
+        AndroidMediaPlayerOnErrorListener._init_fields(self)
             self.androidMediaPlayerWrapperListener = androidMediaPlayerWrapperListener
         return self
     end
 
-    function AndroidMediaPlayerWrapperListener.new(...)
-        local self = setmetatable({}, AndroidMediaPlayerWrapperListener)
-        AndroidMediaPlayerWrapperListener._jinit(self, ...)
+    function AndroidMediaPlayerOnErrorListener.new(...)
+        local self = setmetatable({}, AndroidMediaPlayerOnErrorListener)
+        AndroidMediaPlayerOnErrorListener._jinit(self, ...)
         return self
     end
     
 
-    function AndroidMediaPlayerWrapperListener:onError(mp, what, extra)
+    function AndroidMediaPlayerOnErrorListener:onError(mp, what, extra)
             local logUtil = LogUtil.getInstance()
             logUtil:putF(tostring(StringMaker.new():append(CommonLabels.getInstance().START_LABEL):append("What: "):appendint(what):append(" Extra: "):appendint(extra)), self, self.ON_ERROR)
             self.androidMediaPlayerWrapperListener.androidMediaPlayerWrapper:update(PlayerListener.ERROR)
             return true
     end
-    java_overload(AndroidMediaPlayerWrapperListener, "onError", 3, function(java_a1, java_a2, java_a3) return true and (java_a1 == nil or java_is(java_a1, "MediaPlayer")) and type(java_a2) == "number" and type(java_a3) == "number" end)
+    java_overload(AndroidMediaPlayerOnErrorListener, "onError", 3, function(java_a1, java_a2, java_a3) return true and (java_a1 == nil or java_is(java_a1, "MediaPlayer")) and type(java_a2) == "number" and type(java_a3) == "number" end)
 
 local AndroidMediaPlayerOnCompletionListener = {}
     AndroidMediaPlayerOnCompletionListener.__index = AndroidMediaPlayerOnCompletionListener
@@ -316,27 +316,27 @@ local AndroidMediaPlayerOnCompletionListener = {}
     end
     
 
-    function AndroidMediaPlayerWrapperListener._jinit(self, androidMediaPlayerWrapperListener)
+    function AndroidMediaPlayerOnCompletionListener._jinit(self, androidMediaPlayerWrapperListener)
         java_super_init(MediaPlayerOnCompletionListener, self)
-        AndroidMediaPlayerWrapperListener._init_fields(self)
+        AndroidMediaPlayerOnCompletionListener._init_fields(self)
             self.androidMediaPlayerWrapperListener = androidMediaPlayerWrapperListener
         return self
     end
 
-    function AndroidMediaPlayerWrapperListener.new(...)
-        local self = setmetatable({}, AndroidMediaPlayerWrapperListener)
-        AndroidMediaPlayerWrapperListener._jinit(self, ...)
+    function AndroidMediaPlayerOnCompletionListener.new(...)
+        local self = setmetatable({}, AndroidMediaPlayerOnCompletionListener)
+        AndroidMediaPlayerOnCompletionListener._jinit(self, ...)
         return self
     end
     
 
-    function AndroidMediaPlayerWrapperListener:onCompletion(mp)
+    function AndroidMediaPlayerOnCompletionListener:onCompletion(mp)
             local logUtil = LogUtil.getInstance()
             local commonStrings = CommonStrings.getInstance()
             logUtil:putF(commonStrings.START, self, self.ON_COMPLETE)
             self.androidMediaPlayerWrapperListener.androidMediaPlayerWrapper:update(PlayerListener.END_OF_MEDIA)
     end
-    java_overload(AndroidMediaPlayerWrapperListener, "onCompletion", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MediaPlayer")) end)
+    java_overload(AndroidMediaPlayerOnCompletionListener, "onCompletion", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MediaPlayer")) end)
 
 
 function AndroidMediaPlayerWrapperListener:_init_fields()

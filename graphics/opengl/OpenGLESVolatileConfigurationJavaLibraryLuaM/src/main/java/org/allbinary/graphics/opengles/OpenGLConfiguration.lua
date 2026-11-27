@@ -38,6 +38,8 @@ local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
 local MainFeatureFactory = java_lazy("org.allbinary.game.configuration.feature.MainFeatureFactory")
 local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local OpenGLFeature = java_lazy("org.allbinary.graphics.opengles.OpenGLFeature")
+local OpenGLFeatureFactory = java_lazy("org.allbinary.graphics.opengles.OpenGLFeatureFactory")
 
 local function java_idiv(a, b)
     local q = a / b

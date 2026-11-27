@@ -47,6 +47,7 @@ local BooleanFactory = java_lazy("org.allbinary.logic.java.bool.BooleanFactory")
 local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
 local GLOBALS2 = java_lazy("org.allbinary.globals.GLOBALS2")
 local WeblisketSessionInterface = require("org.allbinary.logic.communication.http.request.session.WeblisketSessionInterface")
+local WeblisketSessionData = java_lazy("org.allbinary.logic.communication.http.request.session.WeblisketSessionData")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

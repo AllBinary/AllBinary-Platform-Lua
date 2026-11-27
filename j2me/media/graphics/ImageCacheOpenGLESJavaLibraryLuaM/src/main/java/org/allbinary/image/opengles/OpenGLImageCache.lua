@@ -40,6 +40,7 @@ local ImageCache = require("org.allbinary.image.ImageCache")
 local ImageCacheFactory = java_lazy("org.allbinary.image.ImageCacheFactory")
 local PreResourceImageUtil = java_lazy("org.allbinary.image.PreResourceImageUtil")
 local SynchObject = java_lazy("org.allbinary.thread.SynchObject")
+local OpenGLESImage = java_lazy("org.allbinary.image.opengles.OpenGLESImage")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

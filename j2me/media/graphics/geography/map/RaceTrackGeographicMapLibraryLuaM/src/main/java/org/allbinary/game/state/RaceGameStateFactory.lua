@@ -29,6 +29,8 @@ local function java_real(class)
 end
 
 local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
+local GameState = java_lazy("org.allbinary.game.state.GameState")
+local GameStateFactory = java_lazy("org.allbinary.game.state.GameStateFactory")
 
 local function java_idiv(a, b)
     local q = a / b

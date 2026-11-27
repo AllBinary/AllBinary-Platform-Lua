@@ -34,6 +34,8 @@ local AndroidHardware = java_lazy("org.allbinary.logic.system.hardware.android.A
 local GenericOperatingSystem = java_lazy("org.allbinary.logic.system.os.GenericOperatingSystem")
 local OperatingSystems = java_lazy("org.allbinary.logic.system.os.OperatingSystems")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local HardwareInterface = java_lazy("org.allbinary.logic.system.hardware.HardwareInterface")
+local NoHardware = java_lazy("org.allbinary.logic.system.hardware.NoHardware")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

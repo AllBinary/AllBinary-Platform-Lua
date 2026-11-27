@@ -28,6 +28,7 @@ local function java_real(class)
     return class
 end
 
+local CacheInterface = java_lazy("org.allbinary.logic.util.cache.CacheInterface")
 local CachePolicy = java_lazy("org.allbinary.logic.util.cache.CachePolicy")
 local CacheType = java_lazy("org.allbinary.logic.util.cache.CacheType")
 

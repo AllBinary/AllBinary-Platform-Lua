@@ -33,6 +33,7 @@ local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local ImageProcessedVisitor = java_lazy("org.allbinary.media.image.ImageProcessedVisitor")
 local ImageProcessorInput = java_lazy("org.allbinary.media.image.ImageProcessorInput")
+local ImageUtil = java_lazy("org.allbinary.media.image.ImageUtil")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}

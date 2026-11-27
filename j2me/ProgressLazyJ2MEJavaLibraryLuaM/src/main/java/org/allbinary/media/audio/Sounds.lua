@@ -36,6 +36,9 @@ local ProgressCanvas = java_lazy("org.allbinary.graphics.canvas.transition.progr
 local ProgressCanvasFactory = java_lazy("org.allbinary.graphics.canvas.transition.progress.ProgressCanvasFactory")
 local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
 local SmallIntegerSingletonFactory = java_lazy("org.allbinary.logic.math.SmallIntegerSingletonFactory")
+local Sound = java_lazy("org.allbinary.media.audio.Sound")
+local SoundStrings = java_lazy("org.allbinary.media.audio.SoundStrings")
+local SoundsFactoryInterface = java_lazy("org.allbinary.media.audio.SoundsFactoryInterface")
 
 local function java_idiv(a, b)
     local q = a / b

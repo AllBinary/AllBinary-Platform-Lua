@@ -29,6 +29,7 @@ local function java_real(class)
 end
 
 -- local Image = require("javax.microedition.lcdui.Image")
+local ImageRotationUtil = java_lazy("org.allbinary.media.image.ImageRotationUtil")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}

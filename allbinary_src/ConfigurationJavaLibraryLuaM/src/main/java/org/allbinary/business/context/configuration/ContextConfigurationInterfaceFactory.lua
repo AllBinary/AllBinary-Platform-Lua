@@ -34,7 +34,9 @@ local CryptFileReader = java_lazy("org.allbinary.logic.control.crypt.file.CryptF
 local AbPath = java_lazy("org.allbinary.logic.io.path.AbPath")
 local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
+local ContextConfigurationData = java_lazy("org.allbinary.business.context.configuration.ContextConfigurationData")
 local ContextConfigurationInterface = java_lazy("org.allbinary.business.context.configuration.ContextConfigurationInterface")
+local ContextConfigurationPathUtil = java_lazy("org.allbinary.business.context.configuration.ContextConfigurationPathUtil")
 local ContextConfigurationView = java_lazy("org.allbinary.business.context.configuration.ContextConfigurationView")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend

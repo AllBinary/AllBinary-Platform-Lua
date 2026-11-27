@@ -34,6 +34,7 @@ local ModDomHelper = java_lazy("org.allbinary.data.tree.dom.ModDomHelper")
 local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
 local JvmStatisticsMapping = require("org.allbinary.logic.communication.java.vm.stats.JvmStatisticsMapping")
+local JvmStatisticsData = java_lazy("org.allbinary.logic.communication.java.vm.stats.JvmStatisticsData")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

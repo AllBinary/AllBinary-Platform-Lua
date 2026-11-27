@@ -31,6 +31,7 @@ end
 -- local Control = require("javax.microedition.media.Control")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local BasicPlayer = require("org.allbinary.media.audio.BasicPlayer")
+local NullControl = java_lazy("org.allbinary.media.audio.NullControl")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}

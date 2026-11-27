@@ -39,6 +39,8 @@ local XmlRpcAbeLicenseRetrievalClient = java_lazy("org.allbinary.logic.system.se
 local PATH_GLOBALS = java_lazy("org.allbinary.globals.PATH_GLOBALS")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local AbeClientInformationInterface = java_lazy("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
+local AbeLicenseInterface = java_lazy("org.allbinary.logic.system.security.licensing.AbeLicenseInterface")
 local PrintLicenseInitInfo = java_lazy("org.allbinary.logic.system.security.licensing.PrintLicenseInitInfo")
 
 local function java_idiv(a, b)

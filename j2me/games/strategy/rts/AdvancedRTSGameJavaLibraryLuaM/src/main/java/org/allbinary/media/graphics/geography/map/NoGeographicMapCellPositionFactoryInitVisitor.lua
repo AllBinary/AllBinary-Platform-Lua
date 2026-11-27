@@ -30,6 +30,7 @@ end
 
 local AllBinaryTiledLayer = java_lazy("org.allbinary.game.layer.AllBinaryTiledLayer")
 local GeographicMapCellPositionFactoryInitVisitorInterface = require("org.allbinary.media.graphics.geography.map.GeographicMapCellPositionFactoryInitVisitorInterface")
+local GeographicMapCellPosition = java_lazy("org.allbinary.media.graphics.geography.map.GeographicMapCellPosition")
 
 local function java_idiv(a, b)
     local q = a / b

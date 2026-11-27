@@ -37,7 +37,11 @@ local BasicTouchButtonCellPositionFactory = java_lazy("org.allbinary.input.motio
 local BasicTouchInputFactory = java_lazy("org.allbinary.input.motion.button.BasicTouchInputFactory")
 local CommonButtons = java_lazy("org.allbinary.input.motion.button.CommonButtons")
 local TouchButton = java_lazy("org.allbinary.input.motion.button.TouchButton")
+local TouchButtonDownResource = java_lazy("org.allbinary.input.motion.button.TouchButtonDownResource")
 local TouchButtonLocationHelper = java_lazy("org.allbinary.input.motion.button.TouchButtonLocationHelper")
+local TouchButtonTurnLeftResource = java_lazy("org.allbinary.input.motion.button.TouchButtonTurnLeftResource")
+local TouchButtonTurnRightResource = java_lazy("org.allbinary.input.motion.button.TouchButtonTurnRightResource")
+local TouchButtonUpResource = java_lazy("org.allbinary.input.motion.button.TouchButtonUpResource")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

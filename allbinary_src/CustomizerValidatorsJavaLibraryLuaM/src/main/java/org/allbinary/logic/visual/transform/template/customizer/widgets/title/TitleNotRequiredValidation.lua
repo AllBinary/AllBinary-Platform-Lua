@@ -38,6 +38,7 @@ local Node = java_lazy("org.w3c.dom.Node")
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local TitleView = require("org.allbinary.logic.visual.transform.template.customizer.widgets.title.TitleView")
+local TitleData = java_lazy("org.allbinary.logic.visual.transform.template.customizer.widgets.title.TitleData")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

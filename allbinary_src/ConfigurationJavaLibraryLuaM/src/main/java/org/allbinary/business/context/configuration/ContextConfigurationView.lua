@@ -37,6 +37,7 @@ local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
 local NodeList = java_lazy("org.w3c.dom.NodeList")
 local ContextConfiguration = java_lazy("org.allbinary.business.context.configuration.ContextConfiguration")
+local ContextConfigurationData = java_lazy("org.allbinary.business.context.configuration.ContextConfigurationData")
 local ContextConfigurationInterface = java_lazy("org.allbinary.business.context.configuration.ContextConfigurationInterface")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend

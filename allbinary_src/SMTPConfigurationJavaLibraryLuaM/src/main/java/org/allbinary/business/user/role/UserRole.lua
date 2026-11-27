@@ -30,6 +30,7 @@ end
 
 local Serializable = java_lazy("java.io.Serializable")
 local UserFactoryInterface = java_lazy("org.allbinary.business.user.UserFactoryInterface")
+local BasicUserRole = java_lazy("org.allbinary.business.user.role.BasicUserRole")
 
 local function java_idiv(a, b)
     local q = a / b

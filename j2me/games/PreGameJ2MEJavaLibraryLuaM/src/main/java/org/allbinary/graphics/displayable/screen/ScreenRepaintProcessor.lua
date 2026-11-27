@@ -30,6 +30,7 @@ end
 
 -- local Displayable = require("javax.microedition.lcdui.Displayable")
 local Processor = require("org.allbinary.canvas.Processor")
+local ScreenRepaintUtil = java_lazy("org.allbinary.graphics.displayable.screen.ScreenRepaintUtil")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

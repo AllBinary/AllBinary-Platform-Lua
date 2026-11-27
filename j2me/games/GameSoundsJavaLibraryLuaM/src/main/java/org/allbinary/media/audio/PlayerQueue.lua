@@ -34,6 +34,8 @@ local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local NoSound = java_lazy("org.allbinary.media.audio.NoSound")
+local Sound = java_lazy("org.allbinary.media.audio.Sound")
 
 local function java_idiv(a, b)
     local q = a / b

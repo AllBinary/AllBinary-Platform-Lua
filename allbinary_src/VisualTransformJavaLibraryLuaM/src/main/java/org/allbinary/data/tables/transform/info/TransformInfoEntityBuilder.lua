@@ -31,6 +31,8 @@ end
 local TransformInfoHttpStoreFactory = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoHttpStoreFactory")
 local TransformInfoObjectConfigAndManipulatorFactory = java_lazy("org.allbinary.logic.visual.transform.info.objectConfig.TransformInfoObjectConfigAndManipulatorFactory")
 local TransformInfoObjectConfigGeneratorFactory = java_lazy("org.allbinary.logic.visual.transform.info.objectConfig.generator.TransformInfoObjectConfigGeneratorFactory")
+local TransformInfoEntity = java_lazy("org.allbinary.data.tables.transform.info.TransformInfoEntity")
+local TransformInfoEntityFactory = java_lazy("org.allbinary.data.tables.transform.info.TransformInfoEntityFactory")
 
 local function java_idiv(a, b)
     local q = a / b

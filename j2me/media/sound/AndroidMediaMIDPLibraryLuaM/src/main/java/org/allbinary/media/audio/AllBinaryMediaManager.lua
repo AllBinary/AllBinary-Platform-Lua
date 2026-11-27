@@ -42,6 +42,11 @@ local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local AndroidMediaPlayerWrapper = java_lazy("org.allbinary.media.audio.AndroidMediaPlayerWrapper")
 local MediaPlayerUtil = java_lazy("org.allbinary.media.audio.MediaPlayerUtil")
+local NoPlayer = java_lazy("org.allbinary.media.audio.NoPlayer")
+local PlayerComposite = java_lazy("org.allbinary.media.audio.PlayerComposite")
+local Sound = java_lazy("org.allbinary.media.audio.Sound")
+local Sounds = java_lazy("org.allbinary.media.audio.Sounds")
+local SoundsFactoryInterface = java_lazy("org.allbinary.media.audio.SoundsFactoryInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

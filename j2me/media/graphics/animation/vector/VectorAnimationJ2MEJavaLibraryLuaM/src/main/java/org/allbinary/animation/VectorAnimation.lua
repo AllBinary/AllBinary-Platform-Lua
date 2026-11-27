@@ -36,6 +36,7 @@ local PrimitiveIntUtil = java_lazy("org.allbinary.logic.math.PrimitiveIntUtil")
 local CircularIndexUtil = java_lazy("org.allbinary.util.CircularIndexUtil")
 local IndexedAnimation = require("org.allbinary.animation.IndexedAnimation")
 local VectorAnimationInterface = require("org.allbinary.animation.VectorAnimationInterface")
+local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}

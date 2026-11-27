@@ -28,6 +28,10 @@ local function java_real(class)
     return class
 end
 
+local GameKey = java_lazy("org.allbinary.game.input.GameKey")
+local GameKeyFactory = java_lazy("org.allbinary.game.input.GameKeyFactory")
+local Input = java_lazy("org.allbinary.game.input.Input")
+local InputFactory = java_lazy("org.allbinary.game.input.InputFactory")
 
 local function java_idiv(a, b)
     local q = a / b

@@ -33,6 +33,7 @@ end
 -- local BufferedImage = require("java.awt.image.BufferedImage")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
+local ImageUtil = java_lazy("org.allbinary.media.image.ImageUtil")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}

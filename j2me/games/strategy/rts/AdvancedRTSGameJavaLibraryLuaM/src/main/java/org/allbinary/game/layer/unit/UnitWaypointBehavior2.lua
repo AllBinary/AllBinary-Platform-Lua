@@ -207,7 +207,7 @@ local BuildingSteeringVisitor = {}
     end
     
 
-    function UnitWaypointBehavior2:visit(anyType)
+    function BuildingSteeringVisitor:visit(anyType)
             local logUtil = LogUtil.getInstance()
             local try_ok, try_error, try_value = pcall(function()
                 if self:getList():size() > 0 then
@@ -232,13 +232,13 @@ local BuildingSteeringVisitor = {}
             end
             if try_ok and try_error == "__jreturn" then return try_value end
     end
-    java_overload(UnitWaypointBehavior2, "visit", 1)
+    java_overload(BuildingSteeringVisitor, "visit", 1)
     
 
-    function UnitWaypointBehavior2:getPositionList()
+    function BuildingSteeringVisitor:getPositionList()
             return self.positionList
     end
-    java_overload(UnitWaypointBehavior2, "getPositionList", 0)
+    java_overload(BuildingSteeringVisitor, "getPositionList", 0)
 
 
 function UnitWaypointBehavior2:_init_fields()

@@ -32,6 +32,7 @@ local AndroidInfoFactory = java_lazy("org.allbinary.android.AndroidInfoFactory")
 local VirtualKeyboardAPI1 = java_lazy("org.allbinary.android.input.api1.VirtualKeyboardAPI1")
 local VirtualKeyboardAPI3 = java_lazy("org.allbinary.android.input.api3.VirtualKeyboardAPI3")
 local Activity = java_lazy("android.app.Activity")
+local VirtualKeyboard = java_lazy("org.allbinary.android.input.VirtualKeyboard")
 
 local function java_idiv(a, b)
     local q = a / b

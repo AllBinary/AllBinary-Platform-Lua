@@ -31,6 +31,7 @@ end
 -- local Graphics = require("javax.microedition.lcdui.Graphics")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local VectorAnimation = require("org.allbinary.animation.VectorAnimation")
+local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

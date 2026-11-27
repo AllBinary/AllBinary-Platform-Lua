@@ -28,6 +28,8 @@ local function java_real(class)
     return class
 end
 
+local ImageCache = java_lazy("org.allbinary.image.ImageCache")
+local ImageCacheFactory = java_lazy("org.allbinary.image.ImageCacheFactory")
 
 local function java_idiv(a, b)
     local q = a / b

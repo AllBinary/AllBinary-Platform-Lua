@@ -31,6 +31,7 @@ end
 local OrderIdGenerator = java_lazy("org.allbinary.data.generator.OrderIdGenerator")
 local OrderHistoryEntity = java_lazy("org.allbinary.data.tables.user.commerce.inventory.order.OrderHistoryEntity")
 local OrderItemsEntity = java_lazy("org.allbinary.data.tables.user.commerce.inventory.order.OrderItemsEntity")
+local Order = java_lazy("org.allbinary.business.user.commerce.inventory.order.Order")
 
 local function java_idiv(a, b)
     local q = a / b

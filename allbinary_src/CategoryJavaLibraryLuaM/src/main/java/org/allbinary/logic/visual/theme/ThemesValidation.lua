@@ -36,6 +36,7 @@ local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
 local Validation = require("org.allbinary.logic.control.validate.Validation")
 local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
+local ThemesData = java_lazy("org.allbinary.logic.visual.theme.ThemesData")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

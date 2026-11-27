@@ -31,6 +31,7 @@ end
 local PositionStrings = java_lazy("org.allbinary.math.PositionStrings")
 local CommonPhoneStrings = java_lazy("org.allbinary.string.CommonPhoneStrings")
 local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local Input = java_lazy("org.allbinary.game.input.Input")
 local PCGameKey = java_lazy("org.allbinary.game.input.PCGameKey")
 
 local function java_idiv(a, b)

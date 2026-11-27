@@ -43,6 +43,7 @@ local TransformInfoObjectFactory = java_lazy("org.allbinary.logic.visual.transfo
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local TransformInterface = java_lazy("org.allbinary.logic.visual.transform.TransformInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

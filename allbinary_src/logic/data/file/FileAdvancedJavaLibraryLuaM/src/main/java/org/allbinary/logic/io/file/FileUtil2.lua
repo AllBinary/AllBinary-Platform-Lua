@@ -33,6 +33,8 @@ local AbFileInputStream = java_lazy("org.allbinary.logic.io.AbFileInputStream")
 local StreamUtil = java_lazy("org.allbinary.logic.io.StreamUtil")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
+local SimpleFileUtil = java_lazy("org.allbinary.logic.io.file.SimpleFileUtil")
 
 local function java_idiv(a, b)
     local q = a / b

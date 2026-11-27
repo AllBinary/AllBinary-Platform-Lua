@@ -35,6 +35,7 @@ local LicensingException = java_lazy("org.allbinary.logic.system.security.licens
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local TagHelperFactory = require("admin.taghelpers.TagHelperFactory")
+local InventoryRequestHelper = java_lazy("admin.taghelpers.InventoryRequestHelper")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

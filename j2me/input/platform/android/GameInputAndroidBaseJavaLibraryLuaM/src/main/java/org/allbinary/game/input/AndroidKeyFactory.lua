@@ -23,6 +23,7 @@ local AbPathData = java_lazy("org.allbinary.logic.io.path.AbPathData")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local AndroidGameKey = java_lazy("org.allbinary.game.input.AndroidGameKey")
+local Input = java_lazy("org.allbinary.game.input.Input")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

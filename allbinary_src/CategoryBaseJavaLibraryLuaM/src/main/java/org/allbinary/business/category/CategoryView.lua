@@ -40,6 +40,7 @@ local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local CategoryData = java_lazy("org.allbinary.business.category.CategoryData")
 local CategoryInterface = java_lazy("org.allbinary.business.category.CategoryInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.

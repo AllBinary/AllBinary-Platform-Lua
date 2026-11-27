@@ -95,8 +95,8 @@ local ImageCopyCallback = {}
     end
     
 
-    function ImageModifierUtil._jinit(self, imageModifierUtil, imageArray, index, image, image3)
-        ImageModifierUtil._init_fields(self)
+    function ImageCopyCallback._jinit(self, imageModifierUtil, imageArray, index, image, image3)
+        ImageCopyCallback._init_fields(self)
             self.imageModifierUtil = imageModifierUtil
             self.imageArray = imageArray
             self.index = index
@@ -105,14 +105,14 @@ local ImageCopyCallback = {}
         return self
     end
 
-    function ImageModifierUtil.new(...)
-        local self = setmetatable({}, ImageModifierUtil)
-        ImageModifierUtil._jinit(self, ...)
+    function ImageCopyCallback.new(...)
+        local self = setmetatable({}, ImageCopyCallback)
+        ImageCopyCallback._jinit(self, ...)
         return self
     end
     
 
-    function ImageModifierUtil:onSuccess(resource)
+    function ImageCopyCallback:onSuccess(resource)
             local logUtil = LogUtil.getInstance()
             local resourceCallbackStrings = self.imageModifierUtil.resourceCallbackStrings
             logUtil:putF(tostring(resourceCallbackStrings.DONE) .. self.image:getName(), self, resourceCallbackStrings.HANDLE_IMAGE)
@@ -120,7 +120,7 @@ local ImageCopyCallback = {}
     end
     
 
-    function ImageModifierUtil:onFailure(e)
+    function ImageCopyCallback:onFailure(e)
             local logUtil = LogUtil.getInstance()
             local resourceCallbackStrings = self.imageModifierUtil.resourceCallbackStrings
             logUtil:put(tostring(StringMaker.new():append(self.imageModifierUtil.commonStrings.EXCEPTION_LABEL):append(resourceCallbackStrings.ERROR):append(self.image:getName())), self, resourceCallbackStrings.HANDLE_IMAGE, e)

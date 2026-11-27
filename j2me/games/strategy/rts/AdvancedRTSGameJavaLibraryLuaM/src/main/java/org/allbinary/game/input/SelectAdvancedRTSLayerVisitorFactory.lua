@@ -31,6 +31,7 @@ end
 local Visitor = java_lazy("org.allbinary.logic.util.visitor.Visitor")
 local SelectRTSLayerVisitorFactoryInterface = require("org.allbinary.game.input.SelectRTSLayerVisitorFactoryInterface")
 local SelectAdvancedRTSLayerVisitor = java_lazy("org.allbinary.game.input.SelectAdvancedRTSLayerVisitor")
+local SelectedRTSLayersPlayerGameInput = java_lazy("org.allbinary.game.input.SelectedRTSLayersPlayerGameInput")
 
 local function java_idiv(a, b)
     local q = a / b

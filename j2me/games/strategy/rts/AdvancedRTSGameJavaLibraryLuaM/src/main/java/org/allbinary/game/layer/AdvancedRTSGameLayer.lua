@@ -74,6 +74,11 @@ local ViewPositionBase = java_lazy("org.allbinary.view.ViewPositionBase")
 local RTSLayer = require("org.allbinary.game.layer.RTSLayer")
 local AdvancedRTSPlayerLayerInterface = java_lazy("org.allbinary.game.layer.AdvancedRTSPlayerLayerInterface")
 local AdvancedRTSProperties = java_lazy("org.allbinary.game.layer.AdvancedRTSProperties")
+local NullPathFindingLayer = java_lazy("org.allbinary.game.layer.NullPathFindingLayer")
+local PathFindingLayerInterface = java_lazy("org.allbinary.game.layer.PathFindingLayerInterface")
+local RTSLayerUtil = java_lazy("org.allbinary.game.layer.RTSLayerUtil")
+local RTSPlayerLayerInterface = java_lazy("org.allbinary.game.layer.RTSPlayerLayerInterface")
+local WaypointBehaviorBase = java_lazy("org.allbinary.game.layer.WaypointBehaviorBase")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

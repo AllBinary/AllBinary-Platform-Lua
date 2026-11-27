@@ -31,6 +31,7 @@ end
 local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local MathUtil = java_lazy("org.allbinary.logic.math.MathUtil")
 local PrimitiveLongSingleton = java_lazy("org.allbinary.logic.math.PrimitiveLongSingleton")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.

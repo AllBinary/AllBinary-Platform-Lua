@@ -34,6 +34,7 @@ local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local UserEmailEventConfigurationInterface = require("org.allbinary.logic.communication.smtp.configuration.user.event.UserEmailEventConfigurationInterface")
+local UserEmailEventConfigurationData = java_lazy("org.allbinary.logic.communication.smtp.configuration.user.event.UserEmailEventConfigurationData")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

@@ -37,6 +37,7 @@ local ItemView = java_lazy("org.allbinary.business.user.commerce.inventory.item.
 local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
 local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
+local BasketData = java_lazy("org.allbinary.business.user.commerce.inventory.basket.BasketData")
 
 local function java_idiv(a, b)
     local q = a / b

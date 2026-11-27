@@ -29,6 +29,7 @@ local function java_real(class)
 end
 
 local HashMap = java_lazy("java.util.HashMap")
+local PaymentGatewayInterface = java_lazy("org.allbinary.business.user.commerce.money.payment.gateway.PaymentGatewayInterface")
 
 local function java_idiv(a, b)
     local q = a / b

@@ -31,6 +31,7 @@ end
 local EventObject = require("java.util.EventObject")
 local EmailInfo = java_lazy("org.allbinary.logic.communication.smtp.info.EmailInfo")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local UserEmailEventNameData = java_lazy("org.allbinary.logic.communication.smtp.event.UserEmailEventNameData")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

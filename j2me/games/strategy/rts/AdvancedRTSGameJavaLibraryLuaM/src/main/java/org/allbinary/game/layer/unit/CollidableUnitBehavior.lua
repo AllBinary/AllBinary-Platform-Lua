@@ -173,7 +173,7 @@ local SimpleSteeringVisitor = {}
     end
     
 
-    function CollidableUnitBehavior:visit(anyType)
+    function SimpleSteeringVisitor:visit(anyType)
             local logUtil = LogUtil.getInstance()
             local try_ok, try_error, try_value = pcall(function()
                 local ownerLayer = anyType
@@ -197,7 +197,7 @@ local SimpleSteeringVisitor = {}
             end
             if try_ok and try_error == "__jreturn" then return try_value end
     end
-    java_overload(CollidableUnitBehavior, "visit", 1)
+    java_overload(SimpleSteeringVisitor, "visit", 1)
 
 
 function CollidableUnitBehavior:_init_fields()

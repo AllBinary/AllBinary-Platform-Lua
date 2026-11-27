@@ -38,6 +38,7 @@ local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local Visitor = java_lazy("org.allbinary.logic.util.visitor.Visitor")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local ABCustomItem = java_lazy("org.allbinary.graphics.form.item.ABCustomItem")
 local CommandTextItem = java_lazy("org.allbinary.graphics.form.item.CommandTextItem")
 
 local function java_new_array(default, size, ...)

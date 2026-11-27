@@ -35,6 +35,8 @@ local GPoint = java_lazy("org.allbinary.graphics.GPoint")
 local PointFactory = java_lazy("org.allbinary.graphics.PointFactory")
 local Rectangle = java_lazy("org.allbinary.graphics.Rectangle")
 local TouchButton = require("org.allbinary.input.motion.button.TouchButton")
+local TouchButtonInput = java_lazy("org.allbinary.input.motion.button.TouchButtonInput")
+local TouchButtonResource = java_lazy("org.allbinary.input.motion.button.TouchButtonResource")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

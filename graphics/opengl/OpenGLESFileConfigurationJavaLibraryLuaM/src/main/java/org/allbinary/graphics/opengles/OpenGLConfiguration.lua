@@ -48,6 +48,8 @@ local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
 local MainFeatureFactory = java_lazy("org.allbinary.game.configuration.feature.MainFeatureFactory")
 local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
 local NullCloseable = java_lazy("org.allbinary.logic.io.NullCloseable")
+local OpenGLFeature = java_lazy("org.allbinary.graphics.opengles.OpenGLFeature")
+local OpenGLFeatureFactory = java_lazy("org.allbinary.graphics.opengles.OpenGLFeatureFactory")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

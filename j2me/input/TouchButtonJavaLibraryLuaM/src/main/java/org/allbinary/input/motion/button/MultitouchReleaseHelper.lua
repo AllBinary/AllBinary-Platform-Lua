@@ -31,6 +31,7 @@ end
 local GameKeyEvent = java_lazy("org.allbinary.game.input.event.GameKeyEvent")
 local ReleaseHelper = require("org.allbinary.input.motion.button.ReleaseHelper")
 local CancelTouchButtonInputFactory = java_lazy("org.allbinary.input.motion.button.CancelTouchButtonInputFactory")
+local TouchButtonInput = java_lazy("org.allbinary.input.motion.button.TouchButtonInput")
 local TouchButtonRecognizer = java_lazy("org.allbinary.input.motion.button.TouchButtonRecognizer")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend

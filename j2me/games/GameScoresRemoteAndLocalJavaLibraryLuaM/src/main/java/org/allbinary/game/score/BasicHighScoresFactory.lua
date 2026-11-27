@@ -40,6 +40,13 @@ local SoftwareInformation = java_lazy("org.allbinary.logic.system.SoftwareInform
 local AbeClientInformationInterface = java_lazy("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
 local SecondaryThreadPool = java_lazy("org.allbinary.thread.SecondaryThreadPool")
 local HighScoresBase = require("org.allbinary.game.score.HighScoresBase")
+local HighScores = java_lazy("org.allbinary.game.score.HighScores")
+local HighScoresHelper2 = java_lazy("org.allbinary.game.score.HighScoresHelper2")
+local HighScoresHelperBaseInterface = java_lazy("org.allbinary.game.score.HighScoresHelperBaseInterface")
+local HighScoresResultsListener = java_lazy("org.allbinary.game.score.HighScoresResultsListener")
+local LastFetchHighScoresFactory = java_lazy("org.allbinary.game.score.LastFetchHighScoresFactory")
+local RecordStoreHighScores = java_lazy("org.allbinary.game.score.RecordStoreHighScores")
+local ScoreComparator = java_lazy("org.allbinary.game.score.ScoreComparator")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}

@@ -85,11 +85,11 @@ local id = {}
         return id._jinit(setmetatable({}, id))
     end
 
-    R.custom_web_view = 0x7f050000
-    R.ad_area_bottom = 0x7f060002
-    R.ad_area_left = 0x7f060003
-    R.ad_area_right = 0x7f060004
-    R.ad_area_top = 0x7f060001
+    id.custom_web_view = 0x7f050000
+    id.ad_area_bottom = 0x7f060002
+    id.ad_area_left = 0x7f060003
+    id.ad_area_right = 0x7f060004
+    id.ad_area_top = 0x7f060001
 
 local layout = {}
     layout.__index = layout
@@ -105,7 +105,7 @@ local layout = {}
         return layout._jinit(setmetatable({}, layout))
     end
 
-    R.webview_layout = 0x7f020000
+    layout.webview_layout = 0x7f020000
 
 local raw = {}
     raw.__index = raw
@@ -121,38 +121,38 @@ local raw = {}
         return raw._jinit(setmetatable({}, raw))
     end
 
-    R.about = 0x7f030000
-    R.privacy_policy = 0x7f030001
-    R.error = 0x7f040000
-    R.licenseinitdata = 0x7f040001
-    R.partner = 0x7f040002
-    R.select = 0x7f040003
-    R.test = 0x7f040004
-    R.testgamedemo_wait_256_by_256 = 0x7f040005
-    R.touch_button_128_by_128 = 0x7f040026
-    R.touch_button_64_by_64 = 0x7f040027
-    R.touch_button_down_arrow_128_by_128 = 0x7f04002a
-    R.touch_button_down_arrow_64_by_64 = 0x7f04002b
-    R.touch_button_generic_action_128_by_128 = 0x7f04002c
-    R.touch_button_generic_action_64_by_64 = 0x7f04002d
-    R.touch_button_start_128_by_128 = 0x7f040038
-    R.touch_button_start_64_by_64 = 0x7f040039
-    R.touch_button_strafe_left_arrow_128_by_128 = 0x7f04003a
-    R.touch_button_strafe_left_arrow_64_by_64 = 0x7f04003b
-    R.touch_button_strafe_right_arrow_128_by_128 = 0x7f04003c
-    R.touch_button_strafe_right_arrow_64_by_64 = 0x7f04003d
-    R.touch_button_turn_left_arrow_128_by_128 = 0x7f04003e
-    R.touch_button_turn_left_arrow_64_by_64 = 0x7f04003f
-    R.touch_button_turn_right_arrow_128_by_128 = 0x7f040040
-    R.touch_button_turn_right_arrow_64_by_64 = 0x7f040041
-    R.touch_button_up_arrow_128_by_128 = 0x7f040042
-    R.touch_button_up_arrow_64_by_64 = 0x7f040043
-    R.ouya_a = 0x7f040012
-    R.ouya_o = 0x7f040014
-    R.ouya_u = 0x7f040015
-    R.ouya_y = 0x7f040016
-    R.ouya_key = 0x7f040013
-    R.google_key = 0x7f040013
+    raw.about = 0x7f030000
+    raw.privacy_policy = 0x7f030001
+    raw.error = 0x7f040000
+    raw.licenseinitdata = 0x7f040001
+    raw.partner = 0x7f040002
+    raw.select = 0x7f040003
+    raw.test = 0x7f040004
+    raw.testgamedemo_wait_256_by_256 = 0x7f040005
+    raw.touch_button_128_by_128 = 0x7f040026
+    raw.touch_button_64_by_64 = 0x7f040027
+    raw.touch_button_down_arrow_128_by_128 = 0x7f04002a
+    raw.touch_button_down_arrow_64_by_64 = 0x7f04002b
+    raw.touch_button_generic_action_128_by_128 = 0x7f04002c
+    raw.touch_button_generic_action_64_by_64 = 0x7f04002d
+    raw.touch_button_start_128_by_128 = 0x7f040038
+    raw.touch_button_start_64_by_64 = 0x7f040039
+    raw.touch_button_strafe_left_arrow_128_by_128 = 0x7f04003a
+    raw.touch_button_strafe_left_arrow_64_by_64 = 0x7f04003b
+    raw.touch_button_strafe_right_arrow_128_by_128 = 0x7f04003c
+    raw.touch_button_strafe_right_arrow_64_by_64 = 0x7f04003d
+    raw.touch_button_turn_left_arrow_128_by_128 = 0x7f04003e
+    raw.touch_button_turn_left_arrow_64_by_64 = 0x7f04003f
+    raw.touch_button_turn_right_arrow_128_by_128 = 0x7f040040
+    raw.touch_button_turn_right_arrow_64_by_64 = 0x7f040041
+    raw.touch_button_up_arrow_128_by_128 = 0x7f040042
+    raw.touch_button_up_arrow_64_by_64 = 0x7f040043
+    raw.ouya_a = 0x7f040012
+    raw.ouya_o = 0x7f040014
+    raw.ouya_u = 0x7f040015
+    raw.ouya_y = 0x7f040016
+    raw.ouya_key = 0x7f040013
+    raw.google_key = 0x7f040013
 
 local string = {}
     string.__index = string
@@ -168,7 +168,7 @@ local string = {}
         return string._jinit(setmetatable({}, string))
     end
 
-    R.progressbar_in_title_string = 0x7f050001
+    string.progressbar_in_title_string = 0x7f050001
 
 
 function R._jinit(self)

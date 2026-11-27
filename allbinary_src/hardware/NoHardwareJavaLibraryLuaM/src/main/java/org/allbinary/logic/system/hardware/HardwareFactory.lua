@@ -29,6 +29,8 @@ local function java_real(class)
 end
 
 local OperatingSystemInterface = java_lazy("org.allbinary.logic.system.os.OperatingSystemInterface")
+local HardwareInterface = java_lazy("org.allbinary.logic.system.hardware.HardwareInterface")
+local NoHardware = java_lazy("org.allbinary.logic.system.hardware.NoHardware")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

@@ -48,6 +48,7 @@ local MusicThreadPool = java_lazy("org.allbinary.thread.MusicThreadPool")
 local BasicPlayer = require("org.allbinary.media.audio.BasicPlayer")
 local NullAudioFormat = java_lazy("org.allbinary.media.audio.NullAudioFormat")
 local NullClip = java_lazy("org.allbinary.media.audio.NullClip")
+local NullControl = java_lazy("org.allbinary.media.audio.NullControl")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

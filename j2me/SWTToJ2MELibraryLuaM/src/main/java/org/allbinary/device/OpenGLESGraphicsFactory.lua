@@ -28,6 +28,7 @@ local function java_real(class)
     return class
 end
 
+local OpenGLESGraphics = java_lazy("org.allbinary.device.OpenGLESGraphics")
 
 local function java_idiv(a, b)
     local q = a / b

@@ -17,6 +17,8 @@ local function java_real(class)
 end
 
 local CommandListener = require("javax.microedition.lcdui.CommandListener")
+local Command = java_lazy("javax.microedition.lcdui.Command")
+local Displayable = java_lazy("javax.microedition.lcdui.Displayable")
 
 local function java_idiv(a, b)
     local q = a / b

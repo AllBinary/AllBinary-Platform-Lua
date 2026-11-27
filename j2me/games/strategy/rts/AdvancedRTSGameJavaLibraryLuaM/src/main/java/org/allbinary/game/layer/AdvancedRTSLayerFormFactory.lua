@@ -34,6 +34,7 @@ local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local ScrollSelectionForm = java_lazy("org.allbinary.graphics.form.ScrollSelectionForm")
 local ItemArraySingletonFactoryInterface = java_lazy("org.allbinary.graphics.form.item.ItemArraySingletonFactoryInterface")
+local RTSLayer = java_lazy("org.allbinary.game.layer.RTSLayer")
 local RTSScrollSelectionFormFactory = java_lazy("org.allbinary.game.layer.RTSScrollSelectionFormFactory")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend

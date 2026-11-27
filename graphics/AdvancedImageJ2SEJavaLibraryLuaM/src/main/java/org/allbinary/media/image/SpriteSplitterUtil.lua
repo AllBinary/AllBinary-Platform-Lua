@@ -35,6 +35,10 @@ local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local ImageProcessedVisitor = java_lazy("org.allbinary.media.image.ImageProcessedVisitor")
 local ImageProcessorInput = java_lazy("org.allbinary.media.image.ImageProcessorInput")
+local ImageUnifierCell = java_lazy("org.allbinary.media.image.ImageUnifierCell")
+local ImageUnifierProperties = java_lazy("org.allbinary.media.image.ImageUnifierProperties")
+local ImageUnifierUtil = java_lazy("org.allbinary.media.image.ImageUnifierUtil")
+local ImageUtil = java_lazy("org.allbinary.media.image.ImageUtil")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}

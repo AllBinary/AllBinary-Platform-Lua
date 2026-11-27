@@ -40,6 +40,7 @@ local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
 local CreditCardType = java_lazy("org.allbinary.business.user.commerce.money.payment.types.CreditCardType")
 local PaymentInterface = require("org.allbinary.business.user.commerce.money.payment.PaymentInterface")
+local PaymentData = java_lazy("org.allbinary.business.user.commerce.money.payment.PaymentData")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

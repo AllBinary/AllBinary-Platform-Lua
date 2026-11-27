@@ -35,6 +35,7 @@ local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
 local DomNodeInterface = require("org.allbinary.data.tree.dom.DomNodeInterface")
 local FileTableMapping = java_lazy("org.allbinary.data.tree.dom.FileTableMapping")
+local ModDomHelper = java_lazy("org.allbinary.data.tree.dom.ModDomHelper")
 
 local function java_idiv(a, b)
     local q = a / b

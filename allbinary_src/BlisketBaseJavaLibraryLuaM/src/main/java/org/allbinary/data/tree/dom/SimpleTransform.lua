@@ -36,6 +36,7 @@ local AbFileLocalInputStream = java_lazy("org.allbinary.logic.io.AbFileLocalInpu
 local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
 local AbPath = java_lazy("org.allbinary.logic.io.path.AbPath")
 local Document = java_lazy("org.w3c.dom.Document")
+local XslHelper = java_lazy("org.allbinary.data.tree.dom.XslHelper")
 
 local function java_idiv(a, b)
     local q = a / b

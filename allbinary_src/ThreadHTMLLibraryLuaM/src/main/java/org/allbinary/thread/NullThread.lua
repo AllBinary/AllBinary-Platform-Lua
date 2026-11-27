@@ -29,6 +29,7 @@ local function java_real(class)
 end
 
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local NullRunnable = java_lazy("org.allbinary.thread.NullRunnable")
 
 local function java_idiv(a, b)
     local q = a / b

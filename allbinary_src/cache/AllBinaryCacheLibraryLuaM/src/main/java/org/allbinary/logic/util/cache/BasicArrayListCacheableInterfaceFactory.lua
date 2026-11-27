@@ -30,6 +30,7 @@ end
 
 local CacheableInterfaceFactoryInterface = require("org.allbinary.logic.util.cache.CacheableInterfaceFactoryInterface")
 local BasicArrayListCacheable = java_lazy("org.allbinary.logic.util.cache.BasicArrayListCacheable")
+local CacheableInterface = java_lazy("org.allbinary.logic.util.cache.CacheableInterface")
 
 local function java_idiv(a, b)
     local q = a / b

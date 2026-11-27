@@ -42,6 +42,7 @@ local TextItemVisitor = java_lazy("org.allbinary.graphics.form.item.validation.T
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local ABTextFieldItem = java_lazy("org.allbinary.graphics.form.item.ABTextFieldItem")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

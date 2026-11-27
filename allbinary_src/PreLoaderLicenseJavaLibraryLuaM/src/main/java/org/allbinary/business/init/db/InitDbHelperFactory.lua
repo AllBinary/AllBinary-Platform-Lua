@@ -31,6 +31,7 @@ end
 local AbeFactory = java_lazy("org.allbinary.logic.system.loader.AbeFactory")
 local AbeClientInformationInterface = java_lazy("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
 local LicensingException = java_lazy("org.allbinary.logic.system.security.licensing.LicensingException")
+local DatabaseConnectionInfoInterface = java_lazy("org.allbinary.business.init.db.DatabaseConnectionInfoInterface")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}

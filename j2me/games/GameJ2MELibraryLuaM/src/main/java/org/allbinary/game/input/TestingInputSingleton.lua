@@ -40,6 +40,10 @@ local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local ViewPosition = java_lazy("org.allbinary.view.ViewPosition")
 local GameInputInterface = require("org.allbinary.game.input.GameInputInterface")
+local GameInputProcessor = java_lazy("org.allbinary.game.input.GameInputProcessor")
+local GameInputProcessorUtil = java_lazy("org.allbinary.game.input.GameInputProcessorUtil")
+local InputFactory = java_lazy("org.allbinary.game.input.InputFactory")
+local TestInputInterface = java_lazy("org.allbinary.game.input.TestInputInterface")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}

@@ -42,6 +42,8 @@ local UpdateMyFontProcessor = java_lazy("org.allbinary.graphics.font.UpdateMyFon
 local Paintable = require("org.allbinary.graphics.paint.Paintable")
 local AllBinaryEventObject = java_lazy("org.allbinary.logic.util.event.AllBinaryEventObject")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local HighScore = java_lazy("org.allbinary.game.score.HighScore")
+local HighScores = java_lazy("org.allbinary.game.score.HighScores")
 local NullHighScoresSingletonFactory = java_lazy("org.allbinary.game.score.NullHighScoresSingletonFactory")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend

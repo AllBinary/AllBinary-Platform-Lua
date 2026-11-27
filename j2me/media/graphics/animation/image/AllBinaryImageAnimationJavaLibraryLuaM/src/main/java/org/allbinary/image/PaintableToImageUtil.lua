@@ -31,6 +31,7 @@ end
 -- local Graphics = require("javax.microedition.lcdui.Graphics")
 -- local Image = require("javax.microedition.lcdui.Image")
 local PaintableInterface = java_lazy("org.allbinary.graphics.paint.PaintableInterface")
+local GameFeatureImageCacheFactory = java_lazy("org.allbinary.image.GameFeatureImageCacheFactory")
 
 local function java_idiv(a, b)
     local q = a / b

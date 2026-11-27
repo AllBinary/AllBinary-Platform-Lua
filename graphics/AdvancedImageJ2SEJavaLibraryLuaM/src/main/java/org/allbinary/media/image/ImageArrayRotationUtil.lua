@@ -32,6 +32,7 @@ end
 -- local IOException = require("java.io.IOException")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local ImageJ2SERotationUtil = java_lazy("org.allbinary.media.image.ImageJ2SERotationUtil")
 local ImageProcessedVisitor = java_lazy("org.allbinary.media.image.ImageProcessedVisitor")
 local ImageProcessorInput = java_lazy("org.allbinary.media.image.ImageProcessorInput")
 

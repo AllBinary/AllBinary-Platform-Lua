@@ -47,6 +47,7 @@ local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local AllBinaryEventObject = java_lazy("org.allbinary.logic.util.event.AllBinaryEventObject")
 local EventStrings = java_lazy("org.allbinary.logic.util.event.EventStrings")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local BasicHudFactory = java_lazy("org.allbinary.game.graphics.hud.BasicHudFactory")
 local HudGraphicsPosition = java_lazy("org.allbinary.game.graphics.hud.HudGraphicsPosition")
 
 local function java_idiv(a, b)

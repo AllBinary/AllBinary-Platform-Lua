@@ -31,6 +31,7 @@ local WorkWaypoint = java_lazy("org.allbinary.game.layer.waypoint.WorkWaypoint")
 local SmallIntegerSingletonFactory = java_lazy("org.allbinary.logic.math.SmallIntegerSingletonFactory")
 local BaseRaceTrackGeographicMap = java_lazy("org.allbinary.media.graphics.geography.map.racetrack.BaseRaceTrackGeographicMap")
 local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
+local RTSLayerUtil = java_lazy("org.allbinary.game.layer.RTSLayerUtil")
 
 local function java_idiv(a, b)
     local q = a / b

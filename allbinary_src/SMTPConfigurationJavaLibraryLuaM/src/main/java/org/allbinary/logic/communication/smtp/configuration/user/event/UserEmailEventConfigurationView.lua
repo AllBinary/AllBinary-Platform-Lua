@@ -37,6 +37,7 @@ local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
 local NodeList = java_lazy("org.w3c.dom.NodeList")
 local UserEmailEventConfiguration = java_lazy("org.allbinary.logic.communication.smtp.configuration.user.event.UserEmailEventConfiguration")
+local UserEmailEventConfigurationData = java_lazy("org.allbinary.logic.communication.smtp.configuration.user.event.UserEmailEventConfigurationData")
 local UserEmailEventConfigurationInterface = java_lazy("org.allbinary.logic.communication.smtp.configuration.user.event.UserEmailEventConfigurationInterface")
 local UserEmailEventConfigurationMapping = java_lazy("org.allbinary.logic.communication.smtp.configuration.user.event.UserEmailEventConfigurationMapping")
 

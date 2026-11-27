@@ -170,9 +170,9 @@ local BuildingNumberHud = {}
     end
     
 
-    function BuildingInfoHudPaintable._jinit(self, label, maximum, basicHudFactory, basicColor, baseTextX, baseY, row, prefixLength, positionBeforeMeasurement)
+    function BuildingNumberHud._jinit(self, label, maximum, basicHudFactory, basicColor, baseTextX, baseY, row, prefixLength, positionBeforeMeasurement)
         java_super_init(NumberStringHud, self, label, maximum, basicHudFactory.ABSOLUTE, basicHudFactory.HORIZONTAL, 0, basicColor)
-        BuildingInfoHudPaintable._init_fields(self)
+        BuildingNumberHud._init_fields(self)
             -- super(...) made self above
             self.baseTextX = baseTextX
             self.baseY = baseY
@@ -182,14 +182,14 @@ local BuildingNumberHud = {}
         return self
     end
 
-    function BuildingInfoHudPaintable.new(...)
-        local self = setmetatable({}, BuildingInfoHudPaintable)
-        BuildingInfoHudPaintable._jinit(self, ...)
+    function BuildingNumberHud.new(...)
+        local self = setmetatable({}, BuildingNumberHud)
+        BuildingNumberHud._jinit(self, ...)
         return self
     end
     
 
-    function BuildingInfoHudPaintable:updateMeasurement(graphics)
+    function BuildingNumberHud:updateMeasurement(graphics)
             if not self.positionBeforeMeasurement then
                 java_super(NumberStringHud, "updateMeasurement", 1)(self, graphics)
             end
@@ -200,7 +200,7 @@ local BuildingNumberHud = {}
                 java_super(NumberStringHud, "updateMeasurement", 1)(self, graphics)
             end
     end
-    java_overload(BuildingInfoHudPaintable, "updateMeasurement", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "Graphics")) end)
+    java_overload(BuildingNumberHud, "updateMeasurement", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "Graphics")) end)
 
 
 function BuildingInfoHudPaintable:_init_fields()

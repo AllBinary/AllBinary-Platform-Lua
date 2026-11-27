@@ -31,6 +31,7 @@ end
 local InputFactory = java_lazy("org.allbinary.game.input.InputFactory")
 local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
 local BasicTouchInputFactory = java_lazy("org.allbinary.input.motion.button.BasicTouchInputFactory")
+local TouchButtonInput = java_lazy("org.allbinary.input.motion.button.TouchButtonInput")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}

@@ -36,6 +36,7 @@ local ToDomHelper = java_lazy("org.allbinary.data.tree.dom.ToDomHelper")
 local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
 local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
+local SearchData = java_lazy("org.allbinary.logic.control.search.SearchData")
 
 local function java_idiv(a, b)
     local q = a / b

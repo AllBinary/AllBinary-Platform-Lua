@@ -29,6 +29,8 @@ local function java_real(class)
 end
 
 local ShaderUpdater = require("org.allbinary.graphics.opengles.shader.ShaderUpdater")
+local ShaderComposite = java_lazy("org.allbinary.graphics.opengles.shader.ShaderComposite")
+local ShaderOpenGLProcessor = java_lazy("org.allbinary.graphics.opengles.shader.ShaderOpenGLProcessor")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}

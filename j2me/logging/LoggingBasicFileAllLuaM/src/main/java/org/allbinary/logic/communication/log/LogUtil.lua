@@ -32,6 +32,7 @@ local FileLog = java_lazy("org.allbinary.log.FileLog")
 local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local Log = java_lazy("org.allbinary.logic.communication.log.Log")
 
 local function java_idiv(a, b)
     local q = a / b

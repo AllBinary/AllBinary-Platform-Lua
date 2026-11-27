@@ -29,7 +29,9 @@ local function java_real(class)
 end
 
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local Log = java_lazy("org.allbinary.logic.communication.log.Log")
 local LogFactory = java_lazy("org.allbinary.logic.communication.log.LogFactory")
+local LogFormatUtil = java_lazy("org.allbinary.logic.communication.log.LogFormatUtil")
 
 local function java_idiv(a, b)
     local q = a / b

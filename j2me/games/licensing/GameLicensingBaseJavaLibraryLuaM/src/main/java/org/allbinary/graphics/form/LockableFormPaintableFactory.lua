@@ -29,7 +29,9 @@ local function java_real(class)
 end
 
 local ItemPaintableFactory = require("org.allbinary.graphics.form.ItemPaintableFactory")
+local ItemPaintable = java_lazy("org.allbinary.graphics.form.ItemPaintable")
 local LockablePaintable = java_lazy("org.allbinary.graphics.form.LockablePaintable")
+local PaintableForm = java_lazy("org.allbinary.graphics.form.PaintableForm")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

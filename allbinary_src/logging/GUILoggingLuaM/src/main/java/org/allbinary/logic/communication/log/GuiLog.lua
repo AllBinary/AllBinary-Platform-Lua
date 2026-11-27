@@ -34,6 +34,8 @@ local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 -- local JLabel = require("javax.swing.JLabel")
 -- local JScrollPane = require("javax.swing.JScrollPane")
 -- local JTextArea = require("javax.swing.JTextArea")
+local LogFormatUtil = java_lazy("org.allbinary.logic.communication.log.LogFormatUtil")
+local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

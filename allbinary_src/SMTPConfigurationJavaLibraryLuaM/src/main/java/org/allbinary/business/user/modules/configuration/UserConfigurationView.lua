@@ -40,6 +40,7 @@ local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
 local NodeList = java_lazy("org.w3c.dom.NodeList")
 local UserConfiguration = java_lazy("org.allbinary.business.user.modules.configuration.UserConfiguration")
+local UserConfigurationData = java_lazy("org.allbinary.business.user.modules.configuration.UserConfigurationData")
 local UserConfigurationInterface = java_lazy("org.allbinary.business.user.modules.configuration.UserConfigurationInterface")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend

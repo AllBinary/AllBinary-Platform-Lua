@@ -28,6 +28,8 @@ local function java_real(class)
     return class
 end
 
+local LogConfigType = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigType")
+local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 
 local function java_idiv(a, b)
     local q = a / b

@@ -35,6 +35,7 @@ local CommonPhoneStrings = java_lazy("org.allbinary.string.CommonPhoneStrings")
 local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local Tokenizer = java_lazy("org.allbinary.logic.string.tokens.Tokenizer")
 
 local function java_idiv(a, b)
     local q = a / b

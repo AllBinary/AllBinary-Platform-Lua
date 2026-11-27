@@ -31,6 +31,8 @@ end
 local CellPosition = java_lazy("org.allbinary.graphics.CellPosition")
 local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
 local BasicGeographicMapCellPositionFactory = require("org.allbinary.media.graphics.geography.map.BasicGeographicMapCellPositionFactory")
+local BasicGeographicMap = java_lazy("org.allbinary.media.graphics.geography.map.BasicGeographicMap")
+local GeographicMapCellPosition = java_lazy("org.allbinary.media.graphics.geography.map.GeographicMapCellPosition")
 local GeographicMapCellPositionFactory = java_lazy("org.allbinary.media.graphics.geography.map.GeographicMapCellPositionFactory")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend

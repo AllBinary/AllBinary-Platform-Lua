@@ -36,6 +36,7 @@ local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 local AbeLicenseInterface = require("org.allbinary.logic.system.security.licensing.AbeLicenseInterface")
+local AbeClientInformationData = java_lazy("org.allbinary.logic.system.security.licensing.AbeClientInformationData")
 local LicenseType = java_lazy("org.allbinary.logic.system.security.licensing.LicenseType")
 local LicenseTypeFactory = java_lazy("org.allbinary.logic.system.security.licensing.LicenseTypeFactory")
 

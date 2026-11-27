@@ -39,6 +39,7 @@ local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
 local SuperCrypt = java_lazy("org.allbinary.logic.control.crypt.SuperCrypt")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local PaymentGatewayInterface = require("org.allbinary.business.user.commerce.money.payment.gateway.PaymentGatewayInterface")
+local PaymentGatewayData = java_lazy("org.allbinary.business.user.commerce.money.payment.gateway.PaymentGatewayData")
 local PaymentGatewayPrimaryKey = java_lazy("org.allbinary.business.user.commerce.money.payment.gateway.PaymentGatewayPrimaryKey")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend

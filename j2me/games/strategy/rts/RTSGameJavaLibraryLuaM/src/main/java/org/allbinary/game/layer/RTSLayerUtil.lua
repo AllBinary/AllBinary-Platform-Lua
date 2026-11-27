@@ -42,6 +42,7 @@ local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local BasicGeographicMap = java_lazy("org.allbinary.media.graphics.geography.map.BasicGeographicMap")
 local BaseRaceTrackGeographicMap = java_lazy("org.allbinary.media.graphics.geography.map.racetrack.BaseRaceTrackGeographicMap")
 local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
+local AllBinaryGameLayerManager = java_lazy("org.allbinary.game.layer.AllBinaryGameLayerManager")
 local FakeLayerManager = java_lazy("org.allbinary.game.layer.FakeLayerManager")
 local RTSLayer = java_lazy("org.allbinary.game.layer.RTSLayer")
 

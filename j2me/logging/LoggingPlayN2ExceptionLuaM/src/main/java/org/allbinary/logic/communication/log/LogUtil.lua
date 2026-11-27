@@ -33,6 +33,9 @@ local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local PlayN = java_lazy("playn.core.PlayN")
 local JsMethod = java_lazy("jsinterop.annotations.JsMethod")
 local JsConstructor = java_lazy("jsinterop.annotations.JsConstructor")
+local Log = java_lazy("org.allbinary.logic.communication.log.Log")
+local LogFormatUtil = java_lazy("org.allbinary.logic.communication.log.LogFormatUtil")
+local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
 
 local function java_idiv(a, b)
     local q = a / b

@@ -31,6 +31,7 @@ end
 -- local PageContext = require("javax.servlet.jsp.PageContext")
 local WeblisketSession = java_lazy("org.allbinary.logic.communication.http.request.session.WeblisketSession")
 local SearchRequest = java_lazy("org.allbinary.logic.control.search.SearchRequest")
+local TransformDocumentInterface = java_lazy("org.allbinary.logic.visual.transform.data.TransformDocumentInterface")
 local TransformStoreDocument = java_lazy("org.allbinary.logic.visual.transform.data.TransformStoreDocument")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend

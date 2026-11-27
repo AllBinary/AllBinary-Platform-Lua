@@ -39,6 +39,7 @@ local AbResponseHandler = java_lazy("org.allbinary.logic.communication.http.requ
 local LicensingException = java_lazy("org.allbinary.logic.system.security.licensing.LicensingException")
 local CustomTagSupport = require("tags.CustomTagSupport")
 local HelperTag = java_lazy("tags.HelperTag")
+local AbTagData = java_lazy("admin.tags.AbTagData")
 local ParentInventoryTagHelper = java_lazy("admin.tags.ParentInventoryTagHelper")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend

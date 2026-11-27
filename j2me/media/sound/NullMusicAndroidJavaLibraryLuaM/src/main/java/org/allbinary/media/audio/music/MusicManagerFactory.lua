@@ -29,6 +29,7 @@ local function java_real(class)
 end
 
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local MusicManager = java_lazy("org.allbinary.media.audio.music.MusicManager")
 local MusicService = java_lazy("org.allbinary.media.audio.music.MusicService")
 
 local function java_idiv(a, b)

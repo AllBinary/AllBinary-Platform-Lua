@@ -141,24 +141,24 @@ local TestableTimeTypeUtil = {}
     end
     
 
-    function TimeTypeTest._jinit(self, hour)
+    function TestableTimeTypeUtil._jinit(self, hour)
         java_super_init(TimeTypeUtil, self)
-        TimeTypeTest._init_fields(self)
+        TestableTimeTypeUtil._init_fields(self)
             self.hour = hour
         return self
     end
 
-    function TimeTypeTest.new(...)
-        local self = setmetatable({}, TimeTypeTest)
-        TimeTypeTest._jinit(self, ...)
+    function TestableTimeTypeUtil.new(...)
+        local self = setmetatable({}, TestableTimeTypeUtil)
+        TestableTimeTypeUtil._jinit(self, ...)
         return self
     end
     
 
-    function TimeTypeTest:getHourOfDay()
+    function TestableTimeTypeUtil:getHourOfDay()
             return self.hour
     end
-    java_overload(TimeTypeTest, "getHourOfDay", 0)
+    java_overload(TestableTimeTypeUtil, "getHourOfDay", 0)
 
 
 function TimeTypeTest._jinit(self)

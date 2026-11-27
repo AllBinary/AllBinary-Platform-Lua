@@ -32,6 +32,7 @@ local Activity = java_lazy("android.app.Activity")
 local MidletActivityBase = java_lazy("org.allbinary.android.activity.MidletActivityBase")
 local SimpleProgressActivityInterface = java_lazy("org.allbinary.android.activity.SimpleProgressActivityInterface")
 local ARunnable = require("org.allbinary.thread.ARunnable")
+local ProgressCanvas = java_lazy("org.allbinary.graphics.canvas.transition.progress.ProgressCanvas")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

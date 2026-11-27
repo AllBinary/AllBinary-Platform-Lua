@@ -36,6 +36,9 @@ local SmallIntegerSingletonFactory = java_lazy("org.allbinary.logic.math.SmallIn
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local Sound = java_lazy("org.allbinary.media.audio.Sound")
+local SoundStrings = java_lazy("org.allbinary.media.audio.SoundStrings")
+local SoundsFactoryInterface = java_lazy("org.allbinary.media.audio.SoundsFactoryInterface")
 
 local function java_idiv(a, b)
     local q = a / b

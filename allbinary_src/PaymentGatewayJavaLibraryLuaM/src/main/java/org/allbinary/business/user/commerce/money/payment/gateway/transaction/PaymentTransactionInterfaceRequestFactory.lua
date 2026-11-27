@@ -56,6 +56,7 @@ local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local GLOBALS2 = java_lazy("org.allbinary.globals.GLOBALS2")
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local PaymentTransactionInterface = java_lazy("org.allbinary.business.user.commerce.money.payment.gateway.transaction.PaymentTransactionInterface")
 local PaymentTransactionInterfaceFactory = java_lazy("org.allbinary.business.user.commerce.money.payment.gateway.transaction.PaymentTransactionInterfaceFactory")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend

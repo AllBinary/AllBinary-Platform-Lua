@@ -39,6 +39,8 @@ local WorkFlowEntityFactory = java_lazy("org.allbinary.data.tables.workflow.Work
 local WeblisketSession = java_lazy("org.allbinary.logic.communication.http.request.session.WeblisketSession")
 local AbPathData = java_lazy("org.allbinary.logic.io.path.AbPathData")
 local LicensingException = java_lazy("org.allbinary.logic.system.security.licensing.LicensingException")
+local WorkFlowData = java_lazy("org.allbinary.logic.control.workflow.WorkFlowData")
+local WorkFlowInterface = java_lazy("org.allbinary.logic.control.workflow.WorkFlowInterface")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

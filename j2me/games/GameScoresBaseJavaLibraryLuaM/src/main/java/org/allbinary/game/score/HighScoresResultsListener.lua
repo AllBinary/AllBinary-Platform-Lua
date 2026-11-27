@@ -28,6 +28,7 @@ local function java_real(class)
     return class
 end
 
+local HighScores = java_lazy("org.allbinary.game.score.HighScores")
 
 local function java_idiv(a, b)
     local q = a / b

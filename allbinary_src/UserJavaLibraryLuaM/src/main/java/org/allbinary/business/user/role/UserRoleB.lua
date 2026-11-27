@@ -34,6 +34,7 @@ local UserFactoryInterface = java_lazy("org.allbinary.business.user.UserFactoryI
 local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
 local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
 local UserRole = require("org.allbinary.business.user.role.UserRole")
+local BasicUserRole = java_lazy("org.allbinary.business.user.role.BasicUserRole")
 local UserRoleFactory = java_lazy("org.allbinary.business.user.role.UserRoleFactory")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.

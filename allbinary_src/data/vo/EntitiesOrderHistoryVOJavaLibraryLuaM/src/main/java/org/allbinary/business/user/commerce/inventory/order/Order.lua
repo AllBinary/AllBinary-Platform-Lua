@@ -44,6 +44,8 @@ local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidat
 local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
 local OrderInterface = require("org.allbinary.business.user.commerce.inventory.order.OrderInterface")
+local OrderData = java_lazy("org.allbinary.business.user.commerce.inventory.order.OrderData")
+local OrderHistoryData = java_lazy("org.allbinary.business.user.commerce.inventory.order.OrderHistoryData")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

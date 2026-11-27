@@ -35,6 +35,9 @@ local LoggingInitInfo = java_lazy("org.allbinary.logic.communication.log.config.
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 local Node = java_lazy("org.w3c.dom.Node")
+local LogConfigType = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigType")
+local LogConfigTypeData = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeData")
+local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

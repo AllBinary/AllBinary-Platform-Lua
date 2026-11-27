@@ -30,6 +30,7 @@ end
 
 local HashMap = java_lazy("java.util.HashMap")
 local FtpConfigurationInterface = require("org.allbinary.logic.communication.ftp.configuration.FtpConfigurationInterface")
+local FtpConfigurationData = java_lazy("org.allbinary.logic.communication.ftp.configuration.FtpConfigurationData")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

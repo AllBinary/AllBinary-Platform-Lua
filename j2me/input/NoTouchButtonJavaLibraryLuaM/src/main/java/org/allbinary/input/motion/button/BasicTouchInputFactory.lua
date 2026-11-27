@@ -36,6 +36,7 @@ local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local TouchButtonInput = java_lazy("org.allbinary.input.motion.button.TouchButtonInput")
 
 local function java_idiv(a, b)
     local q = a / b

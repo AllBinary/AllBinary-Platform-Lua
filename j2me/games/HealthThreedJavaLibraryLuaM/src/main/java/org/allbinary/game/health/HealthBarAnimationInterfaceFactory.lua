@@ -33,6 +33,7 @@ local AnimationInterfaceFactoryInterface = java_lazy("org.allbinary.animation.An
 local ProceduralAnimationInterfaceFactoryInterface = java_lazy("org.allbinary.animation.ProceduralAnimationInterfaceFactoryInterface")
 local AllBinaryLayer = java_lazy("org.allbinary.layer.AllBinaryLayer")
 local ScaleProperties = java_lazy("org.allbinary.media.ScaleProperties")
+local HealthBarAnimation = java_lazy("org.allbinary.game.health.HealthBarAnimation")
 local HealthBarThreedAnimation = java_lazy("org.allbinary.game.health.HealthBarThreedAnimation")
 
 local function java_idiv(a, b)

@@ -30,6 +30,7 @@ end
 
 local AbPathData = java_lazy("org.allbinary.logic.io.path.AbPathData")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local PATH_GLOBALS = java_lazy("org.allbinary.globals.PATH_GLOBALS")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -59,8 +60,8 @@ function FREEBLISKET_PATH_GLOBALS:_init_fields()
     self.TEMPLATEPATH = "template" .. tostring(AbPathData.getInstance().SEPARATOR)
     self.STYLEPATH = self.TEMPLATEPATH .. "style" .. tostring(AbPathData.getInstance().SEPARATOR)
     self.THEMEPATH = self.STYLEPATH .. "theme" .. tostring(AbPathData.getInstance().SEPARATOR)
-    self.DBINITPATH = tostring(self.PATH_GLOBALS:getInstance().INIT_PATH) .. "db" .. tostring(AbPathData.getInstance().SEPARATOR)
-    self.LINEDATAPATH = tostring(self.PATH_GLOBALS:getInstance().INIT_PATH) .. "lineData" .. tostring(AbPathData.getInstance().SEPARATOR)
+    self.DBINITPATH = tostring(PATH_GLOBALS.getInstance().INIT_PATH) .. "db" .. tostring(AbPathData.getInstance().SEPARATOR)
+    self.LINEDATAPATH = tostring(PATH_GLOBALS.getInstance().INIT_PATH) .. "lineData" .. tostring(AbPathData.getInstance().SEPARATOR)
     if self.CONFIGURATIONPATH == nil then self.CONFIGURATIONPATH = nil end
     if self.USERCONFIGURATIONPATH == nil then self.USERCONFIGURATIONPATH = nil end
     if self.CONTEXTCONFIGURATIONPATH == nil then self.CONTEXTCONFIGURATIONPATH = nil end
@@ -81,7 +82,7 @@ function FREEBLISKET_PATH_GLOBALS._jinit(self)
         stringBuffer:append(AbPathData.getInstance().SEPARATOR)
         self.INSTALLPATH = tostring(stringBuffer)
         stringBuffer:delete(0, stringBuffer:length())
-        stringBuffer:append(self.PATH_GLOBALS:getInstance().INIT_PATH)
+        stringBuffer:append(PATH_GLOBALS.getInstance().INIT_PATH)
         stringBuffer:append("views")
         stringBuffer:append(AbPathData.getInstance().SEPARATOR)
         self.XSLPATH = tostring(stringBuffer)

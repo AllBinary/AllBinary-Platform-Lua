@@ -115,7 +115,12 @@ local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 local GameCanvasRunnableInterface = require("org.allbinary.game.displayable.canvas.GameCanvasRunnableInterface")
 local MenuListener = require("org.allbinary.game.displayable.canvas.MenuListener")
+local BasicMenuInputProcessor = java_lazy("org.allbinary.game.displayable.canvas.BasicMenuInputProcessor")
+local FormUtil = java_lazy("org.allbinary.game.displayable.canvas.FormUtil")
 local GameInputMappingCanvas = java_lazy("org.allbinary.game.displayable.canvas.GameInputMappingCanvas")
+local GameRunnable = java_lazy("org.allbinary.game.displayable.canvas.GameRunnable")
+local NoMenuInputProcessor = java_lazy("org.allbinary.game.displayable.canvas.NoMenuInputProcessor")
+local NullWaitGameRunnable = java_lazy("org.allbinary.game.displayable.canvas.NullWaitGameRunnable")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

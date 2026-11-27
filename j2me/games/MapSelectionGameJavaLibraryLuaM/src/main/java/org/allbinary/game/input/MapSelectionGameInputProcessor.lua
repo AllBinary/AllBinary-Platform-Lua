@@ -48,6 +48,8 @@ local ThreadObjectUtil = java_lazy("org.allbinary.thread.ThreadObjectUtil")
 local TimeDelayHelper = java_lazy("org.allbinary.time.TimeDelayHelper")
 local GameInputProcessorInterface = require("org.allbinary.game.input.GameInputProcessorInterface")
 local PlayerGameInputCompositeInterface = require("org.allbinary.game.input.PlayerGameInputCompositeInterface")
+local GameInputProcessorComposite = java_lazy("org.allbinary.game.input.GameInputProcessorComposite")
+local PlayerGameInput = java_lazy("org.allbinary.game.input.PlayerGameInput")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)
@@ -158,21 +160,21 @@ local MapSelectionRunnable = {}
     end
     
 
-    function MapSelectionGameInputProcessor._jinit(self, inputProcessor)
+    function MapSelectionRunnable._jinit(self, inputProcessor)
         java_super_init(ABRunnable, self)
-        MapSelectionGameInputProcessor._init_fields(self)
+        MapSelectionRunnable._init_fields(self)
             self.inputProcessor = inputProcessor
         return self
     end
 
-    function MapSelectionGameInputProcessor.new(...)
-        local self = setmetatable({}, MapSelectionGameInputProcessor)
-        MapSelectionGameInputProcessor._jinit(self, ...)
+    function MapSelectionRunnable.new(...)
+        local self = setmetatable({}, MapSelectionRunnable)
+        MapSelectionRunnable._jinit(self, ...)
         return self
     end
     
 
-    function MapSelectionGameInputProcessor:run()
+    function MapSelectionRunnable:run()
             local try_ok, try_error, try_value = pcall(function()
                 self:setRunning(true)
                 SecondaryPlayerQueueFactory.getInstance():add(SelectSound.getInstance())
@@ -192,7 +194,7 @@ local MapSelectionRunnable = {}
                 logUtil:put(commonStrings.EXCEPTION, self, commonStrings.RUN, e)
             end
     end
-    java_overload(MapSelectionGameInputProcessor, "run", 0)
+    java_overload(MapSelectionRunnable, "run", 0)
 
 
 function MapSelectionGameInputProcessor:_init_fields()

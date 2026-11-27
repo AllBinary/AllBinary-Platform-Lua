@@ -29,6 +29,7 @@ local function java_real(class)
 end
 
 local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
+local HighScores = java_lazy("org.allbinary.game.score.HighScores")
 local NoHighScoresFactory = java_lazy("org.allbinary.game.score.NoHighScoresFactory")
 
 local function java_idiv(a, b)

@@ -28,6 +28,8 @@ local function java_real(class)
     return class
 end
 
+local GPoint = java_lazy("org.allbinary.graphics.GPoint")
+local PointFactory = java_lazy("org.allbinary.graphics.PointFactory")
 
 local function java_idiv(a, b)
     local q = a / b

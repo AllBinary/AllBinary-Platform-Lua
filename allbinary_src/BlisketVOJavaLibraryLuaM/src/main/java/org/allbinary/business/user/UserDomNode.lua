@@ -36,6 +36,7 @@ local ModDomHelper = java_lazy("org.allbinary.data.tree.dom.ModDomHelper")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
+local UserData = java_lazy("org.allbinary.business.user.UserData")
 
 local function java_idiv(a, b)
     local q = a / b

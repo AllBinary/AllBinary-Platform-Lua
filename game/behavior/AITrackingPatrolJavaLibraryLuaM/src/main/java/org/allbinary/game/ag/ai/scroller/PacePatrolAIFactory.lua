@@ -34,6 +34,7 @@ local GameInput = java_lazy("org.allbinary.game.input.GameInput")
 local AllBinaryLayer = java_lazy("org.allbinary.layer.AllBinaryLayer")
 local SmallIntegerSingletonFactory = java_lazy("org.allbinary.logic.math.SmallIntegerSingletonFactory")
 local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
+local BasePatrolAI = java_lazy("org.allbinary.game.ag.ai.scroller.BasePatrolAI")
 local PacePatrolAI = java_lazy("org.allbinary.game.ag.ai.scroller.PacePatrolAI")
 
 local function java_idiv(a, b)

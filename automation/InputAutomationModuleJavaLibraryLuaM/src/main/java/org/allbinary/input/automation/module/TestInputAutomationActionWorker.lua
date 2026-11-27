@@ -36,6 +36,7 @@ local ImageComparatorConstraintsInterface = java_lazy("org.allbinary.media.image
 local MotionRectangleConstraintsInterface = java_lazy("org.allbinary.media.image.comparison.motion.MotionRectangleConstraintsInterface")
 local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
 local AbstractInputAutomationWorker = require("org.allbinary.input.automation.module.AbstractInputAutomationWorker")
+local InputAutomationActionInterface = java_lazy("org.allbinary.input.automation.module.InputAutomationActionInterface")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

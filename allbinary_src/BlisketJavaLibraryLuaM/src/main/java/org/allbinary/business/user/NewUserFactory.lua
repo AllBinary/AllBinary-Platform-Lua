@@ -35,6 +35,8 @@ local UserRoleData = java_lazy("org.allbinary.business.user.role.UserRoleData")
 local RequestParams = java_lazy("org.allbinary.logic.communication.http.request.RequestParams")
 local TransformInfoHttpInterface = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoHttpInterface")
 local TransformInfoInterface = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
+local CreateUserFactory = java_lazy("org.allbinary.business.user.CreateUserFactory")
+local UserInterface = java_lazy("org.allbinary.business.user.UserInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

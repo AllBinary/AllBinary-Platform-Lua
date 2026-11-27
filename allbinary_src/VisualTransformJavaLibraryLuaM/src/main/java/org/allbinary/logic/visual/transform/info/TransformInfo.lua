@@ -63,6 +63,7 @@ local Document = java_lazy("org.w3c.dom.Document")
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local TransformInfoInterface = require("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
+local TransformInfoData = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoData")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

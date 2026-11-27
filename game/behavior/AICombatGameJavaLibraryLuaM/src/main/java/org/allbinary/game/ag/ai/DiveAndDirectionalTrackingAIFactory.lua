@@ -38,6 +38,7 @@ local Visitor = java_lazy("org.allbinary.logic.util.visitor.Visitor")
 local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
 local BasicProbabilityAIDataFactory = java_lazy("org.allbinary.game.ag.ai.BasicProbabilityAIDataFactory")
 local DiveAndDirectionalTrackingAI = java_lazy("org.allbinary.game.ag.ai.DiveAndDirectionalTrackingAI")
+local LastKeyAIVisitorFactory = java_lazy("org.allbinary.game.ag.ai.LastKeyAIVisitorFactory")
 local ThrustAIVisitorFactory = java_lazy("org.allbinary.game.ag.ai.ThrustAIVisitorFactory")
 
 local function java_idiv(a, b)

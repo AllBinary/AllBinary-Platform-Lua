@@ -50,6 +50,7 @@ local ViewPositionEvent = java_lazy("org.allbinary.view.event.ViewPositionEvent"
 local ViewPositionEventListenerInterface = java_lazy("org.allbinary.view.event.ViewPositionEventListenerInterface")
 local GameLayerUtil = java_lazy("org.allbinary.game.layer.GameLayerUtil")
 local SWTBlackPaintable = java_lazy("org.allbinary.game.layer.SWTBlackPaintable")
+local SWTUtil = java_lazy("org.allbinary.game.layer.SWTUtil")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

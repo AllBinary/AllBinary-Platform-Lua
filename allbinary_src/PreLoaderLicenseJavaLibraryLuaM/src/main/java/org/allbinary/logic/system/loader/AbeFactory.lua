@@ -39,6 +39,7 @@ local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local AbeClassLoader = java_lazy("org.allbinary.logic.system.loader.AbeClassLoader")
+local WebappClassLoaderInfo = java_lazy("org.allbinary.logic.system.loader.WebappClassLoaderInfo")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

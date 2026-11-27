@@ -29,6 +29,7 @@ local function java_real(class)
 end
 
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local SoundsFactoryInterface = java_lazy("org.allbinary.media.audio.SoundsFactoryInterface")
 
 local function java_idiv(a, b)
     local q = a / b

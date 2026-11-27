@@ -33,6 +33,7 @@ local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 local BasicArrayListUtil = java_lazy("org.allbinary.util.BasicArrayListUtil")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local BaseTouchInput = require("org.allbinary.input.motion.button.BaseTouchInput")
+local BasicTouchButtonsBuilder = java_lazy("org.allbinary.input.motion.button.BasicTouchButtonsBuilder")
 local BuildingScrollTouchButtonsBuilder = java_lazy("org.allbinary.input.motion.button.BuildingScrollTouchButtonsBuilder")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend

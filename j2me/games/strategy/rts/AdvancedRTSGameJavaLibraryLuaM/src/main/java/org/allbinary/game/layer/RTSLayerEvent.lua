@@ -29,6 +29,8 @@ end
 
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local AllBinaryEventObject = require("org.allbinary.logic.util.event.AllBinaryEventObject")
+local NullPathFindingLayer = java_lazy("org.allbinary.game.layer.NullPathFindingLayer")
+local PathFindingLayerInterface = java_lazy("org.allbinary.game.layer.PathFindingLayerInterface")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

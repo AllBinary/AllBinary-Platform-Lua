@@ -31,6 +31,7 @@ end
 local ScaleProperties = java_lazy("org.allbinary.media.ScaleProperties")
 local AnimationInterfaceFactoryInterface = require("org.allbinary.animation.AnimationInterfaceFactoryInterface")
 local ProceduralAnimationInterfaceFactoryInterface = require("org.allbinary.animation.ProceduralAnimationInterfaceFactoryInterface")
+local Animation = java_lazy("org.allbinary.animation.Animation")
 local NullRotationAnimation2 = java_lazy("org.allbinary.animation.NullRotationAnimation2")
 local RotationAnimation = java_lazy("org.allbinary.animation.RotationAnimation")
 

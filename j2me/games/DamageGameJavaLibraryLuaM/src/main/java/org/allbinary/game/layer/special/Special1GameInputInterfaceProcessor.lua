@@ -31,6 +31,7 @@ end
 local GameKeyEvent = java_lazy("org.allbinary.game.input.event.GameKeyEvent")
 local AllBinaryLayerManager = java_lazy("org.allbinary.layer.AllBinaryLayerManager")
 local SpecialGameInputInterfaceProcessor = require("org.allbinary.game.layer.special.SpecialGameInputInterfaceProcessor")
+local SpecialGameInputInterface = java_lazy("org.allbinary.game.layer.special.SpecialGameInputInterface")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

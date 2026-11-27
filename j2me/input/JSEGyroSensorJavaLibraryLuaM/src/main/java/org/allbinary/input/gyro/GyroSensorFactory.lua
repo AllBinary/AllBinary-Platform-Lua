@@ -28,6 +28,8 @@ local function java_real(class)
     return class
 end
 
+local AllBinaryOrientationSensor = java_lazy("org.allbinary.input.gyro.AllBinaryOrientationSensor")
+local NoGyroSensor = java_lazy("org.allbinary.input.gyro.NoGyroSensor")
 
 local function java_idiv(a, b)
     local q = a / b

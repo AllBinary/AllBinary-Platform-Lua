@@ -160,20 +160,20 @@ local TitleProgressBarSetProgressRunnable = {}
     end
     
 
-    function AndroidTitleProgressBar._jinit(self, androidTitleProgressBar)
-        AndroidTitleProgressBar._init_fields(self)
+    function TitleProgressBarSetProgressRunnable._jinit(self, androidTitleProgressBar)
+        TitleProgressBarSetProgressRunnable._init_fields(self)
             self.androidTitleProgressBar = androidTitleProgressBar
         return self
     end
 
-    function AndroidTitleProgressBar.new(...)
-        local self = setmetatable({}, AndroidTitleProgressBar)
-        AndroidTitleProgressBar._jinit(self, ...)
+    function TitleProgressBarSetProgressRunnable.new(...)
+        local self = setmetatable({}, TitleProgressBarSetProgressRunnable)
+        TitleProgressBarSetProgressRunnable._jinit(self, ...)
         return self
     end
     
 
-    function AndroidTitleProgressBar:run()
+    function TitleProgressBarSetProgressRunnable:run()
             local logUtil = LogUtil.getInstance()
             local commonStrings = CommonStrings.getInstance()
             local try_ok, try_error, try_value = pcall(function()
@@ -200,20 +200,20 @@ local TitleProgressBarPortionSetProgressRunnable = {}
     end
     
 
-    function AndroidTitleProgressBar._jinit(self, androidTitleProgressBar)
-        AndroidTitleProgressBar._init_fields(self)
+    function TitleProgressBarPortionSetProgressRunnable._jinit(self, androidTitleProgressBar)
+        TitleProgressBarPortionSetProgressRunnable._init_fields(self)
             self.androidTitleProgressBar = androidTitleProgressBar
         return self
     end
 
-    function AndroidTitleProgressBar.new(...)
-        local self = setmetatable({}, AndroidTitleProgressBar)
-        AndroidTitleProgressBar._jinit(self, ...)
+    function TitleProgressBarPortionSetProgressRunnable.new(...)
+        local self = setmetatable({}, TitleProgressBarPortionSetProgressRunnable)
+        TitleProgressBarPortionSetProgressRunnable._jinit(self, ...)
         return self
     end
     
 
-    function AndroidTitleProgressBar:run()
+    function TitleProgressBarPortionSetProgressRunnable:run()
             local logUtil = LogUtil.getInstance()
             local commonStrings = CommonStrings.getInstance()
             local try_ok, try_error, try_value = pcall(function()
@@ -240,20 +240,20 @@ local ShowTitleProgressBarRunnable = {}
     end
     
 
-    function AndroidTitleProgressBar._jinit(self, androidTitleProgressBar)
-        AndroidTitleProgressBar._init_fields(self)
+    function ShowTitleProgressBarRunnable._jinit(self, androidTitleProgressBar)
+        ShowTitleProgressBarRunnable._init_fields(self)
             self.androidTitleProgressBar = androidTitleProgressBar
         return self
     end
 
-    function AndroidTitleProgressBar.new(...)
-        local self = setmetatable({}, AndroidTitleProgressBar)
-        AndroidTitleProgressBar._jinit(self, ...)
+    function ShowTitleProgressBarRunnable.new(...)
+        local self = setmetatable({}, ShowTitleProgressBarRunnable)
+        ShowTitleProgressBarRunnable._jinit(self, ...)
         return self
     end
     
 
-    function AndroidTitleProgressBar:run()
+    function ShowTitleProgressBarRunnable:run()
             local logUtil = LogUtil.getInstance()
             local commonStrings = CommonStrings.getInstance()
             local try_ok, try_error, try_value = pcall(function()
@@ -280,20 +280,20 @@ local DismissTitleProgressBarRunnable = {}
     end
     
 
-    function AndroidTitleProgressBar._jinit(self, androidTitleProgressBar)
-        AndroidTitleProgressBar._init_fields(self)
+    function DismissTitleProgressBarRunnable._jinit(self, androidTitleProgressBar)
+        DismissTitleProgressBarRunnable._init_fields(self)
             self.androidTitleProgressBar = androidTitleProgressBar
         return self
     end
 
-    function AndroidTitleProgressBar.new(...)
-        local self = setmetatable({}, AndroidTitleProgressBar)
-        AndroidTitleProgressBar._jinit(self, ...)
+    function DismissTitleProgressBarRunnable.new(...)
+        local self = setmetatable({}, DismissTitleProgressBarRunnable)
+        DismissTitleProgressBarRunnable._jinit(self, ...)
         return self
     end
     
 
-    function AndroidTitleProgressBar:run()
+    function DismissTitleProgressBarRunnable:run()
             local logUtil = LogUtil.getInstance()
             local commonStrings = CommonStrings.getInstance()
             local try_ok, try_error, try_value = pcall(function()

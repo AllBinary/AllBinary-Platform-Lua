@@ -32,6 +32,7 @@ local GenericOperatingSystem = java_lazy("org.allbinary.logic.system.os.GenericO
 local OperatingSystems = java_lazy("org.allbinary.logic.system.os.OperatingSystems")
 local LinuxHardware = java_lazy("org.allbinary.logic.system.hardware.linux.LinuxHardware")
 local WindowsHardware = java_lazy("org.allbinary.logic.system.hardware.windows.WindowsHardware")
+local HardwareInterface = java_lazy("org.allbinary.logic.system.hardware.HardwareInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

@@ -33,6 +33,7 @@ local AngleFactory = java_lazy("org.allbinary.math.AngleFactory")
 local AngleInfo = java_lazy("org.allbinary.math.AngleInfo")
 local CircularIndexUtil = java_lazy("org.allbinary.util.CircularIndexUtil")
 local NullRotationAnimation = require("org.allbinary.animation.NullRotationAnimation")
+local IndexedAnimationBehavior = java_lazy("org.allbinary.animation.IndexedAnimationBehavior")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

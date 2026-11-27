@@ -29,6 +29,7 @@ local function java_real(class)
 end
 
 local ThreadPool = require("org.allbinary.thread.ThreadPool")
+local PriorityRunnable = java_lazy("org.allbinary.thread.PriorityRunnable")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

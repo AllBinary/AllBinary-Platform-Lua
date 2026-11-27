@@ -29,6 +29,7 @@ local function java_real(class)
 end
 
 local NoThirdPartyStore = java_lazy("org.allbinary.thirdparty.store.NoThirdPartyStore")
+local ThirdPartyStore = java_lazy("org.allbinary.thirdparty.store.ThirdPartyStore")
 
 local function java_idiv(a, b)
     local q = a / b

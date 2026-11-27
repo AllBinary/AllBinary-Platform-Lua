@@ -41,6 +41,8 @@ local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local TouchButtonInput = java_lazy("org.allbinary.input.motion.button.TouchButtonInput")
+local TouchButtonResource = java_lazy("org.allbinary.input.motion.button.TouchButtonResource")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

@@ -29,6 +29,7 @@ local function java_real(class)
 end
 
 local GameInputProcessor = require("org.allbinary.game.input.GameInputProcessor")
+local SpecialGameInputInterface = java_lazy("org.allbinary.game.layer.special.SpecialGameInputInterface")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

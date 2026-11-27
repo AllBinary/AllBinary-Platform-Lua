@@ -29,6 +29,7 @@ local function java_real(class)
 end
 
 local CacheInterface = require("org.allbinary.logic.util.cache.CacheInterface")
+local CacheableInterface = java_lazy("org.allbinary.logic.util.cache.CacheableInterface")
 
 local function java_idiv(a, b)
     local q = a / b

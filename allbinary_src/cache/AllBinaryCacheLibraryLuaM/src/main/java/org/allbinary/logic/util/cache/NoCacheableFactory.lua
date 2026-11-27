@@ -29,6 +29,7 @@ local function java_real(class)
 end
 
 local CacheableInterfaceFactoryInterface = require("org.allbinary.logic.util.cache.CacheableInterfaceFactoryInterface")
+local CacheableInterface = java_lazy("org.allbinary.logic.util.cache.CacheableInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

@@ -31,7 +31,10 @@ end
 local OpenGLFeatureUtil = java_lazy("org.allbinary.graphics.opengles.OpenGLFeatureUtil")
 local FeaturedAnimationInterfaceFactoryInterfaceFactory = java_lazy("org.allbinary.animation.FeaturedAnimationInterfaceFactoryInterfaceFactory")
 local AllBinaryLayer = java_lazy("org.allbinary.layer.AllBinaryLayer")
+local Health = java_lazy("org.allbinary.game.health.Health")
+local HealthBar = java_lazy("org.allbinary.game.health.HealthBar")
 local HealthBarAnimationInterfaceFactory = java_lazy("org.allbinary.game.health.HealthBarAnimationInterfaceFactory")
+local HealthBarTwodAnimation = java_lazy("org.allbinary.game.health.HealthBarTwodAnimation")
 
 local function java_idiv(a, b)
     local q = a / b

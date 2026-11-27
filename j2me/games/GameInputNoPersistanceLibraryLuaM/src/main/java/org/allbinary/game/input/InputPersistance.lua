@@ -42,6 +42,7 @@ local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local HashtableUtil = java_lazy("org.allbinary.util.HashtableUtil")
 local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
 local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
+local Input = java_lazy("org.allbinary.game.input.Input")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

@@ -28,6 +28,8 @@ local function java_real(class)
     return class
 end
 
+local PickedUpLayerInterface = java_lazy("org.allbinary.game.layer.pickup.PickedUpLayerInterface")
+local PickupProcessorInterface = java_lazy("org.allbinary.game.layer.pickup.PickupProcessorInterface")
 
 local function java_idiv(a, b)
     local q = a / b

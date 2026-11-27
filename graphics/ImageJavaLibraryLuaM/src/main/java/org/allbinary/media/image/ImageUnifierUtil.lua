@@ -36,6 +36,7 @@ end
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
 local ImageUnifierProperties = java_lazy("org.allbinary.media.image.ImageUnifierProperties")
+local ImageUtil = java_lazy("org.allbinary.media.image.ImageUtil")
 
 local function java_idiv(a, b)
     local q = a / b

@@ -31,6 +31,9 @@ end
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local GenericOperatingSystem = java_lazy("org.allbinary.logic.system.os.GenericOperatingSystem")
 local OperatingSystemFactory = java_lazy("org.allbinary.logic.system.os.OperatingSystemFactory")
+local ColorFillBasePaintable = java_lazy("org.allbinary.game.paint.ColorFillBasePaintable")
+local ColorFillPaintable = java_lazy("org.allbinary.game.paint.ColorFillPaintable")
+local OverScanColorFillPaintable = java_lazy("org.allbinary.game.paint.OverScanColorFillPaintable")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

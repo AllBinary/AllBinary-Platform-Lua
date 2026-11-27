@@ -36,6 +36,8 @@ local GenericProfile = java_lazy("org.allbinary.input.automation.module.generic.
 local NoImageComparatorConstraints = java_lazy("org.allbinary.input.automation.module.generic.constraints.NoImageComparatorConstraints")
 local NoMotionRectangleConstraints = java_lazy("org.allbinary.input.automation.module.generic.constraints.NoMotionRectangleConstraints")
 local RunnableInterface = java_lazy("org.allbinary.thread.RunnableInterface")
+local GenericInputAutomationAction = java_lazy("org.allbinary.input.automation.module.generic.GenericInputAutomationAction")
+local GenericInputAutomationWorker = java_lazy("org.allbinary.input.automation.module.generic.GenericInputAutomationWorker")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

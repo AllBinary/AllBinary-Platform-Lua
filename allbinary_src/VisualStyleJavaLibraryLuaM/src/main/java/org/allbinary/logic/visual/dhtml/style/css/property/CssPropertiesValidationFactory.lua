@@ -35,6 +35,7 @@ local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
 local ValidationInterface = java_lazy("org.allbinary.logic.control.validate.ValidationInterface")
 local Node = java_lazy("org.w3c.dom.Node")
 local NodeList = java_lazy("org.w3c.dom.NodeList")
+local CssPropertyData = java_lazy("org.allbinary.logic.visual.dhtml.style.css.property.CssPropertyData")
 local CssPropertyValidationFactory = java_lazy("org.allbinary.logic.visual.dhtml.style.css.property.CssPropertyValidationFactory")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend

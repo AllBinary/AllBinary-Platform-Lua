@@ -33,6 +33,7 @@ local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 local TableMappingInterface = java_lazy("org.allbinary.data.tables.TableMappingInterface")
 local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local ContextConfigurationData = java_lazy("org.allbinary.business.context.configuration.ContextConfigurationData")
 local ContextConfigurationInterface = java_lazy("org.allbinary.business.context.configuration.ContextConfigurationInterface")
 
 local function java_idiv(a, b)

@@ -34,6 +34,8 @@ local ModDomHelper = java_lazy("org.allbinary.data.tree.dom.ModDomHelper")
 local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
 local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
+local URLGLOBALS = java_lazy("org.allbinary.globals.URLGLOBALS")
+local UrlGlobalsData = java_lazy("org.allbinary.globals.UrlGlobalsData")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -74,7 +76,7 @@ end
 -- throws Exception
 function UrlGlobalsView:toXmlNode(document)
         local hashMap = StdUtil.getInstance():createHashMap()
-        hashMap:put(UrlGlobalsData.WEBAPPPATH, self.URLGLOBALS:getWebappPath())
+        hashMap:put(UrlGlobalsData.WEBAPPPATH, URLGLOBALS.getWebappPath())
         local node = ModDomHelper.createNameValueNodes(document, UrlGlobalsData.NAME, hashMap)
         return node
 end

@@ -33,6 +33,7 @@ local NullPaintable = java_lazy("org.allbinary.graphics.paint.NullPaintable")
 local PaintableInterface = java_lazy("org.allbinary.graphics.paint.PaintableInterface")
 local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local ProgressCanvas = java_lazy("org.allbinary.graphics.canvas.transition.progress.ProgressCanvas")
 
 local function java_idiv(a, b)
     local q = a / b

@@ -34,6 +34,7 @@ end
 -- local Image = require("javax.microedition.lcdui.Image")
 local OpenGLFeatureFactory = java_lazy("org.allbinary.graphics.opengles.OpenGLFeatureFactory")
 local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
+local PreResourceImageUtil = java_lazy("org.allbinary.image.PreResourceImageUtil")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

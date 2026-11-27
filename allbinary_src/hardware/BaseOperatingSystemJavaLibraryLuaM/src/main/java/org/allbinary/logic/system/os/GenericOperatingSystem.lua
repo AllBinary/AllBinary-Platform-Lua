@@ -34,6 +34,7 @@ local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
 local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
 local OperatingSystemInterface = require("org.allbinary.logic.system.os.OperatingSystemInterface")
+local SystemProperties = java_lazy("org.allbinary.logic.system.os.SystemProperties")
 
 local function java_idiv(a, b)
     local q = a / b

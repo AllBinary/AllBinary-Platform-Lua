@@ -30,6 +30,7 @@ end
 
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local AbPath = require("org.allbinary.logic.io.path.AbPath")
+local AbPathData = java_lazy("org.allbinary.logic.io.path.AbPathData")
 local PathUtil = java_lazy("org.allbinary.logic.io.path.PathUtil")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend

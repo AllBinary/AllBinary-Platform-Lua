@@ -29,6 +29,7 @@ local function java_real(class)
 end
 
 local CachePolicy = java_lazy("org.allbinary.logic.util.cache.CachePolicy")
+local CacheableInterfaceFactoryInterface = java_lazy("org.allbinary.logic.util.cache.CacheableInterfaceFactoryInterface")
 local PoolInterface = java_lazy("org.allbinary.logic.util.cache.PoolInterface")
 local PoolType = java_lazy("org.allbinary.logic.util.cache.PoolType")
 

@@ -28,6 +28,7 @@ local function java_real(class)
     return class
 end
 
+local Image = java_lazy("javax.microedition.lcdui.Image")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}

@@ -32,6 +32,8 @@ end
 -- local Logger = require("java.util.logging.Logger")
 local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local Log = java_lazy("org.allbinary.logic.communication.log.Log")
+local LogFormatUtil = java_lazy("org.allbinary.logic.communication.log.LogFormatUtil")
 
 local function java_idiv(a, b)
     local q = a / b

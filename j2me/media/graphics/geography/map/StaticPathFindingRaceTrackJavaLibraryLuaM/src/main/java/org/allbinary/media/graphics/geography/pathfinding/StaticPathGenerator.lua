@@ -44,6 +44,8 @@ local GeographicMapCellPosition = java_lazy("org.allbinary.media.graphics.geogra
 local PathData = java_lazy("org.allbinary.media.graphics.geography.map.PathData")
 local BasicArrayListUtil = java_lazy("org.allbinary.util.BasicArrayListUtil")
 local PathGeneratorInterface = require("org.allbinary.media.graphics.geography.pathfinding.PathGeneratorInterface")
+local PathCacheFactory = java_lazy("org.allbinary.media.graphics.geography.pathfinding.PathCacheFactory")
+local PathFindingInfo = java_lazy("org.allbinary.media.graphics.geography.pathfinding.PathFindingInfo")
 
 local function java_idiv(a, b)
     local q = a / b

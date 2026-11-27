@@ -36,6 +36,11 @@ local BasicArrayListUtil = java_lazy("org.allbinary.util.BasicArrayListUtil")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local CellPositionFactory = java_lazy("org.allbinary.graphics.CellPositionFactory")
 local BaseTouchInput = require("org.allbinary.input.motion.button.BaseTouchInput")
+local BasicTouchButtonCellPositionFactory = java_lazy("org.allbinary.input.motion.button.BasicTouchButtonCellPositionFactory")
+local BasicTouchInputFactory = java_lazy("org.allbinary.input.motion.button.BasicTouchInputFactory")
+local CommonButtons = java_lazy("org.allbinary.input.motion.button.CommonButtons")
+local TouchButton = java_lazy("org.allbinary.input.motion.button.TouchButton")
+local TouchButtonLocationHelper = java_lazy("org.allbinary.input.motion.button.TouchButtonLocationHelper")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

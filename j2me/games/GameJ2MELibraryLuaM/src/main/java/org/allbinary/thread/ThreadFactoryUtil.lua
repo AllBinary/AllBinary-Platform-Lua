@@ -39,6 +39,9 @@ local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local ABRunnable = java_lazy("org.allbinary.thread.ABRunnable")
+local PrimaryThreadPool = java_lazy("org.allbinary.thread.PrimaryThreadPool")
+local ThreadPool = java_lazy("org.allbinary.thread.ThreadPool")
 
 local function java_idiv(a, b)
     local q = a / b

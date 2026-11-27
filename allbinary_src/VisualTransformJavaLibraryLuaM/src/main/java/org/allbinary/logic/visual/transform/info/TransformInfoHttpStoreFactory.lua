@@ -32,6 +32,7 @@ local HashMap = java_lazy("java.util.HashMap")
 -- local PageContext = require("javax.servlet.jsp.PageContext")
 local TransformInfoFactoryInterface = require("org.allbinary.logic.visual.transform.info.TransformInfoFactoryInterface")
 local TransformInfoHttpStore = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoHttpStore")
+local TransformInfoInterface = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

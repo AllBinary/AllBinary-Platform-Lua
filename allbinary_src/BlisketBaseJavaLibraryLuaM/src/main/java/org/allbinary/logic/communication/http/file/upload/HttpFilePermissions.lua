@@ -38,6 +38,7 @@ local AbPath = java_lazy("org.allbinary.logic.io.path.AbPath")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local FileUploadData = java_lazy("org.allbinary.logic.communication.http.file.upload.FileUploadData")
 
 local function java_idiv(a, b)
     local q = a / b

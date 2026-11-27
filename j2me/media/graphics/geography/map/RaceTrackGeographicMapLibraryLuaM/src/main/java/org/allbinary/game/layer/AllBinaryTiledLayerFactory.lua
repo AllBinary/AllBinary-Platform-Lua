@@ -35,6 +35,8 @@ local AllBinaryTiledLayerFactoryInterface = java_lazy("org.allbinary.media.graph
 local RaceTrackData = java_lazy("org.allbinary.media.graphics.geography.map.racetrack.RaceTrackData")
 local RaceTrackInfo = java_lazy("org.allbinary.media.graphics.geography.map.racetrack.RaceTrackInfo")
 local TiledLayerFactory = java_lazy("org.allbinary.media.graphics.geography.map.racetrack.TiledLayerFactory")
+local AllBinaryJ2METiledLayer = java_lazy("org.allbinary.game.layer.AllBinaryJ2METiledLayer")
+local AllBinaryTiledLayer = java_lazy("org.allbinary.game.layer.AllBinaryTiledLayer")
 
 local function java_idiv(a, b)
     local q = a / b

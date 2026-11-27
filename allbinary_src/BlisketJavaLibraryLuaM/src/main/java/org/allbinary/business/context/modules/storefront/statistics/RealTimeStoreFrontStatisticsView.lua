@@ -41,6 +41,7 @@ local UserRoleFactory = java_lazy("org.allbinary.business.user.role.UserRoleFact
 local DomNodeInterface = java_lazy("org.allbinary.data.tree.dom.DomNodeInterface")
 local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
+local StoreFrontStatisticsData = java_lazy("org.allbinary.business.context.modules.storefront.statistics.StoreFrontStatisticsData")
 local StoreFrontStatisticsInterface = java_lazy("org.allbinary.business.context.modules.storefront.statistics.StoreFrontStatisticsInterface")
 
 local function java_idiv(a, b)

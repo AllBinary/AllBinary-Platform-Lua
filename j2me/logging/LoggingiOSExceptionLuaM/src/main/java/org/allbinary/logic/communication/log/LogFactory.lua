@@ -30,6 +30,7 @@ end
 
 local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local Log = java_lazy("org.allbinary.logic.communication.log.Log")
 
 local function java_idiv(a, b)
     local q = a / b

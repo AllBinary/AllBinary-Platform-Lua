@@ -63,6 +63,7 @@ local Node = java_lazy("org.w3c.dom.Node")
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local ThemeInterface = require("org.allbinary.logic.visual.theme.ThemeInterface")
+local ThemeData = java_lazy("org.allbinary.logic.visual.theme.ThemeData")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

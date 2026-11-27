@@ -34,6 +34,8 @@ local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local CommonPhoneStrings = java_lazy("org.allbinary.string.CommonPhoneStrings")
 local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
+local ColorData = java_lazy("org.allbinary.logic.visual.dhtml.style.color.ColorData")
+local ColorsData = java_lazy("org.allbinary.logic.visual.dhtml.style.color.ColorsData")
 
 local function java_idiv(a, b)
     local q = a / b

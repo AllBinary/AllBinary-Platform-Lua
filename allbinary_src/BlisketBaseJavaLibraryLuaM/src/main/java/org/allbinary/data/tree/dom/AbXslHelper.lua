@@ -33,6 +33,7 @@ local ByteArrayOutputStream = java_lazy("java.io.ByteArrayOutputStream")
 -- local StreamSource = require("javax.xml.transform.stream.StreamSource")
 local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
 local AbPath = java_lazy("org.allbinary.logic.io.path.AbPath")
+local XslHelper = java_lazy("org.allbinary.data.tree.dom.XslHelper")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

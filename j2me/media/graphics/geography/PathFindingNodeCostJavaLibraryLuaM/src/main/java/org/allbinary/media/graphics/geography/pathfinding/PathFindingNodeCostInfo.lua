@@ -32,6 +32,7 @@ local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
 -- java.lang.Comparable has no Lua module
 local Comparable = {}
+local PathFindingNodeCostInfoData = java_lazy("org.allbinary.media.graphics.geography.pathfinding.PathFindingNodeCostInfoData")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

@@ -28,6 +28,7 @@ local function java_real(class)
     return class
 end
 
+local PointFactory = java_lazy("org.allbinary.graphics.PointFactory")
 local Rectangle = java_lazy("org.allbinary.graphics.Rectangle")
 
 local function java_new_array(default, size, ...)

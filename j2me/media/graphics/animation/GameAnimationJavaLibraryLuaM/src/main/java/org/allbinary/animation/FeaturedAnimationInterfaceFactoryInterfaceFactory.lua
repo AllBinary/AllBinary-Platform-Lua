@@ -39,6 +39,10 @@ local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local AnimationInterfaceFactoryInterface = java_lazy("org.allbinary.animation.AnimationInterfaceFactoryInterface")
+local BasicAnimationInterfaceFactoryInterface = java_lazy("org.allbinary.animation.BasicAnimationInterfaceFactoryInterface")
+local NullAnimationFactory = java_lazy("org.allbinary.animation.NullAnimationFactory")
+local ProceduralAnimationInterfaceFactoryInterface = java_lazy("org.allbinary.animation.ProceduralAnimationInterfaceFactoryInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

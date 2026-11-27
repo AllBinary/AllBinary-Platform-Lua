@@ -38,6 +38,7 @@ local DataOutputStreamFactory = java_lazy("org.allbinary.logic.io.DataOutputStre
 local StreamUtil = java_lazy("org.allbinary.logic.io.StreamUtil")
 local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
 local Document = java_lazy("org.w3c.dom.Document")
+local DomDocumentHelper = java_lazy("org.allbinary.data.tree.dom.document.DomDocumentHelper")
 
 local function java_idiv(a, b)
     local q = a / b

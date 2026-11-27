@@ -32,6 +32,7 @@ local HashMap = java_lazy("java.util.HashMap")
 -- local PageContext = require("javax.servlet.jsp.PageContext")
 local LicensingException = java_lazy("org.allbinary.logic.system.security.licensing.LicensingException")
 local TagHelperFactoryInterface = require("admin.taghelpers.TagHelperFactoryInterface")
+local HelperFactory = java_lazy("admin.taghelpers.HelperFactory")
 
 local function java_idiv(a, b)
     local q = a / b

@@ -42,6 +42,8 @@ local OpenGLSurfaceChangedInterface = java_lazy("org.allbinary.image.opengles.Op
 local ViewPositionBase = java_lazy("org.allbinary.view.ViewPositionBase")
 local PickedUpLayerInterface = require("org.allbinary.game.layer.pickup.PickedUpLayerInterface")
 local PickupableInterface = require("org.allbinary.game.layer.pickup.PickupableInterface")
+local CountedPickedUpLayerInterfaceFactory = java_lazy("org.allbinary.game.layer.pickup.CountedPickedUpLayerInterfaceFactory")
+local PickedUpLayerInterfaceFactoryInterface = java_lazy("org.allbinary.game.layer.pickup.PickedUpLayerInterfaceFactoryInterface")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

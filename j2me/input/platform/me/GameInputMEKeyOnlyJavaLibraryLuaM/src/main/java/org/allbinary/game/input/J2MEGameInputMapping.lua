@@ -31,6 +31,9 @@ end
 local GamePersistanceStrings = java_lazy("org.allbinary.game.configuration.persistance.GamePersistanceStrings")
 local PersistentInputMapping = require("org.allbinary.game.input.mapping.PersistentInputMapping")
 local AbeClientInformationInterface = java_lazy("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
+local GameKeyFactory = java_lazy("org.allbinary.game.input.GameKeyFactory")
+local Input = java_lazy("org.allbinary.game.input.Input")
+local J2MEKeyFactory = java_lazy("org.allbinary.game.input.J2MEKeyFactory")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

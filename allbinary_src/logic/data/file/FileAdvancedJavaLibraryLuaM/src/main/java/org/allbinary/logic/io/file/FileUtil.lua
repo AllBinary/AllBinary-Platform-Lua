@@ -51,7 +51,10 @@ local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local File = java_lazy("java.io.File")
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
+local FilePathData = java_lazy("org.allbinary.logic.io.file.FilePathData")
 local FileUtil2 = java_lazy("org.allbinary.logic.io.file.FileUtil2")
+local FileWrapperUtil = java_lazy("org.allbinary.logic.io.file.FileWrapperUtil")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

@@ -30,6 +30,7 @@ end
 
 local AbPathData = java_lazy("org.allbinary.logic.io.path.AbPathData")
 local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
+local FilePathData = java_lazy("org.allbinary.logic.io.file.FilePathData")
 
 local function java_idiv(a, b)
     local q = a / b

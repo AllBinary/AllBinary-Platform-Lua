@@ -38,6 +38,7 @@ local BasicUserRole = java_lazy("org.allbinary.business.user.role.BasicUserRole"
 local BasicUserRoleData = java_lazy("org.allbinary.business.user.role.BasicUserRoleData")
 local BooleanFactory = java_lazy("org.allbinary.logic.java.bool.BooleanFactory")
 local GLOBALS2 = java_lazy("org.allbinary.globals.GLOBALS2")
+local WeblisketSessionData = java_lazy("org.allbinary.logic.communication.http.request.session.WeblisketSessionData")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

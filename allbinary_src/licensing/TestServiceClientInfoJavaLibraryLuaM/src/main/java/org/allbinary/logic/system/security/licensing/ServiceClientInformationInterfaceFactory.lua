@@ -28,6 +28,7 @@ local function java_real(class)
     return class
 end
 
+local AbeClientInformationInterface = java_lazy("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
 local TestClientInformation = java_lazy("org.allbinary.logic.system.security.licensing.TestClientInformation")
 
 local function java_idiv(a, b)

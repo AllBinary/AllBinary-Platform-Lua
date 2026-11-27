@@ -33,6 +33,7 @@ local HashMap = java_lazy("java.util.HashMap")
 local MoneyException = java_lazy("org.allbinary.business.user.commerce.money.MoneyException")
 local TableMappingInterface = java_lazy("org.allbinary.data.tables.TableMappingInterface")
 local RequestParams = java_lazy("org.allbinary.logic.communication.http.request.RequestParams")
+local Item = java_lazy("org.allbinary.business.user.commerce.inventory.item.Item")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

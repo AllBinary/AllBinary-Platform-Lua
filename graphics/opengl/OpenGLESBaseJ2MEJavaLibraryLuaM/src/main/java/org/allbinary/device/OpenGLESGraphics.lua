@@ -23,6 +23,7 @@ local FontDebugBase = java_lazy("org.allbinary.graphics.font.FontDebugBase")
 local OpenGLSurfaceChangedInterface = java_lazy("org.allbinary.image.opengles.OpenGLSurfaceChangedInterface")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local GraphicsInterface = require("org.allbinary.device.GraphicsInterface")
+local NullGL10 = java_lazy("org.allbinary.device.NullGL10")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

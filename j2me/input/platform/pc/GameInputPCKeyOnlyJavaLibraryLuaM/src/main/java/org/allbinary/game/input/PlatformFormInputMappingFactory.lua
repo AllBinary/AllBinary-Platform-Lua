@@ -32,6 +32,8 @@ local InputToGameKeyMapping = java_lazy("org.allbinary.game.input.mapping.InputT
 local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local GameKeyFactory = java_lazy("org.allbinary.game.input.GameKeyFactory")
+local PCKeyFactory = java_lazy("org.allbinary.game.input.PCKeyFactory")
 
 local function java_idiv(a, b)
     local q = a / b

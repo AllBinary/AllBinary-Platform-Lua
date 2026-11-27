@@ -32,6 +32,7 @@ local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local Activity = java_lazy("android.app.Activity")
 local ProgressRunnable = require("org.allbinary.graphics.canvas.transition.progress.ProgressRunnable")
+local ProgressCanvas = java_lazy("org.allbinary.graphics.canvas.transition.progress.ProgressCanvas")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

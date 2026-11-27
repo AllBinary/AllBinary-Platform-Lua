@@ -30,6 +30,7 @@ end
 
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local TouchButtonInput = java_lazy("org.allbinary.input.motion.button.TouchButtonInput")
 
 local function java_idiv(a, b)
     local q = a / b

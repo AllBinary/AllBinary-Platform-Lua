@@ -32,6 +32,7 @@ end
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local AbFileInputStream = java_lazy("org.allbinary.logic.io.AbFileInputStream")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

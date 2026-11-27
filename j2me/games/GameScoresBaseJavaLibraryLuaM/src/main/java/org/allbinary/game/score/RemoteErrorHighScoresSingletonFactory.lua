@@ -29,6 +29,7 @@ local function java_real(class)
 end
 
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local HighScores = java_lazy("org.allbinary.game.score.HighScores")
 
 local function java_idiv(a, b)
     local q = a / b

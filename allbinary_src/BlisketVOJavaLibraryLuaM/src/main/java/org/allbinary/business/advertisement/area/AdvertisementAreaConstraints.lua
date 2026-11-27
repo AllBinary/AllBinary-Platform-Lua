@@ -36,6 +36,7 @@ local TwoDimensionalConstraintInterface = java_lazy("org.allbinary.logic.control
 local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
 local AdvertisementAreaConstraintsInterface = require("org.allbinary.business.advertisement.area.AdvertisementAreaConstraintsInterface")
+local AdvertisementAreaData = java_lazy("org.allbinary.business.advertisement.area.AdvertisementAreaData")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

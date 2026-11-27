@@ -23,6 +23,8 @@ local StreamUtil = java_lazy("org.allbinary.logic.io.StreamUtil")
 local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
 local AbFileNativeUtil = java_lazy("org.allbinary.logic.io.file.AbFileNativeUtil")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local FileItem = java_lazy("org.apache.commons.fileupload.FileItem")
+local FileItemStream = java_lazy("org.apache.commons.fileupload.FileItemStream")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}

@@ -38,6 +38,7 @@ local OrderHistoryEntityFactory = java_lazy("org.allbinary.data.tables.user.comm
 local OrderHistoryEntityInterface = java_lazy("org.allbinary.data.tables.user.commerce.inventory.order.OrderHistoryEntityInterface")
 local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
 local StoreFrontOrdersHistoryStatisticsInterface = require("org.allbinary.business.context.modules.storefront.statistics.orders.history.StoreFrontOrdersHistoryStatisticsInterface")
+local StoreFrontOrdersHistoryStatisticsData = java_lazy("org.allbinary.business.context.modules.storefront.statistics.orders.history.StoreFrontOrdersHistoryStatisticsData")
 
 local function java_idiv(a, b)
     local q = a / b

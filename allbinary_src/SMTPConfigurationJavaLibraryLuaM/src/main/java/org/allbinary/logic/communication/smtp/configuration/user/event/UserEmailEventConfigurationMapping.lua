@@ -33,6 +33,7 @@ local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 local TableMappingInterface = java_lazy("org.allbinary.data.tables.TableMappingInterface")
 local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local UserEmailEventConfigurationData = java_lazy("org.allbinary.logic.communication.smtp.configuration.user.event.UserEmailEventConfigurationData")
 local UserEmailEventConfigurationInterface = java_lazy("org.allbinary.logic.communication.smtp.configuration.user.event.UserEmailEventConfigurationInterface")
 
 local function java_idiv(a, b)

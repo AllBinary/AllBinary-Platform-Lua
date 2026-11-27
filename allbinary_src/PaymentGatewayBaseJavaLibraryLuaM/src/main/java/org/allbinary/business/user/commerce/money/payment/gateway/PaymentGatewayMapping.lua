@@ -32,6 +32,7 @@ local HashMap = java_lazy("java.util.HashMap")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 local TableMappingInterface = java_lazy("org.allbinary.data.tables.TableMappingInterface")
+local PaymentGatewayInterface = java_lazy("org.allbinary.business.user.commerce.money.payment.gateway.PaymentGatewayInterface")
 
 local function java_idiv(a, b)
     local q = a / b

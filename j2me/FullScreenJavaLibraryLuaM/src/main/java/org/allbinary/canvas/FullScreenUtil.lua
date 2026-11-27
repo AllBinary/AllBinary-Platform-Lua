@@ -32,6 +32,7 @@ end
 local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
 local MainFeatureFactory = java_lazy("org.allbinary.game.configuration.feature.MainFeatureFactory")
 -- local CommandListener = require("javax.microedition.lcdui.CommandListener")
+local RunnableCanvas = java_lazy("org.allbinary.canvas.RunnableCanvas")
 
 local function java_idiv(a, b)
     local q = a / b

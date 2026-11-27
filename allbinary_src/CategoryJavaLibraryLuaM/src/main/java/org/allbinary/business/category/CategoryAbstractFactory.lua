@@ -38,6 +38,8 @@ local Node = java_lazy("org.w3c.dom.Node")
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local CategoryFactoryInterface = require("org.allbinary.business.category.CategoryFactoryInterface")
+local Category = java_lazy("org.allbinary.business.category.Category")
+local CategoryInterface = java_lazy("org.allbinary.business.category.CategoryInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

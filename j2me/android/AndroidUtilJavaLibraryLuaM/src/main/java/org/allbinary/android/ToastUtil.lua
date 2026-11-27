@@ -59,22 +59,22 @@ ToastUtil.javaClassName = "org.allbinary.android.ToastUtil"
     end
     
 
-    function ToastUtil._jinit(self, context, string_, time)
-        ToastUtil._init_fields(self)
+    function MakeToast._jinit(self, context, string_, time)
+        MakeToast._init_fields(self)
             self.context = context
             self.string_ = string_
             self.time = time
         return self
     end
 
-    function ToastUtil.new(...)
-        local self = setmetatable({}, ToastUtil)
-        ToastUtil._jinit(self, ...)
+    function MakeToast.new(...)
+        local self = setmetatable({}, MakeToast)
+        MakeToast._jinit(self, ...)
         return self
     end
     
 
-    function ToastUtil:run()
+    function MakeToast:run()
             local logUtil = LogUtil.getInstance()
             local try_ok, try_error, try_value = pcall(function()
                 Toast.makeText(self.context, self.string_, self.time):show()

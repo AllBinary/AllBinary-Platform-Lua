@@ -37,6 +37,7 @@ local FrameUtil = java_lazy("org.allbinary.math.FrameUtil")
 local CircularIndexUtil = java_lazy("org.allbinary.util.CircularIndexUtil")
 local IndexedAnimation = require("org.allbinary.animation.IndexedAnimation")
 local RotationAnimationInterface = require("org.allbinary.animation.RotationAnimationInterface")
+local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

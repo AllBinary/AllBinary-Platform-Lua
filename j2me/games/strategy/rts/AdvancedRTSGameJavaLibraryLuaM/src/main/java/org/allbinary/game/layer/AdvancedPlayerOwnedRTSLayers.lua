@@ -32,6 +32,8 @@ local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 local PlayerOwnedRTSLayers = require("org.allbinary.game.layer.PlayerOwnedRTSLayers")
+local AllBinaryGameLayer = java_lazy("org.allbinary.game.layer.AllBinaryGameLayer")
+local RTSLayer = java_lazy("org.allbinary.game.layer.RTSLayer")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

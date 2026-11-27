@@ -29,6 +29,8 @@ local function java_real(class)
 end
 
 local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
+local OpenGLConfiguration = java_lazy("org.allbinary.graphics.opengles.OpenGLConfiguration")
+local OpenGLFeatureFactory = java_lazy("org.allbinary.graphics.opengles.OpenGLFeatureFactory")
 
 local function java_idiv(a, b)
     local q = a / b

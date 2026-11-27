@@ -34,6 +34,7 @@ local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
 local AbeClientInformation = require("org.allbinary.logic.system.security.licensing.AbeClientInformation")
+local PartnerIdentifierFileUtil = java_lazy("org.allbinary.logic.system.security.licensing.PartnerIdentifierFileUtil")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

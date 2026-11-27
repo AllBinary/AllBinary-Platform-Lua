@@ -33,6 +33,8 @@ local DomNodeInterface = java_lazy("org.allbinary.data.tree.dom.DomNodeInterface
 local ModDomHelper = java_lazy("org.allbinary.data.tree.dom.ModDomHelper")
 local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
+local StoreFrontUsersStatisticsData = java_lazy("org.allbinary.business.context.modules.storefront.statistics.users.StoreFrontUsersStatisticsData")
+local StoreFrontUsersStatisticsInterface = java_lazy("org.allbinary.business.context.modules.storefront.statistics.users.StoreFrontUsersStatisticsInterface")
 
 local function java_idiv(a, b)
     local q = a / b

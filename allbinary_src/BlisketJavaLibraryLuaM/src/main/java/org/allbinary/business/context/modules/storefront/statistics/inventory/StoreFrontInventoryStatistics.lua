@@ -38,6 +38,7 @@ local InventoryEntityFactory = java_lazy("org.allbinary.data.tables.user.commerc
 local InventoryEntityInterface = java_lazy("org.allbinary.data.tables.user.commerce.inventory.item.InventoryEntityInterface")
 local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
 local StoreFrontInventoryStatisticsInterface = require("org.allbinary.business.context.modules.storefront.statistics.inventory.StoreFrontInventoryStatisticsInterface")
+local StoreFrontInventoryStatisticsData = java_lazy("org.allbinary.business.context.modules.storefront.statistics.inventory.StoreFrontInventoryStatisticsData")
 
 local function java_idiv(a, b)
     local q = a / b

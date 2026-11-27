@@ -37,6 +37,7 @@ local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local AbeHttpRequestInfoData = java_lazy("org.allbinary.logic.communication.http.request.AbeHttpRequestInfoData")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

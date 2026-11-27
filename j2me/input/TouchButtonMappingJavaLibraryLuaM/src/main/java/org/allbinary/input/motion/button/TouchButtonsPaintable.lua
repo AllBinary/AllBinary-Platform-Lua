@@ -33,6 +33,8 @@ local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local BasicColorSetUtil = java_lazy("org.allbinary.graphics.color.BasicColorSetUtil")
 local Paintable = require("org.allbinary.graphics.paint.Paintable")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local TouchButton = java_lazy("org.allbinary.input.motion.button.TouchButton")
+local TouchButtonFactory = java_lazy("org.allbinary.input.motion.button.TouchButtonFactory")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

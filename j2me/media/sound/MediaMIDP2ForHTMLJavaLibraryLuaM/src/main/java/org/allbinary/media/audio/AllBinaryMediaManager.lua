@@ -37,6 +37,9 @@ local GameFeatureFactory = java_lazy("org.allbinary.game.configuration.feature.G
 local ProgressCanvasFactory = java_lazy("org.allbinary.graphics.canvas.transition.progress.ProgressCanvasFactory")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local NoPlayer = java_lazy("org.allbinary.media.audio.NoPlayer")
+local Sounds = java_lazy("org.allbinary.media.audio.Sounds")
+local SoundsFactoryInterface = java_lazy("org.allbinary.media.audio.SoundsFactoryInterface")
 
 local function java_idiv(a, b)
     local q = a / b

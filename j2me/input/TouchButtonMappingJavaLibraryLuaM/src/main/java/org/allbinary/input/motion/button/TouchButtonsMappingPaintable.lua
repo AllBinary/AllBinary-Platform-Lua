@@ -34,6 +34,11 @@ local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local Paintable = require("org.allbinary.graphics.paint.Paintable")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local BasicTouchInputFactory = java_lazy("org.allbinary.input.motion.button.BasicTouchInputFactory")
+local CommonButtons = java_lazy("org.allbinary.input.motion.button.CommonButtons")
+local TouchButton = java_lazy("org.allbinary.input.motion.button.TouchButton")
+local TouchButtonBlankResource = java_lazy("org.allbinary.input.motion.button.TouchButtonBlankResource")
+local TouchButtonLocationHelper = java_lazy("org.allbinary.input.motion.button.TouchButtonLocationHelper")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}

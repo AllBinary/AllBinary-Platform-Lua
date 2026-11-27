@@ -35,6 +35,8 @@ local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
 local GeographicMapCellPositionBaseFactory = require("org.allbinary.media.graphics.geography.map.GeographicMapCellPositionBaseFactory")
+local BasicGeographicMap = java_lazy("org.allbinary.media.graphics.geography.map.BasicGeographicMap")
+local BasicGeographicMapCellPositionFactory = java_lazy("org.allbinary.media.graphics.geography.map.BasicGeographicMapCellPositionFactory")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

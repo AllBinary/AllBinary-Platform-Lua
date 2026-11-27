@@ -29,6 +29,8 @@ local function java_real(class)
 end
 
 local Sound = require("org.allbinary.media.audio.Sound")
+local AllBinaryMediaManager = java_lazy("org.allbinary.media.audio.AllBinaryMediaManager")
+local PlayerComposite = java_lazy("org.allbinary.media.audio.PlayerComposite")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

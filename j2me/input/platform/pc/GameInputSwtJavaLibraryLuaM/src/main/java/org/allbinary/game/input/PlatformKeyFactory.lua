@@ -29,6 +29,7 @@ local function java_real(class)
 end
 
 local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
+local Input = java_lazy("org.allbinary.game.input.Input")
 local PCGameKey = java_lazy("org.allbinary.game.input.PCGameKey")
 local PCKeyFactory = java_lazy("org.allbinary.game.input.PCKeyFactory")
 

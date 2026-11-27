@@ -39,6 +39,7 @@ local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
 local TimeUtil = java_lazy("org.allbinary.time.TimeUtil")
+local DownloadItemData = java_lazy("org.allbinary.business.user.commerce.inventory.item.download.DownloadItemData")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

@@ -33,6 +33,7 @@ local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local StringValidationUtil = java_lazy("org.allbinary.logic.string.StringValidationUtil")
 local AbFilePath = java_lazy("org.allbinary.logic.io.path.AbFilePath")
 local AbPath = java_lazy("org.allbinary.logic.io.path.AbPath")
+local AbPathData = java_lazy("org.allbinary.logic.io.path.AbPathData")
 
 local function java_idiv(a, b)
     local q = a / b

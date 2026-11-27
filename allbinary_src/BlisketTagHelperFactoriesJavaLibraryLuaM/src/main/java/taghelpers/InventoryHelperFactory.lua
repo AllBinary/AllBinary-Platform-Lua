@@ -35,6 +35,7 @@ local LicensingException = java_lazy("org.allbinary.logic.system.security.licens
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local InventoryHelper = java_lazy("taghelpers.InventoryHelper")
 
 local function java_idiv(a, b)
     local q = a / b

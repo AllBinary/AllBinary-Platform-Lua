@@ -31,6 +31,7 @@ end
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
 local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local GPoint = java_lazy("org.allbinary.graphics.GPoint")
 
 local function java_idiv(a, b)
     local q = a / b

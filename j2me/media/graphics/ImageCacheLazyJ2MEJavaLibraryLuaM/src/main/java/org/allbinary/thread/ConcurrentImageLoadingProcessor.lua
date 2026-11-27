@@ -34,6 +34,7 @@ local ImageCache = java_lazy("org.allbinary.image.ImageCache")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local BaseImageLoadingProcessor = require("org.allbinary.thread.BaseImageLoadingProcessor")
+local ABRunnable = require("org.allbinary.thread.ABRunnable")
 local ImageThreadPool = java_lazy("org.allbinary.thread.ImageThreadPool")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
@@ -143,21 +144,21 @@ local ImageCacheRunnable = {}
     end
     
 
-    function ConcurrentImageLoadingProcessor._jinit(self, imageCache)
+    function ImageCacheRunnable._jinit(self, imageCache)
         java_super_init(ABRunnable, self)
-        ConcurrentImageLoadingProcessor._init_fields(self)
+        ImageCacheRunnable._init_fields(self)
             self.imageCache = imageCache
         return self
     end
 
-    function ConcurrentImageLoadingProcessor.new(...)
-        local self = setmetatable({}, ConcurrentImageLoadingProcessor)
-        ConcurrentImageLoadingProcessor._jinit(self, ...)
+    function ImageCacheRunnable.new(...)
+        local self = setmetatable({}, ImageCacheRunnable)
+        ImageCacheRunnable._jinit(self, ...)
         return self
     end
     
 
-    function ConcurrentImageLoadingProcessor:run()
+    function ImageCacheRunnable:run()
             local logUtil = LogUtil.getInstance()
             local try_ok, try_error, try_value = pcall(function()
                 self:setRunning(true)
@@ -178,7 +179,7 @@ local ImageCacheRunnable = {}
                 logUtil:put(commonStrings.EXCEPTION, self, commonStrings.RUN, e)
             end
     end
-    java_overload(ConcurrentImageLoadingProcessor, "run", 0)
+    java_overload(ImageCacheRunnable, "run", 0)
 
 
 function ConcurrentImageLoadingProcessor:_init_fields()

@@ -34,6 +34,8 @@ local AngleInfo = java_lazy("org.allbinary.math.AngleInfo")
 local ScaleProperties = java_lazy("org.allbinary.media.ScaleProperties")
 local AnimationInterfaceFactoryInterface = require("org.allbinary.animation.AnimationInterfaceFactoryInterface")
 local ProceduralAnimationInterfaceFactoryInterface = require("org.allbinary.animation.ProceduralAnimationInterfaceFactoryInterface")
+local Animation = java_lazy("org.allbinary.animation.Animation")
+local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 local NullRotationAnimation = java_lazy("org.allbinary.animation.NullRotationAnimation")
 
 local function java_idiv(a, b)

@@ -47,6 +47,7 @@ local Node = java_lazy("org.w3c.dom.Node")
 local NodeList = java_lazy("org.w3c.dom.NodeList")
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local CssElementData = java_lazy("org.allbinary.logic.visual.dhtml.style.css.CssElementData")
 local CssElementsValidationFactory = java_lazy("org.allbinary.logic.visual.dhtml.style.css.CssElementsValidationFactory")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.

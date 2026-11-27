@@ -30,6 +30,7 @@ end
 
 -- local GL10 = require("javax.microedition.khronos.opengles.GL10")
 local OpenGLESImageTranslate = require("org.allbinary.image.opengles.OpenGLESImageTranslate")
+local OpenGLESImage = java_lazy("org.allbinary.image.opengles.OpenGLESImage")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

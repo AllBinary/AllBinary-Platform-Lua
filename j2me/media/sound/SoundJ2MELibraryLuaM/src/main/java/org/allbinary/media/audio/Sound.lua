@@ -33,6 +33,7 @@ local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local SoundInterface = require("org.allbinary.media.audio.SoundInterface")
 local Runnable = require("java.lang.Runnable")
+local NoPlayer = java_lazy("org.allbinary.media.audio.NoPlayer")
 
 local function java_idiv(a, b)
     local q = a / b

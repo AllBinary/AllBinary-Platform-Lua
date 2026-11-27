@@ -45,6 +45,7 @@ local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local ScaleProperties = java_lazy("org.allbinary.media.ScaleProperties")
 local CircularIndexUtil = java_lazy("org.allbinary.util.CircularIndexUtil")
+local BaseImageAnimationFactory = java_lazy("org.allbinary.animation.image.BaseImageAnimationFactory")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)
@@ -192,34 +193,34 @@ function LazyImageRotationAnimation._jinit(self, layoutIndex, instanceId, scaleP
         end
         
 
-        function LazyImageRotationAnimation._jinit(self, lazyImageRotationAnimation)
+        function ActualRotationAnimation._jinit(self, lazyImageRotationAnimation)
             java_super_init(RotationAnimation, self, AngleInfo.getInstance(AngleFactory.getInstance().QUARTER_TOTAL_ANGLE), CircularIndexUtil.createInstance(4), self.animationBehavior)
-            LazyImageRotationAnimation._init_fields(self)
+            ActualRotationAnimation._init_fields(self)
                 -- super(...) made self above
                 self.lazyImageRotationAnimation = lazyImageRotationAnimation
             return self
         end
 
-        function LazyImageRotationAnimation.new(...)
-            local self = setmetatable({}, LazyImageRotationAnimation)
-            LazyImageRotationAnimation._jinit(self, ...)
+        function ActualRotationAnimation.new(...)
+            local self = setmetatable({}, ActualRotationAnimation)
+            ActualRotationAnimation._jinit(self, ...)
             return self
         end
         
 
-        function LazyImageRotationAnimation:setFrame(index)
+        function ActualRotationAnimation:setFrame(index)
                 self.index = index
         end
-        java_overload(LazyImageRotationAnimation, "setFrame", 1, function(java_a1) return true and type(java_a1) == "number" end)
+        java_overload(ActualRotationAnimation, "setFrame", 1, function(java_a1) return true and type(java_a1) == "number" end)
         
 
-        function LazyImageRotationAnimation:getFrame()
+        function ActualRotationAnimation:getFrame()
                 return self.index
         end
-        java_overload(LazyImageRotationAnimation, "getFrame", 0)
+        java_overload(ActualRotationAnimation, "getFrame", 0)
         
 
-        function LazyImageRotationAnimation:paintXY(graphics, x, y)
+        function ActualRotationAnimation:paintXY(graphics, x, y)
                 local try_ok, try_error, try_value = pcall(function()
                     ImageCacheFactory.getInstance():insertFirst(self)
                     self.lazyImageRotationAnimation.animation = self.lazyImageRotationAnimation.NULL_INDEX_ANIMATION
@@ -231,10 +232,10 @@ function LazyImageRotationAnimation._jinit(self, layoutIndex, instanceId, scaleP
                     logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.PROCESS, e)
                 end
         end
-        java_overload(LazyImageRotationAnimation, "paintXY", 3, function(java_a1, java_a2, java_a3) return true and (java_a1 == nil or java_is(java_a1, "Graphics")) and type(java_a2) == "number" and type(java_a3) == "number" end)
+        java_overload(ActualRotationAnimation, "paintXY", 3, function(java_a1, java_a2, java_a3) return true and (java_a1 == nil or java_is(java_a1, "Graphics")) and type(java_a2) == "number" and type(java_a3) == "number" end)
         
 
-        function LazyImageRotationAnimation:paintThreedXYZ(graphics, x, y, z)
+        function ActualRotationAnimation:paintThreedXYZ(graphics, x, y, z)
                 local try_ok, try_error, try_value = pcall(function()
                     ImageCacheFactory.getInstance():insertFirst(self)
                     self.lazyImageRotationAnimation.animation = self.lazyImageRotationAnimation.NULL_INDEX_ANIMATION
@@ -246,7 +247,7 @@ function LazyImageRotationAnimation._jinit(self, layoutIndex, instanceId, scaleP
                     logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.PROCESS, e)
                 end
         end
-        java_overload(LazyImageRotationAnimation, "paintThreedXYZ", 4, function(java_a1, java_a2, java_a3, java_a4) return true and (java_a1 == nil or java_is(java_a1, "Graphics")) and type(java_a2) == "number" and type(java_a3) == "number" and type(java_a4) == "number" end)
+        java_overload(ActualRotationAnimation, "paintThreedXYZ", 4, function(java_a1, java_a2, java_a3, java_a4) return true and (java_a1 == nil or java_is(java_a1, "Graphics")) and type(java_a2) == "number" and type(java_a3) == "number" and type(java_a4) == "number" end)
 
         self.animation = ActualRotationAnimation.new(self)
     return self

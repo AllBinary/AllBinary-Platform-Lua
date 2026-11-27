@@ -36,6 +36,7 @@ local BasicGeographicMapCellPositionFactory = java_lazy("org.allbinary.media.gra
 local GeographicMapCellTypeFactory = java_lazy("org.allbinary.media.graphics.geography.map.GeographicMapCellTypeFactory")
 local DropCellPositionHistory = java_lazy("org.allbinary.media.graphics.geography.map.drop.DropCellPositionHistory")
 local CustomMapGeneratorBase = require("org.allbinary.media.graphics.geography.map.racetrack.CustomMapGeneratorBase")
+local RaceTrackGeographicMap = java_lazy("org.allbinary.media.graphics.geography.map.racetrack.RaceTrackGeographicMap")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

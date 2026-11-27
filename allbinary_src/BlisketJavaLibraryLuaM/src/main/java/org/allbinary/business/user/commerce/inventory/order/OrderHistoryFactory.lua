@@ -33,6 +33,7 @@ local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local OrderHistory = java_lazy("org.allbinary.business.user.commerce.inventory.order.OrderHistory")
 
 local function java_idiv(a, b)
     local q = a / b

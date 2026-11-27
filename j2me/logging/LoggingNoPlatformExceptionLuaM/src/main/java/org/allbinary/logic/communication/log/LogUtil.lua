@@ -28,6 +28,7 @@ local function java_real(class)
     return class
 end
 
+local Log = java_lazy("org.allbinary.logic.communication.log.Log")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

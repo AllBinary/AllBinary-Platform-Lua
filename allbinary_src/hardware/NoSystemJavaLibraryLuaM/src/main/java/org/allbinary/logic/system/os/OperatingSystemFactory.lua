@@ -31,6 +31,8 @@ end
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local GenericOperatingSystem = java_lazy("org.allbinary.logic.system.os.GenericOperatingSystem")
+local NoOperatingSystem = java_lazy("org.allbinary.logic.system.os.NoOperatingSystem")
 
 local function java_idiv(a, b)
     local q = a / b

@@ -20,6 +20,7 @@ local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
 local ActivityFractureControllerUtilFactory = java_lazy("org.allbinary.game.input.ActivityFractureControllerUtilFactory")
 local AndroidGameKey = java_lazy("org.allbinary.game.input.AndroidGameKey")
 local AndroidKeyFactory = java_lazy("org.allbinary.game.input.AndroidKeyFactory")
+local Input = java_lazy("org.allbinary.game.input.Input")
 
 local function java_idiv(a, b)
     local q = a / b

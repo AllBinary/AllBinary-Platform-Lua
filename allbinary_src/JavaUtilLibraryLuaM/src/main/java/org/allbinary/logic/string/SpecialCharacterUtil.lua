@@ -34,6 +34,7 @@ local AbPathData = java_lazy("org.allbinary.logic.io.path.AbPathData")
 local MathData = java_lazy("org.allbinary.logic.math.MathData")
 local CommonPhoneStrings = java_lazy("org.allbinary.string.CommonPhoneStrings")
 local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
+local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 
 local function java_idiv(a, b)
     local q = a / b

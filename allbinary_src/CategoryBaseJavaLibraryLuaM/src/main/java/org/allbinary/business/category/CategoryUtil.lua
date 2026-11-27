@@ -37,6 +37,7 @@ local StringUtils = java_lazy("org.apache.commons.lang3.StringUtils")
 local Attr = java_lazy("org.w3c.dom.Attr")
 local NamedNodeMap = java_lazy("org.w3c.dom.NamedNodeMap")
 local Node = java_lazy("org.w3c.dom.Node")
+local CategoryData = java_lazy("org.allbinary.business.category.CategoryData")
 
 local function java_idiv(a, b)
     local q = a / b

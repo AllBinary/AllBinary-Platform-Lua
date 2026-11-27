@@ -32,6 +32,7 @@ end
 local SmallIntegerSingletonFactory = java_lazy("org.allbinary.logic.math.SmallIntegerSingletonFactory")
 local NoTimeDelayHelper = java_lazy("org.allbinary.time.NoTimeDelayHelper")
 local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
+local InputProbability = java_lazy("org.allbinary.game.ag.ai.InputProbability")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}

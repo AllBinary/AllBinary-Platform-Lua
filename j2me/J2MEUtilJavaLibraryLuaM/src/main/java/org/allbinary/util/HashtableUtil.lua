@@ -30,6 +30,7 @@ end
 
 local Enumeration = java_lazy("java.util.Enumeration")
 local JsType = java_lazy("jsinterop.annotations.JsType")
+local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListS = java_lazy("org.allbinary.util.BasicArrayListS")
 local EnumerationUtil = java_lazy("org.allbinary.util.EnumerationUtil")

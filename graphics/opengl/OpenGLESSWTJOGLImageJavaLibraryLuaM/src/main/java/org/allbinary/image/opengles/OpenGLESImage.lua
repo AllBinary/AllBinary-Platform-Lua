@@ -45,7 +45,9 @@ local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 local OpenGLSurfaceChangedInterface = require("org.allbinary.image.opengles.OpenGLSurfaceChangedInterface")
 local OpenGLESImageProcessor = java_lazy("org.allbinary.image.opengles.OpenGLESImageProcessor")
+local OpenGLESImageProperties = java_lazy("org.allbinary.image.opengles.OpenGLESImageProperties")
 local OpenGLESImageTranslate = java_lazy("org.allbinary.image.opengles.OpenGLESImageTranslate")
+local OpenGLImageCacheFactory = java_lazy("org.allbinary.image.opengles.OpenGLImageCacheFactory")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

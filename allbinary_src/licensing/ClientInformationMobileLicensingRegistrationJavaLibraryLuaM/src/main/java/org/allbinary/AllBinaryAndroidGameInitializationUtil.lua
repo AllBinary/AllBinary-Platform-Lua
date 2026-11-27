@@ -31,6 +31,7 @@ end
 local LicenseInitInfoUtil = java_lazy("org.allbinary.business.init.LicenseInitInfoUtil")
 local ResourceUtil = java_lazy("org.allbinary.data.resource.ResourceUtil")
 local PartnerIdentifierFileUtil = java_lazy("org.allbinary.logic.system.security.licensing.PartnerIdentifierFileUtil")
+local AndroidResources = java_lazy("org.allbinary.AndroidResources")
 
 local function java_idiv(a, b)
     local q = a / b

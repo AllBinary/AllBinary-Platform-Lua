@@ -35,6 +35,7 @@ local DownloadItemsRequestHelperFactory = java_lazy("admin.taghelpers.DownloadIt
 local AbResponseHandler = java_lazy("org.allbinary.logic.communication.http.request.AbResponseHandler")
 local GLOBALS2 = java_lazy("org.allbinary.globals.GLOBALS2")
 local TableTag = require("admin.tags.TableTag")
+local AbTagData = java_lazy("admin.tags.AbTagData")
 local ParentInventoryTagHelper = java_lazy("admin.tags.ParentInventoryTagHelper")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend

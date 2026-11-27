@@ -39,6 +39,7 @@ local AbPathData = java_lazy("org.allbinary.logic.io.path.AbPathData")
 local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
 local UserConfiguration = java_lazy("org.allbinary.business.user.modules.configuration.UserConfiguration")
+local UserConfigurationData = java_lazy("org.allbinary.business.user.modules.configuration.UserConfigurationData")
 local UserConfigurationInterface = java_lazy("org.allbinary.business.user.modules.configuration.UserConfigurationInterface")
 local UserConfigurationView = java_lazy("org.allbinary.business.user.modules.configuration.UserConfigurationView")
 

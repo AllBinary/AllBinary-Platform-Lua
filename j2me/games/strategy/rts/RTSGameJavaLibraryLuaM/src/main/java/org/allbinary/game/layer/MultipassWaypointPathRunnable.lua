@@ -160,24 +160,24 @@ local FirstRunnable = {}
     end
     
 
-    function MultipassWaypointPathRunnable._jinit(self, multipassWaypointPathRunnable)
+    function FirstRunnable._jinit(self, multipassWaypointPathRunnable)
         java_super_init(ARunnable, self)
-        MultipassWaypointPathRunnable._init_fields(self)
+        FirstRunnable._init_fields(self)
             self.multipassWaypointPathRunnable = multipassWaypointPathRunnable
         return self
     end
 
-    function MultipassWaypointPathRunnable.new(...)
-        local self = setmetatable({}, MultipassWaypointPathRunnable)
-        MultipassWaypointPathRunnable._jinit(self, ...)
+    function FirstRunnable.new(...)
+        local self = setmetatable({}, FirstRunnable)
+        FirstRunnable._jinit(self, ...)
         return self
     end
     
 
-    function MultipassWaypointPathRunnable:run()
+    function FirstRunnable:run()
             self.multipassWaypointPathRunnable:processFirstRunnable()
     end
-    java_overload(MultipassWaypointPathRunnable, "run", 0)
+    java_overload(FirstRunnable, "run", 0)
 
 --    private boolean first = true;
     local SecondRunnable = {}
@@ -192,24 +192,24 @@ local FirstRunnable = {}
     end
     
 
-    function MultipassWaypointPathRunnable._jinit(self, multipassWaypointPathRunnable)
+    function SecondRunnable._jinit(self, multipassWaypointPathRunnable)
         java_super_init(ARunnable, self)
-        MultipassWaypointPathRunnable._init_fields(self)
+        SecondRunnable._init_fields(self)
             self.multipassWaypointPathRunnable = multipassWaypointPathRunnable
         return self
     end
 
-    function MultipassWaypointPathRunnable.new(...)
-        local self = setmetatable({}, MultipassWaypointPathRunnable)
-        MultipassWaypointPathRunnable._jinit(self, ...)
+    function SecondRunnable.new(...)
+        local self = setmetatable({}, SecondRunnable)
+        SecondRunnable._jinit(self, ...)
         return self
     end
     
 
-    function MultipassWaypointPathRunnable:run()
+    function SecondRunnable:run()
             self.multipassWaypointPathRunnable:processSecondRunnable()
     end
-    java_overload(MultipassWaypointPathRunnable, "run", 0)
+    java_overload(SecondRunnable, "run", 0)
 
 local EndRunnable = {}
     EndRunnable.__index = EndRunnable
@@ -223,24 +223,24 @@ local EndRunnable = {}
     end
     
 
-    function MultipassWaypointPathRunnable._jinit(self, multipassWaypointPathRunnable)
+    function EndRunnable._jinit(self, multipassWaypointPathRunnable)
         java_super_init(ARunnable, self)
-        MultipassWaypointPathRunnable._init_fields(self)
+        EndRunnable._init_fields(self)
             self.multipassWaypointPathRunnable = multipassWaypointPathRunnable
         return self
     end
 
-    function MultipassWaypointPathRunnable.new(...)
-        local self = setmetatable({}, MultipassWaypointPathRunnable)
-        MultipassWaypointPathRunnable._jinit(self, ...)
+    function EndRunnable.new(...)
+        local self = setmetatable({}, EndRunnable)
+        EndRunnable._jinit(self, ...)
         return self
     end
     
 
-    function MultipassWaypointPathRunnable:run()
+    function EndRunnable:run()
             self.multipassWaypointPathRunnable:processEndRunnable()
     end
-    java_overload(MultipassWaypointPathRunnable, "run", 0)
+    java_overload(EndRunnable, "run", 0)
 
 
 function MultipassWaypointPathRunnable:_init_fields()

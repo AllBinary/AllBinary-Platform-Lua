@@ -32,6 +32,8 @@ local Activity = java_lazy("android.app.Activity")
 local Configuration = java_lazy("android.content.res.Configuration")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
+local TouchScreenFactory = java_lazy("org.allbinary.input.motion.button.TouchScreenFactory")
+local TouchScreenTypesFactory = java_lazy("org.allbinary.input.motion.button.TouchScreenTypesFactory")
 
 local function java_idiv(a, b)
     local q = a / b

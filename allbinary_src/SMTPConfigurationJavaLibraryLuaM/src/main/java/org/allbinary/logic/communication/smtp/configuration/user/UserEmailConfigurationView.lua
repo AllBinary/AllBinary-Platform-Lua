@@ -43,6 +43,7 @@ local NodeList = java_lazy("org.w3c.dom.NodeList")
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local UserEmailConfiguration = java_lazy("org.allbinary.logic.communication.smtp.configuration.user.UserEmailConfiguration")
+local UserEmailConfigurationData = java_lazy("org.allbinary.logic.communication.smtp.configuration.user.UserEmailConfigurationData")
 local UserEmailConfigurationInterface = java_lazy("org.allbinary.logic.communication.smtp.configuration.user.UserEmailConfigurationInterface")
 local UserEmailConfigurationMapping = java_lazy("org.allbinary.logic.communication.smtp.configuration.user.UserEmailConfigurationMapping")
 

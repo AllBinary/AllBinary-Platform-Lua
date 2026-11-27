@@ -32,6 +32,7 @@ local DomNodeInterface = java_lazy("org.allbinary.data.tree.dom.DomNodeInterface
 local ModDomHelper = java_lazy("org.allbinary.data.tree.dom.ModDomHelper")
 local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
+local TransformInfoData = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoData")
 local TransformInfoInterface = java_lazy("org.allbinary.logic.visual.transform.info.TransformInfoInterface")
 
 local function java_idiv(a, b)

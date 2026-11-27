@@ -131,12 +131,18 @@ local GameCanvasRunnableInterface = require("org.allbinary.game.displayable.canv
 local MenuListener = require("org.allbinary.game.displayable.canvas.MenuListener")
 local DemoPaintableInterface = require("org.allbinary.game.displayable.canvas.DemoPaintableInterface")
 local AllBinaryGameCanvas = java_lazy("org.allbinary.game.displayable.canvas.AllBinaryGameCanvas")
+local BasicMenuInputProcessor = java_lazy("org.allbinary.game.displayable.canvas.BasicMenuInputProcessor")
+local CommandFormInputProcessor = java_lazy("org.allbinary.game.displayable.canvas.CommandFormInputProcessor")
 local DemoCanvasProgressUtil = java_lazy("org.allbinary.game.displayable.canvas.DemoCanvasProgressUtil")
 local DemoGameRunnable = java_lazy("org.allbinary.game.displayable.canvas.DemoGameRunnable")
 local DemoGameStartupRunnable = java_lazy("org.allbinary.game.displayable.canvas.DemoGameStartupRunnable")
 local DemoLimitedCommandTextItemArrayFactory = java_lazy("org.allbinary.game.displayable.canvas.DemoLimitedCommandTextItemArrayFactory")
+local FormUtil = java_lazy("org.allbinary.game.displayable.canvas.FormUtil")
 local GameInputMappingCanvas = java_lazy("org.allbinary.game.displayable.canvas.GameInputMappingCanvas")
+local GameRunnable = java_lazy("org.allbinary.game.displayable.canvas.GameRunnable")
+local NoMenuInputProcessor = java_lazy("org.allbinary.game.displayable.canvas.NoMenuInputProcessor")
 local NullGameCanvas = java_lazy("org.allbinary.game.displayable.canvas.NullGameCanvas")
+local NullWaitGameRunnable = java_lazy("org.allbinary.game.displayable.canvas.NullWaitGameRunnable")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

@@ -31,6 +31,7 @@ end
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local Input = require("org.allbinary.game.input.Input")
+local InputFactory = java_lazy("org.allbinary.game.input.InputFactory")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

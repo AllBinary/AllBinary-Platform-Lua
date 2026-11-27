@@ -28,6 +28,7 @@ local function java_real(class)
     return class
 end
 
+local GameMidlet = java_lazy("org.allbinary.game.midlet.GameMidlet")
 
 local function java_idiv(a, b)
     local q = a / b

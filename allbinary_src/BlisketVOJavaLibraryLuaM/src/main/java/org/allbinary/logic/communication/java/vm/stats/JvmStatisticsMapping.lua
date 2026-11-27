@@ -34,6 +34,7 @@ local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 local TableMappingInterface = java_lazy("org.allbinary.data.tables.TableMappingInterface")
 local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
 local JvmStatistics = require("org.allbinary.logic.communication.java.vm.stats.JvmStatistics")
+local JvmStatisticsData = java_lazy("org.allbinary.logic.communication.java.vm.stats.JvmStatisticsData")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

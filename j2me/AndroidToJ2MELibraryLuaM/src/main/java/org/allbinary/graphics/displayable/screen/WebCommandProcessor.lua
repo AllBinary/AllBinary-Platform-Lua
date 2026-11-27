@@ -38,6 +38,7 @@ local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local AboutCommandProcessor = java_lazy("org.allbinary.graphics.displayable.screen.AboutCommandProcessor")
 
 local function java_idiv(a, b)
     local q = a / b

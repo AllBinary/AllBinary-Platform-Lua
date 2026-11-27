@@ -38,6 +38,7 @@ local PrimitiveIntUtil = java_lazy("org.allbinary.logic.math.PrimitiveIntUtil")
 local ImageScaleUtil = java_lazy("org.allbinary.media.image.ImageScaleUtil")
 local AndroidImageInterface = java_lazy("org.microemu.android.device.AndroidImageInterface")
 local BaseImageAnimationFactory = require("org.allbinary.animation.image.BaseImageAnimationFactory")
+local ImageAnimation = java_lazy("org.allbinary.animation.image.ImageAnimation")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

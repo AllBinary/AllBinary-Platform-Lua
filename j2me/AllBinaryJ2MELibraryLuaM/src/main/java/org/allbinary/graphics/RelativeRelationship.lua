@@ -30,6 +30,8 @@ end
 
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListUtil = java_lazy("org.allbinary.util.BasicArrayListUtil")
+local GPoint = java_lazy("org.allbinary.graphics.GPoint")
+local PointFactory = java_lazy("org.allbinary.graphics.PointFactory")
 
 local function java_idiv(a, b)
     local q = a / b

@@ -28,6 +28,8 @@ local function java_real(class)
     return class
 end
 
+local ScreenCapture = java_lazy("org.allbinary.graphics.ScreenCapture")
+local ScreenCaptureNoneFactory = java_lazy("org.allbinary.graphics.ScreenCaptureNoneFactory")
 
 local function java_idiv(a, b)
     local q = a / b

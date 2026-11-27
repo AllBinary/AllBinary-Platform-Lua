@@ -50,6 +50,8 @@ local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local URLGLOBALS = java_lazy("org.allbinary.globals.URLGLOBALS")
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local AbSqlTable = java_lazy("org.allbinary.logic.communication.sql.AbSqlTable")
+local SqlStrings = java_lazy("org.allbinary.logic.communication.sql.SqlStrings")
 
 local function java_idiv(a, b)
     local q = a / b

@@ -28,6 +28,7 @@ local function java_real(class)
     return class
 end
 
+local TouchScreenFactory = java_lazy("org.allbinary.input.motion.button.TouchScreenFactory")
 
 local function java_idiv(a, b)
     local q = a / b

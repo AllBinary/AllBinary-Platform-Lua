@@ -37,6 +37,7 @@ local UnitLayer = java_lazy("org.allbinary.game.layer.unit.UnitLayer")
 local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local Visitor = require("org.allbinary.logic.util.visitor.Visitor")
+local SelectedRTSLayersPlayerGameInput = java_lazy("org.allbinary.game.input.SelectedRTSLayersPlayerGameInput")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

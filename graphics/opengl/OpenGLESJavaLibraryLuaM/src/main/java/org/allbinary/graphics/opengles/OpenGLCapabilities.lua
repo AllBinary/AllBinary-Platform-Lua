@@ -44,6 +44,8 @@ local Tokenizer = java_lazy("org.allbinary.logic.string.tokens.Tokenizer")
 local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
 local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
+local OpenGLFeature = java_lazy("org.allbinary.graphics.opengles.OpenGLFeature")
+local OpenGLFeatureFactory = java_lazy("org.allbinary.graphics.opengles.OpenGLFeatureFactory")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}

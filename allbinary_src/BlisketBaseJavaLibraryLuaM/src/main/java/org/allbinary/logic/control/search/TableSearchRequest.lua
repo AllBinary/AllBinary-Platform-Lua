@@ -33,6 +33,7 @@ local FREEBLISKET_PATH_GLOBALS = java_lazy("org.allbinary.globals.FREEBLISKET_PA
 local URLGLOBALS = java_lazy("org.allbinary.globals.URLGLOBALS")
 local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
+local SearchData = java_lazy("org.allbinary.logic.control.search.SearchData")
 local SearchParams = java_lazy("org.allbinary.logic.control.search.SearchParams")
 
 local function java_idiv(a, b)

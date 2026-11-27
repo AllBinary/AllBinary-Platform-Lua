@@ -34,6 +34,7 @@ local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local Payment = java_lazy("org.allbinary.business.user.commerce.money.payment.Payment")
+local PaymentInterface = java_lazy("org.allbinary.business.user.commerce.money.payment.PaymentInterface")
 
 local function java_idiv(a, b)
     local q = a / b

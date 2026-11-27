@@ -30,6 +30,7 @@ end
 
 local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
+local Log = java_lazy("org.allbinary.logic.communication.log.Log")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

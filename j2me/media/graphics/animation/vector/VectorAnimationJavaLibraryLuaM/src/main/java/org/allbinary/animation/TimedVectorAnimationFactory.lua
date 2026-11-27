@@ -30,7 +30,9 @@ end
 
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local VectorAnimationFactoryInterface = require("org.allbinary.animation.VectorAnimationFactoryInterface")
+local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 local TimedVectorAnimation = java_lazy("org.allbinary.animation.TimedVectorAnimation")
+local VectorAnimation = java_lazy("org.allbinary.animation.VectorAnimation")
 
 local function java_idiv(a, b)
     local q = a / b

@@ -34,6 +34,8 @@ local BasicTouchInputFactory = java_lazy("org.allbinary.input.motion.button.Basi
 local TouchMotionGestureFactory = java_lazy("org.allbinary.input.motion.gesture.TouchMotionGestureFactory")
 local TrackballMotionGestureFactory = java_lazy("org.allbinary.input.motion.gesture.TrackballMotionGestureFactory")
 local AbeClientInformationInterface = java_lazy("org.allbinary.logic.system.security.licensing.AbeClientInformationInterface")
+local Input = java_lazy("org.allbinary.game.input.Input")
+local PCKeyFactory = java_lazy("org.allbinary.game.input.PCKeyFactory")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

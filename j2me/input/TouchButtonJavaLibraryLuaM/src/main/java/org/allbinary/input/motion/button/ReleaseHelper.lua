@@ -29,6 +29,7 @@ local function java_real(class)
 end
 
 local GameKeyEvent = java_lazy("org.allbinary.game.input.event.GameKeyEvent")
+local TouchButtonInput = java_lazy("org.allbinary.input.motion.button.TouchButtonInput")
 local TouchButtonRecognizer = java_lazy("org.allbinary.input.motion.button.TouchButtonRecognizer")
 
 local function java_idiv(a, b)

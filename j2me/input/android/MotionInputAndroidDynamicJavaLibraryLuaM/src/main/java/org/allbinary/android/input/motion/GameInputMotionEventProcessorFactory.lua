@@ -31,6 +31,7 @@ end
 local AndroidInfoFactory = java_lazy("org.allbinary.android.AndroidInfoFactory")
 local GameInputMotionEventProcessorAPI1 = java_lazy("org.allbinary.android.input.motion.api1.GameInputMotionEventProcessorAPI1")
 local GameInputMotionEventProcessorAPI5 = java_lazy("org.allbinary.android.input.motion.api5.GameInputMotionEventProcessorAPI5")
+local BaseGameInputMotionEventProcessor = java_lazy("org.allbinary.android.input.motion.BaseGameInputMotionEventProcessor")
 
 local function java_idiv(a, b)
     local q = a / b

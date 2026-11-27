@@ -28,6 +28,7 @@ local function java_real(class)
     return class
 end
 
+local ABCustomItem = java_lazy("org.allbinary.graphics.form.item.ABCustomItem")
 
 local function java_idiv(a, b)
     local q = a / b

@@ -109,8 +109,8 @@ function BasePathFindingInfoFactory:init(geographicMapInterface, pathFindingInfo
         end
         
 
-        function BasePathFindingInfoFactory._jinit(self, pathFindingInfoFactory, geographicMapInterface, pathFindingInfo, mapArray)
-            BasePathFindingInfoFactory._init_fields(self)
+        function RaceTrackGeographicMapCellPositionFactoryInitVisitor._jinit(self, pathFindingInfoFactory, geographicMapInterface, pathFindingInfo, mapArray)
+            RaceTrackGeographicMapCellPositionFactoryInitVisitor._init_fields(self)
                 self.pathFindingInfoFactory = pathFindingInfoFactory
                 self.geographicMapInterface = geographicMapInterface
                 self.pathFindingInfo = pathFindingInfo
@@ -121,15 +121,15 @@ function BasePathFindingInfoFactory:init(geographicMapInterface, pathFindingInfo
             return self
         end
 
-        function BasePathFindingInfoFactory.new(...)
-            local self = setmetatable({}, BasePathFindingInfoFactory)
-            BasePathFindingInfoFactory._jinit(self, ...)
+        function RaceTrackGeographicMapCellPositionFactoryInitVisitor.new(...)
+            local self = setmetatable({}, RaceTrackGeographicMapCellPositionFactoryInitVisitor)
+            RaceTrackGeographicMapCellPositionFactoryInitVisitor._jinit(self, ...)
             return self
         end
         
 
         -- throws Exception
-        function BasePathFindingInfoFactory:visit(tiledLayer, cellPosition)
+        function RaceTrackGeographicMapCellPositionFactoryInitVisitor:visit(tiledLayer, cellPosition)
                 local row = cellPosition:getRow()
                 local column = cellPosition:getColumn()
                 local try_ok, try_error, try_value = pcall(function()

@@ -36,6 +36,7 @@ local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local RunnableInterface = java_lazy("org.allbinary.thread.RunnableInterface")
 local TimeDelayHelper = java_lazy("org.allbinary.time.TimeDelayHelper")
+local InputAutomationActionInterface = java_lazy("org.allbinary.input.automation.module.InputAutomationActionInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

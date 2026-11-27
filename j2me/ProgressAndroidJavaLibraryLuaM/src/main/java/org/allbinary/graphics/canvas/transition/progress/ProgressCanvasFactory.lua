@@ -34,6 +34,7 @@ local PaintableInterface = java_lazy("org.allbinary.graphics.paint.PaintableInte
 local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local AndroidBasicTitleProgressBar = java_lazy("org.allbinary.graphics.canvas.transition.progress.AndroidBasicTitleProgressBar")
+local ProgressCanvas = java_lazy("org.allbinary.graphics.canvas.transition.progress.ProgressCanvas")
 
 local function java_idiv(a, b)
     local q = a / b

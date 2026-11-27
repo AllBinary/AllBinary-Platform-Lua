@@ -28,6 +28,7 @@ local function java_real(class)
     return class
 end
 
+local Log = java_lazy("org.allbinary.logic.communication.log.Log")
 
 local function java_idiv(a, b)
     local q = a / b

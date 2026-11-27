@@ -31,6 +31,8 @@ end
 local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
 local GameFeatureFactory = java_lazy("org.allbinary.game.configuration.feature.GameFeatureFactory")
 local AllBinaryLayer = java_lazy("org.allbinary.layer.AllBinaryLayer")
+local CollisionHelper = java_lazy("org.allbinary.game.collision.CollisionHelper")
+local SourceCollisionHelper = java_lazy("org.allbinary.game.collision.SourceCollisionHelper")
 
 local function java_idiv(a, b)
     local q = a / b

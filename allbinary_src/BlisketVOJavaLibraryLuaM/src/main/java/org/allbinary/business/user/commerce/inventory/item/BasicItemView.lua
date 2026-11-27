@@ -41,6 +41,8 @@ local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local BasicItemData = java_lazy("org.allbinary.business.user.commerce.inventory.item.BasicItemData")
+local ItemInterface = java_lazy("org.allbinary.business.user.commerce.inventory.item.ItemInterface")
 
 local function java_idiv(a, b)
     local q = a / b

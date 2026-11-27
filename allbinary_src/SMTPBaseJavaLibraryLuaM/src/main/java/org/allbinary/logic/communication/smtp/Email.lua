@@ -53,6 +53,7 @@ local Node = java_lazy("org.w3c.dom.Node")
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local EmailInterface = require("org.allbinary.logic.communication.smtp.EmailInterface")
+local EmailData = java_lazy("org.allbinary.logic.communication.smtp.EmailData")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

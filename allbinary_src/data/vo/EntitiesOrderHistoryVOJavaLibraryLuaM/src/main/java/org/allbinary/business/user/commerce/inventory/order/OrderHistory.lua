@@ -50,6 +50,8 @@ local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
 local Order = require("org.allbinary.business.user.commerce.inventory.order.Order")
 local OrderHistoryInterface = require("org.allbinary.business.user.commerce.inventory.order.OrderHistoryInterface")
+local OrderData = java_lazy("org.allbinary.business.user.commerce.inventory.order.OrderData")
+local OrderHistoryData = java_lazy("org.allbinary.business.user.commerce.inventory.order.OrderHistoryData")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

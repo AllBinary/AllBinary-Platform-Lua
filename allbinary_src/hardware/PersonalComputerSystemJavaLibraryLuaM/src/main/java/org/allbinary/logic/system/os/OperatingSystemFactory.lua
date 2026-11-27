@@ -39,6 +39,10 @@ local LinuxOperatingSystemFactory = java_lazy("org.allbinary.logic.system.os.lin
 local SolarisOperatingSystemFactory = java_lazy("org.allbinary.logic.system.os.solaris.SolarisOperatingSystemFactory")
 local WindowsOperatingSystemFactory = java_lazy("org.allbinary.logic.system.os.windows.WindowsOperatingSystemFactory")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local GenericOperatingSystem = java_lazy("org.allbinary.logic.system.os.GenericOperatingSystem")
+local NoOperatingSystem = java_lazy("org.allbinary.logic.system.os.NoOperatingSystem")
+local OperatingSystems = java_lazy("org.allbinary.logic.system.os.OperatingSystems")
+local SystemProperties = java_lazy("org.allbinary.logic.system.os.SystemProperties")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

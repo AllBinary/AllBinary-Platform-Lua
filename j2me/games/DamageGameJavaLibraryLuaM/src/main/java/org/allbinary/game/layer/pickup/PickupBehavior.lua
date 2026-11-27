@@ -38,6 +38,13 @@ local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local PickupBehaviorInterface = require("org.allbinary.game.layer.pickup.PickupBehaviorInterface")
+local CountedPickedUpLayerInterfaceFactory = java_lazy("org.allbinary.game.layer.pickup.CountedPickedUpLayerInterfaceFactory")
+local CountedPickedUpLayerInterfaceFactoryInterface = java_lazy("org.allbinary.game.layer.pickup.CountedPickedUpLayerInterfaceFactoryInterface")
+local PickedUpLayerInterface = java_lazy("org.allbinary.game.layer.pickup.PickedUpLayerInterface")
+local PickedUpLayerInterfaceFactoryInterface = java_lazy("org.allbinary.game.layer.pickup.PickedUpLayerInterfaceFactoryInterface")
+local PickedUpLayerType = java_lazy("org.allbinary.game.layer.pickup.PickedUpLayerType")
+local PickedUpLayerTypeFactory = java_lazy("org.allbinary.game.layer.pickup.PickedUpLayerTypeFactory")
+local PickupProcessorInterface = java_lazy("org.allbinary.game.layer.pickup.PickupProcessorInterface")
 
 local function java_idiv(a, b)
     local q = a / b

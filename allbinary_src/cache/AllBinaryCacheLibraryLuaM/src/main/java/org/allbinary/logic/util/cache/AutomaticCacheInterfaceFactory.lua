@@ -28,8 +28,10 @@ local function java_real(class)
     return class
 end
 
+local AutomaticCacheInterface = java_lazy("org.allbinary.logic.util.cache.AutomaticCacheInterface")
 local CachePolicy = java_lazy("org.allbinary.logic.util.cache.CachePolicy")
 local CacheType = java_lazy("org.allbinary.logic.util.cache.CacheType")
+local CacheableInterfaceFactoryInterface = java_lazy("org.allbinary.logic.util.cache.CacheableInterfaceFactoryInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

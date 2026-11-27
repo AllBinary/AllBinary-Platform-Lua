@@ -38,6 +38,7 @@ local CryptInterface = java_lazy("org.allbinary.init.crypt.jcehelper.CryptInterf
 local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local SunJCE = java_lazy("com.sun.crypto.provider.SunJCE")
+local KeySpecFactory = java_lazy("org.allbinary.logic.system.security.crypt.jcehelper.KeySpecFactory")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}

@@ -35,6 +35,7 @@ local SubDirectory = java_lazy("org.allbinary.logic.io.file.directory.SubDirecto
 local VisitorFileFilter = java_lazy("org.allbinary.logic.io.file.filter.VisitorFileFilter")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

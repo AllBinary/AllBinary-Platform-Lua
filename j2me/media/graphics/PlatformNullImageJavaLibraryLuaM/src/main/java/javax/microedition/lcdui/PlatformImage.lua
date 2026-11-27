@@ -29,6 +29,9 @@ local function java_real(class)
 end
 
 local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local NullImage = java_lazy("javax.microedition.lcdui.NullImage")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

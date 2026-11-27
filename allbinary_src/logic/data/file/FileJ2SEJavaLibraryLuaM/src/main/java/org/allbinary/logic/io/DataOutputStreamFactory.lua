@@ -29,6 +29,7 @@ local function java_real(class)
 end
 
 local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
+local AbDataOutputStream = java_lazy("org.allbinary.logic.io.AbDataOutputStream")
 local AbFileOutputStream = java_lazy("org.allbinary.logic.io.AbFileOutputStream")
 local FileStreamFactory = java_lazy("org.allbinary.logic.io.FileStreamFactory")
 

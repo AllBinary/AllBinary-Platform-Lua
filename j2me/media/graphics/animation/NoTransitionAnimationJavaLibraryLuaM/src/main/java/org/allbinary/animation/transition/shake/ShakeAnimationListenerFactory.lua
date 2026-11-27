@@ -28,6 +28,8 @@ local function java_real(class)
     return class
 end
 
+local NoShakeAnimationListener = java_lazy("org.allbinary.animation.transition.shake.NoShakeAnimationListener")
+local ShakeAnimationListener = java_lazy("org.allbinary.animation.transition.shake.ShakeAnimationListener")
 
 local function java_idiv(a, b)
     local q = a / b

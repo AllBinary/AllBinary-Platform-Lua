@@ -44,6 +44,10 @@ local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 local BasicArrayListUtil = java_lazy("org.allbinary.util.BasicArrayListUtil")
 local GeographicPathFinderBase = require("org.allbinary.media.graphics.geography.pathfinding.GeographicPathFinderBase")
+local MultipassState = java_lazy("org.allbinary.media.graphics.geography.pathfinding.MultipassState")
+local PathFindingNode = java_lazy("org.allbinary.media.graphics.geography.pathfinding.PathFindingNode")
+local PathFindingNodeCost = java_lazy("org.allbinary.media.graphics.geography.pathfinding.PathFindingNodeCost")
+local PathFindingNodeCostInfo = java_lazy("org.allbinary.media.graphics.geography.pathfinding.PathFindingNodeCostInfo")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

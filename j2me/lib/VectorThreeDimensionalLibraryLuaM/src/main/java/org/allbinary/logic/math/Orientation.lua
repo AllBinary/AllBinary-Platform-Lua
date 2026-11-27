@@ -29,6 +29,7 @@ local function java_real(class)
 end
 
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
+local BasicDecimal = java_lazy("org.allbinary.logic.math.BasicDecimal")
 
 local function java_idiv(a, b)
     local q = a / b

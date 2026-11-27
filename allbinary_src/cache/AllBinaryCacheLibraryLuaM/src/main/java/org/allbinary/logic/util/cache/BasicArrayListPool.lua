@@ -31,6 +31,8 @@ end
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local AbstractArrayListPool = require("org.allbinary.logic.util.cache.AbstractArrayListPool")
 local BasicArrayListCacheable = java_lazy("org.allbinary.logic.util.cache.BasicArrayListCacheable")
+local CacheableInterface = java_lazy("org.allbinary.logic.util.cache.CacheableInterface")
+local CacheableInterfaceFactoryInterface = java_lazy("org.allbinary.logic.util.cache.CacheableInterfaceFactoryInterface")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

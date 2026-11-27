@@ -30,6 +30,7 @@ end
 
 local CircularIndexUtil = java_lazy("org.allbinary.util.CircularIndexUtil")
 local HighScoresHelperBase = require("org.allbinary.game.score.HighScoresHelperBase")
+local HighScores = java_lazy("org.allbinary.game.score.HighScores")
 local NullHighScoresSingletonFactory = java_lazy("org.allbinary.game.score.NullHighScoresSingletonFactory")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend

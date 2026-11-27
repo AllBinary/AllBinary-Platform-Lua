@@ -32,6 +32,10 @@ local AndroidOperatingSystemFactory = java_lazy("org.allbinary.logic.system.os.a
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
+local GenericOperatingSystem = java_lazy("org.allbinary.logic.system.os.GenericOperatingSystem")
+local NoOperatingSystem = java_lazy("org.allbinary.logic.system.os.NoOperatingSystem")
+local OperatingSystems = java_lazy("org.allbinary.logic.system.os.OperatingSystems")
+local SystemProperties = java_lazy("org.allbinary.logic.system.os.SystemProperties")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

@@ -31,6 +31,8 @@ end
 local DomNodeInterface = java_lazy("org.allbinary.data.tree.dom.DomNodeInterface")
 local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
+local CategoryInterface = java_lazy("org.allbinary.business.category.CategoryInterface")
+local CategoryView = java_lazy("org.allbinary.business.category.CategoryView")
 
 local function java_idiv(a, b)
     local q = a / b

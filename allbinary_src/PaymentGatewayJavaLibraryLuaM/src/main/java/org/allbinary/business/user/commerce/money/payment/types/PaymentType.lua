@@ -35,6 +35,7 @@ local PaymentGatewayData = java_lazy("org.allbinary.business.user.commerce.money
 local PaymentProcessorInterfaceFactoryInterface = java_lazy("org.allbinary.business.user.commerce.money.payment.gateway.processor.PaymentProcessorInterfaceFactoryInterface")
 local PaymentTransactionInterfaceFactoryInterface = java_lazy("org.allbinary.business.user.commerce.money.payment.gateway.transaction.PaymentTransactionInterfaceFactoryInterface")
 local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
+local BasicPaymentType = java_lazy("org.allbinary.business.user.commerce.money.payment.types.BasicPaymentType")
 local PaymentTypeUtil = java_lazy("org.allbinary.business.user.commerce.money.payment.types.PaymentTypeUtil")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.

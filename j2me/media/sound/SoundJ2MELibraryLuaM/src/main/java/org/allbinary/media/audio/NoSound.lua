@@ -30,6 +30,7 @@ end
 
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local Sound = require("org.allbinary.media.audio.Sound")
+local NoPlayer = java_lazy("org.allbinary.media.audio.NoPlayer")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

@@ -28,6 +28,7 @@ local function java_real(class)
     return class
 end
 
+local BasicColorUtil = java_lazy("org.allbinary.graphics.color.BasicColorUtil")
 
 local function java_idiv(a, b)
     local q = a / b

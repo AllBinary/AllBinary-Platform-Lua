@@ -75,20 +75,20 @@ MusicManager.javaClassName = "org.allbinary.media.audio.music.MusicManager"
     end
     
 
-    function MusicManager._jinit(self, musicManager)
-        MusicManager._init_fields(self)
+    function MusicManagerPlayerListener._jinit(self, musicManager)
+        MusicManagerPlayerListener._init_fields(self)
             self.musicManager = musicManager
         return self
     end
 
-    function MusicManager.new(...)
-        local self = setmetatable({}, MusicManager)
-        MusicManager._jinit(self, ...)
+    function MusicManagerPlayerListener.new(...)
+        local self = setmetatable({}, MusicManagerPlayerListener)
+        MusicManagerPlayerListener._jinit(self, ...)
         return self
     end
     
 
-    function MusicManager:playerUpdate(player, event, eventData)
+    function MusicManagerPlayerListener:playerUpdate(player, event, eventData)
             PreLogUtil.put(event, self, self.musicManager.commonStrings.PROCESS)
             if event == PlayerListener.END_OF_MEDIA or event == PlayerListener.STOPPED or event == PlayerListener.CLOSED then
                 self.musicManager:reset()

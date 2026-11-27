@@ -42,6 +42,8 @@ local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
+local SqlStrings = java_lazy("org.allbinary.logic.communication.sql.SqlStrings")
+local SqlTypeStrings = java_lazy("org.allbinary.logic.communication.sql.SqlTypeStrings")
 
 local function java_idiv(a, b)
     local q = a / b

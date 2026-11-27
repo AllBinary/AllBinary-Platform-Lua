@@ -156,23 +156,23 @@ setmetatable(BaseMusicService, {__index = Service})
     end
     
 
-    function BaseMusicService._jinit(self, baseMusicService, player, intent)
+    function MusicRunnable._jinit(self, baseMusicService, player, intent)
         java_super_init(ARunnable, self)
-        BaseMusicService._init_fields(self)
+        MusicRunnable._init_fields(self)
             self.baseMusicService = baseMusicService
             self.player = player
             self.intent = intent
         return self
     end
 
-    function BaseMusicService.new(...)
-        local self = setmetatable({}, BaseMusicService)
-        BaseMusicService._jinit(self, ...)
+    function MusicRunnable.new(...)
+        local self = setmetatable({}, MusicRunnable)
+        MusicRunnable._jinit(self, ...)
         return self
     end
     
 
-    function BaseMusicService:run()
+    function MusicRunnable:run()
             local logUtil = LogUtil.getInstance()
             local commonStrings = CommonStrings.getInstance()
             local commonStateStrings = CommonStateStrings.getInstance()
@@ -189,7 +189,7 @@ setmetatable(BaseMusicService, {__index = Service})
                 logUtil:put(commonStrings.EXCEPTION, self, commonStateStrings.ON_START_COMMAND, e)
             end
     end
-    java_overload(BaseMusicService, "run", 0)
+    java_overload(MusicRunnable, "run", 0)
 
 
 function BaseMusicService:_init_fields()

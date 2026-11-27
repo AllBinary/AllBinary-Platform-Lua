@@ -34,6 +34,7 @@ local Angle = java_lazy("org.allbinary.math.Angle")
 local AngleFactory = java_lazy("org.allbinary.math.AngleFactory")
 local AngleInfo = java_lazy("org.allbinary.math.AngleInfo")
 local VectorBaseRotationAnimation = require("org.allbinary.animation.VectorBaseRotationAnimation")
+local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

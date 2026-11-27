@@ -30,6 +30,7 @@ end
 
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local MultipassState = java_lazy("org.allbinary.media.graphics.geography.pathfinding.MultipassState")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

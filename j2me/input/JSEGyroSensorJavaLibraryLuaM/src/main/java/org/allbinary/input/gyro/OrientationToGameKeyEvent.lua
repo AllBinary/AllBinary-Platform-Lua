@@ -31,6 +31,8 @@ end
 local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
 local SensorFeatureFactory = java_lazy("org.allbinary.game.configuration.feature.SensorFeatureFactory")
 local Orientation = java_lazy("org.allbinary.logic.math.Orientation")
+local AllBinaryOrientationSensor = java_lazy("org.allbinary.input.gyro.AllBinaryOrientationSensor")
+local NoGyroSensor = java_lazy("org.allbinary.input.gyro.NoGyroSensor")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

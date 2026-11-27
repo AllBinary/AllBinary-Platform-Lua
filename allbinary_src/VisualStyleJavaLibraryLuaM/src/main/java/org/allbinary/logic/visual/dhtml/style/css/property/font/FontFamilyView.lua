@@ -31,6 +31,7 @@ end
 local CssProperty = java_lazy("org.allbinary.logic.visual.dhtml.style.css.property.CssProperty")
 local CssPropertyView = require("org.allbinary.logic.visual.dhtml.style.css.property.CssPropertyView")
 local Node = java_lazy("org.w3c.dom.Node")
+local FontFamilyData = java_lazy("org.allbinary.logic.visual.dhtml.style.css.property.font.FontFamilyData")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

@@ -31,6 +31,7 @@ end
 local BaseSoundsFactory = require("org.allbinary.media.audio.BaseSoundsFactory")
 local ErrorSound = java_lazy("org.allbinary.media.audio.ErrorSound")
 local SelectSound = java_lazy("org.allbinary.media.audio.SelectSound")
+local Sound = java_lazy("org.allbinary.media.audio.Sound")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}

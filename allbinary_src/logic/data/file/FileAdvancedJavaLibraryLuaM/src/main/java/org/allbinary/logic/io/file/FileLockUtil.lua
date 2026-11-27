@@ -36,6 +36,7 @@ local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local AbFileOutputStream = java_lazy("org.allbinary.logic.io.AbFileOutputStream")
 local StreamUtil = java_lazy("org.allbinary.logic.io.StreamUtil")
+local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

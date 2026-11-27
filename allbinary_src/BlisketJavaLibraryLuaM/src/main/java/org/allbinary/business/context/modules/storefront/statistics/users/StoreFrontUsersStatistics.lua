@@ -39,6 +39,7 @@ local UserEntityFactory = java_lazy("org.allbinary.data.tables.user.UserEntityFa
 local UserEntityInterface = java_lazy("org.allbinary.data.tables.user.UserEntityInterface")
 local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
 local StoreFrontUsersStatisticsInterface = require("org.allbinary.business.context.modules.storefront.statistics.users.StoreFrontUsersStatisticsInterface")
+local StoreFrontUsersStatisticsData = java_lazy("org.allbinary.business.context.modules.storefront.statistics.users.StoreFrontUsersStatisticsData")
 
 local function java_idiv(a, b)
     local q = a / b

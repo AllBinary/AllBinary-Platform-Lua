@@ -30,6 +30,7 @@ end
 
 local CollidableDestroyableDamageableLayer = java_lazy("org.allbinary.game.layer.special.CollidableDestroyableDamageableLayer")
 local TimeDelayHelper = java_lazy("org.allbinary.time.TimeDelayHelper")
+local AnalogControllerConfigurationFactory = java_lazy("org.allbinary.android.input.motion.AnalogControllerConfigurationFactory")
 
 local function java_idiv(a, b)
     local q = a / b

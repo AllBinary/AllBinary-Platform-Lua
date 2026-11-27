@@ -51,6 +51,7 @@ local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local NullRunnable = java_lazy("org.allbinary.thread.NullRunnable")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
+local OpenGLFeatureFactory = java_lazy("org.allbinary.graphics.opengles.OpenGLFeatureFactory")
 
 local function java_instanceof(object, class)
     class = java_real(class)

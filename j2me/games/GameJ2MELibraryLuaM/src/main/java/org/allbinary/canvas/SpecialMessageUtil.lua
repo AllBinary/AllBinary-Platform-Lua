@@ -33,6 +33,7 @@ local OpenGLFeatureFactory = java_lazy("org.allbinary.graphics.opengles.OpenGLFe
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
 local Memory = java_lazy("org.allbinary.system.Memory")
+local GameStatisticsFactory = java_lazy("org.allbinary.canvas.GameStatisticsFactory")
 
 local function java_idiv(a, b)
     local q = a / b

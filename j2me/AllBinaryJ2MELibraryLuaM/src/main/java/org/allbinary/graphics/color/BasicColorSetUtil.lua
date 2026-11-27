@@ -29,6 +29,7 @@ local function java_real(class)
 end
 
 -- local Graphics = require("javax.microedition.lcdui.Graphics")
+local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 
 local function java_idiv(a, b)
     local q = a / b

@@ -33,6 +33,8 @@ local InputToGameKeyMapping = java_lazy("org.allbinary.game.input.mapping.InputT
 local PersistentInputMapping = require("org.allbinary.game.input.mapping.PersistentInputMapping")
 local BasicTouchInputFactory = java_lazy("org.allbinary.input.motion.button.BasicTouchInputFactory")
 local TouchMotionGestureFactory = java_lazy("org.allbinary.input.motion.gesture.TouchMotionGestureFactory")
+local GameKeyFactory = java_lazy("org.allbinary.game.input.GameKeyFactory")
+local PCKeyFactory = java_lazy("org.allbinary.game.input.PCKeyFactory")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

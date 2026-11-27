@@ -51,6 +51,7 @@ local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.co
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local RequestParams = require("org.allbinary.logic.communication.http.request.RequestParams")
 local NameSpaceRequestParam = java_lazy("org.allbinary.logic.communication.http.request.NameSpaceRequestParam")
+local NameSpaceRequestParamData = java_lazy("org.allbinary.logic.communication.http.request.NameSpaceRequestParamData")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

@@ -28,6 +28,7 @@ local function java_real(class)
     return class
 end
 
+local ThreadPool = java_lazy("org.allbinary.thread.ThreadPool")
 
 local function java_idiv(a, b)
     local q = a / b

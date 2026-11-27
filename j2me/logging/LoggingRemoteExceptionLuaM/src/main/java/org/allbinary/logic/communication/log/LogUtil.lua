@@ -37,6 +37,8 @@ local SpecialMessageUtil = java_lazy("org.allbinary.canvas.SpecialMessageUtil")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local TimeDelayHelper = java_lazy("org.allbinary.time.TimeDelayHelper")
 local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")
+local Log = java_lazy("org.allbinary.logic.communication.log.Log")
+local LogFormatUtil = java_lazy("org.allbinary.logic.communication.log.LogFormatUtil")
 local XmlRpcRemoteLogClient = java_lazy("org.allbinary.logic.communication.log.XmlRpcRemoteLogClient")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.

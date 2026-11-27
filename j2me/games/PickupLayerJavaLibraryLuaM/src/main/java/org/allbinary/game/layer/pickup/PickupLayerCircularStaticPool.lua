@@ -29,6 +29,8 @@ local function java_real(class)
 end
 
 local AllBinaryLayerCircularPool = require("org.allbinary.layer.AllBinaryLayerCircularPool")
+local PickedUpLayerInterface = java_lazy("org.allbinary.game.layer.pickup.PickedUpLayerInterface")
+local PickedUpLayerInterfaceFactoryInterface = java_lazy("org.allbinary.game.layer.pickup.PickedUpLayerInterfaceFactoryInterface")
 local PickupLayer = java_lazy("org.allbinary.game.layer.pickup.PickupLayer")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend

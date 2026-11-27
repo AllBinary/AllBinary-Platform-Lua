@@ -20,6 +20,7 @@ end
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local CustomCustomItem = require("org.allbinary.graphics.form.item.CustomCustomItem")
 local ABCustomItemInterface = require("org.allbinary.graphics.form.item.ABCustomItemInterface")
+local ABStringComponent = java_lazy("org.allbinary.graphics.form.item.ABStringComponent")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

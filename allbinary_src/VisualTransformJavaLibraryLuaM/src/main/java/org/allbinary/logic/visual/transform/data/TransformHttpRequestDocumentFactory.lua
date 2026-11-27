@@ -30,6 +30,7 @@ end
 
 -- local PageContext = require("javax.servlet.jsp.PageContext")
 local WeblisketSession = java_lazy("org.allbinary.logic.communication.http.request.session.WeblisketSession")
+local TransformDocumentInterface = java_lazy("org.allbinary.logic.visual.transform.data.TransformDocumentInterface")
 local TransformHttpRequestDocument = java_lazy("org.allbinary.logic.visual.transform.data.TransformHttpRequestDocument")
 
 local function java_idiv(a, b)

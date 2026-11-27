@@ -36,6 +36,7 @@ local Document = java_lazy("org.w3c.dom.Document")
 local AdvertisementAreaInterface = require("org.allbinary.business.advertisement.area.AdvertisementAreaInterface")
 local AdvertisementAreaConstraints = java_lazy("org.allbinary.business.advertisement.area.AdvertisementAreaConstraints")
 local AdvertisementAreaConstraintsInterface = java_lazy("org.allbinary.business.advertisement.area.AdvertisementAreaConstraintsInterface")
+local AdvertisementAreaData = java_lazy("org.allbinary.business.advertisement.area.AdvertisementAreaData")
 
 local function java_idiv(a, b)
     local q = a / b

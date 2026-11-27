@@ -29,6 +29,7 @@ local function java_real(class)
 end
 
 local LockedUtilInterface = require("org.allbinary.logic.system.security.licensing.LockedUtilInterface")
+local LockableFeature = java_lazy("org.allbinary.logic.system.security.licensing.LockableFeature")
 
 local function java_idiv(a, b)
     local q = a / b

@@ -18,6 +18,7 @@ end
 
 -- local Graphics2D = require("java.awt.Graphics2D")
 -- local BufferedImage = require("java.awt.image.BufferedImage")
+local ImageUtil = java_lazy("org.allbinary.media.image.ImageUtil")
 
 local function java_idiv(a, b)
     local q = a / b

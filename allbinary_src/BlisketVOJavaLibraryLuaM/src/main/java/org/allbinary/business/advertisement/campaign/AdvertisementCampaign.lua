@@ -33,6 +33,7 @@ local DynamicObjectData = java_lazy("org.allbinary.business.DynamicObjectData")
 local AdvertisementsInterface = java_lazy("org.allbinary.business.advertisement.AdvertisementsInterface")
 local AdvertisementSearchInterface = java_lazy("org.allbinary.business.advertisement.search.AdvertisementSearchInterface")
 local AdvertisementCampaignInterface = require("org.allbinary.business.advertisement.campaign.AdvertisementCampaignInterface")
+local AdvertisementCampaignData = java_lazy("org.allbinary.business.advertisement.campaign.AdvertisementCampaignData")
 
 local function java_idiv(a, b)
     local q = a / b

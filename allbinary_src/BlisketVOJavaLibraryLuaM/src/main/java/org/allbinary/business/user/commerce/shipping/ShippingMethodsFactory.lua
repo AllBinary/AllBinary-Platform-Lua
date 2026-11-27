@@ -51,6 +51,8 @@ local TransformInfoObjectConfigData = java_lazy("org.allbinary.logic.visual.tran
 local Document = java_lazy("org.w3c.dom.Document")
 local Node = java_lazy("org.w3c.dom.Node")
 local NodeList = java_lazy("org.w3c.dom.NodeList")
+local ShippingMethodData = java_lazy("org.allbinary.business.user.commerce.shipping.ShippingMethodData")
+local ShippingMethodsData = java_lazy("org.allbinary.business.user.commerce.shipping.ShippingMethodsData")
 
 local function java_idiv(a, b)
     local q = a / b

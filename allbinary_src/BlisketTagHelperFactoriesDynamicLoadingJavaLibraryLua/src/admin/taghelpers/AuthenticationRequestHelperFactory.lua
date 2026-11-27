@@ -33,6 +33,7 @@ local HashMap = java_lazy("java.util.HashMap")
 local LicensingException = java_lazy("org.allbinary.logic.system.security.licensing.LicensingException")
 -- local HttpServletRequest = require("javax.servlet.http.HttpServletRequest")
 local TagHelperFactoryInterface = require("admin.taghelpers.TagHelperFactoryInterface")
+local HelperFactory = java_lazy("admin.taghelpers.HelperFactory")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

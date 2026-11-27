@@ -33,6 +33,7 @@ local Vibrator = java_lazy("android.os.Vibrator")
 local ResourceUtil = java_lazy("org.allbinary.data.resource.ResourceUtil")
 local GameConfigurationCentral = java_lazy("org.allbinary.game.configuration.GameConfigurationCentral")
 local AllBinaryVibrationME = require("org.allbinary.media.AllBinaryVibrationME")
+local AllBinaryNoVibration = java_lazy("org.allbinary.media.AllBinaryNoVibration")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

@@ -32,6 +32,8 @@ local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 local PoolInterface = require("org.allbinary.logic.util.cache.PoolInterface")
+local CacheableInterface = java_lazy("org.allbinary.logic.util.cache.CacheableInterface")
+local CacheableInterfaceFactoryInterface = java_lazy("org.allbinary.logic.util.cache.CacheableInterfaceFactoryInterface")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

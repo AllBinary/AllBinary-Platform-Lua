@@ -20,6 +20,7 @@ local GameAdState = java_lazy("org.allbinary.game.GameAdState")
 local SoftwareInformation = java_lazy("org.allbinary.logic.system.SoftwareInformation")
 local GameAdStateFactoryInterface = require("org.allbinary.business.advertisement.GameAdStateFactoryInterface")
 local AppNameLicensingAdConfiguration = java_lazy("org.allbinary.business.advertisement.AppNameLicensingAdConfiguration")
+local GameAdStateBase = java_lazy("org.allbinary.business.advertisement.GameAdStateBase")
 
 local function java_idiv(a, b)
     local q = a / b

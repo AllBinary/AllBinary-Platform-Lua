@@ -41,6 +41,7 @@ local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local CryptFileWriter = java_lazy("org.allbinary.logic.control.crypt.file.CryptFileWriter")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local AdminConfigurationInterface = require("org.allbinary.business.user.modules.admin.configuration.AdminConfigurationInterface")
+local AdminConfigurationData = java_lazy("org.allbinary.business.user.modules.admin.configuration.AdminConfigurationData")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

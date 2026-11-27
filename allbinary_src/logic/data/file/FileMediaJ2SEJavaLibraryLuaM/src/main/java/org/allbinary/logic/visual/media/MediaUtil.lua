@@ -28,6 +28,7 @@ local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local ImageUtil = java_lazy("org.allbinary.media.image.ImageUtil")
 local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
 local ImageIOUtil = java_lazy("org.allbinary.logic.visual.media.ImageIOUtil")
+local MediaData = java_lazy("org.allbinary.logic.visual.media.MediaData")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

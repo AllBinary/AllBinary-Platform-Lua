@@ -41,6 +41,8 @@ local PlatformBitmapBaseFactory = java_lazy("org.allbinary.platform.graphics.Pla
 local PlatformTextureBaseFactory = java_lazy("org.allbinary.platform.opengles.PlatformTextureBaseFactory")
 local OpenGLESImage = require("org.allbinary.image.opengles.OpenGLESImage")
 local OpenGLESImageDraw = java_lazy("org.allbinary.image.opengles.OpenGLESImageDraw")
+local OpenGLESImageProcessor = java_lazy("org.allbinary.image.opengles.OpenGLESImageProcessor")
+local OpenGLESImageProperties = java_lazy("org.allbinary.image.opengles.OpenGLESImageProperties")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}

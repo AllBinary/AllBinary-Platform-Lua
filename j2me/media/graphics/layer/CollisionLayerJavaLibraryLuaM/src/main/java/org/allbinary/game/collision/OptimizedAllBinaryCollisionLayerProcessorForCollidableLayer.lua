@@ -33,6 +33,7 @@ local AllBinaryLayer = java_lazy("org.allbinary.layer.AllBinaryLayer")
 local AllBinaryLayerManager = java_lazy("org.allbinary.layer.AllBinaryLayerManager")
 local LayerManager = java_lazy("org.allbinary.layer.LayerManager")
 local LayerProcessor = require("org.allbinary.layer.LayerProcessor")
+local CollidableBaseBehavior = java_lazy("org.allbinary.game.collision.CollidableBaseBehavior")
 local OptimizedAllBinaryCollisionLayerManager = java_lazy("org.allbinary.game.collision.OptimizedAllBinaryCollisionLayerManager")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend

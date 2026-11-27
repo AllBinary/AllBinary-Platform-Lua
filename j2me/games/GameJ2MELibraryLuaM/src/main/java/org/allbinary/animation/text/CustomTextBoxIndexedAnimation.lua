@@ -38,6 +38,7 @@ local UpdateMyFontInterface = java_lazy("org.allbinary.graphics.font.UpdateMyFon
 local CustomTextBox = java_lazy("org.allbinary.graphics.form.item.CustomTextBox")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local TextInterface = require("org.allbinary.animation.text.TextInterface")
+local TextChangeListener = java_lazy("org.allbinary.animation.text.TextChangeListener")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

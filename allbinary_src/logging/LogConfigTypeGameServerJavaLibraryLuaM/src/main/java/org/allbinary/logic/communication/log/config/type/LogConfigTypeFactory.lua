@@ -30,6 +30,7 @@ end
 
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
+local LogConfigType = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigType")
 
 local function java_idiv(a, b)
     local q = a / b

@@ -44,6 +44,7 @@ local RunnableInterface = java_lazy("org.allbinary.thread.RunnableInterface")
 local ThreadObjectUtil = java_lazy("org.allbinary.thread.ThreadObjectUtil")
 local TimeDelayHelper = java_lazy("org.allbinary.time.TimeDelayHelper")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
+local Processor = java_lazy("org.allbinary.canvas.Processor")
 local RunnableCanvasRefreshHelper = java_lazy("org.allbinary.canvas.RunnableCanvasRefreshHelper")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend

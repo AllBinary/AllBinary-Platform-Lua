@@ -34,6 +34,7 @@ local InitEmulatorFactory = java_lazy("org.allbinary.emulator.InitEmulatorFactor
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
+local RendererStrings = java_lazy("org.allbinary.graphics.opengles.renderer.RendererStrings")
 
 local function java_idiv(a, b)
     local q = a / b

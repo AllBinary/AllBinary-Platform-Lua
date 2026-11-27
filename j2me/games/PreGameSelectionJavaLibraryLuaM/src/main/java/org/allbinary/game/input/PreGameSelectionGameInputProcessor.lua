@@ -48,6 +48,8 @@ local ThreadObjectUtil = java_lazy("org.allbinary.thread.ThreadObjectUtil")
 local TimeDelayHelper = java_lazy("org.allbinary.time.TimeDelayHelper")
 local GameInputProcessorInterface = require("org.allbinary.game.input.GameInputProcessorInterface")
 local PlayerGameInputCompositeInterface = require("org.allbinary.game.input.PlayerGameInputCompositeInterface")
+local GameInputProcessorComposite = java_lazy("org.allbinary.game.input.GameInputProcessorComposite")
+local PlayerGameInput = java_lazy("org.allbinary.game.input.PlayerGameInput")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)
@@ -158,21 +160,21 @@ local PreGameSelectionRunnable = {}
     end
     
 
-    function PreGameSelectionGameInputProcessor._jinit(self, inputProcessor)
+    function PreGameSelectionRunnable._jinit(self, inputProcessor)
         java_super_init(ABRunnable, self)
-        PreGameSelectionGameInputProcessor._init_fields(self)
+        PreGameSelectionRunnable._init_fields(self)
             self.inputProcessor = inputProcessor
         return self
     end
 
-    function PreGameSelectionGameInputProcessor.new(...)
-        local self = setmetatable({}, PreGameSelectionGameInputProcessor)
-        PreGameSelectionGameInputProcessor._jinit(self, ...)
+    function PreGameSelectionRunnable.new(...)
+        local self = setmetatable({}, PreGameSelectionRunnable)
+        PreGameSelectionRunnable._jinit(self, ...)
         return self
     end
     
 
-    function PreGameSelectionGameInputProcessor:run()
+    function PreGameSelectionRunnable:run()
             local try_ok, try_error, try_value = pcall(function()
                 self:setRunning(true)
                 SecondaryPlayerQueueFactory.getInstance():add(SelectSound.getInstance())
@@ -189,7 +191,7 @@ local PreGameSelectionRunnable = {}
                 logUtil:put(commonStrings.EXCEPTION, self, commonStrings.RUN, e)
             end
     end
-    java_overload(PreGameSelectionGameInputProcessor, "run", 0)
+    java_overload(PreGameSelectionRunnable, "run", 0)
 
 
 function PreGameSelectionGameInputProcessor:_init_fields()
