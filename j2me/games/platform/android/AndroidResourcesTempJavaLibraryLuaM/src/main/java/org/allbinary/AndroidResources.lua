@@ -41,11 +41,11 @@ AndroidResources.className = "AndroidResources"
 AndroidResources.javaClassName = "org.allbinary.AndroidResources"
 
 function AndroidResources:_init_fields()
-    self.drawable = drawable.new()
-    self.id = id.new()
-    self.layout_f = layout.new()
-    self.raw = raw.new()
-    self.string_ = string.new()
+    self.drawable = R.drawable.new()
+    self.id = R.id.new()
+    self.layout_f = R.layout.new()
+    self.raw = R.raw.new()
+    self.string_ = R.string.new()
 end
 
 function AndroidResources._jinit(self)

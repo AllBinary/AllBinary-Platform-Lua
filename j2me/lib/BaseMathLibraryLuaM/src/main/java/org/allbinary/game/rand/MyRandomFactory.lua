@@ -99,7 +99,7 @@ end
 
 function MyRandomFactory._jinit(self)
     MyRandomFactory._init_fields(self)
-        self.rand = Random.new(math.floor(os.time() * 1000))
+        self.rand = Random.new(require("java.lang.System").currentTimeMillis())
     return self
 end
 

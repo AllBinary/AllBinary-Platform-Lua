@@ -73,7 +73,7 @@ end
 
 
 function GameTickTimeDelayHelper:setStartTime()
-        self.startTime = math.floor(os.time() * 1000)
+        self.startTime = require("java.lang.System").currentTimeMillis()
         return self.startTime
 end
 
@@ -82,7 +82,7 @@ function GameTickTimeDelayHelper:loop()
         if rawequal(self.lastStartTime, require("java.lang.Long").MIN_VALUE) then
             self.timeDelta = 0
         else
-            self.timeDelta = math.floor(os.time() * 1000) - self.lastStartTime
+            self.timeDelta = require("java.lang.System").currentTimeMillis() - self.lastStartTime
         end
 end
 

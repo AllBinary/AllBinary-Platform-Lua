@@ -76,7 +76,7 @@ end
 
 
 function TimeDelayHelper:isTimeTNT()
-        local currentTime = math.floor(os.time() * 1000)
+        local currentTime = require("java.lang.System").currentTimeMillis()
         if currentTime - self.startTime > self.delay then
             self.startTime = currentTime
             return true
@@ -86,7 +86,7 @@ end
 
 
 function TimeDelayHelper:isTimeSinceTNT(delay)
-        local currentTime = math.floor(os.time() * 1000)
+        local currentTime = require("java.lang.System").currentTimeMillis()
         if currentTime - self.startTime > delay then
             self.startTime = currentTime
             return true
@@ -122,7 +122,7 @@ end
 
 
 function TimeDelayHelper:getElapsedTNT()
-        return math.floor(os.time() * 1000) - self.startTime
+        return require("java.lang.System").currentTimeMillis() - self.startTime
 end
 
 
@@ -160,7 +160,7 @@ end
 
 
 function TimeDelayHelper:setStartTimeTNT()
-        self.startTime = math.floor(os.time() * 1000)
+        self.startTime = require("java.lang.System").currentTimeMillis()
 end
 
 
@@ -172,7 +172,7 @@ end
 
 function TimeDelayHelper:resume()
         if not rawequal(self.elapsedTimeAtPause, require("java.lang.Long").MIN_VALUE) then
-            self.startTime = math.floor(os.time() * 1000) + self.elapsedTimeAtPause
+            self.startTime = require("java.lang.System").currentTimeMillis() + self.elapsedTimeAtPause
             self.elapsedTimeAtPause = require("java.lang.Long").MIN_VALUE
             self:setStartTimeTNT()
             return true
@@ -194,7 +194,7 @@ end
 
 
 function TimeDelayHelper:toString()
-        local currentTime = math.floor(os.time() * 1000)
+        local currentTime = require("java.lang.System").currentTimeMillis()
         local elapsed = self:getElapsed(currentTime)
         if elapsed > 0 then
             local commonLabels = CommonLabels.getInstance()

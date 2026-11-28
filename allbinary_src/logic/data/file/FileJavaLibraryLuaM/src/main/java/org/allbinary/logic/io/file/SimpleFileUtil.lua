@@ -136,11 +136,11 @@ function SimpleFileUtil:loadFileAsListReturnLine(inputStream, max, byteArray1, i
         local returnLine = 0
         while index < size do
             startIndex = index
-            while index < size - 1 and not rawequal(byteArray[index + 1], string.byte("\n")) do
+            while index < size - 1 and not rawequal(byteArray[index + 1], require("allbinary_java").char_code("\n")) do
                 index = index + 1
             end
             if rawequal(includeReturnLine, 0) then
-                if index > 0 and rawequal(byteArray[index - 1 + 1], string.byte("\r")) then
+                if index > 0 and rawequal(byteArray[index - 1 + 1], require("allbinary_java").char_code("\r")) then
                     returnLine = 1
                 else
                     returnLine = 0

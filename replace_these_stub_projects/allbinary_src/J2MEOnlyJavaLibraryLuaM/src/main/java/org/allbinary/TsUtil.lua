@@ -138,7 +138,7 @@ end
 
 
 function TsUtil:toNumberFromChar(value)
-        return string.byte(value)
+        return require("allbinary_java").char_code(value)
 end
 
 

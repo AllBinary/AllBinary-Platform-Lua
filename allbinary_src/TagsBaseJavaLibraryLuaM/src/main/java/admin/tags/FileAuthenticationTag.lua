@@ -64,9 +64,7 @@ local function java_is_interface(interface, name, depth)
     return parent ~= nil and parent.__index ~= interface and java_is_interface(parent.__index, name, depth + 1)
 end
 
-local function java_is(object, name)
-    if type(object) ~= "table" then return false end
-    local class = getmetatable(object)
+local function java_class_matches(class, name)
     while type(class) == "table" do
         class = java_real(class)
         if rawget(class, "className") == name then return true end
@@ -84,6 +82,18 @@ local function java_is(object, name)
         end
     end
     return false
+end
+local java_type_matches = setmetatable({}, {__mode = "k"})
+local function java_is(object, name)
+    if type(object) ~= "table" then return false end
+    local class = getmetatable(object)
+    if type(class) ~= "table" then return false end
+    local matches = java_type_matches[class]
+    if matches and matches[name] then return true end
+    if not java_class_matches(class, name) then return false end
+    if not matches then matches = {}; java_type_matches[class] = matches end
+    matches[name] = true
+    return true
 end
 
 local function java_super_init(base, self, ...)

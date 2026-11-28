@@ -72,7 +72,7 @@ end
 
 
 function AndroidDebug:start()
-        self:setStartTime(math.floor(os.time() * 1000))
+        self:setStartTime(require("java.lang.System").currentTimeMillis())
         Debug.startMethodTracing("trace", self.bufferSize)
         self:setRunning(true)
 end

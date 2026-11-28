@@ -72,7 +72,7 @@ end
 
 
 function ABSystemWrapper:currentTimeMillis()
-        return math.floor(os.time() * 1000)
+        return require("java.lang.System").currentTimeMillis()
 end
 
 ABSystemWrapper.instance_f = ABSystemWrapper.new()
