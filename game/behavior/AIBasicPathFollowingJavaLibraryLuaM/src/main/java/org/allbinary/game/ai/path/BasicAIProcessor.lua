@@ -110,7 +110,7 @@ function BasicAIProcessor:goTowardNextChosenOnPathPosition(currentGeographicMapC
         local keyDirection = -1
         local goToGeographicMapCellPosition = self.geographicMapCellPathHistoryInfo:getNextChosenOnPathGeographicMapCellPosition()
         local geographicMapDirectionData = self.geographicMapDirectionUtil:getDirectionFromCellPositionToAdjacentCellPosition(currentGeographicMapCellPosition, goToGeographicMapCellPosition)
-        if geographicMapDirectionData == DirectionFactory.getInstance().NOT_BORDERED_WITH then
+        if rawequal(geographicMapDirectionData, DirectionFactory.getInstance().NOT_BORDERED_WITH) then
             geographicMapDirectionData = self.geographicMapDirectionUtil:getDirectionFromCellPositionToCellPosition(currentGeographicMapCellPosition, goToGeographicMapCellPosition)
         end
         keyDirection = self.basicAI:getAIKeyPressedFromDirection(geographicMapDirectionData)

@@ -167,10 +167,10 @@ function GenericInputAutomationWorker._jinit(self, inputAutomationActionInterfac
         local size = vector:size()
         for index = 0, size - 1 do
             local genericProfileDataWorkerType = vector:get(index)
-            self.logUtil:putF("Adding Listener: " .. tostring(genericProfileDataWorkerType), self, self.commonStrings.CONSTRUCTOR)
-            if genericProfileDataWorkerType == GenericProfileDataWorkerType.COMPARISON then
+            self.logUtil:putF(require("allbinary_java").to_string("Adding Listener: ") .. require("allbinary_java").to_string(genericProfileDataWorkerType), self, self.commonStrings.CONSTRUCTOR)
+            if rawequal(genericProfileDataWorkerType, GenericProfileDataWorkerType.COMPARISON) then
                 self:getCaptureWorker():addListenerInterface(self:getImageComparisonWorker())
-            elseif genericProfileDataWorkerType == GenericProfileDataWorkerType.MOTION then
+            elseif rawequal(genericProfileDataWorkerType, GenericProfileDataWorkerType.MOTION) then
                 self:getImageComparisonWorker():addListenerInterface(self:getMotionRectanglesWorker())
             end
         end
@@ -194,15 +194,15 @@ function GenericInputAutomationWorker:processDataWorkerResults()
             self.logUtil:putF("Image Available", self, self.PROCESS_DATA_WORKER_RESULTS)
             self:setFrame(keyArray[(keyArray.n or #keyArray) - 1 + 1])
             if self:getFrame() > self.lastFrame then
-                self.logUtil:putF("Processing new frame: " .. tostring(self:getFrame()), self, self.PROCESS_DATA_WORKER_RESULTS)
+                self.logUtil:putF(require("allbinary_java").to_string("Processing new frame: ") .. require("allbinary_java").to_string(self:getFrame()), self, self.PROCESS_DATA_WORKER_RESULTS)
                 local hashMap = self:getGenericProfile():getGenericProfileActions():getHashMap()
                 local set = hashMap:keySet()
-                self.logUtil:putF("Processing " .. tostring(set:size()) .. "Actions", self, self.PROCESS_DATA_WORKER_RESULTS)
+                self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string("Processing ") .. require("allbinary_java").to_string(set:size())) .. require("allbinary_java").to_string("Actions"), self, self.PROCESS_DATA_WORKER_RESULTS)
                 local actionNameArray = set:toArray()
                 local size = (actionNameArray.n or #actionNameArray)
                 for index = 0, size - 1 do
                     local actionNameString = actionNameArray[index + 1]
-                    self.logUtil:putF("Processing Action: " .. actionNameString, self, self.PROCESS_DATA_WORKER_RESULTS)
+                    self.logUtil:putF(require("allbinary_java").to_string("Processing Action: ") .. require("allbinary_java").to_string(actionNameString), self, self.PROCESS_DATA_WORKER_RESULTS)
                     local genericProfileAction = hashMap:get(actionNameString)
                     local genericProfileActionScript = genericProfileAction:getGenericProfileActionScript()
                     local vector = genericProfileActionScript:getProfileActionConditionInterfaceVector()

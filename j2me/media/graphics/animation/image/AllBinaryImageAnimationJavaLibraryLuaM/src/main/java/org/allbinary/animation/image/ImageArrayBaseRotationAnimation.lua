@@ -28,9 +28,9 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local Image = require("javax.microedition.lcdui.Image")
--- local NullImage = require("javax.microedition.lcdui.NullImage")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local NullImage = java_lazy("javax.microedition.lcdui.NullImage")
 local DisposalUtil = java_lazy("org.allbinary.DisposalUtil")
 local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 local RotationAnimation = require("org.allbinary.animation.RotationAnimation")
@@ -187,7 +187,7 @@ java_overload(ImageArrayBaseRotationAnimation, "getAnimationSize", 0)
 
 
 function ImageArrayBaseRotationAnimation:setAlpha(alpha)
-        if self.alphaP ~= alpha then
+        if not rawequal(self.alphaP, alpha) then
             java_super(RotationAnimation, "setAlpha", 1)(self, alpha)
             self.imageModifierUtil:reset()
             local index = self.circularIndexUtil:getIndex()

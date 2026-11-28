@@ -116,7 +116,7 @@ end
 
 
 function InterfaceUtil.getClass(interfaceName, interfaces)
-        if interfaceName ~= nil and interfaces ~= nil and (interfaces.n or #interfaces) > 0 then
+        if not rawequal(interfaceName, nil) and not rawequal(interfaces, nil) and (interfaces.n or #interfaces) > 0 then
             for index = 0, (interfaces.n or #interfaces) - 1 do
                 if interfaces[index + 1]:getName():indexOf(interfaceName) >= 0 then
                     return interfaces[index + 1]
@@ -130,7 +130,7 @@ end
 function InterfaceUtil.isImplemented_j2_1(clazz, anyType)
         local classes = getmetatable(anyType):getInterfaces()
         for index = 0, (classes.n or #classes) - 1 do
-            if (clazz.javaClassName or clazz.className):compareTo(classes[index + 1]:getName()) == 0 then
+            if rawequal((clazz.javaClassName or clazz.className):compareTo(classes[index + 1]:getName()), 0) then
                 return true
             end
         end
@@ -141,7 +141,7 @@ end
 function InterfaceUtil.isImplemented_j2_2(className, anyType)
         local classes = getmetatable(anyType):getInterfaces()
         for index = 0, (classes.n or #classes) - 1 do
-            if classes[index + 1]:getName():indexOf(className) == 0 then
+            if rawequal(classes[index + 1]:getName():indexOf(className), 0) then
                 return true
             end
         end

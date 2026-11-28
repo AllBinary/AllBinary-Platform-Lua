@@ -152,7 +152,7 @@ function LogoValidation:_init_fields()
     if self.logoFileItem == nil then self.logoFileItem = nil end
     if self.logoAbPath == nil then self.logoAbPath = nil end
     if self.logoFile == nil then self.logoFile = nil end
-    if self.isFile == nil then self.isFile = nil end
+    if self.isFile == nil then self.isFile = false end
 end
 
 function LogoValidation._jinit(self, ...)
@@ -209,7 +209,7 @@ end
 function LogoValidation:getFormData(hashMap)
         self.logoFileItem = hashMap:get(LogoData.getInstance().IMAGE)
         self.logoAbPath = AbPath.new(hashMap:get(LogoData.getInstance().IMAGEPATH), StringUtil.getInstance().EMPTY_STRING)
-        if self.logoFileItem ~= nil then
+        if not rawequal(self.logoFileItem, nil) then
             self.logoFile = HttpRequestUtil.getInstance():generateFileName(self.logoFileItem:getName())
         end
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
@@ -231,31 +231,31 @@ function LogoValidation:isValid()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                 self.logUtil:putF("LogoValidation", self, self.commonStrings.IS_VALID)
             end
-            if not StringValidationUtil.getInstance():isValidRequired(tostring(self.logoAbPath), 0, 512) then
+            if not (StringValidationUtil.getInstance():isValidRequired(tostring(self.logoAbPath), 0, 512)) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                    self.logUtil:putF("logoPath is invalid: " .. tostring(self.logoAbPath), self, self.commonStrings.IS_VALID)
+                    self.logUtil:putF(require("allbinary_java").to_string("logoPath is invalid: ") .. require("allbinary_java").to_string(tostring(self.logoAbPath)), self, self.commonStrings.IS_VALID)
                 end
                 do return "__jreturn", false end
             end
-            if not StringValidationUtil.getInstance():isValidRequired(self.logoFile, fileData.MINLEN, fileData.MAXLEN) then
+            if not (StringValidationUtil.getInstance():isValidRequired(self.logoFile, fileData.MINLEN, fileData.MAXLEN)) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                    self.logUtil:putF("logoFile is invalid: " .. self.logoFile, self, self.commonStrings.IS_VALID)
+                    self.logUtil:putF(require("allbinary_java").to_string("logoFile is invalid: ") .. require("allbinary_java").to_string(self.logoFile), self, self.commonStrings.IS_VALID)
                 end
                 do return "__jreturn", false end
             end
             if self.isFile then
-                if self.logoFileItem == nil then
+                if rawequal(self.logoFileItem, nil) then
                     do return "__jreturn", false end
                 end
                 if self.logoFileItem:getSize() > fileData.MAXIMAGEFILESIZE or self.logoFileItem:getSize() < fileData.MINIMAGEFILESIZE then
                     if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                        self.logUtil:putF("Image File Is Not The Right Size. " .. tostring(fileData.MINIMAGEFILESIZE) .. "< > " .. tostring(fileData.MAXIMAGEFILESIZE), self, self.commonStrings.IS_VALID)
+                        self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Image File Is Not The Right Size. ") .. require("allbinary_java").to_string(fileData.MINIMAGEFILESIZE)) .. require("allbinary_java").to_string("< > ")) .. require("allbinary_java").to_string(fileData.MAXIMAGEFILESIZE), self, self.commonStrings.IS_VALID)
                     end
                     do return "__jreturn", false end
                 end
             end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("Logo Validation: " .. tostring(valid), self, self.commonStrings.IS_VALID)
+                self.logUtil:putF(require("allbinary_java").to_string("Logo Validation: ") .. require("allbinary_java").to_string(valid), self, self.commonStrings.IS_VALID)
             end
             do return "__jreturn", valid end
         end)
@@ -307,7 +307,7 @@ function LogoValidation:toHashMap()
         local stringUtil = StringUtil.getInstance()
         local hashMap = StdUtil.getInstance():createHashMap()
         hashMap:put(LogoData.getInstance().IMAGE, stringUtil.EMPTY_STRING)
-        if self.logoFile ~= nil then
+        if not rawequal(self.logoFile, nil) then
             hashMap:put(LogoData.getInstance().IMAGEPATH, tostring(self.logoAbPath))
             hashMap:put(LogoData.getInstance().IMAGEFILENAME, self.logoFile)
         else

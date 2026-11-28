@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local Image = require("javax.microedition.lcdui.Image")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local AnimationInterface = java_lazy("org.allbinary.animation.AnimationInterface")
 local HealthInterface = java_lazy("org.allbinary.game.health.HealthInterface")
 local Anchor = java_lazy("org.allbinary.graphics.Anchor")

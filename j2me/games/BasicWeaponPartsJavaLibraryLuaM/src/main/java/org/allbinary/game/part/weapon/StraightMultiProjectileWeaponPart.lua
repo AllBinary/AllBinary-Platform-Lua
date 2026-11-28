@@ -138,7 +138,7 @@ setmetatable(StraightMultiProjectileWeaponPart, {__index = BasicWeaponPart})
 
 function StraightMultiProjectileWeaponPart:_init_fields()
     if self.weaponLayerCircularStaticPool == nil then self.weaponLayerCircularStaticPool = nil end
-    if self.total == nil then self.total = nil end
+    if self.total == nil then self.total = 0 end
     self.noDecimalTrigTable = NoDecimalTrigTable.getInstance()
 end
 

@@ -200,7 +200,7 @@ function ModDomHelper.createNameValueNodes_j3_3(document, node, hashMap)
             local objectKey = keyArray[i + 1]
             local name = objectKey
             local anyType = hashMap:get(objectKey)
-            if anyType == nil then
+            if rawequal(anyType, nil) then
                 local value = stringUtil.EMPTY_STRING
                 node:appendChild(ModDomHelper.createNameValueNodes(document, name, value))
             elseif java_instanceof(anyType, String) then
@@ -209,7 +209,7 @@ function ModDomHelper.createNameValueNodes_j3_3(document, node, hashMap)
             elseif java_instanceof(anyType, HashMap) then
                 node:appendChild(ModDomHelper.createNameValueNodes(document, name, hashMap))
             else
-                error(require("java.lang.Exception").new("HashMap value is the wrong instance and is: " .. tostring(ClassUtil.viewAll(anyType, CommonSeps.getInstance().NEW_LINE))), 0)
+                error(require("java.lang.Exception").new(require("allbinary_java").to_string("HashMap value is the wrong instance and is: ") .. require("allbinary_java").to_string(ClassUtil.viewAll(anyType, CommonSeps.getInstance().NEW_LINE))), 0)
             end
         end
         return node

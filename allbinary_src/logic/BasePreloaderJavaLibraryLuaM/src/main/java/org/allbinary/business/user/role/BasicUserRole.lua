@@ -91,11 +91,11 @@ BasicUserRole.java_implements = " Serializable "
 BasicUserRole.java_interfaces = function() return {Serializable} end
 
 function BasicUserRole:_init_fields()
-    if self.m_int_RoleId == nil then self.m_int_RoleId = nil end
+    if self.m_int_RoleId == nil then self.m_int_RoleId = 0 end
     if self.role == nil then self.role = nil end
     if self.displayValue == nil then self.displayValue = nil end
-    if self.sessionTimeout == nil then self.sessionTimeout = nil end
-    if self.sessionInactivityTimeout == nil then self.sessionInactivityTimeout = nil end
+    if self.sessionTimeout == nil then self.sessionTimeout = 0 end
+    if self.sessionInactivityTimeout == nil then self.sessionInactivityTimeout = 0 end
 end
 
 function BasicUserRole._jinit(self, ...)
@@ -153,7 +153,7 @@ end
 
 
 function BasicUserRole:equals(basicUserRole)
-        if self:getRoleId() == basicUserRole:getRoleId() then
+        if rawequal(self:getRoleId(), basicUserRole:getRoleId()) then
             return true
         end
         return false

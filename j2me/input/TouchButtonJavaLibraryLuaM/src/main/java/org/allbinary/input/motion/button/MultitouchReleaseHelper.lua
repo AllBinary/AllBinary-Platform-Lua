@@ -151,7 +151,7 @@ function MultitouchReleaseHelper:release(touchButtonInput, deviceId)
         local gameKeyEvent = nil
         for index = self.touchButtonRecognizer.currentlyPressedTouchButtonSingleton:size() - 1, 0, -1 do
             nextTouchButtonInput = self.touchButtonRecognizer.currentlyPressedTouchButtonSingleton:get(index)
-            if cancelTouchButtonInput == nextTouchButtonInput then
+            if rawequal(cancelTouchButtonInput, nextTouchButtonInput) then
                 gameKeyEvent = nextTouchButtonInput:getGameKeyEvent()
                 self.touchButtonRecognizer.upGameKeyEventHandler:fireEvent(gameKeyEvent)
                 self.touchButtonRecognizer.upGameKeyEventHandler:getInstanceForDevice(deviceId):fireEvent(gameKeyEvent)

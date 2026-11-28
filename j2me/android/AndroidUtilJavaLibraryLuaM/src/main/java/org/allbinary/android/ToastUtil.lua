@@ -55,7 +55,7 @@ ToastUtil.javaClassName = "org.allbinary.android.ToastUtil"
     function MakeToast:_init_fields()
         if self.context == nil then self.context = nil end
         if self.string_ == nil then self.string_ = nil end
-        if self.time == nil then self.time = nil end
+        if self.time == nil then self.time = 0 end
     end
     
 

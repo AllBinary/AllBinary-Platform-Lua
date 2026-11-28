@@ -28,9 +28,9 @@ local function java_real(class)
     return class
 end
 
--- local GL = require("javax.microedition.khronos.opengles.GL")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local Image = require("javax.microedition.lcdui.Image")
+local GL = java_lazy("javax.microedition.khronos.opengles.GL")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 local IndexedAnimation = java_lazy("org.allbinary.animation.IndexedAnimation")
 local NullRotationAnimationFactory = java_lazy("org.allbinary.animation.NullRotationAnimationFactory")
@@ -161,8 +161,8 @@ setmetatable(LazyImageRotationAnimation, {__index = RotationAnimation})
 
 function LazyImageRotationAnimation:_init_fields()
     self.logUtil = LogUtil.getInstance()
-    if self.layoutIndex == nil then self.layoutIndex = nil end
-    if self.instanceId == nil then self.instanceId = nil end
+    if self.layoutIndex == nil then self.layoutIndex = 0 end
+    if self.instanceId == nil then self.instanceId = 0 end
     if self.animationInterfaceFactoryInterface == nil then self.animationInterfaceFactoryInterface = nil end
     if self.NULL_INDEX_ANIMATION == nil then self.NULL_INDEX_ANIMATION = nil end
     if self.animation == nil then self.animation = nil end
@@ -206,6 +206,11 @@ function LazyImageRotationAnimation._jinit(self, layoutIndex, instanceId, scaleP
             ActualRotationAnimation._jinit(self, ...)
             return self
         end
+            function ActualRotationAnimation.newEnclosed(outer, ...)
+                local self = setmetatable({__javaOuter = outer}, ActualRotationAnimation)
+                ActualRotationAnimation._jinit(self, ...)
+                return self
+            end
         
 
         function ActualRotationAnimation:setFrame(index)
@@ -249,7 +254,7 @@ function LazyImageRotationAnimation._jinit(self, layoutIndex, instanceId, scaleP
         end
         java_overload(ActualRotationAnimation, "paintThreedXYZ", 4, function(java_a1, java_a2, java_a3, java_a4) return true and (java_a1 == nil or java_is(java_a1, "Graphics")) and type(java_a2) == "number" and type(java_a3) == "number" and type(java_a4) == "number" end)
 
-        self.animation = ActualRotationAnimation.new(self)
+        self.animation = ActualRotationAnimation.newEnclosed(self, self)
     return self
 end
 

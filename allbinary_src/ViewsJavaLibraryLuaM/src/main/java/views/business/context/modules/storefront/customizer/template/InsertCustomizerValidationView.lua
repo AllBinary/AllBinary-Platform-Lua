@@ -180,7 +180,7 @@ function InsertCustomizerValidationView._jinit(self, transformInfoInterface)
     InsertCustomizerValidationView._init_fields(self)
         -- super(...) made self above
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("View Name: " .. transformInfoInterface:getName(), self, self.commonStrings.CONSTRUCTOR)
+            self.logUtil:putF(require("allbinary_java").to_string("View Name: ") .. require("allbinary_java").to_string(transformInfoInterface:getName()), self, self.commonStrings.CONSTRUCTOR)
         end
         local requestHashMap = RequestParams.new(self:getPageContext()):toHashMap()
         self.viewName = requestHashMap:get(TransformInfoData.getInstance().NAME)
@@ -217,7 +217,7 @@ function InsertCustomizerValidationView:isValid()
                     local transformInfo = componentVector:get(index)
                     local transformInfoName = transformInfo:getName()
                     if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                        self.logUtil:putF("Setting Template Component with ViewName: " .. transformInfoName, self, self.commonStrings.IS_VALID)
+                        self.logUtil:putF(require("allbinary_java").to_string("Setting Template Component with ViewName: ") .. require("allbinary_java").to_string(transformInfoName), self, self.commonStrings.IS_VALID)
                     end
                     local componentInterface = TransformFactory.getInstance():getInstance(self.abeClientInformation, transformInfoName, self:getTransformInfoInterface())
                     local templateViewObjectConfig = InsertTemplateCustomizerTransformInfoObjectConfig.new(componentInterface:getTransformInfoInterface(), componentInterface:getTransformInfoInterface():getObjectConfigInterface():toXmlDoc())

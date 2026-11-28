@@ -88,10 +88,10 @@ function StringValidationUtil:isNumber(value)
         local numberOfDecimalPoints = 0
         for index = 0, #value - 1 do
             local digit = string.sub(value, (index) + 1, (index) + 1)
-            if not self:isNumberFromChar(digit) and digit ~= "." then
+            if not (self:isNumberFromChar(digit)) and not rawequal(digit, ".") then
                 return false
             end
-            if digit == "." then
+            if rawequal(digit, ".") then
                 numberOfDecimalPoints = numberOfDecimalPoints + 1
                 if numberOfDecimalPoints > 1 then
                     return false
@@ -103,7 +103,7 @@ end
 
 
 function StringValidationUtil:isNumberFromChar(digit)
-        if digit ~= "0" and digit ~= "1" and digit ~= "2" and digit ~= "3" and digit ~= "4" and digit ~= "5" and digit ~= "6" and digit ~= "7" and digit ~= "8" and digit ~= "9" then
+        if not rawequal(digit, "0") and not rawequal(digit, "1") and not rawequal(digit, "2") and not rawequal(digit, "3") and not rawequal(digit, "4") and not rawequal(digit, "5") and not rawequal(digit, "6") and not rawequal(digit, "7") and not rawequal(digit, "8") and not rawequal(digit, "9") then
             return false
         end
         return true
@@ -122,7 +122,7 @@ function StringValidationUtil:isValidRequiredNumber(value, min, max)
         if self:isEmpty(value) or #value < min or #value > max then
             return false
         end
-        if not self:isNumber(value) then
+        if not (self:isNumber(value)) then
             return false
         end
         return true
@@ -141,10 +141,10 @@ end
 
 function StringValidationUtil:isValidNotRequiredNumber(value, min, max)
         if #value > 0 then
-            if self.tsUtil:compareTo(value, self.stringUtil.NULL_STRING) == 0 or #value < min or #value > max then
+            if rawequal(self.tsUtil:compareTo(value, self.stringUtil.NULL_STRING), 0) or #value < min or #value > max then
                 return false
             end
-            if not self:isNumber(value) then
+            if not (self:isNumber(value)) then
                 return false
             end
         end
@@ -153,7 +153,7 @@ end
 
 
 function StringValidationUtil:isEmpty(string_)
-        if self.tsUtil:compareTo(string_, self.stringUtil.NULL_STRING) ~= 0 and self.tsUtil:compareTo(string_, self.stringUtil.EMPTY_STRING) ~= 0 then
+        if not rawequal(self.tsUtil:compareTo(string_, self.stringUtil.NULL_STRING), 0) and not rawequal(self.tsUtil:compareTo(string_, self.stringUtil.EMPTY_STRING), 0) then
             return false
         else
             return true

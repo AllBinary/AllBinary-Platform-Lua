@@ -30,7 +30,7 @@ end
 
 -- local DataOutputStream = require("java.io.DataOutputStream")
 local File = java_lazy("java.io.File")
--- local FileInputStream = require("java.io.FileInputStream")
+local FileInputStream = java_lazy("java.io.FileInputStream")
 -- local FileOutputStream = require("java.io.FileOutputStream")
 local HashMap = java_lazy("java.util.HashMap")
 -- local Set = require("java.util.Set")
@@ -122,15 +122,15 @@ function GenericProfiles._jinit(self, fileName)
             local endIndex = data:lastIndexOf(">")
             local document = DomDocumentHelper.create(string.sub(data, (0) + 1, endIndex + 1))
             local nodeList = document:getElementsByTagName(GenericProfilesData.NAME)
-            self.logUtil:putF("Number Of Profiles Specified: " .. tostring(nodeList:getLength()), self, "Contructor")
-            if nodeList ~= nil then
+            self.logUtil:putF(require("allbinary_java").to_string("Number Of Profiles Specified: ") .. require("allbinary_java").to_string(nodeList:getLength()), self, "Contructor")
+            if not rawequal(nodeList, nil) then
                 self:initProfiles(nodeList:item(0))
             else
-                error(require("java.lang.Exception").new(tostring(GenericProfileActionData.NAME) .. " Name Node Node Children"), 0)
+                error(require("java.lang.Exception").new(require("allbinary_java").to_string(GenericProfileActionData.NAME) .. require("allbinary_java").to_string(" Name Node Node Children")), 0)
             end
-            self.logUtil:putF("Loaded: " .. tostring(self.hashMap:size()) .. " Configuration Profile Actions", self, "Contructor")
+            self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string("Loaded: ") .. require("allbinary_java").to_string(self.hashMap:size())) .. require("allbinary_java").to_string(" Configuration Profile Actions"), self, "Contructor")
         else
-            self.logUtil:putF("No Generic Profile: " .. fileName, self, "Contructor")
+            self.logUtil:putF(require("allbinary_java").to_string("No Generic Profile: ") .. require("allbinary_java").to_string(fileName), self, "Contructor")
         end
         self:getDefaultListModelHelper():initDefaultModelList()
     return self
@@ -148,7 +148,7 @@ function GenericProfiles:initProfiles(node)
         local nodeList = node:getChildNodes()
         for index = 0, nodeList:getLength() - 1 do
             local profileNameNode = nodeList:item(index)
-            if profileNameNode:getNodeName():compareTo(GenericProfileData.NAME) == 0 then
+            if rawequal(profileNameNode:getNodeName():compareTo(GenericProfileData.NAME), 0) then
                 local genericProfile = GenericProfile.new(profileNameNode)
                 self.hashMap:put(genericProfile:getName(), genericProfile)
                 self:getDefaultListModelHelper():add(genericProfile:getName())
@@ -165,9 +165,9 @@ end
 -- throws Exception
 function GenericProfiles:get(name)
         local genericProfile = self.hashMap:get(name)
-        if genericProfile == nil then
+        if rawequal(genericProfile, nil) then
             local commonStrings = CommonStrings.getInstance()
-            self.logUtil:putF("No Generic Profile Named: " .. name .. " availability was: " .. tostring(self.hashMap), self, commonStrings.GET)
+            self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("No Generic Profile Named: ") .. require("allbinary_java").to_string(name)) .. require("allbinary_java").to_string(" availability was: ")) .. require("allbinary_java").to_string(self.hashMap), self, commonStrings.GET)
         end
         return genericProfile
 end
@@ -223,8 +223,8 @@ function GenericProfiles:save()
 end
 
 GenericProfiles.DEFAULT_PROFILES_PATH = "./modules/configs/profiles/"
-GenericProfiles.DEFAULT_PROFILE_ACTIONS_PATH = tostring(GenericProfiles.DEFAULT_PROFILES_PATH) .. "actions/"
-GenericProfiles.DEFAULT_FILE = tostring(GenericProfiles.DEFAULT_PROFILES_PATH) .. "profiles.xml"
+GenericProfiles.DEFAULT_PROFILE_ACTIONS_PATH = require("allbinary_java").to_string(GenericProfiles.DEFAULT_PROFILES_PATH) .. require("allbinary_java").to_string("actions/")
+GenericProfiles.DEFAULT_FILE = require("allbinary_java").to_string(GenericProfiles.DEFAULT_PROFILES_PATH) .. require("allbinary_java").to_string("profiles.xml")
 
 return GenericProfiles
 

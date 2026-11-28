@@ -178,7 +178,7 @@ java_overload(LayerManagerLogging, "appendAt", 2, function(java_a1, java_a2) ret
 
 
 function LayerManagerLogging:remove(layerInterface)
-        if layerInterface == nil then
+        if rawequal(layerInterface, nil) then
             self.stringBuilder:delete(0, self.stringBuilder:length())
             self.logUtil:putF(tostring(self.stringBuilder:appendint(java_int(TsUtil.getInstance():hashCode(self))):append(self.ATTEMPT_REMOVE_):append(StringUtil.getInstance():toString(layerInterface))), self, self.REMOVE)
         else
@@ -190,7 +190,7 @@ java_overload(LayerManagerLogging, "remove", 1, function(java_a1) return true an
 
 
 function LayerManagerLogging:removeResult(layerManager, layerInterface, result)
-        if layerInterface == nil then
+        if rawequal(layerInterface, nil) then
             self.stringBuilder:delete(0, self.stringBuilder:length())
             self.logUtil:putF(tostring(self.stringBuilder:appendint(java_int(TsUtil.getInstance():hashCode(self))):append(self.REMOVE_):append(StringUtil.getInstance():toString(layerInterface))), self, self.REMOVE)
         elseif result then

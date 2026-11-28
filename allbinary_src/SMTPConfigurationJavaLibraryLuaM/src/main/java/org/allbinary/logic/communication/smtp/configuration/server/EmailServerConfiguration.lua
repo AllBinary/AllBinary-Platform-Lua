@@ -196,7 +196,7 @@ end
 
 
 function EmailServerConfiguration:toString()
-        return "Email Server Configuration:\n" .. "Smtp Server: \n" .. tostring(self:getSmtpServer()) .. "\nAccount Name: " .. tostring(self:getAccountName()) .. "\nPassword: " .. tostring(self:getPassword())
+        return require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Email Server Configuration:\n") .. require("allbinary_java").to_string("Smtp Server: \n")) .. require("allbinary_java").to_string(self:getSmtpServer())) .. require("allbinary_java").to_string("\nAccount Name: ")) .. require("allbinary_java").to_string(self:getAccountName())) .. require("allbinary_java").to_string("\nPassword: ")) .. require("allbinary_java").to_string(self:getPassword())
 end
 EmailServerConfiguration.__tostring = function(self) return self:toString() end
 

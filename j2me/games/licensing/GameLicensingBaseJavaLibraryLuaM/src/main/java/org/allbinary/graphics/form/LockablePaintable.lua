@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local Animation = java_lazy("org.allbinary.animation.Animation")
 local FeaturedAnimationInterfaceFactoryInterfaceFactory = java_lazy("org.allbinary.animation.FeaturedAnimationInterfaceFactoryInterfaceFactory")
 local LockedResources = java_lazy("org.allbinary.logic.system.security.licensing.LockedResources")
@@ -133,7 +133,7 @@ setmetatable(LockablePaintable, {__index = ItemPaintable})
 
 function LockablePaintable:_init_fields()
     self.animation = FeaturedAnimationInterfaceFactoryInterfaceFactory.getInstance():get(LockedResources.getInstance().LOCKED_DEMO_GAME_FEATURE_RESOURCE):getInstance(0)
-    if self.lockedIndex == nil then self.lockedIndex = nil end
+    if self.lockedIndex == nil then self.lockedIndex = 0 end
 end
 
 

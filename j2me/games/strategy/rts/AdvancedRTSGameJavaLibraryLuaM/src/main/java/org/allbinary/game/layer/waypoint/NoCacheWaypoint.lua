@@ -228,10 +228,10 @@ java_overload(NoCacheWaypoint, "getPathsListRunnable", 1, function(java_a1) retu
 function NoCacheWaypoint:getEndGeographicMapCellPosition(startGeographicMapCellPosition)
         local endList = self.ownerLayer:getEndGeographicMapCellPositionList()
         local endGeographicMapCellPosition = BasicArrayListUtil.getInstance():getRandom(endList)
-        if startGeographicMapCellPosition == endGeographicMapCellPosition then
+        if rawequal(startGeographicMapCellPosition, endGeographicMapCellPosition) then
             for index = endList:size() - 1, 0, -1 do
                 endGeographicMapCellPosition = endList:get(index)
-                if startGeographicMapCellPosition ~= endGeographicMapCellPosition then
+                if not rawequal(startGeographicMapCellPosition, endGeographicMapCellPosition) then
                     break
                 end
             end
@@ -244,14 +244,14 @@ java_overload(NoCacheWaypoint, "getEndGeographicMapCellPosition", 1, function(ja
 -- throws Exception
 function NoCacheWaypoint:createPaths(startGeographicMapCellPosition)
         local endGeographicMapCellPosition = self:getEndGeographicMapCellPosition(startGeographicMapCellPosition)
-        if endGeographicMapCellPosition == nil then
+        if rawequal(endGeographicMapCellPosition, nil) then
             return BasicArrayListUtil.getInstance():getImmutableInstance()
         end
-        if startGeographicMapCellPosition == endGeographicMapCellPosition then
+        if rawequal(startGeographicMapCellPosition, endGeographicMapCellPosition) then
             if self.ownerLayer:shouldHandleStartSameAsEnd() then
                 return BasicArrayListUtil.getInstance():getImmutableInstance()
             else
-                error(require("java.lang.Exception").new("Start should not be End: " .. tostring(endGeographicMapCellPosition)), 0)
+                error(require("java.lang.Exception").new(require("allbinary_java").to_string("Start should not be End: ") .. require("allbinary_java").to_string(endGeographicMapCellPosition)), 0)
             end
         end
         local geographicMapCompositeInterface = self.allBinaryGameLayerManagerP
@@ -293,7 +293,7 @@ java_overload(NoCacheWaypoint, "reset", 0)
 
 -- throws Exception
 function NoCacheWaypoint:visit(unitLayer)
-        if unitLayer:getGroupInterface()[1] ~= self.ownerLayer:getGroupInterface()[1] then
+        if not rawequal(unitLayer:getGroupInterface()[1], self.ownerLayer:getGroupInterface()[1]) then
             return
         end
         local size = self:getConnectedWaypointList():size()

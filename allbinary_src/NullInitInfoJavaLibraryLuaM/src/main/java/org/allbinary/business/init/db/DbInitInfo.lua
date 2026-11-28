@@ -160,7 +160,7 @@ end
 
 function DbInitInfo:getUrl()
         local url = java_super(DbConnectionInfo, "getUrl", 0)(self)
-        PreLogUtil.put("Url: " .. url, self, "getUrl")
+        PreLogUtil.put(require("allbinary_java").to_string("Url: ") .. require("allbinary_java").to_string(url), self, "getUrl")
         return url
 end
 java_overload(DbInitInfo, "getUrl", 0)

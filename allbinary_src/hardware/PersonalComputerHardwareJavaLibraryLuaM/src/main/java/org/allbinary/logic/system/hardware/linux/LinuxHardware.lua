@@ -179,12 +179,12 @@ function LinuxHardware._new0(self)
             error(require("java.lang.Exception").new("Not Enough Data For A Valid License On Linux"), 0)
         end
         local cpu = Cpu.new()
-        if cpu ~= nil then
+        if not rawequal(cpu, nil) then
             self.cpuInterfaceVector:add(cpu)
             self.componentInterfaceVector:add(cpu)
         end
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().OS) then
-            self.logUtil:putF("Hardware Data: " .. tostring(self), self, self.commonStrings.CONSTRUCTOR)
+            self.logUtil:putF(require("allbinary_java").to_string("Hardware Data: ") .. require("allbinary_java").to_string(tostring(self)), self, self.commonStrings.CONSTRUCTOR)
         end
     return self
 end
@@ -200,7 +200,7 @@ function LinuxHardware:init_j1(filePath)
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().OS) then
-                self.logUtil:put("Hardware Data: " .. tostring(self), self, self.commonStrings.CONSTRUCTOR, e)
+                self.logUtil:put(require("allbinary_java").to_string("Hardware Data: ") .. require("allbinary_java").to_string(tostring(self)), self, self.commonStrings.CONSTRUCTOR, e)
             end
             error(e, 0)
         end
@@ -224,22 +224,22 @@ function LinuxHardware:init_j2(lineNumberReader, filePath)
             self.monitorInterfaceVector = BasicArrayListD.new()
             local pciFile = FileReader.new(filePath)
             lineNumberReader = LineNumberReader.new(pciFile)
-            if lineNumberReader == nil then
+            if rawequal(lineNumberReader, nil) then
                 local fileVector = SubDirectory.getInstance():search(filePath, AbFile.createAbFile(FilePathData.getInstance().PATH_START))
-                if not fileVector:isEmpty() then
+                if not (fileVector:isEmpty()) then
                     local file = fileVector:get(0)
                     lineNumberReader = LineNumberReader.new(FileReader.new(file:getPath()))
                 end
-                if lineNumberReader == nil then
+                if rawequal(lineNumberReader, nil) then
                     error(require("java.lang.Exception").new("No Linux File Data"), 0)
                 end
             end
-            if lineNumberReader ~= nil then
+            if not rawequal(lineNumberReader, nil) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().OS) then
                     self.logUtil:putF("PCI File Found", self, self.commonStrings.CONSTRUCTOR)
                 end
                 local nextLine = lineNumberReader:readLine()
-                while nextLine ~= nil do
+                while not rawequal(nextLine, nil) do
                     if self:isNextHardware(nextLine) then
                         break
                     end
@@ -248,7 +248,7 @@ function LinuxHardware:init_j2(lineNumberReader, filePath)
                 while self:isNextHardware(nextLine) do
                     local componentData = StringMaker.new()
                     if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().OS) then
-                        self.logUtil:putF("Found Hardware Device: " .. tostring(self.componentInterfaceVector:size()), self, self.commonStrings.CONSTRUCTOR)
+                        self.logUtil:putF(require("allbinary_java").to_string("Found Hardware Device: ") .. require("allbinary_java").to_string(self.componentInterfaceVector:size()), self, self.commonStrings.CONSTRUCTOR)
                     end
                     componentData:append(nextLine)
                     componentData:append(CommonSeps.getInstance().NEW_LINE)
@@ -258,12 +258,12 @@ function LinuxHardware:init_j2(lineNumberReader, filePath)
                         componentData:append(nextLine)
                         componentData:append(CommonSeps.getInstance().NEW_LINE)
                         nextLine = lineNumberReader:readLine()
-                        if nextLine == nil or self:isNextHardware(nextLine) then
+                        if rawequal(nextLine, nil) or self:isNextHardware(nextLine) then
                             break
                         end
                     end
                     local componentInterface = PCComponentFactory.getInstance():getInstance(componentType, tostring(componentData))
-                    if componentInterface ~= nil then
+                    if not rawequal(componentInterface, nil) then
                         self.componentInterfaceVector:add(componentInterface)
                     end
                 end
@@ -275,7 +275,7 @@ function LinuxHardware:init_j2(lineNumberReader, filePath)
             lineNumberReader:close()
         end)
         do -- finally
-            if lineNumberReader ~= nil then
+            if not rawequal(lineNumberReader, nil) then
                 lineNumberReader:close()
             end
         end
@@ -377,7 +377,7 @@ end
 
 
 function LinuxHardware:isNextHardware(nextLine)
-        if nextLine ~= nil then
+        if not rawequal(nextLine, nil) then
             local index = ((string.find(nextLine, "Bus", 1, true) or 0) - 1)
             if index >= 0 and index < 4 then
                 return true

@@ -64,12 +64,12 @@ end
 function DesktopBundle._jinit(self)
     DesktopBundle._init_fields(self)
         local bundleContext = InputAutomationBundleActivator.getBundleContext()
-        if bundleContext ~= nil then
+        if not rawequal(bundleContext, nil) then
             local bundleArray = bundleContext:getBundles()
             for index = 0, (bundleArray.n or #bundleArray) - 1 do
                 local bundle = bundleArray[index + 1]
                 local symbolicName = bundle:getSymbolicName()
-                if ((symbolicName < DesktopBundle.DESKTOP_SYMBOLIC_NAME and -1) or (symbolicName > DesktopBundle.DESKTOP_SYMBOLIC_NAME and 1) or 0) == 0 then
+                if rawequal(((symbolicName < DesktopBundle.DESKTOP_SYMBOLIC_NAME and -1) or (symbolicName > DesktopBundle.DESKTOP_SYMBOLIC_NAME and 1) or 0), 0) then
                     self.bundle = bundle
                 end
             end

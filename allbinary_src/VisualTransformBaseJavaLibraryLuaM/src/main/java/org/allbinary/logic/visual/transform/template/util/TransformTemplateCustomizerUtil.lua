@@ -100,14 +100,14 @@ function TransformTemplateCustomizerUtil._jinit(self)
     TransformTemplateCustomizerUtil._init_fields(self)
         local commonStrings = CommonStrings.getInstance()
         local SPACE = CommonSeps.getInstance().SPACE
-        self.CUSTOMIZER_NAME = SPACE .. tostring(CustomizerTransformInfoData.NAME)
-        self.BODY_VIEWNAMEKEY = SPACE .. tostring(BodyData.getInstance().VIEWNAMEKEY)
-        self.TITLE_VIEWNAMEKEY = SPACE .. tostring(TitleData.getInstance().VIEWNAMEKEY)
-        self.GLOBALS_NEW = tostring(GLOBALS2.NEW) .. SPACE
-        self.GLOBALS_INSERT = tostring(commonStrings.INSERT) .. SPACE
-        self.GLOBALS_DELETE = tostring(commonStrings.DELETE) .. SPACE
-        self.GLOBALS_EDIT = tostring(GLOBALS2.EDIT) .. SPACE
-        self.GLOBALS_UPDATE = tostring(commonStrings.UPDATE) .. SPACE
+        self.CUSTOMIZER_NAME = require("allbinary_java").to_string(SPACE) .. require("allbinary_java").to_string(CustomizerTransformInfoData.NAME)
+        self.BODY_VIEWNAMEKEY = require("allbinary_java").to_string(SPACE) .. require("allbinary_java").to_string(BodyData.getInstance().VIEWNAMEKEY)
+        self.TITLE_VIEWNAMEKEY = require("allbinary_java").to_string(SPACE) .. require("allbinary_java").to_string(TitleData.getInstance().VIEWNAMEKEY)
+        self.GLOBALS_NEW = require("allbinary_java").to_string(GLOBALS2.NEW) .. require("allbinary_java").to_string(SPACE)
+        self.GLOBALS_INSERT = require("allbinary_java").to_string(commonStrings.INSERT) .. require("allbinary_java").to_string(SPACE)
+        self.GLOBALS_DELETE = require("allbinary_java").to_string(commonStrings.DELETE) .. require("allbinary_java").to_string(SPACE)
+        self.GLOBALS_EDIT = require("allbinary_java").to_string(GLOBALS2.EDIT) .. require("allbinary_java").to_string(SPACE)
+        self.GLOBALS_UPDATE = require("allbinary_java").to_string(commonStrings.UPDATE) .. require("allbinary_java").to_string(SPACE)
     return self
 end
 
@@ -122,8 +122,8 @@ function TransformTemplateCustomizerUtil:getPageNameHack(viewName, storeName)
         local SPACE = CommonSeps.getInstance().SPACE
         local ONE_EMPTY_STRING_ARRAY = StringUtil.getInstance().ONE_EMPTY_STRING_ARRAY
         local hashMap = StdUtil.getInstance():createHashMap()
-        hashMap:put({viewName .. SPACE}, ONE_EMPTY_STRING_ARRAY)
-        hashMap:put({storeName .. SPACE}, ONE_EMPTY_STRING_ARRAY)
+        hashMap:put({require("allbinary_java").to_string(viewName) .. require("allbinary_java").to_string(SPACE)}, ONE_EMPTY_STRING_ARRAY)
+        hashMap:put({require("allbinary_java").to_string(storeName) .. require("allbinary_java").to_string(SPACE)}, ONE_EMPTY_STRING_ARRAY)
         hashMap:put({self.CUSTOMIZER_NAME}, ONE_EMPTY_STRING_ARRAY)
         hashMap:put({self.BODY_VIEWNAMEKEY}, ONE_EMPTY_STRING_ARRAY)
         hashMap:put({self.TITLE_VIEWNAMEKEY}, ONE_EMPTY_STRING_ARRAY)
@@ -135,7 +135,7 @@ function TransformTemplateCustomizerUtil:getPageNameHack(viewName, storeName)
         local replace = nil
         local rootViewName = replace:all(viewName)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("RootViewName for ObjectConfig: " .. rootViewName, self, "getPageNameHack")
+            self.logUtil:putF(require("allbinary_java").to_string("RootViewName for ObjectConfig: ") .. require("allbinary_java").to_string(rootViewName), self, "getPageNameHack")
         end
         return rootViewName
 end

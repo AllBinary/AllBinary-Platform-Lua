@@ -235,14 +235,14 @@ function TitleBodyValidation:isValid()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                 self.logUtil:putF("TitleBodyValidation", self, self.commonStrings.IS_VALID)
             end
-            if not StringValidationUtil.getInstance():isValidNotRequired(self.body, BodyData.getInstance().MIN, AbSqlData.MAXBLOB) then
+            if not (StringValidationUtil.getInstance():isValidNotRequired(self.body, BodyData.getInstance().MIN, AbSqlData.MAXBLOB)) then
                 isValid = false
             end
-            if not self.titleValidation:isValid() then
+            if not (self.titleValidation:isValid()) then
                 isValid = false
             end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("TitleBodyValidation: " .. tostring(isValid), self, self.commonStrings.IS_VALID)
+                self.logUtil:putF(require("allbinary_java").to_string("TitleBodyValidation: ") .. require("allbinary_java").to_string(isValid), self, self.commonStrings.IS_VALID)
             end
             do return "__jreturn", isValid end
         end)
@@ -298,7 +298,7 @@ java_overload(TitleBodyValidation, "toValidationInfoNode", 1, function(java_a1) 
 -- throws Exception
 function TitleBodyValidation:toXmlNode(document)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("Title Body: " .. self.body, self, "toXmlNode(document)")
+            self.logUtil:putF(require("allbinary_java").to_string("Title Body: ") .. require("allbinary_java").to_string(self.body), self, "toXmlNode(document)")
         end
         local node = ModDomHelper.createNameValueNodes(document, BodyData.getInstance().NAME, self.body)
         node:appendChild(self.titleValidation:toXmlNode(document))

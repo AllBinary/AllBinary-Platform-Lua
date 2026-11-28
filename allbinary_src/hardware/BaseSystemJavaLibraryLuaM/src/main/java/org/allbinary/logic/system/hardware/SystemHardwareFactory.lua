@@ -120,7 +120,7 @@ end
 
 function SystemHardwareFactory:getInstance(operatingSystemInterface)
         local try_ok, try_error, try_value = pcall(function()
-            if self.hardwareInterface == NoHardware.getInstance() then
+            if rawequal(self.hardwareInterface, NoHardware.getInstance()) then
                 self.hardwareInterface = HardwareFactory.getInstance():getInstance(operatingSystemInterface)
             end
             self.logUtil:putF("Found Hardware", self, self.commonStrings.CONSTRUCTOR)
@@ -138,7 +138,7 @@ function SystemHardwareFactory.static_toString()
         local systemHardwareFactory = SystemHardwareFactory.getInstance()
         local osBuffer = StringMaker.new()
         osBuffer:append("Hardware Info: \n")
-        if systemHardwareFactory.hardwareInterface ~= nil then
+        if not rawequal(systemHardwareFactory.hardwareInterface, nil) then
             osBuffer:append(tostring(systemHardwareFactory.hardwareInterface))
         else
             osBuffer:append(StringUtil.getInstance().NULL_STRING)

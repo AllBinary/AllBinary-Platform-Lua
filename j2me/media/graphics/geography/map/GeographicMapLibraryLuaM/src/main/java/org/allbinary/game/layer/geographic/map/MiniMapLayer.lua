@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
@@ -216,14 +216,14 @@ function MiniMapLayer:onGeographicMapCellPositionEvent(geographicMapCellPosition
         local nextColorCompositeInterface = nil
         for index = 0, size - 1 do
             nextColorCompositeInterface = self.list:get(index)
-            if nextColorCompositeInterface == colorCompositeInterface then
+            if rawequal(nextColorCompositeInterface, colorCompositeInterface) then
                 layerIndex = index
                 break
             end
         end
         local geographicMapCellPosition = self.geographicMapCellPositionFactory:getInstance(geographicMapCellPositionEvent:getGeographicMapCellPosition())
         local point = geographicMapCellPosition:getPoint()
-        if layerIndex == -1 then
+        if rawequal(layerIndex, -1) then
             self.list:add(colorCompositeInterface)
             local basicColor = colorCompositeInterface:getBasicColorP()
             self.basicColorList:add(basicColor)

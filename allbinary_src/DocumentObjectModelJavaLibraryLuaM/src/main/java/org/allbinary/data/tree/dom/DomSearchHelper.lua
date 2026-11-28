@@ -84,7 +84,7 @@ function DomSearchHelper.getNodeNoThrow(nodeName, nodeList)
         local numberOfNodes = nodeList:getLength()
         for index = 0, numberOfNodes - 1 do
             local node = nodeList:item(index)
-            if node:getNodeName():compareTo(nodeName) == 0 then
+            if rawequal(node:getNodeName():compareTo(nodeName), 0) then
                 return node
             end
         end
@@ -95,10 +95,10 @@ end
 -- throws Exception
 function DomSearchHelper.getNode(nodeName, nodeList)
         local node = DomSearchHelper.getNodeNoThrow(nodeName, nodeList)
-        if node ~= nil then
+        if not rawequal(node, nil) then
             return node
         else
-            error(require("java.lang.Exception").new(nodeName .. " Node Not Found in search"), 0)
+            error(require("java.lang.Exception").new(require("allbinary_java").to_string(nodeName) .. require("allbinary_java").to_string(" Node Not Found in search")), 0)
         end
 end
 
@@ -113,8 +113,8 @@ end
 -- throws Exception
 function DomSearchHelper.getAllNodes(nodeName, nodeList)
         local vector = DomSearchHelper.getAllNodesNoThrow(nodeName, nodeList)
-        if vector == nil then
-            error(require("java.lang.Exception").new(nodeName .. " Node Not Found in search"), 0)
+        if rawequal(vector, nil) then
+            error(require("java.lang.Exception").new(require("allbinary_java").to_string(nodeName) .. require("allbinary_java").to_string(" Node Not Found in search")), 0)
         else
             return vector
         end
@@ -126,7 +126,7 @@ function DomSearchHelper.getAllNodesNoThrow(nodeName, nodeList)
         local numberOfNodes = nodeList:getLength()
         for index = 0, numberOfNodes - 1 do
             local node = nodeList:item(index)
-            if node:getNodeName():compareTo(nodeName) == 0 then
+            if rawequal(node:getNodeName():compareTo(nodeName), 0) then
                 nodeVector:add(node)
             end
         end

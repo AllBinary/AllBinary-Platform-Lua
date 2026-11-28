@@ -131,7 +131,7 @@ setmetatable(UpTouchInputToGameKeyEventAction, {__index = GameKeyCompleteMotionG
 
 
 function UpTouchInputToGameKeyEventAction.getInstance()
-        if UpTouchInputToGameKeyEventAction.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(UpTouchInputToGameKeyEventAction.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             UpTouchInputToGameKeyEventAction.instance_f = UpTouchInputToGameKeyEventAction.new()
         end
         return UpTouchInputToGameKeyEventAction.instance_f

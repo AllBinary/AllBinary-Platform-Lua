@@ -206,7 +206,7 @@ function ScreenCaptureImagesWorker:run()
 end
 java_overload(ScreenCaptureImagesWorker, "run", 0)
 
-ScreenCaptureImagesWorker.index = nil
+ScreenCaptureImagesWorker.index = 0
 
 return ScreenCaptureImagesWorker
 

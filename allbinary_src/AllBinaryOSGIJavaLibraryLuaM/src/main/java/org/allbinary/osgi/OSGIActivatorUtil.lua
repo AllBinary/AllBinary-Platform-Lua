@@ -128,7 +128,7 @@ function OSGIActivatorUtil.registerAsService_j4(bundleContext, anyType, serviceN
         local serviceRegistration = bundleContext:registerService(serviceName, anyType, properties)
         local serviceReference = serviceRegistration:getReference()
         serviceReference = bundleContext:getServiceReference(serviceName)
-        if serviceReference == NullServiceReferenceFactory.getInstance().NULL_SERVICE_REFERENCE then
+        if rawequal(serviceReference, NullServiceReferenceFactory.getInstance().NULL_SERVICE_REFERENCE) then
             error(require("java.lang.Exception").new("No Such Service Reference"), 0)
         end
 end

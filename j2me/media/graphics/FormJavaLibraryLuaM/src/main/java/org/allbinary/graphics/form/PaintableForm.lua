@@ -149,7 +149,7 @@ end
 
 
 function PaintableForm.getNullPaintableForm()
-        if PaintableForm.NULL_PAINTABLE_FORM == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(PaintableForm.NULL_PAINTABLE_FORM, NullUtil.getInstance().NULL_OBJECT) then
             PaintableForm.NULL_PAINTABLE_FORM = PaintableForm.new(StringUtil.getInstance().EMPTY_STRING, java_new_array(nil, 0), BasicColorFactory.getInstance().BLACK, BasicColorFactory.getInstance().WHITE)
         end
         return PaintableForm.NULL_PAINTABLE_FORM

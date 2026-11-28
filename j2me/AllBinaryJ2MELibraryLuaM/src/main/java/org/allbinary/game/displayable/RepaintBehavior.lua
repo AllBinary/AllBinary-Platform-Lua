@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
 local DisplayInfoSingleton = java_lazy("org.allbinary.graphics.displayable.DisplayInfoSingleton")
 local OpenGLFeatureFactory = java_lazy("org.allbinary.graphics.opengles.OpenGLFeatureFactory")

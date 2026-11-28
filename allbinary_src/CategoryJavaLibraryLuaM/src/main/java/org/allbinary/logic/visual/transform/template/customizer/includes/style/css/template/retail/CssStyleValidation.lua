@@ -202,12 +202,12 @@ function CssStyleValidation:isValid()
             local size = self.cssStyleElementVector:size()
             for i = 0, size - 1 do
                 local styleValidationInterface = self.cssStyleElementVector:get(i)
-                if not styleValidationInterface:isValid() then
+                if not (styleValidationInterface:isValid()) then
                     isValid = false
                 end
             end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("End: " .. tostring(isValid), self, self.commonStrings.IS_VALID)
+                self.logUtil:putF(require("allbinary_java").to_string("End: ") .. require("allbinary_java").to_string(isValid), self, self.commonStrings.IS_VALID)
             end
             do return "__jreturn", isValid end
         end)

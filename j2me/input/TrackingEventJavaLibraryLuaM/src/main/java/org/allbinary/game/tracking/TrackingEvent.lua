@@ -138,7 +138,7 @@ function TrackingEvent._jinit(self, allBinaryLayerInterface)
     java_super_init(AllBinaryEventObject, self, allBinaryLayerInterface)
     TrackingEvent._init_fields(self)
         -- super(...) made self above
-        if allBinaryLayerInterface ~= TrackingEventHandler.getInstance() then
+        if not rawequal(allBinaryLayerInterface, TrackingEventHandler.getInstance()) then
             self:setLayerInterface(allBinaryLayerInterface)
         end
     return self

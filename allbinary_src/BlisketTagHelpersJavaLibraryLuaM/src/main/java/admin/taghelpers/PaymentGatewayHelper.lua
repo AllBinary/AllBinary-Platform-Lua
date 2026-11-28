@@ -183,7 +183,7 @@ function PaymentGatewayHelper:insert()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGS) then
                 self.logUtil:putF(success, self, "insert()")
             end
-            do return "__jreturn", success .. "<br/>" end
+            do return "__jreturn", require("allbinary_java").to_string(success) .. require("allbinary_java").to_string("<br/>") end
         end)
         if not try_ok then
             local e = try_error
@@ -192,7 +192,7 @@ function PaymentGatewayHelper:insert()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "add()", e)
             end
-            return error .. "<br>" .. "Exception: " .. tostring(e) .. "<br>"
+            return require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(error) .. require("allbinary_java").to_string("<br>")) .. require("allbinary_java").to_string("Exception: ")) .. require("allbinary_java").to_string(e)) .. require("allbinary_java").to_string("<br>")
         end
         if try_ok and try_error == "__jreturn" then return try_value end
 end
@@ -216,7 +216,7 @@ function PaymentGatewayHelper:update()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGS) then
                 self.logUtil:putF(success, self, "update()")
             end
-            do return "__jreturn", success .. "<br/>" end
+            do return "__jreturn", require("allbinary_java").to_string(success) .. require("allbinary_java").to_string("<br/>") end
         end)
         if not try_ok then
             local e = try_error
@@ -225,7 +225,7 @@ function PaymentGatewayHelper:update()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "update()", e)
             end
-            return error .. "<br/>" .. "Exception: " .. tostring(e) .. "<br/>"
+            return require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(error) .. require("allbinary_java").to_string("<br/>")) .. require("allbinary_java").to_string("Exception: ")) .. require("allbinary_java").to_string(e)) .. require("allbinary_java").to_string("<br/>")
         end
         if try_ok and try_error == "__jreturn" then return try_value end
 end
@@ -248,7 +248,7 @@ function PaymentGatewayHelper:delete()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGS) then
                 self.logUtil:putF(success, self, "delete()")
             end
-            do return "__jreturn", success .. "<br/>" end
+            do return "__jreturn", require("allbinary_java").to_string(success) .. require("allbinary_java").to_string("<br/>") end
         end)
         if not try_ok then
             local e = try_error
@@ -257,7 +257,7 @@ function PaymentGatewayHelper:delete()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "remove()", e)
             end
-            return error .. "<br/>" .. "Exception: " .. tostring(e) .. "<br>"
+            return require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(error) .. require("allbinary_java").to_string("<br/>")) .. require("allbinary_java").to_string("Exception: ")) .. require("allbinary_java").to_string(e)) .. require("allbinary_java").to_string("<br>")
         end
         if try_ok and try_error == "__jreturn" then return try_value end
 end

@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
--- local Sprite = require("javax.microedition.lcdui.game.Sprite")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local Sprite = java_lazy("javax.microedition.lcdui.game.Sprite")
 local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 local Direction = java_lazy("org.allbinary.direction.Direction")
 local Angle = java_lazy("org.allbinary.math.Angle")

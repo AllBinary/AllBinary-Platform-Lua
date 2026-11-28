@@ -66,7 +66,7 @@ function UnitWaypointStrings:_init_fields()
     self.ALL_VISITED = "All Visited"
     self.ALREADY_THERE_SHORT = "Again?"
     self.ALREADY_THERE = "Already There"
-    self.NEXT_PATH_NODE = tostring(CommonLabels.getInstance().NEXT) .. " Path Node"
+    self.NEXT_PATH_NODE = require("allbinary_java").to_string(CommonLabels.getInstance().NEXT) .. require("allbinary_java").to_string(" Path Node")
     self._ALL_VISITED_SHORT = " Arrived"
     self._ALREADY_THERE_SHORT = " Again?"
     self.VISITED_MOST_OF_THE_PATH = " visited most of the path"

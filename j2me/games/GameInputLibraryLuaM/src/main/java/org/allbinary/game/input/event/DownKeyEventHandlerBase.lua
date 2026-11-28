@@ -169,7 +169,7 @@ end
 
 
 function DownKeyEventHandlerBase:addListener(playerGameInput)
-        if not self.list:contains(playerGameInput) then
+        if not (self.list:contains(playerGameInput)) then
             self.list:add(playerGameInput)
         end
 end

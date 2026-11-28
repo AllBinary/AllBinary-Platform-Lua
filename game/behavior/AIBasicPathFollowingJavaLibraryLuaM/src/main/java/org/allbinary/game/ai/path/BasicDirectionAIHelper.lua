@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local Direction = java_lazy("org.allbinary.direction.Direction")
 local DirectionFactory = java_lazy("org.allbinary.direction.DirectionFactory")
 local AngleIncrementInfo = java_lazy("org.allbinary.math.AngleIncrementInfo")
@@ -100,7 +100,7 @@ end
 
 function BasicDirectionAIHelper:getAIKeyPressed(frame)
         local angle = java_int(self.angleInfo:getAngleIncrementInfo():getFrameAngle(math.tointeger(frame // 1)))
-        if self.angleInfo:getAngle() ~= angle then
+        if not rawequal(self.angleInfo:getAngle(), angle) then
             return self:turnAI(math.tointeger(frame // 1))
         else
             return Canvas.UP
@@ -112,13 +112,13 @@ function BasicDirectionAIHelper:getAIKeyPressedFromDirection(geographicMapDirect
         local keyDirection = -1
         local angleIncrementInfo = self.angleInfo:getAngleIncrementInfo()
         local directionFactory = DirectionFactory.getInstance()
-        if geographicMapDirectionData == directionFactory.DOWN then
+        if rawequal(geographicMapDirectionData, directionFactory.DOWN) then
             keyDirection = self:getAIKeyPressed(angleIncrementInfo.DOWN_FRAME)
-        elseif geographicMapDirectionData == directionFactory.UP then
+        elseif rawequal(geographicMapDirectionData, directionFactory.UP) then
             keyDirection = self:getAIKeyPressed(angleIncrementInfo.UP_FRAME)
-        elseif geographicMapDirectionData == directionFactory.LEFT then
+        elseif rawequal(geographicMapDirectionData, directionFactory.LEFT) then
             keyDirection = self:getAIKeyPressed(angleIncrementInfo.LEFT_FRAME)
-        elseif geographicMapDirectionData == directionFactory.RIGHT then
+        elseif rawequal(geographicMapDirectionData, directionFactory.RIGHT) then
             keyDirection = self:getAIKeyPressed(angleIncrementInfo.RIGHT_FRAME)
         end
         return keyDirection

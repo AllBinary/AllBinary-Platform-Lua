@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Displayable = require("javax.microedition.lcdui.Displayable")
+local Displayable = java_lazy("javax.microedition.lcdui.Displayable")
 local AndroidUtil = java_lazy("org.allbinary.AndroidUtil")
 local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
 local DisplayChangeEvent = java_lazy("org.allbinary.graphics.displayable.event.DisplayChangeEvent")
@@ -181,7 +181,7 @@ end
 
 
 function DisplayInfoSingleton:setLastSize(aLastWidth, aLastHeight, reason)
-        if self.full[self.WIDTH + 1] ~= aLastWidth or self.full[self.HEIGHT + 1] ~= aLastHeight then
+        if not rawequal(self.full[self.WIDTH + 1], aLastWidth) or not rawequal(self.full[self.HEIGHT + 1], aLastHeight) then
             self:setLastSizeForce(aLastWidth, aLastHeight, reason)
         end
 end
@@ -309,7 +309,7 @@ function DisplayInfoSingleton:update(displayable, reason)
         if aLastWidth > 0 and aLastHeight > 0 then
             local features = Features.getInstance()
             local openGLFeatureFactory = OpenGLFeatureFactory.getInstance()
-            if not features:isDefault(openGLFeatureFactory.OPENGL) or self.last[self.WIDTH + 1] ~= aLastWidth or self.last[self.HEIGHT + 1] ~= aLastHeight then
+            if not (features:isDefault(openGLFeatureFactory.OPENGL)) or not rawequal(self.last[self.WIDTH + 1], aLastWidth) or not rawequal(self.last[self.HEIGHT + 1], aLastHeight) then
                 stringMaker:delete(0, stringMaker:length())
                 self.logUtil:putF(tostring(stringMaker:append(self.UPDATE_FROM_ORIENTATION_CHANGE)), self, self.commonStrings.UPDATE)
                 local operatingSystemInterface = OperatingSystemFactory.getInstance():getOperatingSystemInstance()

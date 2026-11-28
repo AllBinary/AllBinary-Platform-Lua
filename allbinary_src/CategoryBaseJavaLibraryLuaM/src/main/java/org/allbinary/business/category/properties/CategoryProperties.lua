@@ -194,9 +194,9 @@ function CategoryProperties:getPath(categoryHierarchyInterface)
         local pathStringBuffer = StringMaker.new()
         local list = BasicArrayListD.new()
         local nextParentCategoryInterface = categoryHierarchyInterface:getParent()
-        if self ~= nextParentCategoryInterface:getProperties() then
+        if not rawequal(self, nextParentCategoryInterface:getProperties()) then
             local depthIndex = 0
-            while nextParentCategoryInterface ~= nil do
+            while not rawequal(nextParentCategoryInterface, nil) do
                 if nextParentCategoryInterface:getProperties():isRealRoot() then
                     break
                 end
@@ -206,7 +206,7 @@ function CategoryProperties:getPath(categoryHierarchyInterface)
                     pathStringBuffer:delete(0, pathStringBuffer:length())
                     list:addAt(0, tostring(pathStringBuffer:append(abPathData.SEPARATOR):append(nextParentCategoryInterface:getProperties():getValue())))
                 end
-                if nextParentCategoryInterface == nextParentCategoryInterface:getHierarchy():getParent() then
+                if rawequal(nextParentCategoryInterface, nextParentCategoryInterface:getHierarchy():getParent()) then
                     break
                 end
                 nextParentCategoryInterface = nextParentCategoryInterface:getHierarchy():getParent()
@@ -224,7 +224,7 @@ function CategoryProperties:getPath(categoryHierarchyInterface)
         end
         pathStringBuffer:append(abPathData.SEPARATOR)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().CATEGORY) then
-            self.logUtil:putF("path = " .. tostring(pathStringBuffer), self, "getPath")
+            self.logUtil:putF(require("allbinary_java").to_string("path = ") .. require("allbinary_java").to_string(tostring(pathStringBuffer)), self, "getPath")
         end
         return AbPath.new(tostring(pathStringBuffer), StringUtil.getInstance().EMPTY_STRING)
 end

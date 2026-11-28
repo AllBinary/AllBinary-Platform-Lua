@@ -81,7 +81,7 @@ end
 
 
 function GameKeyEventFactory.getInstance()
-        if GameKeyEventFactory.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(GameKeyEventFactory.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             GameKeyEventFactory.instance_f = GameKeyEventFactory.new()
         end
         return GameKeyEventFactory.instance_f

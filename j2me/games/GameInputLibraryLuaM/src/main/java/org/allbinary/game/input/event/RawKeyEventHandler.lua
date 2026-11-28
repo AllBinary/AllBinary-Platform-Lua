@@ -98,14 +98,14 @@ end
 
 
 function RawKeyEventHandler:addListenerSingleThreaded(eventListenerInterface)
-        if not self.eventListenerInterfaceList:contains(eventListenerInterface) then
+        if not (self.eventListenerInterfaceList:contains(eventListenerInterface)) then
             self.eventListenerInterfaceList:add(eventListenerInterface)
         end
 end
 
 
 function RawKeyEventHandler:addListener(eventListenerInterface)
-        if not self.eventListenerInterfaceList:contains(eventListenerInterface) then
+        if not (self.eventListenerInterfaceList:contains(eventListenerInterface)) then
             self.eventListenerInterfaceList:add(eventListenerInterface)
         end
 end

@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local LockedFeatureNotificationUtil = java_lazy("org.allbinary.logic.system.security.licensing.LockedFeatureNotificationUtil")
 local LockedUtil = java_lazy("org.allbinary.logic.system.security.licensing.LockedUtil")
@@ -172,6 +172,11 @@ local PreGameSelectionRunnable = {}
         PreGameSelectionRunnable._jinit(self, ...)
         return self
     end
+        function PreGameSelectionRunnable.newEnclosed(outer, ...)
+            local self = setmetatable({__javaOuter = outer}, PreGameSelectionRunnable)
+            PreGameSelectionRunnable._jinit(self, ...)
+            return self
+        end
     
 
     function PreGameSelectionRunnable:run()
@@ -201,8 +206,8 @@ function PreGameSelectionGameInputProcessor:_init_fields()
     self.inputTimeHelper = TimeDelayHelper.new(650)
     if self.nextGameState == nil then self.nextGameState = nil end
     if self.playerGameInput == nil then self.playerGameInput = nil end
-    if self.lockedIndex == nil then self.lockedIndex = nil end
-    self.abRunnable = PreGameSelectionRunnable.new(self)
+    if self.lockedIndex == nil then self.lockedIndex = 0 end
+    self.abRunnable = PreGameSelectionRunnable.newEnclosed(self, self)
 end
 
 
@@ -237,16 +242,16 @@ function PreGameSelectionGameInputProcessor:onInput(list)
         for index = 0, size - 1 do
             local anyType = list:get(index)
             local key = GameKeyEventUtil.getKey(anyType)
-            if key == Canvas.LEFT or key == Canvas.RIGHT or key == Canvas.UP or key == Canvas.DOWN then
+            if rawequal(key, Canvas.LEFT) or rawequal(key, Canvas.RIGHT) or rawequal(key, Canvas.UP) or rawequal(key, Canvas.DOWN) then
                 if self.inputTimeHelper:isTimeTNT() then
                     SecondaryPlayerQueueFactory.getInstance():add(SelectSound.getInstance())
                     self:getPreGameSelectorPaintable():getPreGameSelectionForm():processInputKey(key)
                     break
                 end
-            elseif key == Canvas.KEY_NUM0 then
+            elseif rawequal(key, Canvas.KEY_NUM0) then
                 local selectedIndex = self.preGameSelectorPaintable:getPreGameSelectionForm():getSelectedIndex()
-                if selectedIndex < self.lockedIndex or not LockedUtil.getInstance():isLocked() then
-                    if not self.abRunnable:isRunning() then
+                if selectedIndex < self.lockedIndex or not (LockedUtil.getInstance():isLocked()) then
+                    if not (self.abRunnable:isRunning()) then
                         self.abRunnable:setRunning(true)
                         ThreadObjectUtil.getInstance():processThread(self.abRunnable)
                     end

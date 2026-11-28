@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local BasicAI = require("org.allbinary.game.ai.BasicAI")
 local BasicGroupFactory = java_lazy("org.allbinary.game.identification.BasicGroupFactory")
 local GameInput = java_lazy("org.allbinary.game.input.GameInput")
@@ -138,7 +138,7 @@ FlockingAI.javaClassName = "org.allbinary.game.ag.ai.scroller.FlockingAI"
 setmetatable(FlockingAI, {__index = BasicAI})
 
 function FlockingAI:_init_fields()
-    if self.allowedDistance == nil then self.allowedDistance = nil end
+    if self.allowedDistance == nil then self.allowedDistance = 0 end
 end
 
 
@@ -169,7 +169,7 @@ function FlockingAI:processAI(allBinaryLayerManager)
         local ownerLayerInterface = nil
         for index = 0, size - 1 do
             allBinaryLayer = list:get(index)
-            if allBinaryLayer:getType() ~= WeaponLayer.getStaticType() then
+            if not rawequal(allBinaryLayer:getType(), WeaponLayer.getStaticType()) then
                 local distance = self:getXYDistance(allBinaryLayer)
                 if distance > maxDistance then
                     maxDistance = distance
@@ -181,7 +181,7 @@ function FlockingAI:processAI(allBinaryLayerManager)
             end
         end
         if maxDistance > self.allowedDistance then
-            if farAllbinaryLayer ~= AllBinaryLayer.NULL_ALLBINARY_LAYER then
+            if not rawequal(farAllbinaryLayer, AllBinaryLayer.NULL_ALLBINARY_LAYER) then
                 ownerLayerInterface = self:getOwnerLayerInterface()
                 if farAllbinaryLayer:getXP() < ownerLayerInterface:getXP() then
                     self:processKeyAI(Canvas.LEFT)

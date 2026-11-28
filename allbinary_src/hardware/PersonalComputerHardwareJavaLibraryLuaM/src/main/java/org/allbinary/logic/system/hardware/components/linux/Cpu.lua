@@ -165,19 +165,19 @@ function Cpu:init_j2(lineNumberReader, filePath)
             local fileReader = FileReader.new(filePath)
             lineNumberReader = LineNumberReader.new(fileReader)
             self.cpuHashMap = StdUtil.getInstance():createHashMap()
-            if lineNumberReader == nil then
+            if rawequal(lineNumberReader, nil) then
                 local fileVector = SubDirectory.getInstance():search(filePath, AbFile.createAbFile(FilePathData.getInstance().PATH_START))
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().OS) then
                     self.logUtil:putF(tostring(StringMaker.new():append("Cpu File BasicArrayList Size: "):appendint(fileVector:size())), self, self.commonStrings.CONSTRUCTOR)
                 end
-                if not fileVector:isEmpty() then
+                if not (fileVector:isEmpty()) then
                     local file = fileVector:get(0)
                     lineNumberReader = LineNumberReader.new(FileReader.new(file:getPath()))
                 end
             end
-            if lineNumberReader ~= nil then
+            if not rawequal(lineNumberReader, nil) then
                 local nextLine = lineNumberReader:readLine()
-                while nextLine ~= nil do
+                while not rawequal(nextLine, nil) do
                     local index = ((string.find(nextLine, ":", 1, true) or 0) - 1)
                     if index >= 0 then
                         local key = string.sub(nextLine, (0) + 1, index)
@@ -213,7 +213,7 @@ function Cpu:init_j2(lineNumberReader, filePath)
             end
         end)
         do -- finally
-            if lineNumberReader ~= nil then
+            if not rawequal(lineNumberReader, nil) then
                 lineNumberReader:close()
             end
         end

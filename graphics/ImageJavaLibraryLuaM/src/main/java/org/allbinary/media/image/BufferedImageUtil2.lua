@@ -69,7 +69,7 @@ function BufferedImageUtil2:createSpriteImage(bufferedImageArray)
             columns = (bufferedImageArray.n or #bufferedImageArray)
         end
         rows = (java_idiv((bufferedImageArray.n or #bufferedImageArray), columns))
-        if math.fmod((bufferedImageArray.n or #bufferedImageArray), columns) ~= 0 then
+        if not rawequal(math.fmod((bufferedImageArray.n or #bufferedImageArray), columns), 0) then
             rows = rows + 1
         end
         local bufferedImage = self.imageUtil:create(bufferedImageArray[1]:getWidth(nil) * columns, bufferedImageArray[1]:getHeight(nil) * rows)
@@ -77,7 +77,7 @@ function BufferedImageUtil2:createSpriteImage(bufferedImageArray)
         local columnIndex = 0
         local rowIndex = 0
         for index = 0, (bufferedImageArray.n or #bufferedImageArray) - 1 do
-            if java_idiv(index, max) ~= 0 and math.fmod(index, max) == 0 then
+            if not rawequal(java_idiv(index, max), 0) and rawequal(math.fmod(index, max), 0) then
                 rowIndex = rowIndex + 1
                 columnIndex = 0
             end

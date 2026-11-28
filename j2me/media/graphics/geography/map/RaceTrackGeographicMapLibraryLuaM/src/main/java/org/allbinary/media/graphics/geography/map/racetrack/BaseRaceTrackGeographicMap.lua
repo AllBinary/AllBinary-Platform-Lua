@@ -186,13 +186,13 @@ function BaseRaceTrackGeographicMap._jinit(self, raceTrackInfo, raceTrackData, t
         self.raceTrackData = raceTrackData
         self.miniGeographicMap = miniGeographicMap
         local miniTiledLayer = self.miniGeographicMap:getAllBinaryTiledLayer()
-        if miniTiledLayer:getColumns() ~= self:getGeographicMapCellPositionFactory():getColumns() then
+        if not rawequal(miniTiledLayer:getColumns(), self:getGeographicMapCellPositionFactory():getColumns()) then
             local error = tostring(StringMaker.new():append("RaceTrackMap has incorrect Mini Map columns: "):appendint(java_int(miniTiledLayer:getColumns())):append(" != "):appendint(java_int(self:getGeographicMapCellPositionFactory():getColumns())))
             local commonStrings = CommonStrings.getInstance()
             self.logUtil:putF(commonStrings.EXCEPTION, self, commonStrings.CONSTRUCTOR)
             error(require("java.lang.Exception").new(error), 0)
         end
-        if miniTiledLayer:getRows() ~= self:getGeographicMapCellPositionFactory():getRows() then
+        if not rawequal(miniTiledLayer:getRows(), self:getGeographicMapCellPositionFactory():getRows()) then
             local error = "RaceTrackMap has incorrect Mini Map rows"
             local commonStrings = CommonStrings.getInstance()
             self.logUtil:putF(commonStrings.EXCEPTION, self, commonStrings.CONSTRUCTOR)

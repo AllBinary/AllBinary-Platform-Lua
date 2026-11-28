@@ -143,7 +143,7 @@ function BasicTopViewGeographicMapCellTypeFactory:_init_fields()
     if self.STAIRS_UP_CELL_TYPE == nil then self.STAIRS_UP_CELL_TYPE = nil end
     if self.STAIRS_DOWN_CELL_TYPE == nil then self.STAIRS_DOWN_CELL_TYPE = nil end
     if self.OTHER_CELL_TYPE == nil then self.OTHER_CELL_TYPE = nil end
-    if self.maxTileId == nil then self.maxTileId = nil end
+    if self.maxTileId == nil then self.maxTileId = 0 end
 end
 
 
@@ -157,7 +157,7 @@ function BasicTopViewGeographicMapCellTypeFactory._jinit(self, tileTypeToTileIds
         local geographicMapCellTypeFactory = GeographicMapCellTypeFactory.getInstance()
         local geographicMapCellTypeArray = geographicMapCellTypeFactory:getGeographicMapCellTypeArray()
         local type = 0
-        if geographicMapCellTypeArray[type + 1] == nil then
+        if rawequal(geographicMapCellTypeArray[type + 1], nil) then
             RaceTrackGeographicMapCellType.new(CommonStrings.getInstance().UNKNOWN, type, 999, 0)
         else
         end
@@ -207,12 +207,12 @@ function BasicTopViewGeographicMapCellTypeFactory._jinit(self, tileTypeToTileIds
         self.STAIRS_DOWN_CELL_TYPE = STAIRS_DOWN_CELL_TYPE
         self.OTHER_CELL_TYPE = OTHER_CELL_TYPE
         type = self.maxTileId - 1
-        if geographicMapCellTypeArray[type + 1] == nil then
+        if rawequal(geographicMapCellTypeArray[type + 1], nil) then
             RaceTrackGeographicMapCellType.new(commonStrings.START, type, 1, 0)
         else
         end
         type = self.maxTileId - 2
-        if geographicMapCellTypeArray[type + 1] == nil then
+        if rawequal(geographicMapCellTypeArray[type + 1], nil) then
             RaceTrackGeographicMapCellType.new(commonStrings.START, type, 1, 0)
         else
         end

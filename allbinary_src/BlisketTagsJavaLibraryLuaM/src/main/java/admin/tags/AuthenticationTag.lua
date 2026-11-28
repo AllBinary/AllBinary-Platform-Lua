@@ -409,31 +409,31 @@ function AuthenticationTag:doStartTag()
                 stringBuffer:append(request:getRequestURI())
                 self.logUtil:putF(tostring(stringBuffer), self, self.tagStrings.DO_START_TAG)
             end
-            if self.command ~= nil then
+            if not rawequal(self.command, nil) then
                 self.propertiesHashMap = StdUtil.getInstance():createHashMap()
-                if ((self.command < GLOBALS2.NEWPASSWORD and -1) or (self.command > GLOBALS2.NEWPASSWORD and 1) or 0) == 0 then
+                if rawequal(((self.command < GLOBALS2.NEWPASSWORD and -1) or (self.command > GLOBALS2.NEWPASSWORD and 1) or 0), 0) then
                     if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAG) then
                         self.logUtil:putF("New Password", self, self.tagStrings.DO_START_TAG)
                     end
-                    if not self:newPassword() then
+                    if not (self:newPassword()) then
                         self.pageContext:getOut():print("New Password Request Failed.<p/>")
                         do return "__jreturn", self.EVAL_BODY_INCLUDE end
                     else
                         self.pageContext:getOut():print("New Password Was Sent.<p/>")
                         do return "__jreturn", self.SKIP_BODY end
                     end
-                elseif ((self.command < GLOBALS2.CHANGEPASSWORD and -1) or (self.command > GLOBALS2.CHANGEPASSWORD and 1) or 0) == 0 then
+                elseif rawequal(((self.command < GLOBALS2.CHANGEPASSWORD and -1) or (self.command > GLOBALS2.CHANGEPASSWORD and 1) or 0), 0) then
                     if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAG) then
                         self.logUtil:putF("Change Password", self, self.tagStrings.DO_START_TAG)
                     end
-                    if not self:changePassword() then
+                    if not (self:changePassword()) then
                         self.pageContext:getOut():print("Password Change Attempt Failed.<p/>")
                         do return "__jreturn", self.EVAL_BODY_INCLUDE end
                     else
                         self.pageContext:getOut():print("Password Changed Successfully.<p/>")
                         do return "__jreturn", self.SKIP_BODY end
                     end
-                elseif ((self.command < WeblisketSessionData.INVALIDATESESSION and -1) or (self.command > WeblisketSessionData.INVALIDATESESSION and 1) or 0) == 0 then
+                elseif rawequal(((self.command < WeblisketSessionData.INVALIDATESESSION and -1) or (self.command > WeblisketSessionData.INVALIDATESESSION and 1) or 0), 0) then
                     if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAG) then
                         self.logUtil:putF("INVALIDATESESSION", self, self.tagStrings.DO_START_TAG)
                     end
@@ -445,7 +445,7 @@ function AuthenticationTag:doStartTag()
                                 self.logUtil:putF("Processing Invalidation", self, self.tagStrings.DO_START_TAG)
                             end
                             self.pageContext:getOut():print("Please login again.<p>")
-                            if ((self.command < GLOBALS2.PROCESSBODYIFAUTHENTICATED and -1) or (self.command > GLOBALS2.PROCESSBODYIFAUTHENTICATED and 1) or 0) == 0 then
+                            if rawequal(((self.command < GLOBALS2.PROCESSBODYIFAUTHENTICATED and -1) or (self.command > GLOBALS2.PROCESSBODYIFAUTHENTICATED and 1) or 0), 0) then
                                 do return "__jreturn", TagSupport.SKIP_BODY end
                             else
                                 do return "__jreturn", TagSupport.EVAL_BODY_INCLUDE end
@@ -454,24 +454,24 @@ function AuthenticationTag:doStartTag()
                             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAG) then
                                 self.logUtil:putF("Preparing session for invalidation", self, self.tagStrings.DO_START_TAG)
                             end
-                            if ((self.command < GLOBALS2.PROCESSBODYIFAUTHENTICATED and -1) or (self.command > GLOBALS2.PROCESSBODYIFAUTHENTICATED and 1) or 0) == 0 then
+                            if rawequal(((self.command < GLOBALS2.PROCESSBODYIFAUTHENTICATED and -1) or (self.command > GLOBALS2.PROCESSBODYIFAUTHENTICATED and 1) or 0), 0) then
                                 do return "__jreturn", TagSupport.SKIP_BODY end
                             else
                                 do return "__jreturn", TagSupport.EVAL_BODY_INCLUDE end
                             end
                         end
                     end
-                    if (self.userName == nil or ((self.userName < stringUtil.EMPTY_STRING and -1) or (self.userName > stringUtil.EMPTY_STRING and 1) or 0) == 0) and (self.password == nil or ((self.password < stringUtil.EMPTY_STRING and -1) or (self.password > stringUtil.EMPTY_STRING and 1) or 0) == 0) and self.roles ~= nil and self:isAuthenticationSessionValid() then
+                    if (rawequal(self.userName, nil) or rawequal(((self.userName < stringUtil.EMPTY_STRING and -1) or (self.userName > stringUtil.EMPTY_STRING and 1) or 0), 0)) and (rawequal(self.password, nil) or rawequal(((self.password < stringUtil.EMPTY_STRING and -1) or (self.password > stringUtil.EMPTY_STRING and 1) or 0), 0)) and not rawequal(self.roles, nil) and self:isAuthenticationSessionValid() then
                         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAG) then
                             self.logUtil:putF("Authenticated session is valid", self, self.tagStrings.DO_START_TAG)
                         end
-                        if ((self.command < GLOBALS2.PROCESSBODYIFAUTHENTICATED and -1) or (self.command > GLOBALS2.PROCESSBODYIFAUTHENTICATED and 1) or 0) == 0 then
+                        if rawequal(((self.command < GLOBALS2.PROCESSBODYIFAUTHENTICATED and -1) or (self.command > GLOBALS2.PROCESSBODYIFAUTHENTICATED and 1) or 0), 0) then
                             do return "__jreturn", TagSupport.EVAL_BODY_INCLUDE end
                         else
                             do return "__jreturn", TagSupport.SKIP_BODY end
                         end
                     end
-                    if self.userName ~= nil and self.password ~= nil and self:processIfNewLogin() then
+                    if not rawequal(self.userName, nil) and not rawequal(self.password, nil) and self:processIfNewLogin() then
                         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAG) then
                             self.logUtil:putF("Processing new login.", self, self.tagStrings.DO_START_TAG)
                         end
@@ -480,7 +480,7 @@ function AuthenticationTag:doStartTag()
                                 self.logUtil:putF("Role is valid - Processing new login", self, self.tagStrings.DO_START_TAG)
                             end
                             self.pageContext:getOut():print(self:validRole())
-                            if ((self.command < GLOBALS2.PROCESSBODYIFAUTHENTICATED and -1) or (self.command > GLOBALS2.PROCESSBODYIFAUTHENTICATED and 1) or 0) == 0 then
+                            if rawequal(((self.command < GLOBALS2.PROCESSBODYIFAUTHENTICATED and -1) or (self.command > GLOBALS2.PROCESSBODYIFAUTHENTICATED and 1) or 0), 0) then
                                 do return "__jreturn", self.EVAL_BODY_INCLUDE end
                             else
                                 do return "__jreturn", self.SKIP_BODY end
@@ -490,7 +490,7 @@ function AuthenticationTag:doStartTag()
                                 self.logUtil:putF("Role is not valid - Processing new login", self, self.tagStrings.DO_START_TAG)
                             end
                             self.pageContext:getOut():print(self:invalidRole())
-                            if ((self.command < GLOBALS2.PROCESSBODYIFAUTHENTICATED and -1) or (self.command > GLOBALS2.PROCESSBODYIFAUTHENTICATED and 1) or 0) == 0 then
+                            if rawequal(((self.command < GLOBALS2.PROCESSBODYIFAUTHENTICATED and -1) or (self.command > GLOBALS2.PROCESSBODYIFAUTHENTICATED and 1) or 0), 0) then
                                 do return "__jreturn", self.SKIP_BODY end
                             else
                                 do return "__jreturn", self.EVAL_BODY_INCLUDE end
@@ -500,14 +500,14 @@ function AuthenticationTag:doStartTag()
                         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAG) then
                             self.logUtil:putF("Invalid Login", self, self.tagStrings.DO_START_TAG)
                         end
-                        if self.userName ~= nil and ((self.userName < stringUtil.EMPTY_STRING and -1) or (self.userName > stringUtil.EMPTY_STRING and 1) or 0) ~= 0 and self.password ~= nil and ((self.password < stringUtil.EMPTY_STRING and -1) or (self.password > stringUtil.EMPTY_STRING and 1) or 0) ~= 0 then
+                        if not rawequal(self.userName, nil) and not rawequal(((self.userName < stringUtil.EMPTY_STRING and -1) or (self.userName > stringUtil.EMPTY_STRING and 1) or 0), 0) and not rawequal(self.password, nil) and not rawequal(((self.password < stringUtil.EMPTY_STRING and -1) or (self.password > stringUtil.EMPTY_STRING and 1) or 0), 0) then
                             self.pageContext:getOut():print("Sorry your username and/or password is invalid.<p/>")
                         end
                     end
                     if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAG) then
                         self.logUtil:putF(tostring(StringMaker.new():append("Major authentication error - userName: "):append(self.userName):append(" Password: "):append(self.password):append(" Command: "):append(self.command)), self, self.tagStrings.DO_START_TAG)
                     end
-                    if ((self.command < GLOBALS2.PROCESSBODYIFAUTHENTICATED and -1) or (self.command > GLOBALS2.PROCESSBODYIFAUTHENTICATED and 1) or 0) == 0 then
+                    if rawequal(((self.command < GLOBALS2.PROCESSBODYIFAUTHENTICATED and -1) or (self.command > GLOBALS2.PROCESSBODYIFAUTHENTICATED and 1) or 0), 0) then
                         do return "__jreturn", TagSupport.SKIP_BODY end
                     else
                         do return "__jreturn", TagSupport.EVAL_BODY_INCLUDE end

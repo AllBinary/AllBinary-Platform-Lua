@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local NumberStringHud = require("org.allbinary.game.ag.layer.hud.basic.NumberStringHud")
 local NumberStringHudFactory = java_lazy("org.allbinary.game.ag.layer.hud.basic.NumberStringHudFactory")
 local SelectionHudPaintable = require("org.allbinary.game.layer.SelectionHudPaintable")
@@ -162,11 +162,11 @@ local BuildingNumberHud = {}
     BuildingInfoHudPaintable.BuildingNumberHud = BuildingNumberHud
 
     function BuildingNumberHud:_init_fields()
-        if self.baseTextX == nil then self.baseTextX = nil end
-        if self.baseY == nil then self.baseY = nil end
-        if self.row == nil then self.row = nil end
-        if self.prefixLength == nil then self.prefixLength = nil end
-        if self.positionBeforeMeasurement == nil then self.positionBeforeMeasurement = nil end
+        if self.baseTextX == nil then self.baseTextX = 0 end
+        if self.baseY == nil then self.baseY = 0 end
+        if self.row == nil then self.row = 0 end
+        if self.prefixLength == nil then self.prefixLength = 0 end
+        if self.positionBeforeMeasurement == nil then self.positionBeforeMeasurement = false end
     end
     
 
@@ -190,7 +190,7 @@ local BuildingNumberHud = {}
     
 
     function BuildingNumberHud:updateMeasurement(graphics)
-            if not self.positionBeforeMeasurement then
+            if not (self.positionBeforeMeasurement) then
                 java_super(NumberStringHud, "updateMeasurement", 1)(self, graphics)
             end
             local font = graphics:getFont()

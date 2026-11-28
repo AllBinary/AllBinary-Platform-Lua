@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local GL = require("javax.microedition.khronos.opengles.GL")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local GL = java_lazy("javax.microedition.khronos.opengles.GL")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local Animation = java_lazy("org.allbinary.animation.Animation")
 local NullAnimationFactory = java_lazy("org.allbinary.animation.NullAnimationFactory")
 local CollidableAlwaysPickupNeverCollideBehaviorFactory = java_lazy("org.allbinary.game.collision.CollidableAlwaysPickupNeverCollideBehaviorFactory")

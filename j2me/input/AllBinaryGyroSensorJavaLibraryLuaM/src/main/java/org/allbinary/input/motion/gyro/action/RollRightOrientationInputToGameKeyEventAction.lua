@@ -131,7 +131,7 @@ setmetatable(RollRightOrientationInputToGameKeyEventAction, {__index = GameKeyCo
 
 
 function RollRightOrientationInputToGameKeyEventAction.getInstance()
-        if RollRightOrientationInputToGameKeyEventAction.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(RollRightOrientationInputToGameKeyEventAction.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             RollRightOrientationInputToGameKeyEventAction.instance_f = RollRightOrientationInputToGameKeyEventAction.new()
         end
         return RollRightOrientationInputToGameKeyEventAction.instance_f

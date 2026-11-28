@@ -218,11 +218,11 @@ function DomHelper:getChildNodeList(nodeName, nodeList)
         local numberOfNodes = nodeList:getLength()
         for index = 0, numberOfNodes - 1 do
             local node = nodeList:item(index)
-            if node:getNodeName():compareTo(nodeName) == 0 then
+            if rawequal(node:getNodeName():compareTo(nodeName), 0) then
                 return node:getChildNodes()
             end
         end
-        error(require("java.lang.Exception").new(nodeName .. " Node Not Found"), 0)
+        error(require("java.lang.Exception").new(require("allbinary_java").to_string(nodeName) .. require("allbinary_java").to_string(" Node Not Found")), 0)
 end
 
 
@@ -233,7 +233,7 @@ function DomHelper:getChildrenWithoutTextNodes(nodeName, nodeList)
         local numberOfChildren = childNodeList:getLength()
         for index = 0, numberOfChildren - 1 do
             local node = childNodeList:item(index)
-            if node:getNodeType() ~= Node.TEXT_NODE then
+            if not rawequal(node:getNodeType(), Node.TEXT_NODE) then
                 list:add(node)
             end
         end
@@ -247,7 +247,7 @@ function DomHelper:getWithoutTextNodes(nodeList)
         local numberOfChildren = nodeList:getLength()
         for index = 0, numberOfChildren - 1 do
             local node = nodeList:item(index)
-            if node:getNodeType() ~= Node.TEXT_NODE then
+            if not rawequal(node:getNodeType(), Node.TEXT_NODE) then
                 list:add(node)
             end
         end
@@ -260,12 +260,12 @@ function DomHelper:searchNodeList_j2_1(nodeName, nodeList)
         local numberOfNodes = nodeList:getLength()
         for index = 0, numberOfNodes - 1 do
             local node = nodeList:item(index)
-            self.logUtil:putF("NodeName: " .. tostring(node:getNodeName()), self, "searchNodeList")
-            if node:getNodeName():compareTo(nodeName) == 0 then
+            self.logUtil:putF(require("allbinary_java").to_string("NodeName: ") .. require("allbinary_java").to_string(node:getNodeName()), self, "searchNodeList")
+            if rawequal(node:getNodeName():compareTo(nodeName), 0) then
                 return node
             end
         end
-        error(require("java.lang.Exception").new(nodeName .. " Node Not Found in search"), 0)
+        error(require("java.lang.Exception").new(require("allbinary_java").to_string(nodeName) .. require("allbinary_java").to_string(" Node Not Found in search")), 0)
 end
 
 
@@ -274,12 +274,12 @@ function DomHelper:searchNodeList_j2_2(nodeName, nodeList)
         local numberOfNodes = nodeList:size()
         for index = 0, numberOfNodes - 1 do
             local node = nodeList:get(index)
-            self.logUtil:putF("NodeName: " .. tostring(node:getNodeName()), self, "searchNodeList")
-            if node:getNodeName():compareTo(nodeName) == 0 then
+            self.logUtil:putF(require("allbinary_java").to_string("NodeName: ") .. require("allbinary_java").to_string(node:getNodeName()), self, "searchNodeList")
+            if rawequal(node:getNodeName():compareTo(nodeName), 0) then
                 return node
             end
         end
-        error(require("java.lang.Exception").new(nodeName .. " Node Not Found in search"), 0)
+        error(require("java.lang.Exception").new(require("allbinary_java").to_string(nodeName) .. require("allbinary_java").to_string(" Node Not Found in search")), 0)
 end
 function DomHelper:searchNodeList(...)
     local count = select("#", ...)

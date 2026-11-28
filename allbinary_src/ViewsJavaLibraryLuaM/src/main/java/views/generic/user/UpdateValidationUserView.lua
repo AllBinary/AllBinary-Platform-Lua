@@ -179,13 +179,13 @@ end
 
 function UpdateValidationUserView:isValid()
         local try_ok, try_error, try_value = pcall(function()
-            if UserEntityFactory.getInstance():getUser(self.user:getUserName()) == nil then
+            if rawequal(UserEntityFactory.getInstance():getUser(self.user:getUserName()), nil) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     self.logUtil:putF("User does not exist", self, self.commonStrings.IS_VALID)
                 end
                 do return "__jreturn", false end
             end
-            if self.user:isValid() == false then
+            if rawequal(self.user:isValid(), false) then
                 do return "__jreturn", false end
             end
             do return "__jreturn", true end
@@ -206,13 +206,13 @@ java_overload(UpdateValidationUserView, "isValid", 0)
 function UpdateValidationUserView:validationInfo()
         local try_ok, try_error, try_value = pcall(function()
             local stringBuffer = StringMaker.new()
-            if UserEntityFactory.getInstance():getUser(self.user:getUserName()) == nil then
+            if rawequal(UserEntityFactory.getInstance():getUser(self.user:getUserName()), nil) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     self.logUtil:putF("User does not exist", self, "validationInfo()")
                 end
                 stringBuffer:append("Unable to update user that does not exist.<br />")
             end
-            if self.user:isValid() == false then
+            if rawequal(self.user:isValid(), false) then
                 stringBuffer:append(self.user:validationInfo())
             end
             do return "__jreturn", tostring(stringBuffer) end

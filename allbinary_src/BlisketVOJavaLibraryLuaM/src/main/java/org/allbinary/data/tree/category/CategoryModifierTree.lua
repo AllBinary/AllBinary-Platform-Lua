@@ -182,7 +182,7 @@ function CategoryModifierTree:insert(parentCategoryInterface, newChildCategoryIn
             end
             if parentCategoryInterface:isValid() then
                 parentCategoryInterface:addChild(newChildCategoryInterface)
-                local directoryToBeCreatedAbPath = AbPath.new(tostring(newChildCategoryInterface:getRootFilePath()) .. tostring(newChildCategoryInterface:getPath()), StringUtil.getInstance().EMPTY_STRING)
+                local directoryToBeCreatedAbPath = AbPath.new(require("allbinary_java").to_string(tostring(newChildCategoryInterface:getRootFilePath())) .. require("allbinary_java").to_string(tostring(newChildCategoryInterface:getPath())), StringUtil.getInstance().EMPTY_STRING)
                 self.directory:create(directoryToBeCreatedAbPath)
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().CATEGORY) then
                     self.logUtil:putF("Saving", self, "insert()")
@@ -208,7 +208,7 @@ function CategoryModifierTree:delete(parentCategoryInterface, existingChildCateg
         local try_ok, try_error, try_value = pcall(function()
             if parentCategoryInterface:isValid() then
                 parentCategoryInterface:addChild(existingChildCategoryInterface)
-                local directoryToBeDeletedAbPath = AbPath.new(tostring(existingChildCategoryInterface:getRootFilePath()) .. tostring(existingChildCategoryInterface:getPath()), StringUtil.getInstance().EMPTY_STRING)
+                local directoryToBeDeletedAbPath = AbPath.new(require("allbinary_java").to_string(tostring(existingChildCategoryInterface:getRootFilePath())) .. require("allbinary_java").to_string(tostring(existingChildCategoryInterface:getPath())), StringUtil.getInstance().EMPTY_STRING)
                 self:delete(existingChildCategoryInterface)
                 parentCategoryInterface:removeChild(existingChildCategoryInterface)
                 self:save(parentCategoryInterface)

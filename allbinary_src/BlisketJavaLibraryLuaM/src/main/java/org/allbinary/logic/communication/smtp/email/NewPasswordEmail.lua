@@ -101,8 +101,8 @@ function NewPasswordEmail:notifyStoreAdmin()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().EMAILLOGGING) then
                 self.logUtil:putF("notifyStoreAdmin", self, "notifyStoreAdmin")
             end
-            local emailSubject = "New Password For User: " .. tostring(self.userInterface:getUserName())
-            local emailBody = "New Password: " .. self.newPassword_f
+            local emailSubject = require("allbinary_java").to_string("New Password For User: ") .. require("allbinary_java").to_string(self.userInterface:getUserName())
+            local emailBody = require("allbinary_java").to_string("New Password: ") .. require("allbinary_java").to_string(self.newPassword_f)
             local basicEmailInfo = AdminEmailInfo.new(emailSubject, emailBody)
             local emailInfo = EmailInfo.new(basicEmailInfo)
             local adminUserEmailEventHandler = AdminUserEmailEventHandlerSingletons.getInstance():getInstance(self.abeClientInformation, UserEmailEventNameData.NEWPASSWORD)
@@ -125,7 +125,7 @@ function NewPasswordEmail:notifyUser()
                 self.logUtil:putF("Email User", self, "notifyUser()")
             end
             local subject = "New Password"
-            local body = "New Password: " .. self.newPassword_f
+            local body = require("allbinary_java").to_string("New Password: ") .. require("allbinary_java").to_string(self.newPassword_f)
             local basicEmailInfo = AdminEmailInfo.new(subject, body)
             local emailInfo = EmailInfo.new(basicEmailInfo)
             local userEmailEventHandler = UserEmailEventHandlerSingletons.getInstance():getInstance(self.abeClientInformation, UserEmailEventNameData.NEWPASSWORD, self.userInterface)

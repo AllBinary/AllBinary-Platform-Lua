@@ -28,10 +28,10 @@ local function java_real(class)
     return class
 end
 
--- local InputStream = require("java.io.InputStream")
--- local GL10 = require("javax.microedition.khronos.opengles.GL10")
--- local Image = require("javax.microedition.lcdui.Image")
--- local NullImage = require("javax.microedition.lcdui.NullImage")
+local InputStream = java_lazy("java.io.InputStream")
+local GL10 = java_lazy("javax.microedition.khronos.opengles.GL10")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local NullImage = java_lazy("javax.microedition.lcdui.NullImage")
 local NullGL10 = java_lazy("org.allbinary.device.NullGL10")
 local AllBinaryRendererBase3 = java_lazy("org.allbinary.graphics.opengles.renderer.AllBinaryRendererBase3")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
@@ -187,7 +187,7 @@ function OpenGLImageCache:update(gl)
         do -- synchronized (self.lock)
             for index = self.list:size() - 1, 0, -1 do
                 local openGLESImage = (self.list.objectArray[index + 1])
-                if openGLESImage ~= OpenGLESImage.NULL_OPENGL_IMAGE then
+                if not rawequal(openGLESImage, OpenGLESImage.NULL_OPENGL_IMAGE) then
                     openGLESImage:set(gl)
                 end
             end
@@ -202,7 +202,7 @@ function OpenGLImageCache:createImage(caller, width, height)
         if height > width then
             textureSize = height
         end
-        while (math.fmod(textureSize, 4)) ~= 0 do
+        while not rawequal((math.fmod(textureSize, 4)), 0) do
             textureSize = textureSize + 1
         end
         width = textureSize
@@ -210,7 +210,7 @@ function OpenGLImageCache:createImage(caller, width, height)
         local image2 = self.imageCache:get(caller, width, height)
         local image = self.preResourceImageUtil:encapsulate(image2)
         do -- synchronized (self.lock)
-            if image ~= NullImage.NULL_IMAGE then
+            if not rawequal(image, NullImage.NULL_IMAGE) then
                 self.list:add(image)
             end
         end
@@ -224,7 +224,7 @@ function OpenGLImageCache:createImageFromInputStream(key, inputStream)
         local cachedImage = self.imageCache:getWithKey(key)
         local image = self.preResourceImageUtil:encapsulate(cachedImage)
         do -- synchronized (self.lock)
-            if image ~= NullImage.NULL_IMAGE then
+            if not rawequal(image, NullImage.NULL_IMAGE) then
                 self.list:add(image)
             end
         end

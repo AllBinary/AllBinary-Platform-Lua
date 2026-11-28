@@ -64,17 +64,17 @@ function JvmStatisticsData.new(...)
 end
 
 JvmStatisticsData.JVM_STATISTICS = "JVM_STATISTICS_"
-JvmStatisticsData.NAME = tostring(JvmStatisticsData.JVM_STATISTICS) .. "NAME"
-JvmStatisticsData.TOTAL_MEMORY_BYTES = tostring(JvmStatisticsData.JVM_STATISTICS) .. "TOTAL_MEMORY_BYTES"
-JvmStatisticsData.TOTAL_MEMORY_KILOBYTES = tostring(JvmStatisticsData.JVM_STATISTICS) .. "TOTAL_MEMORY_KILOBYTES"
-JvmStatisticsData.TOTAL_MEMORY_MEGABYTES = tostring(JvmStatisticsData.JVM_STATISTICS) .. "TOTAL_MEMORY_MEGABYTES"
-JvmStatisticsData.FREE_MEMORY_BYTES = tostring(JvmStatisticsData.JVM_STATISTICS) .. "FREE_MEMORY_BYTES"
-JvmStatisticsData.FREE_MEMORY_KILOBYTES = tostring(JvmStatisticsData.JVM_STATISTICS) .. "FREE_MEMORY_KILOBYTES"
-JvmStatisticsData.FREE_MEMORY_MEGABYTES = tostring(JvmStatisticsData.JVM_STATISTICS) .. "FREE_MEMORY_MEGABYTES"
-JvmStatisticsData.MAX_MEMORY_BYTES = tostring(JvmStatisticsData.JVM_STATISTICS) .. "MAX_MEMORY_BYTES"
-JvmStatisticsData.MAX_MEMORY_KILOBYTES = tostring(JvmStatisticsData.JVM_STATISTICS) .. "MAX_MEMORY_KILOBYTES"
-JvmStatisticsData.MAX_MEMORY_MEGABYTES = tostring(JvmStatisticsData.JVM_STATISTICS) .. "MAX_MEMORY_MEGABYTES"
-JvmStatisticsData.NUMBER_OF_THREADS = tostring(JvmStatisticsData.JVM_STATISTICS) .. "NUMBER_OF_THREADS"
+JvmStatisticsData.NAME = require("allbinary_java").to_string(JvmStatisticsData.JVM_STATISTICS) .. require("allbinary_java").to_string("NAME")
+JvmStatisticsData.TOTAL_MEMORY_BYTES = require("allbinary_java").to_string(JvmStatisticsData.JVM_STATISTICS) .. require("allbinary_java").to_string("TOTAL_MEMORY_BYTES")
+JvmStatisticsData.TOTAL_MEMORY_KILOBYTES = require("allbinary_java").to_string(JvmStatisticsData.JVM_STATISTICS) .. require("allbinary_java").to_string("TOTAL_MEMORY_KILOBYTES")
+JvmStatisticsData.TOTAL_MEMORY_MEGABYTES = require("allbinary_java").to_string(JvmStatisticsData.JVM_STATISTICS) .. require("allbinary_java").to_string("TOTAL_MEMORY_MEGABYTES")
+JvmStatisticsData.FREE_MEMORY_BYTES = require("allbinary_java").to_string(JvmStatisticsData.JVM_STATISTICS) .. require("allbinary_java").to_string("FREE_MEMORY_BYTES")
+JvmStatisticsData.FREE_MEMORY_KILOBYTES = require("allbinary_java").to_string(JvmStatisticsData.JVM_STATISTICS) .. require("allbinary_java").to_string("FREE_MEMORY_KILOBYTES")
+JvmStatisticsData.FREE_MEMORY_MEGABYTES = require("allbinary_java").to_string(JvmStatisticsData.JVM_STATISTICS) .. require("allbinary_java").to_string("FREE_MEMORY_MEGABYTES")
+JvmStatisticsData.MAX_MEMORY_BYTES = require("allbinary_java").to_string(JvmStatisticsData.JVM_STATISTICS) .. require("allbinary_java").to_string("MAX_MEMORY_BYTES")
+JvmStatisticsData.MAX_MEMORY_KILOBYTES = require("allbinary_java").to_string(JvmStatisticsData.JVM_STATISTICS) .. require("allbinary_java").to_string("MAX_MEMORY_KILOBYTES")
+JvmStatisticsData.MAX_MEMORY_MEGABYTES = require("allbinary_java").to_string(JvmStatisticsData.JVM_STATISTICS) .. require("allbinary_java").to_string("MAX_MEMORY_MEGABYTES")
+JvmStatisticsData.NUMBER_OF_THREADS = require("allbinary_java").to_string(JvmStatisticsData.JVM_STATISTICS) .. require("allbinary_java").to_string("NUMBER_OF_THREADS")
 
 return JvmStatisticsData
 

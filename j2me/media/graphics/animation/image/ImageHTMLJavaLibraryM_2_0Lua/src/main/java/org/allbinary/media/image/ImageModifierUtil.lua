@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local Image = require("javax.microedition.lcdui.Image")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local Anchor = java_lazy("org.allbinary.graphics.Anchor")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
@@ -89,7 +89,7 @@ local ImageCopyCallback = {}
     function ImageCopyCallback:_init_fields()
         if self.imageModifierUtil == nil then self.imageModifierUtil = nil end
         if self.imageArray == nil then self.imageArray = nil end
-        if self.index == nil then self.index = nil end
+        if self.index == nil then self.index = 0 end
         if self.image == nil then self.image = nil end
         if self.image3 == nil then self.image3 = nil end
     end
@@ -110,12 +110,17 @@ local ImageCopyCallback = {}
         ImageCopyCallback._jinit(self, ...)
         return self
     end
+        function ImageCopyCallback.newEnclosed(outer, ...)
+            local self = setmetatable({__javaOuter = outer}, ImageCopyCallback)
+            ImageCopyCallback._jinit(self, ...)
+            return self
+        end
     
 
     function ImageCopyCallback:onSuccess(resource)
             local logUtil = LogUtil.getInstance()
             local resourceCallbackStrings = self.imageModifierUtil.resourceCallbackStrings
-            logUtil:putF(tostring(resourceCallbackStrings.DONE) .. self.image:getName(), self, resourceCallbackStrings.HANDLE_IMAGE)
+            logUtil:putF(require("allbinary_java").to_string(resourceCallbackStrings.DONE) .. require("allbinary_java").to_string(self.image:getName()), self, resourceCallbackStrings.HANDLE_IMAGE)
             self.imageModifierUtil:copy(self.imageArray, self.index, self.image, self.image3)
     end
     
@@ -208,11 +213,11 @@ end
 
 function ImageModifierUtil:handleImage(imageArray, index, image)
         local image3 = (image):getImage()
-        if image3 ~= nil then
-            if image3:isReady() or image3:width() + image3:height() <= 0 or image:getName() == self.resourceCallbackStrings.FROM_DATA then
+        if not rawequal(image3, nil) then
+            if image3:isReady() or image3:width() + image3:height() <= 0 or rawequal(image:getName(), self.resourceCallbackStrings.FROM_DATA) then
                 self:copy(imageArray, index, image, image3)
             else
-                local callback = ImageCopyCallback.new(self, imageArray, index, image, image3)
+                local callback = ImageCopyCallback.newEnclosed(self, self, imageArray, index, image, image3)
                 image3:addCallback(callback)
             end
         else

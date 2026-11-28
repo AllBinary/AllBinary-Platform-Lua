@@ -162,7 +162,7 @@ end
 
 
 function ClientInformation:isSameId(alicenseId)
-        if self.tsUtil:compareTo(self:getLicenseId(), alicenseId) == 0 then
+        if rawequal(self.tsUtil:compareTo(self:getLicenseId(), alicenseId), 0) then
             return true
         else
             return false
@@ -180,7 +180,7 @@ function ClientInformation:isLargerOrDifferentServerList(list)
             local newServerName = list.objectArray[index + 1]
             for index2 = currentSize, 0, -1 do
                 local nextOldServerName = self.licenseServers.objectArray[index + 1]
-                if self.tsUtil:compareTo(newServerName, nextOldServerName) ~= 0 then
+                if not rawequal(self.tsUtil:compareTo(newServerName, nextOldServerName), 0) then
                     return true
                 end
             end

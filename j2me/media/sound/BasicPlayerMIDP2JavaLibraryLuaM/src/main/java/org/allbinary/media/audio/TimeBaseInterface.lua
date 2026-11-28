@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local MediaException = require("javax.microedition.media.MediaException")
--- local TimeBase = require("javax.microedition.media.TimeBase")
+local MediaException = java_lazy("javax.microedition.media.MediaException")
+local TimeBase = java_lazy("javax.microedition.media.TimeBase")
 
 local function java_idiv(a, b)
     local q = a / b

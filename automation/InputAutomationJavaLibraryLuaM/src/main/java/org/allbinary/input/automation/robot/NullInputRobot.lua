@@ -190,30 +190,30 @@ java_overload(NullInputRobot, "getMousePoint", 0)
 
 
 function NullInputRobot:keyPress(keycode)
-        self.logUtil:putF("KeyCode: " .. tostring(keycode), self, "keyPress")
+        self.logUtil:putF(require("allbinary_java").to_string("KeyCode: ") .. require("allbinary_java").to_string(keycode), self, "keyPress")
 end
 java_overload(NullInputRobot, "keyPress", 1, function(java_a1) return true and (java_a1 == nil or math.type(java_a1) == "integer") end)
 
 
 function NullInputRobot:keyRelease(keycode)
-        self.logUtil:putF("KeyCode: " .. tostring(keycode), self, "keyRelease")
+        self.logUtil:putF(require("allbinary_java").to_string("KeyCode: ") .. require("allbinary_java").to_string(keycode), self, "keyRelease")
 end
 java_overload(NullInputRobot, "keyRelease", 1, function(java_a1) return true and (java_a1 == nil or math.type(java_a1) == "integer") end)
 
 
 function NullInputRobot:mouseMove_j2(x, y)
-        self.logUtil:putF("X: " .. tostring(x) .. " Y: " .. tostring(y), self, "mouseMove")
+        self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("X: ") .. require("allbinary_java").to_string(x)) .. require("allbinary_java").to_string(" Y: ")) .. require("allbinary_java").to_string(y), self, "mouseMove")
 end
 
 
 function NullInputRobot:mousePress(buttons)
-        self.logUtil:putF("Buttons: " .. tostring(buttons), self, "mousePress")
+        self.logUtil:putF(require("allbinary_java").to_string("Buttons: ") .. require("allbinary_java").to_string(buttons), self, "mousePress")
 end
 java_overload(NullInputRobot, "mousePress", 1, function(java_a1) return true and (java_a1 == nil or math.type(java_a1) == "integer") end)
 
 
 function NullInputRobot:mouseRelease(buttons)
-        self.logUtil:putF("Buttons: " .. tostring(buttons), self, "mouseRelease")
+        self.logUtil:putF(require("allbinary_java").to_string("Buttons: ") .. require("allbinary_java").to_string(buttons), self, "mouseRelease")
 end
 java_overload(NullInputRobot, "mouseRelease", 1, function(java_a1) return true and (java_a1 == nil or math.type(java_a1) == "integer") end)
 
@@ -281,6 +281,8 @@ function NullInputRobot:mouseMove(...)
     local count = select("#", ...)
     if count == 2 then return self:mouseMove_j2(...) end
     if count == 1 then return self:mouseMove_j1(...) end
+    local parent = getmetatable(NullInputRobot).__index
+    if parent.mouseMove then return parent.mouseMove(self, ...) end
     error("No method mouseMove takes " .. count .. " arguments")
 end
 NullInputRobot.mouseMove__jdispatcher = NullInputRobot.mouseMove
@@ -300,6 +302,8 @@ function NullInputRobot:mouseMoveToTarget(...)
     local count = select("#", ...)
     if count == 1 then return self:mouseMoveToTarget_j1(...) end
     if count == 3 then return self:mouseMoveToTarget_j3(...) end
+    local parent = getmetatable(NullInputRobot).__index
+    if parent.mouseMoveToTarget then return parent.mouseMoveToTarget(self, ...) end
     error("No method mouseMoveToTarget takes " .. count .. " arguments")
 end
 NullInputRobot.mouseMoveToTarget__jdispatcher = NullInputRobot.mouseMoveToTarget

@@ -156,7 +156,7 @@ end
 
 
 function Order:isIdValid()
-        if self:getId() == nil or self:getId():compareTo(StringUtil.getInstance().EMPTY_STRING) == 0 or self:getId():length() > OrderHistoryData.MAXIDLEN or not StringValidationUtil.getInstance():isNumber(self:getId()) then
+        if rawequal(self:getId(), nil) or rawequal(self:getId():compareTo(StringUtil.getInstance().EMPTY_STRING), 0) or self:getId():length() > OrderHistoryData.MAXIDLEN or not (StringValidationUtil.getInstance():isNumber(self:getId())) then
             return false
         end
         return true
@@ -170,8 +170,8 @@ end
 
 function Order:getIdValidationInfo()
         local EMPTY_STRING = StringUtil.getInstance().EMPTY_STRING
-        if self:getId() == nil or self:getId():compareTo(EMPTY_STRING) == 0 or self:getId():length() > OrderHistoryData.MAXIDLEN or not StringValidationUtil.getInstance():isNumber(self:getId()) then
-            return "Please enter a valid order Id < " .. tostring(OrderHistoryData.MAXIDLEN) .. " digits in length.<br>"
+        if rawequal(self:getId(), nil) or rawequal(self:getId():compareTo(EMPTY_STRING), 0) or self:getId():length() > OrderHistoryData.MAXIDLEN or not (StringValidationUtil.getInstance():isNumber(self:getId())) then
+            return require("allbinary_java").to_string(require("allbinary_java").to_string("Please enter a valid order Id < ") .. require("allbinary_java").to_string(OrderHistoryData.MAXIDLEN)) .. require("allbinary_java").to_string(" digits in length.<br>")
         end
         return EMPTY_STRING
 end

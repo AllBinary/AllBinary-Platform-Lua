@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local Anchor = java_lazy("org.allbinary.graphics.Anchor")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local BasicColorFactory = java_lazy("org.allbinary.graphics.color.BasicColorFactory")

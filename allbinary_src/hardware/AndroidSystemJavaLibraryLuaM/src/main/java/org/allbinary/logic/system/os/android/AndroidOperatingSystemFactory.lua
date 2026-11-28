@@ -101,13 +101,13 @@ function AndroidOperatingSystemFactory:getOperatingSystemInstance()
             local GenericOperatingSystem = nil
             local systemProperties = SystemProperties.getInstance()
             local osName = systemProperties:getName()
-            if self.tsUtil:compareTo(osName, OperatingSystems.getInstance().ANDROID) == 0 then
+            if rawequal(self.tsUtil:compareTo(osName, OperatingSystems.getInstance().ANDROID), 0) then
                 GenericOperatingSystem = AndroidOS.new()
             else
                 if OperatingSystems.getInstance():isUnknownSpecificOSAllowed() then
                     GenericOperatingSystem = AndroidOS.new()
                 else
-                    error(require("java.lang.Exception").new("Specific Android OS Not Supported: " .. osName), 0)
+                    error(require("java.lang.Exception").new(require("allbinary_java").to_string("Specific Android OS Not Supported: ") .. require("allbinary_java").to_string(osName)), 0)
                 end
             end
             do return "__jreturn", GenericOperatingSystem end

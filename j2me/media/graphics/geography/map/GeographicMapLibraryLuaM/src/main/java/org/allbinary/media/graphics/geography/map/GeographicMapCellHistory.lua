@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
@@ -151,7 +151,7 @@ end
 
 
 function GeographicMapCellHistory:track(geographicMapCellPosition)
-        if not self.list:contains(geographicMapCellPosition) then
+        if not (self.list:contains(geographicMapCellPosition)) then
             self.list:add(geographicMapCellPosition)
             self.visitedList:add(self.booleanFactory.FALSE)
         end
@@ -185,7 +185,7 @@ function GeographicMapCellHistory:getFirstUnvisited()
         local value = nil
         for index = 0, size - 1 do
             value = self.visitedList:get(index)
-            if value == self.booleanFactory.FALSE then
+            if rawequal(value, self.booleanFactory.FALSE) then
                 return localList:get(index)
             end
         end
@@ -199,7 +199,7 @@ function GeographicMapCellHistory:getFirstUnvisitedIndex()
         local value = nil
         for index = 0, size - 1 do
             value = self.visitedList:get(index)
-            if value == self.booleanFactory.FALSE then
+            if rawequal(value, self.booleanFactory.FALSE) then
                 return index
             end
         end
@@ -214,7 +214,7 @@ function GeographicMapCellHistory:getInPathButNotTracked(pathList)
         local geographicMapCellPosition = nil
         for index = 0, size - 1 do
             geographicMapCellPosition = pathList:get(index)
-            if not localList:contains(geographicMapCellPosition) then
+            if not (localList:contains(geographicMapCellPosition)) then
                 inPathButNotTrackedList:add(geographicMapCellPosition)
             end
         end
@@ -224,9 +224,9 @@ end
 
 function GeographicMapCellHistory:isVisited(geographicMapCellPosition)
         local index = self.list:indexOf(geographicMapCellPosition)
-        if index ~= -1 then
+        if not rawequal(index, -1) then
             local value = self.visitedList:get(index)
-            if value == self.booleanFactory.TRUE then
+            if rawequal(value, self.booleanFactory.TRUE) then
                 return true
             end
         else
@@ -238,10 +238,10 @@ end
 function GeographicMapCellHistory:visit(geographicMapCellPosition)
         local index = self.list:indexOf(geographicMapCellPosition)
         local value = nil
-        if index ~= -1 then
+        if not rawequal(index, -1) then
             value = self.visitedList:get(index)
             local TRUE = self.booleanFactory.TRUE
-            if value ~= TRUE then
+            if not rawequal(value, TRUE) then
                 self.visitedList:set(index, TRUE)
                 self.totalVisited = self.totalVisited + 1
                 return true
@@ -254,7 +254,7 @@ end
 
 -- throws Exception
 function GeographicMapCellHistory:isAllVisited()
-        if self.totalVisited == self:getSize() - 1 then
+        if rawequal(self.totalVisited, self:getSize() - 1) then
             return true
         else
             return false
@@ -264,7 +264,7 @@ end
 
 -- throws Exception
 function GeographicMapCellHistory:isAllVisited2()
-        if self.totalVisited == self:getSize() then
+        if rawequal(self.totalVisited, self:getSize()) then
             return true
         else
             return false
@@ -275,7 +275,7 @@ end
 -- throws Exception
 function GeographicMapCellHistory:isPortionVisited(basicDecimal)
         local size = self:getSize()
-        local numberRequired = java_idiv((size << basicDecimal:getScaledFactor()), java_int(basicDecimal:getUnscaled()))
+        local numberRequired = java_idiv(((((((size) << ((basicDecimal:getScaledFactor()) & 31)) + 0x80000000) & 0xffffffff) - 0x80000000)), java_int(basicDecimal:getUnscaled()))
         local numberNotVisited = self:getSize() - 1 - self.totalVisited
         if size - numberNotVisited > numberRequired then
             return true
@@ -300,7 +300,7 @@ end
 function GeographicMapCellHistory:paintNotVisitedRelativeToPoint(graphics, tiledLayer, point)
         local x = point:getX() - tiledLayer:getXP()
         local y = point:getY() - tiledLayer:getYP()
-        if self.halfWidth == 0 then
+        if rawequal(self.halfWidth, 0) then
             self.halfWidth = (((graphics:getFont():stringWidth(self.MISSED_INFO)) // (1 << (1))))
         end
         local height = 2 * self.fontHeight
@@ -321,7 +321,7 @@ function GeographicMapCellHistory:paintNotVisited(graphics, geographicMapInterfa
                 while (function() index = index - 1 return index end)() >= 0 do
                 geographicMapCellPosition = self.list:get(index)
                 isCellVisitedBoolean = localVisitedList:get(index)
-                if not isCellVisitedBoolean then
+                if not (isCellVisitedBoolean) then
                     self:paintNotVisitedRelativeToPoint(graphics, geographicMapInterface:getAllBinaryTiledLayer(), geographicMapCellPosition:getPoint())
                 end
                 end

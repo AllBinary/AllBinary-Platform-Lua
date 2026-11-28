@@ -98,7 +98,7 @@ function BasketReview:removeItem(id)
         local size = (itemArray.n or #itemArray)
         for index = 0, size - 1 do
             local item = itemArray[index + 1]
-            if item:getId():compareTo(id) == 0 then
+            if rawequal(item:getId():compareTo(id), 0) then
                 self.items:remove(item)
             end
         end
@@ -110,7 +110,7 @@ function BasketReview:adjustItem(id, num)
         local size = (itemArray.n or #itemArray)
         for index = 0, size - 1 do
             local item = itemArray[index + 1]
-            if item:getId():compareTo(id) == 0 then
+            if rawequal(item:getId():compareTo(id), 0) then
                 item:setNumber(num)
             end
         end
@@ -151,7 +151,7 @@ function BasketReview:getNumberOf(id)
         local size = (itemArray.n or #itemArray)
         for index = 0, size - 1 do
             local item = itemArray[index + 1]
-            if item:getId():compareTo(id) == 0 then
+            if rawequal(item:getId():compareTo(id), 0) then
                 return item:getNumber()
             end
         end

@@ -128,10 +128,10 @@ VehicleFrictionProperties.javaClassName = "org.allbinary.game.layer.VehicleFrict
 setmetatable(VehicleFrictionProperties, {__index = FrictionProperties})
 
 function VehicleFrictionProperties:_init_fields()
-    if self.TIRE_FRICTION_NOMINATOR == nil then self.TIRE_FRICTION_NOMINATOR = nil end
-    if self.BRAKE_FRICTION_NOMINATOR == nil then self.BRAKE_FRICTION_NOMINATOR = nil end
-    if self.AIR_FRICTION_NOMINATOR == nil then self.AIR_FRICTION_NOMINATOR = nil end
-    if self.CRASH_FRICTION_NOMINATOR == nil then self.CRASH_FRICTION_NOMINATOR = nil end
+    if self.TIRE_FRICTION_NOMINATOR == nil then self.TIRE_FRICTION_NOMINATOR = 0 end
+    if self.BRAKE_FRICTION_NOMINATOR == nil then self.BRAKE_FRICTION_NOMINATOR = 0 end
+    if self.AIR_FRICTION_NOMINATOR == nil then self.AIR_FRICTION_NOMINATOR = 0 end
+    if self.CRASH_FRICTION_NOMINATOR == nil then self.CRASH_FRICTION_NOMINATOR = 0 end
 end
 
 

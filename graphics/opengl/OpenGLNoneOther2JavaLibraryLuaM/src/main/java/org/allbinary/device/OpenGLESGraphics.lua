@@ -16,10 +16,10 @@ local function java_real(class)
     return class
 end
 
--- local GL = require("javax.microedition.khronos.opengles.GL")
--- local GL10 = require("javax.microedition.khronos.opengles.GL10")
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local GL = java_lazy("javax.microedition.khronos.opengles.GL")
+local GL10 = java_lazy("javax.microedition.khronos.opengles.GL10")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = require("javax.microedition.lcdui.Graphics")
 local FontDebugBase = java_lazy("org.allbinary.graphics.font.FontDebugBase")
 local OpenGLSurfaceChangedInterface = java_lazy("org.allbinary.image.opengles.OpenGLSurfaceChangedInterface")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")

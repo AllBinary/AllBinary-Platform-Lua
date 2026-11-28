@@ -110,9 +110,9 @@ end
 
 
 function LicenseTypeFactory:getInstance(name)
-        if self.DEMO:getName():compareTo(name) == 0 then
+        if rawequal(self.DEMO:getName():compareTo(name), 0) then
             return self.DEMO
-        elseif self.NORMAL:getName():compareTo(name) == 0 then
+        elseif rawequal(self.NORMAL:getName():compareTo(name), 0) then
             return self.NORMAL
         end
         return self.UNKNOWN

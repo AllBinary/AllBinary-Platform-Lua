@@ -96,14 +96,14 @@ end
 -- throws Exception
 function OSGIServiceUtil:getServicesObjectVector(bundleContext, serviceReferences)
         local vector = BasicArrayListD.new()
-        if serviceReferences ~= nil then
+        if not rawequal(serviceReferences, nil) then
             local size = (serviceReferences.n or #serviceReferences)
-            self.logUtil:putF("Service References: " .. tostring(size), self, "getServicesObjectVector")
+            self.logUtil:putF(require("allbinary_java").to_string("Service References: ") .. require("allbinary_java").to_string(size), self, "getServicesObjectVector")
             for index = 0, size - 1 do
                 local serviceReference = serviceReferences[index + 1]
-                if serviceReference ~= nil then
+                if not rawequal(serviceReference, nil) then
                     local osgiServiceInterface = bundleContext:getService(serviceReference)
-                    if osgiServiceInterface == nil then
+                    if rawequal(osgiServiceInterface, nil) then
                         error(require("java.lang.Exception").new("No Service For Reference"), 0)
                     end
                     vector:add(osgiServiceInterface)

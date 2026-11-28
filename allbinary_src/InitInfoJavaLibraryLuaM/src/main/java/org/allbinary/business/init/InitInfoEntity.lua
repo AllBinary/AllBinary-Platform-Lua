@@ -203,7 +203,7 @@ function InitInfoEntity:get()
             local keyAndValue = StdUtil.getInstance():createHashMap()
             keyAndValue:put(self.NOTHING, self.NOTHING)
             local hashMap = self:getRow(keyAndValue)
-            if hashMap ~= nil then
+            if not rawequal(hashMap, nil) then
                 InitInfo.getInstance():set(hashMap)
                 do return "__jreturn", true end
             else
@@ -231,7 +231,7 @@ function InitInfoEntity:is()
             local keyAndValue = StdUtil.getInstance():createHashMap()
             keyAndValue:put(self.NOTHING, self.NOTHING)
             local hashMap = self:getRow(keyAndValue)
-            if hashMap ~= nil then
+            if not rawequal(hashMap, nil) then
                 do return "__jreturn", true end
             else
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRELOADER) then
@@ -281,7 +281,7 @@ java_overload(InitInfoEntity, "add", 0)
 
 function InitInfoEntity:createTable()
         if java_super(InitSql, "createTable", 1)(self, self.tableData) then
-            return self.tableName .. self.CREATED_SUCCESS
+            return require("allbinary_java").to_string(self.tableName) .. require("allbinary_java").to_string(self.CREATED_SUCCESS)
         else
             local stringBuffer = StringMaker.new()
             stringBuffer:append(self.FAILED_TO_CREATE)

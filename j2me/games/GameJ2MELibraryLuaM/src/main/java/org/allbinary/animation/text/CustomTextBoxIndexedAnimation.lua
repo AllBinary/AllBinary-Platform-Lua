@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 local IndexedAnimation = require("org.allbinary.animation.IndexedAnimation")
 local RawKeyEventListener = java_lazy("org.allbinary.game.input.event.RawKeyEventListener")
@@ -205,7 +205,7 @@ java_overload(CustomTextBoxIndexedAnimation, "updateMeasurement", 1, function(ja
 
 
 function CustomTextBoxIndexedAnimation:setText(text)
-        if self.lastText ~= text then
+        if not rawequal(self.lastText, text) then
             self.hasChanged = true
             self.lastText = text
             self.customTextBox:getTextFieldItem():setString(text)

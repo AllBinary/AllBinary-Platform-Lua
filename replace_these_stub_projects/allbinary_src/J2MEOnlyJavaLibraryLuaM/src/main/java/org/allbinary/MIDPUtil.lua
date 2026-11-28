@@ -29,13 +29,13 @@ local function java_real(class)
 end
 
 -- local IOException = require("java.io.IOException")
--- local InputStream = require("java.io.InputStream")
--- local Form = require("javax.microedition.lcdui.Form")
--- local Image = require("javax.microedition.lcdui.Image")
--- local Item = require("javax.microedition.lcdui.Item")
--- local Manager = require("javax.microedition.media.Manager")
--- local MediaException = require("javax.microedition.media.MediaException")
--- local Player = require("javax.microedition.media.Player")
+local InputStream = java_lazy("java.io.InputStream")
+local Form = java_lazy("javax.microedition.lcdui.Form")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local Item = java_lazy("javax.microedition.lcdui.Item")
+local Manager = java_lazy("javax.microedition.media.Manager")
+local MediaException = java_lazy("javax.microedition.media.MediaException")
+local Player = java_lazy("javax.microedition.media.Player")
 
 local function java_idiv(a, b)
     local q = a / b

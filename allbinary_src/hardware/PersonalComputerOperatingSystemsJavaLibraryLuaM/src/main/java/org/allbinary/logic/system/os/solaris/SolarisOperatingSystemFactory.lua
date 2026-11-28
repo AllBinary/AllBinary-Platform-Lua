@@ -100,13 +100,13 @@ function SolarisOperatingSystemFactory:getOperatingSystemInstance()
             local operatingSystems = OperatingSystems.getInstance()
             local osName = SystemProperties.getInstance():getName()
             local operatingSystemInterface = nil
-            if ((osName < operatingSystems.SOLARIS and -1) or (osName > operatingSystems.SOLARIS and 1) or 0) == 0 then
+            if rawequal(((osName < operatingSystems.SOLARIS and -1) or (osName > operatingSystems.SOLARIS and 1) or 0), 0) then
                 operatingSystemInterface = SolarisOS.new()
             else
                 if operatingSystems:isUnknownSpecificOSAllowed() then
                     operatingSystemInterface = SolarisOS.new()
                 else
-                    error(require("java.lang.Exception").new("Specific Solaris OS Not Supported: " .. osName), 0)
+                    error(require("java.lang.Exception").new(require("allbinary_java").to_string("Specific Solaris OS Not Supported: ") .. require("allbinary_java").to_string(osName)), 0)
                 end
             end
             do return "__jreturn", operatingSystemInterface end

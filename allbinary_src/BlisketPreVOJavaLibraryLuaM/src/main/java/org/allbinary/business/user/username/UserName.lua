@@ -160,9 +160,9 @@ function UserName:isValid_j1(aUserName)
             local booleanFactory = BooleanFactory.getInstance()
             local valid = booleanFactory.TRUE
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VALIDATION) then
-                self.logUtil:putF("UserName: " .. aUserName, self, commonStrings.IS_VALID)
+                self.logUtil:putF(require("allbinary_java").to_string("UserName: ") .. require("allbinary_java").to_string(aUserName), self, commonStrings.IS_VALID)
             end
-            if not StringValidationUtil.getInstance():isValidRequired(aUserName, 5, UserData.MAXLEN) then
+            if not (StringValidationUtil.getInstance():isValidRequired(aUserName, 5, UserData.MAXLEN)) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VALIDATION) then
                     self.logUtil:putF("UserName is invalid", self, commonStrings.IS_VALID)
                 end
@@ -190,7 +190,7 @@ UserName.isValid__jdispatcher = UserName.isValid
 
 
 function UserName.getValidationInfo(aUserName)
-        if not StringValidationUtil.getInstance():isValidRequired(aUserName, 5, UserData.MAXLEN) then
+        if not (StringValidationUtil.getInstance():isValidRequired(aUserName, 5, UserData.MAXLEN)) then
             return "Please enter a User Name with more than 5 characters.<br/>"
         end
         return StringUtil.getInstance().EMPTY_STRING

@@ -30,7 +30,7 @@ end
 
 local File = java_lazy("java.io.File")
 -- local IOException = require("java.io.IOException")
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 -- local OutputStream = require("java.io.OutputStream")
 -- local UnsupportedEncodingException = require("java.io.UnsupportedEncodingException")
 local ForcedLogUtil = java_lazy("org.allbinary.logic.communication.log.ForcedLogUtil")

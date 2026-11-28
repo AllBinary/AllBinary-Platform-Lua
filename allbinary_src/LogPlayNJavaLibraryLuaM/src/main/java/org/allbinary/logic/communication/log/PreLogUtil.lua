@@ -72,35 +72,35 @@ end
 
 function PreLogUtil.put(specialMessage, anyType, functionName)
         local className = PreLogUtil.getClassName(anyType)
-        if className == nil then
+        if rawequal(className, nil) then
             className = CommonStrings.getInstance().EMPTY
         end
         className = tostring(StringMaker.new():append(className):append(CommonSeps.getInstance().FORWARD_SLASH):append(StringUtil.getInstance():toString(anyType)))
         local message = LogFormatUtil.getInstance():getS(className, functionName, specialMessage)
-        PlayN.log():debug(tostring(PreLogUtil.LOG_SUCCESS) .. message)
+        PlayN.log():debug(require("allbinary_java").to_string(PreLogUtil.LOG_SUCCESS) .. require("allbinary_java").to_string(message))
 end
 
 
 function PreLogUtil.putOE(specialMessage, anyType, functionName, exception)
         local className = PreLogUtil.getClassName(anyType)
-        if className == nil then
+        if rawequal(className, nil) then
             className = CommonStrings.getInstance().EMPTY
         end
         className = tostring(StringMaker.new():append(className):append(CommonSeps.getInstance().FORWARD_SLASH):append(StringUtil.getInstance():toString(anyType)))
         local message = LogFormatUtil.getInstance():get(className, functionName, specialMessage, exception)
-        PlayN.log():error(tostring(PreLogUtil.LOG_SUCCESS) .. message, exception)
+        PlayN.log():error(require("allbinary_java").to_string(PreLogUtil.LOG_SUCCESS) .. require("allbinary_java").to_string(message), exception)
 end
 
 
 function PreLogUtil.putS(specialMessage, className, functionName)
         local message = LogFormatUtil.getInstance():getS(className, functionName, specialMessage)
-        PlayN.log():debug(tostring(PreLogUtil.LOG_SUCCESS) .. message)
+        PlayN.log():debug(require("allbinary_java").to_string(PreLogUtil.LOG_SUCCESS) .. require("allbinary_java").to_string(message))
 end
 
 
 function PreLogUtil.putSE(specialMessage, className, functionName, exception)
         local message = LogFormatUtil.getInstance():get(className, functionName, specialMessage, exception)
-        PlayN.log():error(tostring(PreLogUtil.LOG_SUCCESS) .. message, exception)
+        PlayN.log():error(require("allbinary_java").to_string(PreLogUtil.LOG_SUCCESS) .. require("allbinary_java").to_string(message), exception)
 end
 
 

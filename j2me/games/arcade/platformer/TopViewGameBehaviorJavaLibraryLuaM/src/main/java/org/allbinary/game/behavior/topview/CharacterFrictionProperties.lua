@@ -128,9 +128,9 @@ CharacterFrictionProperties.javaClassName = "org.allbinary.game.behavior.topview
 setmetatable(CharacterFrictionProperties, {__index = FrictionProperties})
 
 function CharacterFrictionProperties:_init_fields()
-    if self.WATER_FRICTION_NOMINATOR == nil then self.WATER_FRICTION_NOMINATOR = nil end
-    if self.AIR_FRICTION_NOMINATOR == nil then self.AIR_FRICTION_NOMINATOR = nil end
-    if self.COLLISION_FRICTION_NOMINATOR == nil then self.COLLISION_FRICTION_NOMINATOR = nil end
+    if self.WATER_FRICTION_NOMINATOR == nil then self.WATER_FRICTION_NOMINATOR = 0 end
+    if self.AIR_FRICTION_NOMINATOR == nil then self.AIR_FRICTION_NOMINATOR = 0 end
+    if self.COLLISION_FRICTION_NOMINATOR == nil then self.COLLISION_FRICTION_NOMINATOR = 0 end
 end
 
 

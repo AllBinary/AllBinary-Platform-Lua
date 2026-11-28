@@ -65,7 +65,7 @@ end
 
 function FilePathData._jinit(self)
     FilePathData._init_fields(self)
-        if File.separatorChar == "\\" then
+        if rawequal(File.separatorChar, "\\") then
             self.PATH_START = File.separator + File.separator
         end
     return self

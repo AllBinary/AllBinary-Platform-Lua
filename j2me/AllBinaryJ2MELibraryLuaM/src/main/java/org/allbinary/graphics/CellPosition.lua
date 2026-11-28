@@ -129,9 +129,9 @@ CellPosition.javaClassName = "org.allbinary.graphics.CellPosition"
 setmetatable(CellPosition, {__index = V})
 
 function CellPosition:_init_fields()
-    if self.id == nil then self.id = nil end
-    if self.column == nil then self.column = nil end
-    if self.row == nil then self.row = nil end
+    if self.id == nil then self.id = 0 end
+    if self.column == nil then self.column = 0 end
+    if self.row == nil then self.row = 0 end
 end
 
 

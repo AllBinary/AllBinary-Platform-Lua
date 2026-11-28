@@ -16,7 +16,7 @@ local function java_real(class)
     return class
 end
 
--- local GL10 = require("javax.microedition.khronos.opengles.GL10")
+local GL10 = java_lazy("javax.microedition.khronos.opengles.GL10")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)

@@ -167,7 +167,7 @@ function TestModuleFactory:getInstance()
 end
 java_overload(TestModuleFactory, "getInstance", 0)
 
-TestModuleFactory.NAME = "Test New Game" .. tostring(InputAutomationModuleData.MODULE_NAME_END)
+TestModuleFactory.NAME = require("allbinary_java").to_string("Test New Game") .. require("allbinary_java").to_string(InputAutomationModuleData.MODULE_NAME_END)
 
 return TestModuleFactory
 

@@ -62,7 +62,7 @@ PlayerQueue.javaClassName = "org.allbinary.media.audio.PlayerQueue"
 function PlayerQueue:_init_fields()
     self.commonStrings = CommonStrings.getInstance()
     self.list = BasicArrayListD.new()
-    if self.max == nil then self.max = nil end
+    if self.max == nil then self.max = 0 end
 end
 
 
@@ -81,7 +81,7 @@ end
 
 function PlayerQueue:add(sound)
         local try_ok, try_error, try_value = pcall(function()
-            if not self.list:contains(sound) then
+            if not (self.list:contains(sound)) then
                 self.list:add(sound)
             end
         end)
@@ -99,7 +99,7 @@ function PlayerQueue:process()
             local played = false
             if self.list:size() > 0 then
                 sound = self.list:removeAt(0)
-                if sound ~= nil then
+                if not rawequal(sound, nil) then
                     sound:getPlayerP():start()
                 end
                 while self.list:size() > self.max do
@@ -113,7 +113,7 @@ function PlayerQueue:process()
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local resource = StringUtil.getInstance().EMPTY_STRING
-            if sound ~= nil then
+            if not rawequal(sound, nil) then
                 resource = sound:getResource()
             end
             PreLogUtil.put(tostring(StringMaker.new():append(self.commonStrings.EXCEPTION_LABEL):append(resource)), self, self.commonStrings.PROCESS)

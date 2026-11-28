@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Command = require("javax.microedition.lcdui.Command")
+local Command = java_lazy("javax.microedition.lcdui.Command")
 local Intent = java_lazy("android.content.Intent")
 local Uri = java_lazy("android.net.Uri")
 local ResourceUtil = java_lazy("org.allbinary.data.resource.ResourceUtil")

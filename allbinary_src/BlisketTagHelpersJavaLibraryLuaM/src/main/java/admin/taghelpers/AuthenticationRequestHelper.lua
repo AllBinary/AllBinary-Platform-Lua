@@ -208,7 +208,7 @@ end
 
 -- throws Exception
 function AuthenticationRequestHelper:generateNewPassword()
-        if self.weblisketSession ~= nil and self.weblisketSession:getId() ~= nil then
+        if not rawequal(self.weblisketSession, nil) and not rawequal(self.weblisketSession:getId(), nil) then
             local startIndex = self.weblisketSession:getId():length()
             if startIndex >= 8 then
                 return self.weblisketSession:getId():substring(startIndex - 8)
@@ -227,12 +227,12 @@ function AuthenticationRequestHelper:newPassword()
             local userName = self.request:getParameter(WeblisketSessionData.REMOVABLEUSERNAME)
             local email = self.request:getParameter(UserData.MAINEMAIL)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPER) then
-                self.logUtil:putF("Generating New Password For: " .. userName, self, "newPassword()")
+                self.logUtil:putF(require("allbinary_java").to_string("Generating New Password For: ") .. require("allbinary_java").to_string(userName), self, "newPassword()")
             end
             local userEntityInterface = UserEntityFactory.getInstance()
             local userInterface = userEntityInterface:getUser(userName)
-            if userInterface:getMainEmail():compareTo(email) ~= 0 then
-                if userInterface:getSecondaryEmail() ~= nil and userInterface:getSecondaryEmail():compareTo(email) ~= 0 then
+            if not rawequal(userInterface:getMainEmail():compareTo(email), 0) then
+                if not rawequal(userInterface:getSecondaryEmail(), nil) and not rawequal(userInterface:getSecondaryEmail():compareTo(email), 0) then
                     if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPER) then
                         self.logUtil:putF("Requested Email Is Not In User Profile", self, "newPassword()")
                     end
@@ -245,7 +245,7 @@ function AuthenticationRequestHelper:newPassword()
             UserEntityFactory.getInstance():update(userName, newPasswordHashMap)
             NewPasswordEmail.new(self.abeClientInformation, userInterface, newPassword):process()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPER) then
-                self.logUtil:putF("Generated New Password For: " .. userName, self, "newPassword()")
+                self.logUtil:putF(require("allbinary_java").to_string("Generated New Password For: ") .. require("allbinary_java").to_string(userName), self, "newPassword()")
             end
             do return "__jreturn", true end
         end)
@@ -269,16 +269,16 @@ function AuthenticationRequestHelper:changePassword()
             local newPassword = self.request:getParameter(WeblisketSessionData.REMOVABLENEWPASSWORD)
             local newReenteredPassword = self.request:getParameter(WeblisketSessionData.REMOVABLEREENTERNEWPASSWORD)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPER) then
-                self.logUtil:putF("Changing Password For User: " .. userName, self, "changePassword()")
+                self.logUtil:putF(require("allbinary_java").to_string("Changing Password For User: ") .. require("allbinary_java").to_string(userName), self, "changePassword()")
             end
             local password = Password.new(newPassword)
-            if not password:isValid() then
+            if not (password:isValid()) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPER) then
                     self.logUtil:putF("New Password Is Not Valid", self, "changePassword()")
                 end
                 do return "__jreturn", false end
             end
-            if ((newPassword < newReenteredPassword and -1) or (newPassword > newReenteredPassword and 1) or 0) ~= 0 then
+            if not rawequal(((newPassword < newReenteredPassword and -1) or (newPassword > newReenteredPassword and 1) or 0), 0) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPER) then
                     self.logUtil:putF("New Password Fields Do Not Match", self, "changePassword()")
                 end
@@ -288,7 +288,7 @@ function AuthenticationRequestHelper:changePassword()
             local userEntityInterface = UserEntityFactory.getInstance()
             local userInterface = userEntityInterface:getUser(userName)
             local login = userEntityInterface:login(userName, passwordString)
-            if ((login < GLOBALS2.LOGINSUCCESS and -1) or (login > GLOBALS2.LOGINSUCCESS and 1) or 0) == 0 then
+            if rawequal(((login < GLOBALS2.LOGINSUCCESS and -1) or (login > GLOBALS2.LOGINSUCCESS and 1) or 0), 0) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPER) then
                     self.logUtil:putF("Authentication Successful", self, "changePassword()")
                 end
@@ -319,9 +319,9 @@ function AuthenticationRequestHelper:isRoleValid(userName, password, roles)
         local try_ok, try_error, try_value = pcall(function()
             local userEntityInterface = UserEntityFactory.getInstance()
             local userInterface = userEntityInterface:getUser(userName)
-            if userInterface:getRole() == nil then
+            if rawequal(userInterface:getRole(), nil) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPER) then
-                    self.logUtil:putF("Role is null: " .. tostring(userInterface:getRole()) .. " Valid Roles: " .. tostring(roles), self, "isRoleValid()")
+                    self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Role is null: ") .. require("allbinary_java").to_string(userInterface:getRole())) .. require("allbinary_java").to_string(" Valid Roles: ")) .. require("allbinary_java").to_string(tostring(roles)), self, "isRoleValid()")
                 end
                 do return "__jreturn", false end
             end
@@ -329,7 +329,7 @@ function AuthenticationRequestHelper:isRoleValid(userName, password, roles)
             local size = (basicUserRoleArray.n or #basicUserRoleArray)
             for index = 0, size - 1 do
                 local nextRole = basicUserRoleArray[index + 1]
-                if userInterface:getRole():getBasicUserRole():equals(nextRole) then
+                if require("allbinary_java").equals(userInterface:getRole():getBasicUserRole(), nextRole) then
                     userInterface:validateSession(self.weblisketSession)
                     self.request:removeAttribute(WeblisketSessionData.REMOVABLEUSERNAME)
                     self.request:removeAttribute(WeblisketSessionData.REMOVABLEPASSWORD)

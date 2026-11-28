@@ -115,7 +115,7 @@ end
 -- throws Exception
 function InventoryUploadMediaUtil:saveFiles(byteArray, fileName, mediaData)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().CATEGORY) then
-            self.logUtil:putF("Start FileName: " .. fileName, self, "saveFiles()")
+            self.logUtil:putF(require("allbinary_java").to_string("Start FileName: ") .. require("allbinary_java").to_string(fileName), self, "saveFiles()")
         end
         if StringValidationUtil.getInstance():isEmpty(fileName) then
             error(require("java.lang.Exception").new("Image File Name Was Null"), 0)
@@ -127,7 +127,7 @@ function InventoryUploadMediaUtil:saveFiles(byteArray, fileName, mediaData)
         stringBuffer:append(self.itemInterface:getCategory())
         local fullPath = tostring(stringBuffer)
         local imageDirectoryFile = AbFile.createAbFile(fullPath)
-        if not imageDirectoryFile:isDirectory() then
+        if not (imageDirectoryFile:isDirectory()) then
             error(require("java.lang.Exception").new("Unable to save file to non existant directory"), 0)
         end
         stringBuffer:delete(0, stringBuffer:length())
@@ -137,7 +137,7 @@ function InventoryUploadMediaUtil:saveFiles(byteArray, fileName, mediaData)
         stringBuffer:append(mediaData:getName())
         local originalImageFile = AbFile.createAbFile(tostring(stringBuffer))
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().CATEGORY) then
-            self.logUtil:putF("Saving Original Image: " .. tostring(originalImageFile), self, "saveFiles()")
+            self.logUtil:putF(require("allbinary_java").to_string("Saving Original Image: ") .. require("allbinary_java").to_string(originalImageFile), self, "saveFiles()")
         end
         originalImageFile:createNewFile()
         fileUtil:write(ByteArrayInputStream.new(byteArray), originalImageFile)
@@ -167,7 +167,7 @@ function InventoryUploadMediaUtil:saveFiles(byteArray, fileName, mediaData)
             end
             if isMediaResizable then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().CATEGORY) then
-                    self.logUtil:putF("Saving Small Image: " .. tostring(self.itemInterface:getSmallImage()), self, "saveFiles()")
+                    self.logUtil:putF(require("allbinary_java").to_string("Saving Small Image: ") .. require("allbinary_java").to_string(self.itemInterface:getSmallImage()), self, "saveFiles()")
                 end
                 self.mediaUtil:saveImageFile(originalImageFile, self.itemInterface:getSmallImage(), fullPath, mediaData, self.SMALLWIDTH, self.SMALLHEIGHT)
                 self.mediaUtil:saveImageFile(originalImageFile, self.itemInterface:getMediumImage(), fullPath, mediaData, self.MEDIUMWIDTH, self.MEDIUMHEIGHT)
@@ -186,7 +186,7 @@ function InventoryUploadMediaUtil:saveFiles(byteArray, fileName, mediaData)
                 end
                 if isConvertable then
                     if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().CATEGORY) then
-                        self.logUtil:putF("Saving Small Image: " .. tostring(self.itemInterface:getSmallImage()), self, "saveFiles()")
+                        self.logUtil:putF(require("allbinary_java").to_string("Saving Small Image: ") .. require("allbinary_java").to_string(self.itemInterface:getSmallImage()), self, "saveFiles()")
                     end
                     self.mediaUtil:saveImageFile(originalImageFile, self.itemInterface:getSmallImage(), fullPath, defaultMediaData, self.SMALLWIDTH, self.SMALLHEIGHT)
                     self.mediaUtil:saveImageFile(originalImageFile, self.itemInterface:getMediumImage(), fullPath, defaultMediaData, self.MEDIUMWIDTH, self.MEDIUMHEIGHT)

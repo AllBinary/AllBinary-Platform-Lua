@@ -79,7 +79,7 @@ function JavaHelpSetNotifier.isNotified(helpSet)
         local urlArray = JavaHelpSetNotifier.vector:toArray()
         for i = 0, size - 1 do
             local nextURL = urlArray[i + 1]
-            if ((tostring(url) < tostring(nextURL) and -1) or (tostring(url) > tostring(nextURL) and 1) or 0) == 0 then
+            if rawequal(((tostring(url) < tostring(nextURL) and -1) or (tostring(url) > tostring(nextURL) and 1) or 0), 0) then
                 isNotified = true
             end
         end

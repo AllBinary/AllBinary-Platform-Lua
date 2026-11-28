@@ -28,13 +28,13 @@ local function java_real(class)
     return class
 end
 
--- local BufferedInputStream = require("java.io.BufferedInputStream")
+local BufferedInputStream = java_lazy("java.io.BufferedInputStream")
 -- local ByteArrayInputStream = require("java.io.ByteArrayInputStream")
 -- local IOException = require("java.io.IOException")
--- local InputStream = require("java.io.InputStream")
--- local Manager = require("javax.microedition.media.Manager")
--- local MediaException = require("javax.microedition.media.MediaException")
--- local Player = require("javax.microedition.media.Player")
+local InputStream = java_lazy("java.io.InputStream")
+local Manager = java_lazy("javax.microedition.media.Manager")
+local MediaException = java_lazy("javax.microedition.media.MediaException")
+local Player = java_lazy("javax.microedition.media.Player")
 local TsUtil = java_lazy("org.allbinary.TsUtil")
 local AudioContentTypeDataFactory = java_lazy("org.allbinary.audio.AudioContentTypeDataFactory")
 local ResourceUtil = java_lazy("org.allbinary.data.resource.ResourceUtil")

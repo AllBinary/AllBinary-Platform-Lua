@@ -157,8 +157,8 @@ function HighScoreRunnable:run()
         local highScoresCanvas = self.highScoresCanvas
         local try_ok, try_error, try_value = pcall(function()
             local isHTML = J2MEUtil.isHTML()
-            if not isHTML then
-                while not highScoresCanvas.hasPainted do
+            if not (isHTML) then
+                while not (highScoresCanvas.hasPainted) do
                 end
                 highScoresCanvas.hasPainted = false
             end
@@ -167,8 +167,8 @@ function HighScoreRunnable:run()
             local currentTimeMillis = systemWrapper:currentTimeMillis()
             logUtil:putF(tostring(stringMaker:append("HighScoresCanvas - Request repaint to be sure: "):appendlong(currentTimeMillis)), self, commonStrings.RUN)
             highScoresCanvas.repaintBehavior:onChangeRepaint(highScoresCanvas)
-            if not isHTML then
-                while not highScoresCanvas.hasPainted do
+            if not (isHTML) then
+                while not (highScoresCanvas.hasPainted) do
                 end
             end
             stringMaker:delete(0, stringMaker:length())

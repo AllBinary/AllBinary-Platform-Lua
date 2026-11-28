@@ -194,7 +194,7 @@ end
 function DbInitInfo:getUrl()
         local url = java_super(DbConnectionInfo, "getUrl", 0)(self)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRELOADER) then
-            PreLogUtil.put(tostring(self.httpData.URL_LABEL) .. url, self, self.GET_URL)
+            PreLogUtil.put(require("allbinary_java").to_string(self.httpData.URL_LABEL) .. require("allbinary_java").to_string(url), self, self.GET_URL)
         end
         return url
 end
@@ -203,9 +203,9 @@ java_overload(DbInitInfo, "getUrl", 0)
 
 -- throws Exception
 function DbInitInfo:write()
-        local PATH = AbPath.new(tostring(URLGLOBALS.getWebappPath()) .. self.PACKAGE, StringUtil.getInstance().EMPTY_STRING)
+        local PATH = AbPath.new(require("allbinary_java").to_string(URLGLOBALS.getWebappPath()) .. require("allbinary_java").to_string(self.PACKAGE), StringUtil.getInstance().EMPTY_STRING)
         self.directory:create(PATH)
-        local FILEABPATH = AbPath.new(tostring(URLGLOBALS.getWebappPath()) .. self.PACKAGE, self.initFileName)
+        local FILEABPATH = AbPath.new(require("allbinary_java").to_string(URLGLOBALS.getWebappPath()) .. require("allbinary_java").to_string(self.PACKAGE), self.initFileName)
         local try_ok, try_error, try_value = pcall(function()
             local newFile = AbFile.createAbFileFromAbPath(FILEABPATH)
             newFile:createNewFile()
@@ -236,7 +236,7 @@ function DbInitInfo:write()
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRELOADERERROR) then
-                PreLogUtil.putOE("Failed Write: " .. tostring(FILEABPATH), self, "write", e)
+                PreLogUtil.putOE(require("allbinary_java").to_string("Failed Write: ") .. require("allbinary_java").to_string(tostring(FILEABPATH)), self, "write", e)
             end
         end
 end
@@ -245,7 +245,7 @@ java_overload(DbInitInfo, "write", 0)
 
 -- throws Exception
 function DbInitInfo:load()
-        local FILEABPATH = AbPath.new(tostring(URLGLOBALS.getWebappPath()) .. self.PACKAGE, self.initFileName)
+        local FILEABPATH = AbPath.new(require("allbinary_java").to_string(URLGLOBALS.getWebappPath()) .. require("allbinary_java").to_string(self.PACKAGE), self.initFileName)
         local try_ok, try_error, try_value = pcall(function()
             local file = AbFile.createAbFileFromAbPath(FILEABPATH)
             if file:isFile() then
@@ -275,7 +275,7 @@ function DbInitInfo:load()
             else
                 self.hasRead = false
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRELOADER) then
-                    PreLogUtil.put("Not a File - Failed Loading: " .. tostring(FILEABPATH), self, self.commonStrings.LOAD)
+                    PreLogUtil.put(require("allbinary_java").to_string("Not a File - Failed Loading: ") .. require("allbinary_java").to_string(tostring(FILEABPATH)), self, self.commonStrings.LOAD)
                 end
             end
         end)
@@ -283,7 +283,7 @@ function DbInitInfo:load()
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRELOADERERROR) then
-                PreLogUtil.putOE("Failed Loading: " .. tostring(FILEABPATH), self, self.commonStrings.LOAD, e)
+                PreLogUtil.putOE(require("allbinary_java").to_string("Failed Loading: ") .. require("allbinary_java").to_string(tostring(FILEABPATH)), self, self.commonStrings.LOAD, e)
             end
         end
 end
@@ -298,7 +298,7 @@ java_overload(DbInitInfo, "setHasRead", 1, function(java_a1) return true and typ
 
 function DbInitInfo:updateIfNeeded()
         local try_ok, try_error, try_value = pcall(function()
-            if not self.hasRead then
+            if not (self.hasRead) then
                 self.hasRead = true
                 self:load()
             end
@@ -317,7 +317,7 @@ java_overload(DbInitInfo, "updateIfNeeded", 0)
 function DbInitInfo:getName()
         self:updateIfNeeded()
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRELOADER) then
-            PreLogUtil.put("Name: " .. java_super(DbConnectionInfo, "getName", 0)(self), self, "getName")
+            PreLogUtil.put(require("allbinary_java").to_string("Name: ") .. require("allbinary_java").to_string(java_super(DbConnectionInfo, "getName", 0)(self)), self, "getName")
         end
         return java_super(DbConnectionInfo, "getName", 0)(self)
 end
@@ -327,7 +327,7 @@ java_overload(DbInitInfo, "getName", 0)
 function DbInitInfo:getUserName()
         self:updateIfNeeded()
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRELOADER) then
-            PreLogUtil.put("Name: " .. tostring(java_super(DbConnectionInfo, "getUserName", 0)(self)), self, "getUserName")
+            PreLogUtil.put(require("allbinary_java").to_string("Name: ") .. require("allbinary_java").to_string(java_super(DbConnectionInfo, "getUserName", 0)(self)), self, "getUserName")
         end
         return java_super(DbConnectionInfo, "getUserName", 0)(self)
 end

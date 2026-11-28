@@ -87,7 +87,7 @@ end
 -- throws Exception
 function BasicRandomAIFactory:getInstance(hashtable, ownerLayerInterface, gameInput)
         local visitor = hashtable:get(BasicAI.AI_VISITOR)
-        if visitor == nil then
+        if rawequal(visitor, nil) then
             error(require("java.lang.Exception").new("No Visitor Provided"), 0)
         end
         local inputProbability = hashtable:get(InputProbability.INPUT_PROBABILITY)

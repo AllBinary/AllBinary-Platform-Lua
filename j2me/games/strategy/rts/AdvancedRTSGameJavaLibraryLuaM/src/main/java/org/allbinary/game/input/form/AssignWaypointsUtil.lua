@@ -92,7 +92,7 @@ function AssignWaypointsUtil:set(unitLayer, ownerAdvancedRTSGameLayer)
                 unitWaypointBehavior:onWaypointEvent(self.WAYPOINT_EVENT)
             end
             local waypointLayer = PrimaryWaypointHelper.getInstance():getWaypointLayer()
-            if waypointLayer ~= NullPathFindingLayer.NULL_PATH_FINDING_LAYER then
+            if not rawequal(waypointLayer, NullPathFindingLayer.NULL_PATH_FINDING_LAYER) then
                 self.WAYPOINT_EVENT:setRtsLayer(waypointLayer)
                 unitWaypointBehavior:onWaypointEvent(self.WAYPOINT_EVENT)
             end

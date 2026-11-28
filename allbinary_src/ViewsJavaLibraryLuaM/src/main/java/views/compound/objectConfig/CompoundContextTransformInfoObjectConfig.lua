@@ -29,7 +29,7 @@ local function java_real(class)
 end
 
 -- local ByteArrayInputStream = require("java.io.ByteArrayInputStream")
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 local DocumentToNode = java_lazy("org.allbinary.data.tree.dom.document.DocumentToNode")
@@ -206,7 +206,7 @@ function CompoundContextTransformInfoObjectConfig:get()
         local rootComponentInterface = TransformFactory.getInstance():getInstance(self.abeClientInformation, tostring(stringBuffer), self:getTransformInfoInterface())
         local viewVector = self:getTransformDomNodes()
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("Root View Called with: " .. tostring(viewVector:size()), self, "get(transformInfoInterface)")
+            self.logUtil:putF(require("allbinary_java").to_string("Root View Called with: ") .. require("allbinary_java").to_string(viewVector:size()), self, "get(transformInfoInterface)")
         end
         local rootView = rootComponentInterface:view()
         local startXMLHeader = "<xsl:text disable-output-escaping=\"yes\" ><![CDATA["
@@ -235,7 +235,7 @@ function CompoundContextTransformInfoObjectConfig:get()
             rootView = replace:all(rootView)
         end
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("End: Result of a compound view: " .. rootView, self, "get()")
+            self.logUtil:putF(require("allbinary_java").to_string("End: Result of a compound view: ") .. require("allbinary_java").to_string(rootView), self, "get()")
         end
         return rootView
 end
@@ -247,7 +247,7 @@ function CompoundContextTransformInfoObjectConfig:createInputStream()
         local completeTemplateViewBytes = self:get():getBytes()
         local bais = ByteArrayInputStream.new(completeTemplateViewBytes)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("Template: " .. tostring(string.char(table.unpack(completeTemplateViewBytes))), self, "createInputStream()")
+            self.logUtil:putF(require("allbinary_java").to_string("Template: ") .. require("allbinary_java").to_string(tostring(string.char(table.unpack(completeTemplateViewBytes)))), self, "createInputStream()")
         end
         return bais
 end

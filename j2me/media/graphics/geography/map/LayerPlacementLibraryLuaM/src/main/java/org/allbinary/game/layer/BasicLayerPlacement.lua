@@ -54,8 +54,8 @@ BasicLayerPlacement.javaClassName = "org.allbinary.game.layer.BasicLayerPlacemen
 
 function BasicLayerPlacement:_init_fields()
     if self.layerType == nil then self.layerType = nil end
-    if self.width == nil then self.width = nil end
-    if self.height == nil then self.height = nil end
+    if self.width == nil then self.width = 0 end
+    if self.height == nil then self.height = 0 end
 end
 
 

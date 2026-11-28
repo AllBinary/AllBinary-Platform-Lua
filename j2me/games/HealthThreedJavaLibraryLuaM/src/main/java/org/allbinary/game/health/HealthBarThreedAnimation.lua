@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local GL10 = require("javax.microedition.khronos.opengles.GL10")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local GL10 = java_lazy("javax.microedition.khronos.opengles.GL10")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local ColorBufferList = java_lazy("min3d.core.ColorBufferList")
 local Number3dBufferList = java_lazy("min3d.core.Number3dBufferList")
 local Rectangle = java_lazy("min3d.objectPrimitives.Rectangle")

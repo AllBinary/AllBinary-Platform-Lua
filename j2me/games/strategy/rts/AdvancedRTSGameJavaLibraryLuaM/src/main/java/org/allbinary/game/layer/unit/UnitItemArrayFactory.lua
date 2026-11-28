@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
--- local ImageItem = require("javax.microedition.lcdui.ImageItem")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local ImageItem = java_lazy("javax.microedition.lcdui.ImageItem")
 local RTSGameStrings = java_lazy("org.allbinary.game.layer.RTSGameStrings")
 local LayerInterfaceFactoryImageItem = java_lazy("org.allbinary.game.layer.item.LayerInterfaceFactoryImageItem")
 local RTSLayerTextAnimation = java_lazy("org.allbinary.game.layer.item.RTSLayerTextAnimation")
@@ -137,7 +137,7 @@ end
 
 function UnitItemArrayFactory:indexOf(basicGameResources)
         for index = (self.resources.n or #self.resources) - 1, 0, -1 do
-            if self.resources[index + 1] == basicGameResources then
+            if rawequal(self.resources[index + 1], basicGameResources) then
                 return index
             end
         end

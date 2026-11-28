@@ -28,13 +28,13 @@ local function java_real(class)
     return class
 end
 
--- local Command = require("javax.microedition.lcdui.Command")
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
--- local Display = require("javax.microedition.lcdui.Display")
--- local Displayable = require("javax.microedition.lcdui.Displayable")
--- local NullCanvas = require("javax.microedition.lcdui.NullCanvas")
--- local MIDlet = require("javax.microedition.midlet.MIDlet")
--- local MIDletStateChangeException = require("javax.microedition.midlet.MIDletStateChangeException")
+local Command = java_lazy("javax.microedition.lcdui.Command")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
+local Display = java_lazy("javax.microedition.lcdui.Display")
+local Displayable = java_lazy("javax.microedition.lcdui.Displayable")
+local NullCanvas = java_lazy("javax.microedition.lcdui.NullCanvas")
+local MIDlet = require("javax.microedition.midlet.MIDlet")
+local MIDletStateChangeException = java_lazy("javax.microedition.midlet.MIDletStateChangeException")
 local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
 local ForcedLogUtil = java_lazy("org.allbinary.logic.communication.log.ForcedLogUtil")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
@@ -159,7 +159,7 @@ end
 
 
 function AllBinaryMidlet.getNullInstance()
-        if AllBinaryMidlet.NULL_ALLBINARY_MIDLET == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(AllBinaryMidlet.NULL_ALLBINARY_MIDLET, NullUtil.getInstance().NULL_OBJECT) then
             AllBinaryMidlet.NULL_ALLBINARY_MIDLET = AllBinaryMidlet.new()
         end
         return AllBinaryMidlet.NULL_ALLBINARY_MIDLET
@@ -182,7 +182,7 @@ end
 
 function AllBinaryMidlet:setDisplay(newDisplay)
         local title = StringUtil.getInstance().EMPTY_STRING
-        if newDisplay ~= NullCanvas.NULL_CANVAS then
+        if not rawequal(newDisplay, NullCanvas.NULL_CANVAS) then
             title = newDisplay:getTitle()
             self.logUtil:putF(tostring(StringMaker.new():append(self.SETTING_):append(title):append(self._DISPLAY_):append(StringUtil.getInstance():toString(newDisplay))), self, self.SET_DISPLAY)
         end

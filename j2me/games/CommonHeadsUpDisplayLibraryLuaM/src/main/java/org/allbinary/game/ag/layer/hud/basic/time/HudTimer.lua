@@ -58,7 +58,7 @@ HudTimer.javaClassName = "org.allbinary.game.ag.layer.hud.basic.time.HudTimer"
 function HudTimer:_init_fields()
     self.startTime = -1
     if self.hundredthTime == nil then self.hundredthTime = 0 end
-    if self.maxTime == nil then self.maxTime = nil end
+    if self.maxTime == nil then self.maxTime = 0 end
     if self.modifier == nil then self.modifier = 0 end
     self.hundrethsString = PrimitiveLongSingleton.getInstance().ZERO
     self.totalDigits = 1
@@ -104,7 +104,7 @@ function HudTimer:update()
             if self.startTime > 0 then
                 self.hundrethsString = self.MAX
             end
-        elseif lastLowerTime ~= self.hundredthTime then
+        elseif not rawequal(lastLowerTime, self.hundredthTime) then
             self.hundrethsString = self.primitiveLongUtil:getCharArray(self.hundredthTime)
             self.totalDigits = self.primitiveLongUtil:getCurrentTotalDigits()
         end

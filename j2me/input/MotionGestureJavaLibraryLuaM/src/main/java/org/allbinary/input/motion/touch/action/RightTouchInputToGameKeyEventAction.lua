@@ -131,7 +131,7 @@ setmetatable(RightTouchInputToGameKeyEventAction, {__index = GameKeyCompleteMoti
 
 
 function RightTouchInputToGameKeyEventAction.getInstance()
-        if RightTouchInputToGameKeyEventAction.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(RightTouchInputToGameKeyEventAction.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             RightTouchInputToGameKeyEventAction.instance_f = RightTouchInputToGameKeyEventAction.new()
         end
         return RightTouchInputToGameKeyEventAction.instance_f

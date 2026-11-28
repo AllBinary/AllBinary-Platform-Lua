@@ -86,7 +86,7 @@ function AndroidHardware:_init_fields()
     self.commonStrings = CommonStrings.getInstance()
     self.componentInterfaceVector = BasicArrayListD.new()
     self.PROC_BUS_INPUT_DIRECTORY = "/proc/bus/input/"
-    self.DEVICES = self.PROC_BUS_INPUT_DIRECTORY .. "devices/"
+    self.DEVICES = require("allbinary_java").to_string(self.PROC_BUS_INPUT_DIRECTORY) .. require("allbinary_java").to_string("devices/")
     self.MINHARDWARE = 3
 end
 
@@ -117,11 +117,11 @@ function AndroidHardware:init(filePath)
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-            self.logUtil:put("Hardware Data: " .. tostring(self), self, self.commonStrings.INIT, e)
+            self.logUtil:put(require("allbinary_java").to_string("Hardware Data: ") .. require("allbinary_java").to_string(tostring(self)), self, self.commonStrings.INIT, e)
             error(e, 0)
         end
         do -- finally
-            if lineNumberReader ~= nil then
+            if not rawequal(lineNumberReader, nil) then
                 lineNumberReader:close()
             end
         end
@@ -135,7 +135,7 @@ function AndroidHardware:get(filePath)
         local lineNumberReader = LineNumberReader.new(pciFile)
         self.logUtil:putF("File Found", self, self.commonStrings.CONSTRUCTOR)
         local nextLine = lineNumberReader:readLine()
-        while nextLine ~= nil do
+        while not rawequal(nextLine, nil) do
             nextLine = lineNumberReader:readLine()
             self.componentInterfaceVector:add(UnknownHardware.new(nextLine))
         end

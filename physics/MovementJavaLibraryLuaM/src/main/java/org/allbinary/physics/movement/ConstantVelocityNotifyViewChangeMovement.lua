@@ -178,7 +178,7 @@ function ConstantVelocityNotifyViewChangeMovement:process(layer)
         local y = self.basicVelocityProperties:getVelocityYBasicDecimalP():getScaled()
         local z = self.basicVelocityProperties:getVelocityZBasicDecimalP():getScaled()
         layer:moveDXYZ(x, y, z)
-        if x ~= 0 or y ~= 0 or z ~= 0 then
+        if not rawequal(x, 0) or not rawequal(y, 0) or not rawequal(z, 0) then
             layer:onViewPositionChangeEvent()
         end
 end

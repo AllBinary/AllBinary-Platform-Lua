@@ -77,7 +77,7 @@ end
 
 
 function BasicGroupFactory.getInstance()
-        if BasicGroupFactory.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(BasicGroupFactory.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             BasicGroupFactory.instance_f = BasicGroupFactory.new()
         end
         return BasicGroupFactory.instance_f

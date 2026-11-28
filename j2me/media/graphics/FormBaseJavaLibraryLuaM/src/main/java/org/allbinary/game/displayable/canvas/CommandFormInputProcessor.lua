@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
--- local Command = require("javax.microedition.lcdui.Command")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
+local Command = java_lazy("javax.microedition.lcdui.Command")
 local GameCommandsFactory = java_lazy("org.allbinary.game.commands.GameCommandsFactory")
 local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
 local InputFeatureFactory = java_lazy("org.allbinary.game.configuration.feature.InputFeatureFactory")
@@ -197,11 +197,11 @@ end
 
 -- throws Exception
 function CommandFormInputProcessor:processInput(key)
-        if key == Canvas.LEFT or key == Canvas.RIGHT or key == Canvas.UP or key == Canvas.DOWN then
+        if rawequal(key, Canvas.LEFT) or rawequal(key, Canvas.RIGHT) or rawequal(key, Canvas.UP) or rawequal(key, Canvas.DOWN) then
             PrimaryPlayerQueueFactory.getInstance():add(SelectSound.getInstance())
             self.form:processInputKey(key)
             return 1
-        elseif key == Canvas.FIRE then
+        elseif rawequal(key, Canvas.FIRE) then
             PrimaryPlayerQueueFactory.getInstance():add(SelectSound.getInstance())
             return self:processCommand()
         end
@@ -216,12 +216,12 @@ function CommandFormInputProcessor:processCommand()
         self.logUtil:putF(tostring(command), self, self.PROCESS_COMMAND)
         local features = Features.getInstance()
         local openGLFeatureFactory = OpenGLFeatureFactory.getInstance()
-        if SWTUtil.isSWT and features:isFeature(openGLFeatureFactory.OPENGL) and command ~= GameCommandsFactory.getInstance().EXIT_COMMAND then
+        if SWTUtil.isSWT and features:isFeature(openGLFeatureFactory.OPENGL) and not rawequal(command, GameCommandsFactory.getInstance().EXIT_COMMAND) then
             CommandRunnable.new(self, command):run()
         else
             PrimaryThreadPool.getInstance():runTask(CommandRunnable.new(self, command))
         end
-        if command == GameCommandsFactory.getInstance().QUIT_COMMAND then
+        if rawequal(command, GameCommandsFactory.getInstance().QUIT_COMMAND) then
             return -1
         else
             return 1
@@ -241,8 +241,8 @@ function CommandFormInputProcessor:processInputList()
             for index = 0, size - 1 do
                 gameKeyEvent = list.objectArray[index + 1]
                 key = gameKeyEvent:getKey()
-                if gameKeyEvent:getSourceId() ~= self.MOTION_GESTURE_SOURCE_ID then
-                    if self:processInput(key) == 1 then
+                if not rawequal(gameKeyEvent:getSourceId(), self.MOTION_GESTURE_SOURCE_ID) then
+                    if rawequal(self:processInput(key), 1) then
                         break
                     end
                 end
@@ -282,13 +282,13 @@ java_overload(CommandFormInputProcessor, "processMotionInputs", 0)
 function CommandFormInputProcessor:processMotionInput(motionGestureEvent)
         local touchMotionGestureFactory = TouchMotionGestureFactory.getInstance()
         local motionGestureInput = motionGestureEvent:getMotionGesture()
-        if motionGestureInput == touchMotionGestureFactory.RELEASED then
+        if rawequal(motionGestureInput, touchMotionGestureFactory.RELEASED) then
             local point = motionGestureEvent:getCurrentPoint()
             if self.form:isInForm(point) then
                 local index = self.form:getSelectedIndexForPoint(point)
-                if index ~= -1 then
+                if not rawequal(index, -1) then
                     PrimaryPlayerQueueFactory.getInstance():add(SelectSound.getInstance())
-                    if index == self.form:getSelectedIndex() then
+                    if rawequal(index, self.form:getSelectedIndex()) then
                         if self.clickTimeHelper:isTimeTNT() then
                             self:processCommand()
                         end
@@ -299,7 +299,7 @@ function CommandFormInputProcessor:processMotionInput(motionGestureEvent)
                 end
             end
             if self.hasPressed then
-                if not self.doubleClickTimeHelper:isTimeTNT() then
+                if not (self.doubleClickTimeHelper:isTimeTNT()) then
                     self.logUtil:putF("Double Press", self, self.gameInputStrings.PROCESS_MOTION_INPUT)
                     self:processCommand()
                 end
@@ -307,7 +307,7 @@ function CommandFormInputProcessor:processMotionInput(motionGestureEvent)
                 self.doubleClickTimeHelper:setStartTimeTNT()
             end
             self.hasPressed = false
-        elseif motionGestureInput == touchMotionGestureFactory.PRESSED then
+        elseif rawequal(motionGestureInput, touchMotionGestureFactory.PRESSED) then
             self.doubleClickTimeHelper.delay = 0
             self.hasPressed = true
         end

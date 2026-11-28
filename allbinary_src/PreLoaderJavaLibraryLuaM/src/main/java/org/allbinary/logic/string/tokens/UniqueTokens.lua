@@ -113,16 +113,16 @@ function UniqueTokens:getWhithoutDashesAndSkipNumberOnlyTokens(stringVector)
                 for forIndex = 0, keywordVector:size() - 1 do
                     local cleanString = keywordVector:get(forIndex)
                     cleanString = string.match(cleanString, "^%s*(.-)%s*$")
-                    if ((string.find(cleanString, "-", 1, true) or 0) - 1) ~= -1 then
+                    if not rawequal(((string.find(cleanString, "-", 1, true) or 0) - 1), -1) then
                         cleanString = Replace.new("-", commonSeps.SPACE):all(cleanString)
                     end
                     hashSet:add(cleanString)
-                    if ((string.find(cleanString, " ", 1, true) or 0) - 1) ~= -1 then
+                    if not rawequal(((string.find(cleanString, " ", 1, true) or 0) - 1), -1) then
                         local spaceTokenizer = Tokenizer.new(commonSeps.SPACE)
                         local subKeywordVector = spaceTokenizer:getTokensFromString(cleanString, BasicArrayListD.new())
                         for spaceIndex = 0, subKeywordVector:size() - 1 do
                             local subCleanString = subKeywordVector:get(spaceIndex)
-                            if not self:isSpecialCharacter(subCleanString) and not self:numberOnly(subCleanString) then
+                            if not (self:isSpecialCharacter(subCleanString)) and not (self:numberOnly(subCleanString)) then
                                 hashSet:add(subCleanString)
                             end
                         end
@@ -157,7 +157,7 @@ end
 
 function UniqueTokens:isSpecialCharacter(subCleaningString)
         for index = 0, self.specialCharacters:size() - 1 do
-            if ((subCleaningString < self.specialCharacters:get(index) and -1) or (subCleaningString > self.specialCharacters:get(index) and 1) or 0) == 0 then
+            if rawequal(((subCleaningString < self.specialCharacters:get(index) and -1) or (subCleaningString > self.specialCharacters:get(index) and 1) or 0), 0) then
                 return true
             end
         end

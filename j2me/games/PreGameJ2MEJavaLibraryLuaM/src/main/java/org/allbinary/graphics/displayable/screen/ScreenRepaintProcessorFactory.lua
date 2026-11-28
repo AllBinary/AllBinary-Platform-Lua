@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Displayable = require("javax.microedition.lcdui.Displayable")
+local Displayable = java_lazy("javax.microedition.lcdui.Displayable")
 local J2MEUtil = java_lazy("org.allbinary.J2MEUtil")
 local Processor = java_lazy("org.allbinary.canvas.Processor")
 local ScreenRepaintProcessor = java_lazy("org.allbinary.graphics.displayable.screen.ScreenRepaintProcessor")
@@ -73,7 +73,7 @@ end
 
 
 function ScreenRepaintProcessorFactory:create(displayable)
-        if not J2MEUtil.isJ2ME() then
+        if not (J2MEUtil.isJ2ME()) then
             return ScreenRepaintProcessor.new(displayable)
         else
             return Processor.getInstance()

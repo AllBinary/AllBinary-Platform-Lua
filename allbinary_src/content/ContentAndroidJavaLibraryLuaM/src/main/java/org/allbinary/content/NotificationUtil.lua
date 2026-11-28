@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Command = require("javax.microedition.lcdui.Command")
+local Command = java_lazy("javax.microedition.lcdui.Command")
 local Notification = java_lazy("android.app.Notification")
 local NotificationManager = java_lazy("android.app.NotificationManager")
 local PendingIntent = java_lazy("android.app.PendingIntent")
@@ -98,10 +98,10 @@ function NotificationUtil:notify(command, resource, message)
         local context = ResourceUtil.getInstance():getContext()
         local intent = CommandUriAction.getInstance():getIntent(command)
         local integer = ResourceUtil.getInstance():getResourceId(resource)
-        local FLAG_IMMUTABLE = 1 << 26
+        local FLAG_IMMUTABLE = (((((1) << ((26) & 31)) + 0x80000000) & 0xffffffff) - 0x80000000)
         local SDK_VERSION = AndroidInfoFactory.getInstance():getVersion()
         local pendingIntent = PendingIntent.getActivity(context, 0, intent, (function() if SDK_VERSION > 22 then return FLAG_IMMUTABLE else return 0 end end)())
-        if self.notificationBuilder == nil then
+        if rawequal(self.notificationBuilder, nil) then
             local commonStrings = CommonStrings.getInstance()
             self.logUtil:putF(commonStrings.EXCEPTION, self, commonStrings.NOT_IMPLEMENTED)
             return

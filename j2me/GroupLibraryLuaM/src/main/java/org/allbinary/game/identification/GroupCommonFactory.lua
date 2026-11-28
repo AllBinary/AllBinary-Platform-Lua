@@ -72,7 +72,7 @@ end
 
 
 function GroupCommonFactory.getInstance()
-        if GroupCommonFactory.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(GroupCommonFactory.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             GroupCommonFactory.instance_f = GroupCommonFactory.new()
         end
         return GroupCommonFactory.instance_f

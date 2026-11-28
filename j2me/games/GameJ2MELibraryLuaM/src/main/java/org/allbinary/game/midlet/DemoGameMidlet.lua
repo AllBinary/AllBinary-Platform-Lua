@@ -167,7 +167,7 @@ end
 -- throws Exception
 function DemoGameMidlet:isContinue()
         local hashtable = self:getStartStateHashtable()
-        if hashtable ~= nil and hashtable:size() > 0 then
+        if not rawequal(hashtable, nil) and hashtable:size() > 0 then
             return true
         else
             return false

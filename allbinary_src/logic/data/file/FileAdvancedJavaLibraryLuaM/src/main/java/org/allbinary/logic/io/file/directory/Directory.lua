@@ -138,9 +138,9 @@ end
 function Directory:create_j1_2(directory)
         local try_ok, try_error, try_value = pcall(function()
             local directoryFile = FileFactory.getInstance():getInstance(directory)
-            if not directoryFile:isDirectory() then
-                PreLogUtil.put("Creating Directories: " .. directory, self, "create")
-                if not directoryFile:mkdirs() then
+            if not (directoryFile:isDirectory()) then
+                PreLogUtil.put(require("allbinary_java").to_string("Creating Directories: ") .. require("allbinary_java").to_string(directory), self, "create")
+                if not (directoryFile:mkdirs()) then
                     do return "__jreturn", false end
                 end
             end
@@ -149,7 +149,7 @@ function Directory:create_j1_2(directory)
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-            PreLogUtil.putOE("Error Creating Directories: " .. directory, self, "create", e)
+            PreLogUtil.putOE(require("allbinary_java").to_string("Error Creating Directories: ") .. require("allbinary_java").to_string(directory), self, "create", e)
             return false
         end
         if try_ok and try_error == "__jreturn" then return try_value end
@@ -172,12 +172,12 @@ function Directory:remove_j1_2(existingDirectory)
         local existingDirectoryFile = FileFactory.getInstance():getInstance(existingDirectory)
         if existingDirectoryFile:isDirectory() then
             if (existingDirectoryFile:list().n or #existingDirectoryFile:list()) > 0 then
-                error(require("java.lang.Exception").new("Did not remove category: " .. existingDirectory .. " because files exist"), 0)
+                error(require("java.lang.Exception").new(require("allbinary_java").to_string(require("allbinary_java").to_string("Did not remove category: ") .. require("allbinary_java").to_string(existingDirectory)) .. require("allbinary_java").to_string(" because files exist")), 0)
             elseif existingDirectoryFile:delete() then
-                PreLogUtil.put("Successfully Removed: " .. existingDirectory, "Directory", "remove")
+                PreLogUtil.put(require("allbinary_java").to_string("Successfully Removed: ") .. require("allbinary_java").to_string(existingDirectory), "Directory", "remove")
             end
         else
-            error(require("java.lang.Exception").new("Category Directory Is Missing:" .. existingDirectory), 0)
+            error(require("java.lang.Exception").new(require("allbinary_java").to_string("Category Directory Is Missing:") .. require("allbinary_java").to_string(existingDirectory)), 0)
         end
 end
 function Directory:remove(...)
@@ -203,11 +203,11 @@ function Directory:search_j3_1(fileFilter, file, isRecursiveSearch)
         local recursiveFileList = nil
         if file:isDirectory() then
             local fileArray = file:listFilesFileFilter(fileFilter)
-            if fileArray == nil then
+            if rawequal(fileArray, nil) then
                 return fileList
             end
             local files = FileWrapperUtil.wrapFiles(fileArray)
-            if files == nil then
+            if rawequal(files, nil) then
                 return fileList
             end
             local size = (files.n or #files)
@@ -233,11 +233,11 @@ function Directory:search_j2_2(file, isRecursiveSearch)
         local recursiveFileList = nil
         if file:isDirectory() then
             local fileArray = file:listFiles()
-            if fileArray == nil then
+            if rawequal(fileArray, nil) then
                 return fileList
             end
             local files = FileWrapperUtil.wrapFiles(fileArray)
-            if files == nil then
+            if rawequal(files, nil) then
                 return fileList
             end
             for index = 0, (files.n or #files) - 1 do
@@ -262,11 +262,11 @@ function Directory:search_j3_2(searchValue, file, isRecursiveSearch)
         local recursiveFileList = nil
         if file:isDirectory() then
             local fileArray = file:listFiles()
-            if fileArray == nil then
+            if rawequal(fileArray, nil) then
                 return fileList
             end
             local files = FileWrapperUtil.wrapFiles(fileArray)
-            if files == nil then
+            if rawequal(files, nil) then
                 return fileList
             end
             for index = 0, (files.n or #files) - 1 do
@@ -293,11 +293,11 @@ function Directory:search_j3_3(level, file, isRecursiveSearch)
         local recursiveFileList = nil
         if file:isDirectory() then
             local fileArray = file:listFiles()
-            if fileArray == nil then
+            if rawequal(fileArray, nil) then
                 return fileList
             end
             local files = FileWrapperUtil.wrapFiles(fileArray)
-            if files == nil then
+            if rawequal(files, nil) then
                 return fileList
             end
             for index = 0, (files.n or #files) - 1 do

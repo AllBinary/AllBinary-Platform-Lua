@@ -83,7 +83,7 @@ function LogUtil:putL(log)
         local anyType = log:getObject()
         local functionName = log:getFunctionName()
         local exception = log:getThrowable()
-        if log ~= nil then
+        if not rawequal(log, nil) then
             self:put(specialMessage, anyType, functionName, exception)
         end
 end
@@ -101,7 +101,7 @@ function LogUtil:put(specialMessage, anyType, functionName, exception)
         local className = self.LABEL
         className = (getmetatable(anyType).javaClassName or getmetatable(anyType).className)
         local message = self.logFormatUtil:get(className, functionName, specialMessage, exception)
-        android.util.Log:i(self.LABEL, self.LOG_SUCCESS .. message)
+        android.util.Log:i(self.LABEL, require("allbinary_java").to_string(self.LOG_SUCCESS) .. require("allbinary_java").to_string(message))
 end
 
 LogUtil.instance_f = LogUtil.new()

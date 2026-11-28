@@ -102,7 +102,7 @@ end
 function BooleanFileVisitor._jinit(self, filterStringBasicArrayList)
     BooleanFileVisitor._init_fields(self)
         self:setFilterStringBasicArrayList(filterStringBasicArrayList)
-        PreLogUtil.put("Filter BasicArrayList: " .. tostring(self:getFilterStringBasicArrayList()), self, self.commonStrings.CONSTRUCTOR)
+        PreLogUtil.put(require("allbinary_java").to_string("Filter BasicArrayList: ") .. require("allbinary_java").to_string(tostring(self:getFilterStringBasicArrayList())), self, self.commonStrings.CONSTRUCTOR)
     return self
 end
 

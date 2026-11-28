@@ -31,7 +31,7 @@ end
 -- local BufferedImage = require("java.awt.image.BufferedImage")
 -- local ColorModel = require("java.awt.image.ColorModel")
 -- local WritableRaster = require("java.awt.image.WritableRaster")
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local Anchor = java_lazy("org.allbinary.graphics.Anchor")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
@@ -120,8 +120,8 @@ function ImageModifierUtil:setColor(unusedOriginalImage, image, imageIndex, basi
                 rx = colorModel:getRed(dataElements)
                 gx = colorModel:getGreen(dataElements)
                 bx = colorModel:getBlue(dataElements)
-                if rx ~= 0 or gx ~= 0 or bx ~= 0 then
-                    newBufferedImage:setRGB(index, index2, (ax << 24) | (r << 16) | (g << 8) | (b))
+                if not rawequal(rx, 0) or not rawequal(gx, 0) or not rawequal(bx, 0) then
+                    newBufferedImage:setRGB(index, index2, ((((((ax) << ((24) & 31)) + 0x80000000) & 0xffffffff) - 0x80000000)) | ((((((r) << ((16) & 31)) + 0x80000000) & 0xffffffff) - 0x80000000)) | ((((((g) << ((8) & 31)) + 0x80000000) & 0xffffffff) - 0x80000000)) | (b))
                 end
             end
         end
@@ -153,7 +153,7 @@ function ImageModifierUtil:changeColor(unusedOriginalImage, image, imageIndex, b
                 rx = java_int(rx * r)
                 gx = java_int(gx * g)
                 bx = java_int(bx * b)
-                newBufferedImage:setRGB(index, index2, (ax << 24) | (rx << 16) | (gx << 8) | (bx))
+                newBufferedImage:setRGB(index, index2, ((((((ax) << ((24) & 31)) + 0x80000000) & 0xffffffff) - 0x80000000)) | ((((((rx) << ((16) & 31)) + 0x80000000) & 0xffffffff) - 0x80000000)) | ((((((gx) << ((8) & 31)) + 0x80000000) & 0xffffffff) - 0x80000000)) | (bx))
             end
         end
 end

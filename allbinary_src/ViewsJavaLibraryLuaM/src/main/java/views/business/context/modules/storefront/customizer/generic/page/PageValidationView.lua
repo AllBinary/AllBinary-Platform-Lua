@@ -175,7 +175,7 @@ function PageValidationView._jinit(self, transformInfoInterface)
     PageValidationView._init_fields(self)
         -- super(...) made self above
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("View Name: " .. transformInfoInterface:getName(), self, "PageViewValidation()")
+            self.logUtil:putF(require("allbinary_java").to_string("View Name: ") .. require("allbinary_java").to_string(transformInfoInterface:getName()), self, "PageViewValidation()")
         end
     return self
 end
@@ -197,7 +197,7 @@ function PageValidationView:isValid()
             local pageObjectConfigInterface = self:getTransformInfoInterface():getObjectConfigInterface()
             local allViewsToBeModifiedVector = pageObjectConfigInterface:getGroupTransforms()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("Views To Be Modified: " .. tostring(allViewsToBeModifiedVector:size()), self, "get(transformInfoInterface)")
+                self.logUtil:putF(require("allbinary_java").to_string("Views To Be Modified: ") .. require("allbinary_java").to_string(allViewsToBeModifiedVector:size()), self, "get(transformInfoInterface)")
             end
             local size = allViewsToBeModifiedVector:size()
             for index = 0, size - 1 do
@@ -221,16 +221,16 @@ function PageValidationView:isValid()
                 end
                 local hashMap = StdUtil.getInstance():createHashMap()
                 local title = specifiedTransformInfoInterface:getName():substring(self:getTransformInfoInterface():getStoreName():length())
-                if ((title < "index" and -1) or (title > "index" and 1) or 0) == 0 then
-                    hashMap:put(TitleData.getInstance().TEXT, tostring(self:getTransformInfoInterface():getStoreName()) .. " - Home Page")
+                if rawequal(((title < "index" and -1) or (title > "index" and 1) or 0), 0) then
+                    hashMap:put(TitleData.getInstance().TEXT, require("allbinary_java").to_string(self:getTransformInfoInterface():getStoreName()) .. require("allbinary_java").to_string(" - Home Page"))
                 else
-                    hashMap:put(TitleData.getInstance().TEXT, tostring(self:getTransformInfoInterface():getStoreName()) .. " -" .. title)
+                    hashMap:put(TitleData.getInstance().TEXT, require("allbinary_java").to_string(require("allbinary_java").to_string(self:getTransformInfoInterface():getStoreName()) .. require("allbinary_java").to_string(" -")) .. require("allbinary_java").to_string(title))
                 end
                 local pageValidation = PageValidation.new(hashMap)
-                if pageValidation:isValid() == false then
+                if rawequal(pageValidation:isValid(), false) then
                     isValid = false
                 end
-                if isValid == true then
+                if rawequal(isValid, true) then
                     local document = DomDocumentHelper.create()
                     document:appendChild(pageValidation:toXmlNode(document))
                     local documentString = XmlDocumentHelper.toString(document)
@@ -275,16 +275,16 @@ function PageValidationView:validationInfo()
                 local specifiedTransformInfoInterface = transformInfoEntityInterface:get(viewNameOfViewToBeModified, httpTransformInfoInterface:getPropertiesHashMap(), httpTransformInfoInterface:getPageContext())
                 local hashMap = StdUtil.getInstance():createHashMap()
                 local title = specifiedTransformInfoInterface:getName():substring(self:getTransformInfoInterface():getStoreName():length())
-                if ((title < "index" and -1) or (title > "index" and 1) or 0) == 0 then
-                    hashMap:put(TitleData.getInstance().TEXT, tostring(self:getTransformInfoInterface():getStoreName()) .. " - Home Page")
+                if rawequal(((title < "index" and -1) or (title > "index" and 1) or 0), 0) then
+                    hashMap:put(TitleData.getInstance().TEXT, require("allbinary_java").to_string(self:getTransformInfoInterface():getStoreName()) .. require("allbinary_java").to_string(" - Home Page"))
                 else
-                    hashMap:put(TitleData.getInstance().TEXT, tostring(self:getTransformInfoInterface():getStoreName()) .. " -" .. title)
+                    hashMap:put(TitleData.getInstance().TEXT, require("allbinary_java").to_string(require("allbinary_java").to_string(self:getTransformInfoInterface():getStoreName()) .. require("allbinary_java").to_string(" -")) .. require("allbinary_java").to_string(title))
                 end
                 local pageValidation = PageValidation.new(hashMap)
-                if pageValidation:isValid() == false then
-                    stringBuffer:append("TransformInfo Name for PageValidation:" .. specifiedTransformInfoInterface:getName())
-                    stringBuffer:append("PageValidation:" .. tostring(hashMap))
-                    stringBuffer:append("PageValidation Info:" .. tostring(pageValidation:validationInfo()))
+                if rawequal(pageValidation:isValid(), false) then
+                    stringBuffer:append(require("allbinary_java").to_string("TransformInfo Name for PageValidation:") .. require("allbinary_java").to_string(specifiedTransformInfoInterface:getName()))
+                    stringBuffer:append(require("allbinary_java").to_string("PageValidation:") .. require("allbinary_java").to_string(hashMap))
+                    stringBuffer:append(require("allbinary_java").to_string("PageValidation Info:") .. require("allbinary_java").to_string(pageValidation:validationInfo()))
                 end
             end
             do return "__jreturn", tostring(stringBuffer) end

@@ -258,65 +258,65 @@ end
 
 function Initializer:isValid()
         local isValid = true
-        if not self:isJdbcDriverValid(self.userJdbcDriver) then
+        if not (self:isJdbcDriverValid(self.userJdbcDriver)) then
             isValid = false
         end
         local stringValidationUtil = StringValidationUtil.getInstance()
-        if not stringValidationUtil:isValidRequired(self.userName, Initializer.MIN, Initializer.MAXDB) then
+        if not (stringValidationUtil:isValidRequired(self.userName, Initializer.MIN, Initializer.MAXDB)) then
             isValid = false
         end
-        if not stringValidationUtil:isValidRequired(self.userUserName, Initializer.MIN, Initializer.MAX) then
+        if not (stringValidationUtil:isValidRequired(self.userUserName, Initializer.MIN, Initializer.MAX)) then
             isValid = false
         end
-        if not stringValidationUtil:isValidNotRequired(self.userPassword, Initializer.MINPASSWORD, Initializer.MAX) then
+        if not (stringValidationUtil:isValidNotRequired(self.userPassword, Initializer.MINPASSWORD, Initializer.MAX)) then
             isValid = false
         end
-        if not self:isJdbcDriverValid(self.historyJdbcDriver) then
+        if not (self:isJdbcDriverValid(self.historyJdbcDriver)) then
             isValid = false
         end
-        if not stringValidationUtil:isValidRequired(self.historyName, Initializer.MIN, Initializer.MAXDB) then
+        if not (stringValidationUtil:isValidRequired(self.historyName, Initializer.MIN, Initializer.MAXDB)) then
             isValid = false
         end
-        if not stringValidationUtil:isValidRequired(self.historyUserName, Initializer.MIN, Initializer.MAX) then
+        if not (stringValidationUtil:isValidRequired(self.historyUserName, Initializer.MIN, Initializer.MAX)) then
             isValid = false
         end
-        if not stringValidationUtil:isValidNotRequired(self.historyPassword, Initializer.MINPASSWORD, Initializer.MAX) then
+        if not (stringValidationUtil:isValidNotRequired(self.historyPassword, Initializer.MINPASSWORD, Initializer.MAX)) then
             isValid = false
         end
-        if not self:isJdbcDriverValid(self.logJdbcDriver) then
+        if not (self:isJdbcDriverValid(self.logJdbcDriver)) then
             isValid = false
         end
-        if not stringValidationUtil:isValidRequired(self.logName, Initializer.MIN, Initializer.MAXDB) then
+        if not (stringValidationUtil:isValidRequired(self.logName, Initializer.MIN, Initializer.MAXDB)) then
             isValid = false
         end
-        if not stringValidationUtil:isValidRequired(self.logUserName, Initializer.MIN, Initializer.MAX) then
+        if not (stringValidationUtil:isValidRequired(self.logUserName, Initializer.MIN, Initializer.MAX)) then
             isValid = false
         end
-        if not stringValidationUtil:isValidNotRequired(self.logPassword, Initializer.MINPASSWORD, Initializer.MAX) then
+        if not (stringValidationUtil:isValidNotRequired(self.logPassword, Initializer.MINPASSWORD, Initializer.MAX)) then
             isValid = false
         end
-        if not self:isJdbcDriverValid(self.inventoryJdbcDriver) then
+        if not (self:isJdbcDriverValid(self.inventoryJdbcDriver)) then
             isValid = false
         end
-        if not stringValidationUtil:isValidRequired(self.inventoryName, Initializer.MIN, Initializer.MAXDB) then
+        if not (stringValidationUtil:isValidRequired(self.inventoryName, Initializer.MIN, Initializer.MAXDB)) then
             isValid = false
         end
-        if not stringValidationUtil:isValidRequired(self.inventoryUserName, Initializer.MIN, Initializer.MAX) then
+        if not (stringValidationUtil:isValidRequired(self.inventoryUserName, Initializer.MIN, Initializer.MAX)) then
             isValid = false
         end
-        if not stringValidationUtil:isValidNotRequired(self.inventoryPassword, Initializer.MINPASSWORD, Initializer.MAX) then
+        if not (stringValidationUtil:isValidNotRequired(self.inventoryPassword, Initializer.MINPASSWORD, Initializer.MAX)) then
             isValid = false
         end
-        if not self:isJdbcDriverValid(self.staticPagesJdbcDriver) then
+        if not (self:isJdbcDriverValid(self.staticPagesJdbcDriver)) then
             isValid = false
         end
-        if not stringValidationUtil:isValidRequired(self.staticPagesName, Initializer.MIN, Initializer.MAXDB) then
+        if not (stringValidationUtil:isValidRequired(self.staticPagesName, Initializer.MIN, Initializer.MAXDB)) then
             isValid = false
         end
-        if not stringValidationUtil:isValidRequired(self.staticPagesUserName, Initializer.MIN, Initializer.MAX) then
+        if not (stringValidationUtil:isValidRequired(self.staticPagesUserName, Initializer.MIN, Initializer.MAX)) then
             isValid = false
         end
-        if not stringValidationUtil:isValidNotRequired(self.staticPagesPassword, Initializer.MINPASSWORD, Initializer.MAX) then
+        if not (stringValidationUtil:isValidNotRequired(self.staticPagesPassword, Initializer.MINPASSWORD, Initializer.MAX)) then
             isValid = false
         end
         return isValid
@@ -350,73 +350,73 @@ end
 function Initializer:getInvalidInfo()
         local isJdbcDriversValid = true
         local stringBuffer = StringMaker.new()
-        if not self:isJdbcDriverValid(self.userJdbcDriver) then
+        if not (self:isJdbcDriverValid(self.userJdbcDriver)) then
             isJdbcDriversValid = false
             stringBuffer:append(self:getJdbcDriverValidationInfo(self.userJdbcDriver))
         end
         local stringValidationUtil = StringValidationUtil.getInstance()
-        if not stringValidationUtil:isValidRequired(self.userName, Initializer.MIN, Initializer.MAXDB) then
-            stringBuffer:append("User db name should be < " .. tostring(Initializer.MAXDB) .. " and > " .. tostring(Initializer.MIN) .. " characters in length.<br />")
+        if not (stringValidationUtil:isValidRequired(self.userName, Initializer.MIN, Initializer.MAXDB)) then
+            stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("User db name should be < ") .. require("allbinary_java").to_string(Initializer.MAXDB)) .. require("allbinary_java").to_string(" and > ")) .. require("allbinary_java").to_string(Initializer.MIN)) .. require("allbinary_java").to_string(" characters in length.<br />"))
         end
-        if not stringValidationUtil:isValidRequired(self.userUserName, Initializer.MIN, Initializer.MAX) then
-            stringBuffer:append("User db username should be < " .. tostring(Initializer.MAX) .. " and > " .. tostring(Initializer.MIN) .. " characters in length.<br />")
+        if not (stringValidationUtil:isValidRequired(self.userUserName, Initializer.MIN, Initializer.MAX)) then
+            stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("User db username should be < ") .. require("allbinary_java").to_string(Initializer.MAX)) .. require("allbinary_java").to_string(" and > ")) .. require("allbinary_java").to_string(Initializer.MIN)) .. require("allbinary_java").to_string(" characters in length.<br />"))
         end
-        if not stringValidationUtil:isValidNotRequired(self.userPassword, Initializer.MINPASSWORD, Initializer.MAX) then
-            stringBuffer:append("User DB password should be < " .. tostring(Initializer.MAX) .. " and > " .. tostring(Initializer.MINPASSWORD) .. " characters in length.<br />")
+        if not (stringValidationUtil:isValidNotRequired(self.userPassword, Initializer.MINPASSWORD, Initializer.MAX)) then
+            stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("User DB password should be < ") .. require("allbinary_java").to_string(Initializer.MAX)) .. require("allbinary_java").to_string(" and > ")) .. require("allbinary_java").to_string(Initializer.MINPASSWORD)) .. require("allbinary_java").to_string(" characters in length.<br />"))
         end
-        if not self:isJdbcDriverValid(self.historyJdbcDriver) then
+        if not (self:isJdbcDriverValid(self.historyJdbcDriver)) then
             isJdbcDriversValid = false
             stringBuffer:append(self:getJdbcDriverValidationInfo(self.historyJdbcDriver))
         end
-        if not stringValidationUtil:isValidRequired(self.historyName, Initializer.MIN, Initializer.MAXDB) then
-            stringBuffer:append("History db should be < " .. tostring(Initializer.MAXDB) .. " and > " .. tostring(Initializer.MIN) .. " characters in length.<br />")
+        if not (stringValidationUtil:isValidRequired(self.historyName, Initializer.MIN, Initializer.MAXDB)) then
+            stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("History db should be < ") .. require("allbinary_java").to_string(Initializer.MAXDB)) .. require("allbinary_java").to_string(" and > ")) .. require("allbinary_java").to_string(Initializer.MIN)) .. require("allbinary_java").to_string(" characters in length.<br />"))
         end
-        if not stringValidationUtil:isValidRequired(self.historyUserName, Initializer.MIN, Initializer.MAX) then
-            stringBuffer:append("History db username should be < " .. tostring(Initializer.MAX) .. " and > " .. tostring(Initializer.MIN) .. " characters in length.<br />")
+        if not (stringValidationUtil:isValidRequired(self.historyUserName, Initializer.MIN, Initializer.MAX)) then
+            stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("History db username should be < ") .. require("allbinary_java").to_string(Initializer.MAX)) .. require("allbinary_java").to_string(" and > ")) .. require("allbinary_java").to_string(Initializer.MIN)) .. require("allbinary_java").to_string(" characters in length.<br />"))
         end
-        if not stringValidationUtil:isValidNotRequired(self.historyPassword, Initializer.MINPASSWORD, Initializer.MAX) then
-            stringBuffer:append("History db password should be < " .. tostring(Initializer.MAX) .. " and > " .. tostring(Initializer.MINPASSWORD) .. " characters in length.<br />")
+        if not (stringValidationUtil:isValidNotRequired(self.historyPassword, Initializer.MINPASSWORD, Initializer.MAX)) then
+            stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("History db password should be < ") .. require("allbinary_java").to_string(Initializer.MAX)) .. require("allbinary_java").to_string(" and > ")) .. require("allbinary_java").to_string(Initializer.MINPASSWORD)) .. require("allbinary_java").to_string(" characters in length.<br />"))
         end
-        if not self:isJdbcDriverValid(self.logJdbcDriver) then
+        if not (self:isJdbcDriverValid(self.logJdbcDriver)) then
             isJdbcDriversValid = false
             stringBuffer:append(self:getJdbcDriverValidationInfo(self.logJdbcDriver))
         end
-        if not stringValidationUtil:isValidRequired(self.logName, Initializer.MIN, Initializer.MAXDB) then
-            stringBuffer:append("Log db should be < " .. tostring(Initializer.MAXDB) .. " and > " .. tostring(Initializer.MIN) .. " characters in length.<br />")
+        if not (stringValidationUtil:isValidRequired(self.logName, Initializer.MIN, Initializer.MAXDB)) then
+            stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Log db should be < ") .. require("allbinary_java").to_string(Initializer.MAXDB)) .. require("allbinary_java").to_string(" and > ")) .. require("allbinary_java").to_string(Initializer.MIN)) .. require("allbinary_java").to_string(" characters in length.<br />"))
         end
-        if not stringValidationUtil:isValidRequired(self.logUserName, Initializer.MIN, Initializer.MAX) then
-            stringBuffer:append("Log db username should be < " .. tostring(Initializer.MAX) .. " and > " .. tostring(Initializer.MIN) .. " characters in length.<br />")
+        if not (stringValidationUtil:isValidRequired(self.logUserName, Initializer.MIN, Initializer.MAX)) then
+            stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Log db username should be < ") .. require("allbinary_java").to_string(Initializer.MAX)) .. require("allbinary_java").to_string(" and > ")) .. require("allbinary_java").to_string(Initializer.MIN)) .. require("allbinary_java").to_string(" characters in length.<br />"))
         end
-        if not stringValidationUtil:isValidNotRequired(self.logPassword, Initializer.MINPASSWORD, Initializer.MAX) then
-            stringBuffer:append("Log db password should be < " .. tostring(Initializer.MAX) .. " and > " .. tostring(Initializer.MINPASSWORD) .. " characters in length.<br />")
+        if not (stringValidationUtil:isValidNotRequired(self.logPassword, Initializer.MINPASSWORD, Initializer.MAX)) then
+            stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Log db password should be < ") .. require("allbinary_java").to_string(Initializer.MAX)) .. require("allbinary_java").to_string(" and > ")) .. require("allbinary_java").to_string(Initializer.MINPASSWORD)) .. require("allbinary_java").to_string(" characters in length.<br />"))
         end
-        if not self:isJdbcDriverValid(self.inventoryJdbcDriver) then
+        if not (self:isJdbcDriverValid(self.inventoryJdbcDriver)) then
             isJdbcDriversValid = false
             stringBuffer:append(self:getJdbcDriverValidationInfo(self.inventoryJdbcDriver))
         end
-        if not stringValidationUtil:isValidRequired(self.inventoryName, Initializer.MIN, Initializer.MAXDB) then
-            stringBuffer:append("Inventory db should be < " .. tostring(Initializer.MAXDB) .. " and > " .. tostring(Initializer.MIN) .. " characters in length.<br />")
+        if not (stringValidationUtil:isValidRequired(self.inventoryName, Initializer.MIN, Initializer.MAXDB)) then
+            stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Inventory db should be < ") .. require("allbinary_java").to_string(Initializer.MAXDB)) .. require("allbinary_java").to_string(" and > ")) .. require("allbinary_java").to_string(Initializer.MIN)) .. require("allbinary_java").to_string(" characters in length.<br />"))
         end
-        if not stringValidationUtil:isValidRequired(self.inventoryUserName, Initializer.MIN, Initializer.MAX) then
-            stringBuffer:append("Inventory db username should be < " .. tostring(Initializer.MAX) .. " and > " .. tostring(Initializer.MIN) .. " characters in length.<br />")
+        if not (stringValidationUtil:isValidRequired(self.inventoryUserName, Initializer.MIN, Initializer.MAX)) then
+            stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Inventory db username should be < ") .. require("allbinary_java").to_string(Initializer.MAX)) .. require("allbinary_java").to_string(" and > ")) .. require("allbinary_java").to_string(Initializer.MIN)) .. require("allbinary_java").to_string(" characters in length.<br />"))
         end
-        if not stringValidationUtil:isValidNotRequired(self.inventoryPassword, Initializer.MINPASSWORD, Initializer.MAX) then
-            stringBuffer:append("Inventory DB password should be < " .. tostring(Initializer.MAX) .. " and > " .. tostring(Initializer.MINPASSWORD) .. " characters in length.<br />")
+        if not (stringValidationUtil:isValidNotRequired(self.inventoryPassword, Initializer.MINPASSWORD, Initializer.MAX)) then
+            stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Inventory DB password should be < ") .. require("allbinary_java").to_string(Initializer.MAX)) .. require("allbinary_java").to_string(" and > ")) .. require("allbinary_java").to_string(Initializer.MINPASSWORD)) .. require("allbinary_java").to_string(" characters in length.<br />"))
         end
-        if not self:isJdbcDriverValid(self.staticPagesJdbcDriver) then
+        if not (self:isJdbcDriverValid(self.staticPagesJdbcDriver)) then
             isJdbcDriversValid = false
             stringBuffer:append(self:getJdbcDriverValidationInfo(self.staticPagesJdbcDriver))
         end
-        if not stringValidationUtil:isValidRequired(self.staticPagesName, Initializer.MIN, Initializer.MAXDB) then
-            stringBuffer:append("Static Pages db should be < " .. tostring(Initializer.MAXDB) .. " and > " .. tostring(Initializer.MIN) .. " characters in length.<br />")
+        if not (stringValidationUtil:isValidRequired(self.staticPagesName, Initializer.MIN, Initializer.MAXDB)) then
+            stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Static Pages db should be < ") .. require("allbinary_java").to_string(Initializer.MAXDB)) .. require("allbinary_java").to_string(" and > ")) .. require("allbinary_java").to_string(Initializer.MIN)) .. require("allbinary_java").to_string(" characters in length.<br />"))
         end
-        if not stringValidationUtil:isValidRequired(self.staticPagesUserName, Initializer.MIN, Initializer.MAX) then
-            stringBuffer:append("Static Pages db username should be < " .. tostring(Initializer.MAX) .. " and > " .. tostring(Initializer.MIN) .. " characters in length.<br />")
+        if not (stringValidationUtil:isValidRequired(self.staticPagesUserName, Initializer.MIN, Initializer.MAX)) then
+            stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Static Pages db username should be < ") .. require("allbinary_java").to_string(Initializer.MAX)) .. require("allbinary_java").to_string(" and > ")) .. require("allbinary_java").to_string(Initializer.MIN)) .. require("allbinary_java").to_string(" characters in length.<br />"))
         end
-        if not stringValidationUtil:isValidNotRequired(self.staticPagesPassword, Initializer.MINPASSWORD, Initializer.MAX) then
-            stringBuffer:append("Static Pages DB password should be < " .. tostring(Initializer.MAX) .. " and > " .. tostring(Initializer.MINPASSWORD) .. " characters in length.<br />")
+        if not (stringValidationUtil:isValidNotRequired(self.staticPagesPassword, Initializer.MINPASSWORD, Initializer.MAX)) then
+            stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Static Pages DB password should be < ") .. require("allbinary_java").to_string(Initializer.MAX)) .. require("allbinary_java").to_string(" and > ")) .. require("allbinary_java").to_string(Initializer.MINPASSWORD)) .. require("allbinary_java").to_string(" characters in length.<br />"))
         end
-        if not isJdbcDriversValid then
+        if not (isJdbcDriversValid) then
             stringBuffer:append(self:getJdbcDriverSolutionInfo())
         end
         return tostring(stringBuffer)

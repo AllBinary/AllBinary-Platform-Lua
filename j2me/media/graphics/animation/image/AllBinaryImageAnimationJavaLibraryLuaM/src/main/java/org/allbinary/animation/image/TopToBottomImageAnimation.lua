@@ -28,9 +28,9 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local Image = require("javax.microedition.lcdui.Image")
--- local Sprite = require("javax.microedition.lcdui.game.Sprite")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local Sprite = java_lazy("javax.microedition.lcdui.game.Sprite")
 local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 local Anchor = java_lazy("org.allbinary.graphics.Anchor")
 local ImageSegmentAnimation = require("org.allbinary.animation.image.ImageSegmentAnimation")
@@ -148,7 +148,7 @@ TopToBottomImageAnimation.javaClassName = "org.allbinary.animation.image.TopToBo
 setmetatable(TopToBottomImageAnimation, {__index = ImageSegmentAnimation})
 
 function TopToBottomImageAnimation:_init_fields()
-    if self.currentHeight == nil then self.currentHeight = nil end
+    if self.currentHeight == nil then self.currentHeight = 0 end
     self.anchor = Anchor.TOP_LEFT
 end
 
@@ -158,7 +158,7 @@ function TopToBottomImageAnimation._jinit(self, image, sequenceArray, animationB
     TopToBottomImageAnimation._init_fields(self)
         -- super(...) made self above
         self.currentHeight = 0
-        if self:getSequence()[1] == -1 then
+        if rawequal(self:getSequence()[1], -1) then
             self:setFrame(self:getSize() - 1)
         end
     return self
@@ -172,7 +172,7 @@ end
 
 
 function TopToBottomImageAnimation:nextFrame()
-        if self:getSequence()[1] == -1 then
+        if rawequal(self:getSequence()[1], -1) then
             java_super(ImageSegmentAnimation, "previousFrame", 0)(self)
         else
             java_super(ImageSegmentAnimation, "nextFrame", 0)(self)
@@ -183,7 +183,7 @@ java_overload(TopToBottomImageAnimation, "nextFrame", 0)
 
 
 function TopToBottomImageAnimation:previousFrame()
-        if self:getSequence()[1] == -1 then
+        if rawequal(self:getSequence()[1], -1) then
             java_super(ImageSegmentAnimation, "nextFrame", 0)(self)
         else
             java_super(ImageSegmentAnimation, "previousFrame", 0)(self)

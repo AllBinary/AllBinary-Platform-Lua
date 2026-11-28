@@ -158,7 +158,7 @@ end
 
 
 function ImageJPanel:paint(graphics)
-        if not self.isDrawn then
+        if not (self.isDrawn) then
             self.logUtil:putF(self.commonStrings.START, self, self.canvasStrings.PAINT)
             graphics:drawImage(self.bufferedImage, 0, 0, self.bufferedImage:getWidth(nil), self.bufferedImage:getHeight(nil), nil)
             self.isDrawn = true

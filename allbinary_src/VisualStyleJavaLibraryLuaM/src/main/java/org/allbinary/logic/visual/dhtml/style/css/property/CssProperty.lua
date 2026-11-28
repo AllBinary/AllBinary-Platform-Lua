@@ -141,7 +141,7 @@ function CssProperty._new1_2(self, node)
         local propertyNode = DomSearchHelper.getNode(DomData.VALUE, node:getChildNodes())
         self.propertyName = DomNodeHelper.getTextNodeValue(propertyNode)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().STYLE) then
-            self.logUtil:putF("Name: " .. self:getName(), self, "CssProperty()")
+            self.logUtil:putF(require("allbinary_java").to_string("Name: ") .. require("allbinary_java").to_string(self:getName()), self, "CssProperty()")
         end
         local propertyValuesNode = DomSearchHelper.getNode(CssPropertyData.getInstance().VALUES, node:getChildNodes())
         self.cssPropertyValues = CssPropertyValues.new(propertyValuesNode)
@@ -165,7 +165,7 @@ end
 function CssProperty:toXmlNode(document)
         local hashMap = self:toHashMap()
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("CssView HashMap: " .. tostring(hashMap), self, "toXmlNode()")
+            self.logUtil:putF(require("allbinary_java").to_string("CssView HashMap: ") .. require("allbinary_java").to_string(tostring(hashMap)), self, "toXmlNode()")
         end
         local node = ModDomHelper.createNameValueNodes(document, CssPropertyData.getInstance().NAME, self.propertyName)
         node:appendChild(self.cssPropertyValues:toXmlNode(document))

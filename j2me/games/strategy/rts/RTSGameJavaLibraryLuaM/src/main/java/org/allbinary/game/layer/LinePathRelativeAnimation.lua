@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local GPoint = java_lazy("org.allbinary.graphics.GPoint")
 local Layer = java_lazy("org.allbinary.layer.Layer")
 local LinePathAnimation = require("org.allbinary.game.layer.LinePathAnimation")

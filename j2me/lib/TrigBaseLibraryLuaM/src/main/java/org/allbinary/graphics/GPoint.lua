@@ -58,9 +58,9 @@ GPoint.className = "GPoint"
 GPoint.javaClassName = "org.allbinary.graphics.GPoint"
 
 function GPoint:_init_fields()
-    if self.x == nil then self.x = nil end
-    if self.y == nil then self.y = nil end
-    if self.z == nil then self.z = nil end
+    if self.x == nil then self.x = 0 end
+    if self.y == nil then self.y = 0 end
+    if self.z == nil then self.z = 0 end
 end
 
 

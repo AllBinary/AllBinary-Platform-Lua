@@ -206,7 +206,7 @@ function RTSLayerSelectedLogHelper:turnTo(associatedAdvancedRTSGameLayer, dx, dy
         stringBuffer:append(movementAngle.name_f)
         stringBuffer:append(self.commonSeps.FORWARD_SLASH)
         stringBuffer:appendshort(java_int(movementAngle:getValue()))
-        if angleInfo ~= nil then
+        if not rawequal(angleInfo, nil) then
             local angleIncrement = angleInfo:getAngleIncrementInfo():getAngleIncrement()
             stringBuffer:append(" angleIncrement: ")
             stringBuffer:appendshort(angleIncrement)

@@ -100,11 +100,11 @@ function BasicPaymentTypeUtil:get(paymentTypeString)
         local size = self.paymentTypeVector:size()
         for i = 0, size - 1 do
             local paymentType = self.paymentTypeVector:get(i)
-            if paymentType:getName():compareTo(paymentTypeString) == 0 then
+            if rawequal(paymentType:getName():compareTo(paymentTypeString), 0) then
                 return paymentType
             end
         end
-        error(require("java.lang.Exception").new("Unknown PaymentType: " .. paymentTypeString), 0)
+        error(require("java.lang.Exception").new(require("allbinary_java").to_string("Unknown PaymentType: ") .. require("allbinary_java").to_string(paymentTypeString)), 0)
 end
 
 
@@ -118,7 +118,7 @@ function BasicPaymentTypeUtil:difference(a_PaymentTypeVector)
         local size = self.paymentTypeVector:size()
         for i = 0, size - 1 do
             local paymentType = self.paymentTypeVector:get(i)
-            if not a_PaymentTypeVector:contains(paymentType) then
+            if not (a_PaymentTypeVector:contains(paymentType)) then
                 diff:add(paymentType)
             end
         end

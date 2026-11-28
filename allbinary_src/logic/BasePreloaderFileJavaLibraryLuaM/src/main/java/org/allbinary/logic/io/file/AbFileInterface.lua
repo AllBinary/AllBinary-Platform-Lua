@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local FilenameFilter = require("java.io.FilenameFilter")
+local FilenameFilter = java_lazy("java.io.FilenameFilter")
 -- local IOException = require("java.io.IOException")
 -- local URI = require("java.net.URI")
 

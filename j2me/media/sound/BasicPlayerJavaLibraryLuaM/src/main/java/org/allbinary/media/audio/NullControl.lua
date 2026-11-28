@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Control = require("javax.microedition.media.Control")
+local Control = java_lazy("javax.microedition.media.Control")
 
 local function java_idiv(a, b)
     local q = a / b

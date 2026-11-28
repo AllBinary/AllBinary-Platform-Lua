@@ -90,7 +90,7 @@ end
 
 
 function ExceptionUtil:getStackTrace(e)
-        if e ~= nil then
+        if not rawequal(e, nil) then
             local byteArrayOutputStream = require("java.io.ByteArrayOutputStream").new()
             local printStream = PrintStream.new(byteArrayOutputStream)
             e:printStackTrace(printStream)

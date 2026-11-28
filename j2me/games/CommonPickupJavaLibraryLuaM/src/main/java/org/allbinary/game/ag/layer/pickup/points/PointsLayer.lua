@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local ScoreableInterface = java_lazy("org.allbinary.game.score.ScoreableInterface")
 local PointFactory = java_lazy("org.allbinary.graphics.PointFactory")
 local Rectangle = java_lazy("org.allbinary.graphics.Rectangle")
@@ -133,7 +133,7 @@ PointsLayer.javaClassName = "org.allbinary.game.ag.layer.pickup.points.PointsLay
 setmetatable(PointsLayer, {__index = AllBinaryLayer})
 
 function PointsLayer:_init_fields()
-    if self.points == nil then self.points = nil end
+    if self.points == nil then self.points = 0 end
 end
 
 

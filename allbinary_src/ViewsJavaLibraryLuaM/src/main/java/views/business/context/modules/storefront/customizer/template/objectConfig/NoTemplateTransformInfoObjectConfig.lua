@@ -190,20 +190,20 @@ end
 function NoTemplateTransformInfoObjectConfig:generate(objectConfigDocument)
         local docString = XmlDocumentHelper.toString(objectConfigDocument)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("Initial ObjectConfig: " .. docString, self, "generate()")
+            self.logUtil:putF(require("allbinary_java").to_string("Initial ObjectConfig: ") .. require("allbinary_java").to_string(docString), self, "generate()")
         end
         local storeName = self:getTransformInfoInterface():getStoreName()
         local viewName = self:getTransformInfoInterface():getName()
         local hashMap = StdUtil.getInstance():createHashMap()
         local VARKEY = TransformInfoObjectConfigData.getInstance().VARKEY
-        hashMap:put(VARKEY .. tostring(StoreFrontData.getInstance().NAME), storeName)
-        hashMap:put(VARKEY .. tostring(TransformInfoData.getInstance().OWNER), viewName)
+        hashMap:put(require("allbinary_java").to_string(VARKEY) .. require("allbinary_java").to_string(StoreFrontData.getInstance().NAME), storeName)
+        hashMap:put(require("allbinary_java").to_string(VARKEY) .. require("allbinary_java").to_string(TransformInfoData.getInstance().OWNER), viewName)
         local pageName = TransformTemplateCustomizerUtil.getInstance():getPageNameHack(self:getTransformInfoInterface():getName(), self:getTransformInfoInterface():getStoreName())
-        hashMap:put(VARKEY .. tostring(TransformInfoData.getInstance().PARTIAL), pageName)
+        hashMap:put(require("allbinary_java").to_string(VARKEY) .. require("allbinary_java").to_string(TransformInfoData.getInstance().PARTIAL), pageName)
         local replace = Replace.new(hashMap)
         local newObjectConfigDocument = DomDocumentHelper.create(replace:all(docString))
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("Final ObjectConfig: " .. XmlDocumentHelper.toString(newObjectConfigDocument), self, "generate()")
+            self.logUtil:putF(require("allbinary_java").to_string("Final ObjectConfig: ") .. require("allbinary_java").to_string(XmlDocumentHelper.toString(newObjectConfigDocument)), self, "generate()")
         end
         return newObjectConfigDocument
 end

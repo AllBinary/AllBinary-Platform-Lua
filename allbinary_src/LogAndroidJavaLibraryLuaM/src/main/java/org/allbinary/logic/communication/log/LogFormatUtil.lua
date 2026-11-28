@@ -113,7 +113,7 @@ end
 
 
 function LogFormatUtil:getF(className, functionName)
-        if functionName == nil then
+        if rawequal(functionName, nil) then
             functionName = self.NONE
         end
         local stringBuffer = StringMaker.new()
@@ -128,17 +128,17 @@ end
 
 
 function LogFormatUtil:getO(exception)
-        if exception ~= self.nullUtil.NULL_OBJECT then
+        if not rawequal(exception, self.nullUtil.NULL_OBJECT) then
             local stringBuffer = StringMaker.new()
             stringBuffer:append(self.LOG_ERROR)
             local exceptionAsString = tostring(exception)
-            if exceptionAsString ~= nil then
+            if not rawequal(exceptionAsString, nil) then
                 stringBuffer:append(exceptionAsString)
             else
                 stringBuffer:append(self.EMPTY)
             end
             stringBuffer:append(self.STACK_TRACE)
-            if exception ~= self.nullUtil.NULL_OBJECT then
+            if not rawequal(exception, self.nullUtil.NULL_OBJECT) then
                 stringBuffer:append(self.exceptionUtil:getStackTrace(exception))
             else
                 stringBuffer:append(self.stringUtil.NULL_STRING)

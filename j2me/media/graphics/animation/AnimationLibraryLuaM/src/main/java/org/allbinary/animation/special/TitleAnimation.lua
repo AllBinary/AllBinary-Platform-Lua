@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 local IndexedAnimation = java_lazy("org.allbinary.animation.IndexedAnimation")
 local IndexedAnimationBehavior = java_lazy("org.allbinary.animation.IndexedAnimationBehavior")
@@ -143,11 +143,11 @@ function TitleAnimation:_init_fields()
     if self.basicColorArray == nil then self.basicColorArray = nil end
     if self.dxArray == nil then self.dxArray = nil end
     if self.dyArray == nil then self.dyArray = nil end
-    if self.widthP == nil then self.widthP = nil end
+    if self.widthP == nil then self.widthP = 0 end
     if self.animationInterfaceArray == nil then self.animationInterfaceArray = nil end
-    if self.sizeP == nil then self.sizeP = nil end
-    if self.y == nil then self.y = nil end
-    if self.lastFrameStartTime == nil then self.lastFrameStartTime = nil end
+    if self.sizeP == nil then self.sizeP = 0 end
+    if self.y == nil then self.y = 0 end
+    if self.lastFrameStartTime == nil then self.lastFrameStartTime = 0 end
     self.displayInfoSingleton = DisplayInfoSingleton.getInstance()
     self.CLEAR_COLOR = BasicColorFactory.getInstance().CLEAR_COLOR
 end
@@ -189,7 +189,7 @@ function TitleAnimation:nextFrame()
             self:previousFrame()
             self.lastFrameStartTime = currentTime
         end
-        if self.animationInterfaceArray[1]:getFrame() == 0 then
+        if rawequal(self.animationInterfaceArray[1]:getFrame(), 0) then
             indexedAnimationBehavior.loopIndex = indexedAnimationBehavior.loopIndex + 1
         end
 end
@@ -198,7 +198,7 @@ java_overload(TitleAnimation, "nextFrame", 0)
 
 function TitleAnimation:isComplete()
         local indexedAnimationBehavior = self:getAnimationBehavior()
-        if indexedAnimationBehavior.loopTotal == -1 or indexedAnimationBehavior.loopIndex < indexedAnimationBehavior.loopTotal or self:getFrame() ~= 0 then
+        if rawequal(indexedAnimationBehavior.loopTotal, -1) or indexedAnimationBehavior.loopIndex < indexedAnimationBehavior.loopTotal or not rawequal(self:getFrame(), 0) then
             return false
         else
             return true
@@ -269,7 +269,7 @@ java_overload(TitleAnimation, "paintFrameXY", 4, function(java_a1, java_a2, java
 
 function TitleAnimation:paintXY(graphics, ax, ay)
         local x = 0
-        if self.widthP ~= require("java.lang.Integer").MIN_VALUE then
+        if not rawequal(self.widthP, require("java.lang.Integer").MIN_VALUE) then
             x = ((self.displayInfoSingleton:getLastWidth() - self.widthP) / 2)
         end
         local deltaX = 0
@@ -277,7 +277,7 @@ function TitleAnimation:paintXY(graphics, ax, ay)
         for index = 0, self.sizeP - 1 do
             deltaX = self.dxArray[index + 1] + x
             deltaY = self.dyArray[index + 1] + self.y
-            if self.basicColorArray[index + 1] ~= self.CLEAR_COLOR then
+            if not rawequal(self.basicColorArray[index + 1], self.CLEAR_COLOR) then
                 self.basicSetColorUtil:setBasicColorP(graphics, self.basicColorArray[index + 1])
             end
             self.animationInterfaceArray[index + 1]:paintXY(graphics, deltaX, deltaY)

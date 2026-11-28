@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local RTSFormInput = java_lazy("org.allbinary.game.input.form.RTSFormInput")
 local MultiPlayerGameLayer = require("org.allbinary.game.multiplayer.layer.MultiPlayerGameLayer")
 local Animation = java_lazy("org.allbinary.animation.Animation")

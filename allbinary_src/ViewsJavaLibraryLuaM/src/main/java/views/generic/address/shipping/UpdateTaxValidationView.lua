@@ -174,23 +174,23 @@ end
 function UpdateTaxValidationView:isValid()
         self.streetAddress = StreetAddress.new(self:getRequest())
         local storeFrontInterface = StoreFrontFactory.getInstance(self:getTransformInfoInterface():getStoreName())
-        if TaxFactory.getInstance():getInstance(self.abeClientInformation, storeFrontInterface):isValid(self.streetAddress, storeFrontInterface) == false then
+        if rawequal(TaxFactory.getInstance():getInstance(self.abeClientInformation, storeFrontInterface):isValid(self.streetAddress, storeFrontInterface), false) then
             return false
         end
         local billingAddressesEntity = ShippingAddressesEntity.new(self:getWeblisketSession():getUserName())
         local streetAddressList = billingAddressesEntity:get()
-        if streetAddressList == nil then
+        if rawequal(streetAddressList, nil) then
             return false
         end
         local count = 0
         local size = streetAddressList:size()
         for index = 0, size - 1 do
             local aStreetAddress = streetAddressList:get(index)
-            if aStreetAddress:getName():compareTo(ShippingAddressData.TAX) == 0 then
+            if rawequal(aStreetAddress:getName():compareTo(ShippingAddressData.TAX), 0) then
                 count = count + 1
             end
         end
-        if count ~= 1 then
+        if not rawequal(count, 1) then
             return false
         end
         return true

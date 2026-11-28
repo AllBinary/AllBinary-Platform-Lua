@@ -172,7 +172,7 @@ function SavedCaptureGenericProfileDataWorkerType:setLastFrame(lastFrame)
 end
 java_overload(SavedCaptureGenericProfileDataWorkerType, "setLastFrame", 1, function(java_a1) return true and type(java_a1) == "number" end)
 
-SavedCaptureGenericProfileDataWorkerType.SAVED_CAPTURE = SavedCaptureGenericProfileDataWorkerType.new("Saved " .. InputImageType.CAPTURE:getName(), "c:\\share\\captures\\2\\", 100)
+SavedCaptureGenericProfileDataWorkerType.SAVED_CAPTURE = SavedCaptureGenericProfileDataWorkerType.new(require("allbinary_java").to_string("Saved ") .. require("allbinary_java").to_string(InputImageType.CAPTURE:getName()), "c:\\share\\captures\\2\\", 100)
 
 return SavedCaptureGenericProfileDataWorkerType
 

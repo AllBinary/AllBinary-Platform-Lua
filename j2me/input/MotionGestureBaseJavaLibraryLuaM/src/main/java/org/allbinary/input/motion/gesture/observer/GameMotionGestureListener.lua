@@ -163,9 +163,9 @@ end
 function GameMotionGestureListener:onMotionGestureEvent(ev)
         local try_ok, try_error, try_value = pcall(function()
             local motionGestureInput = ev:getMotionGesture()
-            if motionGestureInput == TouchMotionGestureFactory.getInstance().PRESSED then
+            if rawequal(motionGestureInput, TouchMotionGestureFactory.getInstance().PRESSED) then
                 self:onPressedMotionGestureEvent(ev)
-            elseif motionGestureInput == TouchMotionGestureFactory.getInstance().RELEASED then
+            elseif rawequal(motionGestureInput, TouchMotionGestureFactory.getInstance().RELEASED) then
                 self:released(ev)
             else
                 self.motionGestureCollection:add(motionGestureInput)

@@ -53,7 +53,7 @@ BasicDecimal.className = "BasicDecimal"
 BasicDecimal.javaClassName = "org.allbinary.logic.math.BasicDecimal"
 
 function BasicDecimal:_init_fields()
-    if self.units == nil then self.units = nil end
+    if self.units == nil then self.units = 0 end
     if self.scaled == nil then self.scaled = 0 end
     self.factor = ScaleFactorFactory.getInstance().DEFAULT_SCALE_FACTOR
     self.factorValue = ScaleFactorFactory.getInstance().DEFAULT_SCALE_VALUE

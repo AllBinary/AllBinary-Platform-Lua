@@ -85,7 +85,7 @@ end
 -- throws Exception
 function ResourceRelativeRelationshipFactory:getResourceRelativeRelationshipList(resource)
         local listCanBeNull = self.hashtable:get(resource)
-        if listCanBeNull == nil then
+        if rawequal(listCanBeNull, nil) then
             return self.basicArrayListUtil:getImmutableInstance()
         end
         return listCanBeNull
@@ -95,7 +95,7 @@ end
 -- throws Exception
 function ResourceRelativeRelationshipFactory:addResourceRelativeRelationship(resource, hardPoint)
         local list = self:getResourceRelativeRelationshipList(resource)
-        if list == self.basicArrayListUtil:getImmutableInstance() then
+        if rawequal(list, self.basicArrayListUtil:getImmutableInstance()) then
             list = BasicArrayListD.new()
         end
         list:add(hardPoint)

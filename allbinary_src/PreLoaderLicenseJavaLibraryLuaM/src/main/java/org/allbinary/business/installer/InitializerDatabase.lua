@@ -211,14 +211,14 @@ end
 
 function InitializerDatabase:isValid()
         local isValid = true
-        if not self:isJdbcDriverValid(self.adminJdbcDriver) then
+        if not (self:isJdbcDriverValid(self.adminJdbcDriver)) then
             isValid = false
         end
         local stringValidationUtil = StringValidationUtil.getInstance()
-        if not stringValidationUtil:isValidRequired(self.adminDbUserName, InitializerDatabase.MIN, InitializerDatabase.MAX) then
+        if not (stringValidationUtil:isValidRequired(self.adminDbUserName, InitializerDatabase.MIN, InitializerDatabase.MAX)) then
             isValid = false
         end
-        if not stringValidationUtil:isValidNotRequired(self.adminDbPassword, InitializerDatabase.MINPASSWORD, InitializerDatabase.MAX) then
+        if not (stringValidationUtil:isValidNotRequired(self.adminDbPassword, InitializerDatabase.MINPASSWORD, InitializerDatabase.MAX)) then
             isValid = false
         end
         return isValid
@@ -238,18 +238,18 @@ function InitializerDatabase:getInvalidInfo()
         local isValid = true
         local isJdbcDriversValid = true
         local stringBuffer = StringMaker.new()
-        if not self:isJdbcDriverValid(self.adminJdbcDriver) then
+        if not (self:isJdbcDriverValid(self.adminJdbcDriver)) then
             isJdbcDriversValid = false
             stringBuffer:append(self:getJdbcDriverValidationInfo(self:getAdminJdbcDriver()))
         end
         local stringValidationUtil = StringValidationUtil.getInstance()
-        if not stringValidationUtil:isValidRequired(self.adminDbUserName, InitializerDatabase.MIN, InitializerDatabase.MAX) then
-            stringBuffer:append("Admin username should be < " .. tostring(InitializerDatabase.MAX) .. " and > " .. tostring(InitializerDatabase.MIN) .. " characters in length.<br />")
+        if not (stringValidationUtil:isValidRequired(self.adminDbUserName, InitializerDatabase.MIN, InitializerDatabase.MAX)) then
+            stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Admin username should be < ") .. require("allbinary_java").to_string(InitializerDatabase.MAX)) .. require("allbinary_java").to_string(" and > ")) .. require("allbinary_java").to_string(InitializerDatabase.MIN)) .. require("allbinary_java").to_string(" characters in length.<br />"))
         end
-        if not stringValidationUtil:isValidNotRequired(self.adminDbPassword, InitializerDatabase.MINPASSWORD, InitializerDatabase.MAX) then
-            stringBuffer:append("Admin password should be < " .. tostring(InitializerDatabase.MAX) .. " and > " .. tostring(InitializerDatabase.MINPASSWORD) .. " characters in length.<br />")
+        if not (stringValidationUtil:isValidNotRequired(self.adminDbPassword, InitializerDatabase.MINPASSWORD, InitializerDatabase.MAX)) then
+            stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Admin password should be < ") .. require("allbinary_java").to_string(InitializerDatabase.MAX)) .. require("allbinary_java").to_string(" and > ")) .. require("allbinary_java").to_string(InitializerDatabase.MINPASSWORD)) .. require("allbinary_java").to_string(" characters in length.<br />"))
         end
-        if not isJdbcDriversValid then
+        if not (isJdbcDriversValid) then
             stringBuffer:append(InitializerData.getInstance():getJdbcDriverSolutionInfo())
         end
         return tostring(stringBuffer)

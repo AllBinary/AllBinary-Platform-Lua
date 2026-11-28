@@ -149,6 +149,8 @@ function NullOutputStream:write(...)
     local count = select("#", ...)
     if count == 1 then return self:write_j1(...) end
     if count == 3 then return self:write_j3(...) end
+    local parent = getmetatable(NullOutputStream).__index
+    if parent.write then return parent.write(self, ...) end
     error("No method write takes " .. count .. " arguments")
 end
 NullOutputStream.write__jdispatcher = NullOutputStream.write

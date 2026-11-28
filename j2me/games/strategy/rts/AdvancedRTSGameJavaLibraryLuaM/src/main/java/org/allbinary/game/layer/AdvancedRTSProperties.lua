@@ -63,7 +63,7 @@ AdvancedRTSProperties.javaClassName = "org.allbinary.game.layer.AdvancedRTSPrope
 function AdvancedRTSProperties:_init_fields()
     if self.shakeListener == nil then self.shakeListener = nil end
     if self.vibration == nil then self.vibration = nil end
-    if self.duration == nil then self.duration = nil end
+    if self.duration == nil then self.duration = 0 end
     if self.waypointBehaviorBase == nil then self.waypointBehaviorBase = nil end
 end
 

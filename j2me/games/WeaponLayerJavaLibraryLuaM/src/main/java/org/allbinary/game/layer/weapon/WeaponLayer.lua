@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local GL = require("javax.microedition.khronos.opengles.GL")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local GL = java_lazy("javax.microedition.khronos.opengles.GL")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local Animation = java_lazy("org.allbinary.animation.Animation")
 local IndexedAnimation = java_lazy("org.allbinary.animation.IndexedAnimation")
 local NullAnimationFactory = java_lazy("org.allbinary.animation.NullAnimationFactory")
@@ -176,7 +176,7 @@ function WeaponLayer:_init_fields()
     self.scoreableInterface = NoScoreable.getInstance()
     if self.movement == nil then self.movement = nil end
     self.weaponProperties = WeaponProperties.NULL_WEAPON_PROPERTIES
-    if self.multiPlayerType == nil then self.multiPlayerType = nil end
+    if self.multiPlayerType == nil then self.multiPlayerType = 0 end
     self.collidableWeaponBehavior = CollidableWeaponBehavior.getNullInstance()
 end
 
@@ -224,7 +224,7 @@ function WeaponLayer:init(sourceLayerInterface, angle, otherAngle, weaponPropert
         self:setOwnerLayerInterface(sourceLayerInterface)
         self.collidableWeaponBehavior:init(sourceLayerInterface)
         self:setGroupInterfaces()
-        if scoreable ~= nil then
+        if not rawequal(scoreable, nil) then
             self.scoreableInterface = scoreable
         end
         self.totalDamage = 0
@@ -237,7 +237,7 @@ java_overload(WeaponLayer, "init", 5, function(java_a1, java_a2, java_a3, java_a
 
 function WeaponLayer:setGroupInterfaces()
         local basicGroupFactory = BasicGroupFactory.getInstance()
-        if self.sourceLayerInterface:getGroupInterface()[1] == basicGroupFactory.ENEMY then
+        if rawequal(self.sourceLayerInterface:getGroupInterface()[1], basicGroupFactory.ENEMY) then
             self:setGroupInterface(basicGroupFactory.ENEMY_ARRAY)
         else
             self:setGroupInterface(self.sourceLayerInterface:getGroupInterface())
@@ -248,7 +248,7 @@ java_overload(WeaponLayer, "setGroupInterfaces", 0)
 
 -- throws Exception
 function WeaponLayer:processTick(allBinaryLayerManager)
-        if self:isExhausted() and not self:isDestroyed() then
+        if self:isExhausted() and not (self:isDestroyed()) then
             if self:isReadyForExplosion() then
                 local indexedAnimationInterface = self:getAnimationInterface()
                 local currentFrame = indexedAnimationInterface:getFrame()
@@ -303,7 +303,7 @@ java_overload(WeaponLayer, "isExhausted", 0)
 
 
 function WeaponLayer:getDamage(damageType)
-        if not self:isExhausted() then
+        if not (self:isExhausted()) then
             local total = self:getInitDamage() - self.totalDamage
             self:givePoints(total)
             return total

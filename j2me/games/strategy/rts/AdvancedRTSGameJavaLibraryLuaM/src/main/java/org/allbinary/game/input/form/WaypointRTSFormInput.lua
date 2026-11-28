@@ -202,7 +202,7 @@ function WaypointRTSFormInput:_init_fields()
     if self.roadCollisionGameNotificationEvent == nil then self.roadCollisionGameNotificationEvent = nil end
     if self.newWaypointGameNotificationEvent == nil then self.newWaypointGameNotificationEvent = nil end
     if self.noMoneyGameNotificationEvent == nil then self.noMoneyGameNotificationEvent = nil end
-    if self.isPrimaryWaypointCreator == nil then self.isPrimaryWaypointCreator = nil end
+    if self.isPrimaryWaypointCreator == nil then self.isPrimaryWaypointCreator = false end
     self.stickyAssociatedRtsLayer = NullPathFindingLayer.NULL_PATH_FINDING_LAYER
 end
 
@@ -248,8 +248,8 @@ java_overload(WaypointRTSFormInput, "setAllBinaryGameLayerManager", 1, function(
 -- throws Exception
 function WaypointRTSFormInput:processAtPoint(associatedRtsLayer, rtsPlayerLayerInterface, layerManager, point)
         java_super(RTSFormInput, "process", 1)(self, layerManager)
-        if self:isStickyItemSelected() or associatedRtsLayer == CollidableDestroyableDamageableLayer.getNullInstance() then
-            if self:isStickyItemSelected() and associatedRtsLayer == CollidableDestroyableDamageableLayer.getNullInstance() then
+        if self:isStickyItemSelected() or rawequal(associatedRtsLayer, CollidableDestroyableDamageableLayer.getNullInstance()) then
+            if self:isStickyItemSelected() and rawequal(associatedRtsLayer, CollidableDestroyableDamageableLayer.getNullInstance()) then
                 local geographicMapCompositeInterface = layerManager
                 local geographicMapInterface = geographicMapCompositeInterface:getGeographicMapInterface()[1]
                 local allBinaryTiledLayer = geographicMapInterface:getAllBinaryTiledLayer()
@@ -258,12 +258,12 @@ function WaypointRTSFormInput:processAtPoint(associatedRtsLayer, rtsPlayerLayerI
                 local geographicMapCellPosition = geographicMapInterface:getCellPositionAtXY(x, y)
                 self:processCellPosition(rtsPlayerLayerInterface, layerManager, geographicMapCellPosition)
             else
-                if not rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface() then
+                if not (rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface()) then
                     GameNotificationEventHandler.getInstance():fireEvent(self.dragToSpotGameNotificationEvent)
                 end
             end
         else
-            if not rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface() then
+            if not (rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface()) then
                 GameNotificationEventHandler.getInstance():fireEvent(self.spotTakenGameNotificationEvent)
             end
         end
@@ -274,7 +274,7 @@ java_overload(WaypointRTSFormInput, "processAtPoint", 4, function(java_a1, java_
 -- throws Exception
 function WaypointRTSFormInput:processCellPosition(rtsPlayerLayerInterface, layerManager, geographicMapCellPosition)
         local itemIndex = self:getSelectedStickyItemIndex()
-        if self.newUnconstructedRTSLayerInterfaceArray[itemIndex + 1] == CollidableDestroyableDamageableLayer.getNullInstance() then
+        if rawequal(self.newUnconstructedRTSLayerInterfaceArray[itemIndex + 1], CollidableDestroyableDamageableLayer.getNullInstance()) then
             self.newUnconstructedRTSLayerInterfaceArray[itemIndex + 1] = self:getInstance(layerManager, self:getSelectedStickyItem(), geographicMapCellPosition)
         else
             local cellPoint = geographicMapCellPosition:getPoint()
@@ -291,7 +291,7 @@ java_overload(WaypointRTSFormInput, "processCellPosition", 3, function(java_a1, 
 
 -- throws Exception
 function WaypointRTSFormInput:processStickyGameSpecific(associatedRtsLayer, rtsPlayerLayerInterface, layerManager, item, index)
-        self.logUtil:putF("Set Sticking Item: " .. tostring(item), self, "processSticky")
+        self.logUtil:putF(require("allbinary_java").to_string("Set Sticking Item: ") .. require("allbinary_java").to_string(item), self, "processSticky")
         self:setSelectedStickyItem(item)
         self:setSelectedStickyItemIndex(index)
         self:setStickyItemSelected(true)
@@ -303,8 +303,8 @@ java_overload(WaypointRTSFormInput, "processStickyGameSpecific", 5, function(jav
 
 -- throws Exception
 function WaypointRTSFormInput:attemptBuild(rtsPlayerLayerInterface, layerManager, layerInterface, itemIndex)
-        self.logUtil:putF("Layer: " .. tostring(layerInterface), self, "attemptBuild")
-        if layerInterface == nil then
+        self.logUtil:putF(require("allbinary_java").to_string("Layer: ") .. require("allbinary_java").to_string(layerInterface), self, "attemptBuild")
+        if rawequal(layerInterface, nil) then
             self.logUtil:put("Layer was null", self, "attemptBuild", require("java.lang.Exception").new())
             return false
         end
@@ -312,7 +312,7 @@ function WaypointRTSFormInput:attemptBuild(rtsPlayerLayerInterface, layerManager
         local list = geographicMapCellPositionArea:getOccupyingGeographicMapCellPositionList()
         if DropCellPositionHistory.getInstance():anyCellPositionWithDrop(list) or WaypointCellPositionHistory.getInstance():anyCellPositionWithDrop(list) then
             rtsPlayerLayerInterface:add(ErrorSound.getInstance())
-            if not rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface() then
+            if not (rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface()) then
                 GameNotificationEventHandler.getInstance():fireEvent(self.buildingCollisionGameNotificationEvent)
             end
             return false
@@ -327,7 +327,7 @@ function WaypointRTSFormInput:attemptBuild(rtsPlayerLayerInterface, layerManager
             geographicMapCellType = geographicMapInterface:getCellTypeAt(list:get(index))
             if raceTrackGeographicMapCellTypeFactory:isPath(geographicMapCellType) then
                 rtsPlayerLayerInterface:add(ErrorSound.getInstance())
-                if not rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface() then
+                if not (rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface()) then
                     GameNotificationEventHandler.getInstance():fireEvent(self.roadCollisionGameNotificationEvent)
                 end
                 return false
@@ -359,13 +359,13 @@ function WaypointRTSFormInput:attemptBuild(rtsPlayerLayerInterface, layerManager
             layerManager:append(layerInterface)
             local waypointAvancedRTSGameLayer = waypointLayer
             rtsPlayerLayerInterface:add(waypointAvancedRTSGameLayer:getWaypointBehavior():getWaypoint():getSound())
-            if not rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface() then
+            if not (rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface()) then
                 GameNotificationEventHandler.getInstance():fireEvent(self.newWaypointGameNotificationEvent)
             end
             return true
         else
             rtsPlayerLayerInterface:add(ErrorSound.getInstance())
-            if not rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface() then
+            if not (rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface()) then
                 GameNotificationEventHandler.getInstance():fireEvent(self.noMoneyGameNotificationEvent)
             end
             return false

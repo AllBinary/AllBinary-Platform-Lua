@@ -76,7 +76,7 @@ BasicTopViewGeographicMapCellType.javaClassName = "org.allbinary.media.graphics.
 function BasicTopViewGeographicMapCellType:_init_fields()
     self.logUtil = LogUtil.getInstance()
     if self.name_f == nil then self.name_f = nil end
-    if self.cost == nil then self.cost = nil end
+    if self.cost == nil then self.cost = 0 end
     if self.types == nil then self.types = nil end
 end
 
@@ -97,7 +97,7 @@ function BasicTopViewGeographicMapCellType._jinit(self, name, types, cost)
         for index = 0, size - 1 do
             typeAsInteger = (types:get(index))
             type = math.tointeger(typeAsInteger // 1)
-            if GeographicMapCellTypeFactory.getInstance():getGeographicMapCellTypeArray()[type + 1] == nil then
+            if rawequal(GeographicMapCellTypeFactory.getInstance():getGeographicMapCellTypeArray()[type + 1], nil) then
                 RaceTrackGeographicMapCellType.new(name, type, cost, 0)
             else
             end
@@ -124,7 +124,7 @@ end
 function BasicTopViewGeographicMapCellType:hasType(type)
         local size = (self.types.n or #self.types)
         for index = 0, size - 1 do
-            if self.types[index + 1] == type then
+            if rawequal(self.types[index + 1], type) then
                 return true
             end
         end

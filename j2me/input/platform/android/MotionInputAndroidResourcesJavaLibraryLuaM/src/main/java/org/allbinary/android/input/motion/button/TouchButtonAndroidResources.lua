@@ -169,7 +169,7 @@ function TouchButtonAndroidResources:init()
         local androidResources = AndroidResources.getInstance()
         local RESOURCE_STRING_ARRAY = {TouchButtonBlankResource.getInstance(), TouchButtonGenericActionResource.getInstance(), TouchButtonStartResource.getInstance(), TouchButtonUpResource.getInstance(), TouchButtonDownResource.getInstance(), TouchButtonTurnLeftResource.getInstance(), TouchButtonTurnRightResource.getInstance(), TouchButtonStrafeLeftResource.getInstance(), TouchButtonStrafeRightResource.getInstance()}
         local RESOURCE_ARRAY = java_typed_array("I", java_new_array(0, (RESOURCE_STRING_ARRAY.n or #RESOURCE_STRING_ARRAY)))
-        if CommonButtons.getInstance().STANDARD_BUTTON_SIZE == 128 then
+        if rawequal(CommonButtons.getInstance().STANDARD_BUTTON_SIZE, 128) then
             RESOURCE_ARRAY[1] = androidResources.raw.touch_button_128_by_128
             RESOURCE_ARRAY[2] = androidResources.raw.touch_button_generic_action_128_by_128
             RESOURCE_ARRAY[3] = androidResources.raw.touch_button_start_128_by_128

@@ -186,7 +186,7 @@ function TransformInfo:override(hashMap)
         local transformInfoData = TransformInfoData.getInstance()
         local stringValidationUtil = StringValidationUtil.getInstance()
         local aName = hashMap:get(transformInfoData.NAME)
-        if not stringValidationUtil:isEmpty(aName) then
+        if not (stringValidationUtil:isEmpty(aName)) then
             self.name_f = aName
         end
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
@@ -198,11 +198,11 @@ function TransformInfo:override(hashMap)
             self.logUtil:putF(tostring(stringBuffer), self, "override(HashMap hashMap)")
         end
         local aStoreName = hashMap:get(StoreFrontData.getInstance().NAME)
-        if not stringValidationUtil:isEmpty(aStoreName) then
+        if not (stringValidationUtil:isEmpty(aStoreName)) then
             self.storeName = aStoreName
         end
         local aObjectFileName = hashMap:get(transformInfoData.OBJECTFILENAME)
-        if not stringValidationUtil:isEmpty(aObjectFileName) then
+        if not (stringValidationUtil:isEmpty(aObjectFileName)) then
             self.objectFileName = aObjectFileName
         end
         local stringBuffer = StringMaker.new()
@@ -212,60 +212,60 @@ function TransformInfo:override(hashMap)
         stringBuffer:append(AbPathData.getInstance().SEPARATOR)
         local fileAbPath = AbPath.new(tostring(stringBuffer), StringUtil.getInstance().EMPTY_STRING)
         local aObject = hashMap:get(transformInfoData.OBJECT)
-        if not stringValidationUtil:isEmpty(aObject) then
+        if not (stringValidationUtil:isEmpty(aObject)) then
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("TransformInfo override view Object for: " .. self:getName(), self, "override(HashMap hashMap)")
+                self.logUtil:putF(require("allbinary_java").to_string("TransformInfo override view Object for: ") .. require("allbinary_java").to_string(self:getName()), self, "override(HashMap hashMap)")
             end
             local fileDataString = CryptFileReader.new(TransformInfoObjectData.getInstance().UNCRYPTED_EXTENSION, TransformInfoObjectData.getInstance().ENCRYPTED_EXTENSION):get(AbPath.new(tostring(fileAbPath), aObject))
-            if fileDataString ~= nil then
+            if not rawequal(fileDataString, nil) then
                 self.anyType = fileDataString
             end
         end
-        if not stringValidationUtil:isEmpty(hashMap:get(transformInfoData.OBJECTCONFIG)) then
+        if not (stringValidationUtil:isEmpty(hashMap:get(transformInfoData.OBJECTCONFIG))) then
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("TransformInfo override ObjectConfig for: " .. self:getName(), self, "override(HashMap hashMap)")
+                self.logUtil:putF(require("allbinary_java").to_string("TransformInfo override ObjectConfig for: ") .. require("allbinary_java").to_string(self:getName()), self, "override(HashMap hashMap)")
             end
             self:setObjectConfig(hashMap:get(transformInfoData.OBJECTCONFIG))
         end
         local objectConfigFileName = hashMap:get(transformInfoData.OBJECTCONFIGFILENAME)
-        if not stringValidationUtil:isEmpty(objectConfigFileName) then
+        if not (stringValidationUtil:isEmpty(objectConfigFileName)) then
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("TransformInfo override ObjectConfig File for: " .. self:getName(), self, "override(HashMap hashMap)")
+                self.logUtil:putF(require("allbinary_java").to_string("TransformInfo override ObjectConfig File for: ") .. require("allbinary_java").to_string(self:getName()), self, "override(HashMap hashMap)")
             end
             self:setObjectConfigFile(objectConfigFileName)
         end
         local type = hashMap:get(OutputTypeData.getInstance().NAME)
-        if not stringValidationUtil:isEmpty(type) then
-            if self:getObjectConfigInterface() == nil then
+        if not (stringValidationUtil:isEmpty(type)) then
+            if rawequal(self:getObjectConfigInterface(), nil) then
                 self:setObjectConfigInterface(TransformInfoObjectConfig.new(self))
             end
             self:getObjectConfigInterface():setOutputTypeName(type)
         end
         local aTemplateFileName = hashMap:get(transformInfoData.TEMPLATEFILENAME)
-        if not stringValidationUtil:isEmpty(aTemplateFileName) then
+        if not (stringValidationUtil:isEmpty(aTemplateFileName)) then
             self.templateFileName = aTemplateFileName
         end
         local aTemplate = hashMap:get(transformInfoData.TEMPLATE)
-        if not stringValidationUtil:isEmpty(aTemplate) then
+        if not (stringValidationUtil:isEmpty(aTemplate)) then
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("TransformInfo override Template for: " .. self:getName(), self, "override(HashMap hashMap)")
+                self.logUtil:putF(require("allbinary_java").to_string("TransformInfo override Template for: ") .. require("allbinary_java").to_string(self:getName()), self, "override(HashMap hashMap)")
             end
             local fileDataString = CryptFileReader.new(TransformInfoTemplateData.getInstance().UNCRYPTED_EXTENSION, TransformInfoTemplateData.getInstance().ENCRYPTED_EXTENSION):get(AbPath.new(tostring(fileAbPath), aTemplate))
-            if not stringValidationUtil:isEmpty(fileDataString) then
+            if not (stringValidationUtil:isEmpty(fileDataString)) then
                 self.template = fileDataString
             end
         end
         local aDataFileName = hashMap:get(transformInfoData.DATAFILENAME)
-        if not stringValidationUtil:isEmpty(aDataFileName) then
+        if not (stringValidationUtil:isEmpty(aDataFileName)) then
             self.dataFileName = aDataFileName
         end
         local aData = hashMap:get(transformInfoData.DATA)
-        if not stringValidationUtil:isEmpty(aData) then
+        if not (stringValidationUtil:isEmpty(aData)) then
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("TransformInfo override Data for: " .. self:getName(), self, "override(HashMap hashMap)")
+                self.logUtil:putF(require("allbinary_java").to_string("TransformInfo override Data for: ") .. require("allbinary_java").to_string(self:getName()), self, "override(HashMap hashMap)")
             end
             local fileDataString = CryptFileReader.new(TransformInfoDataData.getInstance().UNCRYPTED_EXTENSION, TransformInfoDataData.getInstance().ENCRYPTED_EXTENSION):get(AbPath.new(tostring(fileAbPath), aData))
-            if not stringValidationUtil:isEmpty(fileDataString) then
+            if not (stringValidationUtil:isEmpty(fileDataString)) then
                 self.data = fileDataString
             end
         end
@@ -432,12 +432,12 @@ end
 function TransformInfo:getData()
         local stringValidationUtil = StringValidationUtil.getInstance()
         local dataFileString = self:getDataFile()
-        if not stringValidationUtil:isEmpty(dataFileString) then
+        if not (stringValidationUtil:isEmpty(dataFileString)) then
             local try_ok, try_error, try_value = pcall(function()
                 local fileData = CryptFileReader.new(TransformInfoDataData.getInstance().UNCRYPTED_EXTENSION, TransformInfoDataData.getInstance().ENCRYPTED_EXTENSION):get(self:getDataFilePath())
-                if not stringValidationUtil:isEmpty(self.data) then
+                if not (stringValidationUtil:isEmpty(self.data)) then
                     if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                        self.logUtil:putF("Data File overriding existing data: " .. tostring(self:getDataFilePath()), self, "getData()")
+                        self.logUtil:putF(require("allbinary_java").to_string("Data File overriding existing data: ") .. require("allbinary_java").to_string(self:getDataFilePath()), self, "getData()")
                     end
                 end
                 self.data = fileData
@@ -446,14 +446,14 @@ function TransformInfo:getData()
                 local e = try_error
                 if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEWERROR) then
-                    self.logUtil:put("Could Not Load Data from: " .. tostring(self:getDataFile()), self, "getData()", e)
+                    self.logUtil:put(require("allbinary_java").to_string("Could Not Load Data from: ") .. require("allbinary_java").to_string(self:getDataFile()), self, "getData()", e)
                 end
             end
         end
         local try_ok, try_error, try_value = pcall(function()
-            if not stringValidationUtil:isEmpty(self.data) then
+            if not (stringValidationUtil:isEmpty(self.data)) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEWERROR) then
-                    self.logUtil:putF("Data: " .. XmlDocumentHelper.toString(DomDocumentHelper.create(self.data)), self, "getData()")
+                    self.logUtil:putF(require("allbinary_java").to_string("Data: ") .. require("allbinary_java").to_string(XmlDocumentHelper.toString(DomDocumentHelper.create(self.data))), self, "getData()")
                 end
             else
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEWERROR) then
@@ -474,7 +474,7 @@ function TransformInfo:getData()
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEWERROR) then
-                self.logUtil:put("Could Not Preview Data: " .. self.data, self, "getData()", e)
+                self.logUtil:put(require("allbinary_java").to_string("Could Not Preview Data: ") .. require("allbinary_java").to_string(self.data), self, "getData()", e)
             end
         end
         return self.data

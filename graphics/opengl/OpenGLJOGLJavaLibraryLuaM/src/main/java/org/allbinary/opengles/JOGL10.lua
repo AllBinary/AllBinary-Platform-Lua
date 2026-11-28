@@ -34,7 +34,7 @@ local GL2 = java_lazy("com.jogamp.opengl.GL2")
 -- local Buffer = require("java.nio.Buffer")
 -- local FloatBuffer = require("java.nio.FloatBuffer")
 -- local IntBuffer = require("java.nio.IntBuffer")
--- local GL10 = require("javax.microedition.khronos.opengles.GL10")
+local GL10 = java_lazy("javax.microedition.khronos.opengles.GL10")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)
@@ -110,8 +110,8 @@ function JOGL10:_init_fields()
     self.TARGET = "target: "
     if self.gl10 == nil then self.gl10 = nil end
     if self.glu == nil then self.glu = nil end
-    if self.GL_LINE == nil then self.GL_LINE = nil end
-    if self.GL_QUAD_STRIP == nil then self.GL_QUAD_STRIP = nil end
+    if self.GL_LINE == nil then self.GL_LINE = 0 end
+    if self.GL_QUAD_STRIP == nil then self.GL_QUAD_STRIP = 0 end
 end
 
 

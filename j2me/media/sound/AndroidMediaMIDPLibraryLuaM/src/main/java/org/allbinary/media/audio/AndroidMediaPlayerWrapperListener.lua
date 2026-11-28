@@ -16,7 +16,7 @@ local function java_real(class)
     return class
 end
 
--- local PlayerListener = require("javax.microedition.media.PlayerListener")
+local PlayerListener = java_lazy("javax.microedition.media.PlayerListener")
 local MediaPlayer = java_lazy("android.media.MediaPlayer")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
@@ -133,6 +133,9 @@ local MediaPlayerOnBufferingUpdateListener = {}
     function MediaPlayerOnBufferingUpdateListener.new()
         return MediaPlayerOnBufferingUpdateListener._jinit(setmetatable({}, MediaPlayerOnBufferingUpdateListener))
     end
+    function MediaPlayerOnBufferingUpdateListener.newEnclosed(outer)
+        return MediaPlayerOnBufferingUpdateListener._jinit(setmetatable({__javaOuter = outer}, MediaPlayerOnBufferingUpdateListener))
+    end
     
 
     function MediaPlayerOnBufferingUpdateListener:onBufferingUpdate(mediaPlayer, i)
@@ -152,6 +155,9 @@ local MediaPlayerOnPreparedListener = {}
 
     function MediaPlayerOnPreparedListener.new()
         return MediaPlayerOnPreparedListener._jinit(setmetatable({}, MediaPlayerOnPreparedListener))
+    end
+    function MediaPlayerOnPreparedListener.newEnclosed(outer)
+        return MediaPlayerOnPreparedListener._jinit(setmetatable({__javaOuter = outer}, MediaPlayerOnPreparedListener))
     end
     
 
@@ -173,6 +179,9 @@ local MediaPlayerOnErrorListener = {}
     function MediaPlayerOnErrorListener.new()
         return MediaPlayerOnErrorListener._jinit(setmetatable({}, MediaPlayerOnErrorListener))
     end
+    function MediaPlayerOnErrorListener.newEnclosed(outer)
+        return MediaPlayerOnErrorListener._jinit(setmetatable({__javaOuter = outer}, MediaPlayerOnErrorListener))
+    end
     
 
     function MediaPlayerOnErrorListener:onError(mp, what, extra)
@@ -193,6 +202,9 @@ local MediaPlayerOnCompletionListener = {}
 
     function MediaPlayerOnCompletionListener.new()
         return MediaPlayerOnCompletionListener._jinit(setmetatable({}, MediaPlayerOnCompletionListener))
+    end
+    function MediaPlayerOnCompletionListener.newEnclosed(outer)
+        return MediaPlayerOnCompletionListener._jinit(setmetatable({__javaOuter = outer}, MediaPlayerOnCompletionListener))
     end
     
 
@@ -224,6 +236,11 @@ local AndroidMediaPlayerOnBufferingUpdateListener = {}
         AndroidMediaPlayerOnBufferingUpdateListener._jinit(self, ...)
         return self
     end
+        function AndroidMediaPlayerOnBufferingUpdateListener.newEnclosed(outer, ...)
+            local self = setmetatable({__javaOuter = outer}, AndroidMediaPlayerOnBufferingUpdateListener)
+            AndroidMediaPlayerOnBufferingUpdateListener._jinit(self, ...)
+            return self
+        end
     
 
     function AndroidMediaPlayerOnBufferingUpdateListener:onBufferingUpdate(mediaPlayer, i)
@@ -258,6 +275,11 @@ local AndroidMediaPlayerOnPreparedListener = {}
         AndroidMediaPlayerOnPreparedListener._jinit(self, ...)
         return self
     end
+        function AndroidMediaPlayerOnPreparedListener.newEnclosed(outer, ...)
+            local self = setmetatable({__javaOuter = outer}, AndroidMediaPlayerOnPreparedListener)
+            AndroidMediaPlayerOnPreparedListener._jinit(self, ...)
+            return self
+        end
     
 
     function AndroidMediaPlayerOnPreparedListener:onPrepared(mp)
@@ -293,6 +315,11 @@ local AndroidMediaPlayerOnErrorListener = {}
         AndroidMediaPlayerOnErrorListener._jinit(self, ...)
         return self
     end
+        function AndroidMediaPlayerOnErrorListener.newEnclosed(outer, ...)
+            local self = setmetatable({__javaOuter = outer}, AndroidMediaPlayerOnErrorListener)
+            AndroidMediaPlayerOnErrorListener._jinit(self, ...)
+            return self
+        end
     
 
     function AndroidMediaPlayerOnErrorListener:onError(mp, what, extra)
@@ -328,6 +355,11 @@ local AndroidMediaPlayerOnCompletionListener = {}
         AndroidMediaPlayerOnCompletionListener._jinit(self, ...)
         return self
     end
+        function AndroidMediaPlayerOnCompletionListener.newEnclosed(outer, ...)
+            local self = setmetatable({__javaOuter = outer}, AndroidMediaPlayerOnCompletionListener)
+            AndroidMediaPlayerOnCompletionListener._jinit(self, ...)
+            return self
+        end
     
 
     function AndroidMediaPlayerOnCompletionListener:onCompletion(mp)
@@ -343,10 +375,10 @@ function AndroidMediaPlayerWrapperListener:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
     self.androidMediaPlayerWrapper = AndroidMediaPlayerWrapper.NULL_ANDROID_MEDIA_PLAYER_WRAPPER
-    self.mOnBufferingUpdateListener = AndroidMediaPlayerOnBufferingUpdateListener.new(self)
-    self.mOnPreparedListener = AndroidMediaPlayerOnPreparedListener.new(self)
-    self.mOnErrorListener = AndroidMediaPlayerOnErrorListener.new(self)
-    self.mOnCompletionListener = AndroidMediaPlayerOnCompletionListener.new(self)
+    self.mOnBufferingUpdateListener = AndroidMediaPlayerOnBufferingUpdateListener.newEnclosed(self, self)
+    self.mOnPreparedListener = AndroidMediaPlayerOnPreparedListener.newEnclosed(self, self)
+    self.mOnErrorListener = AndroidMediaPlayerOnErrorListener.newEnclosed(self, self)
+    self.mOnCompletionListener = AndroidMediaPlayerOnCompletionListener.newEnclosed(self, self)
 end
 
 

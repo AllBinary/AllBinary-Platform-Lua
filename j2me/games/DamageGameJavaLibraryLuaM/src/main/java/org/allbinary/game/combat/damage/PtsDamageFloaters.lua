@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local MyRandomFactory = java_lazy("org.allbinary.game.rand.MyRandomFactory")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local BasicColorArrayIndexer = java_lazy("org.allbinary.graphics.color.BasicColorArrayIndexer")
@@ -198,7 +198,7 @@ function PtsDamageFloaters:paint(graphics)
         local x = viewPosition:getX()
         local y = viewPosition:getY()
         for index = (self.lastDamage.n or #self.lastDamage) - 1, 0, -1 do
-            if self.lastDamage[index + 1] ~= 0 then
+            if not rawequal(self.lastDamage[index + 1], 0) then
                 local delta = 10 * (index + 2)
                 self.basicSetColorUtil:setBasicColorP(graphics, PtsDamageFloaters.basicColorArrayIndexer:get())
                 graphics:drawChars(self.lastDamageString[index + 1], 0, self.lastDamageStringSizeArray[index + 1], x - self.myRandomFactory:getNextInt(delta), y - delta, 0)

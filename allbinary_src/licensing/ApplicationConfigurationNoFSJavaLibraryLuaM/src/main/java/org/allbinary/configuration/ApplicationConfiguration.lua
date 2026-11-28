@@ -55,7 +55,7 @@ end
 
 
 function ApplicationConfiguration.getInstance()
-        if ApplicationConfiguration.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(ApplicationConfiguration.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             ApplicationConfiguration.instance_f = ApplicationConfiguration.new()
         end
         return ApplicationConfiguration.instance_f
@@ -88,7 +88,7 @@ function ApplicationConfiguration:read()
         self:setFullscreen(true)
         self:setProgressBarView(false)
         self:setShowTitleBar(false)
-        self.logUtil:putF("Read Configuration: " .. tostring(self), self, "read")
+        self.logUtil:putF(require("allbinary_java").to_string("Read Configuration: ") .. require("allbinary_java").to_string(tostring(self)), self, "read")
 end
 
 
@@ -99,10 +99,10 @@ end
 
 -- throws Exception
 function ApplicationConfiguration:update(gameFeature)
-        if gameFeature == MainFeatureFactory.getInstance().FULL_SCREEN then
+        if rawequal(gameFeature, MainFeatureFactory.getInstance().FULL_SCREEN) then
             local features = Features.getInstance()
             if features:isFeature(gameFeature) then
-                if not self:isFullscreen() then
+                if not (self:isFullscreen()) then
                     self:setFullscreen(true)
                     self:write()
                 end

@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local Image = require("javax.microedition.lcdui.Image")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 local AngleInfo = java_lazy("org.allbinary.math.AngleInfo")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
@@ -213,7 +213,7 @@ java_overload(AllBinaryHTMLImageRotationAnimation, "getCanvasSurface", 1, functi
 
 function AllBinaryHTMLImageRotationAnimation:setBasicColorP(basicColor)
         local changed = false
-        if self:getBasicColorP() == nil or math.tointeger(self:getBasicColorP() // 1) ~= math.tointeger(basicColor // 1) then
+        if rawequal(self:getBasicColorP(), nil) or not rawequal(math.tointeger(self:getBasicColorP() // 1), math.tointeger(basicColor // 1)) then
             changed = true
         end
         java_super(ImageBaseRotationAnimation, "setBasicColorP", 1)(self, basicColor)
@@ -226,7 +226,7 @@ java_overload(AllBinaryHTMLImageRotationAnimation, "setBasicColorP", 1, function
 
 function AllBinaryHTMLImageRotationAnimation:setAlpha(alpha)
         local changed = false
-        if self.alphaP ~= alpha then
+        if not rawequal(self.alphaP, alpha) then
             changed = true
         end
         java_super(ImageBaseRotationAnimation, "setAlpha", 1)(self, alpha)
@@ -273,7 +273,7 @@ java_overload(AllBinaryHTMLImageRotationAnimation, "setFrame", 1, function(java_
 
 function AllBinaryHTMLImageRotationAnimation:swap()
         self.imageToShow = self.twoImages[self.bufferedImageIndex + 1]
-        if self.bufferedImageIndex == 0 then
+        if rawequal(self.bufferedImageIndex, 0) then
             self.bufferedImageIndex = 1
         else
             self.bufferedImageIndex = 0

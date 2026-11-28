@@ -57,7 +57,7 @@ MathVector.java_interfaces = function() return {MathVectorInterface} end
 
 function MathVector:_init_fields()
     if self.magnitudeBasicDecimal == nil then self.magnitudeBasicDecimal = nil end
-    if self.direction == nil then self.direction = nil end
+    if self.direction == nil then self.direction = 0 end
     if self.resultBasicDecimal == nil then self.resultBasicDecimal = nil end
 end
 

@@ -184,7 +184,7 @@ function VectorExplosionGenerator:getInstanceStartFrame(points, howMuch, type, s
                 pointsBasicArrayList:add(pointBasicArrayList)
                 frameIndex = frameIndex + 1
             end
-            if not startFrame then
+            if not (startFrame) then
                 pointsBasicArrayList:removeAt(0)
             end
             do return "__jreturn", pointsBasicArrayList end
@@ -205,7 +205,7 @@ function VectorExplosionGenerator:createListFromPoints(tempBasicArrayList, point
         local sectionBasicArrayList = nil
         while index < (points.n or #points) do
             sectionBasicArrayList = BasicArrayListD.new()
-            while points[index + 1][1] ~= 1000 do
+            while not rawequal(points[index + 1][1], 1000) do
                 sectionBasicArrayList:add(tempBasicArrayList.objectArray[index + 1])
                 index = index + 1
                 if index >= (points.n or #points) then
@@ -213,7 +213,7 @@ function VectorExplosionGenerator:createListFromPoints(tempBasicArrayList, point
                 end
             end
             sectionBasicArrayList = RandomTranslation.getInstance(sectionBasicArrayList, howMuch)
-            if type == self.ROTATION then
+            if rawequal(type, self.ROTATION) then
                 sectionBasicArrayList = self.randomRotationFactory:getInstanceList(sectionBasicArrayList, howMuch)
             end
             local size = sectionBasicArrayList:size()
@@ -222,7 +222,7 @@ function VectorExplosionGenerator:createListFromPoints(tempBasicArrayList, point
             end
             if index >= (points.n or #points) then
                 break
-            elseif points[index + 1][1] == 1000 then
+            elseif rawequal(points[index + 1][1], 1000) then
                 pointBasicArrayList:add(tempBasicArrayList.objectArray[index + 1])
                 index = index + 1
             end
@@ -233,7 +233,7 @@ end
 
 -- throws Exception
 function VectorExplosionGenerator:createPointsBasicArrayList(points)
-        if (points.n or #points) == 0 then
+        if rawequal((points.n or #points), 0) then
             error(require("java.lang.Exception").new("Not Points Provided"), 0)
         end
         local firstPointBasicArrayList = BasicArrayListS.new((points.n or #points))

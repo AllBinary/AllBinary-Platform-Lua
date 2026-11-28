@@ -60,7 +60,7 @@ LogUtil.className = "LogUtil"
 LogUtil.javaClassName = "org.allbinary.logic.communication.log.LogUtil"
 
 function LogUtil:_init_fields()
-    self.logger = Logger.getLogger(LogUtil:getName())
+    self.logger = Logger.getLogger(LogUtil.javaClassName)
     self.logFormatUtil = LogFormatUtil.getInstance()
 end
 
@@ -90,13 +90,13 @@ end
 function LogUtil:putL(log)
         local exception = log:getThrowable()
         local try_ok, try_error, try_value = pcall(function()
-            if exception ~= nil then
+            if not rawequal(exception, nil) then
                 local specialMessage = log:getSpecialMessage()
                 local anyType = log:getObject()
                 local functionName = log:getFunctionName()
                 local className = CommonStrings.getInstance().EMPTY
                 local clazz = getmetatable(anyType)
-                if (clazz.javaClassName or clazz.className) ~= nil then
+                if not rawequal((clazz.javaClassName or clazz.className), nil) then
                     className = (clazz.javaClassName or clazz.className)
                 end
                 local message = self.logFormatUtil:get(className, functionName, specialMessage, exception)
@@ -114,11 +114,11 @@ function LogUtil:put(specialMessage, anyType, functionName, exception)
         local try_ok, try_error, try_value = pcall(function()
             local className = CommonStrings.getInstance().EMPTY
             local clazz = getmetatable(anyType)
-            if (clazz.javaClassName or clazz.className) ~= nil then
+            if not rawequal((clazz.javaClassName or clazz.className), nil) then
                 className = (clazz.javaClassName or clazz.className)
             end
             local message = self.logFormatUtil:getS(className, functionName, specialMessage)
-            if exception ~= nil then
+            if not rawequal(exception, nil) then
                 self.logger:log(Level.SEVERE, message, exception)
             else
                 self.logger:log(Level.INFO, message)

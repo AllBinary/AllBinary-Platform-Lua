@@ -106,6 +106,8 @@ function PathFindingNodeCostInfoFactoryInterface:getInstance(...)
     local count = select("#", ...)
     if count == 4 then return self:getInstance_j4(...) end
     if count == 2 then return self:getInstance_j2(...) end
+    local parent = getmetatable(PathFindingNodeCostInfoFactoryInterface).__index
+    if parent.getInstance then return parent.getInstance(self, ...) end
     error("No method getInstance takes " .. count .. " arguments")
 end
 PathFindingNodeCostInfoFactoryInterface.getInstance__jdispatcher = PathFindingNodeCostInfoFactoryInterface.getInstance

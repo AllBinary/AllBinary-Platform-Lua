@@ -185,16 +185,16 @@ end
 -- throws Exception
 function InsertTemplateCustomizerTransformInfoObjectConfig:set(aParentViewName)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("Setting: " .. aParentViewName, self, "set()")
+            self.logUtil:putF(require("allbinary_java").to_string("Setting: ") .. require("allbinary_java").to_string(aParentViewName), self, "set()")
         end
         local document = self:toXmlDoc()
         local parentComponentsNodeList = document:getElementsByTagName(TransformInfosData.getInstance().NAME)
-        if parentComponentsNodeList ~= nil and parentComponentsNodeList:getLength() > 0 then
+        if not rawequal(parentComponentsNodeList, nil) and parentComponentsNodeList:getLength() > 0 then
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                 self.logUtil:putF("Replacing", self, "set()")
             end
             local componentNode = parentComponentsNodeList:item(0):getChildNodes():item(0)
-            if componentNode ~= nil then
+            if not rawequal(componentNode, nil) then
                 document:removeChild(componentNode)
             end
             parentComponentsNodeList:item(0):appendChild(TransformInfoDomNodeView.new(aParentViewName):toXmlNode(document))

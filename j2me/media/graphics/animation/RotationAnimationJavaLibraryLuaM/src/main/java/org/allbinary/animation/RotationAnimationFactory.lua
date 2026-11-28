@@ -63,8 +63,8 @@ RotationAnimationFactory.java_implements = " AnimationInterfaceFactoryInterface 
 RotationAnimationFactory.java_interfaces = function() return {AnimationInterfaceFactoryInterface, ProceduralAnimationInterfaceFactoryInterface} end
 
 function RotationAnimationFactory:_init_fields()
-    if self.totalAngle == nil then self.totalAngle = nil end
-    if self.angleIncrement == nil then self.angleIncrement = nil end
+    if self.totalAngle == nil then self.totalAngle = 0 end
+    if self.angleIncrement == nil then self.angleIncrement = 0 end
 end
 
 

@@ -171,13 +171,13 @@ end
 function TaxValidationView:isValid()
         local billingAddressesEntity = ShippingAddressesEntity.new(self:getWeblisketSession():getUserName())
         local streetAddressList = billingAddressesEntity:get()
-        if streetAddressList == nil then
+        if rawequal(streetAddressList, nil) then
             return false
         end
         local size = streetAddressList:size()
         for index = 0, size - 1 do
             local aStreetAddress = streetAddressList:get(index)
-            if aStreetAddress:getName():compareTo(ShippingAddressData.TAX) == 0 then
+            if rawequal(aStreetAddress:getName():compareTo(ShippingAddressData.TAX), 0) then
                 self.streetAddress = aStreetAddress
                 return true
             end

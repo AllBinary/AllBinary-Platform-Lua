@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local Animation = java_lazy("org.allbinary.animation.Animation")
 local AnimationInterface = java_lazy("org.allbinary.animation.AnimationInterface")
 local CellPosition = java_lazy("org.allbinary.graphics.CellPosition")
@@ -145,8 +145,8 @@ function TouchButton:_init_fields()
     if self.touchButtonInput == nil then self.touchButtonInput = nil end
     if self.animationInterface == nil then self.animationInterface = nil end
     if self.rawRectangle == nil then self.rawRectangle = nil end
-    if self.xBorder == nil then self.xBorder = nil end
-    if self.yBorder == nil then self.yBorder = nil end
+    if self.xBorder == nil then self.xBorder = 0 end
+    if self.yBorder == nil then self.yBorder = 0 end
     self.rectangle = RectangleFactory.SINGLETON
     if self.cellPosition == nil then self.cellPosition = nil end
     if self.animationX == nil then self.animationX = 0 end

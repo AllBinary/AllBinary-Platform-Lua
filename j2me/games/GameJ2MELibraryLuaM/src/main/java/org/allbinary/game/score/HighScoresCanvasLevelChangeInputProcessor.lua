@@ -28,9 +28,9 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local GameKeyEventHandler = java_lazy("org.allbinary.game.input.event.GameKeyEventHandler")
 local GameKeyEventUtil = java_lazy("org.allbinary.game.input.event.GameKeyEventUtil")
 local HighScoresCanvas = java_lazy("org.allbinary.game.score.displayable.HighScoresCanvas")
@@ -189,9 +189,9 @@ function HighScoresCanvasLevelChangeInputProcessor:update()
         for index = 0, size - 1 do
             local anyType = list.objectArray[index + 1]
             local key = GameKeyEventUtil.getKey(anyType)
-            if key == Canvas.RIGHT then
+            if rawequal(key, Canvas.RIGHT) then
                 self:getHighScoresCanvas():getGameInfo():nextGameLevel()
-            elseif key == Canvas.LEFT then
+            elseif rawequal(key, Canvas.LEFT) then
                 self:getHighScoresCanvas():getGameInfo():previousGameLevel()
             end
             self:getHighScoresCanvas():executeUpdate()

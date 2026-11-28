@@ -28,9 +28,9 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local Image = require("javax.microedition.lcdui.Image")
--- local NullImage = require("javax.microedition.lcdui.NullImage")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local NullImage = java_lazy("javax.microedition.lcdui.NullImage")
 local Activity = java_lazy("android.app.Activity")
 local AndroidUtil = java_lazy("org.allbinary.AndroidUtil")
 local GameFeatureImageCacheFactory = java_lazy("org.allbinary.image.GameFeatureImageCacheFactory")
@@ -224,7 +224,7 @@ end
 
 function AndroidBasicTitleProgressBar:init()
         local try_ok, try_error, try_value = pcall(function()
-            if AndroidBasicTitleProgressBar.background ~= 0 then
+            if not rawequal(AndroidBasicTitleProgressBar.background, 0) then
                 ResourceUtil.getInstance():addResource(AndroidBasicTitleProgressBar.RESOURCE, AndroidBasicTitleProgressBar.background)
                 GameFeatureImageCacheFactory.init()
                 self.image = ImageCacheFactory.getInstance():getWithKey(AndroidBasicTitleProgressBar.RESOURCE)
@@ -241,7 +241,7 @@ java_overload(AndroidBasicTitleProgressBar, "init", 0)
 
 function AndroidBasicTitleProgressBar:initActivity(activity)
         local try_ok, try_error, try_value = pcall(function()
-            if self.midletActivity ~= activity then
+            if not rawequal(self.midletActivity, activity) then
                 self.midletActivity = activity
                 self.showTitleProgressBarRunnable = ShowTitleProgressBarRunnable.new(self.midletActivity, self)
                 self.dismissTitleProgressBarRunnable = DismissTitleProgressBarRunnable.new(self.midletActivity, self)
@@ -262,9 +262,9 @@ java_overload(AndroidBasicTitleProgressBar, "initActivity", 1, function(java_a1)
 
 function AndroidBasicTitleProgressBar:updateCurrent()
         local try_ok, try_error, try_value = pcall(function()
-            if not self:isBackground() then
+            if not (self:isBackground()) then
                 self.animation = NullAnimationFactory.getFactoryInstance():getInstance(0)
-            elseif AndroidBasicTitleProgressBar.background ~= 0 then
+            elseif not rawequal(AndroidBasicTitleProgressBar.background, 0) then
                 local displayInfo = DisplayInfoSingleton.getInstance()
                 local currentImage = nil
                 if displayInfo:isPortrait() then
@@ -272,7 +272,7 @@ function AndroidBasicTitleProgressBar:updateCurrent()
                 else
                     currentImage = self:getImage(2)
                 end
-                if currentImage == nil then
+                if rawequal(currentImage, nil) then
                     self.animation = NullAnimationFactory.getFactoryInstance():getInstance(0)
                 else
                     self.animation = ImageAnimation.new(currentImage, AnimationBehavior.getInstance())
@@ -323,7 +323,7 @@ function AndroidBasicTitleProgressBar:loadProgressImages()
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-            self.logUtil:putF("IllegalArgumentException " .. tostring(ExceptionUtil.getInstance():getStackTrace(e)), self, "loadProgressImages")
+            self.logUtil:putF(require("allbinary_java").to_string("IllegalArgumentException ") .. require("allbinary_java").to_string(ExceptionUtil.getInstance():getStackTrace(e)), self, "loadProgressImages")
             self.animation = NullAnimationFactory.getFactoryInstance():getInstance(0)
         end
 end
@@ -331,7 +331,7 @@ java_overload(AndroidBasicTitleProgressBar, "loadProgressImages", 0)
 
 
 function AndroidBasicTitleProgressBar:isInitialized()
-        if self.midletActivity ~= AndroidUtil.NULL_ACTIVITY then
+        if not rawequal(self.midletActivity, AndroidUtil.NULL_ACTIVITY) then
             return true
         else
             return false
@@ -374,7 +374,7 @@ function AndroidBasicTitleProgressBar:addEarlyPortion(value, text, index)
         local try_ok, try_error, try_value = pcall(function()
             self.portion = value
             java_super(ProgressCanvas, "addEarlyPortion", 3)(self, value, text, index)
-            if self.midletActivity ~= AndroidUtil.NULL_ACTIVITY then
+            if not rawequal(self.midletActivity, AndroidUtil.NULL_ACTIVITY) then
                 self.midletActivity:runOnUiThread(self.titleProgressDialogPortionSetProgressRunnable)
             end
         end)
@@ -439,14 +439,14 @@ java_overload(AndroidBasicTitleProgressBar, "waitUntilDisplayed", 0)
 -- throws Exception
 function AndroidBasicTitleProgressBar:setImages(index, lastWidth, lastHeight)
         local image = self.image
-        if image ~= NullImage.NULL_IMAGE then
+        if not rawequal(image, NullImage.NULL_IMAGE) then
             if Features.getInstance():isFeature(MainFeatureFactory.getInstance().FULL_SCREEN) then
-                if self.IMAGE[index + 1] == NullImage.NULL_IMAGE then
+                if rawequal(self.IMAGE[index + 1], NullImage.NULL_IMAGE) then
                     self.IMAGE[index + 1] = ImageScaleUtil.getInstance():createImage2(ImageCacheFactory.getInstance(), image, (lastWidth + 0.0), (image:getWidth() + 0.0), (lastHeight + 0.0) - 20.0, (image:getHeight() + 0.0), false)
                 end
             else
                 local nextIndex = index + 1
-                if self.IMAGE[nextIndex + 1] == NullImage.NULL_IMAGE then
+                if rawequal(self.IMAGE[nextIndex + 1], NullImage.NULL_IMAGE) then
                     self.IMAGE[nextIndex + 1] = ImageScaleUtil.getInstance():createImage2(ImageCacheFactory.getInstance(), image, (lastWidth + 0.0), (image:getWidth() + 0.0), (lastHeight + 0.0) - 28.0, (image:getHeight() + 0.0), false)
                 end
             end
@@ -462,7 +462,7 @@ function AndroidBasicTitleProgressBar:initOpenGL(graphics)
         local preResourceImageUtil = PreResourceImageUtil.getInstance()
         local size = (self.IMAGE.n or #self.IMAGE)
         for index = 0, size - 1 do
-            if self.IMAGE[index + 1] ~= NullImage.NULL_IMAGE then
+            if not rawequal(self.IMAGE[index + 1], NullImage.NULL_IMAGE) then
                 self.IMAGE[index + 1] = preResourceImageUtil:encapsulate(self.IMAGE[index + 1])
             end
         end
@@ -479,7 +479,7 @@ function AndroidBasicTitleProgressBar:update(graphics)
         local preResourceImageUtil = PreResourceImageUtil.getInstance()
         local size = (self.IMAGE.n or #self.IMAGE)
         for index = 0, size - 1 do
-            if self.IMAGE[index + 1] ~= NullImage.NULL_IMAGE then
+            if not rawequal(self.IMAGE[index + 1], NullImage.NULL_IMAGE) then
                 preResourceImageUtil:update(graphics, self.IMAGE[index + 1])
             end
         end

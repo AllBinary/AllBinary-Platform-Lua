@@ -225,7 +225,7 @@ function Waypoint:setAllBinaryGameLayerManager(allBinaryGameLayerManager)
         local geographicMapCompositeInterface = allBinaryGameLayerManager
         local geographicMapInterface = geographicMapCompositeInterface:getGeographicMapInterface()[1]
         local tiledLayer = geographicMapInterface:getAllBinaryTiledLayer()
-        if self.paths ~= self.basicArrayListUtil.NULL_ARRAY_OF_ARRAY then
+        if not rawequal(self.paths, self.basicArrayListUtil.NULL_ARRAY_OF_ARRAY) then
             error(require("java.lang.RuntimeException").new(), 0)
         end
         self.endList = self.ownerLayer:getEndGeographicMapCellPositionList()
@@ -243,7 +243,7 @@ function Waypoint:releaseCachedPaths()
                 local rowIndex = (self.paths.n or #self.paths)
                 while (function() rowIndex = rowIndex - 1 return rowIndex end)() >= 0 do
                 local pathsList = self.paths[columnIndex + 1][rowIndex + 1]
-                if pathsList ~= self.basicArrayListUtil:getImmutableInstance() then
+                if not rawequal(pathsList, self.basicArrayListUtil:getImmutableInstance()) then
                     BasicGeographicMapExtractedPathsCacheFactory.getInstance():release(pathsList)
                 end
                 end
@@ -264,7 +264,7 @@ java_overload(Waypoint, "getPathsListFromCacheOnly", 1, function(java_a1) return
 -- throws Exception
 function Waypoint:getPathsListRunnable(geographicMapCellPosition)
         local pathsList = self.paths[geographicMapCellPosition:getColumn() + 1][geographicMapCellPosition:getRow() + 1]
-        if pathsList == self.basicArrayListUtil:getImmutableInstance() then
+        if rawequal(pathsList, self.basicArrayListUtil:getImmutableInstance()) then
             pathsList = self:createPaths(geographicMapCellPosition)
             self.paths[geographicMapCellPosition:getColumn() + 1][geographicMapCellPosition:getRow() + 1] = pathsList
         end
@@ -275,10 +275,10 @@ java_overload(Waypoint, "getPathsListRunnable", 1, function(java_a1) return true
 
 function Waypoint:getEndGeographicMapCellPosition(startGeographicMapCellPosition)
         local endGeographicMapCellPosition = self.basicArrayListUtil:getRandom(self.endList)
-        if startGeographicMapCellPosition == endGeographicMapCellPosition then
+        if rawequal(startGeographicMapCellPosition, endGeographicMapCellPosition) then
             for index = self.endList:size() - 1, 0, -1 do
                 endGeographicMapCellPosition = self.endList:get(index)
-                if startGeographicMapCellPosition ~= endGeographicMapCellPosition then
+                if not rawequal(startGeographicMapCellPosition, endGeographicMapCellPosition) then
                     break
                 end
             end
@@ -290,18 +290,18 @@ java_overload(Waypoint, "getEndGeographicMapCellPosition", 1, function(java_a1) 
 
 -- throws Exception
 function Waypoint:createPaths(startGeographicMapCellPosition)
-        if self.endList:size() == 0 then
+        if rawequal(self.endList:size(), 0) then
             return self.basicArrayListUtil:getImmutableInstance()
         end
         local endGeographicMapCellPosition = self:getEndGeographicMapCellPosition(startGeographicMapCellPosition)
-        if endGeographicMapCellPosition == nil then
+        if rawequal(endGeographicMapCellPosition, nil) then
             return self.basicArrayListUtil:getImmutableInstance()
         end
-        if startGeographicMapCellPosition == endGeographicMapCellPosition then
+        if rawequal(startGeographicMapCellPosition, endGeographicMapCellPosition) then
             if self.ownerLayer:shouldHandleStartSameAsEnd() then
                 return self.basicArrayListUtil:getImmutableInstance()
             else
-                error(require("java.lang.Exception").new("Start should not be End: " .. tostring(self.endList:size())), 0)
+                error(require("java.lang.Exception").new(require("allbinary_java").to_string("Start should not be End: ") .. require("allbinary_java").to_string(self.endList:size())), 0)
             end
         end
         local geographicMapCompositeInterface = self.allBinaryGameLayerManagerP
@@ -361,7 +361,7 @@ java_overload(Waypoint, "reset", 0)
 
 -- throws Exception
 function Waypoint:visit(unitLayer)
-        if unitLayer:getGroupInterface()[1] ~= self.ownerLayer:getGroupInterface()[1] then
+        if not rawequal(unitLayer:getGroupInterface()[1], self.ownerLayer:getGroupInterface()[1]) then
             return
         end
         local size = self:getConnectedWaypointList():size()

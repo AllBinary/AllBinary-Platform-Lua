@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Command = require("javax.microedition.lcdui.Command")
+local Command = java_lazy("javax.microedition.lcdui.Command")
 local J2MEUtil = java_lazy("org.allbinary.J2MEUtil")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 
@@ -88,7 +88,7 @@ end
 
 function HighScoreCommandsBaseFactory:isHighScoreCommand(command)
         for index = (self.HIGH_SCORE_COMMANDS.n or #self.HIGH_SCORE_COMMANDS) - 1, 0, -1 do
-            if command == self.HIGH_SCORE_COMMANDS[index + 1] then
+            if rawequal(command, self.HIGH_SCORE_COMMANDS[index + 1]) then
                 return true
             end
         end
@@ -99,7 +99,7 @@ end
 -- throws Exception
 function HighScoreCommandsBaseFactory:getIndex(command)
         for index = (self.HIGH_SCORE_COMMANDS.n or #self.HIGH_SCORE_COMMANDS) - 1, 0, -1 do
-            if command == self.HIGH_SCORE_COMMANDS[index + 1] then
+            if rawequal(command, self.HIGH_SCORE_COMMANDS[index + 1]) then
                 return index
             end
         end

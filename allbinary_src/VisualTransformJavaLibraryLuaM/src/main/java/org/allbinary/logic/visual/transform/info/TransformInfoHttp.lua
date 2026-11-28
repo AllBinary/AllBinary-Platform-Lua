@@ -180,7 +180,7 @@ function TransformInfoHttp._new3_1(self, propertiesHashMap, pageContext, crud)
         -- super(...) made self above
         self.abContext = AbContext.new(propertiesHashMap, pageContext)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("Properties HashMap: " .. tostring(propertiesHashMap), self, "Constructor(HashMap, PageContext, boolean)")
+            self.logUtil:putF(require("allbinary_java").to_string("Properties HashMap: ") .. require("allbinary_java").to_string(tostring(propertiesHashMap)), self, "Constructor(HashMap, PageContext, boolean)")
         end
         self:override(propertiesHashMap)
     return self
@@ -193,7 +193,7 @@ function TransformInfoHttp._new3_2(self, request, propertiesHashMap, pageContext
         -- super(...) made self above
         self.abContext = AbContext.new(propertiesHashMap, pageContext)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("Properties HashMap: " .. tostring(propertiesHashMap), self, "Constructor(HttpServletRequest, HashMap, PageContext)")
+            self.logUtil:putF(require("allbinary_java").to_string("Properties HashMap: ") .. require("allbinary_java").to_string(tostring(propertiesHashMap)), self, "Constructor(HttpServletRequest, HashMap, PageContext)")
         end
         self:set(RequestParams.new(request):toHashMap())
         self:override(propertiesHashMap)
@@ -207,7 +207,7 @@ function TransformInfoHttp._new3_3(self, databaseHashMap, propertiesHashMap, pag
         -- super(...) made self above
         self.abContext = AbContext.new(propertiesHashMap, pageContext)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("Properties HashMap: " .. tostring(propertiesHashMap), self, "Constructor(HashMap, HashMap, PageContext)")
+            self.logUtil:putF(require("allbinary_java").to_string("Properties HashMap: ") .. require("allbinary_java").to_string(tostring(propertiesHashMap)), self, "Constructor(HashMap, HashMap, PageContext)")
         end
         self:set(databaseHashMap)
     return self
@@ -220,7 +220,7 @@ function TransformInfoHttp._new2(self, propertiesHashMap, pageContext)
         -- super(...) made self above
         self.abContext = AbContext.new(propertiesHashMap, pageContext)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("Properties HashMap: " .. tostring(propertiesHashMap), self, "Constructor(HashMap, PageContext)")
+            self.logUtil:putF(require("allbinary_java").to_string("Properties HashMap: ") .. require("allbinary_java").to_string(tostring(propertiesHashMap)), self, "Constructor(HashMap, PageContext)")
         end
         self:set(propertiesHashMap)
     return self
@@ -239,7 +239,7 @@ end
 -- throws Exception
 function TransformInfoHttp:set(hashMap)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("Properties HashMap: " .. tostring(hashMap), self, "set()")
+            self.logUtil:putF(require("allbinary_java").to_string("Properties HashMap: ") .. require("allbinary_java").to_string(tostring(hashMap)), self, "set()")
         end
         local transformInfoData = TransformInfoData.getInstance()
         self:setName(hashMap:get(transformInfoData.NAME))
@@ -253,7 +253,7 @@ function TransformInfoHttp:set(hashMap)
         else
             self:setObjectConfig(tostring(TransformInfoObjectConfig.new(self)))
         end
-        if not stringValidationUtil:isEmpty(hashMap:get(transformInfoData.OBJECTCONFIGFILENAME)) then
+        if not (stringValidationUtil:isEmpty(hashMap:get(transformInfoData.OBJECTCONFIGFILENAME))) then
             self:setObjectConfigFile(hashMap:get(transformInfoData.OBJECTCONFIGFILENAME))
         end
         self:setTemplateFile(hashMap:get(transformInfoData.TEMPLATEFILENAME))

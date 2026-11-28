@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 -- local URIResolver = require("javax.xml.transform.URIResolver")
 -- local StreamSource = require("javax.xml.transform.stream.StreamSource")
 local CompositeTransformInfoInterface = require("org.allbinary.logic.visual.transform.info.CompositeTransformInfoInterface")

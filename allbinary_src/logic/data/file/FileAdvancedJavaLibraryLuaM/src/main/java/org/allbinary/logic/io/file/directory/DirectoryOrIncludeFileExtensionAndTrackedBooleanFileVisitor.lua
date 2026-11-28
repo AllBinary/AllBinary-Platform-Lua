@@ -191,7 +191,7 @@ function DirectoryOrIncludeFileExtensionAndTrackedBooleanFileVisitor:visit_j1(fi
         if file:isDirectory() then
             return true
         end
-        if self.includesString == nil or file:getAbsolutePath():indexOf(self.includesString) >= 0 then
+        if rawequal(self.includesString, nil) or file:getAbsolutePath():indexOf(self.includesString) >= 0 then
             return java_super(IncludeFileExtensionsBooleanFileVisitor, "visit", 1)(self, file)
         else
             return false
@@ -202,8 +202,8 @@ end
 function DirectoryOrIncludeFileExtensionAndTrackedBooleanFileVisitor:visit_j2(file, fileNameString)
         local filePath = file:getPath()
         if java_super(IncludeFileExtensionsBooleanFileVisitor, "visit", 2)(self, file, fileNameString) then
-            if not (string.find(filePath, self.trackedStrings.APPLICATION, 1, true) ~= nil) or (string.find(filePath, self.trackedStrings.APP, 1, true) ~= nil) or (string.find(filePath, self.trackedStrings.HTML_TEMP, 1, true) ~= nil) then
-                if not (string.find(filePath, self.trackedStrings.TARGET_PATH_WINDOWS, 1, true) ~= nil) or (string.find(filePath, self.trackedStrings.TARGET_PATH_UNIX, 1, true) ~= nil) then
+            if not ((string.find(filePath, self.trackedStrings.APPLICATION, 1, true) ~= nil) or (string.find(filePath, self.trackedStrings.APP, 1, true) ~= nil) or (string.find(filePath, self.trackedStrings.HTML_TEMP, 1, true) ~= nil)) then
+                if not ((string.find(filePath, self.trackedStrings.TARGET_PATH_WINDOWS, 1, true) ~= nil) or (string.find(filePath, self.trackedStrings.TARGET_PATH_UNIX, 1, true) ~= nil)) then
                     if self.gitProcessHelper:isTracked(file) then
                         return true
                     else
@@ -219,6 +219,8 @@ function DirectoryOrIncludeFileExtensionAndTrackedBooleanFileVisitor:visit(...)
     local count = select("#", ...)
     if count == 1 then return self:visit_j1(...) end
     if count == 2 then return self:visit_j2(...) end
+    local parent = getmetatable(DirectoryOrIncludeFileExtensionAndTrackedBooleanFileVisitor).__index
+    if parent.visit then return parent.visit(self, ...) end
     error("No method visit takes " .. count .. " arguments")
 end
 DirectoryOrIncludeFileExtensionAndTrackedBooleanFileVisitor.visit__jdispatcher = DirectoryOrIncludeFileExtensionAndTrackedBooleanFileVisitor.visit
@@ -230,7 +232,7 @@ function DirectoryOrIncludeFileExtensionAndTrackedBooleanFileVisitor.main(args)
         list:add(commonFileStrings.JAVA)
         local filePath = "G:\\mnt\\bc\\mydev\\games\\ZeptoRacer\\platform\\j2se\\ZeptoRacerStaticPathsJ2SEM\\target\\dependency\\org\\allbinary\\logic\\system\\security\\licensing\\ZeptoRacerPCClientInformation.java"
         local result = DirectoryOrIncludeFileExtensionAndTrackedBooleanFileVisitor.new(list):visit(AbFile.createAbFileFromRawPath(filePath))
-        print(filePath .. " is Tracked: " .. tostring(result))
+        print(require("allbinary_java").to_string(require("allbinary_java").to_string(filePath) .. require("allbinary_java").to_string(" is Tracked: ")) .. require("allbinary_java").to_string(result))
 end
 
 return DirectoryOrIncludeFileExtensionAndTrackedBooleanFileVisitor

@@ -28,9 +28,9 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local Image = require("javax.microedition.lcdui.Image")
--- local Sprite = require("javax.microedition.lcdui.game.Sprite")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local Sprite = java_lazy("javax.microedition.lcdui.game.Sprite")
 local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 local IndexedAnimation = require("org.allbinary.animation.IndexedAnimation")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
@@ -165,7 +165,7 @@ function SpriteIndexedAnimation._jinit(self, sprite, image, basicColorArray, ani
         self.sprite = sprite
         self.image = image
         self.basicColorArray = basicColorArray
-        if (self.basicColorArray.n or #self.basicColorArray) ~= 0 and self:getSize() ~= (self.basicColorArray.n or #self.basicColorArray) then
+        if not rawequal((self.basicColorArray.n or #self.basicColorArray), 0) and not rawequal(self:getSize(), (self.basicColorArray.n or #self.basicColorArray)) then
             error(require("java.lang.Exception").new(tostring(StringMaker.new():append(CommonLabels.getInstance().TOTAL_LABEL):appendint(self:getSize()):append("!="):appendint((self.basicColorArray.n or #self.basicColorArray)))), 0)
         end
     return self
@@ -187,7 +187,7 @@ java_overload(SpriteIndexedAnimation, "getAnimationSize", 0)
 
 function SpriteIndexedAnimation:setBasicColorP(basicColor)
         for index = 0, (self.basicColorArray.n or #self.basicColorArray) - 1 do
-            if basicColor == self.basicColorArray[index + 1] then
+            if rawequal(basicColor, self.basicColorArray[index + 1]) then
                 self:setFrame(index)
                 break
             end
@@ -258,7 +258,7 @@ java_overload(SpriteIndexedAnimation, "getFrame", 0)
 
 
 function SpriteIndexedAnimation:isLastFrame()
-        if self.sprite:getFrame() == self:getSize() - 1 then
+        if rawequal(self.sprite:getFrame(), self:getSize() - 1) then
             return true
         else
             return false

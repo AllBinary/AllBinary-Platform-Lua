@@ -28,9 +28,9 @@ local function java_real(class)
     return class
 end
 
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local Image = require("javax.microedition.lcdui.Image")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local CostLayerInterfaceFactoryInterface = java_lazy("org.allbinary.game.layer.CostLayerInterfaceFactoryInterface")
 local TechEventListenerInterface = java_lazy("org.allbinary.game.rts.technology.event.TechEventListenerInterface")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")

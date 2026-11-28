@@ -109,7 +109,7 @@ function CategoryView:toXmlNode(document)
         local node = document:createElement(CategoryData.getInstance().NAME)
         local childCategoryVector = self.categoryInterface:getChildNodes()
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().CATEGORY) then
-            self.logUtil:putF("Number Of Children: " .. tostring(childCategoryVector:size()), self, "toXmlNode")
+            self.logUtil:putF(require("allbinary_java").to_string("Number Of Children: ") .. require("allbinary_java").to_string(childCategoryVector:size()), self, "toXmlNode")
         end
         local size = childCategoryVector:size()
         for i = 0, size - 1 do
@@ -122,7 +122,7 @@ function CategoryView:toXmlNode(document)
                 categoryPropertiesInterface = categoryInterface:getProperties()
             else
                 local isImpl = InterfaceUtil.viewAll(getmetatable(anyType), CommonSeps.getInstance().NEW_LINE)
-                error(require("java.lang.Exception").new("CategoryView found unknown object.\n" .. "Show Testing:" .. isImpl), 0)
+                error(require("java.lang.Exception").new(require("allbinary_java").to_string(require("allbinary_java").to_string("CategoryView found unknown object.\n") .. require("allbinary_java").to_string("Show Testing:")) .. require("allbinary_java").to_string(isImpl)), 0)
             end
             local childCategoryNode = CategoryPropertiesView.new(categoryPropertiesInterface):toXmlNode(document)
             node:appendChild(childCategoryNode)

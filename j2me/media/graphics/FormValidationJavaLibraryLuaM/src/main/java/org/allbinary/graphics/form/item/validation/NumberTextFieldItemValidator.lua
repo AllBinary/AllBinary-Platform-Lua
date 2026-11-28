@@ -134,9 +134,9 @@ setmetatable(NumberTextFieldItemValidator, {__index = ValidatorBase})
 
 function NumberTextFieldItemValidator:_init_fields()
     if self.textFieldItem == nil then self.textFieldItem = nil end
-    if self.min == nil then self.min = nil end
-    if self.max == nil then self.max = nil end
-    if self.maxChars == nil then self.maxChars = nil end
+    if self.min == nil then self.min = 0 end
+    if self.max == nil then self.max = 0 end
+    if self.maxChars == nil then self.maxChars = 0 end
 end
 
 

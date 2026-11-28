@@ -106,7 +106,7 @@ end
 function PrimitiveLongSingleton:getNumberFromChar(numberAsChar)
         local size = (self.NUMBER_CHAR_ARRAY.n or #self.NUMBER_CHAR_ARRAY)
         for index = 0, size - 1 do
-            if self.NUMBER_CHAR_ARRAY[index + 1] == numberAsChar then
+            if rawequal(self.NUMBER_CHAR_ARRAY[index + 1], numberAsChar) then
                 return self.NUMBER_ARRAY[index + 1]
             end
         end

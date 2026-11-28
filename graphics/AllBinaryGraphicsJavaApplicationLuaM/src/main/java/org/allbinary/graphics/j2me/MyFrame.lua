@@ -315,22 +315,26 @@ function MyFrame:initComponents()
         self.autoShrinkJMenuItem = JMenuItem.new()
         self.jMenu1 = JMenu.new()
         self:addWindowListener((function()
-            local o = WindowAdapter.new and WindowAdapter.new() or setmetatable({}, {__index = WindowAdapter})
+            local java_outer_self = self
+        local o = WindowAdapter.new and WindowAdapter.new() or setmetatable({}, {__index = WindowAdapter})
             
 
             function o:windowClosing(evt)
-                self:exitForm(evt)
+                ;(self.exitForm and self or java_outer_self):exitForm(evt)
+            
             end
             java_overload(o, "windowClosing", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "WindowEvent")) end)
             return o
         end)())
         self.jButton2:setText("New")
         self.jButton2:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:jButton2ActionPerformed(evt)
+                ;(self.jButton2ActionPerformed and self or java_outer_self):jButton2ActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -338,11 +342,13 @@ function MyFrame:initComponents()
         self.jToolBar1:add(self.jButton2)
         self.saveJButton:setText("Save")
         self.saveJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:saveJButtonActionPerformed(evt)
+                ;(self.saveJButtonActionPerformed and self or java_outer_self):saveJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -350,11 +356,13 @@ function MyFrame:initComponents()
         self.jToolBar1:add(self.saveJButton)
         self.jButton1:setText("Export")
         self.jButton1:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:jButton1ActionPerformed(evt)
+                ;(self.jButton1ActionPerformed and self or java_outer_self):jButton1ActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -362,11 +370,13 @@ function MyFrame:initComponents()
         self.jToolBar1:add(self.jButton1)
         self.openJButton:setText("Open")
         self.openJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:openJButtonActionPerformed(evt)
+                ;(self.openJButtonActionPerformed and self or java_outer_self):openJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -384,11 +394,13 @@ function MyFrame:initComponents()
         self.jToolBar1:add(self.animateJButton)
         self.playJButton:setText("Play")
         self.playJButton:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:playJButtonMousePressed(evt)
+                ;(self.playJButtonMousePressed and self or java_outer_self):playJButtonMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -396,11 +408,13 @@ function MyFrame:initComponents()
         self.jToolBar1:add(self.playJButton)
         self.stopJjButton:setText("Stop")
         self.stopJjButton:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:stopJjButtonMousePressed(evt)
+                ;(self.stopJjButtonMousePressed and self or java_outer_self):stopJjButtonMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -411,11 +425,13 @@ function MyFrame:initComponents()
         self.mainJPanel:setLayout(GridLayout.new(1, 0))
         self.jTabbedPane:setMinimumSize(Dimension.new(550, 400))
         self.jTabbedPane:addChangeListener((function()
-            local o = ChangeListener.new and ChangeListener.new() or setmetatable({}, {__index = ChangeListener})
+            local java_outer_self = self
+        local o = ChangeListener.new and ChangeListener.new() or setmetatable({}, {__index = ChangeListener})
             
 
             function o:stateChanged(evt)
-                self:jTabbedPaneStateChanged(evt)
+                ;(self.jTabbedPaneStateChanged and self or java_outer_self):jTabbedPaneStateChanged(evt)
+            
             end
             java_overload(o, "stateChanged", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ChangeEvent")) end)
             return o
@@ -429,22 +445,26 @@ function MyFrame:initComponents()
         self:getContentPane():add(self.statusJPanel, BorderLayout.SOUTH)
         self.fileJMenu:setText("File")
         self.fileJMenu:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:fileJMenuActionPerformed(evt)
+                ;(self.fileJMenuActionPerformed and self or java_outer_self):fileJMenuActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.newJMenuItem:setText("New")
         self.newJMenuItem:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:newJMenuItemActionPerformed(evt)
+                ;(self.newJMenuItemActionPerformed and self or java_outer_self):newJMenuItemActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -452,11 +472,13 @@ function MyFrame:initComponents()
         self.fileJMenu:add(self.newJMenuItem)
         self.openJMenuItem:setText("Open")
         self.openJMenuItem:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:openJMenuItemActionPerformed(evt)
+                ;(self.openJMenuItemActionPerformed and self or java_outer_self):openJMenuItemActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -464,11 +486,13 @@ function MyFrame:initComponents()
         self.fileJMenu:add(self.openJMenuItem)
         self.saveJMenuItem:setText("Save")
         self.saveJMenuItem:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:saveJMenuItemMousePressed(evt)
+                ;(self.saveJMenuItemMousePressed and self or java_outer_self):saveJMenuItemMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -478,11 +502,13 @@ function MyFrame:initComponents()
         self.fileJMenu:add(self.saveAsJMenuItem)
         self.exportJMenuItem1:setText("Export")
         self.exportJMenuItem1:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:exportJMenuItem1ActionPerformed(evt)
+                ;(self.exportJMenuItem1ActionPerformed and self or java_outer_self):exportJMenuItem1ActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -490,11 +516,13 @@ function MyFrame:initComponents()
         self.fileJMenu:add(self.exportJMenuItem1)
         self.exitJMenuItem:setText("Exit")
         self.exitJMenuItem:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:exitJMenuItemActionPerformed(evt)
+                ;(self.exitJMenuItemActionPerformed and self or java_outer_self):exitJMenuItemActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -504,11 +532,13 @@ function MyFrame:initComponents()
         self.viewJMenu:setText("View")
         self.zoomInJMenuItem:setText("Zoom In")
         self.zoomInJMenuItem:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:zoomInJMenuItemMousePressed(evt)
+                ;(self.zoomInJMenuItemMousePressed and self or java_outer_self):zoomInJMenuItemMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -516,11 +546,13 @@ function MyFrame:initComponents()
         self.viewJMenu:add(self.zoomInJMenuItem)
         self.zoomOutJMenuItem:setText("Zoom Out")
         self.zoomOutJMenuItem:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:zoomOutJMenuItemMousePressed(evt)
+                ;(self.zoomOutJMenuItemMousePressed and self or java_outer_self):zoomOutJMenuItemMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -530,11 +562,13 @@ function MyFrame:initComponents()
         self.objectJMenu:setText("Objects")
         self.explodeAllJMenuItem:setText("Explode All")
         self.explodeAllJMenuItem:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:explodeAllJMenuItemMousePressed(evt)
+                ;(self.explodeAllJMenuItemMousePressed and self or java_outer_self):explodeAllJMenuItemMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -543,11 +577,13 @@ function MyFrame:initComponents()
         self.menuJMenuBar:add(self.objectJMenu)
         self.frameJMenu:setText("Frame")
         self.frameJMenu:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:frameJMenuActionPerformed(evt)
+                ;(self.frameJMenuActionPerformed and self or java_outer_self):frameJMenuActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -568,11 +604,13 @@ function MyFrame:initComponents()
         self.generateJMenu:setText("Generate")
         self.centerJMenuItem:setText("Center")
         self.centerJMenuItem:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:centerJMenuItemActionPerformed(evt)
+                ;(self.centerJMenuItemActionPerformed and self or java_outer_self):centerJMenuItemActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -582,11 +620,13 @@ function MyFrame:initComponents()
         self.generateJMenu:add(self.autoDamageJMenuItem)
         self.autoExplodeJMenuItem:setText("Explode")
         self.autoExplodeJMenuItem:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:autoExplodeJMenuItemMousePressed(evt)
+                ;(self.autoExplodeJMenuItemMousePressed and self or java_outer_self):autoExplodeJMenuItemMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -596,11 +636,13 @@ function MyFrame:initComponents()
         self.generateJMenu:add(self.autoGrowJMenuItem)
         self.jMenuItem1:setText("Mirror")
         self.jMenuItem1:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:jMenuItem1ActionPerformed(evt)
+                ;(self.jMenuItem1ActionPerformed and self or java_outer_self):jMenuItem1ActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -608,11 +650,13 @@ function MyFrame:initComponents()
         self.generateJMenu:add(self.jMenuItem1)
         self.autoRotateGenerationJMenuItem:setText("Rotate")
         self.autoRotateGenerationJMenuItem:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:autoRotateGenerationJMenuItemMousePressed(evt)
+                ;(self.autoRotateGenerationJMenuItemMousePressed and self or java_outer_self):autoRotateGenerationJMenuItemMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -791,7 +835,7 @@ java_overload(MyFrame, "jMenuItem1ActionPerformed", 1, function(java_a1) return 
 
 function MyFrame:onFiles(files)
         local try_ok, try_error, try_value = pcall(function()
-            self.logUtil:putF("Reading: " .. tostring(files), self, "onFiles")
+            self.logUtil:putF(require("allbinary_java").to_string("Reading: ") .. require("allbinary_java").to_string(files), self, "onFiles")
             for index = 0, (files.n or #files) - 1 do
                 local document = DomHelper.getInstance():createDocument(files[index + 1])
                 local workAreaJPanel = WorkAreaJPanel.new(WorkAreaDom.new(document), self:getSize())
@@ -811,7 +855,7 @@ java_overload(MyFrame, "onFiles", 1, function(java_a1) return true and (java_a1 
 
 function MyFrame:newGraphics()
         local try_ok, try_error, try_value = pcall(function()
-            local newName = "graphic" .. tostring(MyFrame.numberOfWorkAreas)
+            local newName = require("allbinary_java").to_string("graphic") .. require("allbinary_java").to_string(MyFrame.numberOfWorkAreas)
             local dim = self:getSize()
             local newDialog = NewWorkAreaJDialog.new(self, false, dim, newName)
         end)
@@ -845,10 +889,10 @@ java_overload(MyFrame, "openGraphics", 0)
 function MyFrame:export()
         local try_ok, try_error, try_value = pcall(function()
             local workAreaJPanel = self.jTabbedPane:getSelectedComponent()
-            local file = File.new(self.SAVE_PATH .. "/" .. workAreaJPanel:getName() .. self.JAVAEXTENSION)
+            local file = File.new(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(MyFrame.SAVE_PATH) .. require("allbinary_java").to_string("/")) .. require("allbinary_java").to_string(workAreaJPanel:getName())) .. require("allbinary_java").to_string(self.JAVAEXTENSION))
             local document = workAreaJPanel:toDocument()
-            self.logUtil:putF("Export: " .. DomHelper.getInstance():toString(document), self, "exportJMenuItem1ActionPerformed")
-            self.xslHelper:export(file, tostring(MyFrame.TEMPLATE_EXPORT_PATH) .. "/" .. self.JAVA_TEMPLATE, document)
+            self.logUtil:putF(require("allbinary_java").to_string("Export: ") .. require("allbinary_java").to_string(DomHelper.getInstance():toString(document)), self, "exportJMenuItem1ActionPerformed")
+            self.xslHelper:export(file, require("allbinary_java").to_string(require("allbinary_java").to_string(MyFrame.TEMPLATE_EXPORT_PATH) .. require("allbinary_java").to_string("/")) .. require("allbinary_java").to_string(self.JAVA_TEMPLATE), document)
         end)
         if not try_ok then
             local e = try_error
@@ -864,7 +908,7 @@ java_overload(MyFrame, "export", 0)
 function MyFrame:save()
         local try_ok, try_error, try_value = pcall(function()
             local workAreaJPanel = self.jTabbedPane:getSelectedComponent()
-            DomHelper.getInstance():save(File.new(self.SAVE_PATH .. "/" .. workAreaJPanel:getName() .. self.SAVEEXTENSION), workAreaJPanel:toDocument())
+            DomHelper.getInstance():save(File.new(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(MyFrame.SAVE_PATH) .. require("allbinary_java").to_string("/")) .. require("allbinary_java").to_string(workAreaJPanel:getName())) .. require("allbinary_java").to_string(self.SAVEEXTENSION)), workAreaJPanel:toDocument())
         end)
         if not try_ok then
             local e = try_error
@@ -899,7 +943,7 @@ function MyFrame:updateSelectedWorkArea()
             workAreaJPanel:deselect()
         end
         local workAreaJPanel = self.jTabbedPane:getSelectedComponent()
-        if workAreaJPanel ~= nil then
+        if not rawequal(workAreaJPanel, nil) then
             workAreaJPanel:select()
         end
 end
@@ -909,8 +953,8 @@ java_overload(MyFrame, "updateSelectedWorkArea", 0)
 -- throws Exception
 function MyFrame:add(newCanvasInterface)
         local try_ok, try_error, try_value = pcall(function()
-            self.numberOfWorkAreas = self.numberOfWorkAreas + 1
-            if self.numberOfWorkAreas == MyFrame.MAXWORKAREAS then
+            MyFrame.numberOfWorkAreas = MyFrame.numberOfWorkAreas + 1
+            if rawequal(MyFrame.numberOfWorkAreas, MyFrame.MAXWORKAREAS) then
                 error(require("java.lang.Exception").new(), 0)
             end
             self.jTabbedPane:addTab(newCanvasInterface:getName(), newCanvasInterface)
@@ -963,8 +1007,8 @@ end
 MyFrame.MAXWORKAREAS = 10
 MyFrame.numberOfWorkAreas = 0
 MyFrame.PATH = "G:/mnt/bc/mydev/work/graphics/AllBinaryGraphicsJavaApplication"
-MyFrame.SAVE_PATH = tostring(MyFrame.PATH) .. "/save"
-MyFrame.TEMPLATE_EXPORT_PATH = tostring(MyFrame.PATH) .. "/templates/export"
+MyFrame.SAVE_PATH = require("allbinary_java").to_string(MyFrame.PATH) .. require("allbinary_java").to_string("/save")
+MyFrame.TEMPLATE_EXPORT_PATH = require("allbinary_java").to_string(MyFrame.PATH) .. require("allbinary_java").to_string("/templates/export")
 MyFrame.statusJLabel = nil
 
 return MyFrame

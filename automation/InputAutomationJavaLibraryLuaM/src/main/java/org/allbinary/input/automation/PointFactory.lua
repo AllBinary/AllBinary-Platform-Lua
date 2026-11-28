@@ -80,7 +80,7 @@ end
 
 function PointFactory.getInstance(x, y)
         local point = PointFactory.pointArray[x + 1][y + 1]
-        if point == nil then
+        if rawequal(point, nil) then
             PointFactory.pointArray[x + 1][y + 1] = Point.new(x, y)
             point = PointFactory.pointArray[x + 1][y + 1]
         end

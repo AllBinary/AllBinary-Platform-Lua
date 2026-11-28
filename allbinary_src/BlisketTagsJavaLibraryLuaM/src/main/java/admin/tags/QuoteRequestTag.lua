@@ -201,9 +201,9 @@ java_overload(QuoteRequestTag, "email", 0)
 -- throws JspTagException
 function QuoteRequestTag:doStartTag()
         local try_ok, try_error, try_value = pcall(function()
-            if self:getCommand() ~= nil then
+            if not rawequal(self:getCommand(), nil) then
                 self:getPropertiesHashMap():put(StoreFrontData.getInstance().NAME, self.storeName)
-                if self:getCommand():compareTo("EMAIL") == 0 then
+                if rawequal(self:getCommand():compareTo("EMAIL"), 0) then
                     self:email()
                     do return "__jreturn", self.EVAL_BODY_INCLUDE end
                 else

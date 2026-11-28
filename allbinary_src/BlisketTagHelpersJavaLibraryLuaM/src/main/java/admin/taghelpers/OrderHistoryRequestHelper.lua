@@ -177,14 +177,14 @@ java_overload(OrderHistoryRequestHelper, "getFormData", 0)
 
 function OrderHistoryRequestHelper:setOrderStatus_j0()
         local try_ok, try_error, try_value = pcall(function()
-            if ((self.groupId < CommonPhoneStrings.getInstance().ZERO and -1) or (self.groupId > CommonPhoneStrings.getInstance().ZERO and 1) or 0) ~= 0 then
+            if not rawequal(((self.groupId < CommonPhoneStrings.getInstance().ZERO and -1) or (self.groupId > CommonPhoneStrings.getInstance().ZERO and 1) or 0), 0) then
                 if OrderItemsEntityFactory.getInstance():isEverythingShipped(self.id) then
                     self.status = OrderHistoryData.SHIPPED
                 else
                     self.status = OrderHistoryData.PARTIALLYSHIPPED
                 end
             end
-            local success = "Status successfully set to: " .. self.status
+            local success = require("allbinary_java").to_string("Status successfully set to: ") .. require("allbinary_java").to_string(self.status)
             OrderHistoryEntityFactory.getInstance():setStatus(self.id, self.status)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGS) then
                 self.logUtil:putF("Success", self, "setOrderStatus()")
@@ -206,10 +206,10 @@ end
 
 function OrderHistoryRequestHelper:setOrderStatus_j1(newStatus)
         local try_ok, try_error, try_value = pcall(function()
-            if newStatus == nil then
+            if rawequal(newStatus, nil) then
                 newStatus = self.status
             end
-            local success = "Status successfully set to: " .. newStatus
+            local success = require("allbinary_java").to_string("Status successfully set to: ") .. require("allbinary_java").to_string(newStatus)
             OrderHistoryEntityFactory.getInstance():setStatus(self.id, newStatus)
             local orderHistory = OrderHistoryEntityFactory.getInstance():getOrder(self.id)
             OrderStatusEmail.new(self.abeClientInformation, orderHistory):process()
@@ -233,6 +233,8 @@ function OrderHistoryRequestHelper:setOrderStatus(...)
     local count = select("#", ...)
     if count == 0 then return self:setOrderStatus_j0(...) end
     if count == 1 then return self:setOrderStatus_j1(...) end
+    local parent = getmetatable(OrderHistoryRequestHelper).__index
+    if parent.setOrderStatus then return parent.setOrderStatus(self, ...) end
     error("No method setOrderStatus takes " .. count .. " arguments")
 end
 OrderHistoryRequestHelper.setOrderStatus__jdispatcher = OrderHistoryRequestHelper.setOrderStatus

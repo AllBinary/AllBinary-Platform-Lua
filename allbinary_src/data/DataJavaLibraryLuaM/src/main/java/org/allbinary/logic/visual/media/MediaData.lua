@@ -78,7 +78,7 @@ end
 function MediaData._jinit(self, a_Name)
     MediaData._init_fields(self)
         self.name_f = a_Name
-        self.extension = "." .. self.name_f
+        self.extension = require("allbinary_java").to_string(".") .. require("allbinary_java").to_string(self.name_f)
         self.type = MediaTypeData.getInstance().NOT_RESIZABLE_MEDIA
         MediaData.hashMap:put(a_Name, self)
     return self
@@ -107,7 +107,7 @@ end
 
 
 function MediaData:isConvertableTo(mediaData)
-        if self == MediaDataFactory.getInstance().GIF and mediaData == MediaDataFactory.getInstance().JPG then
+        if rawequal(self, MediaDataFactory.getInstance().GIF) and rawequal(mediaData, MediaDataFactory.getInstance().JPG) then
             return true
         end
         return false
@@ -123,7 +123,7 @@ MediaData.__tostring = function(self) return self:toString() end
 -- throws Exception
 function MediaData.get(a_Name)
         local mediaData = MediaData.hashMap:get(a_Name)
-        if mediaData ~= nil then
+        if not rawequal(mediaData, nil) then
             return mediaData
         else
             error(require("java.lang.Exception").new("No Such MediaData"), 0)

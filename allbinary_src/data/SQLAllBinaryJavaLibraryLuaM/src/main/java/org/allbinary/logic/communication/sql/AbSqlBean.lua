@@ -189,9 +189,9 @@ function AbSqlBean:getField_j3(key, value, requestedField)
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
-                self.logUtil:put(tostring(self.FAILED_SQL_STATEMENT) .. sqlStatement, self, self.METHOD_GET_FIELD, e)
+                self.logUtil:put(require("allbinary_java").to_string(self.FAILED_SQL_STATEMENT) .. require("allbinary_java").to_string(sqlStatement), self, self.METHOD_GET_FIELD, e)
             end
-            return tostring(self.FAILED_SQL_STATEMENT) .. sqlStatement
+            return require("allbinary_java").to_string(self.FAILED_SQL_STATEMENT) .. require("allbinary_java").to_string(sqlStatement)
         end
         if try_ok and try_error == "__jreturn" then return try_value end
 end
@@ -243,9 +243,9 @@ function AbSqlBean:getField_j2(keysAndValues, requestedField)
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local sqlStatement = tostring(stringBuffer)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
-                self.logUtil:put(tostring(self.FAILED_SQL_STATEMENT) .. sqlStatement, self, self.METHOD_GET_FIELD, e)
+                self.logUtil:put(require("allbinary_java").to_string(self.FAILED_SQL_STATEMENT) .. require("allbinary_java").to_string(sqlStatement), self, self.METHOD_GET_FIELD, e)
             end
-            return tostring(self.FAILED_SQL_STATEMENT) .. sqlStatement
+            return require("allbinary_java").to_string(self.FAILED_SQL_STATEMENT) .. require("allbinary_java").to_string(sqlStatement)
         end
         if try_ok and try_error == "__jreturn" then return try_value end
 end
@@ -253,6 +253,8 @@ function AbSqlBean:getField(...)
     local count = select("#", ...)
     if count == 3 then return self:getField_j3(...) end
     if count == 2 then return self:getField_j2(...) end
+    local parent = getmetatable(AbSqlBean).__index
+    if parent.getField then return parent.getField(self, ...) end
     error("No method getField takes " .. count .. " arguments")
 end
 AbSqlBean.getField__jdispatcher = AbSqlBean.getField
@@ -287,12 +289,12 @@ function AbSqlBean:isSubsetOfEntry(key, value, columnsAndValues)
                 for i = 0, size2 - 1 do
                     columnName = tostring(keyArray2[i + 1])
                     field = tostring(rset:getObject(columnName))
-                    if ((field < columnsAndValues:get(columnName) and -1) or (field > columnsAndValues:get(columnName) and 1) or 0) ~= 0 then
+                    if not rawequal(((field < columnsAndValues:get(columnName) and -1) or (field > columnsAndValues:get(columnName) and 1) or 0), 0) then
                         do return "__jreturn", GLOBALS2.NOTASUBSET end
                     end
                 end
             end
-            if rset:getRow() ~= 1 then
+            if not rawequal(rset:getRow(), 1) then
                 do return "__jreturn", GLOBALS2.NOTASUBSET end
             else
                 do return "__jreturn", GLOBALS2.ISASUBSET end
@@ -303,9 +305,9 @@ function AbSqlBean:isSubsetOfEntry(key, value, columnsAndValues)
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local sqlStatement = tostring(stringBuffer)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
-                self.logUtil:put(tostring(self.FAILED_SQL_STATEMENT) .. sqlStatement, self, self.METHOD_IS_SUBSET_OF_ENTRY, e)
+                self.logUtil:put(require("allbinary_java").to_string(self.FAILED_SQL_STATEMENT) .. require("allbinary_java").to_string(sqlStatement), self, self.METHOD_IS_SUBSET_OF_ENTRY, e)
             end
-            return tostring(self.FAILED_SQL_STATEMENT) .. sqlStatement
+            return require("allbinary_java").to_string(self.FAILED_SQL_STATEMENT) .. require("allbinary_java").to_string(sqlStatement)
         end
         if try_ok and try_error == "__jreturn" then return try_value end
 end

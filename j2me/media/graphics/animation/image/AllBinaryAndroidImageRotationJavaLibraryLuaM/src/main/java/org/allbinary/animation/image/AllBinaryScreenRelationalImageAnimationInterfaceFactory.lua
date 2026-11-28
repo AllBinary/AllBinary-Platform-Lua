@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
--- local NullImage = require("javax.microedition.lcdui.NullImage")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local NullImage = java_lazy("javax.microedition.lcdui.NullImage")
 local GameFeatureImageCacheFactory = java_lazy("org.allbinary.image.GameFeatureImageCacheFactory")
 local Animation = java_lazy("org.allbinary.animation.Animation")
 local AnimationBehaviorFactory = java_lazy("org.allbinary.animation.AnimationBehaviorFactory")
@@ -145,7 +145,7 @@ function AllBinaryScreenRelationalImageAnimationInterfaceFactory._jinit(self, im
     java_super_init(BaseImageAnimationFactory, self, image, PrimitiveIntUtil.getArrayInstance(), 0, 0, 0, 0, animationBehaviorFactory)
     AllBinaryScreenRelationalImageAnimationInterfaceFactory._init_fields(self)
         -- super(...) made self above
-        if self.lastImage ~= NullImage.NULL_IMAGE then
+        if not rawequal(self.lastImage, NullImage.NULL_IMAGE) then
             local androidImageInterface = self.lastImage
             androidImageInterface:getBitmap():recycle()
         end

@@ -190,7 +190,7 @@ java_overload(RaceTrackGeographicMapCellTypeFactory, "getEmptyType", 0)
 
 
 function RaceTrackGeographicMapCellTypeFactory:isPath(cellType)
-        if cellType ~= self.EMPTY_CELL_TYPE and cellType ~= self.EASY_CELL_TYPE then
+        if not rawequal(cellType, self.EMPTY_CELL_TYPE) and not rawequal(cellType, self.EASY_CELL_TYPE) then
             return true
         end
         return false

@@ -29,8 +29,8 @@ local function java_real(class)
 end
 
 local File = java_lazy("java.io.File")
--- local FileInputStream = require("java.io.FileInputStream")
--- local InputStream = require("java.io.InputStream")
+local FileInputStream = java_lazy("java.io.FileInputStream")
+local InputStream = java_lazy("java.io.InputStream")
 local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
@@ -187,7 +187,7 @@ AbFileSystem.readAsString__jdispatcher = AbFileSystem.readAsString
 
 function AbFileSystem:close(closeable)
         local try_ok, try_error, try_value = pcall(function()
-            if closeable ~= nil then
+            if not rawequal(closeable, nil) then
                 local inputStream = (closeable)
                 inputStream:close()
             end

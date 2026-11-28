@@ -146,7 +146,7 @@ end
 
 
 function InitSql:dropTable()
-        local sqlStatement = tostring(self.sqlStrings.DROP_TABLE) .. self.tableName
+        local sqlStatement = require("allbinary_java").to_string(self.sqlStrings.DROP_TABLE) .. require("allbinary_java").to_string(self.tableName)
         local try_ok, try_error, try_value = pcall(function()
             self:executeSQLStatement(sqlStatement)
             do return "__jreturn", true end
@@ -186,7 +186,7 @@ function InitSql:getRow(keysAndValues)
             end
             local sqlStatement = tostring(stringBuffer)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                PreLogUtil.put(tostring(self.sqlStrings.SQL_STATEMENT_LABEL) .. sqlStatement, self.INIT_SQL, self.METHOD_GET_ROW)
+                PreLogUtil.put(require("allbinary_java").to_string(self.sqlStrings.SQL_STATEMENT_LABEL) .. require("allbinary_java").to_string(sqlStatement), self.INIT_SQL, self.METHOD_GET_ROW)
             end
             local rset = self:executeSQLStatement(sqlStatement)
             local resultSetMetaData = rset:getMetaData()
@@ -199,7 +199,7 @@ function InitSql:getRow(keysAndValues)
                     result:put(columnName, field)
                 end
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                    PreLogUtil.put(self.ROW_VALUE_LABEL .. tostring(result), self.INIT_SQL, self.METHOD_GET_ROW)
+                    PreLogUtil.put(require("allbinary_java").to_string(self.ROW_VALUE_LABEL) .. require("allbinary_java").to_string(tostring(result)), self.INIT_SQL, self.METHOD_GET_ROW)
                 end
                 do return "__jreturn", result end
             end
@@ -212,7 +212,7 @@ function InitSql:getRow(keysAndValues)
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
-                PreLogUtil.putOE(self.FAILED_SQL_STATEMENT .. tostring(stringBuffer), self.INIT_SQL, self.METHOD_GET_ROW, e)
+                PreLogUtil.putOE(require("allbinary_java").to_string(self.FAILED_SQL_STATEMENT) .. require("allbinary_java").to_string(stringBuffer), self.INIT_SQL, self.METHOD_GET_ROW, e)
             end
             return nil
         end
@@ -234,7 +234,7 @@ function InitSql:updateWhere(key, value, updatedKeyValuePairs)
                 stringBuffer:append(columnName)
                 stringBuffer:append(self.EQUAL_QUOTE)
                 local columnValue = updatedKeyValuePairs:get(columnName)
-                if columnValue == nil then
+                if rawequal(columnValue, nil) then
                     columnValue = self.stringUtil.EMPTY_STRING
                 else
                 end
@@ -252,14 +252,14 @@ function InitSql:updateWhere(key, value, updatedKeyValuePairs)
             local sqlStatement = tostring(stringBuffer)
             self:executeSQLStatement(sqlStatement)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                PreLogUtil.put(self.SUCCESS_SQL_STATEMENT .. sqlStatement, self.INIT_SQL, self.METHOD_UPDATE_WHERE)
+                PreLogUtil.put(require("allbinary_java").to_string(self.SUCCESS_SQL_STATEMENT) .. require("allbinary_java").to_string(sqlStatement), self.INIT_SQL, self.METHOD_UPDATE_WHERE)
             end
         end)
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
-                PreLogUtil.putOE(self.FAILED_SQL_STATEMENT .. tostring(stringBuffer), self.INIT_SQL, self.METHOD_UPDATE_WHERE, e)
+                PreLogUtil.putOE(require("allbinary_java").to_string(self.FAILED_SQL_STATEMENT) .. require("allbinary_java").to_string(stringBuffer), self.INIT_SQL, self.METHOD_UPDATE_WHERE, e)
             end
         end
 end
@@ -283,14 +283,14 @@ function InitSql:insert(values)
             local sqlStatement = tostring(stringBuffer)
             self:executeSQLStatement(sqlStatement)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                PreLogUtil.put(self.SUCCESS_SQL_STATEMENT .. sqlStatement, self.INIT_SQL, self.INSERT)
+                PreLogUtil.put(require("allbinary_java").to_string(self.SUCCESS_SQL_STATEMENT) .. require("allbinary_java").to_string(sqlStatement), self.INIT_SQL, self.INSERT)
             end
         end)
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
-                PreLogUtil.putOE(self.FAILED_SQL_STATEMENT .. tostring(stringBuffer), self.INIT_SQL, self.INSERT, e)
+                PreLogUtil.putOE(require("allbinary_java").to_string(self.FAILED_SQL_STATEMENT) .. require("allbinary_java").to_string(tostring(stringBuffer)), self.INIT_SQL, self.INSERT, e)
             end
         end
 end
@@ -308,7 +308,7 @@ end
 -- throws Exception, SQLException
 function InitSql:executeSQLStatement(statement)
         local try_ok, try_error, try_value = pcall(function()
-            if self.conn == nil then
+            if rawequal(self.conn, nil) then
                 self:initialize()
             end
             local stmt = self.conn:createStatement()
@@ -332,7 +332,7 @@ end
 -- throws SQLException
 function InitSql:createConnection()
         local try_ok, try_error, try_value = pcall(function()
-            if self.useridAndPassword == true then
+            if rawequal(self.useridAndPassword, true) then
                 self.conn = DriverManager.getConnection(self.databaseConnectionInfoInterface:getUrl(), self.userid, self.password)
             else
                 self.conn = DriverManager.getConnection(self.databaseConnectionInfoInterface:getUrl())
@@ -359,11 +359,11 @@ function InitSql:initialize()
                 local e = try_error
                 if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
-                    PreLogUtil.putOE("LoadDriver Failed: " .. tostring(self.databaseConnectionInfoInterface:getJdbcDriver()), self.INIT_SQL, "initialize()", e)
+                    PreLogUtil.putOE(require("allbinary_java").to_string("LoadDriver Failed: ") .. require("allbinary_java").to_string(self.databaseConnectionInfoInterface:getJdbcDriver()), self.INIT_SQL, "initialize()", e)
                 end
                 error(e, 0)
             end
-            if self.userid == nil and self.password == nil then
+            if rawequal(self.userid, nil) and rawequal(self.password, nil) then
                 self.useridAndPassword = true
             end
             self:createConnection()

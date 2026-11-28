@@ -164,107 +164,107 @@ function PaymentGateway:getFormData(hashMap)
         self.testServer = stringUtil:getNonNull(hashMap:get(tostring(PaymentGatewayData.TESTSERVER)))
         self.testPort = stringUtil:getNonNull(hashMap:get(tostring(PaymentGatewayData.TESTPORT)))
         self.testPath = hashMap:get(tostring(PaymentGatewayData.TESTPATH))
-        if self.testPath == nil then
+        if rawequal(self.testPath, nil) then
             self.testPath = empty
         end
         self.serverProtocol = hashMap:get(tostring(PaymentGatewayData.SERVERPROTOCOL))
-        if self.serverProtocol == nil then
+        if rawequal(self.serverProtocol, nil) then
             self.serverProtocol = empty
         end
         self.server = hashMap:get(tostring(PaymentGatewayData.SERVER))
-        if self.server == nil then
+        if rawequal(self.server, nil) then
             self.server = empty
         end
         self.serverPort = hashMap:get(tostring(PaymentGatewayData.SERVERPORT))
-        if self.serverPort == nil then
+        if rawequal(self.serverPort, nil) then
             self.serverPort = empty
         end
         self.serverPath = hashMap:get(tostring(PaymentGatewayData.SERVERPATH))
-        if self.serverPath == nil then
+        if rawequal(self.serverPath, nil) then
             self.serverPath = empty
         end
         self.userName = hashMap:get(tostring(UserData.USERNAME))
-        if self.userName == nil then
+        if rawequal(self.userName, nil) then
             self.userName = empty
         end
         self.password = hashMap:get(tostring(UserData.PASSWORD))
-        if self.password == nil then
+        if rawequal(self.password, nil) then
             self.password = empty
         end
         self.timeout = hashMap:get(tostring(PaymentGatewayData.TIMEOUT))
-        if self.timeout == nil then
+        if rawequal(self.timeout, nil) then
             self.timeout = empty
         end
         self.proxyProtocol = hashMap:get(tostring(PaymentGatewayData.PROXYPROTOCOL))
-        if self.proxyProtocol == nil then
+        if rawequal(self.proxyProtocol, nil) then
             self.proxyProtocol = empty
         end
         self.proxyServer = hashMap:get(tostring(PaymentGatewayData.PROXYSERVER))
-        if self.proxyServer == nil then
+        if rawequal(self.proxyServer, nil) then
             self.proxyServer = empty
         end
         self.proxyPort = hashMap:get(tostring(PaymentGatewayData.PROXYPORT))
-        if self.proxyPort == nil then
+        if rawequal(self.proxyPort, nil) then
             self.proxyPort = empty
         end
         self.proxyPath = hashMap:get(tostring(PaymentGatewayData.PROXYPATH))
-        if self.proxyPath == nil then
+        if rawequal(self.proxyPath, nil) then
             self.proxyPath = empty
         end
         self.proxyUserName = hashMap:get(tostring(PaymentGatewayData.PROXYUSERNAME))
-        if self.proxyUserName == nil then
+        if rawequal(self.proxyUserName, nil) then
             self.proxyUserName = empty
         end
         self.proxyPassword = hashMap:get(tostring(PaymentGatewayData.PROXYPASSWORD))
-        if self.proxyPassword == nil then
+        if rawequal(self.proxyPassword, nil) then
             self.proxyPassword = empty
         end
         self.proxyTimeout = hashMap:get(tostring(PaymentGatewayData.PROXYTIMEOUT))
-        if self.proxyTimeout == nil then
+        if rawequal(self.proxyTimeout, nil) then
             self.proxyTimeout = empty
         end
         self.special1 = hashMap:get(tostring(PaymentGatewayData.SPECIAL1))
-        if self.special1 == nil then
+        if rawequal(self.special1, nil) then
             self.special1 = empty
         end
         self.special2 = hashMap:get(tostring(PaymentGatewayData.SPECIAL2))
-        if self.special2 == nil then
+        if rawequal(self.special2, nil) then
             self.special2 = empty
         end
         self.special3 = hashMap:get(tostring(PaymentGatewayData.SPECIAL3))
-        if self.special3 == nil then
+        if rawequal(self.special3, nil) then
             self.special3 = empty
         end
         self.special4 = hashMap:get(tostring(PaymentGatewayData.SPECIAL4))
-        if self.special4 == nil then
+        if rawequal(self.special4, nil) then
             self.special4 = empty
         end
         self.special5 = hashMap:get(tostring(PaymentGatewayData.SPECIAL5))
-        if self.special5 == nil then
+        if rawequal(self.special5, nil) then
             self.special5 = empty
         end
         self.special6 = hashMap:get(tostring(PaymentGatewayData.SPECIAL6))
-        if self.special6 == nil then
+        if rawequal(self.special6, nil) then
             self.special6 = empty
         end
         self.special7 = hashMap:get(tostring(PaymentGatewayData.SPECIAL7))
-        if self.special7 == nil then
+        if rawequal(self.special7, nil) then
             self.special7 = empty
         end
         self.special8 = hashMap:get(tostring(PaymentGatewayData.SPECIAL8))
-        if self.special8 == nil then
+        if rawequal(self.special8, nil) then
             self.special8 = empty
         end
         self.special9 = hashMap:get(tostring(PaymentGatewayData.SPECIAL9))
-        if self.special9 == nil then
+        if rawequal(self.special9, nil) then
             self.special9 = empty
         end
         self.lastModified = hashMap:get(tostring(EntryData.getInstance().LASTMODIFIED))
-        if self.lastModified == nil then
+        if rawequal(self.lastModified, nil) then
             self.lastModified = empty
         end
         self.timeEntered = hashMap:get(tostring(EntryData.getInstance().TIMECREATED))
-        if self.timeEntered == nil then
+        if rawequal(self.timeEntered, nil) then
             self.timeEntered = empty
         end
 end

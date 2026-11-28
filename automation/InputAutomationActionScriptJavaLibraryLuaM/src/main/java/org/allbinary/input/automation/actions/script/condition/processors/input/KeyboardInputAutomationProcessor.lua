@@ -78,16 +78,16 @@ end
 function KeyboardInputAutomationProcessor.process(keyActionScriptInputInterface)
         local logUtil = LogUtil.getInstance()
         local commonStrings = CommonStrings.getInstance()
-        logUtil:putF(tostring(CommonLabels.getInstance().START) .. tostring(keyActionScriptInputInterface), "KeyInputAutomationProcessor", commonStrings.PROCESS)
+        logUtil:putF(require("allbinary_java").to_string(CommonLabels.getInstance().START) .. require("allbinary_java").to_string(tostring(keyActionScriptInputInterface)), "KeyInputAutomationProcessor", commonStrings.PROCESS)
         local inputRobotInterface = keyActionScriptInputInterface:getInputRobotInterface()
         local integer = keyActionScriptInputInterface:getKeyArray()
-        if keyActionScriptInputInterface:getDelayBetweenKeys() == 0 then
+        if rawequal(keyActionScriptInputInterface:getDelayBetweenKeys(), 0) then
             for index = 0, (keyActionScriptInputInterface:getKeyArray().n or #keyActionScriptInputInterface:getKeyArray()) - 1 do
                 if keyActionScriptInputInterface:isPress() then
                     inputRobotInterface:keyPress(integer[index + 1])
                 end
             end
-            java_sleep(keyActionScriptInputInterface:getTime())
+            require("java.lang.Thread").sleep(keyActionScriptInputInterface:getTime())
             for index = (keyActionScriptInputInterface:getKeyArray().n or #keyActionScriptInputInterface:getKeyArray()) - 1, 0, -1 do
                 if keyActionScriptInputInterface:isRelease() then
                     inputRobotInterface:keyRelease(integer[index + 1])
@@ -98,15 +98,15 @@ function KeyboardInputAutomationProcessor.process(keyActionScriptInputInterface)
                 if keyActionScriptInputInterface:isPress() then
                     inputRobotInterface:keyPress(integer[index + 1])
                 end
-                java_sleep(keyActionScriptInputInterface:getTime())
+                require("java.lang.Thread").sleep(keyActionScriptInputInterface:getTime())
                 if keyActionScriptInputInterface:isRelease() then
                     inputRobotInterface:keyRelease(integer[index + 1])
                 end
                 local timeHelper = TimeDelayHelper.new(keyActionScriptInputInterface:getDelayBetweenKeys())
                 local toLong = 0
-                while not timeHelper:isTimeTNT() or toLong > 6000 do
+                while not (timeHelper:isTimeTNT()) or toLong > 6000 do
                     toLong = toLong + 1
-                    java_sleep(50)
+                    require("java.lang.Thread").sleep(50)
                 end
             end
         end

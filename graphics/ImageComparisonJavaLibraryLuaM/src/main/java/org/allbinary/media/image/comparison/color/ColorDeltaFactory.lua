@@ -78,7 +78,7 @@ end
 -- throws Exception
 function ColorDeltaFactory.getInstance(rgb1, rgb2)
         local colorDelta = ColorDeltaFactory.cacheInterface:get(ColorDelta.getKey(rgb1, rgb2))
-        if colorDelta == nil then
+        if rawequal(colorDelta, nil) then
             colorDelta = ColorDelta.new(rgb1, rgb2)
         end
         return colorDelta

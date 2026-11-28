@@ -16,8 +16,8 @@ local function java_real(class)
     return class
 end
 
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local J2MEUtil = java_lazy("org.allbinary.J2MEUtil")
 local Rectangle = java_lazy("org.allbinary.graphics.Rectangle")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
@@ -213,11 +213,11 @@ java_overload(MultipleScrollSelectionHorizontalForm, "fillRect", 1, function(jav
 function MultipleScrollSelectionHorizontalForm:init(rectangle, formType)
         java_super(ScrollSelectionForm, "init", 2)(self, rectangle, formType)
         local formTypeFactory = FormTypeFactory.getInstance()
-        if formType == formTypeFactory.HORIZONTAL_FORM then
+        if rawequal(formType, formTypeFactory.HORIZONTAL_FORM) then
             self.multipleScrollSelectionHorizontalFormTypeItemIndexPaintable = MultipleScrollSelectionFormHorizontalPaintable.new(self)
-        elseif formType == formTypeFactory.VERTICAL_CENTER_FORM then
+        elseif rawequal(formType, formTypeFactory.VERTICAL_CENTER_FORM) then
             self.multipleScrollSelectionHorizontalFormTypeItemIndexPaintable = MultipleScrollSelectionFormVerticalPaintable.new(self)
-        elseif formType == formTypeFactory.NULL_FORM_TYPE then
+        elseif rawequal(formType, formTypeFactory.NULL_FORM_TYPE) then
         else
             error(require("java.lang.Exception").new(formTypeFactory.UNK), 0)
         end

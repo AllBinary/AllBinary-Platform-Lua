@@ -240,7 +240,7 @@ function PaymentGatewayEntity:update(paymentGatewayInterface)
             local whereKeyValuePairs = StdUtil.getInstance():createHashMap()
             whereKeyValuePairs:put(tostring(StoreFrontData.getInstance().NAME), paymentGatewayInterface:getStoreName())
             whereKeyValuePairs:put(tostring(PaymentGatewayData.NAME), paymentGatewayInterface:getName())
-            if whereKeyValuePairs:get(EntryData.getInstance().TIMECREATED) ~= nil then
+            if not rawequal(whereKeyValuePairs:get(EntryData.getInstance().TIMECREATED), nil) then
                 error(require("java.lang.Exception").new("Don't update TimeCreated for update"), 0)
             end
             local updateHashMap = PaymentGatewayEncryptedMapping.new(paymentGatewayInterface):toHashMap()
@@ -267,7 +267,7 @@ function PaymentGatewayEntity:getPaymentGatewayInterface(storeName, paymentType)
             whereKeyAndValue:put(tostring(StoreFrontData.getInstance().NAME), storeName)
             whereKeyAndValue:put(tostring(PaymentGatewayData.NAME), paymentType:getName())
             paymentGatewayHashMap = java_super(AbSqlBean, "getRow", 1)(self, whereKeyAndValue)
-            if paymentGatewayHashMap ~= nil then
+            if not rawequal(paymentGatewayHashMap, nil) then
                 local userName = paymentGatewayHashMap:get(tostring(UserData.USERNAME))
                 local password = paymentGatewayHashMap:get(tostring(UserData.PASSWORD))
                 local special1 = paymentGatewayHashMap:get(tostring(PaymentGatewayData.SPECIAL1))
@@ -304,7 +304,7 @@ function PaymentGatewayEntity:getPaymentGatewayInterface(storeName, paymentType)
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                self.logUtil:put("Command Failed for paymentType: " .. paymentType:getName(), self, "getPaymentGatewayInterface", e)
+                self.logUtil:put(require("allbinary_java").to_string("Command Failed for paymentType: ") .. require("allbinary_java").to_string(paymentType:getName()), self, "getPaymentGatewayInterface", e)
             end
             return nil
         end
@@ -317,7 +317,7 @@ function PaymentGatewayEntity:findPaymentTypeVectorByStore(storeName)
         local try_ok, try_error, try_value = pcall(function()
             local paymentGatewayNameVector = BasicArrayListD.new()
             paymentGatewayNameVector = java_super(AbSqlBean, "getColumnWhere", 3)(self, tostring(PaymentGatewayData.NAME), tostring(StoreFrontData.getInstance().NAME), storeName)
-            if paymentGatewayNameVector ~= nil then
+            if not rawequal(paymentGatewayNameVector, nil) then
                 local paymentGatewayVector = BasicArrayListD.new()
                 local size = paymentGatewayNameVector:size()
                 for i = 0, size - 1 do

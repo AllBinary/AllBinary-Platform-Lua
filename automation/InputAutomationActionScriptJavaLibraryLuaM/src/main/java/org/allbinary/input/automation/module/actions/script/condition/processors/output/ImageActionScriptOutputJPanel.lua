@@ -275,11 +275,13 @@ function ImageActionScriptOutputJPanel:initComponents()
         self.titleJLabel:setText("Image Output Options")
         self.okJButton:setText("OK")
         self.okJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:okJButtonActionPerformed(evt)
+                ;(self.okJButtonActionPerformed and self or java_outer_self):okJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -291,11 +293,13 @@ function ImageActionScriptOutputJPanel:initComponents()
         self.displayJCheckBox:setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0))
         self.displayJCheckBox:setMargin(Insets.new(0, 0, 0, 0))
         self.displayJCheckBox:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:displayJCheckBoxActionPerformed(evt)
+                ;(self.displayJCheckBoxActionPerformed and self or java_outer_self):displayJCheckBoxActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -325,11 +329,13 @@ function ImageActionScriptOutputJPanel:initComponents()
         self:setMinimumSize(Dimension.new(100, 0))
         self.capturedImageActionJButton:setText("Edit")
         self.capturedImageActionJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:capturedImageActionJButtonActionPerformed(evt)
+                ;(self.capturedImageActionJButtonActionPerformed and self or java_outer_self):capturedImageActionJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o

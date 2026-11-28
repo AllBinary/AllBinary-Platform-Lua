@@ -30,8 +30,8 @@ end
 
 local File = java_lazy("java.io.File")
 -- local FileOutputStream = require("java.io.FileOutputStream")
--- local GL10 = require("javax.microedition.khronos.opengles.GL10")
--- local Image = require("javax.microedition.lcdui.Image")
+local GL10 = java_lazy("javax.microedition.khronos.opengles.GL10")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local Bitmap = java_lazy("android.graphics.Bitmap")
 local Canvas = java_lazy("android.graphics.Canvas")
 local Paint = java_lazy("android.graphics.Paint")
@@ -194,7 +194,7 @@ java_overload(TrueTypeFontUtil, "saveFontAtlasAsFile", 0)
 
 
 function TrueTypeFontUtil:getFontBitmapGL(gl, filename, cellSize, basicColor)
-        if self.fontImage == OpenGLESImage.NULL_OPENGL_IMAGE then
+        if rawequal(self.fontImage, OpenGLESImage.NULL_OPENGL_IMAGE) then
             local cellsPerRow2 = self.CELLS_PER_ROW * 2
             local cellsPerRow3 = self.CELLS_PER_ROW * 3
             local cellsPerRow4 = self.CELLS_PER_ROW * 4
@@ -272,37 +272,37 @@ function TrueTypeFontUtil:getFontWidths(filename, fontSize)
             self.characterArray[1] = self.pattern:charAt(index)
             paint:getTextBounds(self.characterArray, 0, 1, bounds)
             if index < self.lastCapIndex then
-                if self.characterArray[1] == "1" then
+                if rawequal(self.characterArray[1], "1") then
                     self._characterWidth[index + 1] = bounds.right + 3
-                elseif self.characterArray[1] == "J" or self.characterArray[1] == "V" or self.characterArray[1] == "2" or self.characterArray[1] == "9" or self.characterArray[1] == "I" or self.characterArray[1] == "N" or self.characterArray[1] == "U" then
+                elseif rawequal(self.characterArray[1], "J") or rawequal(self.characterArray[1], "V") or rawequal(self.characterArray[1], "2") or rawequal(self.characterArray[1], "9") or rawequal(self.characterArray[1], "I") or rawequal(self.characterArray[1], "N") or rawequal(self.characterArray[1], "U") then
                     self._characterWidth[index + 1] = bounds.right + 1
-                elseif self.characterArray[1] == "4" or self.characterArray[1] == "C" or self.characterArray[1] == "E" or self.characterArray[1] == "O" then
+                elseif rawequal(self.characterArray[1], "4") or rawequal(self.characterArray[1], "C") or rawequal(self.characterArray[1], "E") or rawequal(self.characterArray[1], "O") then
                     self._characterWidth[index + 1] = bounds.right - 2
-                elseif self.characterArray[1] == "B" or self.characterArray[1] == "D" or self.characterArray[1] == "G" or self.characterArray[1] == "H" or self.characterArray[1] == "T" or self.characterArray[1] == "W" then
+                elseif rawequal(self.characterArray[1], "B") or rawequal(self.characterArray[1], "D") or rawequal(self.characterArray[1], "G") or rawequal(self.characterArray[1], "H") or rawequal(self.characterArray[1], "T") or rawequal(self.characterArray[1], "W") then
                     self._characterWidth[index + 1] = bounds.right - 3
-                elseif self.characterArray[1] == "A" or self.characterArray[1] == "Q" or self.characterArray[1] == "R" then
+                elseif rawequal(self.characterArray[1], "A") or rawequal(self.characterArray[1], "Q") or rawequal(self.characterArray[1], "R") then
                     self._characterWidth[index + 1] = bounds.right - 5
-                elseif self.characterArray[1] == "M" then
+                elseif rawequal(self.characterArray[1], "M") then
                     self._characterWidth[index + 1] = bounds.right - 6
-                elseif self.characterArray[1] == "m" then
+                elseif rawequal(self.characterArray[1], "m") then
                     self._characterWidth[index + 1] = bounds.right - 8
                 else
                     self._characterWidth[index + 1] = bounds.right
                 end
             else
-                if self.characterArray[1] == " " then
+                if rawequal(self.characterArray[1], " ") then
                     self._characterWidth[index + 1] = bounds.right + 10
-                elseif self.characterArray[1] == "l" or self.characterArray[1] == "i" or self.characterArray[1] == "j" or self.characterArray[1] == "." or self.characterArray[1] == "!" or self.characterArray[1] == "|" then
+                elseif rawequal(self.characterArray[1], "l") or rawequal(self.characterArray[1], "i") or rawequal(self.characterArray[1], "j") or rawequal(self.characterArray[1], ".") or rawequal(self.characterArray[1], "!") or rawequal(self.characterArray[1], "|") then
                     self._characterWidth[index + 1] = bounds.right + 6
-                elseif self.characterArray[1] == "f" or self.characterArray[1] == "t" or self.characterArray[1] == "u" or self.characterArray[1] == "v" then
+                elseif rawequal(self.characterArray[1], "f") or rawequal(self.characterArray[1], "t") or rawequal(self.characterArray[1], "u") or rawequal(self.characterArray[1], "v") then
                     self._characterWidth[index + 1] = bounds.right + 1
-                elseif self.characterArray[1] == "r" then
+                elseif rawequal(self.characterArray[1], "r") then
                     self._characterWidth[index + 1] = bounds.right + 2
-                elseif self.characterArray[1] == "a" or self.characterArray[1] == "b" or self.characterArray[1] == "g" or self.characterArray[1] == "u" then
+                elseif rawequal(self.characterArray[1], "a") or rawequal(self.characterArray[1], "b") or rawequal(self.characterArray[1], "g") or rawequal(self.characterArray[1], "u") then
                     self._characterWidth[index + 1] = bounds.right - 1
-                elseif self.characterArray[1] == "o" or self.characterArray[1] == "e" then
+                elseif rawequal(self.characterArray[1], "o") or rawequal(self.characterArray[1], "e") then
                     self._characterWidth[index + 1] = bounds.right - 2
-                elseif self.characterArray[1] == "m" then
+                elseif rawequal(self.characterArray[1], "m") then
                     self._characterWidth[index + 1] = bounds.right - 7
                 else
                     self._characterWidth[index + 1] = bounds.right

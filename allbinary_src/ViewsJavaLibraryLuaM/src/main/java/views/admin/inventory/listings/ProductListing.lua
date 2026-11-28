@@ -176,7 +176,7 @@ function ProductListing:getHashSet(storeFront)
         local size = subStoreVector:size()
         for index = 0, size - 1 do
             local subStore = subStoreVector:get(index)
-            local substoreKeywords = inventoryColumnUtil:getColumnWhereLike(self.inventory, tostring(AbPathData.getInstance().SEPARATOR) .. subStore, self.basicItemData.CATEGORY)
+            local substoreKeywords = inventoryColumnUtil:getColumnWhereLike(self.inventory, require("allbinary_java").to_string(AbPathData.getInstance().SEPARATOR) .. require("allbinary_java").to_string(subStore), self.basicItemData.CATEGORY)
             keywords:addAllList(substoreKeywords)
         end
         local uniqueTokens = UniqueTokens.new()
@@ -188,7 +188,7 @@ end
 -- throws Exception
 function ProductListing:savePage(file, data)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().STATICPAGEGENERATIONLOGGING) then
-            self.logUtil:putF("Creating File: " .. file, self, "generateAll()")
+            self.logUtil:putF(require("allbinary_java").to_string("Creating File: ") .. require("allbinary_java").to_string(file), self, "generateAll()")
         end
         local newFile = AbFile.createAbFile(file)
         if newFile:exists() then
@@ -201,10 +201,10 @@ function ProductListing:savePage(file, data)
             idOutData:flush()
             StreamUtil.getInstance():close(idOutData)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().STATICPAGEGENERATIONLOGGING) then
-                self.logUtil:putF("Wrote Total Bytes: " .. tostring(newFile:length()), self, "generateAll()")
+                self.logUtil:putF(require("allbinary_java").to_string("Wrote Total Bytes: ") .. require("allbinary_java").to_string(newFile:length()), self, "generateAll()")
             end
         else
-            error(require("java.lang.Exception").new("Could Not Create: " .. file), 0)
+            error(require("java.lang.Exception").new(require("allbinary_java").to_string("Could Not Create: ") .. require("allbinary_java").to_string(file)), 0)
         end
 end
 
@@ -224,17 +224,17 @@ function ProductListing:create(keywordData, keywordFilenameHashMap, vector, stat
         local inventorySearchUtil = InventorySearchUtil.getInstance()
         local productListingPages = inventorySearchUtil:search(abeClientInformation, self.searchRequest, vector)
         for index = 0, (productListingPages.n or #productListingPages) - 1 do
-            if productListingPages[index + 1] == nil then
+            if rawequal(productListingPages[index + 1], nil) then
                 break
             end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().STATICPAGEGENERATIONLOGGING) then
-                self.logUtil:putF("Saving Listing: " .. tostring(index), self, "generateAll()")
+                self.logUtil:putF(require("allbinary_java").to_string("Saving Listing: ") .. require("allbinary_java").to_string(index), self, "generateAll()")
             end
             local indexStr = StringUtil.getInstance().EMPTY_STRING
             if index > 0 then
                 indexStr = tostring(index)
             end
-            keywordFilenameHashMap:put(keywordData, pageName .. indexStr)
+            keywordFilenameHashMap:put(keywordData, require("allbinary_java").to_string(pageName) .. require("allbinary_java").to_string(indexStr))
             stringBuffer:delete(0, stringBuffer:length())
             stringBuffer:append(tostring(staticPath))
             stringBuffer:append(pageName)
@@ -242,8 +242,8 @@ function ProductListing:create(keywordData, keywordFilenameHashMap, vector, stat
             stringBuffer:append(AbPathData.getInstance().EXTENSION_SEP)
             stringBuffer:append(InputOutputTypeData.getInstance().DEFAULT)
             local file = tostring(stringBuffer)
-            if not self.directory:create(staticPath) then
-                error(require("java.lang.Exception").new("Could Not Create Directory: " .. tostring(staticPath)), 0)
+            if not (self.directory:create(staticPath)) then
+                error(require("java.lang.Exception").new(require("allbinary_java").to_string("Could Not Create Directory: ") .. require("allbinary_java").to_string(staticPath)), 0)
             end
             self:savePage(file, productListingPages[index + 1])
         end
@@ -277,13 +277,13 @@ function ProductListing:generateAll_j0()
             stringBuffer:append(storeFront:getStaticPath())
             local staticPath = AbPath.new(tostring(stringBuffer), StringUtil.getInstance().EMPTY_STRING)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().STATICPAGEGENERATIONLOGGING) then
-                self.logUtil:putF("Store Static Pages Path: " .. tostring(staticPath), self, "generateAll()")
+                self.logUtil:putF(require("allbinary_java").to_string("Store Static Pages Path: ") .. require("allbinary_java").to_string(staticPath), self, "generateAll()")
             end
             local keywordHashSet = self:getHashSet(storeFront)
             local keywordArray = keywordHashSet:toArray()
             local size = (keywordArray.n or #keywordArray)
             local keywordFilenameHashMap = StdUtil.getInstance():createHashMap()
-            if size == 0 then
+            if rawequal(size, 0) then
                 stringBuffer:delete(0, stringBuffer:length())
                 stringBuffer:append("Products For ")
                 stringBuffer:append(storeFront:getName())
@@ -320,8 +320,8 @@ end
 function ProductListing:generateAll_j1(storeName)
         local try_ok, try_error, try_value = pcall(function()
             local stringBuffer = StringMaker.new()
-            if storeName ~= nil then
-                if ((storeName < GLOBALS2.GENERATEALLSTORES and -1) or (storeName > GLOBALS2.GENERATEALLSTORES and 1) or 0) ~= 0 then
+            if not rawequal(storeName, nil) then
+                if not rawequal(((storeName < GLOBALS2.GENERATEALLSTORES and -1) or (storeName > GLOBALS2.GENERATEALLSTORES and 1) or 0), 0) then
                     self.searchRequest:setStoreFront(self.storeFronts:getStoreFrontInterface(storeName))
                     stringBuffer:append(self:generateAll())
                     stringBuffer:append("<br />")

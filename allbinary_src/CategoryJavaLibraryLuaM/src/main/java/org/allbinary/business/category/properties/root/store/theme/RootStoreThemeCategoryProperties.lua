@@ -201,8 +201,8 @@ function RootStoreThemeCategoryProperties:initPath()
         stringBuffer:append(FREEBLISKET_PATH_GLOBALS.getInstance().THEMEPATH)
         local abPath = AbPath.new(tostring(stringBuffer), StringUtil.getInstance().EMPTY_STRING)
         local httpServletRequest = transformInfoHttpStoreInterface:getPageContext():getRequest()
-        self.webAppAbPath = AbPath.new(tostring(httpServletRequest:getContextPath()) .. tostring(abPath), StringUtil.getInstance().EMPTY_STRING)
-        self:setRootFilePath(AbPath.new(tostring(URLGLOBALS.getMainPath()) .. tostring(abPath), StringUtil.getInstance().EMPTY_STRING))
+        self.webAppAbPath = AbPath.new(require("allbinary_java").to_string(httpServletRequest:getContextPath()) .. require("allbinary_java").to_string(tostring(abPath)), StringUtil.getInstance().EMPTY_STRING)
+        self:setRootFilePath(AbPath.new(require("allbinary_java").to_string(URLGLOBALS.getMainPath()) .. require("allbinary_java").to_string(tostring(abPath)), StringUtil.getInstance().EMPTY_STRING))
 end
 java_overload(RootStoreThemeCategoryProperties, "initPath", 0)
 

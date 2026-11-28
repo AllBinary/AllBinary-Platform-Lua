@@ -55,7 +55,7 @@ CommonButtons.className = "CommonButtons"
 CommonButtons.javaClassName = "org.allbinary.input.motion.button.CommonButtons"
 
 function CommonButtons:_init_fields()
-    if self.STANDARD_BUTTON_SIZE == nil then self.STANDARD_BUTTON_SIZE = nil end
+    if self.STANDARD_BUTTON_SIZE == nil then self.STANDARD_BUTTON_SIZE = 0 end
     if self.NORMAL_BUTTON == nil then self.NORMAL_BUTTON = nil end
     if self.LARGE_BUTTON == nil then self.LARGE_BUTTON = nil end
 end
@@ -84,7 +84,7 @@ function CommonButtons._jinit(self)
         end
         self.STANDARD_BUTTON_SIZE = commonButtonSize
         self.NORMAL_BUTTON = Rectangle.new(PointFactory.getInstance().ZERO_ZERO, self.STANDARD_BUTTON_SIZE, self.STANDARD_BUTTON_SIZE)
-        self.LARGE_BUTTON = Rectangle.new(PointFactory.getInstance().ZERO_ZERO, self.STANDARD_BUTTON_SIZE << 1, self.STANDARD_BUTTON_SIZE << 1)
+        self.LARGE_BUTTON = Rectangle.new(PointFactory.getInstance().ZERO_ZERO, (((((self.STANDARD_BUTTON_SIZE) << ((1) & 31)) + 0x80000000) & 0xffffffff) - 0x80000000), (((((self.STANDARD_BUTTON_SIZE) << ((1) & 31)) + 0x80000000) & 0xffffffff) - 0x80000000))
     return self
 end
 

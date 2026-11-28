@@ -30,8 +30,8 @@ end
 
 -- local ByteArrayInputStream = require("java.io.ByteArrayInputStream")
 local ByteArrayOutputStream = java_lazy("java.io.ByteArrayOutputStream")
--- local FileInputStream = require("java.io.FileInputStream")
--- local InputStream = require("java.io.InputStream")
+local FileInputStream = java_lazy("java.io.FileInputStream")
+local InputStream = java_lazy("java.io.InputStream")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local StreamUtil = java_lazy("org.allbinary.logic.io.StreamUtil")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
@@ -124,9 +124,9 @@ end
 -- throws Exception
 function ResourceUtil:getResourceAsStream(resource)
         local inputStream = self:getResourceAsStreamAtStart(resource, 2)
-        if inputStream == nil then
+        if rawequal(inputStream, nil) then
             inputStream = self:getResourceAsStreamAtStart(resource, 1)
-            if inputStream == nil then
+            if rawequal(inputStream, nil) then
                 error(require("java.lang.Exception").new(tostring(StringMaker.new():append("Unable to obtain: "):append(resource))), 0)
             end
         end
@@ -137,7 +137,7 @@ end
 -- throws Exception
 function ResourceUtil:getResourceAsStreamAtStart(resource, startIndex)
         local inputStream = FileInputStream.new(tostring(StringMaker.new():append(self.path):append(resource):append(self.ext)))
-        if inputStream ~= nil then
+        if not rawequal(inputStream, nil) then
             local byteArray = java_typed_array("B", java_new_array(0, inputStream:available()))
             StreamUtil.getInstance():getByteArray(inputStream, require("java.io.ByteArrayOutputStream").new(), byteArray)
             return ByteArrayInputStream.new(byteArray)

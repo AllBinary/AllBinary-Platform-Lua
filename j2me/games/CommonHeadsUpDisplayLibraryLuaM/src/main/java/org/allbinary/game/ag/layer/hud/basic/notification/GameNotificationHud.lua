@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local BasicHud = require("org.allbinary.game.graphics.hud.BasicHud")
 local BasicHudFactory = java_lazy("org.allbinary.game.graphics.hud.BasicHudFactory")
 local GameNotificationEvent = java_lazy("org.allbinary.game.layer.hud.event.GameNotificationEvent")
@@ -166,7 +166,7 @@ java_overload(GameNotificationHud, "onEvent", 1, function(java_a1) return true a
 
 -- throws Exception
 function GameNotificationHud:onGameNotificationEvent(gameNotificationEvent)
-        if self.lastGameNotificationEvent ~= gameNotificationEvent then
+        if not rawequal(self.lastGameNotificationEvent, gameNotificationEvent) then
             self.lastGameNotificationEvent = gameNotificationEvent
             self.logUtil:putF(gameNotificationEvent:getString(), self, self.METHOD_NAME)
         end

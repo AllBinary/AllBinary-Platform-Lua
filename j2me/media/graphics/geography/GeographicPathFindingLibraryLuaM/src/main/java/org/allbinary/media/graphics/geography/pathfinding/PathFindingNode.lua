@@ -80,7 +80,7 @@ function PathFindingNode._jinit(self, parent, geographicMapCellPosition)
     PathFindingNode._init_fields(self)
         self.parent = parent
         self:setGeographicMapCellPositionP(geographicMapCellPosition)
-        if self.geographicMapCellPosition == SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION then
+        if rawequal(self.geographicMapCellPosition, SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION) then
             error(require("java.lang.Exception").new("No GeographicMapCellPosition"), 0)
         end
     return self
@@ -110,7 +110,7 @@ function PathFindingNode:toString()
         stringBuffer:append(" Path: ")
         stringBuffer:append(tostring(self.geographicMapCellPosition))
         local pathFindingNode = self:getParentP()
-        while pathFindingNode ~= nil do
+        while not rawequal(pathFindingNode, nil) do
             stringBuffer:append(tostring(pathFindingNode.geographicMapCellPosition))
             stringBuffer:append(CommonSeps.getInstance().SPACE)
             pathFindingNode = pathFindingNode:getParentP()

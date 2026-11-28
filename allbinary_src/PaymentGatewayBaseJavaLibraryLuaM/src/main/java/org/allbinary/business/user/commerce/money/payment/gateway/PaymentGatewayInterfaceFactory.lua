@@ -154,7 +154,7 @@ function PaymentGatewayInterfaceFactory:getInstance_j1_3(hashMap)
             local gatewayName = hashMap:get(tostring(PaymentGatewayData.NAME))
             local paymentType = BasicPaymentTypeUtil.getInstance():get(gatewayName)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PAYMENT) then
-                self.logUtil:putF("Getting PaymentGatewayInterface for PaymentType: " .. paymentType:getName() .. " with: " .. tostring(hashMap), self, commonStrings.GET_INSTANCE)
+                self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Getting PaymentGatewayInterface for PaymentType: ") .. require("allbinary_java").to_string(paymentType:getName())) .. require("allbinary_java").to_string(" with: ")) .. require("allbinary_java").to_string(hashMap), self, commonStrings.GET_INSTANCE)
             end
             local paymentGatewayInterfaceFactoryInterface = paymentType:getPaymentGatewayInterfaceFactoryInterface()
             do return "__jreturn", paymentGatewayInterfaceFactoryInterface:getInstance(hashMap) end

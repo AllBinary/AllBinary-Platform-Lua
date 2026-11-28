@@ -157,7 +157,7 @@ function WeblisketSession._new2_2(self, hashMap, httpServletRequest)
         local propertiesHashMap = hashMap
         local request = httpServletRequest
         self.session = request:getSession(true)
-        if self:getStoreName() == nil then
+        if rawequal(self:getStoreName(), nil) then
             self:setStoreName(propertiesHashMap:get(StoreFrontData.getInstance().NAME))
         end
     return self
@@ -252,7 +252,7 @@ end
 -- throws Exception
 function WeblisketSession:getRole()
         local userRole = self.session:getAttribute(tostring(UserRoleData.NAME))
-        if userRole ~= nil then
+        if not rawequal(userRole, nil) then
             return UserRoleB.getRole(userRole:getBasicUserRole():getRole())
         else
             return nil
@@ -264,9 +264,9 @@ end
 function WeblisketSession:getOrder()
         local storeFrontInterface = StoreFrontFactory.getInstance(self:getStoreName())
         local basketName = storeFrontInterface:getBasketName()
-        if not StringValidationUtil.getInstance():isEmpty(basketName) then
+        if not (StringValidationUtil.getInstance():isEmpty(basketName)) then
             local orderInterface = self.session:getAttribute(basketName)
-            if orderInterface == nil then
+            if rawequal(orderInterface, nil) then
                 orderInterface = Order.new(Basket.new())
             end
             self.session:setAttribute(basketName, orderInterface)
@@ -310,7 +310,7 @@ end
 function WeblisketSession:removeBasket()
         local storeFrontInterface = StoreFrontFactory.getInstance(self:getStoreName())
         local basketName = storeFrontInterface:getBasketName()
-        if not StringValidationUtil.getInstance():isEmpty(basketName) then
+        if not (StringValidationUtil.getInstance():isEmpty(basketName)) then
             self.session:removeAttribute(basketName)
         end
 end

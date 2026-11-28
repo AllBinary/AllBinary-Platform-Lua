@@ -167,7 +167,7 @@ end
 
 
 function CollidableDestroyableDamageableBehavior:isCollision(ownerLayer, collisionLayer)
-        if ownerLayer:getGroupInterface()[1] ~= collisionLayer:getGroupInterface()[1] then
+        if not rawequal(ownerLayer:getGroupInterface()[1], collisionLayer:getGroupInterface()[1]) then
             return java_super(CollidableBaseBehavior, "isCollision", 2)(self, ownerLayer, collisionLayer)
         end
         return false

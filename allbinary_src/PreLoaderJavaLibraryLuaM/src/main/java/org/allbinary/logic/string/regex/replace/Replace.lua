@@ -186,10 +186,10 @@ function Replace:upTo(replace, total)
             local begin2 = 0
             while index < #replace do
                 local begin = ((string.find(replace, keys[1], (index) + 1, true) or 0) - 1)
-                if begin ~= -1 then
+                if not rawequal(begin, -1) then
                     foundTotal = foundTotal + 1
-                    if math.fmod(foundTotal, 100) == 0 then
-                        print(self.FOUND_KEY .. tostring(foundTotal))
+                    if rawequal(math.fmod(foundTotal, 100), 0) then
+                        print(require("allbinary_java").to_string(self.FOUND_KEY) .. require("allbinary_java").to_string(foundTotal))
                     end
                     nextKey = keys[1]
                     end_ = begin + #nextKey
@@ -202,7 +202,7 @@ function Replace:upTo(replace, total)
                     if (keys.n or #keys) > 1 then
                         nextSecondKey = keys[2]
                         begin2 = ((string.find(replace, nextSecondKey, (index) + 1, true) or 0) - 1)
-                        if begin2 ~= -1 then
+                        if not rawequal(begin2, -1) then
                             local end2 = begin2 + #nextSecondKey
                             newStringBuffer:delete(0, newStringBuffer:length())
                             newStringBuffer:append(string.sub(replace, (0) + 1, begin2))
@@ -213,7 +213,7 @@ function Replace:upTo(replace, total)
                         end
                     end
                     totalNumberOfReplaces = totalNumberOfReplaces + 1
-                    if total ~= require("java.lang.Integer").MIN_VALUE and totalNumberOfReplaces >= total then
+                    if not rawequal(total, require("java.lang.Integer").MIN_VALUE) and totalNumberOfReplaces >= total then
                         break
                     end
                 else
@@ -223,7 +223,7 @@ function Replace:upTo(replace, total)
         end
         if totalNumberOfReplaces > 0 then
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().REPLACE) then
-                self.logUtil:putF("Total Number Of Replaces: " .. tostring(totalNumberOfReplaces), self, self.ALL)
+                self.logUtil:putF(require("allbinary_java").to_string("Total Number Of Replaces: ") .. require("allbinary_java").to_string(totalNumberOfReplaces), self, self.ALL)
             end
         end
         return replace
@@ -244,7 +244,7 @@ function Replace:line(replace)
             while index < #replace do
                 newStringBuffer:delete(0, newStringBuffer:length())
                 local begin = ((string.find(replace, key, (index) + 1, true) or 0) - 1)
-                if begin ~= -1 then
+                if not rawequal(begin, -1) then
                     print(self.FOUND_KEY)
                     local end_ = ((string.find(replace, "\n", (begin + #key) + 1, true) or 0) - 1) + 1
                     if end_ >= 0 then
@@ -260,7 +260,7 @@ function Replace:line(replace)
             end
         end
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().REPLACE) then
-            self.logUtil:putF("Total Number Of Replaces: " .. tostring(totalNumberOfReplaces), self, self.ALL)
+            self.logUtil:putF(require("allbinary_java").to_string("Total Number Of Replaces: ") .. require("allbinary_java").to_string(totalNumberOfReplaces), self, self.ALL)
         end
         return replace
 end
@@ -274,12 +274,12 @@ function Replace.main(args)
             URLGLOBALS.init(appUrlGlobals)
             local testString = "\"super gun\" big tank \"goodgunriflegun"
             local replace = Replace.new("gun", "abcdefghijklmnopqrstuxwxyzabcdefghijklmnopqrstuxwxyz")
-            print("Old String: " .. testString)
+            print(require("allbinary_java").to_string("Old String: ") .. require("allbinary_java").to_string(testString))
             testString = replace:all(testString)
-            print("New String: " .. testString)
+            print(require("allbinary_java").to_string("New String: ") .. require("allbinary_java").to_string(testString))
             local replaceCat = Replace.new("abcdefghijklmnopqrstuxwxyzabcdefghijklmnopqrstuxwxyz", stringUtil.EMPTY_STRING)
             testString = replaceCat:all(testString)
-            print("New String: " .. testString)
+            print(require("allbinary_java").to_string("New String: ") .. require("allbinary_java").to_string(testString))
         end)
         if not try_ok then
             local e = try_error

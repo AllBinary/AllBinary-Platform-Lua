@@ -78,7 +78,7 @@ end
 
 
 function Features.getInstance()
-        if Features.SINGLETON == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(Features.SINGLETON, NullUtil.getInstance().NULL_OBJECT) then
             Features.SINGLETON = Features.new()
         end
         return Features.SINGLETON
@@ -103,7 +103,7 @@ end
 -- throws Exception
 function Features:addDefault(gameFeature)
         self:add(gameFeature)
-        if not self.defaultList:contains(gameFeature) then
+        if not (self.defaultList:contains(gameFeature)) then
             self.defaultList:add(gameFeature)
         end
 end
@@ -111,7 +111,7 @@ end
 
 -- throws Exception
 function Features:add(gameFeature)
-        if not self.list:contains(gameFeature) then
+        if not (self.list:contains(gameFeature)) then
             self.logUtil:putF(tostring(StringMaker.new():append(CommonLabels.getInstance().START_LABEL):append(tostring(gameFeature))), self, self.commonStrings.ADD)
             self.list:add(gameFeature)
             GameFeatureEventHandler.getInstance():fireEvent(GameFeatureEvent.new(gameFeature, tostring(gameFeature)))

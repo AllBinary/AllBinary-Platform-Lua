@@ -186,21 +186,21 @@ function AddTaxValidationView:isValid()
             self.streetAddress = StreetAddress.new(self:getRequest())
             local storeFrontInterface = StoreFrontFactory.getInstance(self:getTransformInfoInterface():getStoreName())
             local taxInterface = TaxFactory.getInstance():getInstance(self.abeClientInformation, storeFrontInterface)
-            if taxInterface == nil then
+            if rawequal(taxInterface, nil) then
                 do return "__jreturn", false end
             end
-            if taxInterface:isValid(self.streetAddress, storeFrontInterface) == false then
+            if rawequal(taxInterface:isValid(self.streetAddress, storeFrontInterface), false) then
                 do return "__jreturn", false end
             end
             local billingAddressesEntity = ShippingAddressesEntity.new(self:getWeblisketSession():getUserName())
             local streetAddressList = billingAddressesEntity:get()
-            if streetAddressList == nil then
+            if rawequal(streetAddressList, nil) then
                 do return "__jreturn", false end
             end
             local size = streetAddressList:size()
             for index = 0, size - 1 do
                 local aStreetAddress = streetAddressList:get(index)
-                if aStreetAddress:getName():compareTo(ShippingAddressData.TAX) == 0 then
+                if rawequal(aStreetAddress:getName():compareTo(ShippingAddressData.TAX), 0) then
                     do return "__jreturn", false end
                 end
             end
@@ -225,10 +225,10 @@ function AddTaxValidationView:validationInfo()
             local stringBuffer = StringMaker.new()
             local storeFrontInterface = StoreFrontFactory.getInstance(self:getTransformInfoInterface():getStoreName())
             local taxInterface = TaxFactory.getInstance():getInstance(self.abeClientInformation, storeFrontInterface)
-            if taxInterface == nil then
+            if rawequal(taxInterface, nil) then
                 stringBuffer:append("Unable to Load Tax Component<br/>")
             else
-                if taxInterface:isValid(self.streetAddress, storeFrontInterface) == false then
+                if rawequal(taxInterface:isValid(self.streetAddress, storeFrontInterface), false) then
                     stringBuffer:append("Unable to validate address with Tax Component<br/>")
                 end
             end
@@ -237,7 +237,7 @@ function AddTaxValidationView:validationInfo()
             local size = streetAddressList:size()
             for index = 0, size - 1 do
                 local aStreetAddress = streetAddressList:get(index)
-                if aStreetAddress:getName():compareTo(ShippingAddressData.TAX) == 0 then
+                if rawequal(aStreetAddress:getName():compareTo(ShippingAddressData.TAX), 0) then
                     stringBuffer:append("Not a valid tax location<br/>")
                 end
             end

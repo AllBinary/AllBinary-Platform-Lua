@@ -17,7 +17,7 @@ local function java_real(class)
 end
 
 -- local ByteBuffer = require("java.nio.ByteBuffer")
--- local GL10 = require("javax.microedition.khronos.opengles.GL10")
+local GL10 = java_lazy("javax.microedition.khronos.opengles.GL10")
 local OpenGLBitmap = java_lazy("org.allbinary.graphics.OpenGLBitmap")
 local OpenGLESImage = java_lazy("org.allbinary.image.opengles.OpenGLESImage")
 

@@ -202,7 +202,7 @@ function GenericCssStyleValidation:isValid()
                 self.logUtil:putF(self.commonStrings.START, self, self.commonStrings.IS_VALID)
             end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("End: " .. tostring(isValid), self, self.commonStrings.IS_VALID)
+                self.logUtil:putF(require("allbinary_java").to_string("End: ") .. require("allbinary_java").to_string(isValid), self, self.commonStrings.IS_VALID)
             end
             do return "__jreturn", isValid end
         end)

@@ -86,9 +86,9 @@ end
 -- throws Exception
 function ProfileActionScriptInputFactory.getInstance(node)
         local profileActionScriptInputInterface = nil
-        if DomSearchHelper.getNodeNoThrow(KeyboardActionScriptInputData.NAME, node:getChildNodes()) ~= nil then
+        if not rawequal(DomSearchHelper.getNodeNoThrow(KeyboardActionScriptInputData.NAME, node:getChildNodes()), nil) then
             profileActionScriptInputInterface = KeyboardActionScriptInput.new(node)
-        elseif DomSearchHelper.getNodeNoThrow(MouseActionScriptInputData.NAME, node:getChildNodes()) ~= nil then
+        elseif not rawequal(DomSearchHelper.getNodeNoThrow(MouseActionScriptInputData.NAME, node:getChildNodes()), nil) then
             profileActionScriptInputInterface = MouseActionScriptInput.new(node)
         else
             error(require("java.lang.Exception").new("No Such ActionScript Input"), 0)

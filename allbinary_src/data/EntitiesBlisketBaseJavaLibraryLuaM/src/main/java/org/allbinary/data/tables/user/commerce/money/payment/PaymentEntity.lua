@@ -197,7 +197,7 @@ function PaymentEntity:setDefault(userName, index)
             local whereKeyAndValue = StdUtil.getInstance():createHashMap()
             whereKeyAndValue:put(UserData.USERNAME, userName)
             local paymentInterface = self:getDefault(userName)
-            if paymentInterface ~= nil then
+            if not rawequal(paymentInterface, nil) then
                 updateKeyAndValue:put(EntryData.getInstance().DEFAULT, StringUtil.getInstance().EMPTY_STRING)
                 whereKeyAndValue:put(PaymentData.ID, paymentInterface:getId())
                 java_super(AbSqlBean, "updateWhere", 2)(self, whereKeyAndValue, updateKeyAndValue)
@@ -230,7 +230,7 @@ function PaymentEntity:get(userName)
             for index = 0, size - 1 do
                 local paymentHashMap = paymentList:get(index)
                 local payment = Payment.new(paymentHashMap)
-                if payment ~= nil then
+                if not rawequal(payment, nil) then
                     paymentVector:add(payment)
                 end
             end
@@ -256,7 +256,7 @@ function PaymentEntity:getDefault(userName)
             updateKeyAndValue:put(EntryData.getInstance().DEFAULT, EntryData.getInstance().DEFAULT)
             updateKeyAndValue:put(UserData.USERNAME, userName)
             paymentHashMap = java_super(AbSqlBean, "getRow", 1)(self, updateKeyAndValue)
-            if paymentHashMap ~= nil then
+            if not rawequal(paymentHashMap, nil) then
                 local payment = Payment.new(paymentHashMap)
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                     self.logUtil:putF(self.commonStrings.SUCCESS, self, "getDefault")

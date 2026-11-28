@@ -57,7 +57,7 @@ DamageTechnology.java_interfaces = function() return {RTSInterface} end
 
 function DamageTechnology:_init_fields()
     if self.level == nil then self.level = 0 end
-    if self.maxLevel == nil then self.maxLevel = nil end
+    if self.maxLevel == nil then self.maxLevel = 0 end
 end
 
 

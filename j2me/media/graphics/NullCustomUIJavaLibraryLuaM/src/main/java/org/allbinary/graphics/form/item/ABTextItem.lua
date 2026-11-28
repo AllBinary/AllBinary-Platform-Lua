@@ -16,7 +16,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local CustomCustomItem = require("org.allbinary.graphics.form.item.CustomCustomItem")
 local ABCustomItemInterface = require("org.allbinary.graphics.form.item.ABCustomItemInterface")

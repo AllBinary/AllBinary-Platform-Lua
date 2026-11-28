@@ -75,7 +75,7 @@ function PrintLicenseInitInfo:getLicenseInitInfo()
         if FileFactory.getInstance():isFile(licenseInitInfoUtil:getFilePath()) then
             return licenseInitInfoUtil:read()
         else
-            print("No Licence File at: " .. tostring(licenseInitInfoUtil:getFilePath()))
+            print(require("allbinary_java").to_string("No Licence File at: ") .. require("allbinary_java").to_string(licenseInitInfoUtil:getFilePath()))
             return LicenseInitInfo.new()
         end
 end
@@ -84,17 +84,17 @@ end
 function PrintLicenseInitInfo:printInitInfo()
         local try_ok, try_error, try_value = pcall(function()
             local licenseInitInfo = self:getLicenseInitInfo()
-            print("License ID: " .. tostring(licenseInitInfo:getLicenseId()))
+            print(require("allbinary_java").to_string("License ID: ") .. require("allbinary_java").to_string(licenseInitInfo:getLicenseId()))
             local list = licenseInitInfo:getServerList()
             local size = list:size()
             for index = 0, size - 1 do
-                print("Lic Serv: " .. tostring(list:get(index)))
+                print(require("allbinary_java").to_string("Lic Serv: ") .. require("allbinary_java").to_string(list:get(index)))
             end
         end)
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-            io.write(tostring("Error: " .. tostring(e)))
+            io.write(tostring(require("allbinary_java").to_string("Error: ") .. require("allbinary_java").to_string(e)))
             print(debug.traceback(tostring(e)))
         end
 end

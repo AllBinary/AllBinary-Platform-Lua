@@ -187,7 +187,7 @@ function InsertCssValidationView:isValid()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                 self.logUtil:putF("Started Validation", self, self.commonStrings.IS_VALID)
             end
-            if isValid == true then
+            if rawequal(isValid, true) then
                 CustomizerUtil.getInstance():insert(self:getTransformInfoInterface(), self.styleValidationInterface)
             end
             do return "__jreturn", isValid end

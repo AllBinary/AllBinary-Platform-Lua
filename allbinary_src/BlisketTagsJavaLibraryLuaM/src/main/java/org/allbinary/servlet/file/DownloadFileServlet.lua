@@ -29,7 +29,7 @@ local function java_real(class)
 end
 
 -- local IOException = require("java.io.IOException")
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 local HashMap = java_lazy("java.util.HashMap")
 -- local ServletException = require("javax.servlet.ServletException")
 -- local HttpServlet = require("javax.servlet.http.HttpServlet")
@@ -186,7 +186,7 @@ function DownloadFileServlet:processRequest(request, response)
         local try_ok, try_error, try_value = pcall(function()
             BlisketServletUtil.getInstance():init(request)
             local requestPath = request:getRequestURI()
-            if requestPath == nil then
+            if rawequal(requestPath, nil) then
                 response:sendError(HttpServletResponse.SC_NOT_FOUND)
                 do return "__jreturn" end
             end
@@ -197,8 +197,8 @@ function DownloadFileServlet:processRequest(request, response)
             else
                 response:sendError(HttpServletResponse.SC_NOT_FOUND)
             end
-            local file = AbFile.createAbFile(tostring(URLGLOBALS.getWebappPath()) .. filePath)
-            if not file:exists() then
+            local file = AbFile.createAbFile(require("allbinary_java").to_string(URLGLOBALS.getWebappPath()) .. require("allbinary_java").to_string(filePath))
+            if not (file:exists()) then
                 response:sendError(HttpServletResponse.SC_NOT_FOUND)
                 do return "__jreturn" end
             end
@@ -208,7 +208,7 @@ function DownloadFileServlet:processRequest(request, response)
                 if AuthenticationHelperUtil.getInstance():isAuthorized(authenticationHelper, filePath) then
                     inputStream = CloudStreamUtil.getInstance():getFile(file)
                     local contentType = self:getServletContext():getMimeType(file:getName())
-                    if contentType == nil then
+                    if rawequal(contentType, nil) then
                         contentType = "application/octet-stream"
                     end
                     response:reset()
@@ -238,7 +238,7 @@ function DownloadFileServlet:processRequest(request, response)
         end
         do -- finally
             StreamUtil.getInstance():close(response:getOutputStream())
-            if not StreamUtil.getInstance():close(inputStream) then
+            if not (StreamUtil.getInstance():close(inputStream)) then
             end
         end
         if try_ok and try_error == "__jreturn" then return try_value end

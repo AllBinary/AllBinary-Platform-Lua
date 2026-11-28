@@ -151,7 +151,7 @@ end
 
 
 function MineWeaponResources.getInstance()
-        if MineWeaponResources.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(MineWeaponResources.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             MineWeaponResources.instance_f = MineWeaponResources.new()
         end
         return MineWeaponResources.instance_f

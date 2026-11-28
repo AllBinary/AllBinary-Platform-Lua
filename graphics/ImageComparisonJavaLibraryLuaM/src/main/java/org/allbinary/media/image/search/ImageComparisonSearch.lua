@@ -80,8 +80,8 @@ function ImageComparisonSearch:_init_fields()
     if self.isSameWidth == nil then self.isSameWidth = false end
     if self.pixelsThatMatch == nil then self.pixelsThatMatch = 0 end
     if self.pixelsIgnored == nil then self.pixelsIgnored = 0 end
-    if self.imageHeight == nil then self.imageHeight = nil end
-    if self.imageWidth == nil then self.imageWidth = nil end
+    if self.imageHeight == nil then self.imageHeight = 0 end
+    if self.imageWidth == nil then self.imageWidth = 0 end
     if self.tolerance == nil then self.tolerance = 0 end
     if self.nonMatchingPixelVector == nil then self.nonMatchingPixelVector = nil end
     if self.bufferedImages == nil then self.bufferedImages = nil end
@@ -97,7 +97,7 @@ function ImageComparisonSearch._jinit(self, bufferedImage, bufferedImage2, toler
         self:getBufferedImages()[2] = bufferedImage2
         self.imageHeight = bufferedImage:getHeight()
         self.imageWidth = bufferedImage:getWidth()
-        if bufferedImage:getHeight() ~= bufferedImage2:getHeight() then
+        if not rawequal(bufferedImage:getHeight(), bufferedImage2:getHeight()) then
             self.isSameHeight = false
             if self.imageHeight > bufferedImage2:getHeight() then
                 self.imageHeight = bufferedImage2:getHeight()
@@ -105,7 +105,7 @@ function ImageComparisonSearch._jinit(self, bufferedImage, bufferedImage2, toler
         else
             self.isSameHeight = true
         end
-        if bufferedImage:getWidth() ~= bufferedImage2:getWidth() then
+        if not rawequal(bufferedImage:getWidth(), bufferedImage2:getWidth()) then
             self.isSameWidth = false
             if self.imageWidth > bufferedImage2:getWidth() then
                 self.imageWidth = bufferedImage2:getWidth()
@@ -113,11 +113,11 @@ function ImageComparisonSearch._jinit(self, bufferedImage, bufferedImage2, toler
         else
             self.isSameWidth = true
         end
-        if not self.isSameWidth or not self.isSameHeight then
+        if not (self.isSameWidth) or not (self.isSameHeight) then
             local imageUtil = ImageUtil.getInstance()
             self.logUtil:putF("Images were not the same size? Most likely a resolution change.", self, self.commonStrings.CONSTRUCTOR)
-            self.logUtil:putF("1: " .. imageUtil:toString(bufferedImage), self, self.commonStrings.CONSTRUCTOR)
-            self.logUtil:putF("2: " .. imageUtil:toString(bufferedImage2), self, self.commonStrings.CONSTRUCTOR)
+            self.logUtil:putF(require("allbinary_java").to_string("1: ") .. require("allbinary_java").to_string(imageUtil:toString(bufferedImage)), self, self.commonStrings.CONSTRUCTOR)
+            self.logUtil:putF(require("allbinary_java").to_string("2: ") .. require("allbinary_java").to_string(imageUtil:toString(bufferedImage2)), self, self.commonStrings.CONSTRUCTOR)
         end
     return self
 end
@@ -130,7 +130,7 @@ end
 
 
 function ImageComparisonSearch:getMatchingPercent()
-        if self.matchingPercent == (-1 + 0.0) then
+        if rawequal(self.matchingPercent, (-1 + 0.0)) then
             self.matchingPercent = (self.pixelsThatMatch + 0.0) / ((self.imageWidth * self.imageHeight) + 0.0)
         end
         return self.matchingPercent
@@ -148,7 +148,7 @@ end
 
 
 function ImageComparisonSearch:toString()
-        return "ImageComparisonInfo: " .. " Number Of Matching Pixels: " .. tostring(self.pixelsThatMatch) .. "\nNumber Of Non-Matching Pixels: " .. tostring(self:getNonMatchingPixelVector():size()) .. "\nNumber Of Pixels Ignored: " .. tostring(self.pixelsIgnored) .. "\nMatching Percentage: " .. tostring(self:getMatchingPercent())
+        return require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("ImageComparisonInfo: ") .. require("allbinary_java").to_string(" Number Of Matching Pixels: ")) .. require("allbinary_java").to_string(self.pixelsThatMatch)) .. require("allbinary_java").to_string("\nNumber Of Non-Matching Pixels: ")) .. require("allbinary_java").to_string(self:getNonMatchingPixelVector():size())) .. require("allbinary_java").to_string("\nNumber Of Pixels Ignored: ")) .. require("allbinary_java").to_string(self.pixelsIgnored)) .. require("allbinary_java").to_string("\nMatching Percentage: ")) .. require("allbinary_java").to_string(self:getMatchingPercent())
 end
 ImageComparisonSearch.__tostring = function(self) return self:toString() end
 

@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local TiledLayer = require("javax.microedition.lcdui.game.TiledLayer")
+local TiledLayer = java_lazy("javax.microedition.lcdui.game.TiledLayer")
 local BasicColorFactory = java_lazy("org.allbinary.graphics.color.BasicColorFactory")
 local SmallIntegerSingletonFactory = java_lazy("org.allbinary.logic.math.SmallIntegerSingletonFactory")
 local AllBinaryTiledLayerFactoryInterface = java_lazy("org.allbinary.media.graphics.geography.map.racetrack.AllBinaryTiledLayerFactoryInterface")

@@ -30,7 +30,7 @@ end
 
 local ByteArrayOutputStream = java_lazy("java.io.ByteArrayOutputStream")
 -- local IOException = require("java.io.IOException")
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 -- local ServletException = require("javax.servlet.ServletException")
 -- local HttpServlet = require("javax.servlet.http.HttpServlet")
 -- local HttpServletRequest = require("javax.servlet.http.HttpServletRequest")
@@ -177,7 +177,7 @@ function CloudImageServlet:processRequest(request, response)
         local try_ok, try_error, try_value = pcall(function()
             BlisketServletUtil.getInstance():init(request)
             local requestURI = request:getRequestURI()
-            local file = AbFile.createAbFile(tostring(URLGLOBALS.getWebappPath()) .. requestURI)
+            local file = AbFile.createAbFile(require("allbinary_java").to_string(URLGLOBALS.getWebappPath()) .. require("allbinary_java").to_string(requestURI))
             inputStream = CloudStreamUtil.getInstance():getFile(file)
             local outputStream = require("java.io.ByteArrayOutputStream").new(8000)
             local byteArray = StreamUtil.getInstance():getByteArray(inputStream, outputStream, java_typed_array("B", java_new_array(0, 16384)))
@@ -193,7 +193,7 @@ function CloudImageServlet:processRequest(request, response)
         end
         do -- finally
             StreamUtil.getInstance():close(response:getOutputStream())
-            if not StreamUtil.getInstance():close(inputStream) then
+            if not (StreamUtil.getInstance():close(inputStream)) then
                 response:sendError(HttpServletResponse.SC_NOT_FOUND)
             end
         end

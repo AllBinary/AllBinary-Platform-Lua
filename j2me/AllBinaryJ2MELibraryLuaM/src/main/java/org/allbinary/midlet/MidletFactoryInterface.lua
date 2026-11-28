@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local MIDlet = require("javax.microedition.midlet.MIDlet")
+local MIDlet = java_lazy("javax.microedition.midlet.MIDlet")
 local AllBinaryMidlet = java_lazy("org.allbinary.midlet.AllBinaryMidlet")
 
 local function java_idiv(a, b)

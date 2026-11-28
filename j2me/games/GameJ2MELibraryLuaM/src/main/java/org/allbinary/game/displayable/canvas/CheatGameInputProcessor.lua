@@ -166,29 +166,29 @@ function CheatGameInputProcessor:update()
             for index = 0, size - 1 do
                 local anyType = list.objectArray[index + 1]
                 local key = GameKeyEventUtil.getKey(anyType)
-                if key == self.gameKeyFactory.LEVEL_DOWN:getId() then
+                if rawequal(key, self.gameKeyFactory.LEVEL_DOWN:getId()) then
                     CheatGameInputProcessor.inputProcessor:strafeLeft()
                     break
-                elseif key == self.gameKeyFactory.LEVEL_UP:getId() then
+                elseif rawequal(key, self.gameKeyFactory.LEVEL_UP:getId()) then
                     CheatGameInputProcessor.inputProcessor:strafeRight()
                     break
                 end
-                if key == self.gameKeyFactory.LEFT:getId() then
+                if rawequal(key, self.gameKeyFactory.LEFT:getId()) then
                     CheatGameInputProcessor.inputProcessor:left()
                     break
-                elseif key == self.gameKeyFactory.RIGHT:getId() then
+                elseif rawequal(key, self.gameKeyFactory.RIGHT:getId()) then
                     CheatGameInputProcessor.inputProcessor:right()
                     break
-                elseif key == self.gameKeyFactory.UP:getId() then
+                elseif rawequal(key, self.gameKeyFactory.UP:getId()) then
                     CheatGameInputProcessor.inputProcessor:up()
                     break
-                elseif key == self.gameKeyFactory.DOWN:getId() then
+                elseif rawequal(key, self.gameKeyFactory.DOWN:getId()) then
                     CheatGameInputProcessor.inputProcessor:down()
                     break
-                elseif key == self.gameKeyFactory.KEY_NUM1:getId() then
+                elseif rawequal(key, self.gameKeyFactory.KEY_NUM1:getId()) then
                     CheatGameInputProcessor.inputProcessor:special1(gameLayerManager, GameKeyEvent.NONE)
                     break
-                elseif key == self.gameKeyFactory.KEY_NUM3:getId() then
+                elseif rawequal(key, self.gameKeyFactory.KEY_NUM3:getId()) then
                     CheatGameInputProcessor.inputProcessor:special2(gameLayerManager, GameKeyEvent.NONE)
                     break
                 end

@@ -119,7 +119,7 @@ end
 function CapturedImageInputOutput:save_j1(frame)
         local commonStrings = CommonStrings.getInstance()
         local capturedBufferedImageCacheable = ((CapturedBufferedImagesCacheSingleton.getInstance()):get(frame))
-        self.logUtil:putF(("Saving: " .. tostring(capturedBufferedImageCacheable)), self, commonStrings.SAVE)
+        self.logUtil:putF((require("allbinary_java").to_string("Saving: ") .. require("allbinary_java").to_string(tostring(capturedBufferedImageCacheable))), self, commonStrings.SAVE)
         self:save(capturedBufferedImageCacheable:getBufferedImage(), frame)
 end
 
@@ -132,7 +132,7 @@ function CapturedImageInputOutput:save_j2(bufferedImage, frame)
         filePathStringBuffer:append(LongUtil.fillIn(tostring(frame)))
         filePathStringBuffer:append(MediaDataFactory.getInstance().JPG:getExtension())
         local filePath = tostring(filePathStringBuffer)
-        self.logUtil:putF(("Image File Path: " .. filePath .. imageUtil:toString(bufferedImage)), self, commonStrings.SAVE)
+        self.logUtil:putF((require("allbinary_java").to_string(require("allbinary_java").to_string("Image File Path: ") .. require("allbinary_java").to_string(filePath)) .. require("allbinary_java").to_string(imageUtil:toString(bufferedImage))), self, commonStrings.SAVE)
         local imagePersistanceUtil = ImagePersistanceUtil.getInstance()
         imagePersistanceUtil:saveWithImageIO(filePath, bufferedImage)
 end

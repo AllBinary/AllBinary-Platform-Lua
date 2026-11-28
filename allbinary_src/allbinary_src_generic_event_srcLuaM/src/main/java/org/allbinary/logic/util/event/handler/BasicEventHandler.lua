@@ -114,14 +114,14 @@ end
 
 
 function BasicEventHandler:addListenerSingleThreaded(eventListenerInterface)
-        if not self.eventListenerInterfaceList:contains(eventListenerInterface) then
+        if not (self.eventListenerInterfaceList:contains(eventListenerInterface)) then
             self.eventListenerInterfaceList:add(eventListenerInterface)
         end
 end
 
 
 function BasicEventHandler:addListenerInterface(eventListenerInterface)
-        if not self.eventListenerInterfaceList:contains(eventListenerInterface) then
+        if not (self.eventListenerInterfaceList:contains(eventListenerInterface)) then
             self.eventListenerInterfaceList:add(eventListenerInterface)
         end
 end

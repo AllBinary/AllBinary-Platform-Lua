@@ -55,7 +55,7 @@ AnalogControllerHelper.className = "AnalogControllerHelper"
 AnalogControllerHelper.javaClassName = "org.allbinary.android.input.motion.AnalogControllerHelper"
 
 function AnalogControllerHelper:_init_fields()
-    if self.reduceTimeFactor == nil then self.reduceTimeFactor = nil end
+    if self.reduceTimeFactor == nil then self.reduceTimeFactor = 0 end
     self.SCALE_VALUE = AnalogControllerConfigurationFactory.getInstance().SCALE_VALUE
     self.rightTimeElapsedHelper = TimeDelayHelper.new(0)
     self.leftTimeElapsedHelper = TimeDelayHelper.new(0)

@@ -110,7 +110,7 @@ end
 
 -- throws Exception
 function LicenseInitInfoUtil:write(initData)
-        if self.filePath == self.stringUtil.EMPTY_STRING then
+        if rawequal(self.filePath, self.stringUtil.EMPTY_STRING) then
             self.filePath = URLGLOBALS.getMainPath() + PATH_GLOBALS.getInstance().INIT_PATH
         end
         local try_ok, try_error, try_value = pcall(function()
@@ -129,7 +129,7 @@ function LicenseInitInfoUtil:write(initData)
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-            self.logUtil:put("Command Failed: " .. self.INITFILENAME, self, "write", e)
+            self.logUtil:put(require("allbinary_java").to_string("Command Failed: ") .. require("allbinary_java").to_string(self.INITFILENAME), self, "write", e)
             FileStreamFactory.getInstance():delete(self.filePath, self.INITFILENAME)
             error(e, 0)
         end
@@ -145,14 +145,14 @@ end
 -- throws Exception
 function LicenseInitInfoUtil:readAgain(initializeCounter)
         local METHOD_NAME = "readAgain"
-        if self.filePath == self.stringUtil.EMPTY_STRING then
+        if rawequal(self.filePath, self.stringUtil.EMPTY_STRING) then
             self.filePath = URLGLOBALS.getMainPath() + PATH_GLOBALS.getInstance().INIT_PATH
         end
         local try_ok, try_error, try_value = pcall(function()
-            self.logUtil:putF("LicenseInitInfo File: " .. self.INITFILENAME, self, METHOD_NAME)
+            self.logUtil:putF(require("allbinary_java").to_string("LicenseInitInfo File: ") .. require("allbinary_java").to_string(self.INITFILENAME), self, METHOD_NAME)
             local fileStreamFactory = FileStreamFactory.getInstance()
             local iFile = fileStreamFactory:getFileInputStreamInstance(self.filePath, self.INITFILENAME)
-            if iFile ~= nil then
+            if not rawequal(iFile, nil) then
                 local iData = AbDataInputStream.new(iFile)
                 local initInfo = LicenseInitInfo.new()
                 local decodedByteArray = DatabaseEncoder.decode(iData:readUTF())
@@ -165,25 +165,25 @@ function LicenseInitInfoUtil:readAgain(initializeCounter)
                     decodedByteArray = DatabaseEncoder.decode(iData:readUTF())
                     licenseServerDecoded = string.char(table.unpack(decodedByteArray))
                     initInfo:setServer(WeakCrypt.new(3):decrypt(licenseServerDecoded), index)
-                    self.logUtil:putF(NEXT_FILE .. tostring(initInfo:getServer(index)), self, METHOD_NAME)
+                    self.logUtil:putF(require("allbinary_java").to_string(NEXT_FILE) .. require("allbinary_java").to_string(initInfo:getServer(index)), self, METHOD_NAME)
                 end
                 do return "__jreturn", initInfo end
             else
-                error(require("java.lang.Exception").new("Could Not Load License InitInfo: " .. self.INITFILENAME), 0)
+                error(require("java.lang.Exception").new(require("allbinary_java").to_string("Could Not Load License InitInfo: ") .. require("allbinary_java").to_string(self.INITFILENAME)), 0)
             end
         end)
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local try_ok, try_error, try_value = pcall(function()
-                self.logUtil:put("Command Failed: " .. self.INITFILENAME, self, METHOD_NAME, e)
+                self.logUtil:put(require("allbinary_java").to_string("Command Failed: ") .. require("allbinary_java").to_string(self.INITFILENAME), self, METHOD_NAME, e)
             end)
             if not try_ok then
                 local e2 = try_error
                 if type(e2) ~= "table" then e2 = require("java.lang.RuntimeException").new(tostring(e2)) end
-                self.logUtil:put("LicenseInitInfo Read Retry: " .. self.INITFILENAME, self, "readAgain()", e2)
+                self.logUtil:put(require("allbinary_java").to_string("LicenseInitInfo Read Retry: ") .. require("allbinary_java").to_string(self.INITFILENAME), self, "readAgain()", e2)
             end
-            error(require("java.lang.Exception").new("LicenseInitInfo Read Error: " .. self.INITFILENAME), 0)
+            error(require("java.lang.Exception").new(require("allbinary_java").to_string("LicenseInitInfo Read Error: ") .. require("allbinary_java").to_string(self.INITFILENAME)), 0)
         end
         if try_ok and try_error == "__jreturn" then return try_value end
 end

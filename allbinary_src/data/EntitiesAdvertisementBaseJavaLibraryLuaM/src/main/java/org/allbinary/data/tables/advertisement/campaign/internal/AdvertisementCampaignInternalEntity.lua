@@ -209,7 +209,7 @@ function AdvertisementCampaignInternalEntity:getCampaignsInStore(storeName)
         local size = hashMapVector:size()
         for index = 0, size - 1 do
             local hashMap = hashMapVector:get(index)
-            if hashMap ~= nil then
+            if not rawequal(hashMap, nil) then
                 vector:add(AdvertisementCampaign.new(hashMap))
             end
         end
@@ -223,7 +223,7 @@ function AdvertisementCampaignInternalEntity:get(storeName, name)
         keysAndValues:put(StoreFrontData.getInstance().NAME, storeName)
         keysAndValues:put(AdvertisementCampaignData.getInstance().NAME, name)
         local hashMap = java_super(AbSqlBean, "getRow", 1)(self, keysAndValues)
-        if hashMap ~= nil then
+        if not rawequal(hashMap, nil) then
             return AdvertisementCampaign.new(hashMap)
         else
             return nil

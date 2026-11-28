@@ -28,9 +28,9 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local Image = require("javax.microedition.lcdui.Image")
--- local NullImage = require("javax.microedition.lcdui.NullImage")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local NullImage = java_lazy("javax.microedition.lcdui.NullImage")
 local DisposalUtil = java_lazy("org.allbinary.DisposalUtil")
 local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
@@ -214,7 +214,7 @@ end
 
 function AllBinaryJ2SEImageRotationAnimation:setBasicColorP(basicColor)
         local changed = false
-        if self:getBasicColorP() == nil or math.tointeger(self:getBasicColorP() // 1) ~= math.tointeger(basicColor // 1) then
+        if rawequal(self:getBasicColorP(), nil) or not rawequal(math.tointeger(self:getBasicColorP() // 1), math.tointeger(basicColor // 1)) then
             changed = true
         end
         java_super(ImageBaseRotationAnimation, "setBasicColorP", 1)(self, basicColor)
@@ -228,7 +228,7 @@ java_overload(AllBinaryJ2SEImageRotationAnimation, "setBasicColorP", 1, function
 
 function AllBinaryJ2SEImageRotationAnimation:changeBasicColor(basicColor)
         local changed = false
-        if self:getChangeBasicColor() == nil or math.tointeger(self:getChangeBasicColor() // 1) ~= math.tointeger(basicColor // 1) then
+        if rawequal(self:getChangeBasicColor(), nil) or not rawequal(math.tointeger(self:getChangeBasicColor() // 1), math.tointeger(basicColor // 1)) then
             changed = true
         end
         java_super(ImageBaseRotationAnimation, "changeBasicColor", 1)(self, basicColor)
@@ -242,7 +242,7 @@ java_overload(AllBinaryJ2SEImageRotationAnimation, "changeBasicColor", 1, functi
 
 function AllBinaryJ2SEImageRotationAnimation:setAlpha(alpha)
         local changed = false
-        if self.alphaP ~= alpha then
+        if not rawequal(self.alphaP, alpha) then
             changed = true
         end
         java_super(ImageBaseRotationAnimation, "setAlpha", 1)(self, alpha)
@@ -257,7 +257,7 @@ java_overload(AllBinaryJ2SEImageRotationAnimation, "setAlpha", 1, function(java_
 function AllBinaryJ2SEImageRotationAnimation:setScale(scaleX, scaleY)
         self.scaleX = scaleX
         self.scaleY = scaleY
-        if self.scaleX ~= self.lastScaleX or self.scaleY ~= self.lastScaleY then
+        if not rawequal(self.scaleX, self.lastScaleX) or not rawequal(self.scaleY, self.lastScaleY) then
             self.scaleProcessor:update(self.realOriginalImage, self.originalImageArray, self.twoImages, self.bufferedImageIndex, self.scaleX, self.scaleY, self.maxScaleX, self.maxScaleY)
             self:updateImage()
         end
@@ -309,7 +309,7 @@ java_overload(AllBinaryJ2SEImageRotationAnimation, "setFrame", 1, function(java_
 
 function AllBinaryJ2SEImageRotationAnimation:swap()
         self.imageToShow = self.twoImages[self.bufferedImageIndex + 1]
-        if self.bufferedImageIndex == 0 then
+        if rawequal(self.bufferedImageIndex, 0) then
             self.bufferedImageIndex = 1
         else
             self.bufferedImageIndex = 0

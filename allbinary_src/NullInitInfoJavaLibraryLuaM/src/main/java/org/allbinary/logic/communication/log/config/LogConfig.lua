@@ -95,7 +95,7 @@ LogConfig.className = "LogConfig"
 LogConfig.javaClassName = "org.allbinary.logic.communication.log.config.LogConfig"
 
 function LogConfig:_init_fields()
-    if self.isEnabled_f == nil then self.isEnabled_f = nil end
+    if self.isEnabled_f == nil then self.isEnabled_f = false end
     if self.name_f == nil then self.name_f = nil end
     if self.description == nil then self.description = nil end
     if self.path == nil then self.path = nil end

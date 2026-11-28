@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 local AngleInfo = java_lazy("org.allbinary.math.AngleInfo")
 local ImageArrayBaseRotationAnimation = require("org.allbinary.animation.image.ImageArrayBaseRotationAnimation")
@@ -190,7 +190,7 @@ end
 function ImageArrayRotationAnimation:initImageArray(imageArray, angleInfo, totalAngle)
         self.expectedTotalFrames = totalAngle / self.angleInfo:getAngleIncrementInfo():getAngleIncrement()
         self.angleInfo:adjustAngle(0)
-        if self.expectedTotalFrames ~= self:getSize() then
+        if not rawequal(self.expectedTotalFrames, self:getSize()) then
             error(require("java.lang.Exception").new("Wrong Number of Frames"), 0)
         end
 end

@@ -75,7 +75,7 @@ FixedPoint.className = "FixedPoint"
 FixedPoint.javaClassName = "org.allbinary.animation.FixedPoint"
 
 function FixedPoint:_init_fields()
-    self.ONE = 1 << 16
+    self.ONE = (((((1) << ((16) & 31)) + 0x80000000) & 0xffffffff) - 0x80000000)
 end
 
 function FixedPoint._jinit(self)

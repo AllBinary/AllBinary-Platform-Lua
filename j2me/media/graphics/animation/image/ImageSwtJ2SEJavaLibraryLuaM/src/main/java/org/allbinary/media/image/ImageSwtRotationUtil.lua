@@ -102,7 +102,7 @@ end
 
 
 function ImageSwtRotationUtil:getRotatedImage(bufferedImage, totalAngle)
-        if not self.features:isFeature(self.gameFeatureFactory.POST_IMAGE_LOADING_MODIFICATION) then
+        if not (self.features:isFeature(self.gameFeatureFactory.POST_IMAGE_LOADING_MODIFICATION)) then
             self.logUtil:putF(self.NO_COPY, self, self.commonStrings.CONSTRUCTOR)
             return bufferedImage
         end
@@ -111,7 +111,7 @@ end
 
 
 function ImageSwtRotationUtil:getRotatedImage2(bufferedImage, newBufferedImage, gc, angle)
-        if not self.features:isFeature(self.gameFeatureFactory.POST_IMAGE_LOADING_MODIFICATION) then
+        if not (self.features:isFeature(self.gameFeatureFactory.POST_IMAGE_LOADING_MODIFICATION)) then
             self.logUtil:putF(self.NO_COPY, self, self.commonStrings.CONSTRUCTOR)
             return bufferedImage
         end
@@ -149,7 +149,7 @@ function ImageSwtRotationUtil:createSpriteImage(bufferedImageArray)
             columns = size
         end
         rows = (java_idiv(size, columns))
-        if math.fmod(size, columns) ~= 0 then
+        if not rawequal(math.fmod(size, columns), 0) then
             rows = rows + 1
         end
         local firstBufferedImage = bufferedImageArray[1]
@@ -162,7 +162,7 @@ function ImageSwtRotationUtil:createSpriteImage(bufferedImageArray)
         local rowIndex = 0
         local nextBufferedImage = nil
         for index = 0, size - 1 do
-            if java_idiv(index, 9) ~= 0 and math.fmod(index, 9) == 0 then
+            if not rawequal(java_idiv(index, 9), 0) and rawequal(math.fmod(index, 9), 0) then
                 rowIndex = rowIndex + 1
                 columnIndex = 0
             end

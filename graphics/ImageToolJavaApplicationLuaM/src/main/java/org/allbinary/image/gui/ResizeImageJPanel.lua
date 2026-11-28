@@ -193,7 +193,7 @@ function ResizeImageJPanel._jinit(self, imageProcessorInput)
         end
         self.jComboBox1:setModel(DefaultComboBoxModel.new(numberStringArray))
         local araster = self.imageProcessorInput:getBufferedImageArray()[1]:getAlphaRaster()
-        if araster == nil then
+        if rawequal(araster, nil) then
             print("there is no Alpha channel!!!!!!!!!")
         else
             print("Alpha channel found !")
@@ -210,29 +210,30 @@ end
 
 function ResizeImageJPanel:process()
         ;(function()
-            local o = Thread.new and Thread.new() or setmetatable({}, {__index = Thread})
+            local java_outer_self = self
+        local o = Thread.new and Thread.new() or setmetatable({}, {__index = Thread})
             
 
             function o:run()
                 local logUtil = LogUtil.getInstance()
                 local try_ok, try_error, try_value = pcall(function()
                     local imageUtil = ImageUtil.getInstance()
-                    local percent = tostring(self.jComboBox1:getSelectedItem())
-                    local percentAsFloat = tonumber(self.floatPercentJTextField:getText())
-                    local imageProcessorInput = self:getImageProcessorInput()
+                    local percent = tostring(java_outer_self.jComboBox1:getSelectedItem())
+                    local percentAsFloat = tonumber(java_outer_self.floatPercentJTextField:getText())
+                    local imageProcessorInput = java_outer_self:getImageProcessorInput()
                     local files = imageProcessorInput:getFiles()
                     local generatedBufferedImageArray = nil
-                    if math.tointeger(percentAsFloat // 1) ~= -1 then
+                    if not rawequal(math.tointeger(percentAsFloat // 1), -1) then
                         generatedBufferedImageArray = imageUtil:createBufferedImage2(imageProcessorInput:getBufferedImageArray(), percentAsFloat, true)
-                    elseif math.tointeger(percent // 1) ~= -1 then
+                    elseif not rawequal(math.tointeger(percent // 1), -1) then
                         generatedBufferedImageArray = imageUtil:createBufferedImageForResize(imageProcessorInput:getBufferedImageArray(), percent, true)
                     else
-                        local width = tostring(self.jTextField1:getText())
-                        local height = tostring(self.jTextField2:getText())
+                        local width = tostring(java_outer_self.jTextField1:getText())
+                        local height = tostring(java_outer_self.jTextField2:getText())
                         generatedBufferedImageArray = imageUtil:createBufferedImage3(imageProcessorInput:getBufferedImageArray(), width, height, true)
                     end
                     local araster = generatedBufferedImageArray[1]:getAlphaRaster()
-                    if araster == nil then
+                    if rawequal(araster, nil) then
                         print("No Alpha Channel In Result")
                     else
                         print("Found Alpha Channel In Result")
@@ -241,7 +242,7 @@ function ResizeImageJPanel:process()
                     for index = 0, (generatedBufferedImageArray.n or #generatedBufferedImageArray) - 1 do
                         imagePersistanceUtil:saveWithBatik(FileWrapperUtil.wrapFile(files[index + 1]), generatedBufferedImageArray[index + 1])
                     end
-                    self:getParent():repaint()
+                    java_outer_self:getParent():repaint()
                 end)
                 if not try_ok then
                     local e = try_error
@@ -258,22 +259,23 @@ java_overload(ResizeImageJPanel, "process", 0)
 
 function ResizeImageJPanel:update()
         ;(function()
-            local o = Thread.new and Thread.new() or setmetatable({}, {__index = Thread})
+            local java_outer_self = self
+        local o = Thread.new and Thread.new() or setmetatable({}, {__index = Thread})
             
 
             function o:run()
                 local logUtil = LogUtil.getInstance()
                 local try_ok, try_error, try_value = pcall(function()
-                    local imageProcessorInput = self:getImageProcessorInput()
+                    local imageProcessorInput = java_outer_self:getImageProcessorInput()
                     local size = (imageProcessorInput:getBufferedImageArray().n or #imageProcessorInput:getBufferedImageArray())
                     local bufferedImageArray = imageProcessorInput:getBufferedImageArray()
                     local bufferedImage = nil
                     for index = 0, size - 1 do
                         bufferedImage = bufferedImageArray[1]
-                        self.jTextField1:setText(tostring(bufferedImage:getWidth()))
-                        self.jTextField2:setText(tostring(bufferedImage:getHeight()))
+                        java_outer_self.jTextField1:setText(tostring(bufferedImage:getWidth()))
+                        java_outer_self.jTextField2:setText(tostring(bufferedImage:getHeight()))
                     end
-                    self:getParent():repaint()
+                    java_outer_self:getParent():repaint()
                 end)
                 if not try_ok then
                     local e = try_error
@@ -290,22 +292,23 @@ java_overload(ResizeImageJPanel, "update", 0)
 
 function ResizeImageJPanel:updateFor16Above()
         ;(function()
-            local o = Thread.new and Thread.new() or setmetatable({}, {__index = Thread})
+            local java_outer_self = self
+        local o = Thread.new and Thread.new() or setmetatable({}, {__index = Thread})
             
 
             function o:run()
                 local logUtil = LogUtil.getInstance()
                 local try_ok, try_error, try_value = pcall(function()
-                    local imageProcessorInput = self:getImageProcessorInput()
+                    local imageProcessorInput = java_outer_self:getImageProcessorInput()
                     local size = (imageProcessorInput:getBufferedImageArray().n or #imageProcessorInput:getBufferedImageArray())
                     local bufferedImageArray = imageProcessorInput:getBufferedImageArray()
                     local bufferedImage = nil
                     for index = 0, size - 1 do
                         bufferedImage = bufferedImageArray[1]
-                        self.jTextField1:setText(tostring(bufferedImage:getWidth() / 16 * 16))
-                        self.jTextField2:setText(tostring(bufferedImage:getHeight() / 16 * 16))
+                        java_outer_self.jTextField1:setText(tostring(bufferedImage:getWidth() / 16 * 16))
+                        java_outer_self.jTextField2:setText(tostring(bufferedImage:getHeight() / 16 * 16))
                     end
-                    self:getParent():repaint()
+                    java_outer_self:getParent():repaint()
                 end)
                 if not try_ok then
                     local e = try_error
@@ -322,22 +325,23 @@ java_overload(ResizeImageJPanel, "updateFor16Above", 0)
 
 function ResizeImageJPanel:updateFor16Below()
         ;(function()
-            local o = Thread.new and Thread.new() or setmetatable({}, {__index = Thread})
+            local java_outer_self = self
+        local o = Thread.new and Thread.new() or setmetatable({}, {__index = Thread})
             
 
             function o:run()
                 local logUtil = LogUtil.getInstance()
                 local try_ok, try_error, try_value = pcall(function()
-                    local imageProcessorInput = self:getImageProcessorInput()
+                    local imageProcessorInput = java_outer_self:getImageProcessorInput()
                     local size = (imageProcessorInput:getBufferedImageArray().n or #imageProcessorInput:getBufferedImageArray())
                     local bufferedImageArray = imageProcessorInput:getBufferedImageArray()
                     local bufferedImage = nil
                     for index = 0, size - 1 do
                         bufferedImage = bufferedImageArray[1]
-                        self.jTextField1:setText(tostring(((bufferedImage:getWidth() / 16) + 1) * 16))
-                        self.jTextField2:setText(tostring(((bufferedImage:getHeight() / 16) + 1) * 16))
+                        java_outer_self.jTextField1:setText(tostring(((bufferedImage:getWidth() / 16) + 1) * 16))
+                        java_outer_self.jTextField2:setText(tostring(((bufferedImage:getHeight() / 16) + 1) * 16))
                     end
-                    self:getParent():repaint()
+                    java_outer_self:getParent():repaint()
                 end)
                 if not try_ok then
                     local e = try_error
@@ -380,11 +384,13 @@ function ResizeImageJPanel:initComponents()
         self.jComboBox1:setModel(DefaultComboBoxModel.new({"Item 1", "Item 2", "Item 3", "Item 4"}))
         self.aboveJButton:setText("Process")
         self.aboveJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:aboveJButtonActionPerformed(evt)
+                ;(self.aboveJButtonActionPerformed and self or java_outer_self):aboveJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -393,11 +399,13 @@ function ResizeImageJPanel:initComponents()
         self.jLabel3:setText("Height:")
         self.updateJButton:setText("Update")
         self.updateJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:updateJButtonActionPerformed(evt)
+                ;(self.updateJButtonActionPerformed and self or java_outer_self):updateJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -406,22 +414,26 @@ function ResizeImageJPanel:initComponents()
         self.floatPercentJTextField:setMinimumSize(Dimension.new(120, 22))
         self.adjustFor16AboveJButton:setText("Adjust for 16 Above")
         self.adjustFor16AboveJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:adjustFor16AboveJButtonActionPerformed(evt)
+                ;(self.adjustFor16AboveJButtonActionPerformed and self or java_outer_self):adjustFor16AboveJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.adjustFor16BelowJButton:setText("Adjust for 16 Below")
         self.adjustFor16BelowJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:adjustFor16BelowJButtonActionPerformed(evt)
+                ;(self.adjustFor16BelowJButtonActionPerformed and self or java_outer_self):adjustFor16BelowJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o

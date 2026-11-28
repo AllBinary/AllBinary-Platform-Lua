@@ -190,7 +190,7 @@ function Waypoint2SelectedLogHelper:processPossibleTarget(associatedAdvancedRTSG
             stringBuffer:append(self.CURRENT_TARGET_DESTROYED)
             stringBuffer:appendboolean(isCurrentTargetDestroyed)
             stringBuffer:append(self.CURRENT_TARGET_NOT_AVAILABLE)
-            stringBuffer:appendboolean((waypointBehaviorBase:getCurrentTargetLayerInterface() == nil))
+            stringBuffer:appendboolean((rawequal(waypointBehaviorBase:getCurrentTargetLayerInterface(), nil)))
             self.logUtil:putF(tostring(stringBuffer), self, self.PROCESS_POSSIBLE_TARGET)
         end
 end
@@ -390,7 +390,7 @@ function Waypoint2SelectedLogHelper:addWaypointFromUser(associatedAdvancedRTSGam
         stringBuffer:append(associatedAdvancedRTSGameLayer:getName())
         stringBuffer:append(" Adding Waypoint to Selected: ")
         stringBuffer:append(advancedRTSGameLayer:getName())
-        if advancedRTSGameLayer:getParentLayer() ~= nil then
+        if not rawequal(advancedRTSGameLayer:getParentLayer(), nil) then
             stringBuffer:append(" With Parent: ")
             stringBuffer:append(advancedRTSGameLayer:getParentLayer():getName())
         end

@@ -65,7 +65,7 @@ end
 
 
 function ParamsUtil.viewParams(params)
-        if params ~= nil then
+        if not rawequal(params, nil) then
             local stringBuffer = StringMaker.new()
             for index = 0, (params.n or #params) - 1 do
                 stringBuffer:append(" ")

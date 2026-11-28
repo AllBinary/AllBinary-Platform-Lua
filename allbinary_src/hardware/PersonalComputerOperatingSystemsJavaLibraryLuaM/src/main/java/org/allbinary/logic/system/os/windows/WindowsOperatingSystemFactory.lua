@@ -100,23 +100,23 @@ function WindowsOperatingSystemFactory:getOperatingSystemInstance()
             local operatingSystems = OperatingSystems.getInstance()
             local osName = SystemProperties.getInstance():getName()
             local operatingSystemInterface = nil
-            if ((osName < operatingSystems.WINDOWS_NT and -1) or (osName > operatingSystems.WINDOWS_NT and 1) or 0) == 0 then
+            if rawequal(((osName < operatingSystems.WINDOWS_NT and -1) or (osName > operatingSystems.WINDOWS_NT and 1) or 0), 0) then
                 operatingSystemInterface = WindowsOS.new()
-            elseif ((osName < operatingSystems.WINDOWS_10 and -1) or (osName > operatingSystems.WINDOWS_10 and 1) or 0) == 0 then
+            elseif rawequal(((osName < operatingSystems.WINDOWS_10 and -1) or (osName > operatingSystems.WINDOWS_10 and 1) or 0), 0) then
                 operatingSystemInterface = WindowsOS.new()
-            elseif ((osName < operatingSystems.WINDOWS_11 and -1) or (osName > operatingSystems.WINDOWS_11 and 1) or 0) == 0 then
+            elseif rawequal(((osName < operatingSystems.WINDOWS_11 and -1) or (osName > operatingSystems.WINDOWS_11 and 1) or 0), 0) then
                 operatingSystemInterface = WindowsOS.new()
-            elseif ((osName < operatingSystems.WINDOWS2000 and -1) or (osName > operatingSystems.WINDOWS2000 and 1) or 0) == 0 then
+            elseif rawequal(((osName < operatingSystems.WINDOWS2000 and -1) or (osName > operatingSystems.WINDOWS2000 and 1) or 0), 0) then
                 operatingSystemInterface = WindowsOS.new()
-            elseif ((osName < operatingSystems.WINDOWS_XP and -1) or (osName > operatingSystems.WINDOWS_XP and 1) or 0) == 0 then
+            elseif rawequal(((osName < operatingSystems.WINDOWS_XP and -1) or (osName > operatingSystems.WINDOWS_XP and 1) or 0), 0) then
                 operatingSystemInterface = WindowsOS.new()
-            elseif ((osName < operatingSystems.WINDOWS_VISTA and -1) or (osName > operatingSystems.WINDOWS_VISTA and 1) or 0) == 0 then
+            elseif rawequal(((osName < operatingSystems.WINDOWS_VISTA and -1) or (osName > operatingSystems.WINDOWS_VISTA and 1) or 0), 0) then
                 operatingSystemInterface = WindowsOS.new()
             else
                 if operatingSystems:isUnknownSpecificOSAllowed() then
                     operatingSystemInterface = WindowsOS.new()
                 else
-                    error(require("java.lang.Exception").new("Specific Windows OS Not Supported: " .. osName), 0)
+                    error(require("java.lang.Exception").new(require("allbinary_java").to_string("Specific Windows OS Not Supported: ") .. require("allbinary_java").to_string(osName)), 0)
                 end
             end
             do return "__jreturn", operatingSystemInterface end

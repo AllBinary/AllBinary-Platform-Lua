@@ -28,10 +28,10 @@ local function java_real(class)
     return class
 end
 
--- local GL = require("javax.microedition.khronos.opengles.GL")
--- local ChoiceGroupImageFactory = require("javax.microedition.lcdui.ChoiceGroupImageFactory")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local Image = require("javax.microedition.lcdui.Image")
+local GL = java_lazy("javax.microedition.khronos.opengles.GL")
+local ChoiceGroupImageFactory = java_lazy("javax.microedition.lcdui.ChoiceGroupImageFactory")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local OpenGLFeatureFactory = java_lazy("org.allbinary.graphics.opengles.OpenGLFeatureFactory")
 local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
 local PreResourceImageUtil = java_lazy("org.allbinary.image.PreResourceImageUtil")

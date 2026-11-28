@@ -139,7 +139,7 @@ function CssPropertyValues._new1(self, node)
         self.propertyValueVector = BasicArrayListD.new()
         local cssPropertyNodeVector = DomSearchHelper.getAllNodes(CssPropertyValueData.getInstance().NAME, node:getChildNodes())
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().STYLE) then
-            self.logUtil:putF("Number Of Properties: " .. tostring(cssPropertyNodeVector:size()), self, "CssProperties()")
+            self.logUtil:putF(require("allbinary_java").to_string("Number Of Properties: ") .. require("allbinary_java").to_string(cssPropertyNodeVector:size()), self, "CssProperties()")
         end
         local size = cssPropertyNodeVector:size()
         for index = 0, size - 1 do
@@ -147,7 +147,7 @@ function CssPropertyValues._new1(self, node)
             local valueNode = DomSearchHelper.getNode(DomData.VALUE, cssPropertyValueNode:getChildNodes())
             local propertyValue = DomNodeHelper.getTextNodeValue(valueNode)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().STYLE) then
-                self.logUtil:putF("Property Value: " .. propertyValue, self, "CssProperties()")
+                self.logUtil:putF(require("allbinary_java").to_string("Property Value: ") .. require("allbinary_java").to_string(propertyValue), self, "CssProperties()")
             end
             local indexNode = DomSearchHelper.getNode(DomData.INDEX, cssPropertyValueNode:getChildNodes())
             local indexValue = DomNodeHelper.getTextNodeValue(indexNode)
@@ -191,7 +191,7 @@ end
 function CssPropertyValues:toXmlNode(document)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             local hashMap = self:toHashMap()
-            self.logUtil:putF("CssPropertyValues HashMap: " .. tostring(hashMap), self, "toXmlNode()")
+            self.logUtil:putF(require("allbinary_java").to_string("CssPropertyValues HashMap: ") .. require("allbinary_java").to_string(tostring(hashMap)), self, "toXmlNode()")
         end
         return ModDomHelper.createNameValueIndexNodes(document, CssPropertyData.getInstance().VALUES, CssPropertyValueData.getInstance().NAME, self.propertyValueVector)
 end

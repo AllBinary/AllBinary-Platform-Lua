@@ -131,7 +131,7 @@ setmetatable(LeftTouchInputToGameKeyEventAction, {__index = GameKeyCompleteMotio
 
 
 function LeftTouchInputToGameKeyEventAction.getInstance()
-        if LeftTouchInputToGameKeyEventAction.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(LeftTouchInputToGameKeyEventAction.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             LeftTouchInputToGameKeyEventAction.instance_f = LeftTouchInputToGameKeyEventAction.new()
         end
         return LeftTouchInputToGameKeyEventAction.instance_f

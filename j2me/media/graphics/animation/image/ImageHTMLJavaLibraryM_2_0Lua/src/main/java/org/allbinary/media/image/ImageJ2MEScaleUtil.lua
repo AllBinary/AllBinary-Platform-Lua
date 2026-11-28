@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local PlaynImmutableImage = java_lazy("org.microemu.device.playn.PlaynImmutableImage")
 local PlaynMutableImage = java_lazy("org.microemu.device.playn.PlaynMutableImage")

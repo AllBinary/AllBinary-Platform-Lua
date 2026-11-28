@@ -201,6 +201,8 @@ function StoreCategoryFactory:getRootInstance(...)
     local count = select("#", ...)
     if count == 0 then return self:getRootInstance_j0(...) end
     if count == 1 then return self:getRootInstance_j1(...) end
+    local parent = getmetatable(StoreCategoryFactory).__index
+    if parent.getRootInstance then return parent.getRootInstance(self, ...) end
     error("No method getRootInstance takes " .. count .. " arguments")
 end
 StoreCategoryFactory.getRootInstance__jdispatcher = StoreCategoryFactory.getRootInstance

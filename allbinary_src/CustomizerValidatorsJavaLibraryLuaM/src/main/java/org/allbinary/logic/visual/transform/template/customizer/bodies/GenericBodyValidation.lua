@@ -213,11 +213,11 @@ function GenericBodyValidation:isValid()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                 self.logUtil:putF(self.commonStrings.START, self, self.commonStrings.IS_VALID)
             end
-            if not StringValidationUtil.getInstance():isValidNotRequired(self.body, BodyData.getInstance().MIN, AbSqlData.MAXBLOB) then
+            if not (StringValidationUtil.getInstance():isValidNotRequired(self.body, BodyData.getInstance().MIN, AbSqlData.MAXBLOB)) then
                 isValid = false
             end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("BodyValidation: " .. tostring(isValid), self, self.commonStrings.IS_VALID)
+                self.logUtil:putF(require("allbinary_java").to_string("BodyValidation: ") .. require("allbinary_java").to_string(isValid), self, self.commonStrings.IS_VALID)
             end
             do return "__jreturn", isValid end
         end)

@@ -160,7 +160,7 @@ function UpgradeDowngradeTouchButtonsBuilder:getList()
             local touchButtonLocationHelper = TouchButtonLocationHelper.new()
             local cellPositionFactory = CellPositionFactory.getInstance()
             local basicTouchButtonCellPositionFactory = BasicTouchButtonCellPositionFactory.new()
-            if basicTouchButtonCellPositionFactory.SECOND_FROM_TOP_LEFT ~= cellPositionFactory.NONE and basicTouchButtonCellPositionFactory.SECOND_FROM_TOP_RIGHT ~= cellPositionFactory.NONE then
+            if not rawequal(basicTouchButtonCellPositionFactory.SECOND_FROM_TOP_LEFT, cellPositionFactory.NONE) and not rawequal(basicTouchButtonCellPositionFactory.SECOND_FROM_TOP_RIGHT, cellPositionFactory.NONE) then
                 local commonButtons = CommonButtons.getInstance()
                 local UP = TouchButton.createButton(BasicTouchInputFactory.getInstance().SPECIAL_BUTTON_TWO, TouchButtonUpgradeResource.getInstance(), commonButtons.NORMAL_BUTTON, basicTouchButtonCellPositionFactory.SECOND_FROM_TOP_LEFT, touchButtonLocationHelper:getColumnsRemainderHalf(), touchButtonLocationHelper:getRowsRemainderHalf())
                 local DOWN = TouchButton.createButton(BasicTouchInputFactory.getInstance().SPECIAL_BUTTON_ONE, TouchButtonDowngradeResource.getInstance(), commonButtons.NORMAL_BUTTON, basicTouchButtonCellPositionFactory.SECOND_FROM_TOP_RIGHT, touchButtonLocationHelper:getColumnsRemainderHalf(), touchButtonLocationHelper:getRowsRemainderHalf())

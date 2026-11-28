@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local J2MEUtil = java_lazy("org.allbinary.J2MEUtil")
 local ExplosionBasicSound = java_lazy("org.allbinary.ag.weapon.media.audio.ExplosionBasicSound")
 local Animation = java_lazy("org.allbinary.animation.Animation")
@@ -277,7 +277,7 @@ function UnitLayer:_init_fields()
     self.layerDistanceUtil = LayerDistanceUtil.getInstance()
     self.angleFactory = AngleFactory.getInstance()
     self.cellPositionFactory = CellPositionFactory.getInstance()
-    if self.maxResourceLoad == nil then self.maxResourceLoad = nil end
+    if self.maxResourceLoad == nil then self.maxResourceLoad = 0 end
     if self.vehicleProperties == nil then self.vehicleProperties = nil end
     self.accelerationBasicDecimal = BasicDecimal.new(1600)
     self.decelerationBasicDecimal = BasicDecimal.new(-1000)
@@ -414,7 +414,7 @@ function UnitLayer:updateSensorGeographicMapCellPositionList()
             for index = lastColumn - 1, firstColumn, -1 do
                 for index2 = lastRow - 1, firstRow, -1 do
                     local geographicMapCellPosition = geographicMapCellPositionFactory:getAt(index, index2)
-                    if not self.sensorGeographicMapCellPositionList:contains(geographicMapCellPosition) then
+                    if not (self.sensorGeographicMapCellPositionList:contains(geographicMapCellPosition)) then
                         self.sensorGeographicMapCellPositionList:add(geographicMapCellPosition)
                     end
                 end
@@ -495,7 +495,7 @@ java_overload(UnitLayer, "init", 2, function(java_a1, java_a2) return true and (
 function UnitLayer:onMovement(trackingEvent)
         local try_ok, try_error, try_value = pcall(function()
             local layerInterface = trackingEvent:getLayerInterface()
-            if layerInterface:getGroupInterface()[1] ~= self:getGroupInterface()[1] then
+            if not rawequal(layerInterface:getGroupInterface()[1], self:getGroupInterface()[1]) then
                 self:getUnitWaypointBehavior():getPossibleTargetList():add(layerInterface)
                 layerInterface:onMovementFound(self:getTrackingEvent())
             end
@@ -512,7 +512,7 @@ java_overload(UnitLayer, "onMovement", 1, function(java_a1) return true and (jav
 -- throws Exception
 function UnitLayer:onMovementFound(trackingEvent)
         local layerInterface = trackingEvent:getLayerInterface()
-        if layerInterface:getGroupInterface()[1] ~= self:getGroupInterface()[1] then
+        if not rawequal(layerInterface:getGroupInterface()[1], self:getGroupInterface()[1]) then
             self:getUnitWaypointBehavior():getPossibleTargetList():add(layerInterface)
         end
 end
@@ -534,12 +534,12 @@ java_overload(UnitLayer, "initRangeHack", 0)
 
 -- throws Exception
 function UnitLayer:processBuiltTick(allBinaryLayerManager)
-        if not self:getHealthInterface():isAlive() then
+        if not (self:getHealthInterface():isAlive()) then
             if self:isReadyForExplosion() then
                 local currentFrame = self.destroyAnimationInterface:getFrame()
                 local size = self.destroyAnimationInterface:getSize() - 1
-                if currentFrame == size then
-                    if not self:getHealthInterface():isAlive() then
+                if rawequal(currentFrame, size) then
+                    if not (self:getHealthInterface():isAlive()) then
                         self:setDestroyed(true)
                     end
                 else
@@ -574,8 +574,8 @@ function UnitLayer:getCurrentGeographicMapCellPosition()
         local geographicMapInterface = geographicMapCompositeInterface:getGeographicMapInterface()[1]
         local geographicMapCellPosition = geographicMapInterface:getCellPositionAtXY(self.x + self:getHalfWidth(), self.y + self:getHalfHeight())
         local raceTrackGeographicMap = geographicMapInterface
-        if not raceTrackGeographicMap:isValid(geographicMapCellPosition) then
-            error(require("java.lang.Exception").new("Position is not really on the map: " .. tostring(geographicMapCellPosition)), 0)
+        if not (raceTrackGeographicMap:isValid(geographicMapCellPosition)) then
+            error(require("java.lang.Exception").new(require("allbinary_java").to_string("Position is not really on the map: ") .. require("allbinary_java").to_string(geographicMapCellPosition)), 0)
         end
         return geographicMapCellPosition
 end
@@ -613,7 +613,7 @@ java_overload(UnitLayer, "right", 0)
 
 function UnitLayer:down()
         local velocityProperties = self:getVehicleProperties():getVelocityProperties()
-        if not velocityProperties:isOverXYMaxForwardVelocity() then
+        if not (velocityProperties:isOverXYMaxForwardVelocity()) then
             self:accelerate(self.decelerationBasicDecimal)
         end
 end
@@ -622,7 +622,7 @@ java_overload(UnitLayer, "down", 0)
 
 function UnitLayer:up()
         local velocityProperties = self:getVehicleProperties():getVelocityProperties()
-        if not velocityProperties:isOverXYMaxForwardVelocity() then
+        if not (velocityProperties:isOverXYMaxForwardVelocity()) then
             self:accelerate(self.accelerationBasicDecimal)
         end
 end
@@ -722,7 +722,7 @@ function UnitLayer:turnTo(dx, dy, targetAngle)
         local waypointBehaviorBase = self.waypointBehaviorBase
         local nextUnvisitedPathGeographicMapCellPosition = waypointBehaviorBase:getNextUnvisitedPathGeographicMapCellPosition()
         local evading = false
-        if self:getUnitWaypointBehavior():getSensorAction() == SensorActionFactory.getInstance().EVADE then
+        if rawequal(self:getUnitWaypointBehavior():getSensorAction(), SensorActionFactory.getInstance().EVADE) then
             self.rtsLogHelper:evade(self)
             evading = true
             targetAngle = targetAngle + (180)
@@ -731,39 +731,39 @@ function UnitLayer:turnTo(dx, dy, targetAngle)
         local angle = FrameUtil.getInstance():adjustAngleToFrameAngle(angleInfo:getAngle() - 270)
         self.rtsLogHelper:turnTo(self, dx, dy, angleInfo, angle, self.movementAngle, evading, targetAngle)
         local gameKeyEventFactory = GameKeyEventFactory.getInstance()
-        if dx == 0 and dy == 0 then
+        if rawequal(dx, 0) and rawequal(dy, 0) then
             self.rtsLogHelper:doneMoving(self)
             return true
-        elseif (java_int(self.movementAngle:getValue())) == angle then
-            if dx > 0 and self.movementAngle == self.angleFactory.LEFT then
+        elseif rawequal((java_int(self.movementAngle:getValue())), angle) then
+            if dx > 0 and rawequal(self.movementAngle, self.angleFactory.LEFT) then
                 self.rtsLogHelper:movingLeft(self)
                 return false
             end
-            if dx < 0 and self.movementAngle == self.angleFactory.RIGHT then
+            if dx < 0 and rawequal(self.movementAngle, self.angleFactory.RIGHT) then
                 self.rtsLogHelper:movingRight(self)
                 return false
             end
-            if dy > 0 and self.movementAngle == self.angleFactory.UP then
+            if dy > 0 and rawequal(self.movementAngle, self.angleFactory.UP) then
                 self.rtsLogHelper:movingUp(self)
                 return false
             end
-            if dy < 0 and self.movementAngle == self.angleFactory.DOWN then
+            if dy < 0 and rawequal(self.movementAngle, self.angleFactory.DOWN) then
                 self.rtsLogHelper:movingDown(self)
                 return false
             end
             self.rtsLogHelper:currentMoveEnded(self)
-            if self.movementAngle == self.angleFactory.LEFT or self.movementAngle == self.angleFactory.RIGHT then
+            if rawequal(self.movementAngle, self.angleFactory.LEFT) or rawequal(self.movementAngle, self.angleFactory.RIGHT) then
                 self:handleDeltalY(dx, dy)
-            elseif self.movementAngle == self.angleFactory.UP or self.movementAngle == self.angleFactory.DOWN then
+            elseif rawequal(self.movementAngle, self.angleFactory.UP) or rawequal(self.movementAngle, self.angleFactory.DOWN) then
                 self:handleDeltalX(dx, dy)
             end
             return true
         else
-            if nextUnvisitedPathGeographicMapCellPosition ~= SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION then
-                if self.steeringInsideGeographicMapCellPosition ~= nextUnvisitedPathGeographicMapCellPosition then
-                    if math.abs(dx) > math.abs(dy) and dy ~= 0 then
+            if not rawequal(nextUnvisitedPathGeographicMapCellPosition, SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION) then
+                if not rawequal(self.steeringInsideGeographicMapCellPosition, nextUnvisitedPathGeographicMapCellPosition) then
+                    if math.abs(dx) > math.abs(dy) and not rawequal(dy, 0) then
                         self:handleDeltalY(dx, dy)
-                    elseif dx ~= 0 then
+                    elseif not rawequal(dx, 0) then
                         self:handleDeltalX(dx, dy)
                     else
                         self:handleDeltalY(dx, dy)
@@ -824,12 +824,12 @@ function UnitLayer:trackToDXYTargetAngle(dx, dy, targetAngle)
             for index = list:size() - 1, 0, -1 do
                 local steeringVisitor = list:get(index)
                 local anyType = steeringVisitor:visit(self)
-                if anyType == nil then
+                if rawequal(anyType, nil) then
                     list:removeAt(index)
                 end
             end
             self:fireOrMove()
-        elseif not self:turnTo(dx, dy, targetAngle) then
+        elseif not (self:turnTo(dx, dy, targetAngle)) then
             self:fireOrMove()
         end
 end
@@ -841,7 +841,7 @@ function UnitLayer:fireOrMove()
         local gameKeyEventFactory = GameKeyEventFactory.getInstance()
         if self:getUnitWaypointBehavior():needToMove() then
             self.rtsLayer2LogHelper:steeringUp(self)
-            if self.showMoreCaptionStates and not self.captionAnimationHelper:isShowing() then
+            if self.showMoreCaptionStates and not (self.captionAnimationHelper:isShowing()) then
                 self.captionAnimationHelper:update(UnitLayer.MOVE, self.basicColorFactory.GREEN)
             end
             self:getGameKeyEventList():add(gameKeyEventFactory:getInstanceForKey(self, Canvas.UP))
@@ -862,13 +862,13 @@ function UnitLayer:move()
             local velocityXScaled = java_int(velocityProperties:getVelocityXBasicDecimalP():getScaled())
             local velocityYScaled = java_int(velocityProperties:getVelocityYBasicDecimalP():getScaled())
             self:getUnitWaypointBehavior():move()
-            if velocityXScaled ~= 0 or velocityYScaled ~= 0 then
+            if not rawequal(velocityXScaled, 0) or not rawequal(velocityYScaled, 0) then
                 self:getUnitWaypointBehavior():setMoving(true)
                 local geographicMapCompositeInterface = self.allBinaryGameLayerManagerP
                 local geographicMapInterface = geographicMapCompositeInterface:getGeographicMapInterface()[1]
                 self.layerPartialCellPositionsUtil:getAllDXY(geographicMapInterface, self, velocityXScaled, velocityYScaled, UnitLayer.getPartialpositionlist())
                 local cellPosition = DropCellPositionHistory.getInstance():getCellPositionWithDrop(UnitLayer.getPartialpositionlist())
-                if cellPosition == self.cellPositionFactory.NONE then
+                if rawequal(cellPosition, self.cellPositionFactory.NONE) then
                     local tiledLayer = geographicMapInterface:getAllBinaryTiledLayer()
                     local tiledLayerUtil = TiledLayerUtil.getInstance()
                     local x = self.x + velocityXScaled
@@ -967,7 +967,7 @@ function UnitLayer:setDestroyed(destroyed)
             WaypointEventHandlerFactory.getInstance(self:getGroupInterface()[1]):removeListener(self:getUnitWaypointBehavior())
             TrackingEventHandler.getInstance():removeListener(self)
             BuildingEventHandler.getInstance():removeListener(self)
-            if not self:getHealthInterface():isAlive() then
+            if not (self:getHealthInterface():isAlive()) then
                 local damage = self:getHealthInterface():getMaxHealth()
                 if damage > 10 then
                     SecondaryPlayerQueueFactory.getInstance():add(ExplosionBasicSound.getInstance())

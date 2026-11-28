@@ -75,11 +75,11 @@ end
 -- throws Exception
 function ProfileActionScriptConditionFactory.getInstance(node)
         local profileActionScriptConditionInterface = nil
-        if DomSearchHelper.getNodeNoThrow(ColorAtActionScriptConditionData.NAME, node:getChildNodes()) ~= nil then
+        if not rawequal(DomSearchHelper.getNodeNoThrow(ColorAtActionScriptConditionData.NAME, node:getChildNodes()), nil) then
             profileActionScriptConditionInterface = ColorAtActionScriptCondition.new(node)
-        elseif DomSearchHelper.getNodeNoThrow(TimeIntervalActionScriptConditionData.NAME, node:getChildNodes()) ~= nil then
+        elseif not rawequal(DomSearchHelper.getNodeNoThrow(TimeIntervalActionScriptConditionData.NAME, node:getChildNodes()), nil) then
             profileActionScriptConditionInterface = TimeIntervalActionScriptCondition.new(node)
-        elseif DomSearchHelper.getNodeNoThrow(AlwaysActionScriptConditionData.NAME, node:getChildNodes()) ~= nil then
+        elseif not rawequal(DomSearchHelper.getNodeNoThrow(AlwaysActionScriptConditionData.NAME, node:getChildNodes()), nil) then
             profileActionScriptConditionInterface = AlwaysActionScriptCondition.new(node)
         end
         return profileActionScriptConditionInterface

@@ -95,7 +95,7 @@ function NativeLibraryHelperWrapper:load()
         params[1] = self:getLibraryName()
         local classes = java_new_array(nil, 1)
         classes[1] = getmetatable(self:getLibraryName())
-        self.loader = NativeLibraryClassLoader.new(getmetatable(self):getClassLoader())
+        self.loader = NativeLibraryClassLoader.new(require("java.lang.ClassLoader").getSystemClassLoader())
         local myClass = self.loader:loadClass("dynamic.NativeLibraryHelper")
         local constructor = myClass:getConstructor(classes)
         self.anyType = constructor:newInstance(params)
@@ -114,7 +114,7 @@ end
 
 
 function NativeLibraryHelperWrapper:toString()
-        return "Library: " .. tostring(self:getLibraryName())
+        return require("allbinary_java").to_string("Library: ") .. require("allbinary_java").to_string(self:getLibraryName())
 end
 NativeLibraryHelperWrapper.__tostring = function(self) return self:toString() end
 

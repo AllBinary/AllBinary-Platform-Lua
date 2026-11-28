@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
--- local Font = require("javax.microedition.lcdui.Font")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
+local Font = java_lazy("javax.microedition.lcdui.Font")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local CustomTextBox = require("org.allbinary.graphics.form.item.CustomTextBox")
 

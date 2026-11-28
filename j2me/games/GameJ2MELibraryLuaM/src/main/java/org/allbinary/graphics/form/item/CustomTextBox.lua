@@ -28,9 +28,9 @@ local function java_real(class)
     return class
 end
 
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local J2MEUtil = java_lazy("org.allbinary.J2MEUtil")
 local GameCommandCanvas = require("org.allbinary.game.displayable.canvas.GameCommandCanvas")
 local Input = java_lazy("org.allbinary.game.input.Input")
@@ -242,7 +242,7 @@ function CustomTextBox:paint(graphics)
         graphics:setColor(self.backgroundColor)
         graphics:fillRect(0, 0, self.displayInfo:getLastWidth(), self.displayInfo:getLastHeight())
         graphics:setColor(self.foregroundColor)
-        if not J2MEUtil.isJ2ME() then
+        if not (J2MEUtil.isJ2ME()) then
             graphics:drawString(self:getTitle(), 8, 1, 0)
         end
         self:paintXY(graphics, 8, graphics:getFont():getHeight() + 2)

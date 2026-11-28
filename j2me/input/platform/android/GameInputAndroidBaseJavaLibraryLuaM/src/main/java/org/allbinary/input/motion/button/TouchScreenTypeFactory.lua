@@ -77,21 +77,21 @@ function TouchScreenTypeFactory:update(activity)
         local touchScreenTypesFactory = TouchScreenTypesFactory.getInstance()
         local configuration = activity:getResources():getConfiguration()
         local touchScreen = configuration.touchscreen
-        if touchScreen == Configuration.TOUCHSCREEN_FINGER then
+        if rawequal(touchScreen, Configuration.TOUCHSCREEN_FINGER) then
             touchScreenFactory:setTouchScreenType(touchScreenTypesFactory.FINGER)
-            if not touchScreenFactory:isTouch() then
+            if not (touchScreenFactory:isTouch()) then
                 PreLogUtil.put("Not Really Exception: This indicates that a touch screen does exist but is not API8 so we will try it", self, commonStrings.PROCESS)
                 touchScreenFactory:setTouch(true)
             end
-        elseif touchScreen == Configuration.TOUCHSCREEN_STYLUS then
+        elseif rawequal(touchScreen, Configuration.TOUCHSCREEN_STYLUS) then
             touchScreenFactory:setTouchScreenType(touchScreenTypesFactory.STYLUS)
-            if not touchScreenFactory:isTouch() then
+            if not (touchScreenFactory:isTouch()) then
                 PreLogUtil.put("Not Really Exception: This indicates that a touch screen does exist but is not API8 so we will try it", self, commonStrings.PROCESS)
                 touchScreenFactory:setTouch(true)
             end
-        elseif touchScreen == Configuration.TOUCHSCREEN_NOTOUCH then
+        elseif rawequal(touchScreen, Configuration.TOUCHSCREEN_NOTOUCH) then
             touchScreenFactory:setTouchScreenType(touchScreenTypesFactory.NOTOUCH)
-        elseif touchScreen == Configuration.TOUCHSCREEN_UNDEFINED then
+        elseif rawequal(touchScreen, Configuration.TOUCHSCREEN_UNDEFINED) then
             touchScreenFactory:setTouchScreenType(touchScreenTypesFactory.UNDEFINED)
         end
 end

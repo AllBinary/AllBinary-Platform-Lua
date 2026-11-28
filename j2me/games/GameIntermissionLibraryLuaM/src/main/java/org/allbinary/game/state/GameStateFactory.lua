@@ -63,7 +63,7 @@ end
 
 
 function GameStateFactory.getInstance()
-        if GameStateFactory.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(GameStateFactory.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             GameStateFactory.instance_f = GameStateFactory.new()
         end
         return GameStateFactory.instance_f

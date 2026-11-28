@@ -100,17 +100,17 @@ function GeographicMapDirectionUtil:getDirectionFromCellPositionToAdjacentCellPo
         local goColumn = toGeographicMapCellPosition:getColumn()
         local goRow = toGeographicMapCellPosition:getRow()
         local directionFactory = DirectionFactory.getInstance()
-        if fromColumn - 1 == goColumn then
+        if rawequal(fromColumn - 1, goColumn) then
             return directionFactory.LEFT
-        elseif fromColumn + 1 == goColumn then
+        elseif rawequal(fromColumn + 1, goColumn) then
             return directionFactory.RIGHT
-        elseif fromRow - 1 == goRow then
+        elseif rawequal(fromRow - 1, goRow) then
             return directionFactory.UP
-        elseif fromRow + 1 == goRow then
+        elseif rawequal(fromRow + 1, goRow) then
             return directionFactory.DOWN
-        elseif fromGeographicMapCellPosition == toGeographicMapCellPosition then
+        elseif rawequal(fromGeographicMapCellPosition, toGeographicMapCellPosition) then
             return directionFactory.NO_DIRECTION
-        elseif fromRow == goRow and fromColumn == goColumn then
+        elseif rawequal(fromRow, goRow) and rawequal(fromColumn, goColumn) then
             error(require("java.lang.Exception").new(self.MESSAGE), 0)
         end
         return directionFactory.NOT_BORDERED_WITH
@@ -124,33 +124,33 @@ function GeographicMapDirectionUtil:getEightDirectionFromCellPositionToAdjacentC
         local goColumn = toGeographicMapCellPosition:getColumn()
         local goRow = toGeographicMapCellPosition:getRow()
         local directionFactory = DirectionFactory.getInstance()
-        if fromRow == goRow then
-            if fromColumn - 1 == goColumn then
+        if rawequal(fromRow, goRow) then
+            if rawequal(fromColumn - 1, goColumn) then
                 return directionFactory.LEFT
-            elseif fromColumn + 1 == goColumn then
+            elseif rawequal(fromColumn + 1, goColumn) then
                 return directionFactory.RIGHT
             end
-        elseif fromRow - 1 == goRow then
-            if fromColumn == goColumn then
+        elseif rawequal(fromRow - 1, goRow) then
+            if rawequal(fromColumn, goColumn) then
                 return directionFactory.UP
             end
-            if fromColumn - 1 == goColumn then
+            if rawequal(fromColumn - 1, goColumn) then
                 return directionFactory.UP_LEFT
-            elseif fromColumn + 1 == goColumn then
+            elseif rawequal(fromColumn + 1, goColumn) then
                 return directionFactory.UP_RIGHT
             end
-        elseif fromRow + 1 == goRow then
-            if fromColumn == goColumn then
+        elseif rawequal(fromRow + 1, goRow) then
+            if rawequal(fromColumn, goColumn) then
                 return directionFactory.DOWN
             end
-            if fromColumn - 1 == goColumn then
+            if rawequal(fromColumn - 1, goColumn) then
                 return directionFactory.DOWN_LEFT
-            elseif fromColumn + 1 == goColumn then
+            elseif rawequal(fromColumn + 1, goColumn) then
                 return directionFactory.DOWN_RIGHT
             end
-        elseif fromGeographicMapCellPosition == toGeographicMapCellPosition then
+        elseif rawequal(fromGeographicMapCellPosition, toGeographicMapCellPosition) then
             return directionFactory.NO_DIRECTION
-        elseif fromRow == goRow and fromColumn == goColumn then
+        elseif rawequal(fromRow, goRow) and rawequal(fromColumn, goColumn) then
             error(require("java.lang.Exception").new(self.MESSAGE), 0)
         end
         return directionFactory.NOT_BORDERED_WITH
@@ -187,9 +187,9 @@ function GeographicMapDirectionUtil:getEightDirectionFromCellPositionToCellPosit
         local goColumn = toGeographicMapCellPosition:getColumn()
         local goRow = toGeographicMapCellPosition:getRow()
         local directionFactory = DirectionFactory.getInstance()
-        if fromGeographicMapCellPosition == toGeographicMapCellPosition then
+        if rawequal(fromGeographicMapCellPosition, toGeographicMapCellPosition) then
             return directionFactory.NO_DIRECTION
-        elseif fromRow == goRow then
+        elseif rawequal(fromRow, goRow) then
             if fromColumn > goColumn then
                 return directionFactory.LEFT
             elseif fromColumn < goColumn then
@@ -200,7 +200,7 @@ function GeographicMapDirectionUtil:getEightDirectionFromCellPositionToCellPosit
                 return directionFactory.UP_LEFT
             elseif fromColumn < goColumn then
                 return directionFactory.UP_RIGHT
-            elseif fromColumn == goColumn then
+            elseif rawequal(fromColumn, goColumn) then
                 return directionFactory.UP
             end
         elseif fromRow < goRow then
@@ -208,7 +208,7 @@ function GeographicMapDirectionUtil:getEightDirectionFromCellPositionToCellPosit
                 return directionFactory.DOWN_LEFT
             elseif fromColumn < goColumn then
                 return directionFactory.DOWN_RIGHT
-            elseif fromColumn == goColumn then
+            elseif rawequal(fromColumn, goColumn) then
                 return directionFactory.DOWN
             end
         end

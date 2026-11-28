@@ -242,11 +242,11 @@ java_overload(UnitWaypointBehavior, "addWaypointFromUser", 1, function(java_a1) 
 
 -- throws Exception
 function UnitWaypointBehavior:addWaypointFromBuilding(advancedRTSGameLayer)
-        if advancedRTSGameLayer == PrimaryWaypointHelper.getInstance():getWaypointLayer() or advancedRTSGameLayer:getParentLayer() == self.associatedAdvancedRTSGameLayer:getParentLayer() then
-            if not self.targetList:contains(advancedRTSGameLayer) then
+        if rawequal(advancedRTSGameLayer, PrimaryWaypointHelper.getInstance():getWaypointLayer()) or rawequal(advancedRTSGameLayer:getParentLayer(), self.associatedAdvancedRTSGameLayer:getParentLayer()) then
+            if not (self.targetList:contains(advancedRTSGameLayer)) then
                 self.associatedAdvancedRTSGameLayer.waypointLogHelperP:addWaypointFromBuilding(self.associatedAdvancedRTSGameLayer, advancedRTSGameLayer)
                 if advancedRTSGameLayer:isDestroyed() then
-                    error(require("java.lang.Exception").new("Trying to add a dead: " .. tostring(advancedRTSGameLayer)), 0)
+                    error(require("java.lang.Exception").new(require("allbinary_java").to_string("Trying to add a dead: ") .. require("allbinary_java").to_string(advancedRTSGameLayer)), 0)
                 end
                 self.targetList:add(advancedRTSGameLayer)
                 self.associatedAdvancedRTSGameLayer.waypointLogHelperP:addWaypointFromBuildingList(self.associatedAdvancedRTSGameLayer, advancedRTSGameLayer, self.targetList)
@@ -267,7 +267,7 @@ function UnitWaypointBehavior:insertWaypoint(index, rtsLayer)
         if self:canInsertWaypoint(index, rtsLayer) then
             self.associatedAdvancedRTSGameLayer.waypointLogHelperP:insertWaypoint(self.associatedAdvancedRTSGameLayer, index, rtsLayer, self:getName())
             if rtsLayer:isDestroyed() then
-                error(require("java.lang.Exception").new("Trying to add a dead: " .. tostring(rtsLayer)), 0)
+                error(require("java.lang.Exception").new(require("allbinary_java").to_string("Trying to add a dead: ") .. require("allbinary_java").to_string(rtsLayer)), 0)
             end
             self.targetList:addAt(index, rtsLayer)
             self.associatedAdvancedRTSGameLayer.waypointLogHelperP:insertWaypointList(self.associatedAdvancedRTSGameLayer, index, rtsLayer, self:getName(), self.targetList)
@@ -350,12 +350,12 @@ java_overload(UnitWaypointBehavior, "moveAwayFromBuilding", 1, function(java_a1)
 
 function UnitWaypointBehavior:needToMove()
         self.associatedAdvancedRTSGameLayer.waypointLogHelperP:needToMove(self.associatedAdvancedRTSGameLayer, self)
-        if self:isTrackingWaypoint() or self.sensorAction == SensorActionFactory.getInstance().EVADE or (self.currentTargetLayerInterfaceP ~= CollidableDestroyableDamageableLayer.getNullInstance() and self:getCurrentTargetDistance() >= self.longWeaponRange + self.currentTargetLayerInterfaceP:getHalfHeight()) then
+        if self:isTrackingWaypoint() or rawequal(self.sensorAction, SensorActionFactory.getInstance().EVADE) or (not rawequal(self.currentTargetLayerInterfaceP, CollidableDestroyableDamageableLayer.getNullInstance()) and self:getCurrentTargetDistance() >= self.longWeaponRange + self.currentTargetLayerInterfaceP:getHalfHeight()) then
             self.repeatedToLong:setStartTimeTNT()
             return true
         end
         if self.repeatedToLong:isTimeTNT() then
-            local message = "Repeating too long: " .. tostring(self:getMovementLogicAsString())
+            local message = require("allbinary_java").to_string("Repeating too long: ") .. require("allbinary_java").to_string(self:getMovementLogicAsString())
             ForcedLogUtil.log(message, self.associatedAdvancedRTSGameLayer)
         end
         return false
@@ -371,7 +371,7 @@ function UnitWaypointBehavior:getMovementLogicAsString()
         stringBuffer:append(self.sensorAction.name_f)
         stringBuffer:append(" getCurrentTargetLayerInterface: ")
         stringBuffer:append(StringUtil.getInstance():toString(self.currentTargetLayerInterfaceP))
-        if self.currentTargetLayerInterfaceP ~= CollidableDestroyableDamageableLayer.getNullInstance() then
+        if not rawequal(self.currentTargetLayerInterfaceP, CollidableDestroyableDamageableLayer.getNullInstance()) then
             stringBuffer:append(" Target Range: ")
             stringBuffer:appendint(self:getCurrentTargetDistance())
             stringBuffer:append(" >= ")

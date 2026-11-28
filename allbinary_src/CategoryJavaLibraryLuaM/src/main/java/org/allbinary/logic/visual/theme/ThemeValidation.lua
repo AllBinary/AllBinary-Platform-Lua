@@ -220,7 +220,7 @@ end
 
 -- throws Exception
 function ThemeValidation:init_j1(storeThemeCategoryInterface)
-        self.fileAbPath = AbPath.new(tostring(storeThemeCategoryInterface:getRootFilePath()) .. tostring(self.categoryAbPath), StringUtil.getInstance().EMPTY_STRING)
+        self.fileAbPath = AbPath.new(require("allbinary_java").to_string(tostring(storeThemeCategoryInterface:getRootFilePath())) .. require("allbinary_java").to_string(tostring(self.categoryAbPath)), StringUtil.getInstance().EMPTY_STRING)
         self.webAppAbPath = storeThemeCategoryInterface:getWebAppPath()
 end
 function ThemeValidation:init(...)
@@ -249,7 +249,7 @@ end
 
 
 function ThemeValidation:getPreviewImagePath()
-        return tostring(self.webAppAbPath) .. tostring(self.categoryAbPath)
+        return require("allbinary_java").to_string(tostring(self.webAppAbPath)) .. require("allbinary_java").to_string(tostring(self.categoryAbPath))
 end
 
 
@@ -260,8 +260,8 @@ end
 
 -- throws Exception
 function ThemeValidation:getCssStyleValidation()
-        if self.styleValidationInterface == nil then
-            local cssStyleFileAbPath = AbPath.new(tostring(self.fileAbPath), self.themeName .. tostring(AbPathData.getInstance().EXTENSION_SEP) .. tostring(CategoryData.getInstance().UNCRYPTED_EXTENSION))
+        if rawequal(self.styleValidationInterface, nil) then
+            local cssStyleFileAbPath = AbPath.new(tostring(self.fileAbPath), require("allbinary_java").to_string(require("allbinary_java").to_string(self.themeName) .. require("allbinary_java").to_string(AbPathData.getInstance().EXTENSION_SEP)) .. require("allbinary_java").to_string(CategoryData.getInstance().UNCRYPTED_EXTENSION))
             local cryptFileReader = CryptFileReader.new(CategoryData.getInstance().UNCRYPTED_EXTENSION, CategoryData.getInstance().ENCRYPTED_EXTENSION)
             local document = DomDocumentHelper.create(cryptFileReader:get(cssStyleFileAbPath))
             self.styleValidationInterface = CssStyleValidation.new(document)
@@ -276,17 +276,17 @@ function ThemeValidation:isValid()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                 self.logUtil:putF(self.commonStrings.START, self, self.commonStrings.IS_VALID)
             end
-            if not StringValidationUtil.getInstance():isValidRequired(tostring(self.categoryAbPath), AbSqlData.MINSTRING, AbSqlData.MAXSTRING) then
+            if not (StringValidationUtil.getInstance():isValidRequired(tostring(self.categoryAbPath), AbSqlData.MINSTRING, AbSqlData.MAXSTRING)) then
                 isValid = false
             end
-            if not StringValidationUtil.getInstance():isValidRequired(self.themeName, AbSqlData.MINSTRING, AbSqlData.MAXSTRING) then
+            if not (StringValidationUtil.getInstance():isValidRequired(self.themeName, AbSqlData.MINSTRING, AbSqlData.MAXSTRING)) then
                 isValid = false
             end
-            if not self:getCssStyleValidation():isValid() then
+            if not (self:getCssStyleValidation():isValid()) then
                 isValid = false
             end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("End: " .. tostring(isValid), self, self.commonStrings.IS_VALID)
+                self.logUtil:putF(require("allbinary_java").to_string("End: ") .. require("allbinary_java").to_string(isValid), self, self.commonStrings.IS_VALID)
             end
             do return "__jreturn", isValid end
         end)

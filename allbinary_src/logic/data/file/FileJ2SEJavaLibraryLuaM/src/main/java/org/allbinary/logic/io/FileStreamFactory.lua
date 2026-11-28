@@ -58,7 +58,7 @@ FileStreamFactory.javaClassName = "org.allbinary.logic.io.FileStreamFactory"
 
 
 function FileStreamFactory.getInstance()
-        if FileStreamFactory.SINGLETON == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(FileStreamFactory.SINGLETON, NullUtil.getInstance().NULL_OBJECT) then
             FileStreamFactory.SINGLETON = FileStreamFactory.new()
         end
         return FileStreamFactory.SINGLETON

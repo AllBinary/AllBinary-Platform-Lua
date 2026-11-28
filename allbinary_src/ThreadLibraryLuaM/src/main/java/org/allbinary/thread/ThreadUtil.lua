@@ -73,7 +73,7 @@ end
 
 
 function ThreadUtil:isRunning(thread)
-        if thread ~= nil and thread:isAlive() then
+        if not rawequal(thread, nil) and thread:isAlive() then
             return true
         else
             return false

@@ -70,7 +70,7 @@ end
 -- throws Exception
 function HttpFilePermissionsUtil:create(path)
         local file = AbFile.createAbFileFromAbPath(path)
-        if not file:isFile() then
+        if not (file:isFile()) then
             file:createNewFile()
         end
 end

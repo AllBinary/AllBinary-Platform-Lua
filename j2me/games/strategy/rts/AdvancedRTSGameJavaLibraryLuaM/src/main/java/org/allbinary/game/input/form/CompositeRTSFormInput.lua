@@ -173,7 +173,7 @@ setmetatable(CompositeRTSFormInput, {__index = RTSFormInput})
 function CompositeRTSFormInput:_init_fields()
     if self.rtsFormInputArray == nil then self.rtsFormInputArray = nil end
     if self.itemIndex == nil then self.itemIndex = nil end
-    if self.isPrimaryWaypointCreator == nil then self.isPrimaryWaypointCreator = nil end
+    if self.isPrimaryWaypointCreator == nil then self.isPrimaryWaypointCreator = false end
 end
 
 
@@ -213,7 +213,7 @@ java_overload(CompositeRTSFormInput, "setAllBinaryGameLayerManager", 1, function
 function CompositeRTSFormInput:processAtPoint(associatedRtsLayer, rtsPlayerLayerInterface, layerManager, point)
         local scrollSelectionForm = rtsPlayerLayerInterface:getCurrentScrollSelectionForm()
         local index = scrollSelectionForm:getSelectedIndexForPoint(point)
-        if self:isStickyItemSelected() and associatedRtsLayer == CollidableDestroyableDamageableLayer.getNullInstance() then
+        if self:isStickyItemSelected() and rawequal(associatedRtsLayer, CollidableDestroyableDamageableLayer.getNullInstance()) then
             if self:getSelectedStickyItemIndex() <= self.itemIndex[1] then
                 self.rtsFormInputArray[1]:processAtPoint(associatedRtsLayer, rtsPlayerLayerInterface, layerManager, point)
             end
@@ -227,8 +227,8 @@ java_overload(CompositeRTSFormInput, "processAtPoint", 4, function(java_a1, java
 -- throws Exception
 function CompositeRTSFormInput:processGameSpecific(associatedRtsLayer, rtsPlayerLayerInterface, layerManager, item, index)
         local commonStrings = CommonStrings.getInstance()
-        self.logUtil:putF(tostring(CommonLabels.getInstance().INDEX_LABEL + index) .. " > " .. tostring(self.itemIndex[1]), self, commonStrings.PROCESS)
-        if self:isStickyItemSelected() and associatedRtsLayer == CollidableDestroyableDamageableLayer.getNullInstance() then
+        self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(CommonLabels.getInstance().INDEX_LABEL + index) .. require("allbinary_java").to_string(" > ")) .. require("allbinary_java").to_string(self.itemIndex[1]), self, commonStrings.PROCESS)
+        if self:isStickyItemSelected() and rawequal(associatedRtsLayer, CollidableDestroyableDamageableLayer.getNullInstance()) then
             if self:getSelectedStickyItemIndex() <= self.itemIndex[1] then
                 self.rtsFormInputArray[1]:processGameSpecific(associatedRtsLayer, rtsPlayerLayerInterface, layerManager, item, index)
             end

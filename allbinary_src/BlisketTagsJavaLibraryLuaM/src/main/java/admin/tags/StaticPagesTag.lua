@@ -222,14 +222,14 @@ java_overload(StaticPagesTag, "makePublic", 0)
 function StaticPagesTag:doStartTag()
         local try_ok, try_error, try_value = pcall(function()
             if self:isEnabled() then
-                if self:getCommand() ~= nil then
-                    if self:getCommand():compareTo(SearchData.GENERATESTATICPAGES) == 0 then
+                if not rawequal(self:getCommand(), nil) then
+                    if rawequal(self:getCommand():compareTo(SearchData.GENERATESTATICPAGES), 0) then
                         self:getPropertiesHashMap():put(TransformInfoData.getInstance().TEMPLATEFILENAME, self.xslFile)
                         local output = self:generateStaticPages()
                         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAGEXTRAOUTPUT) then
                             self.pageContext:getOut():print(output)
                         end
-                    elseif self:getCommand():compareTo(SearchData.MAKEPUBLIC) == 0 then
+                    elseif rawequal(self:getCommand():compareTo(SearchData.MAKEPUBLIC), 0) then
                         local output = self:makePublic()
                         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAGEXTRAOUTPUT) then
                             self.pageContext:getOut():print(output)

@@ -150,7 +150,7 @@ function CachingGeographicMapCellPositionFactory:createInstance(i_column, i_row,
         local hashtable = GeographicMapCellPositionFactory.getHashtable()
         local cellPositionKey = CellPosition.toStringColRow(i_column, i_row)
         local cellPositionCanBeNull = hashtable:get(cellPositionKey)
-        if cellPositionCanBeNull == nil then
+        if rawequal(cellPositionCanBeNull, nil) then
             cellPositionCanBeNull = self.geographicMapCellPositionFactoryInterface:getInstance(self.geographicMapInterface, i_column, i_row, self:getColumns(), self:getRows(), width, height)
             self.geographicMapCellPositionArray[i_row + 1][i_column + 1] = cellPositionCanBeNull
             hashtable:put(cellPositionKey, cellPositionCanBeNull)

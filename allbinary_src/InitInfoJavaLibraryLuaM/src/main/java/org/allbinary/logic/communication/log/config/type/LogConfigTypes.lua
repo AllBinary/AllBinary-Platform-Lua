@@ -92,8 +92,8 @@ function LogConfigTypes.init()
             LogConfigTypeFactory.getInstance()
             local loggingInitInfo = LoggingInitInfo.new()
             local logConfigTypeVector = loggingInitInfo:getTypeList()
-            PreLogUtil.put("Number Of Log Configs: " .. tostring(loggingInitInfo:getNumberOfLogConfigs()), "LogConfigTypes", "init()")
-            PreLogUtil.put("Number Of Log Config Type Names: " .. tostring(logConfigTypeVector:size()), "LogConfigTypes", "init()")
+            PreLogUtil.put(require("allbinary_java").to_string("Number Of Log Configs: ") .. require("allbinary_java").to_string(loggingInitInfo:getNumberOfLogConfigs()), "LogConfigTypes", "init()")
+            PreLogUtil.put(require("allbinary_java").to_string("Number Of Log Config Type Names: ") .. require("allbinary_java").to_string(logConfigTypeVector:size()), "LogConfigTypes", "init()")
             LogConfigTypes.LOGGING:addAllList(logConfigTypeVector)
             LogConfigTypes.LOGGING:add(LogConfigTypeFactory.getInstance().NETBEANS_MODULE)
         end)
@@ -110,7 +110,7 @@ function LogConfigTypes.getInstance(node)
         local nameValueNode = DomSearchHelper.getNode(LogConfigTypeData.getInstance().NAME, node:getChildNodes())
         local name = DomNodeHelper.getTextNodeValue(nameValueNode)
         local descriptionValueNode = DomSearchHelper.getNodeNoThrow(LogConfigTypeData.getInstance().DESCRIPTION, node:getChildNodes())
-        if descriptionValueNode ~= nil then
+        if not rawequal(descriptionValueNode, nil) then
             local description = DomNodeHelper.getTextNodeValue(descriptionValueNode)
         end
         local availableLogConfigTypes = LogConfigType.availableLogConfigTypes
@@ -118,11 +118,11 @@ function LogConfigTypes.getInstance(node)
         local logConfigType = nil
         for index = 0, size - 1 do
             logConfigType = availableLogConfigTypes:get(index)
-            if logConfigType:getName():compareTo(name) == 0 then
+            if rawequal(logConfigType:getName():compareTo(name), 0) then
                 return logConfigType
             end
         end
-        error(require("java.lang.Exception").new("No Such LogConfigType: " .. name), 0)
+        error(require("java.lang.Exception").new(require("allbinary_java").to_string("No Such LogConfigType: ") .. require("allbinary_java").to_string(name)), 0)
 end
 
 LogConfigTypes.JSP_ERROR_NO_FUNCTION = "in JSP Not In Function"

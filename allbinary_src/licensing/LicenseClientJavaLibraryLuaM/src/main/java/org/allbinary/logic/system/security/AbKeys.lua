@@ -80,8 +80,8 @@ end
 -- throws LicensingException
 function AbKeys:getKey(abeClientInformation, keyName)
         local try_ok, try_error, try_value = pcall(function()
-            self.logUtil:putF("Getting Key: " .. keyName, self, "getKey")
-            if ((keyName < "DirectX 8" and -1) or (keyName > "DirectX 8" and 1) or 0) == 0 or ((keyName < "DirectX" and -1) or (keyName > "DirectX" and 1) or 0) == 0 or ((keyName < "Low Level" and -1) or (keyName > "Low Level" and 1) or 0) == 0 or ((keyName < "System Drivers" and -1) or (keyName > "System Drivers" and 1) or 0) == 0 then
+            self.logUtil:putF(require("allbinary_java").to_string("Getting Key: ") .. require("allbinary_java").to_string(keyName), self, "getKey")
+            if rawequal(((keyName < "DirectX 8" and -1) or (keyName > "DirectX 8" and 1) or 0), 0) or rawequal(((keyName < "DirectX" and -1) or (keyName > "DirectX" and 1) or 0), 0) or rawequal(((keyName < "Low Level" and -1) or (keyName > "Low Level" and 1) or 0), 0) or rawequal(((keyName < "System Drivers" and -1) or (keyName > "System Drivers" and 1) or 0), 0) then
                 do return "__jreturn", "Temp For Input Library" end
             end
             do return "__jreturn", AbeLicenseInterfaceFactory.getInstance():getLicenseInstance(abeClientInformation):getKey(keyName) end

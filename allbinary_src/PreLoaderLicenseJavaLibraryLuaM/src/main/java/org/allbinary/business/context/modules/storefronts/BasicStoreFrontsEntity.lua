@@ -190,11 +190,11 @@ function BasicStoreFrontsEntity:getStoreFrontInterface(name)
         local keysAndValues = StdUtil.getInstance():createHashMap()
         keysAndValues:put(StoreFrontData.getInstance().NAME, name)
         local storeHashMap = java_super(InitSql, "getRow", 1)(self, keysAndValues)
-        if storeHashMap == nil then
-            error(require("java.lang.Exception").new("No Such Store: " .. name), 0)
+        if rawequal(storeHashMap, nil) then
+            error(require("java.lang.Exception").new(require("allbinary_java").to_string("No Such Store: ") .. require("allbinary_java").to_string(name)), 0)
         end
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().FACTORYERROR) then
-            self.logUtil:putF("StoreFront: " .. tostring(storeHashMap), self, "getStore()")
+            self.logUtil:putF(require("allbinary_java").to_string("StoreFront: ") .. require("allbinary_java").to_string(tostring(storeHashMap)), self, "getStore()")
         end
         return BasicStoreFront.new(storeHashMap)
 end

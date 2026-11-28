@@ -162,12 +162,14 @@ function NewWorkAreaJDialog._jinit(self, parent, modal, dimension, newName)
             self.dimension = dimension
             local submitButton = JButton.new("Ok")
             submitButton:addActionListener((function()
-                local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+                local java_outer_self = self
+            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
                 
 
                 function o:actionPerformed(evt)
                     local try_ok, try_error, try_value = pcall(function()
-                        self:disposeNewDialog()
+                        ;(self.disposeNewDialog and self or java_outer_self):disposeNewDialog()
+            
                     end)
                     if not try_ok then
                         local e = try_error
@@ -211,7 +213,7 @@ function NewWorkAreaJDialog:disposeNewDialog()
             local canvasWidth = self.xSizeJTextField:getText()
             local canvasHeight = self.ySizeJTextField:getText()
             local newName = self.nameJTextField:getText()
-            if newName == nil then
+            if rawequal(newName, nil) then
                 error(GraphicsException.new("No Name", self, "disposeNewDialog"), 0)
             end
             local workAreaJPanel = WorkAreaJPanel.new(newName, self.dimension, math.tointeger(canvasWidth // 1), math.tointeger(canvasHeight // 1))
@@ -230,11 +232,13 @@ java_overload(NewWorkAreaJDialog, "disposeNewDialog", 0)
 
 function NewWorkAreaJDialog:initComponents()
         self:addWindowListener((function()
-            local o = WindowAdapter.new and WindowAdapter.new() or setmetatable({}, {__index = WindowAdapter})
+            local java_outer_self = self
+        local o = WindowAdapter.new and WindowAdapter.new() or setmetatable({}, {__index = WindowAdapter})
             
 
             function o:windowClosing(evt)
-                self:closeDialog(evt)
+                ;(self.closeDialog and self or java_outer_self):closeDialog(evt)
+            
             end
             java_overload(o, "windowClosing", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "WindowEvent")) end)
             return o

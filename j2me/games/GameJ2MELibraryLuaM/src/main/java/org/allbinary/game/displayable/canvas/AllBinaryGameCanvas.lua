@@ -28,12 +28,12 @@ local function java_real(class)
     return class
 end
 
--- local ChoiceGroup = require("javax.microedition.lcdui.ChoiceGroup")
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local Item = require("javax.microedition.lcdui.Item")
--- local NullCommandListener = require("javax.microedition.lcdui.NullCommandListener")
+local ChoiceGroup = java_lazy("javax.microedition.lcdui.ChoiceGroup")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Item = java_lazy("javax.microedition.lcdui.Item")
+local NullCommandListener = java_lazy("javax.microedition.lcdui.NullCommandListener")
 local AndroidUtil = java_lazy("org.allbinary.AndroidUtil")
 local J2MEUtil = java_lazy("org.allbinary.J2MEUtil")
 local GameAdStateFactory = java_lazy("org.allbinary.business.advertisement.GameAdStateFactory")
@@ -421,7 +421,7 @@ function AllBinaryGameCanvas._jinit(self, commandListener, gameLayerManager, hig
         self.gameInitializationInterfaceFactoryInterface = gameInitializationInterfaceFactoryInterface
         self:init(gameLayerManager, buffered)
         self.highScoresFactoryInterface = highScoresFactoryInterface
-        if self.gameLayerManager:getGameInfo():getGameType() == self.gameTypeFactory.BOT or self.gameLayerManager:getGameInfo():getGameType() == self.gameTypeFactory.NONE then
+        if rawequal(self.gameLayerManager:getGameInfo():getGameType(), self.gameTypeFactory.BOT) or rawequal(self.gameLayerManager:getGameInfo():getGameType(), self.gameTypeFactory.NONE) then
             self.gameBehavior = DemoGameBehavior.getInstance()
             self.menuBehavior = BaseMenuBehavior.getInstance()
         else
@@ -451,7 +451,7 @@ function AllBinaryGameCanvas:updateMeasurement(graphics)
             local popupMenuRectangle = self.myFormUtil:getPopupMenuRectangle()
             local basicPopupMenuPaintable = (self:getOpenMenuPaintable())
             basicPopupMenuPaintable:init(popupMenuRectangle)
-            if self:getPopupMenuInputProcessor() ~= NoMenuInputProcessor.getInstance() then
+            if not rawequal(self:getPopupMenuInputProcessor(), NoMenuInputProcessor.getInstance()) then
                 local popupMenuInputProcessor = (self:getPopupMenuInputProcessor())
                 popupMenuInputProcessor:init(popupMenuRectangle)
             end
@@ -508,7 +508,7 @@ function AllBinaryGameCanvas:updateMenuFromEvent(displayChangeEvent)
         local formType = FormTypeFactory.getInstance():getFormType()
         local rectangle = self.formUtil:createFormRectangle()
         self.menuForm:init(rectangle, formType)
-        if self.currentTouchInputFactory ~= NoButtonsTouchInputFactory.getInstance() then
+        if not rawequal(self.currentTouchInputFactory, NoButtonsTouchInputFactory.getInstance()) then
             self.touchButtonFactory:toggle(self:isPaused(), self.currentTouchInputFactory:getList())
         end
         self.myFontProcessor = self.updateMyFontProcessor
@@ -520,11 +520,11 @@ java_overload(AllBinaryGameCanvas, "updateMenuFromEvent", 1, function(java_a1) r
 function AllBinaryGameCanvas:processSleep()
         java_super(RunnableCanvas, "processSleep", 0)(self)
         if AllBinaryMediaManager.update() then
-            if not self.primaryPlayerQueue:process() then
+            if not (self.primaryPlayerQueue:process()) then
                 self.secondaryPlayerQueue:process()
             end
         end
-        if self.menuInputProcessor:processInputList() ~= -1 then
+        if not rawequal(self.menuInputProcessor:processInputList(), -1) then
             self.runnableCanvasRefreshHelper:process()
         end
 end
@@ -533,7 +533,7 @@ java_overload(AllBinaryGameCanvas, "processSleep", 0)
 
 -- throws Exception
 function AllBinaryGameCanvas:initPopupMenu()
-        if self.popupMenuInputProcessor == NoMenuInputProcessor.getInstance() then
+        if rawequal(self.popupMenuInputProcessor, NoMenuInputProcessor.getInstance()) then
             local features = Features.getInstance()
             local popupMenuRectangle = self.myFormUtil:getPopupMenuRectangle()
             if features:isFeature(self.touchFeatureFactory.TOUCH_ENABLED) then
@@ -575,7 +575,7 @@ function AllBinaryGameCanvas:initMenu2()
         else
         end
         self:setMenuInputProcessor(self:getPopupMenuInputProcessor())
-        if scrollSelectionForm ~= ScrollSelectionFormNoneFactory.getInstance() then
+        if not rawequal(scrollSelectionForm, ScrollSelectionFormNoneFactory.getInstance()) then
             self:setFormPaintable(FormPaintable.new(scrollSelectionForm))
         else
         end
@@ -637,7 +637,7 @@ java_overload(AllBinaryGameCanvas, "unPause", 0)
 
 
 function AllBinaryGameCanvas:isPausable()
-        if CurrentDisplayableFactory.getInstance():getUsedRunnable() == NullWaitGameRunnable.getInstance() then
+        if rawequal(CurrentDisplayableFactory.getInstance():getUsedRunnable(), NullWaitGameRunnable.getInstance()) then
             return true
         else
             return false
@@ -667,11 +667,11 @@ java_overload(AllBinaryGameCanvas, "popupMenu2", 0)
 -- throws Exception
 function AllBinaryGameCanvas:toggleMenu()
         self.logUtil:putF(self.commonStrings.START, self, self.gameStrings.TOGGLE_MENU)
-        if self:getMenuPaintable() == self:getOpenMenuPaintable() then
+        if rawequal(self:getMenuPaintable(), self:getOpenMenuPaintable()) then
             self:pause()
             self:updateMenu()
             self:popupMenu()
-        elseif self:getMenuPaintable() == self:getFormPaintable() then
+        elseif rawequal(self:getMenuPaintable(), self:getFormPaintable()) then
             self.primaryPlayerQueue:add(SelectSound.getInstance())
             self:unPause()
         end
@@ -735,7 +735,7 @@ function AllBinaryGameCanvas:init(gameLayerManager, buffered)
         self.gameStateTimeHelper:setStartTimeTNT()
         self:setHighScoreSubmitted(false)
         self:setLayerManager(gameLayerManager)
-        if not buffered then
+        if not (buffered) then
             local BUFF_MESSAGE = "XXX Not Buffering Causes Concurrency Issues XXX"
             self.logUtil:putF(BUFF_MESSAGE, self, self.commonStrings.CONSTRUCTOR)
         else
@@ -836,7 +836,7 @@ java_overload(AllBinaryGameCanvas, "initTouch", 0)
 
 -- throws Exception
 function AllBinaryGameCanvas:updateCurrentTouchInputFactory(nextTouchInput)
-        if nextTouchInput ~= self.currentTouchInputFactory then
+        if not rawequal(nextTouchInput, self.currentTouchInputFactory) then
             self.currentTouchInputFactory = nextTouchInput
             PreLogUtil.put(tostring(self.currentTouchInputFactory), self, self.gameInputStrings.UDPATE_CURRENT_TOUCH_INPUT_FACTORY)
             self.touchButtonFactory:toggle(self:isPaused(), self.currentTouchInputFactory:getList())
@@ -856,7 +856,7 @@ java_overload(AllBinaryGameCanvas, "updateTouch", 0)
 function AllBinaryGameCanvas:updateTouch2()
         local features = Features.getInstance()
         if features:isFeature(self.touchFeatureFactory.AUTO_HIDE_SHOW_SCREEN_BUTTONS) then
-            if self.gameLayerManager:getGameInfo():getCurrentLevel() - self:getStartLevel() == 1 then
+            if rawequal(self.gameLayerManager:getGameInfo():getCurrentLevel() - self:getStartLevel(), 1) then
                 self:setTouchPaintableP(NullPaintable.getInstance())
             end
         end
@@ -883,7 +883,7 @@ java_overload(AllBinaryGameCanvas, "initCommands", 1, function(java_a1) return t
 function AllBinaryGameCanvas:addCommands()
         local gameCommandsFactory = GameCommandsFactory.getInstance()
         local myCommandsFactory = MyCommandsFactory.getInstance()
-        if DebugFactory.getInstance() ~= NoDebug.getInstance() then
+        if not rawequal(DebugFactory.getInstance(), NoDebug.getInstance()) then
             self:addCommand(gameCommandsFactory.START_TRACE)
         end
         self:addCommand(gameCommandsFactory.RESTART_COMMAND)
@@ -892,7 +892,7 @@ function AllBinaryGameCanvas:addCommands()
         local isOverScan = OperatingSystemFactory.getInstance():getOperatingSystemInstance():isOverScan()
         if J2MEUtil.isHTML() then
         elseif SWTUtil.isSWT then
-        elseif not isOverScan then
+        elseif not (isOverScan) then
             if TouchScreenFactory.getInstance():isTouch() and InGameFeatures.new():isAny() then
                 self:addCommand(InGameOptionsForm.DISPLAY)
             end
@@ -1026,7 +1026,7 @@ java_overload(AllBinaryGameCanvas, "setGameState", 1, function(java_a1) return t
 function AllBinaryGameCanvas:updateGameState()
         local gameAdState = self.gameAdStateFactory:getCurrentInstance()
         gameAdState:processAdState(self.gameState, self.gameLayerManager:getGameInfo():getGameType())
-        if self.gameState ~= self.gameStateFactory.PLAYING_GAME_STATE then
+        if not rawequal(self.gameState, self.gameStateFactory.PLAYING_GAME_STATE) then
             gameAdState:processPageAdState()
         end
 end
@@ -1034,7 +1034,7 @@ java_overload(AllBinaryGameCanvas, "updateGameState", 0)
 
 
 function AllBinaryGameCanvas:updateGameKeyEventProcessor()
-        if self:getGameState() ~= self.gameStateFactory.PLAYING_GAME_STATE or self.isCheating then
+        if not rawequal(self:getGameState(), self.gameStateFactory.PLAYING_GAME_STATE) or self.isCheating then
         else
         end
 end
@@ -1079,7 +1079,7 @@ java_overload(AllBinaryGameCanvas, "updateEndGameProcessor", 0)
 
 -- throws Exception
 function AllBinaryGameCanvas:updateEndGameProcessor2()
-        if self:getGameState() == self.gameStateFactory.SHOW_END_RESULT_GAME_STATE or self:getGameState() == self.gameStateFactory.SHOW_HIGH_SCORE_GAME_STATE then
+        if rawequal(self:getGameState(), self.gameStateFactory.SHOW_END_RESULT_GAME_STATE) or rawequal(self:getGameState(), self.gameStateFactory.SHOW_HIGH_SCORE_GAME_STATE) then
             self:setEndGameProcessor(self.realEndGameProcessor)
         else
             self:setEndGameProcessor(Processor.getInstance())
@@ -1149,13 +1149,13 @@ function AllBinaryGameCanvas:buildGame(portion)
         progressCanvas:addNormalPortion(portion, "Finishing..")
         self:updateColor()
         self:getStartIntermissionPaintable():update()
-        if not self:isRunningInAnotherThread() then
+        if not (self:isRunningInAnotherThread()) then
             return
         end
         progressCanvas:addNormalPortion(portion, "Finishing...")
-        if self:isMainCanvas() or not self:isInitialized() then
+        if self:isMainCanvas() or not (self:isInitialized()) then
             if features:isFeature(MainFeatureFactory.getInstance().LOAD_ONDEMAND) then
-                if self:getCustomCommandListener() ~= nil then
+                if not rawequal(self:getCustomCommandListener(), nil) then
                     progressCanvas:end_()
                 end
             else
@@ -1163,7 +1163,7 @@ function AllBinaryGameCanvas:buildGame(portion)
             end
             self:setInitialized(true)
         end
-        if self:getCustomCommandListener() == NullCommandListener.NULL_COMMAND_LISTENER then
+        if rawequal(self:getCustomCommandListener(), NullCommandListener.NULL_COMMAND_LISTENER) then
             self.logUtil:putF("Show Game Paintable in DemoCanvas Thread", self, self.BUILD_GAME)
             self.gameCanvasStartListener:showGamePaintable()
         else
@@ -1204,7 +1204,7 @@ java_overload(AllBinaryGameCanvas, "setGameCanvasStartListener", 1, function(jav
 function AllBinaryGameCanvas:loadState()
         self.logUtil:putF(self.commonStrings.START, self, self.commonStrings.LOAD)
         local hashtable = self:getLoadStateHashtable()
-        if hashtable ~= nil and hashtable:size() > 0 then
+        if not rawequal(hashtable, nil) and hashtable:size() > 0 then
             local levelAsString = hashtable:get(GameInfo.LEVEL_NAME)
             local level = math.tointeger(tostring(levelAsString) // 1)
             local gameInfo = self.gameLayerManager:getGameInfo()
@@ -1373,7 +1373,7 @@ java_overload(AllBinaryGameCanvas, "threadInit", 0)
 function AllBinaryGameCanvas:processGame()
         java_super(RunnableCanvas, "process", 0)(self)
         if AllBinaryMediaManager.update() then
-            if not self.primaryPlayerQueue:process() then
+            if not (self.primaryPlayerQueue:process()) then
                 self.secondaryPlayerQueue:process()
             end
         end
@@ -1402,7 +1402,7 @@ function AllBinaryGameCanvas:shouldWait()
             if features:isDefault(self.openGLFeatureFactory.OPENGL) then
                 local openGLImageSpecificFactory = OpenGLImageSpecificFactory.getInstance()
                 while openGLImageSpecificFactory.updating do
-                    java_sleep(self.YIELD_SLEEP)
+                    require("java.lang.Thread").sleep(self.YIELD_SLEEP)
                 end
             end
         end
@@ -1417,13 +1417,13 @@ function AllBinaryGameCanvas:run()
             progressCanvas:addNormalPortion(50, "Game Thread")
             self:setCurrentThread()
             self:setRunning(true)
-            if self:getCustomCommandListener() == NullCommandListener.NULL_COMMAND_LISTENER then
-                java_sleep(self.YIELD_SLEEP)
+            if rawequal(self:getCustomCommandListener(), NullCommandListener.NULL_COMMAND_LISTENER) then
+                require("java.lang.Thread").sleep(self.YIELD_SLEEP)
             end
             self:shouldWait()
             self:threadInit()
-            if self:getCustomCommandListener() == NullCommandListener.NULL_COMMAND_LISTENER then
-                java_sleep(self.YIELD_SLEEP)
+            if rawequal(self:getCustomCommandListener(), NullCommandListener.NULL_COMMAND_LISTENER) then
+                require("java.lang.Thread").sleep(self.YIELD_SLEEP)
             end
             self:open()
             local gameAdState = self.gameAdStateFactory:getCurrentInstance()
@@ -1490,7 +1490,7 @@ function AllBinaryGameCanvas:setRunning(running)
             if running then
             else
                 if features:isDefault(self.openGLFeatureFactory.OPENGL) or SWTUtil.isSWT then
-                    if self.gameLayerManager:getGameInfo():getGameType() ~= self.gameTypeFactory.BOT then
+                    if not rawequal(self.gameLayerManager:getGameInfo():getGameType(), self.gameTypeFactory.BOT) then
                         local currentDisplayableFactory = CurrentDisplayableFactory.getInstance()
                         currentDisplayableFactory:clearRunnable()
                     end

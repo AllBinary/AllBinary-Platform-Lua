@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local TiledLayer = require("javax.microedition.lcdui.game.TiledLayer")
+local TiledLayer = java_lazy("javax.microedition.lcdui.game.TiledLayer")
 local RaceTrackData = java_lazy("org.allbinary.media.graphics.geography.map.racetrack.RaceTrackData")
 
 local function java_idiv(a, b)

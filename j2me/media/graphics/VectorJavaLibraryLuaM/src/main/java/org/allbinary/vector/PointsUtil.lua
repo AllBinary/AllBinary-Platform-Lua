@@ -121,7 +121,7 @@ function PointsUtil:adjustXY(points, x, y)
             local size2 = (points[index + 1].n or #points[index + 1])
             newPoints[index + 1] = java_new_array(0, size2, 2)
             for index2 = 0, size2 - 1 do
-                if points[index + 1][index2 + 1][1] ~= 1000 then
+                if not rawequal(points[index + 1][index2 + 1][1], 1000) then
                     newPoints[index + 1][index2 + 1][1] = points[index + 1][index2 + 1][1] + x
                     newPoints[index + 1][index2 + 1][2] = points[index + 1][index2 + 1][2] + y
                 else
@@ -142,7 +142,7 @@ end
 function PointsUtil:adjust_j3(points, x, y)
         local newPoints = java_new_array(0, (points.n or #points), 2)
         for index2 = 0, (points.n or #points) - 1 do
-            if points[index2 + 1][1] ~= 1000 then
+            if not rawequal(points[index2 + 1][1], 1000) then
                 newPoints[index2 + 1][1] = points[index2 + 1][1] + x
                 newPoints[index2 + 1][2] = points[index2 + 1][2] + y
             else

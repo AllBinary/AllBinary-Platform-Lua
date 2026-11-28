@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local ArtificialIntelligence = java_lazy("org.allbinary.ai.ArtificialIntelligence")
 local ArtificialIntelligenceTransitionInterface = java_lazy("org.allbinary.ai.ArtificialIntelligenceTransitionInterface")
 local IndexedAnimation = java_lazy("org.allbinary.animation.IndexedAnimation")
@@ -207,25 +207,25 @@ function HorizontaRotationManeuverAI:processAI(allBinaryLayerManager)
         local angleIncrementInfo = rotationAnimationInterface:getAngleInfoP():getAngleIncrementInfo()
         local frame = self.rotationAnimationInterface:getFrame()
         local ownerLayerInterface = self:getOwnerLayerInterface()
-        if ownerLayerInterface:getXP() - ownerLayerInterface:getWidth() <= 0 and frame == math.tointeger(angleIncrementInfo.LEFT_FRAME // 1) then
+        if ownerLayerInterface:getXP() - ownerLayerInterface:getWidth() <= 0 and rawequal(frame, math.tointeger(angleIncrementInfo.LEFT_FRAME // 1)) then
             self:reverse()
             self:drop()
         end
         local displayInfo = DisplayInfoSingleton.getInstance()
-        if ownerLayerInterface:getX2() + ownerLayerInterface:getWidth() > displayInfo:getLastWidth() and frame == math.tointeger(angleIncrementInfo.RIGHT_FRAME // 1) then
+        if ownerLayerInterface:getX2() + ownerLayerInterface:getWidth() > displayInfo:getLastWidth() and rawequal(frame, math.tointeger(angleIncrementInfo.RIGHT_FRAME // 1)) then
             self:reverse()
             self:accelerate()
             self:drop()
         end
         local index = self.circularIndexUtil:getIndex()
-        if math.fmod(index, self.currentSpeedDivisor) == 0 and math.fmod(index, 2) == 0 then
+        if rawequal(math.fmod(index, self.currentSpeedDivisor), 0) and rawequal(math.fmod(index, 2), 0) then
             java_super(BasicAI, "processKeyAI", 1)(self, Canvas.UP)
             self.velocityInterface:limitMaxXYVelocity(self.velocityInterface:getMaxForwardVelocity() / self.currentSpeedDivisor)
         end
         self.circularIndexUtil:next()
-        if frame == math.tointeger(angleIncrementInfo.LEFT_FRAME // 1) then
+        if rawequal(frame, math.tointeger(angleIncrementInfo.LEFT_FRAME // 1)) then
             java_super(BasicAI, "processKeyAI", 1)(self, Canvas.KEY_NUM0)
-        elseif frame == math.tointeger(angleIncrementInfo.RIGHT_FRAME // 1) then
+        elseif rawequal(frame, math.tointeger(angleIncrementInfo.RIGHT_FRAME // 1)) then
             java_super(BasicAI, "processKeyAI", 1)(self, Canvas.KEY_POUND)
         end
 end
@@ -236,11 +236,11 @@ function HorizontaRotationManeuverAI:reverse()
         local rotationAnimationInterface = self.rotationAnimationInterface
         local angleIncrementInfo = rotationAnimationInterface:getAngleInfoP():getAngleIncrementInfo()
         local frame = self.rotationAnimationInterface:getFrame()
-        if frame == math.tointeger(angleIncrementInfo.LEFT_FRAME // 1) then
+        if rawequal(frame, math.tointeger(angleIncrementInfo.LEFT_FRAME // 1)) then
             local rotationAnimationInterfaceCompositeInterface = self:getOwnerLayerInterface()
             rotationAnimationInterfaceCompositeInterface:setFrame(math.tointeger(angleIncrementInfo.RIGHT_FRAME // 1))
             self.baseVelocityInterface:zero()
-        elseif frame == math.tointeger(angleIncrementInfo.RIGHT_FRAME // 1) then
+        elseif rawequal(frame, math.tointeger(angleIncrementInfo.RIGHT_FRAME // 1)) then
             local rotationAnimationInterfaceCompositeInterface = self:getOwnerLayerInterface()
             rotationAnimationInterfaceCompositeInterface:setFrame(math.tointeger(angleIncrementInfo.LEFT_FRAME // 1))
             self.baseVelocityInterface:zero()

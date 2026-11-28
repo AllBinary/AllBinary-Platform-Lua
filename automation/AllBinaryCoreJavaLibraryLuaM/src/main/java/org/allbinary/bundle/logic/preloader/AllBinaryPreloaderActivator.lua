@@ -120,7 +120,7 @@ function AllBinaryPreloaderActivator:registerAsService()
         local serviceRegistration = AllBinaryPreloaderActivator.context:registerService(AllBinaryPreloaderActivator.CRYPT_REGISTRY_NAME, CryptServiceFactory.new(), properties)
         local serviceReference = serviceRegistration:getReference()
         serviceReference = AllBinaryPreloaderActivator.context:getServiceReference(AllBinaryPreloaderActivator.CRYPT_REGISTRY_NAME)
-        if serviceReference == nil then
+        if rawequal(serviceReference, nil) then
             error(require("java.lang.Exception").new("No Such Service Reference"), 0)
         end
 end

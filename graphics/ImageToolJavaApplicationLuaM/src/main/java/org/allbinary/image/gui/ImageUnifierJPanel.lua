@@ -273,7 +273,7 @@ function ImageUnifierJPanel:updateImage_j0()
             end
             self.avgRatioJTextField:setText(averageRatioString)
             self.fudgeItJButton:setEnabled(false)
-            if not self.imagesRatioUtil:isEqual(tempBufferedImageArray, totalImages) then
+            if not (self.imagesRatioUtil:isEqual(tempBufferedImageArray, totalImages)) then
                 if self.isImageFillIn then
                     self.fudgeItJButton:setEnabled(true)
                 end
@@ -322,6 +322,8 @@ function ImageUnifierJPanel:updateImage(...)
     local count = select("#", ...)
     if count == 0 then return self:updateImage_j0(...) end
     if count == 1 then return self:updateImage_j1(...) end
+    local parent = getmetatable(ImageUnifierJPanel).__index
+    if parent.updateImage then return parent.updateImage(self, ...) end
     error("No method updateImage takes " .. count .. " arguments")
 end
 ImageUnifierJPanel.updateImage__jdispatcher = ImageUnifierJPanel.updateImage
@@ -376,44 +378,52 @@ function ImageUnifierJPanel:initComponents()
         self.jScrollPane1:setViewportView(self.imageJList)
         self.jButton1:setText("Save")
         self.jButton1:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:jButton1ActionPerformed(evt)
+                ;(self.jButton1ActionPerformed and self or java_outer_self):jButton1ActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.upJButton:setText("Up")
         self.upJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:upJButtonActionPerformed(evt)
+                ;(self.upJButtonActionPerformed and self or java_outer_self):upJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.downJButton:setText("Down")
         self.downJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:downJButtonActionPerformed(evt)
+                ;(self.downJButtonActionPerformed and self or java_outer_self):downJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.fudgeItJButton:setText("Fudge It!")
         self.fudgeItJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:fudgeItJButtonActionPerformed(evt)
+                ;(self.fudgeItJButtonActionPerformed and self or java_outer_self):fudgeItJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -421,37 +431,44 @@ function ImageUnifierJPanel:initComponents()
         self.jLabel2:setText("Columns:")
         self.columnsJTextField:setText(commonPhoneStrings.TWO)
         self.columnsJTextField:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:columnsJTextFieldActionPerformed(evt)
+                ;(self.columnsJTextFieldActionPerformed and self or java_outer_self):columnsJTextFieldActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.columnsJTextField:addPropertyChangeListener((function()
-            local o = PropertyChangeListener.new and PropertyChangeListener.new() or setmetatable({}, {__index = PropertyChangeListener})
+            local java_outer_self = self
+        local o = PropertyChangeListener.new and PropertyChangeListener.new() or setmetatable({}, {__index = PropertyChangeListener})
             
 
             function o:propertyChange(evt)
-                self:columnsJTextFieldPropertyChange(evt)
+                ;(self.columnsJTextFieldPropertyChange and self or java_outer_self):columnsJTextFieldPropertyChange(evt)
+            
             end
             java_overload(o, "propertyChange", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "PropertyChangeEvent")) end)
             return o
         end)())
         self.columnsJTextField:addKeyListener((function()
-            local o = KeyAdapter.new and KeyAdapter.new() or setmetatable({}, {__index = KeyAdapter})
+            local java_outer_self = self
+        local o = KeyAdapter.new and KeyAdapter.new() or setmetatable({}, {__index = KeyAdapter})
             
 
             function o:keyPressed(evt)
-                self:columnsJTextFieldKeyPressed(evt)
+                ;(self.columnsJTextFieldKeyPressed and self or java_outer_self):columnsJTextFieldKeyPressed(evt)
+            
             end
             java_overload(o, "keyPressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "KeyEvent")) end)
             
 
             function o:keyTyped(evt)
-                self:columnsJTextFieldKeyTyped(evt)
+                ;(self.columnsJTextFieldKeyTyped and self or java_outer_self):columnsJTextFieldKeyTyped(evt)
+            
             end
             java_overload(o, "keyTyped", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "KeyEvent")) end)
             return o
@@ -459,11 +476,13 @@ function ImageUnifierJPanel:initComponents()
         self.jLabel1:setText("Rows:")
         self.rowsJTextField:setText(commonPhoneStrings.TWO)
         self.rowsJTextField:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:rowsJTextFieldActionPerformed(evt)
+                ;(self.rowsJTextFieldActionPerformed and self or java_outer_self):rowsJTextFieldActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -471,11 +490,13 @@ function ImageUnifierJPanel:initComponents()
         self.jLabel3:setText("Cell Width:")
         self.cellWidthJTextField:setText("200")
         self.cellWidthJTextField:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:cellWidthJTextFieldActionPerformed(evt)
+                ;(self.cellWidthJTextFieldActionPerformed and self or java_outer_self):cellWidthJTextFieldActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -483,11 +504,13 @@ function ImageUnifierJPanel:initComponents()
         self.jLabel4:setText("Cell Height:")
         self.cellHeightJTextField:setText("150")
         self.cellHeightJTextField:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:cellHeightJTextFieldActionPerformed(evt)
+                ;(self.cellHeightJTextFieldActionPerformed and self or java_outer_self):cellHeightJTextFieldActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -498,22 +521,26 @@ function ImageUnifierJPanel:initComponents()
         self.avgRatioJTextField:setEditable(false)
         self.jButton2:setText(self.commonStrings.UPDATE)
         self.jButton2:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:jButton2ActionPerformed(evt)
+                ;(self.jButton2ActionPerformed and self or java_outer_self):jButton2ActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.jButtonOrder:setText("Order")
         self.jButtonOrder:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:jButtonOrderActionPerformed(evt)
+                ;(self.jButtonOrderActionPerformed and self or java_outer_self):jButtonOrderActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -588,7 +615,7 @@ function ImageUnifierJPanel:jButton1ActionPerformed(evt)
             local filePath = file:getAbsolutePath()
             local extensionIndex = ((string.find(filePath, self.imageStrings.PNG_EXTENSION, 1, true) or 0) - 1)
             filePath = tostring(StringMaker.new():append(string.sub(filePath, (0) + 1, extensionIndex)):append(CommonSeps.getInstance().UNDERSCORE):appendint(java_int(self.imageUnifierProperties:getColumns())):append("_By_"):appendint(java_int(self.imageUnifierProperties:getRows())):append("_Unified"):append(self.imageStrings.PNG_EXTENSION))
-            self.logUtil:putF("New File Path: " .. filePath, self, StringUtil.getInstance().EMPTY_STRING)
+            self.logUtil:putF(require("allbinary_java").to_string("New File Path: ") .. require("allbinary_java").to_string(filePath), self, StringUtil.getInstance().EMPTY_STRING)
             local outputFile = File.new(filePath)
             ImagePersistanceUtil.getInstance():saveWithBatik(FileWrapperUtil.wrapFile(outputFile), self.result)
         end)

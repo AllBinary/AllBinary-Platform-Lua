@@ -29,7 +29,7 @@ local function java_real(class)
 end
 
 local ByteArrayOutputStream = java_lazy("java.io.ByteArrayOutputStream")
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 -- local OutputStream = require("java.io.OutputStream")
 -- local Reader = require("java.io.Reader")
 -- local Writer = require("java.io.Writer")
@@ -112,7 +112,7 @@ end
 
 function SimpleFileUtil:loadFileAsListReturnLine(inputStream, max, byteArray1, includeReturnLine)
         local stringList = BasicArrayListD.new()
-        if inputStream == nil then
+        if rawequal(inputStream, nil) then
             return stringList
         end
         local byteArray = self.nullUtil.NULL_BYTE_ARRAY
@@ -127,7 +127,7 @@ function SimpleFileUtil:loadFileAsListReturnLine(inputStream, max, byteArray1, i
             self.streamUtil:close(inputStream)
             self.logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.ADD, e)
         end
-        if byteArray == nil then
+        if rawequal(byteArray, nil) then
             return stringList
         end
         local size = (byteArray.n or #byteArray)
@@ -136,11 +136,11 @@ function SimpleFileUtil:loadFileAsListReturnLine(inputStream, max, byteArray1, i
         local returnLine = 0
         while index < size do
             startIndex = index
-            while index < size - 1 and byteArray[index + 1] ~= string.byte("\n") do
+            while index < size - 1 and not rawequal(byteArray[index + 1], string.byte("\n")) do
                 index = index + 1
             end
-            if includeReturnLine == 0 then
-                if index > 0 and byteArray[index - 1 + 1] == string.byte("\r") then
+            if rawequal(includeReturnLine, 0) then
+                if index > 0 and rawequal(byteArray[index - 1 + 1], string.byte("\r")) then
                     returnLine = 1
                 else
                     returnLine = 0

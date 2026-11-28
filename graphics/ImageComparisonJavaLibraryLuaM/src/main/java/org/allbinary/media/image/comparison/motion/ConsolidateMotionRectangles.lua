@@ -160,7 +160,7 @@ end
 
 function ConsolidateMotionRectangles:consolidateMotionRectangles()
         local vector = self:getVector()
-        self.logUtil:putF("Start - Size Before: " .. tostring(vector:size()), self, "consolidateMotionRectangleConstraints")
+        self.logUtil:putF(require("allbinary_java").to_string("Start - Size Before: ") .. require("allbinary_java").to_string(vector:size()), self, "consolidateMotionRectangleConstraints")
         local removeVector = BasicArrayListD.new()
         local size = vector:size()
         for index = 0, size - 1 do

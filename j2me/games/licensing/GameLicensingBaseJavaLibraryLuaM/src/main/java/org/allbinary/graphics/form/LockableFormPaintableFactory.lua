@@ -130,7 +130,7 @@ LockableFormPaintableFactory.javaClassName = "org.allbinary.graphics.form.Lockab
 setmetatable(LockableFormPaintableFactory, {__index = ItemPaintableFactory})
 
 function LockableFormPaintableFactory:_init_fields()
-    if self.lockedIndex == nil then self.lockedIndex = nil end
+    if self.lockedIndex == nil then self.lockedIndex = 0 end
 end
 
 

@@ -81,7 +81,7 @@ end
 function ImageActionScriptOutputProcessor.process(imageActionScriptOutputInterface, frame)
         local logUtil = LogUtil.getInstance()
         local commonStrings = CommonStrings.getInstance()
-        logUtil:putF("Start - Processing at: " .. tostring(imageActionScriptOutputInterface), "ImageActionScriptOutputProcessor", commonStrings.PROCESS)
+        logUtil:putF(require("allbinary_java").to_string("Start - Processing at: ") .. require("allbinary_java").to_string(tostring(imageActionScriptOutputInterface)), "ImageActionScriptOutputProcessor", commonStrings.PROCESS)
         local imageTypes = imageActionScriptOutputInterface:getImageTypes()
         local vector = imageTypes:getVector()
         local size = vector:size()

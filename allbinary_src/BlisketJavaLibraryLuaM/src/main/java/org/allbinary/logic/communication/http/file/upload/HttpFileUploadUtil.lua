@@ -142,11 +142,11 @@ end
 
 -- throws Exception
 function HttpFileUploadUtil:isValid(anyType)
-        if anyType ~= nil and not java_instanceof(anyType, String) then
+        if not rawequal(anyType, nil) and not (java_instanceof(anyType, String)) then
             if java_instanceof(anyType, FileItem) then
                 return true
             else
-                error(require("java.lang.Exception").new("Object Not Instance Of FileItem but is: " .. tostring(ClassUtil.viewAll(anyType, CommonSeps.getInstance().NEW_LINE))), 0)
+                error(require("java.lang.Exception").new(require("allbinary_java").to_string("Object Not Instance Of FileItem but is: ") .. require("allbinary_java").to_string(ClassUtil.viewAll(anyType, CommonSeps.getInstance().NEW_LINE))), 0)
             end
         end
         return false

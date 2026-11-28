@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
 local OpenGLFeatureFactory = java_lazy("org.allbinary.graphics.opengles.OpenGLFeatureFactory")
 local OpenGLESImage = java_lazy("org.allbinary.image.opengles.OpenGLESImage")
@@ -37,6 +37,7 @@ local GC = java_lazy("org.eclipse.swt.graphics.GC")
 local SwtImmutableImage = java_lazy("org.microemu.device.swt.SwtImmutableImage")
 local SwtMutableImage = java_lazy("org.microemu.device.swt.SwtMutableImage")
 local ImageSwtRotationUtil = java_lazy("org.allbinary.media.image.ImageSwtRotationUtil")
+local SwtOpenGLESImageBridge = java_lazy("org.allbinary.media.image.SwtOpenGLESImageBridge")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -91,7 +92,7 @@ function ImageRotationUtil:rotateImage(originalImage, image, totalAngle)
                 openGLESImage.openGLESImageProperties.angle = totalAngle
                 return
             else
-                PreLogUtil.put("OpenGL but image is: " .. tostring(image) .. " type: " .. tostring(image:getType()), self, "rotateImage")
+                PreLogUtil.put(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("OpenGL but image is: ") .. require("allbinary_java").to_string(image)) .. require("allbinary_java").to_string(" type: ")) .. require("allbinary_java").to_string(image:getType()), self, "rotateImage")
             end
         end
         local originalSwtImage = (originalImage2:getImage())
@@ -103,7 +104,7 @@ function ImageRotationUtil:rotateImage(originalImage, image, totalAngle)
             gc = swtImage:getGc()
             self.imageSwtRotationUtil:rotateImage(originalSwtImage, copySwtImage, gc, totalAngle)
         else
-            PreLogUtil.put("No rotation for: " .. tostring(image), self, "rotateImage")
+            PreLogUtil.put(require("allbinary_java").to_string("No rotation for: ") .. require("allbinary_java").to_string(tostring(image)), self, "rotateImage")
         end
 end
 

@@ -216,7 +216,7 @@ function StreetAddress._new1_4(self, address)
         self.code = address:get(StreetAddressData.CODE)
         self.country = address:get(StreetAddressData.COUNTRY)
         local def = address:get(StreetAddressData.DEFAULT)
-        if def ~= nil and ((def < StreetAddressData.DEFAULT and -1) or (def > StreetAddressData.DEFAULT and 1) or 0) == 0 then
+        if not rawequal(def, nil) and rawequal(((def < StreetAddressData.DEFAULT and -1) or (def > StreetAddressData.DEFAULT and 1) or 0), 0) then
             self.isDefault_f = true
         else
             self.isDefault_f = false
@@ -228,7 +228,7 @@ end
 
 function StreetAddress:log()
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-            self.logUtil:putF("Created Address: \n" .. tostring(self:toHashMap()), self, "log")
+            self.logUtil:putF(require("allbinary_java").to_string("Created Address: \n") .. require("allbinary_java").to_string(self:toHashMap()), self, "log")
         end
 end
 
@@ -310,7 +310,7 @@ end
 
 function StreetAddress:isEmpty()
         local EMPTY_STRING = StringUtil.getInstance().EMPTY_STRING
-        if self:getName() == nil and self:getName():compareTo(EMPTY_STRING) == 0 and self:getStreet() == nil and self:getStreet():compareTo(EMPTY_STRING) == 0 and self:getCity() == nil and self:getCity():compareTo(EMPTY_STRING) == 0 and self:getState() == nil and self:getState():compareTo(EMPTY_STRING) == 0 and self:getCode() == nil and self:getCode():compareTo(EMPTY_STRING) == 0 and self:getCountry() == nil and self:getCountry():compareTo(EMPTY_STRING) == 0 then
+        if rawequal(self:getName(), nil) and rawequal(self:getName():compareTo(EMPTY_STRING), 0) and rawequal(self:getStreet(), nil) and rawequal(self:getStreet():compareTo(EMPTY_STRING), 0) and rawequal(self:getCity(), nil) and rawequal(self:getCity():compareTo(EMPTY_STRING), 0) and rawequal(self:getState(), nil) and rawequal(self:getState():compareTo(EMPTY_STRING), 0) and rawequal(self:getCode(), nil) and rawequal(self:getCode():compareTo(EMPTY_STRING), 0) and rawequal(self:getCountry(), nil) and rawequal(self:getCountry():compareTo(EMPTY_STRING), 0) then
             return true
         end
         return false
@@ -319,7 +319,7 @@ end
 
 function StreetAddress:isValid()
         local EMPTY_STRING = StringUtil.getInstance().EMPTY_STRING
-        if self:getName() == nil or self:getName():compareTo(EMPTY_STRING) == 0 or self:getStreet() == nil or self:getStreet():compareTo(EMPTY_STRING) == 0 or self:getCity() == nil or self:getCity():compareTo(EMPTY_STRING) == 0 or self:getState() == nil or self:getState():compareTo(EMPTY_STRING) == 0 or self:getCode() == nil or self:getCode():compareTo(EMPTY_STRING) == 0 or self:getCountry() == nil or self:getCountry():compareTo(EMPTY_STRING) == 0 then
+        if rawequal(self:getName(), nil) or rawequal(self:getName():compareTo(EMPTY_STRING), 0) or rawequal(self:getStreet(), nil) or rawequal(self:getStreet():compareTo(EMPTY_STRING), 0) or rawequal(self:getCity(), nil) or rawequal(self:getCity():compareTo(EMPTY_STRING), 0) or rawequal(self:getState(), nil) or rawequal(self:getState():compareTo(EMPTY_STRING), 0) or rawequal(self:getCode(), nil) or rawequal(self:getCode():compareTo(EMPTY_STRING), 0) or rawequal(self:getCountry(), nil) or rawequal(self:getCountry():compareTo(EMPTY_STRING), 0) then
             return false
         end
         return true
@@ -330,27 +330,27 @@ function StreetAddress:validationInfo()
         local stringBuffer = StringMaker.new()
         stringBuffer:append("Address Failed To Validate - All fields must contain data.<br></br>")
         local stringValidationUtil = StringValidationUtil.getInstance()
-        if not stringValidationUtil:isValidRequired(self:getName(), StreetAddressData.MIN, StreetAddressData.MAX) then
+        if not (stringValidationUtil:isValidRequired(self:getName(), StreetAddressData.MIN, StreetAddressData.MAX)) then
             stringBuffer:append("Please enter a valid name")
             stringBuffer:append("<br></br>")
         end
-        if not stringValidationUtil:isValidRequired(self:getStreet(), StreetAddressData.MIN, StreetAddressData.MAX) then
+        if not (stringValidationUtil:isValidRequired(self:getStreet(), StreetAddressData.MIN, StreetAddressData.MAX)) then
             stringBuffer:append("Please enter a valid street")
             stringBuffer:append("<br></br>")
         end
-        if not stringValidationUtil:isValidRequired(self:getCity(), StreetAddressData.MIN, StreetAddressData.MAX) then
+        if not (stringValidationUtil:isValidRequired(self:getCity(), StreetAddressData.MIN, StreetAddressData.MAX)) then
             stringBuffer:append("Please enter a valid city")
             stringBuffer:append("<br></br>")
         end
-        if not stringValidationUtil:isValidRequired(self:getState(), StreetAddressData.MIN, StreetAddressData.MAX) then
+        if not (stringValidationUtil:isValidRequired(self:getState(), StreetAddressData.MIN, StreetAddressData.MAX)) then
             stringBuffer:append("Please enter a valid state")
             stringBuffer:append("<br></br>")
         end
-        if not stringValidationUtil:isValidRequired(self:getCode(), StreetAddressData.MIN, StreetAddressData.MAX) then
+        if not (stringValidationUtil:isValidRequired(self:getCode(), StreetAddressData.MIN, StreetAddressData.MAX)) then
             stringBuffer:append("Please enter a valid zipcode")
             stringBuffer:append("<br></br>")
         end
-        if not stringValidationUtil:isValidRequired(self:getCountry(), StreetAddressData.MIN, StreetAddressData.MAX) then
+        if not (stringValidationUtil:isValidRequired(self:getCountry(), StreetAddressData.MIN, StreetAddressData.MAX)) then
             stringBuffer:append("Please enter a valid country")
             stringBuffer:append("<br></br>")
         end

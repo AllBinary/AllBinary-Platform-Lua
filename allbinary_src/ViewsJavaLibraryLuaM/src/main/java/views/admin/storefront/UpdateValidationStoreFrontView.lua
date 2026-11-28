@@ -175,10 +175,10 @@ end
 function UpdateValidationStoreFrontView:isValid()
         local try_ok, try_error, try_value = pcall(function()
             local valid = true
-            if self.newStoreFrontInterface:isValid() == false then
+            if rawequal(self.newStoreFrontInterface:isValid(), false) then
                 valid = false
             end
-            if StoreFrontFactory.getInstance(self.newStoreFrontInterface:getName()) == nil then
+            if rawequal(StoreFrontFactory.getInstance(self.newStoreFrontInterface:getName()), nil) then
                 valid = false
             end
             do return "__jreturn", valid end
@@ -199,10 +199,10 @@ java_overload(UpdateValidationStoreFrontView, "isValid", 0)
 function UpdateValidationStoreFrontView:validationInfo()
         local try_ok, try_error, try_value = pcall(function()
             local stringBuffer = StringMaker.new()
-            if self.newStoreFrontInterface:isValid() == false then
+            if rawequal(self.newStoreFrontInterface:isValid(), false) then
                 stringBuffer:append(self.newStoreFrontInterface:validationInfo())
             end
-            if StoreFrontFactory.getInstance(self.newStoreFrontInterface:getName()) == nil then
+            if rawequal(StoreFrontFactory.getInstance(self.newStoreFrontInterface:getName()), nil) then
                 stringBuffer:append("Store does not exist<br>")
             end
             do return "__jreturn", tostring(stringBuffer) end

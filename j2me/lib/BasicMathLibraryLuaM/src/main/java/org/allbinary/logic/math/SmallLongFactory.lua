@@ -99,7 +99,7 @@ end
 
 
 function SmallLongFactory:init()
-        if self.INTEGER_ARRAY[1] == nil then
+        if rawequal(self.INTEGER_ARRAY[1], nil) then
             if self.lastMin < self.POSITIVE_MAX or self.lastNegativeMin < self.NEGATIVE_MAX then
                 for index = self.POSITIVE_MAX - 1, self.lastMin, -1 do
                     self.INTEGER_ARRAY[index + self.NEGATIVE_MAX + 1] = index
@@ -136,7 +136,7 @@ end
 
 function SmallLongFactory:getString(index)
         local i = index + self.NEGATIVE_MAX
-        if self.STRING_ARRAY[i + 1] == nil then
+        if rawequal(self.STRING_ARRAY[i + 1], nil) then
             self.STRING_ARRAY[i + 1] = tostring(self.INTEGER_ARRAY[i + 1])
         end
         return self.STRING_ARRAY[i + 1]

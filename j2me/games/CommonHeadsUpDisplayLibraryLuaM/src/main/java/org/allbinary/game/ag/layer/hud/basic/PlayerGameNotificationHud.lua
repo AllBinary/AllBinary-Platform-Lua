@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local GameAdStateFactory = java_lazy("org.allbinary.business.advertisement.GameAdStateFactory")
 local Processor = java_lazy("org.allbinary.canvas.Processor")
 local GameAdState = java_lazy("org.allbinary.game.GameAdState")
@@ -233,7 +233,7 @@ java_overload(PlayerGameNotificationHud, "getPoint", 2, function(java_a1, java_a
 
 function PlayerGameNotificationHud:add(string_, seconds, basicColor, permanent)
         if permanent then
-            if self.lastString ~= string_ then
+            if not rawequal(self.lastString, string_) then
                 self.lastString = string_
                 self.logUtil:putF(tostring(StringMaker.new():append(self.PERMANENT_GAME_NOTIFICATION):append(string_)), self, self.commonStrings.ADD)
             end
@@ -282,7 +282,7 @@ function PlayerGameNotificationHud:setAndRemoveProcess()
         self.point:setY(self:getY())
         local time = self.gameNotification.timeList:removeAt(0)
         local iTime = math.tointeger(time // 1) * 1000
-        if iTime == 0 then
+        if rawequal(iTime, 0) then
             iTime = 500
         end
         self.timeDelayHelper.delay = iTime

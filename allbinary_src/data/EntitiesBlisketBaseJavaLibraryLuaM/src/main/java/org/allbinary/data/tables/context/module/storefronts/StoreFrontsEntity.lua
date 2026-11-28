@@ -219,7 +219,7 @@ function StoreFrontsEntity:getStoreFrontInterface(name)
         local keysAndValues = StdUtil.getInstance():createHashMap()
         keysAndValues:put(StoreFrontData.getInstance().NAME, name)
         local storeHashMap = java_super(AbSqlBean, "getRow", 1)(self, keysAndValues)
-        if storeHashMap ~= nil then
+        if not rawequal(storeHashMap, nil) then
             return StoreFront.new(storeHashMap)
         else
             return StoreFront.new()

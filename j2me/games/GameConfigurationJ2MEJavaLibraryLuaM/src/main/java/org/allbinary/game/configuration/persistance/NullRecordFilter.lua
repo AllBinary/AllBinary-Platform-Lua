@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local RecordFilter = require("javax.microedition.rms.RecordFilter")
+local RecordFilter = java_lazy("javax.microedition.rms.RecordFilter")
 
 local function java_idiv(a, b)
     local q = a / b

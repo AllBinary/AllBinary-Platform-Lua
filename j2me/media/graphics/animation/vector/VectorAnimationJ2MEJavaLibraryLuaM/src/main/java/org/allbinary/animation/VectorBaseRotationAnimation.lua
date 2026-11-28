@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
 local PrimitiveIntUtil = java_lazy("org.allbinary.logic.math.PrimitiveIntUtil")
@@ -236,7 +236,7 @@ function VectorBaseRotationAnimation:paintXY(graphics, x, y)
                 point = currentPointsFrame[index + 1 + 1]
                 nextPointX = nextPoint[1]
                 nextPointY = nextPoint[2]
-                if nextPointX ~= 1000 then
+                if not rawequal(nextPointX, 1000) then
                     graphics:drawLine(point[1] + x, point[2] + y, nextPointX + x, nextPointY + y)
                 else
                     index = index - 1

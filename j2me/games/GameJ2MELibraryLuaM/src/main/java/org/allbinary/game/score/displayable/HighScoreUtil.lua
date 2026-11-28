@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Command = require("javax.microedition.lcdui.Command")
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
+local Command = java_lazy("javax.microedition.lcdui.Command")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
 local GameInfo = java_lazy("org.allbinary.game.GameInfo")
 local HighScore = java_lazy("org.allbinary.game.score.HighScore")
 local HighScoreNamePersistanceSingleton = java_lazy("org.allbinary.game.score.HighScoreNamePersistanceSingleton")
@@ -115,7 +115,7 @@ end
 function HighScoreUtil:saveHighScore()
         self.logUtil:putF(tostring(StringMaker.new():append(self.commonStrings.START):append(StringUtil.getInstance():toString(self.highScore))), self, "saveHighScore")
         local size = (self.highScoresArray.n or #self.highScoresArray)
-        if self.firstTime and size == 0 then
+        if self.firstTime and rawequal(size, 0) then
             self.logUtil:putF("Games canvas did not give us any HighScores", self, "saveHighScore")
             self.highScoresFactoryInterface:fetchHighScores(self.gameInfo, self)
             return

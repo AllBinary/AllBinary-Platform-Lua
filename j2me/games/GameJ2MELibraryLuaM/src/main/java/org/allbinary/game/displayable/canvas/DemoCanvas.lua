@@ -28,10 +28,10 @@ local function java_real(class)
     return class
 end
 
--- local Command = require("javax.microedition.lcdui.Command")
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local Item = require("javax.microedition.lcdui.Item")
+local Command = java_lazy("javax.microedition.lcdui.Command")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Item = java_lazy("javax.microedition.lcdui.Item")
 local J2MEUtil = java_lazy("org.allbinary.J2MEUtil")
 local Animation = java_lazy("org.allbinary.animation.Animation")
 local IndexedAnimationBehavior = java_lazy("org.allbinary.animation.IndexedAnimationBehavior")
@@ -356,7 +356,7 @@ function DemoCanvas:onDisplayChangeEvent(displayChangeEvent)
         local try_ok, try_error, try_value = pcall(function()
             self.logUtil:putF(tostring(StringMaker.new():append(self.commonLabels.START_LABEL):append(tostring(self.displayInfo))), self, self.canvasStrings.ON_DISPLAY_CHANGE_EVENT)
             local scrollSelectionForm = self:getMenuForm()
-            if scrollSelectionForm ~= nil then
+            if not rawequal(scrollSelectionForm, nil) then
                 local formType = FormTypeFactory.getInstance():getFormType()
                 local rectangle = self.formUtil:createFormRectangle()
                 scrollSelectionForm:init(rectangle, formType)
@@ -383,7 +383,7 @@ function DemoCanvas:getCustomCommands()
             local inApplicationPurchaseFactory = InApplicationPurchaseFactory.getInstance()
             if inApplicationPurchaseFactory:isEnabled() then
                 local list = LockableFeatureFactory.getInstance():getList()
-                if list:size() > 0 and not inApplicationPurchaseFactory:isPurchased(list:get(0)) then
+                if list:size() > 0 and not (inApplicationPurchaseFactory:isPurchased(list:get(0))) then
                     commandList:add(gameCommandsFactory.BUY_COMMAND)
                 end
             end
@@ -392,7 +392,7 @@ function DemoCanvas:getCustomCommands()
                 local isOverScan = OperatingSystemFactory.getInstance():getOperatingSystemInstance():isOverScan()
                 if SWTUtil.isSWT then
                     commandList:add(GameInputMappingCanvas.DISPLAY)
-                elseif not isOverScan then
+                elseif not (isOverScan) then
                     commandList:add(gameCommandsFactory.DISPLAY_OPTIONS)
                     commandList:add(gameCommandsFactory.DISPLAY_LOAD_FORM)
                     commandList:add(GameInputMappingCanvas.DISPLAY)
@@ -455,7 +455,7 @@ function DemoCanvas:initMenu()
         local formType2 = FormTypeFactory.getInstance():getFormType()
         local rectangle2 = self.formUtil:createFormRectangle()
         scrollSelectionForm:init(rectangle2, formType2)
-        if self:getMenuForm() ~= ScrollSelectionFormNoneFactory.getInstance() then
+        if not rawequal(self:getMenuForm(), ScrollSelectionFormNoneFactory.getInstance()) then
             self:setMenuInputProcessor(CommandFormInputProcessor.new(BasicArrayListD.new(), -1, self, self:getMenuForm()))
         end
         self:open()
@@ -524,11 +524,11 @@ java_overload(DemoCanvas, "keyRepeatedByDevice", 2, function(java_a1, java_a2) r
 function DemoCanvas:addGameKeyEvent(keyCode, repeated)
         local try_ok, try_error, try_value = pcall(function()
             local gameKey = self.inputToGameKeyMapping:getInstanceForCanvas(self, keyCode)
-            if gameKey ~= self.NONE then
+            if not rawequal(gameKey, self.NONE) then
                 local gameKeyEvent = self.gameKeyEventFactory:getInstanceForInput(self, gameKey)
                 DownGameKeyEventHandler.getInstance():fireEvent(gameKeyEvent)
             else
-                if self.lastKeyNotMapped ~= keyCode then
+                if not rawequal(self.lastKeyNotMapped, keyCode) then
                     self.lastKeyNotMapped = keyCode
                     self.logUtil:putF(tostring(StringMaker.new():append(self.gameInputStrings.NO_KEY):appendint(keyCode)), self, self.gameInputStrings.ADD_KEY_EVENT)
                 end
@@ -546,7 +546,7 @@ java_overload(DemoCanvas, "addGameKeyEvent", 2, function(java_a1, java_a2) retur
 function DemoCanvas:removeGameKeyEvent(keyCode, repeated)
         local try_ok, try_error, try_value = pcall(function()
             local gameKey = self.inputToGameKeyMapping:getInstanceForCanvas(self, keyCode)
-            if gameKey ~= self.NONE then
+            if not rawequal(gameKey, self.NONE) then
                 local gameKeyEvent = self.gameKeyEventFactory:getInstanceForInput(self, gameKey)
                 UpGameKeyEventHandler.getInstance():fireEvent(gameKeyEvent)
             else
@@ -581,7 +581,7 @@ java_overload(DemoCanvas, "unPause", 0)
 
 
 function DemoCanvas:isPausable()
-        if CurrentDisplayableFactory.getInstance():getUsedRunnable() == NullWaitGameRunnable.getInstance() then
+        if rawequal(CurrentDisplayableFactory.getInstance():getUsedRunnable(), NullWaitGameRunnable.getInstance()) then
             return true
         else
             return false
@@ -654,12 +654,12 @@ function DemoCanvas:demoStateChange()
         local newState = self.state + 1
         if newState > 2 then
             newState = 0
-        elseif newState == 2 then
-            if not self.highScoresHelper:isAnyHighScores() then
+        elseif rawequal(newState, 2) then
+            if not (self.highScoresHelper:isAnyHighScores()) then
                 newState = 0
             else
                 local highScores = self.highScoresHelper:getNextHighScores()
-                if highScores == NullHighScoresSingletonFactory.getInstance() then
+                if rawequal(highScores, NullHighScoresSingletonFactory.getInstance()) then
                     newState = 0
                 else
                     self:getRealHighScoresPaintable():setHighScores(highScores)
@@ -675,15 +675,15 @@ java_overload(DemoCanvas, "demoStateChange", 0)
 function DemoCanvas:updateDemoState()
         PreLogUtil.put(tostring(SmallIntegerSingletonFactory.getInstance():createInstance(self.state)), self, self.SET_STATE)
         self:getBasicGameDemoPaintable():setState(self.state)
-        if self.state == 0 then
+        if rawequal(self.state, 0) then
             self.highScoresPaintable = NullPaintable.getInstance()
             self.paintedSpecialAnimationInterface = self:getSpecialAnimationInterface()
-            if not self.demoGameRunnable:isRunning() and self.gameCanvas:isInitialized() then
+            if not (self.demoGameRunnable:isRunning()) and self.gameCanvas:isInitialized() then
                 self:getSpecialAnimationInterface():reset()
             end
-        elseif self.state == 1 then
+        elseif rawequal(self.state, 1) then
             self.paintedSpecialAnimationInterface = SpecialAnimation.getInstance()
-        elseif self.state == 2 then
+        elseif rawequal(self.state, 2) then
             self.highScoresPaintable = self:getRealHighScoresPaintable()
         end
         local gameAdState = self.gameAdStateFactory:getCurrentInstance()
@@ -735,7 +735,7 @@ function DemoCanvas:start()
         self.canvasThread = self.threadFactoryUtil:getInstanceGameCanvasRunnable(gameCanvas)
         self.gameCanvas:setThread(self.canvasThread)
         self.threadFactoryUtil:start(self.canvasThread)
-        if self:getWait() == NullWaitGameRunnable.getInstance().WAIT then
+        if rawequal(self:getWait(), NullWaitGameRunnable.getInstance().WAIT) then
             self:setWait(self:getTempWait())
         end
 end
@@ -743,9 +743,9 @@ java_overload(DemoCanvas, "start", 0)
 
 
 function DemoCanvas:preDemoProcess()
-        if not self.gameCanvas:isInitialized() or self.gameCanvas:getTitle() == NullGameCanvas.NO_GAME then
+        if not (self.gameCanvas:isInitialized()) or rawequal(self.gameCanvas:getTitle(), NullGameCanvas.NO_GAME) then
             if AllBinaryMediaManager.update() then
-                if not PrimaryPlayerQueueFactory.getInstance():process() then
+                if not (PrimaryPlayerQueueFactory.getInstance():process()) then
                     SecondaryPlayerQueueFactory.getInstance():process()
                 end
             end
@@ -760,21 +760,21 @@ function DemoCanvas:process()
         java_super(RunnableCanvas, "process", 0)(self)
         self:getMenuInputProcessor():processInputList()
         self:preDemoProcess()
-        if self.state == 0 then
+        if rawequal(self.state, 0) then
             local indexedAnimationBehavior = (self:getSpecialAnimationInterface():getAnimationBehavior())
             if indexedAnimationBehavior.loopIndex < 1 then
                 self.timeDelayHelper:setStartTimeTNT()
             end
             local demoGameMidlet = self:getCustomCommandListener()
-            if self.gameCanvas ~= NullGameCanvas.getInstance() and self.gameCanvas:isGameOver() then
+            if not rawequal(self.gameCanvas, NullGameCanvas.getInstance()) and self.gameCanvas:isGameOver() then
                 self:stopGameDemo()
                 local randomLevel = self:getNextRandom()
                 local gameInfo = self.gameCanvas:getLayerManager():getGameInfo()
                 gameInfo:setCurrentLevel(randomLevel)
                 self.gameCanvas:setGameOver(false)
                 self:start()
-            elseif self.gameCanvas == NullGameCanvas.getInstance() and demoGameMidlet:isReady() then
-                if not self.demoGameRunnable:isRunning() then
+            elseif rawequal(self.gameCanvas, NullGameCanvas.getInstance()) and demoGameMidlet:isReady() then
+                if not (self.demoGameRunnable:isRunning()) then
                     self:startDemoGame()
                     self.demoGameRunnable:setRunning(true)
                     local thread = self.threadFactoryUtil:getInstanceForRunnable(self.demoGameRunnable)
@@ -796,7 +796,7 @@ java_overload(DemoCanvas, "startDemoGame", 0)
 
 -- throws Exception
 function DemoCanvas:stopGameDemo()
-        if self.gameCanvas ~= NullGameCanvas.getInstance() then
+        if not rawequal(self.gameCanvas, NullGameCanvas.getInstance()) then
             self.logUtil:putF("Set Running False", self, "stopGameDemo")
             self.gameCanvas:setRunning(false)
         end
@@ -809,7 +809,7 @@ function DemoCanvas:showGamePaintable()
         local METHOD_NAME = "showGamePaintable"
         PreLogUtil.put(self.commonStrings.START, self, METHOD_NAME)
         local isDefault = J2MEUtil.isHTML()
-        if self.gameCanvas ~= NullGameCanvas.getInstance() and (self.gameCanvas:isRunning() or isDefault or SWTUtil.isSWT) and not self.gameCanvas:getType() == NullGameCanvas.TYPE then
+        if not rawequal(self.gameCanvas, NullGameCanvas.getInstance()) and (self.gameCanvas:isRunning() or isDefault or SWTUtil.isSWT) and not (rawequal(self.gameCanvas:getType(), NullGameCanvas.TYPE)) then
             self.gameRunnable = self.gameCanvas.gameRunnable
             PreLogUtil.put("Showing Game", self, METHOD_NAME)
             self:setPaintableInterface(self.gameCanvas)
@@ -823,7 +823,7 @@ java_overload(DemoCanvas, "showGamePaintable", 0)
 
 
 function DemoCanvas:isReadyForStateChange()
-        return not self.demoGameRunnable:isRunning() and self.gameCanvas:isInitialized()
+        return not (self.demoGameRunnable:isRunning()) and self.gameCanvas:isInitialized()
 end
 java_overload(DemoCanvas, "isReadyForStateChange", 0)
 
@@ -831,7 +831,7 @@ java_overload(DemoCanvas, "isReadyForStateChange", 0)
 -- throws Exception
 function DemoCanvas:processGame()
         self.gameRunnable:run()
-        if not self.specialAnimationInterface:isComplete() and self:isReadyForStateChange() then
+        if not (self.specialAnimationInterface:isComplete()) and self:isReadyForStateChange() then
             self.specialAnimationInterface:nextFrame()
         end
         if self.timeDelayHelper:isTimeTNT() and self:isReadyForStateChange() then
@@ -862,7 +862,7 @@ function DemoCanvas:run()
             self:initPostPaint()
             self:updateDemoState()
             if features:isDefault(openGLFeatureFactory.OPENGL_AS_GAME_THREAD) then
-                while self.gameCanvas == NullGameCanvas.getInstance() or not self.gameCanvas:isInitialized() do
+                while rawequal(self.gameCanvas, NullGameCanvas.getInstance()) or not (self.gameCanvas:isInitialized()) do
                     self.loopTimeHelper:setStartTimeTNT()
                     self:processGame()
                     self:processLoopSleep()
@@ -963,7 +963,7 @@ java_overload(DemoCanvas, "getGameCanvasRunnableInterface", 0)
 
 function DemoCanvas:isDemoLoading()
         local gameCanvas = self.gameCanvas
-        if gameCanvas == NullGameCanvas.getInstance() then
+        if rawequal(gameCanvas, NullGameCanvas.getInstance()) then
             return true
         elseif gameCanvas:isInitialized() then
             return false

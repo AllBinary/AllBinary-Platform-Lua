@@ -173,7 +173,7 @@ function PooledThread:run()
                 logUtil:putF(self.INTERRUPT_EXCEPTION, self, self.commonStrings.RUN)
                 break
             end
-            if task2 == self.threadObjectUtil.NULL_PRIORITY_RUNNABLE then
+            if rawequal(task2, self.threadObjectUtil.NULL_PRIORITY_RUNNABLE) then
                 break
             end
             local try_ok, try_error, try_value = pcall(function()

@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local RecordStore = require("javax.microedition.rms.RecordStore")
+local RecordStore = require("javax.microedition.rms.RecordStore")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

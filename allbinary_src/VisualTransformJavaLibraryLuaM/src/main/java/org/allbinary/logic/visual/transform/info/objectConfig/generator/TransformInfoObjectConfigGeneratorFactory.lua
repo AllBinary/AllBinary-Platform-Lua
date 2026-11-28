@@ -138,11 +138,11 @@ function TransformInfoObjectConfigGeneratorFactory:getInstance(transformInfoInte
         local type = transformInfoInterface:getObjectConfigInterface():getOutputTypeName()
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             local commonStrings = CommonStrings.getInstance()
-            self.logUtil:putF("Generating Instance for type: " .. type, self, commonStrings.GET_INSTANCE)
+            self.logUtil:putF(require("allbinary_java").to_string("Generating Instance for type: ") .. require("allbinary_java").to_string(type), self, commonStrings.GET_INSTANCE)
         end
-        if type == nil or ((type < InputOutputTypeData.getInstance().RESPONSE and -1) or (type > InputOutputTypeData.getInstance().RESPONSE and 1) or 0) == 0 or transformInfoInterface:isChild() then
+        if rawequal(type, nil) or rawequal(((type < InputOutputTypeData.getInstance().RESPONSE and -1) or (type > InputOutputTypeData.getInstance().RESPONSE and 1) or 0), 0) or transformInfoInterface:isChild() then
             return BasicGenerator.new()
-        elseif ((type < InputOutputTypeData.getInstance().FILE and -1) or (type > InputOutputTypeData.getInstance().FILE and 1) or 0) == 0 then
+        elseif rawequal(((type < InputOutputTypeData.getInstance().FILE and -1) or (type > InputOutputTypeData.getInstance().FILE and 1) or 0), 0) then
             return StoreFileGenerator.new(transformInfoInterface)
         else
             error(require("java.lang.Exception").new("No Such TransformInfoObjectConfigGenerator Type"), 0)

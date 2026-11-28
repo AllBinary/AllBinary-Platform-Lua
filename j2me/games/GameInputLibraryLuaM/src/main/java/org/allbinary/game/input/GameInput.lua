@@ -62,7 +62,7 @@ function GameInput:_init_fields()
     self.commonStrings = CommonStrings.getInstance()
     if self.gameKeyEventList == nil then self.gameKeyEventList = nil end
     if self.removalGameKeyEventList == nil then self.removalGameKeyEventList = nil end
-    if self.isRemoveDuplicateKeyPresses == nil then self.isRemoveDuplicateKeyPresses = nil end
+    if self.isRemoveDuplicateKeyPresses == nil then self.isRemoveDuplicateKeyPresses = false end
 end
 
 
@@ -85,7 +85,7 @@ function GameInput:add(gameKeyEvent)
         if self.isRemoveDuplicateKeyPresses and self.gameKeyEventList:contains(gameKeyEvent) then
             return
         end
-        if gameKeyEvent ~= nil then
+        if not rawequal(gameKeyEvent, nil) then
             self.gameKeyEventList:add(gameKeyEvent)
         else
             self.logUtil:putF("Danger Passed Null GameKeyEvent", self, self.commonStrings.ADD)
@@ -115,7 +115,7 @@ function GameInput:removeNonAIInputGameKeyEvents()
             local index = list:size()
             while (function() index = index - 1 return index end)() >= 0 do
             gameKeyEvent = list.objectArray[index + 1]
-            if gameKeyEvent:getSourceId() ~= 1 then
+            if not rawequal(gameKeyEvent:getSourceId(), 1) then
                 list:removeAt(index)
             end
             end
@@ -132,7 +132,7 @@ function GameInput:update()
             do
                 local index2 = list:size()
                 while (function() index2 = index2 - 1 return index2 end)() >= 0 do
-                if list.objectArray[index2 + 1] == anyType then
+                if rawequal(list.objectArray[index2 + 1], anyType) then
                     list:removeAt(index2)
                 end
                 end

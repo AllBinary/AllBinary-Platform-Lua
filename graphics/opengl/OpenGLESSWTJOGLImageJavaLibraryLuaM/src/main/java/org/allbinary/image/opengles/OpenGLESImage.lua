@@ -28,12 +28,12 @@ local function java_real(class)
     return class
 end
 
--- local GL = require("javax.microedition.khronos.opengles.GL")
--- local GL10 = require("javax.microedition.khronos.opengles.GL10")
--- local Image = require("javax.microedition.lcdui.Image")
--- local NullImage = require("javax.microedition.lcdui.NullImage")
--- local OpenGLESPostLoadPlatformImage = require("javax.microedition.lcdui.OpenGLESPostLoadPlatformImage")
--- local PostLoadImageProcessor = require("javax.microedition.lcdui.PostLoadImageProcessor")
+local GL = java_lazy("javax.microedition.khronos.opengles.GL")
+local GL10 = java_lazy("javax.microedition.khronos.opengles.GL10")
+local Image = require("javax.microedition.lcdui.Image")
+local NullImage = java_lazy("javax.microedition.lcdui.NullImage")
+local OpenGLESPostLoadPlatformImage = java_lazy("javax.microedition.lcdui.OpenGLESPostLoadPlatformImage")
+local PostLoadImageProcessor = java_lazy("javax.microedition.lcdui.PostLoadImageProcessor")
 local GraphicsStrings = java_lazy("org.allbinary.graphics.GraphicsStrings")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
@@ -240,11 +240,11 @@ java_overload(OpenGLESImage, "set", 1, function(java_a1) return true and (java_a
 
 
 function OpenGLESImage:initTexture(gl)
-        if not OpenGLESImage.texture2dList:contains(self) then
+        if not (OpenGLESImage.texture2dList:contains(self)) then
             OpenGLESImage.texture2dList:add(self)
             local textures = java_typed_array("I", java_new_array(0, 1))
             gl:glEnable(GL10.GL_TEXTURE_2D)
-            if self.openGLESImageProperties.textureID ~= -1 then
+            if not rawequal(self.openGLESImageProperties.textureID, -1) then
                 textures[1] = self.openGLESImageProperties.textureID
                 gl:glDeleteTextures(1, textures, 0)
             end

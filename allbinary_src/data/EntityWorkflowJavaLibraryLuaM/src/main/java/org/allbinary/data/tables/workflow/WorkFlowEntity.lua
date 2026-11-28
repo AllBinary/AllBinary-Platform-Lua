@@ -256,7 +256,7 @@ function WorkFlowEntity:get_j1(storeName)
             local size = hashMapVector:size()
             for i = 0, size - 1 do
                 local workFlowHashMap = hashMapVector:get(i)
-                if workFlowHashMap ~= nil then
+                if not rawequal(workFlowHashMap, nil) then
                     workFlowsVector:add(DbWorkFlowFactory.getInstance():getInstance(self.abeClientInformation, workFlowHashMap))
                 end
             end
@@ -276,6 +276,8 @@ function WorkFlowEntity:get(...)
     local count = select("#", ...)
     if count == 2 then return self:get_j2(...) end
     if count == 1 then return self:get_j1(...) end
+    local parent = getmetatable(WorkFlowEntity).__index
+    if parent.get then return parent.get(self, ...) end
     error("No method get takes " .. count .. " arguments")
 end
 WorkFlowEntity.get__jdispatcher = WorkFlowEntity.get

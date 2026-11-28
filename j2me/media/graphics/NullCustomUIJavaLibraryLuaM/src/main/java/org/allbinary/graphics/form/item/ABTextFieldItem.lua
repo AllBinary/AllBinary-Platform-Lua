@@ -16,8 +16,8 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
--- local Font = require("javax.microedition.lcdui.Font")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
+local Font = java_lazy("javax.microedition.lcdui.Font")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local Visitor = java_lazy("org.allbinary.logic.util.visitor.Visitor")

@@ -16,7 +16,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local IndexedAnimation = require("org.allbinary.animation.IndexedAnimation")
 local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
@@ -135,8 +135,8 @@ setmetatable(FillAnimation, {__index = IndexedAnimation})
 
 function FillAnimation:_init_fields()
     if self.pixelBuffer == nil then self.pixelBuffer = nil end
-    if self.width == nil then self.width = nil end
-    if self.height == nil then self.height = nil end
+    if self.width == nil then self.width = 0 end
+    if self.height == nil then self.height = 0 end
 end
 
 
@@ -159,7 +159,7 @@ end
 
 function FillAnimation:setBasicColorP(basicColor)
         local changed = false
-        if self:getBasicColorP() == nil or math.tointeger(self:getBasicColorP() // 1) ~= math.tointeger(basicColor // 1) then
+        if rawequal(self:getBasicColorP(), nil) or not rawequal(math.tointeger(self:getBasicColorP() // 1), math.tointeger(basicColor // 1)) then
             changed = true
         end
         java_super(IndexedAnimation, "setBasicColorP", 1)(self, basicColor)
@@ -172,7 +172,7 @@ java_overload(FillAnimation, "setBasicColorP", 1, function(java_a1) return true 
 
 function FillAnimation:changeBasicColor(basicColor)
         local changed = false
-        if self:getChangeBasicColor() == nil or math.tointeger(self:getChangeBasicColor() // 1) ~= math.tointeger(basicColor // 1) then
+        if rawequal(self:getChangeBasicColor(), nil) or not rawequal(math.tointeger(self:getChangeBasicColor() // 1), math.tointeger(basicColor // 1)) then
             changed = true
         end
         java_super(IndexedAnimation, "changeBasicColor", 1)(self, basicColor)
@@ -185,7 +185,7 @@ java_overload(FillAnimation, "changeBasicColor", 1, function(java_a1) return tru
 
 function FillAnimation:setAlpha(alpha)
         local changed = false
-        if self.alphaP ~= alpha then
+        if not rawequal(self.alphaP, alpha) then
             changed = true
         end
         java_super(IndexedAnimation, "setAlpha", 1)(self, alpha)

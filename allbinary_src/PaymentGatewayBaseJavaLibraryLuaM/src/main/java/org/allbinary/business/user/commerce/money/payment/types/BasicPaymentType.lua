@@ -173,7 +173,7 @@ end
 
 -- throws Exception
 function BasicPaymentType:getPaymentGatewayInterfaceFactoryInterface()
-        if self.paymentGatewayInterfaceFactoryInterface == nil then
+        if rawequal(self.paymentGatewayInterfaceFactoryInterface, nil) then
             error(require("java.lang.Exception").new("PaymentGatewayInterfaceFactoryInterface is Null"), 0)
         end
         return self.paymentGatewayInterfaceFactoryInterface
@@ -182,7 +182,7 @@ end
 
 -- throws Exception
 function BasicPaymentType:getPaymentGatewayDomNodeFactoryInterface()
-        if self.paymentGatewayDomNodeFactoryInterface == nil then
+        if rawequal(self.paymentGatewayDomNodeFactoryInterface, nil) then
             error(require("java.lang.Exception").new("PaymentGatewayDomNodeFactoryInterface is Null"), 0)
         end
         return self.paymentGatewayDomNodeFactoryInterface

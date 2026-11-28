@@ -186,7 +186,7 @@ java_overload(BasicAI, "processAI", 1, function(java_a1) return true and (java_a
 
 -- throws Exception
 function BasicAI:processKeyAI(key)
-        if key ~= -1 then
+        if not rawequal(key, -1) then
             self.gameInput:add(self.gameKeyEventFactory:getInstanceForKey(self, key))
         end
 end

@@ -148,14 +148,14 @@ function GitProcessHelper:trackedFiles_j3(rootAsString, pathspec, suffix)
         local process = ProcessBuilder.new(self.trackedStrings.GIT_COMMAND, self.trackedStrings.CHANGE_DIRECTORY_OPTION, rootAsString, self.trackedStrings.LIST_FILES_COMMAND, self.trackedStrings.SEP_BY_NULL_CHAR_INSTEAD_OF_NEW_LINE, self.trackedStrings.PATHSPEC_SEPARATOR, pathspec):redirectError(ProcessBuilder.Redirect.INHERIT):start()
         local output = process:getInputStream():readAllBytes()
         local exitCode = process:waitFor()
-        if exitCode ~= 0 then
+        if not rawequal(exitCode, 0) then
             error(require("java.lang.IllegalStateException").new(tostring(StringMaker.new():append("git ls-files failed for "):append(rootAsString):append(" with exit code "):appendint(exitCode))), 0)
         end
         local files = ArrayList.new()
         local start = 0
         local relativePath = nil
         for index = 0, (output.n or #output) - 1 do
-            if output[index + 1] == 0 then
+            if rawequal(output[index + 1], 0) then
                 relativePath = string.char(table.unpack(output, start, index - start, StandardCharsets.UTF_8))
                 if (suffix == "" or string.sub(relativePath, -#suffix) == suffix) then
                     files:add(relativePath)
@@ -180,7 +180,7 @@ function GitProcessHelper:isTracked(file)
             local parentFile = nativeFile:getParentFile()
             local process = ProcessBuilder.new(self.trackedStrings.GIT_COMMAND, self.trackedStrings.CHANGE_DIRECTORY_OPTION, parentFile:getPath(), self.trackedStrings.LIST_FILES_COMMAND, self.trackedStrings.ERROR_UNMATCH_OPTION, self.trackedStrings.PATHSPEC_SEPARATOR, nativeFile:getName()):redirectErrorStream(true):start()
             process:getInputStream():readAllBytes()
-            do return "__jreturn", process:waitFor() == 0 end
+            do return "__jreturn", rawequal(process:waitFor(), 0) end
         end)
         if not try_ok then
             local e = try_error

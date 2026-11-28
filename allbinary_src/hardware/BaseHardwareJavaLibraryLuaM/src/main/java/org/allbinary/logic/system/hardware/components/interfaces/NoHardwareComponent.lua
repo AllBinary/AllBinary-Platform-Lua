@@ -70,7 +70,7 @@ end
 
 
 function NoHardwareComponent:compareTo(componentInterface)
-        if self == componentInterface then
+        if rawequal(self, componentInterface) then
             return true
         end
         return false

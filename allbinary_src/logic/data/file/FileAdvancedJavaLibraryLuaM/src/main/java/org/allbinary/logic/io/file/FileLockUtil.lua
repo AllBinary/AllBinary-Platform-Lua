@@ -124,15 +124,15 @@ function FileLockUtil:getAll(vector, isReturnOnFailure)
         for index = 0, size - 1 do
             local file = vector:get(index)
             local fileLock = self:getLock(file)
-            if fileLock ~= nil then
-                self.logUtil:putF("File Lock Obtained: " .. tostring(file:getAbsolutePath()), self, "getAll")
+            if not rawequal(fileLock, nil) then
+                self.logUtil:putF(require("allbinary_java").to_string("File Lock Obtained: ") .. require("allbinary_java").to_string(file:getAbsolutePath()), self, "getAll")
                 fileLockVector:add(fileLock)
             elseif isReturnOnFailure then
-                self.logUtil:putF("Total Locks Obtained: " .. tostring(fileLockVector:size()), self, "getAll")
+                self.logUtil:putF(require("allbinary_java").to_string("Total Locks Obtained: ") .. require("allbinary_java").to_string(fileLockVector:size()), self, "getAll")
                 return fileLockVector
             end
         end
-        self.logUtil:putF("Total Locks Obtained: " .. tostring(fileLockVector:size()), self, "getAll")
+        self.logUtil:putF(require("allbinary_java").to_string("Total Locks Obtained: ") .. require("allbinary_java").to_string(fileLockVector:size()), self, "getAll")
         return fileLockVector
 end
 
@@ -146,7 +146,7 @@ end
 -- throws Exception
 function FileLockUtil:getAllOrNone(vector)
         local fileLockVector = self:getAll(vector, true)
-        if vector:size() ~= fileLockVector:size() then
+        if not rawequal(vector:size(), fileLockVector:size()) then
             return BasicArrayListD.new()
         else
             return fileLockVector

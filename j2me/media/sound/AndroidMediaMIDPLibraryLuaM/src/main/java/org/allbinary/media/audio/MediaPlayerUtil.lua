@@ -84,7 +84,7 @@ function MediaPlayerUtil:waitForMediaPlayer(mediaPlayer)
         local index = 0
         while mediaPlayer:isPlaying() and index < 50 do
             self.logUtil:putF(MESSAGE, self, METHOD_NAME)
-            java_sleep(100)
+            require("java.lang.Thread").sleep(100)
             index = index + 1
         end
 end

@@ -92,7 +92,7 @@ function ShippingMethodsFactory._jinit(self, abeClientInformation, storeFrontInt
         stringBuffer:append(storeFrontInterface:getName())
         stringBuffer:append(sep)
         stringBuffer:append(ShippingMethodsFactory.SHIPPINGMETHODSFILEPATHSTRING)
-        local abPath = AbPath.new(tostring(stringBuffer), self.SHIPPINGMETHODSFILENAME)
+        local abPath = AbPath.new(tostring(stringBuffer), ShippingMethodsFactory.SHIPPINGMETHODSFILENAME)
         local data = CryptFileReader.new(TransformInfoObjectConfigData.getInstance().UNCRYPTED_EXTENSION, TransformInfoObjectConfigData.getInstance().ENCRYPTED_EXTENSION):get(abPath)
         self.document = DomDocumentHelper.create(data)
         self.shippingVector = BasicArrayListD.new()
@@ -107,7 +107,7 @@ function ShippingMethodsFactory._jinit(self, abeClientInformation, storeFrontInt
             self.shippingVector:add(shippingMethodInterface)
             local defaultShippingMethodNameNode = DomSearchHelper.getNode(ShippingMethodData.DEFAULT, shippingMethodNameNode:getChildNodes())
             local defaultShippingMethodNameNodeValue = DomNodeHelper.getTextNodeValue(defaultShippingMethodNameNode)
-            if defaultShippingMethodNameNodeValue ~= nil and ((defaultShippingMethodNameNodeValue < ShippingMethodData.DEFAULT and -1) or (defaultShippingMethodNameNodeValue > ShippingMethodData.DEFAULT and 1) or 0) == 0 then
+            if not rawequal(defaultShippingMethodNameNodeValue, nil) and rawequal(((defaultShippingMethodNameNodeValue < ShippingMethodData.DEFAULT and -1) or (defaultShippingMethodNameNodeValue > ShippingMethodData.DEFAULT and 1) or 0), 0) then
                 self.defaultShippingMethodInterface = shippingMethodInterface
             end
         end

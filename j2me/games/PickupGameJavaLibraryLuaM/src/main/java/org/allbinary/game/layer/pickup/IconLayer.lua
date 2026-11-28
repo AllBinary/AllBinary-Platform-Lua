@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local Animation = java_lazy("org.allbinary.animation.Animation")
 local NullAnimationFactory = java_lazy("org.allbinary.animation.NullAnimationFactory")
 local PointFactory = java_lazy("org.allbinary.graphics.PointFactory")

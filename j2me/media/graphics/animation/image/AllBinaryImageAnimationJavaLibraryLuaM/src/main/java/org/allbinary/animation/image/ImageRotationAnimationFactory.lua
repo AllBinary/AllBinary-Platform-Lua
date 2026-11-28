@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local Animation = java_lazy("org.allbinary.animation.Animation")
 local AnimationBehaviorFactory = java_lazy("org.allbinary.animation.AnimationBehaviorFactory")
 local GameConfigurationCentral = java_lazy("org.allbinary.game.configuration.GameConfigurationCentral")
@@ -136,7 +136,7 @@ ImageRotationAnimationFactory.javaClassName = "org.allbinary.animation.image.Ima
 setmetatable(ImageRotationAnimationFactory, {__index = BaseImageAnimationFactory})
 
 function ImageRotationAnimationFactory:_init_fields()
-    if self.angleIncrement == nil then self.angleIncrement = nil end
+    if self.angleIncrement == nil then self.angleIncrement = 0 end
 end
 
 
@@ -159,7 +159,7 @@ end
 
 -- throws Exception
 function ImageRotationAnimationFactory:getInstance(instanceId)
-        if self.animationFactoryInitializationVisitor.dx ~= 0 or self.animationFactoryInitializationVisitor.dy ~= 0 then
+        if not rawequal(self.animationFactoryInitializationVisitor.dx, 0) or not rawequal(self.animationFactoryInitializationVisitor.dy, 0) then
             self.animationFactoryImageScaleUtil:processAdjust(self)
             return AdjustedImageBaseRotationAnimation.new(self:getImage(), AngleInfo.getInstance(self.angleIncrement), AngleFactory.getInstance().TOTAL_ANGLE, self.animationFactoryInitializationVisitor.dx, self.animationFactoryInitializationVisitor.dy, self.animationBehaviorFactory:getOrCreateInstance())
         else

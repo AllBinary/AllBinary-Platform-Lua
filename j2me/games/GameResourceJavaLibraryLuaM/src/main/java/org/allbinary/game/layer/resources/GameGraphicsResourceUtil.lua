@@ -83,7 +83,7 @@ end
 
 
 function GameGraphicsResourceUtil.getInstance()
-        if GameGraphicsResourceUtil.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(GameGraphicsResourceUtil.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             GameGraphicsResourceUtil.instance_f = GameGraphicsResourceUtil.new()
         end
         return GameGraphicsResourceUtil.instance_f
@@ -137,10 +137,10 @@ function GameGraphicsResourceUtil:getStringForFeature(graphicsFeature)
         local features = Features.getInstance()
         if features:isFeature(graphicsFeatureFactory.VECTOR_GRAPHICS) then
         elseif features:isFeature(graphicsFeatureFactory.IMAGE_GRAPHICS) then
-            if graphicsFeature == graphicsFeatureFactory.IMAGE_TO_ARRAY_GRAPHICS or graphicsFeature == graphicsFeatureFactory.IMAGE_ROTATION_ON_THE_FLY then
-            elseif graphicsFeature == graphicsFeatureFactory.SPRITE_FULL_GRAPHICS then
+            if rawequal(graphicsFeature, graphicsFeatureFactory.IMAGE_TO_ARRAY_GRAPHICS) or rawequal(graphicsFeature, graphicsFeatureFactory.IMAGE_ROTATION_ON_THE_FLY) then
+            elseif rawequal(graphicsFeature, graphicsFeatureFactory.SPRITE_FULL_GRAPHICS) then
                 stringBuffer:append(self.SPRITE)
-            elseif graphicsFeature == graphicsFeatureFactory.SPRITE_QUARTER_ROTATION_GRAPHICS then
+            elseif rawequal(graphicsFeature, graphicsFeatureFactory.SPRITE_QUARTER_ROTATION_GRAPHICS) then
                 stringBuffer:append(self.QUARTER)
                 stringBuffer:append(self.SPRITE)
             else

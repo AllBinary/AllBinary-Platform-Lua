@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Font = require("javax.microedition.lcdui.Font")
+local Font = java_lazy("javax.microedition.lcdui.Font")
 local AvianUtil = java_lazy("org.allbinary.AvianUtil")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 
@@ -78,13 +78,13 @@ function TrueTypeFontUtilBase:_init_fields()
     self.size_f = #self.pattern
     self.lastCapIndex = ((string.find(self.pattern, "Z", 1, true) or 0) - 1)
     self.currentFont = Font.getDefaultFont()
-    if self.scale == nil then self.scale = nil end
-    if self.CELLS_PER_ROW == nil then self.CELLS_PER_ROW = nil end
-    if self.fontSize == nil then self.fontSize = nil end
-    if self.baseCharWidth == nil then self.baseCharWidth = nil end
-    if self.cellSize == nil then self.cellSize = nil end
-    if self.textureSize == nil then self.textureSize = nil end
-    if self.actualCellsPerRow == nil then self.actualCellsPerRow = nil end
+    if self.scale == nil then self.scale = 0 end
+    if self.CELLS_PER_ROW == nil then self.CELLS_PER_ROW = 0 end
+    if self.fontSize == nil then self.fontSize = 0 end
+    if self.baseCharWidth == nil then self.baseCharWidth = 0 end
+    if self.cellSize == nil then self.cellSize = 0 end
+    if self.textureSize == nil then self.textureSize = 0 end
+    if self.actualCellsPerRow == nil then self.actualCellsPerRow = 0 end
 end
 
 

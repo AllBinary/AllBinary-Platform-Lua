@@ -33,7 +33,7 @@ local Canvas = java_lazy("android.graphics.Canvas")
 local Color = java_lazy("android.graphics.Color")
 local Matrix = java_lazy("android.graphics.Matrix")
 local Paint = java_lazy("android.graphics.Paint")
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local AndroidImageInterface = java_lazy("org.microemu.android.device.AndroidImageInterface")
 
 local function java_idiv(a, b)

@@ -31,7 +31,7 @@ end
 -- local Graphics2D = require("java.awt.Graphics2D")
 -- local AffineTransform = require("java.awt.geom.AffineTransform")
 -- local BufferedImage = require("java.awt.image.BufferedImage")
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local ImageCache = java_lazy("org.allbinary.image.ImageCache")
 local ImageCreationUtil = java_lazy("org.allbinary.media.image.ImageCreationUtil")
 local ImageJ2SEUtil = java_lazy("org.allbinary.media.image.ImageJ2SEUtil")

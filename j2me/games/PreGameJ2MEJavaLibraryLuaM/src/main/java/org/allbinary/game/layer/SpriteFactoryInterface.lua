@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
--- local Sprite = require("javax.microedition.lcdui.game.Sprite")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local Sprite = java_lazy("javax.microedition.lcdui.game.Sprite")
 
 local function java_idiv(a, b)
     local q = a / b

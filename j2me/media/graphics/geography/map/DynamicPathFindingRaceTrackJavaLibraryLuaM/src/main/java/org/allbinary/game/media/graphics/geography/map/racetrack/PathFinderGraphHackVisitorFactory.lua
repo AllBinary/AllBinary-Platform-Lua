@@ -130,9 +130,9 @@ PathFinderGraphHackVisitorFactory.javaClassName = "org.allbinary.game.media.grap
 setmetatable(PathFinderGraphHackVisitorFactory, {__index = PathFinderGraphVisitorFactoryBase})
 
 function PathFinderGraphHackVisitorFactory:_init_fields()
-    if self.edgeMinimum == nil then self.edgeMinimum = nil end
-    if self.minPathWeight == nil then self.minPathWeight = nil end
-    if self.maxPathWeight == nil then self.maxPathWeight = nil end
+    if self.edgeMinimum == nil then self.edgeMinimum = 0 end
+    if self.minPathWeight == nil then self.minPathWeight = 0 end
+    if self.maxPathWeight == nil then self.maxPathWeight = 0 end
 end
 
 

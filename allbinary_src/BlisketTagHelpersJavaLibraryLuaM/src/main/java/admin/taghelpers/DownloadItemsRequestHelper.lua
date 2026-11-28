@@ -167,7 +167,7 @@ function DownloadItemsRequestHelper:insert()
         local try_ok, try_error, try_value = pcall(function()
             local vector = self.downloadableItem:toVector()
             DownloadItemsEntityFactory.getInstance():getDownloadItemsEntityInstance():insert(vector)
-            local success = "Successfully inserted " .. tostring(self.downloadableItem:getId()) .. " into downloaditems table"
+            local success = require("allbinary_java").to_string(require("allbinary_java").to_string("Successfully inserted ") .. require("allbinary_java").to_string(self.downloadableItem:getId())) .. require("allbinary_java").to_string(" into downloaditems table")
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGS) then
                 self.logUtil:putF(success, self, "insert()")
             end
@@ -176,7 +176,7 @@ function DownloadItemsRequestHelper:insert()
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-            local error = "Failed to insert " .. tostring(self.downloadableItem:getId()) .. " into downloaditems table"
+            local error = require("allbinary_java").to_string(require("allbinary_java").to_string("Failed to insert ") .. require("allbinary_java").to_string(self.downloadableItem:getId())) .. require("allbinary_java").to_string(" into downloaditems table")
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "inserts()", e)
             end
@@ -216,14 +216,14 @@ function DownloadItemsRequestHelper:update()
             local values = self.downloadableItem:toHashMap()
             DownloadItemsEntityFactory.getInstance():getDownloadItemsEntityInstance():update(values)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGS) then
-                self.logUtil:putF(tostring(self.downloadableItem:getId() + CommonSeps.getInstance().SPACE) .. success, self, "update()")
+                self.logUtil:putF(require("allbinary_java").to_string(self.downloadableItem:getId() + CommonSeps.getInstance().SPACE) .. require("allbinary_java").to_string(success), self, "update()")
             end
             do return "__jreturn", success end
         end)
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-            local error = "Failed to update: " .. tostring(self.downloadableItem:getId())
+            local error = require("allbinary_java").to_string("Failed to update: ") .. require("allbinary_java").to_string(self.downloadableItem:getId())
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "update()", e)
             end

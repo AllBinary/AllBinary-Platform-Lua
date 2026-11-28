@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local AndroidUtil = java_lazy("org.allbinary.AndroidUtil")
 local CollidableDestroyableDamageableLayer = java_lazy("org.allbinary.game.layer.special.CollidableDestroyableDamageableLayer")
@@ -184,7 +184,7 @@ function RTSLayerHudPaintable:updateMeasurement(graphics)
         local font = graphics:getFont()
         self.fontHeight = font:getHeight()
         self.costY1 = (self.y + (((self.weaponProperties.n or #self.weaponProperties) + 1) * self.fontHeight))
-        if not AndroidUtil.isAndroid() then
+        if not (AndroidUtil.isAndroid()) then
             self.costY = self.costY1
         else
             self.costY = (self.y + (((self.weaponProperties.n or #self.weaponProperties) + 2) * self.fontHeight))

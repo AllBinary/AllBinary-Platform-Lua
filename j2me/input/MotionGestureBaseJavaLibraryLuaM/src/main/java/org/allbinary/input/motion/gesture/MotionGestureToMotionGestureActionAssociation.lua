@@ -95,11 +95,11 @@ end
 
 function MotionGestureToMotionGestureActionAssociation:isMotionGestureArrayEquals(aList)
         local size = aList:size()
-        if self.list:size() ~= size then
+        if not rawequal(self.list:size(), size) then
             return false
         end
         for i = size - 1, 0, -1 do
-            if aList.objectArray[i + 1] ~= self.list.objectArray[i + 1] then
+            if not rawequal(aList.objectArray[i + 1], self.list.objectArray[i + 1]) then
                 return false
             end
         end

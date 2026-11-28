@@ -173,7 +173,7 @@ function RaceTrackGeographicMap:isValid(geographicMapCellPosition)
             stringBuffer:append(" not in: ")
             stringBuffer:appendint((customMapArray[1].n or #customMapArray[1]))
             self.logUtil:putF(tostring(stringBuffer), self, self.commonStrings.IS_VALID)
-            if geographicMapCellPosition:getColumn() == (customMapArray[1].n or #customMapArray[1]) then
+            if rawequal(geographicMapCellPosition:getColumn(), (customMapArray[1].n or #customMapArray[1])) then
                 return true
             else
                 return false
@@ -185,7 +185,7 @@ function RaceTrackGeographicMap:isValid(geographicMapCellPosition)
             stringBuffer:append(" not in: ")
             stringBuffer:appendint((customMapArray.n or #customMapArray))
             self.logUtil:putF(tostring(stringBuffer), self, self.commonStrings.IS_VALID)
-            if geographicMapCellPosition:getRow() == (customMapArray.n or #customMapArray) then
+            if rawequal(geographicMapCellPosition:getRow(), (customMapArray.n or #customMapArray)) then
                 return true
             else
                 return false

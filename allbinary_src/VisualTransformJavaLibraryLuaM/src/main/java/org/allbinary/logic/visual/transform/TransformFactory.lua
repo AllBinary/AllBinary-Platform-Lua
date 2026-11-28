@@ -142,18 +142,18 @@ end
 function TransformFactory:getInstance_j3_1(abeClientInformation, viewName, ownerTransformInfoInterface)
         local try_ok, try_error, try_value = pcall(function()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERFACTORY) then
-                self.logUtil:putF("Creating Transform: " .. viewName, self, self.commonStrings.GET_INSTANCE)
+                self.logUtil:putF(require("allbinary_java").to_string("Creating Transform: ") .. require("allbinary_java").to_string(viewName), self, self.commonStrings.GET_INSTANCE)
             end
             local ownerTransformInfoHttpInterface = ownerTransformInfoInterface
             local transformInfoEntity = TransformInfoEntityBuilder.getInstance()
             local transformInfoInterface = transformInfoEntity:get(viewName, ownerTransformInfoHttpInterface:getPropertiesHashMap(), ownerTransformInfoHttpInterface:getPageContext())
-            if transformInfoInterface == nil then
-                error(require("java.lang.Exception").new("No Such View In DB: " .. viewName), 0)
+            if rawequal(transformInfoInterface, nil) then
+                error(require("java.lang.Exception").new(require("allbinary_java").to_string("No Such View In DB: ") .. require("allbinary_java").to_string(viewName)), 0)
             end
             transformInfoInterface:setChild()
             local anyType = TransformInfoObjectFactory.getInstance():getInstance(abeClientInformation, transformInfoInterface)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERFACTORY) then
-                self.logUtil:putF("Created Transform: " .. viewName, self, self.commonStrings.GET_INSTANCE)
+                self.logUtil:putF(require("allbinary_java").to_string("Created Transform: ") .. require("allbinary_java").to_string(viewName), self, self.commonStrings.GET_INSTANCE)
             end
             do return "__jreturn", anyType end
         end)
@@ -174,18 +174,18 @@ function TransformFactory:getInstance_j3_2(abeClientInformation, propertiesHashM
         local try_ok, try_error, try_value = pcall(function()
             local transformInfoData = TransformInfoData.getInstance()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERFACTORY) then
-                self.logUtil:putF("Creating Transform: " .. tostring(propertiesHashMap:get(transformInfoData.NAME)), self, self.commonStrings.GET_INSTANCE)
+                self.logUtil:putF(require("allbinary_java").to_string("Creating Transform: ") .. require("allbinary_java").to_string(propertiesHashMap:get(transformInfoData.NAME)), self, self.commonStrings.GET_INSTANCE)
             end
             local transformInfoEntity = TransformInfoEntityBuilder.getInstance()
             local transformInfoInterface = transformInfoEntity:get(propertiesHashMap:get(transformInfoData.NAME), propertiesHashMap, pageContext)
-            if transformInfoInterface ~= nil then
+            if not rawequal(transformInfoInterface, nil) then
                 transformInfoInterface:override(propertiesHashMap)
             else
                 transformInfoInterface = TransformInfoHttpFactory.getInstance(propertiesHashMap, pageContext)
             end
             local anyType = TransformInfoObjectFactory.getInstance():getInstance(abeClientInformation, transformInfoInterface)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERFACTORY) then
-                self.logUtil:putF("Created Transform: " .. tostring(propertiesHashMap:get(transformInfoData.NAME)), self, self.commonStrings.GET_INSTANCE)
+                self.logUtil:putF(require("allbinary_java").to_string("Created Transform: ") .. require("allbinary_java").to_string(propertiesHashMap:get(transformInfoData.NAME)), self, self.commonStrings.GET_INSTANCE)
             end
             do return "__jreturn", anyType end
         end)
@@ -209,11 +209,11 @@ end
 function TransformFactory:getInstance_j2(abeClientInformation, transformInfoInterface)
         local try_ok, try_error, try_value = pcall(function()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERFACTORY) then
-                self.logUtil:putF("Creating Transform: " .. transformInfoInterface:getName(), self, "getInstance(TransformInfoInterface)")
+                self.logUtil:putF(require("allbinary_java").to_string("Creating Transform: ") .. require("allbinary_java").to_string(transformInfoInterface:getName()), self, "getInstance(TransformInfoInterface)")
             end
             local anyType = TransformInfoObjectFactory.getInstance():getInstance(abeClientInformation, transformInfoInterface)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERFACTORY) then
-                self.logUtil:putF("Created Transform: " .. transformInfoInterface:getName(), self, "getInstance(TransformInfoInterface)")
+                self.logUtil:putF(require("allbinary_java").to_string("Created Transform: ") .. require("allbinary_java").to_string(transformInfoInterface:getName()), self, "getInstance(TransformInfoInterface)")
             end
             do return "__jreturn", anyType end
         end)

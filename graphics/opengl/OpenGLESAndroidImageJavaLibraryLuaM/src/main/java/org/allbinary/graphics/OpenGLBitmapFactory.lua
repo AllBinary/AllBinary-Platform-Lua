@@ -16,8 +16,8 @@ local function java_real(class)
     return class
 end
 
--- local InputStream = require("java.io.InputStream")
--- local Image = require("javax.microedition.lcdui.Image")
+local InputStream = java_lazy("java.io.InputStream")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local Bitmap = java_lazy("android.graphics.Bitmap")
 local BitmapFactory = java_lazy("android.graphics.BitmapFactory")
 -- local IOException = require("java.io.IOException")
@@ -162,6 +162,8 @@ function OpenGLBitmapFactory:createBitmap(...)
     local count = select("#", ...)
     if count == 3 then return self:createBitmap_j3(...) end
     if count == 1 then return self:createBitmap_j1(...) end
+    local parent = getmetatable(OpenGLBitmapFactory).__index
+    if parent.createBitmap then return parent.createBitmap(self, ...) end
     error("No method createBitmap takes " .. count .. " arguments")
 end
 OpenGLBitmapFactory.createBitmap__jdispatcher = OpenGLBitmapFactory.createBitmap

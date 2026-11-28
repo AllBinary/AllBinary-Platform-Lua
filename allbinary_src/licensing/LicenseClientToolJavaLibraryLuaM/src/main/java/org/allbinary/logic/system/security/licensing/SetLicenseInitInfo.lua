@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local BufferedReader = require("java.io.BufferedReader")
--- local InputStreamReader = require("java.io.InputStreamReader")
+local BufferedReader = java_lazy("java.io.BufferedReader")
+local InputStreamReader = java_lazy("java.io.InputStreamReader")
 local LicenseInitInfo = java_lazy("org.allbinary.business.init.LicenseInitInfo")
 local LicenseInitInfoUtil = java_lazy("org.allbinary.business.init.LicenseInitInfoUtil")
 local FileFactory = java_lazy("org.allbinary.logic.io.file.FileFactory")
@@ -109,13 +109,13 @@ end
 
 function SetLicenseInitInfo:createNewLicenseInitInfo(licenceServerVector)
         local try_ok, try_error, try_value = pcall(function()
-            if licenceServerVector == nil then
+            if rawequal(licenceServerVector, nil) then
                 error(require("java.lang.Exception").new("null BasicArrayList Passed - Just Make Empty if you want"), 0)
             end
             local licenseInitInfo = self:getLicenseInitInfo()
             print("License Serv Example: http://www.dartstatistics.com/LicServ/serverssl.php")
             licenseInitInfo:clearServers()
-            local file = File.new(tostring(PrintLicenseInitInfo.PATH) .. "licenseservers.txt")
+            local file = File.new(require("allbinary_java").to_string(PrintLicenseInitInfo.PATH) .. require("allbinary_java").to_string("licenseservers.txt"))
             local reader = FileReader.new(file)
             local lineNumberReader = LineNumberReader.new(reader)
             while lineNumberReader:ready() do
@@ -127,7 +127,7 @@ function SetLicenseInitInfo:createNewLicenseInitInfo(licenceServerVector)
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-            io.write(tostring("Error: " .. tostring(e)))
+            io.write(tostring(require("allbinary_java").to_string("Error: ") .. require("allbinary_java").to_string(e)))
             print(debug.traceback(tostring(e)))
         end
 end

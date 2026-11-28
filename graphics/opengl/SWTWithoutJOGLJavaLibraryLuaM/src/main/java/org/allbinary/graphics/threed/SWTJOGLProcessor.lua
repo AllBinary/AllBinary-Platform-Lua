@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Font = require("javax.microedition.lcdui.Font")
--- local MIDlet = require("javax.microedition.midlet.MIDlet")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local MIDlet = java_lazy("javax.microedition.midlet.MIDlet")
 local Runnable = require("java.lang.Runnable")
 local GLHolder = java_lazy("org.allbinary.graphics.threed.GLHolder")
 local RatioProcessor = java_lazy("org.allbinary.graphics.threed.RatioProcessor")

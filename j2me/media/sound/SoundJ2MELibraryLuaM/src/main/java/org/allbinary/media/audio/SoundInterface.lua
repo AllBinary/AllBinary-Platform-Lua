@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Player = require("javax.microedition.media.Player")
+local Player = java_lazy("javax.microedition.media.Player")
 
 local function java_idiv(a, b)
     local q = a / b

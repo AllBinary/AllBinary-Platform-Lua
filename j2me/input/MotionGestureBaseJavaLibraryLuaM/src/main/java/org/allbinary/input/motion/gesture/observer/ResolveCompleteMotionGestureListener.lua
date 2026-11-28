@@ -90,7 +90,7 @@ function ResolveCompleteMotionGestureListener:onMotionGestureCompleted(list)
         local size = commandActionsList:size()
         for index = size - 1, 0, -1 do
             local association = commandActionsList.objectArray[index + 1]
-            if association:isMotionGestureArrayEquals(list) == true then
+            if rawequal(association:isMotionGestureArrayEquals(list), true) then
                 local completeMotionGestureInputEvent = association:getCommandAction()
                 CompleteMotionGestureInputEventHandler.getInstance():fireEvent(completeMotionGestureInputEvent)
                 break

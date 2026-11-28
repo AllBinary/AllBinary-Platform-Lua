@@ -94,11 +94,11 @@ function VectorCenterGenerator:calculate(hashMap)
         local size = (graphicItemArray.n or #graphicItemArray)
         for index = 0, size - 1 do
             local item = hashMap:get(graphicItemArray[index + 1])
-            if item:getName() == LinesGraphicItem.getStaticName() then
+            if rawequal(item:getName(), LinesGraphicItem.getStaticName()) then
                 self:getInstance(item:getPointsInterface():getPoints())
             end
         end
-        self.logUtil:putF("minX: " .. tostring(self.minX) .. " minY: " .. tostring(self.minY) .. " maxX: " .. tostring(self.maxX) .. " maxY: " .. tostring(self.maxY), self, self.commonStrings.GET_INSTANCE)
+        self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("minX: ") .. require("allbinary_java").to_string(self.minX)) .. require("allbinary_java").to_string(" minY: ")) .. require("allbinary_java").to_string(self.minY)) .. require("allbinary_java").to_string(" maxX: ")) .. require("allbinary_java").to_string(self.maxX)) .. require("allbinary_java").to_string(" maxY: ")) .. require("allbinary_java").to_string(self.maxY), self, self.commonStrings.GET_INSTANCE)
         self:setWidth(self.maxX - self.minX)
         self:setHeight(self.maxY - self.minY)
         local max = self:getWidth()

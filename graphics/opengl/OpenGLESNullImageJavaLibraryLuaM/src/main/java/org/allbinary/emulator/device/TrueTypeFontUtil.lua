@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local GL10 = require("javax.microedition.khronos.opengles.GL10")
--- local Image = require("javax.microedition.lcdui.Image")
+local GL10 = java_lazy("javax.microedition.khronos.opengles.GL10")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local OpenGLESImage = java_lazy("org.allbinary.image.opengles.OpenGLESImage")
 local TrueTypeFontUtilBase = require("org.allbinary.emulator.device.TrueTypeFontUtilBase")

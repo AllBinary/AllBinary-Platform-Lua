@@ -16,8 +16,8 @@ local function java_real(class)
     return class
 end
 
--- local GL10 = require("javax.microedition.khronos.opengles.GL10")
--- local Image = require("javax.microedition.lcdui.Image")
+local GL10 = java_lazy("javax.microedition.khronos.opengles.GL10")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local PlatformTextureBaseFactory = require("org.allbinary.platform.opengles.PlatformTextureBaseFactory")
 local OpenGLGLUUtils = java_lazy("org.platform.opengl.OpenGLGLUUtils")
 

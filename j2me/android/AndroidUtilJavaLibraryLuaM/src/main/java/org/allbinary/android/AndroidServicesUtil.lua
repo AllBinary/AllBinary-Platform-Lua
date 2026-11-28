@@ -96,7 +96,7 @@ function AndroidServicesUtil:isServiceRunning(name)
                 return true
             end
         end
-        self.logUtil:putF(self.SERVICE_NOT_FOUND_RUNNING .. name, self, self.IS_SERVICE_RUNNING)
+        self.logUtil:putF(require("allbinary_java").to_string(self.SERVICE_NOT_FOUND_RUNNING) .. require("allbinary_java").to_string(name), self, self.IS_SERVICE_RUNNING)
         return false
 end
 

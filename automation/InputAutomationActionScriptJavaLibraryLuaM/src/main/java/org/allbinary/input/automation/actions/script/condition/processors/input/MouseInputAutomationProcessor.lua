@@ -79,16 +79,16 @@ function MouseInputAutomationProcessor.process(mouseActionScriptInputInterface)
         local commonStrings = CommonStrings.getInstance()
         logUtil:putF(tostring(StringMaker.new():append("Start - Processing Mouse Input at: "):append(tostring(mouseActionScriptInputInterface:getPoint())):append(" clicks: "):appendint(java_int(mouseActionScriptInputInterface:getButtonClicks()))), "MouseInputAutomationProcessor", commonStrings.PROCESS)
         local inputRobotInterface = mouseActionScriptInputInterface:getInputRobotInterface()
-        if mouseActionScriptInputInterface:getPoint().x ~= -1 and mouseActionScriptInputInterface:getPoint().y ~= -1 then
+        if not rawequal(mouseActionScriptInputInterface:getPoint().x, -1) and not rawequal(mouseActionScriptInputInterface:getPoint().y, -1) then
             inputRobotInterface:mouseMove(mouseActionScriptInputInterface:getPoint())
         end
-        java_sleep(mouseActionScriptInputInterface:getTime())
-        if mouseActionScriptInputInterface:getButtonClicks() ~= 0 then
+        require("java.lang.Thread").sleep(mouseActionScriptInputInterface:getTime())
+        if not rawequal(mouseActionScriptInputInterface:getButtonClicks(), 0) then
             inputRobotInterface:mousePress(mouseActionScriptInputInterface:getButtonClicks())
-            java_sleep(mouseActionScriptInputInterface:getTime())
+            require("java.lang.Thread").sleep(mouseActionScriptInputInterface:getTime())
             inputRobotInterface:mouseRelease(mouseActionScriptInputInterface:getButtonClicks())
         end
-        java_sleep(mouseActionScriptInputInterface:getTime())
+        require("java.lang.Thread").sleep(mouseActionScriptInputInterface:getTime())
 end
 
 return MouseInputAutomationProcessor

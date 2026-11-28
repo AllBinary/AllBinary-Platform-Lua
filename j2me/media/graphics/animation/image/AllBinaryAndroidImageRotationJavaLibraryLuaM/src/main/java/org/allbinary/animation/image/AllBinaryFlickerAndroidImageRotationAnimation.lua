@@ -29,7 +29,7 @@ local function java_real(class)
 end
 
 local Matrix = java_lazy("android.graphics.Matrix")
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local AngleInfo = java_lazy("org.allbinary.math.AngleInfo")
@@ -153,9 +153,9 @@ function AllBinaryFlickerAndroidImageRotationAnimation:_init_fields()
     self.imageModifierUtil = ImageModifierUtil.getInstanceOrCreate()
     self.androidImageUtil = AndroidImageUtil.getInstance()
     self.matrix = Matrix.new()
-    if self.halfWidth == nil then self.halfWidth = nil end
-    if self.halfHeight == nil then self.halfHeight = nil end
-    if self.increment == nil then self.increment = nil end
+    if self.halfWidth == nil then self.halfWidth = 0 end
+    if self.halfHeight == nil then self.halfHeight = 0 end
+    if self.increment == nil then self.increment = 0 end
     if self.originalImage == nil then self.originalImage = nil end
 end
 
@@ -180,7 +180,7 @@ end
 
 function AllBinaryFlickerAndroidImageRotationAnimation:setBasicColorP(basicColor)
         local changed = false
-        if self:getBasicColorP() == nil or math.tointeger(self:getBasicColorP() // 1) ~= math.tointeger(basicColor // 1) then
+        if rawequal(self:getBasicColorP(), nil) or not rawequal(math.tointeger(self:getBasicColorP() // 1), math.tointeger(basicColor // 1)) then
             self.imageModifierUtil:setColor(self.originalImage, self:getImage(), 0, basicColor)
             changed = true
         end
@@ -201,7 +201,7 @@ java_overload(AllBinaryFlickerAndroidImageRotationAnimation, "changeBasicColor",
 
 function AllBinaryFlickerAndroidImageRotationAnimation:setAlpha(alpha)
         local changed = false
-        if self.alphaP ~= alpha then
+        if not rawequal(self.alphaP, alpha) then
             changed = true
         end
         java_super(ImageBaseRotationAnimation, "setAlpha", 1)(self, alpha)

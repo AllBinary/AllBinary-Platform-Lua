@@ -83,7 +83,7 @@ end
 
 function AbSqlTableUtil:backupTable(abSqlTable)
         local tableName = abSqlTable:getTableName()
-        return self.TABLE_LABEL .. tableName .. " Backup Failed"
+        return require("allbinary_java").to_string(require("allbinary_java").to_string(self.TABLE_LABEL) .. require("allbinary_java").to_string(tableName)) .. require("allbinary_java").to_string(" Backup Failed")
 end
 
 

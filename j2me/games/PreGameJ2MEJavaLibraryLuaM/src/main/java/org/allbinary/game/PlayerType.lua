@@ -53,7 +53,7 @@ PlayerType.className = "PlayerType"
 PlayerType.javaClassName = "org.allbinary.game.PlayerType"
 
 function PlayerType:_init_fields()
-    if self.id == nil then self.id = nil end
+    if self.id == nil then self.id = 0 end
     self.name_f = StringUtil.getInstance().EMPTY_STRING
 end
 

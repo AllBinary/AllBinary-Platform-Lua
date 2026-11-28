@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local RecordEnumeration = require("javax.microedition.rms.RecordEnumeration")
--- local RecordStore = require("javax.microedition.rms.RecordStore")
+local RecordEnumeration = java_lazy("javax.microedition.rms.RecordEnumeration")
+local RecordStore = java_lazy("javax.microedition.rms.RecordStore")
 local BasicPersitance = require("org.allbinary.game.configuration.persistance.BasicPersitance")
 local NullRecordComparator = java_lazy("org.allbinary.game.configuration.persistance.NullRecordComparator")
 local NullRecordFilter = java_lazy("org.allbinary.game.configuration.persistance.NullRecordFilter")

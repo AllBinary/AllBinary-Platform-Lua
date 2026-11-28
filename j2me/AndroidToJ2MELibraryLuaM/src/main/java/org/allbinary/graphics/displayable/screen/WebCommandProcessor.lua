@@ -29,9 +29,9 @@ local function java_real(class)
 end
 
 local Context = java_lazy("android.content.Context")
--- local Canvas = require("javax.microedition.lcdui.Canvas")
--- local Command = require("javax.microedition.lcdui.Command")
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
+local Command = java_lazy("javax.microedition.lcdui.Command")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
 local Intent = java_lazy("android.content.Intent")
 local TsUtil = java_lazy("org.allbinary.TsUtil")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")

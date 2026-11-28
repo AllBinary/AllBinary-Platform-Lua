@@ -177,7 +177,7 @@ function CustomMapGenerator._jinit(self, raceTrackGeographicMap)
         local mapArray = raceTrackGeographicMap:getRaceTrackData():getMapArray()
         local size2 = (mapArray[1].n or #mapArray[1])
         self.customMapArray = java_new_array(0, (mapArray.n or #mapArray), size2)
-        if (mapArray.n or #mapArray) ~= (self.customMapArray.n or #self.customMapArray) or (mapArray[1].n or #mapArray[1]) ~= (self.customMapArray[1].n or #self.customMapArray[1]) then
+        if not rawequal((mapArray.n or #mapArray), (self.customMapArray.n or #self.customMapArray)) or not rawequal((mapArray[1].n or #mapArray[1]), (self.customMapArray[1].n or #self.customMapArray[1])) then
             error(require("java.lang.Exception").new("Array Incorrect"), 0)
         end
     return self
@@ -210,11 +210,11 @@ function CustomMapGenerator:getCustomType(column, row, currentType)
         local cellPosition = geographicMapCellPositionFactory:getAt(column, row)
         if self.dropCellPositionHistory:isCellPositionWithDrop(cellPosition) then
             local layer = self.dropCellPositionHistory:getLayerInterface(cellPosition)
-            if layer == AllBinaryLayer.NULL_ALLBINARY_LAYER then
+            if rawequal(layer, AllBinaryLayer.NULL_ALLBINARY_LAYER) then
                 return emptyType
             end
             local rtsLayer = layer
-            if not rtsLayer:getType() == WaypointLayer.getStaticType() then
+            if not (rawequal(rtsLayer:getType(), WaypointLayer.getStaticType())) then
                 return emptyType
             end
         end

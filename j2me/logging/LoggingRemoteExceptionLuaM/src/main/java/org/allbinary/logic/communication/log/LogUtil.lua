@@ -104,7 +104,7 @@ end
 
 
 function LogUtil:putL(log)
-        if log == nil then
+        if rawequal(log, nil) then
             return
         end
         local specialMessage = log:getSpecialMessage()
@@ -124,23 +124,23 @@ end
 
 
 function LogUtil:put(specialMessage, anyType, functionName, exception)
-        if exception ~= nil then
-            if (getmetatable(exception).javaClassName or getmetatable(exception).className):compareTo(XmlRpcException:getName()) == 0 then
+        if not rawequal(exception, nil) then
+            if rawequal((getmetatable(exception).javaClassName or getmetatable(exception).className):compareTo(XmlRpcException.javaClassName), 0) then
                 return
             end
-            if (getmetatable(exception).javaClassName or getmetatable(exception).className):compareTo(IOException:getName()) == 0 then
+            if rawequal((getmetatable(exception).javaClassName or getmetatable(exception).className):compareTo(IOException.javaClassName), 0) then
                 return
             end
             if self.isFirstException or self.timeDelayHelper:isTimeTNT() then
                 local className = CommonStrings.getInstance().EMPTY
                 self.isFirstException = false
-                if anyType ~= nil and (getmetatable(anyType).javaClassName or getmetatable(anyType).className) ~= nil then
+                if not rawequal(anyType, nil) and not rawequal((getmetatable(anyType).javaClassName or getmetatable(anyType).className), nil) then
                     className = tostring((getmetatable(anyType).javaClassName or getmetatable(anyType).className))
                 end
                 local message = LogFormatUtil.getInstance():get(className, functionName, specialMessage, exception)
                 local try_ok, try_error, try_value = pcall(function()
                     print("Eeeek")
-                    if self.abeClientInformation == nil then
+                    if rawequal(self.abeClientInformation, nil) then
                         error(require("java.lang.RuntimeException").new(), 0)
                     end
                     local hashtable = self.abeClientInformation:toHashtable()

@@ -132,7 +132,7 @@ function UserEmailEventConfiguration._new1(self, hashMap)
         self:setName(hashMap:get(UserEmailEventConfigurationData.NAME))
         self:setEventListenerClassPath(hashMap:get(UserEmailEventConfigurationData.LISTENER_CLASSPATH))
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().EMAILLOGGING) then
-            self.logUtil:putF("Log: " .. tostring(self:log()), self, " Constructor")
+            self.logUtil:putF(require("allbinary_java").to_string("Log: ") .. require("allbinary_java").to_string(self:log()), self, " Constructor")
         end
     return self
 end
@@ -159,7 +159,7 @@ end
 
 
 function UserEmailEventConfiguration:log()
-        return "\nUser Email Event Log Info:" .. "\nName: " .. self:getName() .. "\nEventListenerClassPath: " .. tostring(self:getEventListenerClassPath())
+        return require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("\nUser Email Event Log Info:") .. require("allbinary_java").to_string("\nName: ")) .. require("allbinary_java").to_string(self:getName())) .. require("allbinary_java").to_string("\nEventListenerClassPath: ")) .. require("allbinary_java").to_string(self:getEventListenerClassPath())
 end
 
 return UserEmailEventConfiguration

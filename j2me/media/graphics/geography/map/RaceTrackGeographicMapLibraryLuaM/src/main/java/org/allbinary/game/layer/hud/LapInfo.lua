@@ -53,8 +53,8 @@ LapInfo.className = "LapInfo"
 LapInfo.javaClassName = "org.allbinary.game.layer.hud.LapInfo"
 
 function LapInfo:_init_fields()
-    if self.numberOfLaps == nil then self.numberOfLaps = nil end
-    if self.totalLaps == nil then self.totalLaps = nil end
+    if self.numberOfLaps == nil then self.numberOfLaps = 0 end
+    if self.totalLaps == nil then self.totalLaps = 0 end
 end
 
 

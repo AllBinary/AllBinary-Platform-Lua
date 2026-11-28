@@ -61,7 +61,7 @@ SaveHighScoreRunnable.java_interfaces = function() return {Runnable} end
 
 function SaveHighScoreRunnable:_init_fields()
     self.progressCanvas = ProgressCanvasFactory.getInstance()
-    if self.isLast == nil then self.isLast = nil end
+    if self.isLast == nil then self.isLast = false end
     if self.textBox == nil then self.textBox = nil end
 end
 

@@ -196,7 +196,7 @@ java_overload(AlwaysActionScriptConditionJPanel, "set", 0)
 
 
 function AlwaysActionScriptConditionJPanel:update()
-        if self.alwaysJComboBox:getSelectedIndex() == 0 then
+        if rawequal(self.alwaysJComboBox:getSelectedIndex(), 0) then
             self.alwaysActionScriptConditionInterface:setIsOn(true)
         else
             self.alwaysActionScriptConditionInterface:setIsOn(false)
@@ -230,11 +230,13 @@ function AlwaysActionScriptConditionJPanel:initComponents()
         self.titleJLabel:setText("Always Condition Options")
         self.okJButton:setText("OK")
         self.okJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:okJButtonActionPerformed(evt)
+                ;(self.okJButtonActionPerformed and self or java_outer_self):okJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -248,11 +250,13 @@ function AlwaysActionScriptConditionJPanel:initComponents()
         self:setMinimumSize(Dimension.new(100, 0))
         self.alwaysActionJButton:setText("Edit")
         self.alwaysActionJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:alwaysActionJButtonActionPerformed(evt)
+                ;(self.alwaysActionJButtonActionPerformed and self or java_outer_self):alwaysActionJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o

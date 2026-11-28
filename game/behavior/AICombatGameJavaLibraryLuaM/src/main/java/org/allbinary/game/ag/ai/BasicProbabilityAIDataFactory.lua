@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local SmallIntegerSingletonFactory = java_lazy("org.allbinary.logic.math.SmallIntegerSingletonFactory")
 local NoTimeDelayHelper = java_lazy("org.allbinary.time.NoTimeDelayHelper")
 local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")

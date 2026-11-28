@@ -77,16 +77,16 @@ end
 
 function WorkAreaDom._jinit(self, document)
     WorkAreaDom._init_fields(self)
-        local workAreaNodeList = document:getElementsByTagName(self.WORKAREA)
-        if workAreaNodeList ~= nil then
+        local workAreaNodeList = document:getElementsByTagName(WorkAreaDom.WORKAREA)
+        if not rawequal(workAreaNodeList, nil) then
             local numberOfworkAreas = workAreaNodeList:getLength()
-            if numberOfworkAreas == 1 then
+            if rawequal(numberOfworkAreas, 1) then
                 local numberOfNodes = workAreaNodeList:getLength()
-                local nameNode = DomHelper.getInstance():searchNodeList(self.NAME, workAreaNodeList:item(0):getChildNodes())
+                local nameNode = DomHelper.getInstance():searchNodeList(WorkAreaDom.NAME, workAreaNodeList:item(0):getChildNodes())
                 local nameTextNode = nameNode:getFirstChild()
                 self.name_f = nameTextNode:getNodeValue()
             else
-                error(require("java.lang.Exception").new("Wrong Number of WorkAreas: " .. tostring(numberOfworkAreas)), 0)
+                error(require("java.lang.Exception").new(require("allbinary_java").to_string("Wrong Number of WorkAreas: ") .. require("allbinary_java").to_string(numberOfworkAreas)), 0)
             end
             self.canvasNodeList = DomHelper.getInstance():getChildrenWithoutTextNodes(WorkAreaDom.FRAMES, workAreaNodeList:item(0):getChildNodes())
         else

@@ -137,7 +137,7 @@ setmetatable(TransformInfoHttpSearch, {__index = TransformInfoHttp})
 function TransformInfoHttpSearch._jinit(self, searchRequest)
     java_super_init(TransformInfoHttp, self, searchRequest:getPropertiesHashMap(), searchRequest:getPageContext())
         -- super(...) made self above
-        if searchRequest:getStoreFront():getName() ~= nil then
+        if not rawequal(searchRequest:getStoreFront():getName(), nil) then
             self:setStoreName(searchRequest:getStoreFront():getName())
         else
             self:setStoreName(StringUtil.getInstance().EMPTY_STRING)

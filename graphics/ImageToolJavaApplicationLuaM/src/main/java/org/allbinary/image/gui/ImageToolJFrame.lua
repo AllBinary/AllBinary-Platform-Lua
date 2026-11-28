@@ -297,11 +297,13 @@ function ImageToolJFrame:initComponents()
         self.blueJLabel:setText("Blue:")
         self.okJButton:setText("OK")
         self.okJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:okJButtonActionPerformed(evt)
+                ;(self.okJButtonActionPerformed and self or java_outer_self):okJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -316,22 +318,26 @@ function ImageToolJFrame:initComponents()
         self:getContentPane():add(self.jPanel1)
         self.fileJMenu:setText("File")
         self.fileJMenu:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:fileJMenuActionPerformed(evt)
+                ;(self.fileJMenuActionPerformed and self or java_outer_self):fileJMenuActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.openImageJMenuItem:setText("Open")
         self.openImageJMenuItem:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:openImageJMenuItemActionPerformed(evt)
+                ;(self.openImageJMenuItemActionPerformed and self or java_outer_self):openImageJMenuItemActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -340,22 +346,26 @@ function ImageToolJFrame:initComponents()
         self.mainJMenuBar:add(self.fileJMenu)
         self.processingJMenu:setText("Processing")
         self.processingJMenu:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:processingJMenuActionPerformed(evt)
+                ;(self.processingJMenuActionPerformed and self or java_outer_self):processingJMenuActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.analyzeJMenuItem:setText("Image Analyze")
         self.analyzeJMenuItem:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:analyzeJMenuItemActionPerformed(evt)
+                ;(self.analyzeJMenuItemActionPerformed and self or java_outer_self):analyzeJMenuItemActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -363,11 +373,13 @@ function ImageToolJFrame:initComponents()
         self.processingJMenu:add(self.analyzeJMenuItem)
         self.generateMirrorSpriteMenuItem:setText("Mirror Sprite Generator")
         self.generateMirrorSpriteMenuItem:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:generateMirrorSpriteMenuItemActionPerformed(evt)
+                ;(self.generateMirrorSpriteMenuItemActionPerformed and self or java_outer_self):generateMirrorSpriteMenuItemActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -375,11 +387,13 @@ function ImageToolJFrame:initComponents()
         self.processingJMenu:add(self.generateMirrorSpriteMenuItem)
         self.generateRotationSpriteJMenuItem:setText("Rotation Sprite Generator")
         self.generateRotationSpriteJMenuItem:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:generateRotationSpriteJMenuItemActionPerformed(evt)
+                ;(self.generateRotationSpriteJMenuItemActionPerformed and self or java_outer_self):generateRotationSpriteJMenuItemActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -387,11 +401,13 @@ function ImageToolJFrame:initComponents()
         self.processingJMenu:add(self.generateRotationSpriteJMenuItem)
         self.generateSpriteSplitterMenuItem:setText("Sprite Splitter Generator")
         self.generateSpriteSplitterMenuItem:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:generateSpriteSplitterMenuItemActionPerformed(evt)
+                ;(self.generateSpriteSplitterMenuItemActionPerformed and self or java_outer_self):generateSpriteSplitterMenuItemActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -399,11 +415,13 @@ function ImageToolJFrame:initComponents()
         self.processingJMenu:add(self.generateSpriteSplitterMenuItem)
         self.generateRotationMenuItem:setText("Rotate Image Generator")
         self.generateRotationMenuItem:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:generateRotationMenuItemActionPerformed(evt)
+                ;(self.generateRotationMenuItemActionPerformed and self or java_outer_self):generateRotationMenuItemActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -411,11 +429,13 @@ function ImageToolJFrame:initComponents()
         self.processingJMenu:add(self.generateRotationMenuItem)
         self.createStripImageJMenuItem:setText("Multi Image Unifier")
         self.createStripImageJMenuItem:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:createStripImageJMenuItemActionPerformed(evt)
+                ;(self.createStripImageJMenuItemActionPerformed and self or java_outer_self):createStripImageJMenuItemActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -423,11 +443,13 @@ function ImageToolJFrame:initComponents()
         self.processingJMenu:add(self.createStripImageJMenuItem)
         self.mirrorJMenuItem:setText("Mirror Image(s)")
         self.mirrorJMenuItem:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:mirrorJMenuItemActionPerformed(evt)
+                ;(self.mirrorJMenuItemActionPerformed and self or java_outer_self):mirrorJMenuItemActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -435,11 +457,13 @@ function ImageToolJFrame:initComponents()
         self.processingJMenu:add(self.mirrorJMenuItem)
         self.scaleImagesJMenuItem:setText("Scale Image(s)")
         self.scaleImagesJMenuItem:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:scaleImagesJMenuItemActionPerformed(evt)
+                ;(self.scaleImagesJMenuItemActionPerformed and self or java_outer_self):scaleImagesJMenuItemActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -447,11 +471,13 @@ function ImageToolJFrame:initComponents()
         self.processingJMenu:add(self.scaleImagesJMenuItem)
         self.canvasImagesJMenuItem:setText("Canvas Image(s)")
         self.canvasImagesJMenuItem:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:canvasImagesJMenuItemActionPerformed(evt)
+                ;(self.canvasImagesJMenuItemActionPerformed and self or java_outer_self):canvasImagesJMenuItemActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -459,11 +485,13 @@ function ImageToolJFrame:initComponents()
         self.processingJMenu:add(self.canvasImagesJMenuItem)
         self.createIconImagesJMenuItem:setText("Create Icon Image(s)")
         self.createIconImagesJMenuItem:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:createIconsJMenuItemActionPerformed(evt)
+                ;(self.createIconsJMenuItemActionPerformed and self or java_outer_self):createIconsJMenuItemActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -533,7 +561,7 @@ java_overload(ImageToolJFrame, "openImageJMenuItemActionPerformed", 1, function(
 
 function ImageToolJFrame:onFiles(files)
         local try_ok, try_error, try_value = pcall(function()
-            self.logUtil:putF("Reading " .. tostring((files.n or #files)) .. " files.", self, "onFiles")
+            self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string("Reading ") .. require("allbinary_java").to_string((files.n or #files))) .. require("allbinary_java").to_string(" files."), self, "onFiles")
             Arrays.sort(files, (function()
                 local o = Comparator.new and Comparator.new() or setmetatable({}, {__index = Comparator})
                 
@@ -567,13 +595,13 @@ function ImageToolJFrame:onFiles(files)
             local bufferedImageArray = java_new_array(nil, (files.n or #files))
             for index = 0, (files.n or #files) - 1 do
                 bufferedImageArray[index + 1] = ImageIO.read(files[index + 1])
-                if bufferedImageArray[index + 1] == nil then
-                    error(require("java.lang.Exception").new("Unable to read file: " .. tostring(files[index + 1]:getPath())), 0)
+                if rawequal(bufferedImageArray[index + 1], nil) then
+                    error(require("java.lang.Exception").new(require("allbinary_java").to_string("Unable to read file: ") .. require("allbinary_java").to_string(files[index + 1]:getPath())), 0)
                 end
             end
             self.imageProcessorInput = ImageProcessorInput.new(files, bufferedImageArray)
             self.fileJDialog:setVisible(false)
-            if ImageToolJFrame.imageProcessorInputCompositeInterface ~= nil then
+            if not rawequal(ImageToolJFrame.imageProcessorInputCompositeInterface, nil) then
                 ImageToolJFrame.imageProcessorInputCompositeInterface:setImageProcessorInput(self.imageProcessorInput)
             end
         end)

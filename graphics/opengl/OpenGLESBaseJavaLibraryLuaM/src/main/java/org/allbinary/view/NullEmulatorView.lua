@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Displayable = require("javax.microedition.lcdui.Displayable")
--- local MIDlet = require("javax.microedition.midlet.MIDlet")
+local Displayable = java_lazy("javax.microedition.lcdui.Displayable")
+local MIDlet = java_lazy("javax.microedition.midlet.MIDlet")
 local EmulatorViewInterface = require("org.allbinary.view.EmulatorViewInterface")
 
 local function java_idiv(a, b)

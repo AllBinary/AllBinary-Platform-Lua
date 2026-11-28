@@ -32,11 +32,11 @@ end
 -- local DataInputStream = require("java.io.DataInputStream")
 -- local EOFException = require("java.io.EOFException")
 -- local IOException = require("java.io.IOException")
--- local RecordComparator = require("javax.microedition.rms.RecordComparator")
--- local RecordEnumeration = require("javax.microedition.rms.RecordEnumeration")
--- local RecordStore = require("javax.microedition.rms.RecordStore")
--- local RecordStoreException = require("javax.microedition.rms.RecordStoreException")
--- local RecordStoreNotFoundException = require("javax.microedition.rms.RecordStoreNotFoundException")
+local RecordComparator = java_lazy("javax.microedition.rms.RecordComparator")
+local RecordEnumeration = java_lazy("javax.microedition.rms.RecordEnumeration")
+local RecordStore = java_lazy("javax.microedition.rms.RecordStore")
+local RecordStoreException = java_lazy("javax.microedition.rms.RecordStoreException")
+local RecordStoreNotFoundException = java_lazy("javax.microedition.rms.RecordStoreNotFoundException")
 local TsUtil = java_lazy("org.allbinary.TsUtil")
 local GameInfo = java_lazy("org.allbinary.game.GameInfo")
 local NullRecordComparator = java_lazy("org.allbinary.game.configuration.persistance.NullRecordComparator")
@@ -202,7 +202,7 @@ end
 
 function RecordStoreHighScores.getInstance(abeClientInformation, gameInfo, highScoreName, heading, columnTwoHeading, recordComparatorInterface)
         local highScoresCanBeNull = RecordStoreHighScores.hashTable:get(highScoreName)
-        if highScoresCanBeNull == nil then
+        if rawequal(highScoresCanBeNull, nil) then
             local highScores = RecordStoreHighScores.new(abeClientInformation, gameInfo, highScoreName, heading, columnTwoHeading, recordComparatorInterface)
             RecordStoreHighScores.hashTable:put(highScores:getName(), highScores)
             return highScores
@@ -237,7 +237,7 @@ function RecordStoreHighScores:addHighScore(newHighScore)
         end
         do -- finally
             local try_ok, try_error, try_value = pcall(function()
-                if recordStore ~= nil then
+                if not rawequal(recordStore, nil) then
                     PreLogUtil.put("Closing RecordStore", self, self.commonStrings.ADD)
                     recordStore:closeRecordStore()
                 end
@@ -265,18 +265,18 @@ function RecordStoreHighScores:removeLowestHighScore()
             while recordEnum:hasNextElement() do
                 local id = recordEnum:nextRecordId()
                 recordAsBytes = self.tsUtil:getRecord(recordStore, id)
-                if recordAsBytes ~= nil then
+                if not rawequal(recordAsBytes, nil) then
                     byteArrayInputStream = ByteArrayInputStream.new(recordAsBytes)
                     inputStream = DataInputStream.new(byteArrayInputStream)
                     local name = inputStream:readUTF()
                     local nextScore = inputStream:readLong()
                     local nextCurrentHighScore = HighScore.new(id, name, GameInfo.NONE, nextScore)
-                    if self.recordComparatorInterface:compare(nextCurrentHighScore:getAsBytes(), bestHighScore:getAsBytes()) == RecordComparator.FOLLOWS then
+                    if rawequal(self.recordComparatorInterface:compare(nextCurrentHighScore:getAsBytes(), bestHighScore:getAsBytes()), RecordComparator.FOLLOWS) then
                         bestHighScore = nextCurrentHighScore
                     end
                 end
             end
-            if bestHighScore:getId() ~= -1 then
+            if not rawequal(bestHighScore:getId(), -1) then
                 self.logUtil:putF(tostring(StringMaker.new():append("Removing Lowest HighScore: "):appendlong(java_int(bestHighScore:getScore()))), self, self.commonStrings.LOAD)
                 recordStore:deleteRecord(bestHighScore:getId())
             end
@@ -288,7 +288,7 @@ function RecordStoreHighScores:removeLowestHighScore()
         end
         do -- finally
             local try_ok, try_error, try_value = pcall(function()
-                if recordStore ~= nil then
+                if not rawequal(recordStore, nil) then
                     PreLogUtil.put("Closing RecordStore", self, "removeLowestHighScore")
                     recordStore:closeRecordStore()
                 end
@@ -315,7 +315,7 @@ function RecordStoreHighScores:load()
             while recordEnum:hasNextElement() do
                 local id = recordEnum:nextRecordId()
                 recordAsBytes = self.tsUtil:getRecord(recordStore, id)
-                if recordAsBytes ~= nil then
+                if not rawequal(recordAsBytes, nil) then
                     byteArrayInputStream = ByteArrayInputStream.new(recordAsBytes)
                     inputStream = DataInputStream.new(byteArrayInputStream)
                     local try_ok, try_error, try_value = pcall(function()
@@ -327,7 +327,7 @@ function RecordStoreHighScores:load()
                         local lastIndex = size
                         for index = 0, size - 1 do
                             local highScore = list.objectArray[index + 1]
-                            if self.recordComparatorInterface:compare(newHighScore:getAsBytes(), highScore:getAsBytes()) == RecordComparator.PRECEDES then
+                            if rawequal(self.recordComparatorInterface:compare(newHighScore:getAsBytes(), highScore:getAsBytes()), RecordComparator.PRECEDES) then
                                 lastIndex = index
                                 break
                             end
@@ -350,7 +350,7 @@ function RecordStoreHighScores:load()
         end
         do -- finally
             local try_ok, try_error, try_value = pcall(function()
-                if recordStore ~= nil then
+                if not rawequal(recordStore, nil) then
                     PreLogUtil.put("Closing RecordStore", self, self.commonStrings.LOAD)
                     recordStore:closeRecordStore()
                 end
@@ -366,7 +366,7 @@ java_overload(RecordStoreHighScores, "load", 0)
 
 
 function RecordStoreHighScores:isTooManyHighScores()
-        if self:getList() ~= nil and self:getList():size() < self.MAXHIGHSCORES then
+        if not rawequal(self:getList(), nil) and self:getList():size() < self.MAXHIGHSCORES then
             return false
         else
             self.logUtil:putF(tostring(StringMaker.new():append("HighScores RecordStore Max Reached: "):appendint(self.MAXHIGHSCORES)), self, "isTooManyHighScores")
@@ -379,7 +379,7 @@ java_overload(RecordStoreHighScores, "isTooManyHighScores", 0)
 -- throws Exception
 function RecordStoreHighScores:isBestScore(newHighScore)
         local try_ok, try_error, try_value = pcall(function()
-            if not self:isTooManyHighScores() then
+            if not (self:isTooManyHighScores()) then
                 self.logUtil:putF("Slot Available for a High Score", self, "isBestScore")
                 do return "__jreturn", true end
             else
@@ -387,7 +387,7 @@ function RecordStoreHighScores:isBestScore(newHighScore)
                 local size = list:size()
                 for index = 0, size - 1 do
                     local highScore = list.objectArray[index + 1]
-                    if self.recordComparatorInterface:compare(newHighScore:getAsBytes(), highScore:getAsBytes()) == RecordComparator.FOLLOWS then
+                    if rawequal(self.recordComparatorInterface:compare(newHighScore:getAsBytes(), highScore:getAsBytes()), RecordComparator.FOLLOWS) then
                         self.logUtil:putF("Obtained a High Score", self, "isBestScore")
                         do return "__jreturn", true end
                     end

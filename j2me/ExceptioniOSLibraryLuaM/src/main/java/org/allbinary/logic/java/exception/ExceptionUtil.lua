@@ -93,7 +93,7 @@ function ExceptionUtil:getStackTrace(e)
         local bs = require("java.io.ByteArrayOutputStream").new()
         print(debug.traceback(tostring(e)))
         local output = tostring(bs)
-        if output ~= nil then
+        if not rawequal(output, nil) then
             return tostring(output)
         end
         return self.NONE

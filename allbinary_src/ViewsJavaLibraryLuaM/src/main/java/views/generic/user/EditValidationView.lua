@@ -175,20 +175,20 @@ end
 
 function EditValidationView:isValid()
         local try_ok, try_error, try_value = pcall(function()
-            if UserName.getInstance():isValid(self:getWeblisketSession():getUserName()) == false then
+            if rawequal(UserName.getInstance():isValid(self:getWeblisketSession():getUserName()), false) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     self.logUtil:putF("Failed to validate username", self, self.commonStrings.IS_VALID)
                 end
                 do return "__jreturn", false end
             end
             self.user = UserEntityFactory.getInstance():getUser(self:getWeblisketSession():getUserName())
-            if self.user == nil then
+            if rawequal(self.user, nil) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     self.logUtil:putF("User does not exist", self, self.commonStrings.IS_VALID)
                 end
                 do return "__jreturn", false end
             end
-            if self.user:isValid() == false then
+            if rawequal(self.user:isValid(), false) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     self.logUtil:putF("User exists but is invalid - Probably manually modified", self, self.commonStrings.IS_VALID)
                 end
@@ -212,19 +212,19 @@ java_overload(EditValidationView, "isValid", 0)
 function EditValidationView:validationInfo()
         local try_ok, try_error, try_value = pcall(function()
             local stringBuffer = StringMaker.new()
-            if UserName.getInstance():isValid(self:getWeblisketSession():getUserName()) == false then
+            if rawequal(UserName.getInstance():isValid(self:getWeblisketSession():getUserName()), false) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     self.logUtil:putF("Failed to validate username", self, "validationInfo()")
                 end
                 stringBuffer:append("Session User Name is not valid - Your session data has been logged!")
             end
-            if self.user == nil then
+            if rawequal(self.user, nil) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     self.logUtil:putF("User does not exist", self, self.commonStrings.IS_VALID)
                 end
                 stringBuffer:append("User profile does not exist - Your session data has been logged!")
             end
-            if self.user:isValid() == false then
+            if rawequal(self.user:isValid(), false) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     self.logUtil:putF("User exists but is invalid - Probably manually modified", self, self.commonStrings.IS_VALID)
                 end

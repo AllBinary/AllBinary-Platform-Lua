@@ -63,7 +63,7 @@ end
 
 
 function TrackballMotionGestureFactory.getInstance()
-        if TrackballMotionGestureFactory.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(TrackballMotionGestureFactory.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             TrackballMotionGestureFactory.instance_f = TrackballMotionGestureFactory.new()
         end
         return TrackballMotionGestureFactory.instance_f

@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local AnimationBehaviorFactory = java_lazy("org.allbinary.animation.AnimationBehaviorFactory")
 local NullAnimationFactory = java_lazy("org.allbinary.animation.NullAnimationFactory")
 local OneRowSpriteIndexedAnimationFactory = java_lazy("org.allbinary.animation.image.sprite.OneRowSpriteIndexedAnimationFactory")
@@ -275,7 +275,7 @@ java_overload(TouchButtonResourceAnimationInterfaceFactoryInterfaceFactory, "ini
 
 function TouchButtonResourceAnimationInterfaceFactoryInterfaceFactory:isLoadingLevel(level)
         local resourceLoadingLevelFactory = ResourceLoadingLevelFactory.getInstance()
-        if level == resourceLoadingLevelFactory.LOAD_TOUCH:getLevel() then
+        if rawequal(level, resourceLoadingLevelFactory.LOAD_TOUCH:getLevel()) then
             return true
         else
             return java_super(BaseResourceAnimationInterfaceFactoryInterfaceFactory, "isLoadingLevel", 1)(self, level)
@@ -285,7 +285,7 @@ java_overload(TouchButtonResourceAnimationInterfaceFactoryInterfaceFactory, "isL
 
 
 function TouchButtonResourceAnimationInterfaceFactoryInterfaceFactory:isFeature()
-        if not Features.getInstance():isDefault(OpenGLFeatureFactory.getInstance().OPENGL) then
+        if not (Features.getInstance():isDefault(OpenGLFeatureFactory.getInstance().OPENGL)) then
             return true
         else
             return false

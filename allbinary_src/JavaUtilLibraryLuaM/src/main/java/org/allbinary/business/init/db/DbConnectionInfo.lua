@@ -128,7 +128,7 @@ function DbConnectionInfo:updateHost()
         stringBuffer:append(self:getSchema())
         stringBuffer:append(self.SCHEMA_SEP)
         stringBuffer:append(self:getServer())
-        if self:getPort() ~= nil and self:getPort():length() > 1 then
+        if not rawequal(self:getPort(), nil) and self:getPort():length() > 1 then
             stringBuffer:append(CommonSeps.getInstance().COLON)
             stringBuffer:append(self:getPort())
         end

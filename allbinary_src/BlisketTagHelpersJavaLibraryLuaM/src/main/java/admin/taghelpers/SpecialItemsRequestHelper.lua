@@ -215,7 +215,7 @@ function SpecialItemsRequestHelper:insert()
             values:add(time)
             values:add(time)
             SpecialItemsEntityFactory.getInstance():getSpecialItemsEntityInstance():insert(values)
-            local success = "Successfully inserted " .. self.id .. " into items table"
+            local success = require("allbinary_java").to_string(require("allbinary_java").to_string("Successfully inserted ") .. require("allbinary_java").to_string(self.id)) .. require("allbinary_java").to_string(" into items table")
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGS) then
                 self.logUtil:putF(success, self, "insert()")
             end
@@ -224,7 +224,7 @@ function SpecialItemsRequestHelper:insert()
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-            local error = "Failed to insert " .. self.id .. " into items table"
+            local error = require("allbinary_java").to_string(require("allbinary_java").to_string("Failed to insert ") .. require("allbinary_java").to_string(self.id)) .. require("allbinary_java").to_string(" into items table")
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "inserts()", e)
             end
@@ -271,7 +271,7 @@ function SpecialItemsRequestHelper:update()
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-            local error = "Failed to update: " .. self.id
+            local error = require("allbinary_java").to_string("Failed to update: ") .. require("allbinary_java").to_string(self.id)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "update()", e)
             end

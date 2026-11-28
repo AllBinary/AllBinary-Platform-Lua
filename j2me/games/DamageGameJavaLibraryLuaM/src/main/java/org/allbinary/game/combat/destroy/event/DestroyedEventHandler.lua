@@ -174,7 +174,7 @@ end
 
 
 function DestroyedEventHandler:addListener(collidableDestroyableDamageableLayer)
-        if not self.list:contains(collidableDestroyableDamageableLayer) then
+        if not (self.list:contains(collidableDestroyableDamageableLayer)) then
             self.list:add(collidableDestroyableDamageableLayer)
         end
 end

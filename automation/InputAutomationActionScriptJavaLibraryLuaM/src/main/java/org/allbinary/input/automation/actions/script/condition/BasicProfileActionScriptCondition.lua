@@ -211,12 +211,12 @@ function BasicProfileActionScriptCondition._new2(self, label, node)
         local nodeList = node:getChildNodes()
         for index = 0, nodeList:getLength() - 1 do
             local actionItemNode = nodeList:item(index)
-            if actionItemNode:getNodeType() == Node.ELEMENT_NODE then
-                if actionItemNode:getNodeName():compareTo(GenericProfileActionScriptConditionData.NAME) == 0 then
+            if rawequal(actionItemNode:getNodeType(), Node.ELEMENT_NODE) then
+                if rawequal(actionItemNode:getNodeName():compareTo(GenericProfileActionScriptConditionData.NAME), 0) then
                     self:addCondition(ProfileActionScriptConditionFactory.getInstance(actionItemNode))
-                elseif actionItemNode:getNodeName():compareTo(GenericProfileActionScriptInputData.NAME) == 0 then
+                elseif rawequal(actionItemNode:getNodeName():compareTo(GenericProfileActionScriptInputData.NAME), 0) then
                     self:addProcessor(ProfileActionScriptInputFactory.getInstance(actionItemNode))
-                elseif actionItemNode:getNodeName():compareTo(GenericProfileActionScriptOutputData.NAME) == 0 then
+                elseif rawequal(actionItemNode:getNodeName():compareTo(GenericProfileActionScriptOutputData.NAME), 0) then
                     self:addProcessor(ProfileActionScriptOutputFactory.getInstance(actionItemNode))
                 end
             end
@@ -230,9 +230,9 @@ function BasicProfileActionScriptCondition:addProcessorNodes(node)
         local nodeList = node:getChildNodes()
         for index = 0, nodeList:getLength() - 1 do
             local processorActionItemNode = nodeList:item(index)
-            if processorActionItemNode:getNodeName():compareTo(GenericProfileActionScriptInputData.NAME) == 0 then
+            if rawequal(processorActionItemNode:getNodeName():compareTo(GenericProfileActionScriptInputData.NAME), 0) then
                 self:addProcessor(ProfileActionScriptInputFactory.getInstance(processorActionItemNode))
-            elseif processorActionItemNode:getNodeName():compareTo(GenericProfileActionScriptOutputData.NAME) == 0 then
+            elseif rawequal(processorActionItemNode:getNodeName():compareTo(GenericProfileActionScriptOutputData.NAME), 0) then
                 self:addProcessor(ProfileActionScriptOutputFactory.getInstance(processorActionItemNode))
             end
         end
@@ -368,28 +368,28 @@ java_overload(BasicProfileActionScriptCondition, "setProfileActionConditionInter
 function BasicProfileActionScriptCondition:actionPerformed(actionEvent)
         local try_ok, try_error, try_value = pcall(function()
             java_super(ProfileActionScriptItem, "actionPerformed", 1)(self, actionEvent)
-            if actionEvent:getActionCommand():compareTo(self.DELETE) == 0 then
+            if rawequal(actionEvent:getActionCommand():compareTo(self.DELETE), 0) then
                 if java_instanceof(self:getParent(), ProfileActionScriptNodeInterface) then
                     local profileActionScriptNodeInterface = self:getParent()
                     profileActionScriptNodeInterface:removeCondition(self)
                     JTreeInterfaceFactory.getInstance():getJTreeInterface():updateJTree()
                 end
-            elseif actionEvent:getActionCommand():compareTo(self.NEW_COLOR_AT) == 0 then
+            elseif rawequal(actionEvent:getActionCommand():compareTo(self.NEW_COLOR_AT), 0) then
                 self:addCondition(ColorAtActionScriptCondition.new())
                 self:updateTree()
-            elseif actionEvent:getActionCommand():compareTo(self.NEW_ALWAYS) == 0 then
+            elseif rawequal(actionEvent:getActionCommand():compareTo(self.NEW_ALWAYS), 0) then
                 self:addCondition(AlwaysActionScriptCondition.new())
                 self:updateTree()
-            elseif actionEvent:getActionCommand():compareTo(self.NEW_TIME_INTERVAL) == 0 then
+            elseif rawequal(actionEvent:getActionCommand():compareTo(self.NEW_TIME_INTERVAL), 0) then
                 self:addCondition(TimeIntervalActionScriptCondition.new())
                 self:updateTree()
-            elseif actionEvent:getActionCommand():compareTo(self.NEW_KEY_INPUT) == 0 then
+            elseif rawequal(actionEvent:getActionCommand():compareTo(self.NEW_KEY_INPUT), 0) then
                 self:addProcessor(KeyboardActionScriptInput.new())
                 self:updateTree()
-            elseif actionEvent:getActionCommand():compareTo(self.NEW_MOUSE_INPUT) == 0 then
+            elseif rawequal(actionEvent:getActionCommand():compareTo(self.NEW_MOUSE_INPUT), 0) then
                 self:addProcessor(MouseActionScriptInput.new())
                 self:updateTree()
-            elseif actionEvent:getActionCommand():compareTo(self.NEW_IMAGE_OUTPUT) == 0 then
+            elseif rawequal(actionEvent:getActionCommand():compareTo(self.NEW_IMAGE_OUTPUT), 0) then
                 self:addProcessor(ImageActionScriptOutput.new())
                 self:updateTree()
             end
@@ -429,7 +429,7 @@ function BasicProfileActionScriptCondition:shouldProcess(frame)
         local size = profileActionConditionInterfaceVector:size()
         for index = 0, size - 1 do
             local profileActionScriptConditionInterface = profileActionConditionInterfaceVector:get(index)
-            if not profileActionScriptConditionInterface:shouldProcess(frame) then
+            if not (profileActionScriptConditionInterface:shouldProcess(frame)) then
                 return false
             end
         end

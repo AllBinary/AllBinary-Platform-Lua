@@ -174,7 +174,7 @@ end
 
 
 function GeographicMapCellPositionEventHandler:addListener(miniMapLayer)
-        if not self.list:contains(miniMapLayer) then
+        if not (self.list:contains(miniMapLayer)) then
             self.list:add(miniMapLayer)
         end
 end

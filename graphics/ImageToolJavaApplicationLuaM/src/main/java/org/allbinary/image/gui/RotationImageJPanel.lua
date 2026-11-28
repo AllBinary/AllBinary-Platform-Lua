@@ -199,14 +199,15 @@ end
 
 function RotationImageJPanel:process()
         ;(function()
-            local o = Thread.new and Thread.new() or setmetatable({}, {__index = Thread})
+            local java_outer_self = self
+        local o = Thread.new and Thread.new() or setmetatable({}, {__index = Thread})
             
 
             function o:run()
                 local logUtil = LogUtil.getInstance()
                 local try_ok, try_error, try_value = pcall(function()
-                    local angleAsString = self.totalAngleJComboBox:getSelectedItem()
-                    ImageArrayRotationUtil.getInstance():process(self:getImageProcessorInput(), angleAsString, self)
+                    local angleAsString = java_outer_self.totalAngleJComboBox:getSelectedItem()
+                    ImageArrayRotationUtil.getInstance():process(java_outer_self:getImageProcessorInput(), angleAsString, java_outer_self)
                 end)
                 if not try_ok then
                     local e = try_error
@@ -223,12 +224,13 @@ java_overload(RotationImageJPanel, "process", 0)
 
 function RotationImageJPanel:initComponents()
         self.jPanel1 = (function()
-            local o = JPanel.new and JPanel.new() or setmetatable({}, {__index = JPanel})
+            local java_outer_self = self
+        local o = JPanel.new and JPanel.new() or setmetatable({}, {__index = JPanel})
             
 
             function o:paint(graphics)
-                if self.result ~= nil then
-                    graphics:drawImage(self.result, 0, 0, self.result:getWidth(nil), self.result:getHeight(nil), nil)
+                if not rawequal(java_outer_self.result, nil) then
+                    graphics:drawImage(java_outer_self.result, 0, 0, java_outer_self.result:getWidth(nil), java_outer_self.result:getHeight(nil), nil)
                 end
             end
             java_overload(o, "paint", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "Graphics")) end)
@@ -248,22 +250,26 @@ function RotationImageJPanel:initComponents()
         jPanel1Layout:setVerticalGroup(jPanel1Layout:createParallelGroup(org.jdesktop.layout_f.GroupLayout.LEADING):add(0, 227, require("java.lang.Short").MAX_VALUE))
         self.generateJButton:setText("Generate")
         self.generateJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:generateJButtonActionPerformed(evt)
+                ;(self.generateJButtonActionPerformed and self or java_outer_self):generateJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.totalAngleJComboBox:setModel(DefaultComboBoxModel.new({self.commonStrings.UP, self.commonStrings.DOWN, "-90", "90"}))
         self.totalAngleJComboBox:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:totalAngleJComboBoxActionPerformed(evt)
+                ;(self.totalAngleJComboBoxActionPerformed and self or java_outer_self):totalAngleJComboBoxActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -315,14 +321,14 @@ function RotationImageJPanel:visit(generatedBufferedImage, name, index)
         self.result = generatedBufferedImage
         self:getParent():repaint()
         local file = self.imageProcessorInput:getFiles()[index + 1]
-        if not self.writeOverOriginalJCheckBox:isSelected() then
+        if not (self.writeOverOriginalJCheckBox:isSelected()) then
             local filePath = file:getAbsolutePath()
             local extensionIndex = ((string.find(filePath, self.imageStrings.PNG_EXTENSION, 1, true) or 0) - 1)
             filePath = tostring(StringMaker.new():append(string.sub(filePath, (0) + 1, extensionIndex)):append(CommonSeps.getInstance().UNDERSCORE):append(name):append(self.imageStrings.PNG_EXTENSION))
             file = File.new(filePath)
         end
         local isWritten = ImageIO.write(self.result, self.imageStrings.PNG, file)
-        self.logUtil:putF("File: " .. tostring(file) .. " Wrote: " .. tostring(isWritten), self, self.commonStrings.RUN)
+        self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("File: ") .. require("allbinary_java").to_string(file)) .. require("allbinary_java").to_string(" Wrote: ")) .. require("allbinary_java").to_string(isWritten), self, self.commonStrings.RUN)
 end
 java_overload(RotationImageJPanel, "visit", 3, function(java_a1, java_a2, java_a3) return true and (java_a1 == nil or java_is(java_a1, "BufferedImage")) and (java_a2 == nil or type(java_a2) == "string") and type(java_a3) == "number" end)
 

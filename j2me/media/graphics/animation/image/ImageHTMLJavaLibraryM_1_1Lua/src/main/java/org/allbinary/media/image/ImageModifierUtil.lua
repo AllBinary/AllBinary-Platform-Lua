@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local Image = require("javax.microedition.lcdui.Image")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local Anchor = java_lazy("org.allbinary.graphics.Anchor")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
@@ -219,18 +219,20 @@ end
 
 function ImageModifierUtil:handleImage(imageArray, index, image)
         local image3 = (image):getImage()
-        if image3 ~= nil then
-            if image3:isReady() or image3:width() + image3:height() <= 0 or image:getName() == self.resourceCallbackStrings.FROM_DATA then
+        if not rawequal(image3, nil) then
+            if image3:isReady() or image3:width() + image3:height() <= 0 or rawequal(image:getName(), self.resourceCallbackStrings.FROM_DATA) then
                 self:copy(imageArray, index, image, image3)
             else
                 local callback = (function()
-                    local o = Callback.new and Callback.new() or setmetatable({}, {__index = Callback})
+                    local java_outer_self = self
+                local o = Callback.new and Callback.new() or setmetatable({}, {__index = Callback})
                     
 
                     function o:onSuccess(resource)
                         local logUtil = LogUtil.getInstance()
-                        logUtil:putF(tostring(self.resourceCallbackStrings.DONE) .. image:getName(), self, self.resourceCallbackStrings.HANDLE_IMAGE)
-                        self:copy(imageArray, index, image, image3)
+                        logUtil:putF(require("allbinary_java").to_string(self.resourceCallbackStrings.DONE) .. require("allbinary_java").to_string(image:getName()), self, self.resourceCallbackStrings.HANDLE_IMAGE)
+                        ;(self.copy and self or java_outer_self):copy(imageArray, index, image, image3)
+            
                     end
                     java_overload(o, "onSuccess", 1)
                     

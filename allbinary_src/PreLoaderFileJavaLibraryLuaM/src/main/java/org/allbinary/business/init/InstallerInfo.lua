@@ -120,7 +120,7 @@ function InstallerInfo:read()
                 self:setPassword(WeakCrypt.new(2):decrypt(decryptedPassword))
             else
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRELOADER) then
-                    self.logUtil:putF("Not a File - Failed Loading: " .. tostring(FILEABPATH), self, "read")
+                    self.logUtil:putF(require("allbinary_java").to_string("Not a File - Failed Loading: ") .. require("allbinary_java").to_string(tostring(FILEABPATH)), self, "read")
                 end
             end
         end)
@@ -151,10 +151,10 @@ end
 
 -- throws Exception
 function InstallerInfo:updateIfNeeded()
-        if not InstallerInfo.hasRead then
+        if not (InstallerInfo.hasRead) then
             InstallerInfo.hasRead = true
             self:read()
-            if InstallerInfo.userName == nil or InstallerInfo.password == nil then
+            if rawequal(InstallerInfo.userName, nil) or rawequal(InstallerInfo.password, nil) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRELOADER) then
                     self.logUtil:putF("Failed", self, "updateIfNeeded")
                 end
@@ -180,7 +180,7 @@ end
 -- throws Exception
 function InstallerInfo:isValid(userName, password)
         self:updateIfNeeded()
-        if self.userName ~= nil and ((self.userName < userName and -1) or (self.userName > userName and 1) or 0) == 0 and self.password ~= nil and ((self.password < password and -1) or (self.password > password and 1) or 0) == 0 then
+        if not rawequal(InstallerInfo.userName, nil) and rawequal(((InstallerInfo.userName < userName and -1) or (InstallerInfo.userName > userName and 1) or 0), 0) and not rawequal(InstallerInfo.password, nil) and rawequal(((InstallerInfo.password < password and -1) or (InstallerInfo.password > password and 1) or 0), 0) then
             return true
         end
         return false

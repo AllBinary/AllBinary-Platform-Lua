@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local CommandForm = java_lazy("org.allbinary.graphics.displayable.screen.CommandForm")
 local Init = java_lazy("org.allbinary.init.Init")
@@ -75,7 +75,7 @@ end
 
 
 function InGameOptionsFormFactory.getInstance()
-        if InGameOptionsFormFactory.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(InGameOptionsFormFactory.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             InGameOptionsFormFactory.instance_f = InGameOptionsFormFactory.new()
         end
         return InGameOptionsFormFactory.instance_f
@@ -84,7 +84,7 @@ end
 
 function InGameOptionsFormFactory:init(commandListener, initInterface, title, backgrounBasicColor, foregroundBasicColor)
         local try_ok, try_error, try_value = pcall(function()
-            if self.SINGLETON == CommandForm.getNullCommandForm() then
+            if rawequal(self.SINGLETON, CommandForm.getNullCommandForm()) then
                 initInterface:init()
                 self.SINGLETON = InGameOptionsForm.new(commandListener, title, backgrounBasicColor, foregroundBasicColor)
             end

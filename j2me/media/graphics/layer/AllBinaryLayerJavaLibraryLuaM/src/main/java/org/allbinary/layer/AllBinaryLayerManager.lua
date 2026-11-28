@@ -206,7 +206,7 @@ java_overload(AllBinaryLayerManager, "log", 0)
 
 -- throws Exception
 function AllBinaryLayerManager:append(layerInterface)
-        if not self:contains(layerInterface) then
+        if not (self:contains(layerInterface)) then
             self:appendProcessors(layerInterface)
             java_super(LayerManager, "append", 1)(self, layerInterface)
         end
@@ -216,7 +216,7 @@ java_overload(AllBinaryLayerManager, "append", 1, function(java_a1) return true 
 
 -- throws Exception
 function AllBinaryLayerManager:appendAt(layerInterface, index)
-        if not self:contains(layerInterface) then
+        if not (self:contains(layerInterface)) then
             self:appendProcessors(layerInterface)
             java_super(LayerManager, "appendAt", 2)(self, layerInterface, index)
         end

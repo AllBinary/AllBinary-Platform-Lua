@@ -197,7 +197,7 @@ java_overload(AddValidationView, "isValid", 0)
 function AddValidationView:validationInfo()
         local try_ok, try_error, try_value = pcall(function()
             local stringBuffer = StringMaker.new()
-            if WorkFlowEntityFactory.getInstance():create2():get(self.workFlowInterface:getName(), self:getTransformInfoInterface():getStoreName()) ~= nil then
+            if not rawequal(WorkFlowEntityFactory.getInstance():create2():get(self.workFlowInterface:getName(), self:getTransformInfoInterface():getStoreName()), nil) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     self.logUtil:putF("Workflow already exist", self, "validationInfo()")
                 end

@@ -156,7 +156,7 @@ end
 
 function SelectAdvancedRTSLayerVisitor:visit(anyType)
         local selectedLayer = anyType
-        if selectedLayer ~= CollidableDestroyableDamageableLayer.getNullInstance() and selectedLayer:getType() == BuildingLayer.getStaticType() then
+        if not rawequal(selectedLayer, CollidableDestroyableDamageableLayer.getNullInstance()) and rawequal(selectedLayer:getType(), BuildingLayer.getStaticType()) then
             local rtsGameLayer = selectedLayer
             local assignWaypointsUtil = AssignWaypointsUtil.getInstance()
             local list = self.selectedRTSLayersPlayerGameInput:getSelectedBasicArrayList()
@@ -164,7 +164,7 @@ function SelectAdvancedRTSLayerVisitor:visit(anyType)
             local unitLayer = nil
             for index = list:size() - 1, 0, -1 do
                 currentRTSLayer = list:get(index)
-                if currentRTSLayer:getType() == UnitLayer.getStaticType() then
+                if rawequal(currentRTSLayer:getType(), UnitLayer.getStaticType()) then
                     unitLayer = currentRTSLayer
                     unitLayer:setParentLayer(rtsGameLayer)
                     assignWaypointsUtil:set(unitLayer, rtsGameLayer)

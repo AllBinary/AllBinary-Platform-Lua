@@ -103,7 +103,7 @@ function ChangedPixelsUtil.generateBufferedImageChacheables(imageComparisonInfo)
         local size = vector:size()
         for index = 0, size - 1 do
             local pixelDelta = vector:get(index)
-            if pixelDelta:getColorDelta() == nil then
+            if rawequal(pixelDelta:getColorDelta(), nil) then
                 io.write(tostring("ColorDelta"))
                 os.exit(0)
             end

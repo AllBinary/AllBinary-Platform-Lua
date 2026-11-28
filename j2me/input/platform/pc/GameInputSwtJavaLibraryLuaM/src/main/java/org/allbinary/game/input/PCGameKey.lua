@@ -163,7 +163,7 @@ end
 
 
 function PCGameKey:toString()
-        return "PCGameKey: " .. tostring(Input)
+        return require("allbinary_java").to_string("PCGameKey: ") .. require("allbinary_java").to_string(tostring(Input))
 end
 java_overload(PCGameKey, "toString", 0)
 PCGameKey.__tostring = function(self) return self:toString() end
@@ -171,7 +171,7 @@ PCGameKey.__tostring = function(self) return self:toString() end
 
 function PCGameKey.getString(keyCode)
         local input = InputFactory.getInstance():getInstanceById(keyCode)
-        if input ~= nil then
+        if not rawequal(input, nil) then
             return input:getName()
         else
             return StringUtil.getInstance().EMPTY_STRING

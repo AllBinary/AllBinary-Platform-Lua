@@ -137,7 +137,7 @@ local TestableTimeTypeUtil = {}
     TimeTypeTest.TestableTimeTypeUtil = TestableTimeTypeUtil
 
     function TestableTimeTypeUtil:_init_fields()
-        if self.hour == nil then self.hour = nil end
+        if self.hour == nil then self.hour = 0 end
     end
     
 

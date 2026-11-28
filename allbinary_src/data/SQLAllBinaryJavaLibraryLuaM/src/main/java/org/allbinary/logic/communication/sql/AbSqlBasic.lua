@@ -76,7 +76,7 @@ function AbSqlBasic:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.sqlConnectionPool = SqlConnectionPool.getInstance()
     if self.databaseConnectionInfoInterface == nil then self.databaseConnectionInfoInterface = nil end
-    if self.connectAttemptCounter == nil then self.connectAttemptCounter = nil end
+    if self.connectAttemptCounter == nil then self.connectAttemptCounter = 0 end
     if self.conn == nil then self.conn = nil end
     self.stringUtil = StringUtil.getInstance()
     self.commonStrings = CommonStrings.getInstance()
@@ -133,7 +133,7 @@ function AbSqlBasic:executeSQLStatement(statement)
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
-                self.logUtil:put(self.FAILED_SQL_STATEMENT .. statement, self, self.METHOD_EXECUTED_SQL_STATEMENT, e)
+                self.logUtil:put(require("allbinary_java").to_string(self.FAILED_SQL_STATEMENT) .. require("allbinary_java").to_string(statement), self, self.METHOD_EXECUTED_SQL_STATEMENT, e)
             end
             self.conn:close()
             self.conn = nil
@@ -145,19 +145,19 @@ end
 
 function AbSqlBasic:create(databaseName)
         local try_ok, try_error, try_value = pcall(function()
-            self:executeSQLStatement(tostring(self.sqlStrings.CREATE_DATABASE) .. databaseName)
+            self:executeSQLStatement(require("allbinary_java").to_string(self.sqlStrings.CREATE_DATABASE) .. require("allbinary_java").to_string(databaseName))
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                self.logUtil:putF(self.DATABASE_CREATED_LABEL .. databaseName, self, self.METHOD_CREATE)
+                self.logUtil:putF(require("allbinary_java").to_string(self.DATABASE_CREATED_LABEL) .. require("allbinary_java").to_string(databaseName), self, self.METHOD_CREATE)
             end
-            do return "__jreturn", databaseName .. tostring(self.sqlStrings.CREATE_RETURN) end
+            do return "__jreturn", require("allbinary_java").to_string(databaseName) .. require("allbinary_java").to_string(self.sqlStrings.CREATE_RETURN) end
         end)
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
-                self.logUtil:put(self.DATABASE_CREATION_FAILED_LABEL .. databaseName, self, self.METHOD_CREATE, e)
+                self.logUtil:put(require("allbinary_java").to_string(self.DATABASE_CREATION_FAILED_LABEL) .. require("allbinary_java").to_string(databaseName), self, self.METHOD_CREATE, e)
             end
-            return self.DATABASE_CREATION_FAILED_LABEL .. databaseName
+            return require("allbinary_java").to_string(self.DATABASE_CREATION_FAILED_LABEL) .. require("allbinary_java").to_string(databaseName)
         end
         if try_ok and try_error == "__jreturn" then return try_value end
 end
@@ -184,7 +184,7 @@ function AbSqlBasic:createConnection()
                 local e = try_error
                 if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
-                    self.logUtil:put(self.SQL_CONNECTION_RETRY .. tostring(se), self, self.METHOD_CREATE_CONNECTION, e)
+                    self.logUtil:put(require("allbinary_java").to_string(self.SQL_CONNECTION_RETRY) .. require("allbinary_java").to_string(tostring(se)), self, self.METHOD_CREATE_CONNECTION, e)
                 end
             end
         end
@@ -197,13 +197,13 @@ function AbSqlBasic:initialize()
                 local try_ok, try_error, try_value = pcall(function()
                     local loader = require("java.lang.Thread").currentThread():getContextClassLoader()
                     local jdbcDriverClass = loader:loadClass(self:getDatabaseConnectionInfoInterface():getJdbcDriver())
-                    jdbcDriverClass:newInstance()
+                    jdbcDriverClass.new()
                 end)
                 if not try_ok then
                     local e = try_error
                     if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
                     if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
-                        self.logUtil:put(self.LOAD_JDBC_DRIVER_FAILED_LABEL .. tostring(self:getDatabaseConnectionInfoInterface():getJdbcDriver()), self, self.METHOD_INITIALIZE, e)
+                        self.logUtil:put(require("allbinary_java").to_string(self.LOAD_JDBC_DRIVER_FAILED_LABEL) .. require("allbinary_java").to_string(self:getDatabaseConnectionInfoInterface():getJdbcDriver()), self, self.METHOD_INITIALIZE, e)
                     end
                 end
             end

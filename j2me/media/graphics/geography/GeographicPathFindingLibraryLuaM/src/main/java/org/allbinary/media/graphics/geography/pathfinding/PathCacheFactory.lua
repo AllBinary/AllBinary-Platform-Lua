@@ -118,7 +118,7 @@ end
 -- throws Exception
 function PathCacheFactory:getOrCreate(pathIdInteger)
         local listCanBeNull = self.hashtable:get(pathIdInteger)
-        if listCanBeNull == nil then
+        if rawequal(listCanBeNull, nil) then
             listCanBeNull = self.basicArrayListUtil:getImmutableInstance()
         end
         return listCanBeNull

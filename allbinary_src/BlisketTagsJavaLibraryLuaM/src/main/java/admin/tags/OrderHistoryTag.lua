@@ -185,7 +185,7 @@ function OrderHistoryTag:setOrderStatus()
         local try_ok, try_error, try_value = pcall(function()
             local request = self.pageContext:getRequest()
             local anyType = OrderHistoryRequestHelperFactory.new():getInstance(self:getPropertiesHashMap(), self.pageContext)
-            if self.status == nil then
+            if rawequal(self.status, nil) then
                 local helperClass = getmetatable(anyType)
                 local method = helperClass:getMethod("setOrderStatus", nil)
                 local result = method:invoke(anyType, nil)
@@ -213,9 +213,9 @@ java_overload(OrderHistoryTag, "setOrderStatus", 0)
 function OrderHistoryTag:doStartTag()
         local try_ok, try_error, try_value = pcall(function()
             if self:isEnabled() then
-                if self:getCommand() ~= nil then
+                if not rawequal(self:getCommand(), nil) then
                     self:getPropertiesHashMap():put(OrderHistoryData.STATUS, self.status)
-                    if self:getCommand():compareTo(OrderHistoryData.SETSTATUS) == 0 then
+                    if rawequal(self:getCommand():compareTo(OrderHistoryData.SETSTATUS), 0) then
                         self:setOrderStatus()
                     else
                         do return "__jreturn", java_super(TableTag, "doStartTag", 0)(self) end

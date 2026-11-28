@@ -81,14 +81,14 @@ end
 
 
 function TsUtil:hashCode(anyType)
-        return anyType:hashCode()
+        return require("allbinary_java").hash_code(anyType)
 end
 
 
 -- throws InterruptedException
 function TsUtil:waitFor(any, timeoutMillis)
         local anyType = any
-        anyType:wait(timeoutMillis)
+        require("java.lang.Thread").waitOn(anyType, timeoutMillis)
 end
 
 
@@ -108,7 +108,7 @@ end
 
 
 function TsUtil:equalsNotstring(anyType, object2)
-        return anyType:equals(object2)
+        return require("allbinary_java").equals(anyType, object2)
 end
 
 

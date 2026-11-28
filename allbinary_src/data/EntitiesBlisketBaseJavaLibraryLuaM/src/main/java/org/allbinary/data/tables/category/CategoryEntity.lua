@@ -275,6 +275,8 @@ end
 function CategoryEntity:insert(...)
     local count = select("#", ...)
     if count == 1 then return self:insert_j1(...) end
+    local parent = getmetatable(CategoryEntity).__index
+    if parent.insert then return parent.insert(self, ...) end
     error("No method insert takes " .. count .. " arguments")
 end
 CategoryEntity.insert__jdispatcher = CategoryEntity.insert

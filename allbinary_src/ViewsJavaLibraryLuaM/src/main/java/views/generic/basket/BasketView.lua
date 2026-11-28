@@ -200,7 +200,7 @@ function BasketView:toXmlNode(document)
             for index = 0, size - 1 do
                 local product = tostring(productArray[index + 1])
                 local itemInterface = inventoryEntity:getItem(product)
-                if itemInterface ~= nil then
+                if not rawequal(itemInterface, nil) then
                     local basicItemView = BasicItemView.new(itemInterface, BasicArrayListD.new())
                     local node = basicItemView:toXmlNode(document)
                     local numberInBasket = tostring(basketInterface:getNumberOf(product))
@@ -211,7 +211,7 @@ function BasketView:toXmlNode(document)
                     node:appendChild(ModDomHelper.createNameValueNodes(document, BasketData.ITEMTOTAL, tostring(itemTotal)))
                     basketNode:appendChild(node)
                 else
-                    self.logUtil:putF("Product Failed: " .. product, self, "toXmlNode")
+                    self.logUtil:putF(require("allbinary_java").to_string("Product Failed: ") .. require("allbinary_java").to_string(product), self, "toXmlNode")
                 end
                 numberOfResults = numberOfResults + 1
             end

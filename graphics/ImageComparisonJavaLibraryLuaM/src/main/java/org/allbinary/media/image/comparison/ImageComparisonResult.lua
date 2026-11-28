@@ -81,8 +81,8 @@ function ImageComparisonResult:_init_fields()
     if self.name_f == nil then self.name_f = nil end
     if self.isSameHeight == nil then self.isSameHeight = false end
     if self.isSameWidth == nil then self.isSameWidth = false end
-    if self.imageHeight == nil then self.imageHeight = nil end
-    if self.imageWidth == nil then self.imageWidth = nil end
+    if self.imageHeight == nil then self.imageHeight = 0 end
+    if self.imageWidth == nil then self.imageWidth = 0 end
     if self.nonMatchingPixelVector == nil then self.nonMatchingPixelVector = nil end
     if self.frameOne == nil then self.frameOne = nil end
     if self.frameTwo == nil then self.frameTwo = nil end
@@ -104,7 +104,7 @@ function ImageComparisonResult._jinit(self, name, bufferedImage, bufferedImage2,
         self:setTolerance(0)
         local imageHeight = bufferedImage:getHeight()
         local imageWidth = bufferedImage:getWidth()
-        if bufferedImage:getHeight() ~= bufferedImage2:getHeight() then
+        if not rawequal(bufferedImage:getHeight(), bufferedImage2:getHeight()) then
             self.isSameHeight = false
             if imageHeight > bufferedImage2:getHeight() then
                 imageHeight = bufferedImage2:getHeight()
@@ -112,7 +112,7 @@ function ImageComparisonResult._jinit(self, name, bufferedImage, bufferedImage2,
         else
             self.isSameHeight = true
         end
-        if bufferedImage:getWidth() ~= bufferedImage2:getWidth() then
+        if not rawequal(bufferedImage:getWidth(), bufferedImage2:getWidth()) then
             self.isSameWidth = false
             if imageWidth > bufferedImage2:getWidth() then
                 imageWidth = bufferedImage2:getWidth()
@@ -122,11 +122,11 @@ function ImageComparisonResult._jinit(self, name, bufferedImage, bufferedImage2,
         end
         self.imageWidth = imageWidth
         self.imageHeight = imageHeight
-        if not self.isSameWidth or not self.isSameHeight then
+        if not (self.isSameWidth) or not (self.isSameHeight) then
             local imageUtil = ImageUtil.getInstance()
             self.logUtil:putF("Images were not the same size? Most likely a resolution change.", self, self.commonStrings.CONSTRUCTOR)
-            self.logUtil:putF("1: " .. imageUtil:toString(bufferedImage), self, self.commonStrings.CONSTRUCTOR)
-            self.logUtil:putF("2: " .. imageUtil:toString(bufferedImage2), self, self.commonStrings.CONSTRUCTOR)
+            self.logUtil:putF(require("allbinary_java").to_string("1: ") .. require("allbinary_java").to_string(imageUtil:toString(bufferedImage)), self, self.commonStrings.CONSTRUCTOR)
+            self.logUtil:putF(require("allbinary_java").to_string("2: ") .. require("allbinary_java").to_string(imageUtil:toString(bufferedImage2)), self, self.commonStrings.CONSTRUCTOR)
         end
     return self
 end
@@ -139,7 +139,7 @@ end
 
 
 function ImageComparisonResult:getMatchingPercent()
-        if self.matchingPercent == (-1 + 0.0) then
+        if rawequal(self.matchingPercent, (-1 + 0.0)) then
             self.matchingPercent = (self.pixelsThatMatch + 0.0) / ((self.imageWidth * self.imageHeight) + 0.0)
         end
         return self.matchingPercent

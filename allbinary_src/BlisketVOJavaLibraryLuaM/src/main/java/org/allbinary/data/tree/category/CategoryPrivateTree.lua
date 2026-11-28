@@ -88,7 +88,7 @@ end
 -- throws Exception
 function CategoryPrivateTree:save(categoryInterface)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-            self.logUtil:putF("Saving Category File: " .. tostring(categoryInterface:getFilePath()), self, "save()")
+            self.logUtil:putF(require("allbinary_java").to_string("Saving Category File: ") .. require("allbinary_java").to_string(categoryInterface:getFilePath()), self, "save()")
         end
         local document = CategoryComponent.new(categoryInterface):toXmlDoc()
         local cryptFileWriter = CryptFileWriter.new(CategoryData.getInstance().UNCRYPTED_EXTENSION, CategoryData.getInstance().ENCRYPTED_EXTENSION)
@@ -105,7 +105,7 @@ function CategoryPrivateTree:delete(categoryInterface)
             local categoryFile = AbFile.createAbFileFromAbPath(categoryInterface:getFilePath())
             if categoryFile:delete() then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                    self.logUtil:putF("Removed: " .. tostring(categoryInterface:getFilePath()), self, "delete(CategoryInterface)")
+                    self.logUtil:putF(require("allbinary_java").to_string("Removed: ") .. require("allbinary_java").to_string(categoryInterface:getFilePath()), self, "delete(CategoryInterface)")
                 end
             end
         else

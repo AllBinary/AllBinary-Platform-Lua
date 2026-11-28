@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Player = require("javax.microedition.media.Player")
+local Player = java_lazy("javax.microedition.media.Player")
 local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local SoundInterface = require("org.allbinary.media.audio.SoundInterface")

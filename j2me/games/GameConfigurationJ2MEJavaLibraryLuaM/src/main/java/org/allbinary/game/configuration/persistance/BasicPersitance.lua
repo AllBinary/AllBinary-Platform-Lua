@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local RecordStore = require("javax.microedition.rms.RecordStore")
+local RecordStore = java_lazy("javax.microedition.rms.RecordStore")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
@@ -117,7 +117,7 @@ function BasicPersitance:delete(abeClientInformation, deleteId)
             error(e, 0)
         end
         do -- finally
-            if recordStore ~= nil then
+            if not rawequal(recordStore, nil) then
                 PreLogUtil.put(self.persistanceStrings.CLOSING_RECORDSTORE, self, self.commonStrings.delete)
                 recordStore:closeRecordStore()
             end

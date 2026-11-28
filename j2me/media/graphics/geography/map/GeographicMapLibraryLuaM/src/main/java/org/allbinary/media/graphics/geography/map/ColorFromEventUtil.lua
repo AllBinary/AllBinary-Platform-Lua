@@ -80,7 +80,7 @@ function ColorFromEventUtil:getForegroundColor(gameCanvasInterface)
         local color = self.YELLOW
         local geographicMapCompositeInterface = gameCanvasInterface:getLayerManager()
         local geographicMapInterface = geographicMapCompositeInterface:getGeographicMapInterface()[1]
-        if geographicMapInterface ~= nil then
+        if not rawequal(geographicMapInterface, nil) then
             local foregroundBasicColor = geographicMapInterface:getForegroundBasicColor()
             color = foregroundBasicColor
         end

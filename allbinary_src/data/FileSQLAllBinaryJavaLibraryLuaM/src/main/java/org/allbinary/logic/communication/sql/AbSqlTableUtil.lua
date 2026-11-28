@@ -121,9 +121,9 @@ end
 
 function AbSqlTableUtil:getOutputStream(backupPath, tableName)
         local try_ok, try_error, try_value = pcall(function()
-            local fileName = tableName .. self.EXTENSION
+            local fileName = require("allbinary_java").to_string(tableName) .. require("allbinary_java").to_string(self.EXTENSION)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                self.logUtil:putF(self.SAVING .. tableName, self, self.METHOD_GET_OUTPUT_STREAM)
+                self.logUtil:putF(require("allbinary_java").to_string(self.SAVING) .. require("allbinary_java").to_string(tableName), self, self.METHOD_GET_OUTPUT_STREAM)
             end
             local backupFilePath = AbPath.new(backupPath, fileName)
             local backupFile = AbFile.createAbFile(backupFilePath)
@@ -153,7 +153,7 @@ function AbSqlTableUtil:backupFile(path, backupPath, tableName)
             local timeLong = calendar:getTimeInMillis()
             local time = tostring(timeLong)
             local stringBuffer = StringMaker.new()
-            local fileName = tableName .. self.EXTENSION
+            local fileName = require("allbinary_java").to_string(tableName) .. require("allbinary_java").to_string(self.EXTENSION)
             stringBuffer:append(backupPath)
             stringBuffer:append(AbPathData.getInstance().SEPARATOR)
             stringBuffer:append(time)
@@ -190,7 +190,7 @@ function AbSqlTableUtil:convertNewLines(value)
         local lastIndex = 0
         while index < #value do
             index = ((string.find(value, self.specialCharArray[1], (lastIndex) + 1, true) or 0) - 1)
-            if index ~= -1 then
+            if not rawequal(index, -1) then
                 local nextLine = string.sub(value, (lastIndex) + 1, index - 1)
                 stringBuffer:append(nextLine)
                 stringBuffer:append(self.NEW_LINE)
@@ -210,11 +210,11 @@ function AbSqlTableUtil:backupTable(abSqlTable)
         local tableName = abSqlTable:getTableName()
         local try_ok, try_error, try_value = pcall(function()
             local count = 0
-            local sqlStatement = tostring(self.sqlStrings.SELECT_ALL_FROM) .. tableName
+            local sqlStatement = require("allbinary_java").to_string(self.sqlStrings.SELECT_ALL_FROM) .. require("allbinary_java").to_string(tableName)
             local path = URLGLOBALS.getMainPath() + PATH_GLOBALS.getInstance().BACKUP_PATH
-            if not Directory.create(AbPath.new(path)) then
+            if not (Directory.create(AbPath.new(path))) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                    self.logUtil:putF(self.ERROR_CREATING .. tostring(path), self, self.METHOD_BACKUP_TABLE)
+                    self.logUtil:putF(require("allbinary_java").to_string(self.ERROR_CREATING) .. require("allbinary_java").to_string(path), self, self.METHOD_BACKUP_TABLE)
                 end
             end
             local rset = abSqlTable:executeSQLStatement(sqlStatement)
@@ -235,12 +235,12 @@ function AbSqlTableUtil:backupTable(abSqlTable)
                 stringBuffer:append(self.END)
                 local sqlStatementLine = tostring(stringBuffer)
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                    self.logUtil:putF(self.APPENDING .. sqlStatementLine, self, self.METHOD_BACKUP_TABLE)
+                    self.logUtil:putF(require("allbinary_java").to_string(self.APPENDING) .. require("allbinary_java").to_string(sqlStatementLine), self, self.METHOD_BACKUP_TABLE)
                 end
                 outputStream:write({string.byte(sqlStatementLine, 1, -1)})
             end
             StreamUtil.getInstance():close(outputStream)
-            do return "__jreturn", self.TABLE_LABEL .. tableName .. self.BACKUP_SUCCESS end
+            do return "__jreturn", require("allbinary_java").to_string(require("allbinary_java").to_string(self.TABLE_LABEL) .. require("allbinary_java").to_string(tableName)) .. require("allbinary_java").to_string(self.BACKUP_SUCCESS) end
         end)
         if not try_ok then
             local e = try_error
@@ -248,7 +248,7 @@ function AbSqlTableUtil:backupTable(abSqlTable)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
                 self.logUtil:put("Backup Table Failed\nSQL Statement", self, self.METHOD_BACKUP_TABLE, e)
             end
-            return self.TABLE_LABEL .. tableName .. " Backup Failed"
+            return require("allbinary_java").to_string(require("allbinary_java").to_string(self.TABLE_LABEL) .. require("allbinary_java").to_string(tableName)) .. require("allbinary_java").to_string(" Backup Failed")
         end
         if try_ok and try_error == "__jreturn" then return try_value end
 end
@@ -259,14 +259,14 @@ function AbSqlTableUtil:restoreTable(abSqlTable, portion)
         local try_ok, try_error, try_value = pcall(function()
             local path = URLGLOBALS.getMainPath() + PATH_GLOBALS.getInstance().BACKUP_PATH
             local current = math.tointeger(portion:getCurrent() // 1)
-            if current == 0 then
+            if rawequal(current, 0) then
                 if Directory.create(AbPath.new(path)) then
                     if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                        self.logUtil:putF(self.ERROR_CREATING .. tostring(path), self, self.METHOD_RESTORE_TABLE)
+                        self.logUtil:putF(require("allbinary_java").to_string(self.ERROR_CREATING) .. require("allbinary_java").to_string(path), self, self.METHOD_RESTORE_TABLE)
                     end
                 end
             end
-            local backupFile = AbFile.createAbFile(path, tableName .. self.EXTENSION)
+            local backupFile = AbFile.createAbFile(path, require("allbinary_java").to_string(tableName) .. require("allbinary_java").to_string(self.EXTENSION))
             local bufferedLineReader = BufferedLineReader.new(backupFile)
             local size = bufferedLineReader:getSize()
             local section = size / math.tointeger(portion:getTotal() // 1) + 1

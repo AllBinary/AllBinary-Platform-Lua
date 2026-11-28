@@ -239,23 +239,23 @@ function ModifyTag:doStartTag()
             end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAG) then
             end
-            if self:getCommand() ~= nil then
+            if not rawequal(self:getCommand(), nil) then
                 self:setHelper()
                 local commonStrings = CommonStrings.getInstance()
-                if self:getCommand():compareTo(commonStrings.INSERT) == 0 then
+                if rawequal(self:getCommand():compareTo(commonStrings.INSERT), 0) then
                     local output = self:insert()
                     if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAGEXTRAOUTPUT) then
-                        self.pageContext:getOut():print(output .. "<br />")
+                        self.pageContext:getOut():print(require("allbinary_java").to_string(output) .. require("allbinary_java").to_string("<br />"))
                     end
-                elseif self:getCommand():compareTo(commonStrings.DELETE) == 0 then
+                elseif rawequal(self:getCommand():compareTo(commonStrings.DELETE), 0) then
                     local output = self:delete()
                     if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAGEXTRAOUTPUT) then
-                        self.pageContext:getOut():print(output .. "<br />")
+                        self.pageContext:getOut():print(require("allbinary_java").to_string(output) .. require("allbinary_java").to_string("<br />"))
                     end
-                elseif self:getCommand():compareTo(commonStrings.UPDATE) == 0 then
+                elseif rawequal(self:getCommand():compareTo(commonStrings.UPDATE), 0) then
                     local output = self:update()
                     if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAGEXTRAOUTPUT) then
-                        self.pageContext:getOut():print(output .. "<br />")
+                        self.pageContext:getOut():print(require("allbinary_java").to_string(output) .. require("allbinary_java").to_string("<br />"))
                     end
                 end
             end

@@ -74,7 +74,7 @@ end
 
 function ThreedObjResources:get(resourceName)
         local resourceName2 = self.hashtable:get(resourceName)
-        if resourceName2 ~= nil then
+        if not rawequal(resourceName2, nil) then
             return resourceName2
         end
         return resourceName

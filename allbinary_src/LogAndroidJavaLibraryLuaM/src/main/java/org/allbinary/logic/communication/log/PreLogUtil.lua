@@ -74,7 +74,7 @@ end
 function PreLogUtil.putOE(specialMessage, anyType, functionName, exception)
         local className = PreLogUtil.LABEL
         local actualClassName = (getmetatable(anyType).javaClassName or getmetatable(anyType).className)
-        if actualClassName ~= nil then
+        if not rawequal(actualClassName, nil) then
             className = actualClassName
         end
         local message = LogFormatUtil.getInstance():get(className, functionName, specialMessage, exception)

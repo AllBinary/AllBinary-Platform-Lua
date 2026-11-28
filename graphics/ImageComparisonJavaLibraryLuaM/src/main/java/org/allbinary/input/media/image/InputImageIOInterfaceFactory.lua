@@ -83,14 +83,14 @@ end
 
 -- throws Exception
 function InputImageIOInterfaceFactory.getInstance(imageType)
-        if imageType == InputImageType.CAPTURE then
+        if rawequal(imageType, InputImageType.CAPTURE) then
             return CapturedImageInputOutput.new()
-        elseif imageType == InputImageType.COMPARISON then
+        elseif rawequal(imageType, InputImageType.COMPARISON) then
             return ComparisonImageInputOutput.new()
-        elseif imageType == InputImageType.MOTION then
+        elseif rawequal(imageType, InputImageType.MOTION) then
             return MotionRectanglesImageInputOutput.new()
         else
-            error(require("java.lang.Exception").new("No ImageIOInterface for: " .. tostring(imageType)), 0)
+            error(require("java.lang.Exception").new(require("allbinary_java").to_string("No ImageIOInterface for: ") .. require("allbinary_java").to_string(tostring(imageType))), 0)
         end
 end
 

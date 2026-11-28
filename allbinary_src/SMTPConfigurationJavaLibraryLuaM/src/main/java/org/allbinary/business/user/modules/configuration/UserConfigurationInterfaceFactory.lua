@@ -121,7 +121,7 @@ end
 
 -- throws Exception
 function UserConfigurationInterfaceFactory.getInstance_j1_2(userRole)
-        local abPath = AbPath.new(URLGLOBALS.getMainPath() + FREEBLISKET_PATH_GLOBALS.getInstance().USERCONFIGURATIONPATH, tostring(UserConfigurationInterfaceFactory.configurationName) .. tostring(userRole) .. tostring(AbPathData.getInstance().EXTENSION_SEP) .. tostring(UserConfigurationData.UNCRYPTED_EXTENSION))
+        local abPath = AbPath.new(URLGLOBALS.getMainPath() + FREEBLISKET_PATH_GLOBALS.getInstance().USERCONFIGURATIONPATH, require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(UserConfigurationInterfaceFactory.configurationName) .. require("allbinary_java").to_string(tostring(userRole))) .. require("allbinary_java").to_string(AbPathData.getInstance().EXTENSION_SEP)) .. require("allbinary_java").to_string(UserConfigurationData.UNCRYPTED_EXTENSION))
         local documentString = CryptFileReader.new(UserConfigurationData.UNCRYPTED_EXTENSION, UserConfigurationData.ENCRYPTED_EXTENSION):get(abPath)
         local document = DomDocumentHelper.create(documentString)
         return UserConfigurationInterfaceFactory.getInstance(document)

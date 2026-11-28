@@ -81,7 +81,7 @@ end
 -- throws Exception
 function GeographicMapCellPositionTracking:getCurrentOverCellType(geographicMap)
         local geographicMapCellPosition = self.currentGeographicMapCellPosition
-        if geographicMapCellPosition ~= self.previousGeographicMapCellPosition then
+        if not rawequal(geographicMapCellPosition, self.previousGeographicMapCellPosition) then
             self.currentCellType = geographicMap:getCellTypeAt(geographicMapCellPosition)
         end
         return self.currentCellType
@@ -90,11 +90,11 @@ end
 
 -- throws Exception
 function GeographicMapCellPositionTracking:updateStart(gameCanvasInterface, layer)
-        if gameCanvasInterface ~= SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION then
+        if not rawequal(gameCanvasInterface, SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION) then
             local geographicMapCompositeInterface = gameCanvasInterface:getLayerManager()
             local geographicMapInterface = geographicMapCompositeInterface:getGeographicMapInterface()[1]
             self.newGeographicMapCellPosition = geographicMapInterface:getCellPositionAtXY(layer:getXP() + layer:getHalfWidth(), layer:getYP() + layer:getHalfHeight())
-            if self.newGeographicMapCellPosition ~= self.currentGeographicMapCellPosition then
+            if not rawequal(self.newGeographicMapCellPosition, self.currentGeographicMapCellPosition) then
                 self.currentGeographicMapCellPosition = self.newGeographicMapCellPosition
                 return true
             end
@@ -104,7 +104,7 @@ end
 
 
 function GeographicMapCellPositionTracking:updateEnd()
-        if self.currentGeographicMapCellPosition ~= self.previousGeographicMapCellPosition then
+        if not rawequal(self.currentGeographicMapCellPosition, self.previousGeographicMapCellPosition) then
             self.previousGeographicMapCellPosition = self.currentGeographicMapCellPosition
             return true
         end

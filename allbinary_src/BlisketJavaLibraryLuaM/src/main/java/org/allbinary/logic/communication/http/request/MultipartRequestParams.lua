@@ -207,9 +207,9 @@ function MultipartRequestParams:processMultipartRequest(request)
         local try_ok, try_error, try_value = pcall(function()
             local specialRequest = StdUtil.getInstance():createHashMap()
             local multipartRequestList = AbFileUploadFactory.getInstance():getFileItemStreamList(request)
-            if multipartRequestList ~= nil then
+            if not rawequal(multipartRequestList, nil) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
-                    self.logUtil:putF("FileItem List Size: " .. tostring(multipartRequestList:size()), self, "processMultipartRequest()")
+                    self.logUtil:putF(require("allbinary_java").to_string("FileItem List Size: ") .. require("allbinary_java").to_string(multipartRequestList:size()), self, "processMultipartRequest()")
                 end
                 local fileItemArray = multipartRequestList:toArray()
                 local size = (fileItemArray.n or #fileItemArray)
@@ -223,7 +223,7 @@ function MultipartRequestParams:processMultipartRequest(request)
                     end
                 end
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
-                    self.logUtil:putF("Special Request Data: " .. tostring(specialRequest), self, "processMultipartRequest()")
+                    self.logUtil:putF(require("allbinary_java").to_string("Special Request Data: ") .. require("allbinary_java").to_string(tostring(specialRequest)), self, "processMultipartRequest()")
                 end
                 self:setSpecial()
                 self:setMap(specialRequest)

@@ -236,14 +236,14 @@ function TransformInfoEntity:get(name, propertiesHashMap, pageContext)
         local keysAndValues = StdUtil.getInstance():createHashMap()
         keysAndValues:put(transformInfoData.NAME, name)
         local hashMap = java_super(AbSqlBean, "getRow", 1)(self, keysAndValues)
-        if hashMap ~= nil then
+        if not rawequal(hashMap, nil) then
             local anyType = hashMap:get(transformInfoData.OBJECTCONFIG)
-            if anyType ~= nil then
+            if not rawequal(anyType, nil) then
                 local string_ = anyType
                 hashMap:put(transformInfoData.OBJECTCONFIG, tostring(Encoder.decode(string_)))
             end
             local objectData = hashMap:get(transformInfoData.DATA)
-            if objectData ~= nil then
+            if not rawequal(objectData, nil) then
                 local string_ = objectData
                 hashMap:put(transformInfoData.DATA, tostring(Encoder.decode(string_)))
             end

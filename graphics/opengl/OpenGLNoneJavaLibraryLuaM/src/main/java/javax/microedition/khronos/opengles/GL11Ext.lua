@@ -110,6 +110,8 @@ function GL11Ext:glDrawTexfvOES(...)
     local count = select("#", ...)
     if count == 2 then return self:glDrawTexfvOES_j2(...) end
     if count == 1 then return self:glDrawTexfvOES_j1(...) end
+    local parent = getmetatable(GL11Ext).__index
+    if parent.glDrawTexfvOES then return parent.glDrawTexfvOES(self, ...) end
     error("No method glDrawTexfvOES takes " .. count .. " arguments")
 end
 GL11Ext.glDrawTexfvOES__jdispatcher = GL11Ext.glDrawTexfvOES
@@ -132,6 +134,8 @@ function GL11Ext:glDrawTexivOES(...)
     local count = select("#", ...)
     if count == 2 then return self:glDrawTexivOES_j2(...) end
     if count == 1 then return self:glDrawTexivOES_j1(...) end
+    local parent = getmetatable(GL11Ext).__index
+    if parent.glDrawTexivOES then return parent.glDrawTexivOES(self, ...) end
     error("No method glDrawTexivOES takes " .. count .. " arguments")
 end
 GL11Ext.glDrawTexivOES__jdispatcher = GL11Ext.glDrawTexivOES
@@ -154,6 +158,8 @@ function GL11Ext:glDrawTexsvOES(...)
     local count = select("#", ...)
     if count == 2 then return self:glDrawTexsvOES_j2(...) end
     if count == 1 then return self:glDrawTexsvOES_j1(...) end
+    local parent = getmetatable(GL11Ext).__index
+    if parent.glDrawTexsvOES then return parent.glDrawTexsvOES(self, ...) end
     error("No method glDrawTexsvOES takes " .. count .. " arguments")
 end
 GL11Ext.glDrawTexsvOES__jdispatcher = GL11Ext.glDrawTexsvOES
@@ -176,6 +182,8 @@ function GL11Ext:glDrawTexxvOES(...)
     local count = select("#", ...)
     if count == 2 then return self:glDrawTexxvOES_j2(...) end
     if count == 1 then return self:glDrawTexxvOES_j1(...) end
+    local parent = getmetatable(GL11Ext).__index
+    if parent.glDrawTexxvOES then return parent.glDrawTexxvOES(self, ...) end
     error("No method glDrawTexxvOES takes " .. count .. " arguments")
 end
 GL11Ext.glDrawTexxvOES__jdispatcher = GL11Ext.glDrawTexxvOES
@@ -207,6 +215,8 @@ end
 function GL11Ext:glMatrixIndexPointerOES(...)
     local count = select("#", ...)
     if count == 4 then return self:glMatrixIndexPointerOES_j4(...) end
+    local parent = getmetatable(GL11Ext).__index
+    if parent.glMatrixIndexPointerOES then return parent.glMatrixIndexPointerOES(self, ...) end
     error("No method glMatrixIndexPointerOES takes " .. count .. " arguments")
 end
 GL11Ext.glMatrixIndexPointerOES__jdispatcher = GL11Ext.glMatrixIndexPointerOES
@@ -228,6 +238,8 @@ end
 function GL11Ext:glWeightPointerOES(...)
     local count = select("#", ...)
     if count == 4 then return self:glWeightPointerOES_j4(...) end
+    local parent = getmetatable(GL11Ext).__index
+    if parent.glWeightPointerOES then return parent.glWeightPointerOES(self, ...) end
     error("No method glWeightPointerOES takes " .. count .. " arguments")
 end
 GL11Ext.glWeightPointerOES__jdispatcher = GL11Ext.glWeightPointerOES

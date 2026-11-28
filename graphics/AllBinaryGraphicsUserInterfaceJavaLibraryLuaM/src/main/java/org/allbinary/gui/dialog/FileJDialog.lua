@@ -188,11 +188,13 @@ function FileJDialog:initComponents()
         self.jFileChooser1 = JFileChooser.new()
         self:setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE)
         self.jFileChooser1:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:jFileChooser1ActionPerformed(evt)
+                ;(self.jFileChooser1ActionPerformed and self or java_outer_self):jFileChooser1ActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -207,13 +209,13 @@ java_overload(FileJDialog, "initComponents", 0)
 
 
 function FileJDialog:jFileChooser1ActionPerformed(evt)
-        self.logUtil:putF("Starting Action Command: " .. tostring(evt:getActionCommand()), self, "ActionPerformed")
+        self.logUtil:putF(require("allbinary_java").to_string("Starting Action Command: ") .. require("allbinary_java").to_string(evt:getActionCommand()), self, "ActionPerformed")
         local files = self:getJFileChooser1():getSelectedFiles()
-        if evt:getActionCommand() == self:getJFileChooser1().CANCEL_SELECTION then
+        if rawequal(evt:getActionCommand(), self:getJFileChooser1().CANCEL_SELECTION) then
             self:setVisible(false)
         end
-        if evt:getActionCommand() == self:getJFileChooser1().APPROVE_SELECTION then
-            if files ~= nil and (files.n or #files) > 0 then
+        if rawequal(evt:getActionCommand(), self:getJFileChooser1().APPROVE_SELECTION) then
+            if not rawequal(files, nil) and (files.n or #files) > 0 then
                 self.finishedListenerInterface:onFiles(files)
             end
         end

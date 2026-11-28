@@ -103,7 +103,7 @@ end
 
 
 function ClassUtil.viewAll_j2_1(anyType, lineBreak)
-        if anyType ~= nil then
+        if not rawequal(anyType, nil) then
             return ClassUtil.viewAll(getmetatable(anyType), lineBreak)
         else
             return "Object Null"
@@ -112,7 +112,7 @@ end
 
 
 function ClassUtil.viewAll_j2_2(myClass, lineBreak)
-        if myClass ~= nil then
+        if not rawequal(myClass, nil) then
             local stringBuffer = StringMaker.new()
             local classes = myClass:getClasses()
             stringBuffer:append(lineBreak)

@@ -132,6 +132,8 @@ function OrderHistoryEntityInterface:getOrders(...)
     local count = select("#", ...)
     if count == 1 then return self:getOrders_j1(...) end
     if count == 3 then return self:getOrders_j3(...) end
+    local parent = getmetatable(OrderHistoryEntityInterface).__index
+    if parent.getOrders then return parent.getOrders(self, ...) end
     error("No method getOrders takes " .. count .. " arguments")
 end
 OrderHistoryEntityInterface.getOrders__jdispatcher = OrderHistoryEntityInterface.getOrders

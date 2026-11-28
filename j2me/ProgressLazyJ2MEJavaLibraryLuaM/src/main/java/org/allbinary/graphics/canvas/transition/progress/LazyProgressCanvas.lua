@@ -198,7 +198,7 @@ java_overload(LazyProgressCanvas, "endFromInitialLazyLoadingComplete", 0)
 
 
 function LazyProgressCanvas:endIfPaintedSinceStart()
-        if self.paintable == self.GAUGE_PAINTABLE and self.hasPainted then
+        if rawequal(self.paintable, self.GAUGE_PAINTABLE) and self.hasPainted then
             self:endFromInitialLazyLoadingComplete()
         end
 end

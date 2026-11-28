@@ -77,7 +77,7 @@ end
 
 function AdvancedRTSGameLayerPositionFinder:getLayerInterface(geographicMapCellPosition)
         local layerInterface = DropCellPositionHistory.getInstance():getLayerInterface(geographicMapCellPosition)
-        if layerInterface == AllBinaryLayer.NULL_ALLBINARY_LAYER then
+        if rawequal(layerInterface, AllBinaryLayer.NULL_ALLBINARY_LAYER) then
             layerInterface = WaypointCellPositionHistory.getInstance():getLayerInterface(geographicMapCellPosition)
         end
         return layerInterface

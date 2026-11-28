@@ -88,7 +88,7 @@ end
 
 -- throws Exception
 function GameConfiguration:setValue(value)
-        if self.value ~= value then
+        if not rawequal(self.value, value) then
             local oldValue = self.value
             self.value = value
             GameFeatureEventHandler.getInstance():fireEvent(GameFeatureEvent.new(self, tostring(StringMaker.new():append(self.name_f):append(" value: from: "):appendint(java_int(math.tointeger(oldValue // 1))):append(" to "):appendint(java_int(math.tointeger(self.value // 1))))))

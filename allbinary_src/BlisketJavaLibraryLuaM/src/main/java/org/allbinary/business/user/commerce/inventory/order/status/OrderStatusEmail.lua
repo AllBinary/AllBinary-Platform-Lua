@@ -110,8 +110,8 @@ function OrderStatusEmail:notifyStoreAdmin()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().EMAILLOGGING) then
                 self.logUtil:putF("Order Email", self, "emailStoreAdmin")
             end
-            local adminEmailSubject = "Order " .. tostring(self.orderHistory:getStatus()) .. " Attempt"
-            local adminEmailTextBody = "Order attempt: " .. tostring(self.orderHistory:getId()) .. " Preprocessing by: " .. tostring(self.user:getUserName())
+            local adminEmailSubject = require("allbinary_java").to_string(require("allbinary_java").to_string("Order ") .. require("allbinary_java").to_string(self.orderHistory:getStatus())) .. require("allbinary_java").to_string(" Attempt")
+            local adminEmailTextBody = require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Order attempt: ") .. require("allbinary_java").to_string(self.orderHistory:getId())) .. require("allbinary_java").to_string(" Preprocessing by: ")) .. require("allbinary_java").to_string(self.user:getUserName())
             local adminBasicEmailInfo = AdminEmailInfo.new(adminEmailSubject, adminEmailTextBody)
             local storeAdminBasicEmailInfo = StoreEmailInfo.new(self.storeFrontInterface, adminEmailSubject, adminEmailTextBody)
             local storeAdminEmailInfo = EmailInfo.new(storeAdminBasicEmailInfo)
@@ -138,8 +138,8 @@ function OrderStatusEmail:notifyUser()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().EMAILLOGGING) then
                 self.logUtil:putF("Email User", self, "notifyUser()")
             end
-            local subject = "Order " .. tostring(self.orderHistory:getStatus()) .. " Attempt"
-            local textBody = "Order attempt: " .. tostring(self.orderHistory:getId()) .. " Preprocessing by: " .. tostring(self.user:getUserName())
+            local subject = require("allbinary_java").to_string(require("allbinary_java").to_string("Order ") .. require("allbinary_java").to_string(self.orderHistory:getStatus())) .. require("allbinary_java").to_string(" Attempt")
+            local textBody = require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Order attempt: ") .. require("allbinary_java").to_string(self.orderHistory:getId())) .. require("allbinary_java").to_string(" Preprocessing by: ")) .. require("allbinary_java").to_string(self.user:getUserName())
             local basicEmailInfo = StoreEmailInfo.new(self.storeFrontInterface, subject, textBody)
             local emailInfo = EmailInfo.new(basicEmailInfo)
             local userEmailEventNameData = UserEmailEventNameData.getInstance(self.orderHistory:getStatus())

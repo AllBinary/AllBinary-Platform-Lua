@@ -28,10 +28,10 @@ local function java_real(class)
     return class
 end
 
--- local InputStream = require("java.io.InputStream")
--- local Manager = require("javax.microedition.media.Manager")
--- local MediaException = require("javax.microedition.media.MediaException")
--- local Player = require("javax.microedition.media.Player")
+local InputStream = java_lazy("java.io.InputStream")
+local Manager = java_lazy("javax.microedition.media.Manager")
+local MediaException = java_lazy("javax.microedition.media.MediaException")
+local Player = java_lazy("javax.microedition.media.Player")
 local MIDPUtil = java_lazy("org.allbinary.MIDPUtil")
 local TsUtil = java_lazy("org.allbinary.TsUtil")
 local AudioContentTypeDataFactory = java_lazy("org.allbinary.audio.AudioContentTypeDataFactory")
@@ -115,7 +115,7 @@ end
 -- throws Exception
 function AllBinaryMediaManager.createPlayer(resource)
         if Features.getInstance():isFeature(GameFeatureFactory.getInstance().SOUND) then
-            if TsUtil.getInstance():compareTo(resource, Manager.TONE_DEVICE_LOCATOR) == 0 then
+            if rawequal(TsUtil.getInstance():compareTo(resource, Manager.TONE_DEVICE_LOCATOR), 0) then
                 return Manager.createPlayer(resource)
             else
                 local inputStream = ResourceUtil.getInstance():getResourceAsStream(resource)

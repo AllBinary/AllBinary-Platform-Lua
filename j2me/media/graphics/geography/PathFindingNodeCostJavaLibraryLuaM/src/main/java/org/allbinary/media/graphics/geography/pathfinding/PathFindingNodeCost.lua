@@ -173,10 +173,10 @@ function PathFindingNodeCost._jinit(self, parent, geographicMapCellPosition, pat
     PathFindingNodeCost._init_fields(self)
         -- super(...) made self above
         self.pathFindingNodeCostInfoP = pathFindingNodeCostInfo
-        if self.geographicMapCellPosition == nil then
+        if rawequal(self.geographicMapCellPosition, nil) then
             error(require("java.lang.Exception").new("No GeographicMapCellPosition"), 0)
         end
-        if self:getPathFindingNodeCostInfo() == nil then
+        if rawequal(self:getPathFindingNodeCostInfo(), nil) then
             error(require("java.lang.Exception").new("No PathFindingNodeCostInfo"), 0)
         end
     return self
@@ -215,7 +215,7 @@ function PathFindingNodeCost:toString()
         stringBuffer:append(" Path: ")
         stringBuffer:append(tostring(self.geographicMapCellPosition))
         local pathFindingNode = self.parent
-        while pathFindingNode ~= nil do
+        while not rawequal(pathFindingNode, nil) do
             stringBuffer:append(tostring(pathFindingNode.geographicMapCellPosition))
             stringBuffer:append(self.commonSeps.SPACE)
             pathFindingNode = pathFindingNode.parent

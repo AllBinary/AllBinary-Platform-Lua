@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
@@ -81,7 +81,7 @@ function CloudStreamUtil:getFile(file)
         local available = inputStream:available()
         if available > 0 then
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("Cloud File Bytes: " .. tostring(available), self, "processRequest()")
+                self.logUtil:putF(require("allbinary_java").to_string("Cloud File Bytes: ") .. require("allbinary_java").to_string(available), self, "processRequest()")
             end
         end
         return inputStream
@@ -94,14 +94,14 @@ function CloudStreamUtil:getFileAnyWhere(file)
         local available = inputStream:available()
         if available > 0 then
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("Local File Bytes: " .. tostring(available), self, "processRequest()")
+                self.logUtil:putF(require("allbinary_java").to_string("Local File Bytes: ") .. require("allbinary_java").to_string(available), self, "processRequest()")
             end
         else
             inputStream = AbFileInputStream.createFromAbFile(file)
             available = inputStream:available()
             if available > 0 then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEWERROR) then
-                    self.logUtil:putF("Cloud File Bytes: " .. tostring(available), self, "processRequest()")
+                    self.logUtil:putF(require("allbinary_java").to_string("Cloud File Bytes: ") .. require("allbinary_java").to_string(available), self, "processRequest()")
                 end
             end
         end
@@ -115,7 +115,7 @@ function CloudStreamUtil:getFileLocal(file)
         local available = inputStream:available()
         if available > 0 then
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("Local File Bytes: " .. tostring(available), self, "processRequest()")
+                self.logUtil:putF(require("allbinary_java").to_string("Local File Bytes: ") .. require("allbinary_java").to_string(available), self, "processRequest()")
             end
         end
         return inputStream

@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local EGLConfig = require("javax.microedition.khronos.egl.EGLConfig")
--- local GL10 = require("javax.microedition.khronos.opengles.GL10")
+local EGLConfig = java_lazy("javax.microedition.khronos.egl.EGLConfig")
+local GL10 = java_lazy("javax.microedition.khronos.opengles.GL10")
 
 local function java_idiv(a, b)
     local q = a / b

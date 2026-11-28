@@ -89,7 +89,7 @@ end
 
 
 function BasicLayerProcessor:add(layerInterface)
-        if not self.list:contains(layerInterface) then
+        if not (self.list:contains(layerInterface)) then
             self.list:add(layerInterface)
         end
 end

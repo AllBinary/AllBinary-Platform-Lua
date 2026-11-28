@@ -69,7 +69,7 @@ end
 
 
 function LastFetchHighScoresFactory.getInstance()
-        if LastFetchHighScoresFactory.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(LastFetchHighScoresFactory.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             LastFetchHighScoresFactory.instance_f = LastFetchHighScoresFactory.new()
         end
         return LastFetchHighScoresFactory.instance_f

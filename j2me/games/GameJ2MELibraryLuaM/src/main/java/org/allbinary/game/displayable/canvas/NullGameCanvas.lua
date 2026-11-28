@@ -28,9 +28,9 @@ local function java_real(class)
     return class
 end
 
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local NullCommandListener = require("javax.microedition.lcdui.NullCommandListener")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local NullCommandListener = java_lazy("javax.microedition.lcdui.NullCommandListener")
 local BasicBuildGameInitializerFactory = java_lazy("org.allbinary.game.init.BasicBuildGameInitializerFactory")
 local AllBinaryGameLayerManager = java_lazy("org.allbinary.game.layer.AllBinaryGameLayerManager")
 local NoHighScoresFactory = java_lazy("org.allbinary.game.score.NoHighScoresFactory")
@@ -184,7 +184,7 @@ end
 
 
 function NullGameCanvas.getInstance()
-        if NullGameCanvas.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(NullGameCanvas.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             NullGameCanvas.instance_f = NullGameCanvas.createNull()
         end
         return NullGameCanvas.instance_f

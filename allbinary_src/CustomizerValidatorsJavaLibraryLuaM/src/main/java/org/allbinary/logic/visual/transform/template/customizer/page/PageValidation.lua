@@ -203,11 +203,11 @@ function PageValidation:isValid()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                 self.logUtil:putF("PageValidation", self, self.commonStrings.IS_VALID)
             end
-            if not self.title:isValid() then
+            if not (self.title:isValid()) then
                 valid = false
             end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("PageValidation: " .. tostring(valid), self, self.commonStrings.IS_VALID)
+                self.logUtil:putF(require("allbinary_java").to_string("PageValidation: ") .. require("allbinary_java").to_string(valid), self, self.commonStrings.IS_VALID)
             end
             do return "__jreturn", valid end
         end)
@@ -227,7 +227,7 @@ java_overload(PageValidation, "isValid", 0)
 function PageValidation:validationInfo()
         local try_ok, try_error, try_value = pcall(function()
             local stringBuffer = StringMaker.new()
-            if not self.title:isValid() then
+            if not (self.title:isValid()) then
                 stringBuffer:append(self.title:validationInfo())
             end
             do return "__jreturn", tostring(stringBuffer) end

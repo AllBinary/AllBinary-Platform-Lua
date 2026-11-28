@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Command = require("javax.microedition.lcdui.Command")
+local Command = java_lazy("javax.microedition.lcdui.Command")
 local ResourceUtil = java_lazy("org.allbinary.data.resource.ResourceUtil")
 local TsUtil = java_lazy("org.allbinary.TsUtil")
 local CommandUriAction = java_lazy("org.allbinary.content.CommandUriAction")

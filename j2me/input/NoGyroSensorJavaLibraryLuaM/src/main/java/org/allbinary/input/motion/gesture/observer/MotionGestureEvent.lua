@@ -136,7 +136,7 @@ setmetatable(MotionGestureEvent, {__index = AllBinaryEventObject})
 
 function MotionGestureEvent:_init_fields()
     self.motionGesture = TouchMotionGestureFactory.getInstance().NO_MOTION
-    if self.id == nil then self.id = nil end
+    if self.id == nil then self.id = 0 end
     self.previousPoint = PointFactory.getInstance().ZERO_ZERO
     self.currentPoint = PointFactory.getInstance().ZERO_ZERO
     self.commonLabels = CommonLabels.getInstance()

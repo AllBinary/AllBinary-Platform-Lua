@@ -191,9 +191,9 @@ java_overload(PaymentProcessTag, "process", 0)
 -- throws JspTagException
 function PaymentProcessTag:doStartTag()
         local try_ok, try_error, try_value = pcall(function()
-            if self:getCommand():compareTo(GLOBALS2.AUTHORIZEORDEREVALBODYONERROR) == 0 or self:getCommand():compareTo(GLOBALS2.AUTHORIZEORDERANDEVALBODY) == 0 or self:getCommand():compareTo(GLOBALS2.AUTHORIZEFORMEVALBODYONERROR) == 0 then
-                self.pageContext:getOut():print(tostring(self:process()) .. "<br />")
-                if self:getCommand():compareTo(GLOBALS2.AUTHORIZEORDEREVALBODYONERROR) == 0 then
+            if rawequal(self:getCommand():compareTo(GLOBALS2.AUTHORIZEORDEREVALBODYONERROR), 0) or rawequal(self:getCommand():compareTo(GLOBALS2.AUTHORIZEORDERANDEVALBODY), 0) or rawequal(self:getCommand():compareTo(GLOBALS2.AUTHORIZEFORMEVALBODYONERROR), 0) then
+                self.pageContext:getOut():print(require("allbinary_java").to_string(self:process()) .. require("allbinary_java").to_string("<br />"))
+                if rawequal(self:getCommand():compareTo(GLOBALS2.AUTHORIZEORDEREVALBODYONERROR), 0) then
                     do return "__jreturn", self.SKIP_BODY end
                 else
                     do return "__jreturn", self.EVAL_BODY_INCLUDE end

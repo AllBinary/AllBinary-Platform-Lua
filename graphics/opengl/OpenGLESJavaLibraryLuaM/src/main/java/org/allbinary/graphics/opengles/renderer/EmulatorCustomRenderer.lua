@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local EGLConfig = require("javax.microedition.khronos.egl.EGLConfig")
--- local GL10 = require("javax.microedition.khronos.opengles.GL10")
+local EGLConfig = java_lazy("javax.microedition.khronos.egl.EGLConfig")
+local GL10 = java_lazy("javax.microedition.khronos.opengles.GL10")
 local InitEmulatorFactory = java_lazy("org.allbinary.emulator.InitEmulatorFactory")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
@@ -82,12 +82,12 @@ end
 function EmulatorCustomRenderer:onSurfaceCreated(gl, eglConfig)
         self.logUtil:putF(self.commonStrings.START, self, self.renderStrings.ON_SURFACE_CREATED)
         local initEmulatorFactory = InitEmulatorFactory.getInstance()
-        if not initEmulatorFactory:isInitEmulator() then
+        if not (initEmulatorFactory:isInitEmulator()) then
             local try_ok, try_error, try_value = pcall(function()
                 local WAIT_FOR_EMULATOR = "Waiting on Emulator Initialization"
-                while not initEmulatorFactory:isInitEmulator() do
+                while not (initEmulatorFactory:isInitEmulator()) do
                     PreLogUtil.put(WAIT_FOR_EMULATOR, self, self.renderStrings.ON_SURFACE_CREATED)
-                    java_sleep(180)
+                    require("java.lang.Thread").sleep(180)
                 end
             end)
             if not try_ok then

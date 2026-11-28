@@ -75,7 +75,7 @@ end
 
 
 function OpenGLConfiguration.getInstance()
-        if OpenGLConfiguration.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(OpenGLConfiguration.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             OpenGLConfiguration.instance_f = OpenGLConfiguration.new()
         end
         return OpenGLConfiguration.instance_f
@@ -103,23 +103,23 @@ function OpenGLConfiguration:init()
         local features = Features.getInstance()
         if ChangedGameFeatureListener.getInstance():isChangedFeature(MainFeatureFactory.getInstance().STATIC) then
             if self:isOpenGL() then
-                if not features:isDefault(OpenGLFeatureFactory.getInstance().OPENGL) then
+                if not (features:isDefault(OpenGLFeatureFactory.getInstance().OPENGL)) then
                     self.logUtil:putF("Turning on OpenGL", self, self.commonStrings.INIT)
                     features:addDefault(OpenGLFeatureFactory.getInstance().OPENGL)
-                    self.logUtil:putF("Using OpenGL Type Feature: " .. tostring(self:getType()), self, self.commonStrings.INIT)
+                    self.logUtil:putF(require("allbinary_java").to_string("Using OpenGL Type Feature: ") .. require("allbinary_java").to_string(self:getType()), self, self.commonStrings.INIT)
                     features:addDefault(self:getType())
-                    self.logUtil:putF("Using OpenGL ImageColor Feature: " .. tostring(self:getImageColor()), self, self.commonStrings.INIT)
+                    self.logUtil:putF(require("allbinary_java").to_string("Using OpenGL ImageColor Feature: ") .. require("allbinary_java").to_string(self:getImageColor()), self, self.commonStrings.INIT)
                     features:addDefault(self:getImageColor())
-                    self.logUtil:putF("Using OpenGL Color Feature: " .. tostring(self:getColor()), self, self.commonStrings.INIT)
+                    self.logUtil:putF(require("allbinary_java").to_string("Using OpenGL Color Feature: ") .. require("allbinary_java").to_string(self:getColor()), self, self.commonStrings.INIT)
                     features:addDefault(self:getColor())
-                    self.logUtil:putF("Using OpenGL Version Selector Feature: " .. tostring(self:getVersionSelector()), self, self.commonStrings.INIT)
+                    self.logUtil:putF(require("allbinary_java").to_string("Using OpenGL Version Selector Feature: ") .. require("allbinary_java").to_string(self:getVersionSelector()), self, self.commonStrings.INIT)
                     features:addDefault(self:getVersionSelector())
                 end
             else
                 self.logUtil:putF("OpenGL is Off", self, self.commonStrings.INIT)
             end
         else
-            if self:isOpenGL() and not features:isDefault(OpenGLFeatureFactory.getInstance().OPENGL) then
+            if self:isOpenGL() and not (features:isDefault(OpenGLFeatureFactory.getInstance().OPENGL)) then
                 PreLogUtil.put("OpenGL is set but not Enabled since Statics where not cleared (Reboot or Complete exit is Required)", self, self.commonStrings.INIT)
             end
         end
@@ -132,9 +132,9 @@ function OpenGLConfiguration:update(gameFeature, colorLocked)
         local features = Features.getInstance()
         local openGLFeatureFactory = OpenGLFeatureFactory.getInstance()
         local modified = false
-        if gameFeature == openGLFeatureFactory.OPENGL then
+        if rawequal(gameFeature, openGLFeatureFactory.OPENGL) then
             if features:isFeature(gameFeature) then
-                if not self:isOpenGL() then
+                if not (self:isOpenGL()) then
                     self:setOpenGL(true)
                     modified = true
                 end
@@ -145,24 +145,24 @@ function OpenGLConfiguration:update(gameFeature, colorLocked)
                 end
             end
         end
-        if gameFeature == openGLFeatureFactory.OPENGL_AND_GAME_HAVE_DIFFERENT_THREADS or gameFeature == openGLFeatureFactory.OPENGL_AS_GAME_THREAD then
+        if rawequal(gameFeature, openGLFeatureFactory.OPENGL_AND_GAME_HAVE_DIFFERENT_THREADS) or rawequal(gameFeature, openGLFeatureFactory.OPENGL_AS_GAME_THREAD) then
             if features:isFeature(gameFeature) then
-                if gameFeature ~= self:getType() then
+                if not rawequal(gameFeature, self:getType()) then
                     self:setType(gameFeature)
                     modified = true
                 end
             end
         end
-        if gameFeature == openGLFeatureFactory.IMAGE_COLOR_DEPTH_4444 or gameFeature == openGLFeatureFactory.IMAGE_COLOR_DEPTH_565 or gameFeature == openGLFeatureFactory.IMAGE_COLOR_DEPTH_8888 then
+        if rawequal(gameFeature, openGLFeatureFactory.IMAGE_COLOR_DEPTH_4444) or rawequal(gameFeature, openGLFeatureFactory.IMAGE_COLOR_DEPTH_565) or rawequal(gameFeature, openGLFeatureFactory.IMAGE_COLOR_DEPTH_8888) then
             if features:isFeature(gameFeature) then
-                if self:getImageColor() ~= gameFeature then
+                if not rawequal(self:getImageColor(), gameFeature) then
                     self:setImageColor(gameFeature)
                     if colorLocked then
-                        if gameFeature == openGLFeatureFactory.IMAGE_COLOR_DEPTH_4444 then
+                        if rawequal(gameFeature, openGLFeatureFactory.IMAGE_COLOR_DEPTH_4444) then
                             self:setColor(openGLFeatureFactory.OPENGL_COLOR_DEPTH_4444)
-                        elseif gameFeature == openGLFeatureFactory.IMAGE_COLOR_DEPTH_565 then
+                        elseif rawequal(gameFeature, openGLFeatureFactory.IMAGE_COLOR_DEPTH_565) then
                             self:setColor(openGLFeatureFactory.OPENGL_COLOR_DEPTH_565)
-                        elseif gameFeature == openGLFeatureFactory.IMAGE_COLOR_DEPTH_8888 then
+                        elseif rawequal(gameFeature, openGLFeatureFactory.IMAGE_COLOR_DEPTH_8888) then
                             self:setColor(openGLFeatureFactory.OPENGL_COLOR_DEPTH_8888)
                         end
                     end
@@ -170,15 +170,15 @@ function OpenGLConfiguration:update(gameFeature, colorLocked)
                 end
             end
         end
-        if gameFeature == openGLFeatureFactory.OPENGL_COLOR_DEPTH_4444 or gameFeature == openGLFeatureFactory.OPENGL_COLOR_DEPTH_565 or gameFeature == openGLFeatureFactory.OPENGL_COLOR_DEPTH_8888 then
+        if rawequal(gameFeature, openGLFeatureFactory.OPENGL_COLOR_DEPTH_4444) or rawequal(gameFeature, openGLFeatureFactory.OPENGL_COLOR_DEPTH_565) or rawequal(gameFeature, openGLFeatureFactory.OPENGL_COLOR_DEPTH_8888) then
             if features:isFeature(gameFeature) then
-                if self:getColor() ~= gameFeature then
+                if not rawequal(self:getColor(), gameFeature) then
                     self:setColor(gameFeature)
                     modified = true
                 end
             end
         end
-        if gameFeature == openGLFeatureFactory.OPENGL_AUTO_SELECT or gameFeature == openGLFeatureFactory.OPENGL_MINIMUM then
+        if rawequal(gameFeature, openGLFeatureFactory.OPENGL_AUTO_SELECT) or rawequal(gameFeature, openGLFeatureFactory.OPENGL_MINIMUM) then
             if features:isFeature(gameFeature) then
                 self:setVersionSelector(gameFeature)
             end

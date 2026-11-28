@@ -157,7 +157,7 @@ end
 function WeaponProperties._jinit(self, reloadTime, targetingTime, speed, damage, dissipation)
     java_super_init(SimpleWeaponProperties, self)
     WeaponProperties._init_fields(self)
-        if speed < self.MAX and speed ~= 0 and not WeaponProperties.messageSent then
+        if speed < self.MAX and not rawequal(speed, 0) and not (WeaponProperties.messageSent) then
             local MESSAGE = "Danger Danger Danger: Speed probably to slow if using 1 degree calculations as velocity for a single axis could be below 1024: "
             local commonStrings = CommonStrings.getInstance()
             PreLogUtil.put(tostring(StringMaker.new():append(MESSAGE):appendlong(speed)), self, commonStrings.CONSTRUCTOR)
@@ -168,7 +168,7 @@ function WeaponProperties._jinit(self, reloadTime, targetingTime, speed, damage,
         self:setDamage(damage)
         self:setDissipation(dissipation)
         self:setSpeed(BasicDecimal.new(speed))
-        if dissipation ~= self.ZERO then
+        if not rawequal(dissipation, self.ZERO) then
             local unscaledDamage = self.speed:getUnscaled() * damage
             local scaledDissipation = dissipation * self.speed:getScaledFactorValue()
             local value = (java_idiv(unscaledDamage, scaledDissipation))

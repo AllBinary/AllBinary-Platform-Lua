@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Player = require("javax.microedition.media.Player")
+local Player = java_lazy("javax.microedition.media.Player")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 
 local function java_idiv(a, b)
@@ -78,15 +78,15 @@ end
 
 
 function PlayerStateUtil:convert(state)
-        if state == Player.UNREALIZED then
+        if rawequal(state, Player.UNREALIZED) then
             return self.UNREALIZED
-        elseif state == Player.REALIZED then
+        elseif rawequal(state, Player.REALIZED) then
             return self.REALIZED
-        elseif state == Player.PREFETCHED then
+        elseif rawequal(state, Player.PREFETCHED) then
             return self.PREFETCHED
-        elseif state == Player.STARTED then
+        elseif rawequal(state, Player.STARTED) then
             return self.STARTED
-        elseif state == Player.CLOSED then
+        elseif rawequal(state, Player.CLOSED) then
             return self.CLOSED
         end
         return self.commonStrings.UNKNOWN

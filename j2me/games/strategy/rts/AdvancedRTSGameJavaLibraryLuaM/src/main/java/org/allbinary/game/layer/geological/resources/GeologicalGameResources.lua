@@ -148,7 +148,7 @@ setmetatable(GeologicalGameResources, {__index = BasicGameResources})
 
 
 function GeologicalGameResources.getInstance()
-        if GeologicalGameResources.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(GeologicalGameResources.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             GeologicalGameResources.instance_f = GeologicalGameResources.new()
         end
         return GeologicalGameResources.instance_f

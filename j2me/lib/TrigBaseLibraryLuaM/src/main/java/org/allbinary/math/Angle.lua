@@ -55,7 +55,7 @@ Angle.className = "Angle"
 Angle.javaClassName = "org.allbinary.math.Angle"
 
 function Angle:_init_fields()
-    if self.value == nil then self.value = nil end
+    if self.value == nil then self.value = 0 end
 end
 
 

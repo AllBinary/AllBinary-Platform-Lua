@@ -84,7 +84,7 @@ end
 
 function BasicColorCacheFactory:getAndOrCreate(integer)
         local basicColor = self.hashtable:get(integer)
-        if basicColor == nil then
+        if rawequal(basicColor, nil) then
             basicColor = BasicColorFactory.getInstance():createInstance(math.tointeger(integer // 1))
             self.hashtable:put(integer, basicColor)
         end

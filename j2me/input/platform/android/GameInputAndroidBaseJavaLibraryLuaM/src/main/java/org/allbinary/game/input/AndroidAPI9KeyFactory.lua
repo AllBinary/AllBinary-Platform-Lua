@@ -119,7 +119,7 @@ setmetatable(AndroidAPI9KeyFactory, {__index = AndroidKeyFactory})
 
 
 function AndroidAPI9KeyFactory.getInstance()
-        if AndroidAPI9KeyFactory.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(AndroidAPI9KeyFactory.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             AndroidAPI9KeyFactory.instance_f = AndroidAPI9KeyFactory.new()
         end
         return AndroidAPI9KeyFactory.instance_f

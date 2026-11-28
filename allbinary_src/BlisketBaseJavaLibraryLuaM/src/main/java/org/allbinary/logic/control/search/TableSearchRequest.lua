@@ -121,7 +121,7 @@ end
 
 -- throws Exception
 function TableSearchRequest:getXslFile()
-        local path = tostring(URLGLOBALS.getMainPath() + FREEBLISKET_PATH_GLOBALS.getInstance().XSLPATH) .. self.xslFile
+        local path = require("allbinary_java").to_string(URLGLOBALS.getMainPath() + FREEBLISKET_PATH_GLOBALS.getInstance().XSLPATH) .. require("allbinary_java").to_string(self.xslFile)
         return path
 end
 

@@ -177,10 +177,10 @@ end
 function CollidableVehicleBehavior:collide(ownerLayer, collidableInterfaceCompositeInterface)
         local collisionTypeFactory = CollisionTypeFactory.getInstance()
         local collisionType = collidableInterfaceCompositeInterface:getCollidableInferface():getCollisionTypeWith(ownerLayer)
-        if collisionType == collisionTypeFactory.PICKUP then
+        if rawequal(collisionType, collisionTypeFactory.PICKUP) then
             local collidableDestroyableDamageableLayer = (ownerLayer)
             collidableDestroyableDamageableLayer:getPickupBehavior():doPickupLayer(collidableInterfaceCompositeInterface)
-        elseif collisionType == collisionTypeFactory.COLLISION then
+        elseif rawequal(collisionType, collisionTypeFactory.COLLISION) then
             java_super(CollidableDestroyableDamageableBehavior, "collide", 2)(self, ownerLayer, collidableInterfaceCompositeInterface)
         else
             self:collideVehicle(ownerLayer, collidableInterfaceCompositeInterface)
@@ -201,13 +201,13 @@ function CollidableVehicleBehavior:collideVehicle(ownerLayer, vehiclePropertiesC
         local vehicleProperties = vehiclePropertiesCompositeInterface:getVehicleProperties()
         local impactVelocityX = ownerVehicleProperties:getVelocityProperties():getVelocityXBasicDecimalP():getUnscaled() - vehicleProperties:getVelocityProperties():getVelocityXBasicDecimalP():getUnscaled()
         local impactVelocityY = ownerVehicleProperties:getVelocityProperties():getVelocityYBasicDecimalP():getUnscaled() - vehicleProperties:getVelocityProperties():getVelocityYBasicDecimalP():getUnscaled()
-        if impactVelocityX ~= 0 then
+        if not rawequal(impactVelocityX, 0) then
             self.halfImpactVelocityX = (((impactVelocityX) // (1 << (1))))
             ownerVehicleProperties:getVelocityProperties():getVelocityXBasicDecimalP():addlong(self.halfImpactVelocityX)
             vehicleProperties:getVelocityProperties():getVelocityXBasicDecimalP():addlong(self.halfImpactVelocityX)
         else
         end
-        if impactVelocityY ~= 0 then
+        if not rawequal(impactVelocityY, 0) then
             self.halfImpactVelocityY = (((impactVelocityY) // (1 << (1))))
             ownerVehicleProperties:getVelocityProperties():getVelocityYBasicDecimalP():addlong(self.halfImpactVelocityY)
             vehicleProperties:getVelocityProperties():getVelocityXBasicDecimalP():addlong(self.halfImpactVelocityY)

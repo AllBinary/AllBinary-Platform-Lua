@@ -182,19 +182,19 @@ function XmlRpcRemoteLicenseRegistrationClient:get(anyType, cryptInterface)
             stringBuffer:appendint(java_int(self:getServer()))
             stringBuffer:append(SEP)
             stringBuffer:append(server)
-            self.logUtil:putF(tostring(CommonLabels.getInstance().START_LABEL) .. tostring(stringBuffer), self, self.commonStrings.GET)
+            self.logUtil:putF(require("allbinary_java").to_string(CommonLabels.getInstance().START_LABEL) .. require("allbinary_java").to_string(tostring(stringBuffer)), self, self.commonStrings.GET)
             local param = BasicArrayListD.new()
             local serverUrl = self:getClientInfo():getLicenseServer(self:getServer())
             local index = serverUrl:lastIndexOf("/")
-            serverUrl = string.sub(serverUrl, (0) + 1, index + 1) .. self.PAGE
+            serverUrl = require("allbinary_java").to_string(string.sub(serverUrl, (0) + 1, index + 1)) .. require("allbinary_java").to_string(self.PAGE)
             local xmlRpcClient = XmlRpcClient.new(serverUrl)
             self:setClient(xmlRpcClient)
             xmlRpcClient:setBasicAuthentication(StringUtil.getInstance().EMPTY_STRING, StringUtil.getInstance().EMPTY_STRING)
             local hashtable = anyType
-            self.logUtil:putF(tostring(self.CLIENT_INFO) .. tostring(hashtable), self, self.commonStrings.GET)
+            self.logUtil:putF(require("allbinary_java").to_string(self.CLIENT_INFO) .. require("allbinary_java").to_string(tostring(hashtable)), self, self.commonStrings.GET)
             param:add(hashtable)
             local result = xmlRpcClient:executeWithCrypt(self:getRemoteMethod(), param, cryptInterface)
-            self.logUtil:putF(tostring(self.RESULT) .. tostring(result), self, self.commonStrings.GET)
+            self.logUtil:putF(require("allbinary_java").to_string(self.RESULT) .. require("allbinary_java").to_string(tostring(result)), self, self.commonStrings.GET)
             self.isOnline = true
             do return "__jreturn", result end
         end)
@@ -202,7 +202,7 @@ function XmlRpcRemoteLicenseRegistrationClient:get(anyType, cryptInterface)
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:putF(self.TRYING_OTHER_SERVERS + ExceptionUtil.getInstance():getStackTrace(e), self, self.commonStrings.GET)
-            if not tostring(e):startsWith(self.HOST_NOT_RESOLVED) then
+            if not (tostring(e):startsWith(self.HOST_NOT_RESOLVED)) then
                 return self:tryAnother(anyType)
             else
                 error(require("java.lang.Exception").new(self.HOST_NOT_RESOLVED_MSG), 0)

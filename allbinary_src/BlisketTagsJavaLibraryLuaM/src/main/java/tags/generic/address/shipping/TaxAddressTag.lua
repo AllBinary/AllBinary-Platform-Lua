@@ -175,21 +175,21 @@ end
 -- throws JspTagException
 function TaxAddressTag:doStartTag()
         local try_ok, try_error, try_value = pcall(function()
-            if self:getCommand() ~= nil then
-                if self:getCommand():compareTo(GLOBALS2.VIEW) == 0 then
+            if not rawequal(self:getCommand(), nil) then
+                if rawequal(self:getCommand():compareTo(GLOBALS2.VIEW), 0) then
                     self:setName("Basic Shipping Address View")
                     self:setObjectFile("views.generic.address.shipping.TaxValidationView")
-                elseif self:getCommand():compareTo(GLOBALS2.NEW) == 0 then
+                elseif rawequal(self:getCommand():compareTo(GLOBALS2.NEW), 0) then
                     self:setName("Basic Shipping Address View")
                     self:setObjectFile("views.generic.address.shipping.NewValidationView")
-                elseif self:getCommand():compareTo(self.commonStrings.INSERT) == 0 then
+                elseif rawequal(self:getCommand():compareTo(self.commonStrings.INSERT), 0) then
                     self:setName("Basic Shipping Address View")
                     self:setObjectFile("views.generic.address.shipping.AddTaxValidationView")
-                elseif self:getCommand():compareTo(self.commonStrings.UPDATE) == 0 then
+                elseif rawequal(self:getCommand():compareTo(self.commonStrings.UPDATE), 0) then
                     self:setName("Basic Shipping Address View")
                     self:setObjectFile("views.generic.address.shipping.UpdateTaxValidationView")
                 else
-                    error(require("java.lang.Exception").new("No Such View Command: " .. tostring(self:getCommand())), 0)
+                    error(require("java.lang.Exception").new(require("allbinary_java").to_string("No Such View Command: ") .. require("allbinary_java").to_string(self:getCommand())), 0)
                 end
                 do return "__jreturn", java_super(StoreValidationTransformTag, "doStartTag", 0)(self) end
             end

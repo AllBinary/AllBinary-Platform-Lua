@@ -16,7 +16,7 @@ local function java_real(class)
     return class
 end
 
--- local GL = require("javax.microedition.khronos.opengles.GL")
+local GL = java_lazy("javax.microedition.khronos.opengles.GL")
 
 local function java_idiv(a, b)
     local q = a / b

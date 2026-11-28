@@ -173,7 +173,7 @@ J2MEGameKey.__tostring = function(self) return self:toString() end
 
 function J2MEGameKey.getString(keyCode)
         local input = InputFactory.getInstance():getInstanceById(keyCode)
-        if input ~= nil then
+        if not rawequal(input, nil) then
             return input:getName()
         else
             return StringUtil.getInstance().EMPTY_STRING

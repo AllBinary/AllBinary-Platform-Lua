@@ -182,7 +182,7 @@ function BasicArrayListPool:releaseUsedBackToPool(usedList)
             local index = usedList:size()
             while (function() index = index - 1 return index end)() >= 0 do
             local list = usedList.objectArray[index + 1]
-            if list:size() == 0 then
+            if rawequal(list:size(), 0) then
                 usedList:removeAt(index)
                 self:add(list)
             end

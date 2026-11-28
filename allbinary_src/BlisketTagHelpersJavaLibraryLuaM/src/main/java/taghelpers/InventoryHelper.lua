@@ -165,7 +165,7 @@ function InventoryHelper._jinit(self, propertiesHashMap, pageContext)
         self.request = pageContext:getRequest()
         local storeName = propertiesHashMap:get(StoreFrontData.getInstance().NAME)
         local xslFile = propertiesHashMap:get(TransformInfoData.getInstance().TEMPLATEFILENAME)
-        if storeName ~= nil then
+        if not rawequal(storeName, nil) then
             local storeFrontInterface = StoreFrontFactory.getInstance(storeName)
             local contentType = AcceptableResponseGenerator.getInstance():get(self.request)
             local searchParams = SearchParams.new(self.request)
@@ -204,7 +204,7 @@ function InventoryHelper:viewSummary()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "viewSummary()", e)
             end
-            return error .. "<br>" .. "Exception: " .. tostring(e) .. "<br>"
+            return require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(error) .. require("allbinary_java").to_string("<br>")) .. require("allbinary_java").to_string("Exception: ")) .. require("allbinary_java").to_string(e)) .. require("allbinary_java").to_string("<br>")
         end
         if try_ok and try_error == "__jreturn" then return try_value end
 end
@@ -215,7 +215,7 @@ function InventoryHelper:search()
         local try_ok, try_error, try_value = pcall(function()
             local stringUtil = StringUtil.getInstance()
             local keywords = self.searchRequest:getParams():get():get(self.basicItemData.KEYWORDS)
-            if keywords == nil or ((keywords < stringUtil.EMPTY_STRING and -1) or (keywords > stringUtil.EMPTY_STRING and 1) or 0) == 0 then
+            if rawequal(keywords, nil) or rawequal(((keywords < stringUtil.EMPTY_STRING and -1) or (keywords > stringUtil.EMPTY_STRING and 1) or 0), 0) then
                 do return "__jreturn", "Please enter a keyword in the search field above the Search button." end
             end
             local inventoryViewSearchInterface = InventoryViewFactory.getInstance(self.searchRequest)
@@ -232,7 +232,7 @@ function InventoryHelper:search()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "searchSingleDynamicPage()", e)
             end
-            return error .. "<br>" .. "Exception: " .. tostring(e) .. "<br>"
+            return require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(error) .. require("allbinary_java").to_string("<br>")) .. require("allbinary_java").to_string("Exception: ")) .. require("allbinary_java").to_string(e)) .. require("allbinary_java").to_string("<br>")
         end
         if try_ok and try_error == "__jreturn" then return try_value end
 end

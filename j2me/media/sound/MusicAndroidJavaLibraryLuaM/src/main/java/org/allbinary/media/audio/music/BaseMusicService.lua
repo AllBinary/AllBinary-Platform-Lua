@@ -179,7 +179,7 @@ setmetatable(BaseMusicService, {__index = Service})
             local try_ok, try_error, try_value = pcall(function()
                 while self.player:isPlaying() do
                     logUtil:putF(self.baseMusicService.WAITING_FOR_MUSIC_TO_END, self, commonStateStrings.ON_START_COMMAND)
-                    java_sleep(1200)
+                    require("java.lang.Thread").sleep(1200)
                 end
                 self.baseMusicService:onStartCommandIntent(self.intent)
             end)
@@ -230,7 +230,7 @@ java_overload(BaseMusicService, "onCreate", 0)
 
 function BaseMusicService:onDestroy()
         self.logUtil:putF(self.commonStrings.START, self, self.commonStateStrings.DESTROY)
-        if self.player ~= NullAndroidCanvas.NULL_MEDIA_PLAYER then
+        if not rawequal(self.player, NullAndroidCanvas.NULL_MEDIA_PLAYER) then
             self.logUtil:putF(self.commonStrings.START, self, self.commonStateStrings.PAUSE)
             self.player:stop()
             self.player:reset()
@@ -241,7 +241,7 @@ java_overload(BaseMusicService, "onDestroy", 0)
 
 
 function BaseMusicService:pause()
-        if self.player ~= NullAndroidCanvas.NULL_MEDIA_PLAYER then
+        if not rawequal(self.player, NullAndroidCanvas.NULL_MEDIA_PLAYER) then
             self.logUtil:putF(self.commonStrings.START, self, self.commonStateStrings.PAUSE)
             self.player:pause()
         end
@@ -250,7 +250,7 @@ java_overload(BaseMusicService, "pause", 0)
 
 
 function BaseMusicService:resume()
-        if self.player ~= NullAndroidCanvas.NULL_MEDIA_PLAYER and not self.player:isPlaying() then
+        if not rawequal(self.player, NullAndroidCanvas.NULL_MEDIA_PLAYER) and not (self.player:isPlaying()) then
             self.logUtil:putF(self.commonStrings.START, self, self.commonStateStrings.RESUME)
             self.player:start()
         end
@@ -284,13 +284,13 @@ java_overload(BaseMusicService, "onStartCommand", 3, function(java_a1, java_a2, 
 function BaseMusicService:onStartCommandIntent(intent)
         self.logUtil:putF(self.commonStrings.START, self, self.commonStateStrings.ON_START_COMMAND)
         local musicStrings = MusicStrings.getInstance()
-        if intent ~= nil then
+        if not rawequal(intent, nil) then
             local command = intent:getIntExtra(self.commonStateStrings.ON_START_COMMAND, -1)
             self.logUtil:putF(CommonLabels.getInstance().COMMAND_LABEL + command, self, self.commonStateStrings.ON_START_COMMAND)
-            if command == 1 then
+            if rawequal(command, 1) then
                 self:pause()
                 return
-            elseif command == 2 then
+            elseif rawequal(command, 2) then
                 self:resume()
                 return
             else
@@ -301,9 +301,9 @@ function BaseMusicService:onStartCommandIntent(intent)
         else
             error(require("java.lang.RuntimeException").new("Started service without intent"), 0)
         end
-        if self.songId ~= -1 then
+        if not rawequal(self.songId, -1) then
             collectgarbage()
-            if self.player ~= NullAndroidCanvas.NULL_MEDIA_PLAYER and self.player:isPlaying() then
+            if not rawequal(self.player, NullAndroidCanvas.NULL_MEDIA_PLAYER) and self.player:isPlaying() then
                 local player = self.player
                 self.logUtil:putF(self.ALREADY_PLAYING, self, self.commonStateStrings.ON_START_COMMAND)
                 local runnable = MusicRunnable.new(self, player, intent)

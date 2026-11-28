@@ -141,7 +141,7 @@ setmetatable(TestInputAutomationActionWorker, {__index = AbstractInputAutomation
 
 function TestInputAutomationActionWorker:_init_fields()
     self.logUtil = LogUtil.getInstance()
-    if self.sleep == nil then self.sleep = nil end
+    if self.sleep == nil then self.sleep = 0 end
 end
 
 
@@ -163,7 +163,7 @@ end
 
 -- throws Exception
 function TestInputAutomationActionWorker:processBetweenWorkers()
-        java_sleep(2000)
+        require("java.lang.Thread").sleep(2000)
 end
 java_overload(TestInputAutomationActionWorker, "processBetweenWorkers", 0)
 
@@ -179,7 +179,7 @@ function TestInputAutomationActionWorker:process()
             local inputTypeNameString = inputTypeNameArray[index + 1]
             local robot = hashtable:get(inputTypeNameString)
             if self.sleep > 0 then
-                java_sleep(self.sleep)
+                require("java.lang.Thread").sleep(self.sleep)
             end
         end
 end

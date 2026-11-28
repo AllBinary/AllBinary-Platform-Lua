@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local Layer = require("org.allbinary.layer.Layer")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend

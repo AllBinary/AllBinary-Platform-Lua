@@ -201,7 +201,7 @@ function SavedCaptureImagesWorker:run()
                 filePathStringBuffer:append(LongUtil.fillIn(tostring(frame)))
                 filePathStringBuffer:append(MediaDataFactory.getInstance().JPG:getExtension())
                 local filePath = tostring(filePathStringBuffer)
-                self.logUtil:putF("Loading Image File Path: " .. filePath, self, self.commonStrings.RUN)
+                self.logUtil:putF(require("allbinary_java").to_string("Loading Image File Path: ") .. require("allbinary_java").to_string(filePath), self, self.commonStrings.RUN)
                 local file = File.new(filePath)
                 if file:isFile() then
                     local bufferedImage = ImageIO.read(file)
@@ -210,7 +210,7 @@ function SavedCaptureImagesWorker:run()
                     local capturedImageEvent = CapturedImageWorkerResultsEvent.new(self, frame, bufferedImage)
                     self:fireEvent(capturedImageEvent)
                 else
-                    self.logUtil:putF("Could Not Load File: " .. filePath, self, self.commonStrings.RUN)
+                    self.logUtil:putF(require("allbinary_java").to_string("Could Not Load File: ") .. require("allbinary_java").to_string(filePath), self, self.commonStrings.RUN)
                 end
                 self.logUtil:putF(CommonLabels.getInstance().ELAPSED + timeHelper:getElapsedTNT(), self, self.commonStrings.RUN)
                 self:setRunning(false)
@@ -225,7 +225,7 @@ function SavedCaptureImagesWorker:run()
 end
 java_overload(SavedCaptureImagesWorker, "run", 0)
 
-SavedCaptureImagesWorker.index = nil
+SavedCaptureImagesWorker.index = 0
 
 return SavedCaptureImagesWorker
 

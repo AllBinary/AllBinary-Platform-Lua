@@ -229,7 +229,7 @@ function InventoryItemView:getFormData()
         local imageFileItemObject = self:getRequestHashMap():get(self.basicItemData.IMAGE)
         if HttpFileUploadUtil.getInstance():isValid(imageFileItemObject) then
             local fileItem = imageFileItemObject
-            if fileItem ~= nil and fileItem:getSize() > 1 then
+            if not rawequal(fileItem, nil) and fileItem:getSize() > 1 then
                 self.imageFileName = HttpRequestUtil.getInstance():generateFileName(fileItem:getName())
                 local pathData = AbPathData.getInstance()
                 local pathUtil = PathUtil.getInstance()
@@ -295,7 +295,7 @@ function InventoryItemView:processImageFiles()
         local size = (fieldNameArray.n or #fieldNameArray)
         for index = 0, size - 1 do
             local fieldName = fieldNameArray[index + 1]
-            if ((fieldName < self.basicItemData.IMAGE and -1) or (fieldName > self.basicItemData.IMAGE and 1) or 0) == 0 then
+            if rawequal(((fieldName < self.basicItemData.IMAGE and -1) or (fieldName > self.basicItemData.IMAGE and 1) or 0), 0) then
                 local storeFrontInterface = StoreFrontFactory.getInstance(self:getWeblisketSession():getStoreName())
                 local inventoryUploadMediaUtil = InventoryUploadMediaUtil.new(storeFrontInterface, self.itemInterface)
                 local fileItem = self:getRequestHashMap():get(self.basicItemData.IMAGE)

@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local Processor = java_lazy("org.allbinary.canvas.Processor")
 local Rectangle = java_lazy("org.allbinary.graphics.Rectangle")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
@@ -176,7 +176,7 @@ ScrollCurrentSelectionForm.java_implements = " UpdateMyFontInterface "
 ScrollCurrentSelectionForm.java_interfaces = function() return {UpdateMyFontInterface} end
 
 function ScrollCurrentSelectionForm:_init_fields()
-    if self.moveForSmallScreen == nil then self.moveForSmallScreen = nil end
+    if self.moveForSmallScreen == nil then self.moveForSmallScreen = false end
     self.updateMyFontProcessor = UpdateMyFontProcessor.new(self)
     self.myFontProcessor = self.updateMyFontProcessor
     self.processor = Processor.getInstance()
@@ -206,16 +206,16 @@ end
 function ScrollCurrentSelectionForm:init(rectangle, formType)
         java_super(ScrollSelectionForm, "init", 2)(self, rectangle, formType)
         local formTypeFactory = FormTypeFactory.getInstance()
-        if formType == formTypeFactory.TEMP_HORIZONTAL_FORM then
+        if rawequal(formType, formTypeFactory.TEMP_HORIZONTAL_FORM) then
             self.processor = TempHorizontalFormProcessor.new(self)
             self.preItemIndexDx = TempHorizontalItemIndexDx.new(self)
-        elseif formType == formTypeFactory.HORIZONTAL_FORM then
+        elseif rawequal(formType, formTypeFactory.HORIZONTAL_FORM) then
             self.processor = HorizontalFormProcessor.new(self)
             self.preItemIndexDx = HorizontalItemIndexDx.new(self)
-        elseif formType == formTypeFactory.VERTICAL_CENTER_FORM then
+        elseif rawequal(formType, formTypeFactory.VERTICAL_CENTER_FORM) then
             self.processor = VerticalFormProcessor.new(self)
             self.preItemIndexDx = VerticalItemIndexDx.new(self)
-        elseif formType == formTypeFactory.NULL_FORM_TYPE then
+        elseif rawequal(formType, formTypeFactory.NULL_FORM_TYPE) then
         else
             self.logUtil:putF(formTypeFactory.UNK, self, self.commonStrings.INIT)
         end
@@ -332,17 +332,17 @@ function ScrollCurrentSelectionForm:paint(graphics)
             for index = 0, size - 1 do
                 item = self:get(index)
                 local diffX = self.preItemIndexDx:getDx(index, item, self.dx, self.dy)
-                if index == self:getSelectedIndex() then
+                if rawequal(index, self:getSelectedIndex()) then
                     delta = self:paintItem(graphics, index, item, deltaX + diffX, deltaY)
                     self.paintable:paint(graphics, index, deltaX + diffX, deltaY)
                 else
                     delta = self:paintUnselectedItem(graphics, index, item, deltaX + diffX, deltaY)
                     self.paintable:paint(graphics, index, deltaX + diffX, deltaY)
                 end
-                if self.formType == formTypeFactory.TEMP_HORIZONTAL_FORM then
-                elseif self.formType == formTypeFactory.HORIZONTAL_FORM then
+                if rawequal(self.formType, formTypeFactory.TEMP_HORIZONTAL_FORM) then
+                elseif rawequal(self.formType, formTypeFactory.HORIZONTAL_FORM) then
                     deltaX = delta
-                elseif self.formType == formTypeFactory.VERTICAL_CENTER_FORM then
+                elseif rawequal(self.formType, formTypeFactory.VERTICAL_CENTER_FORM) then
                     deltaY = delta
                 else
                     error(require("java.lang.Exception").new(formTypeFactory.UNK), 0)

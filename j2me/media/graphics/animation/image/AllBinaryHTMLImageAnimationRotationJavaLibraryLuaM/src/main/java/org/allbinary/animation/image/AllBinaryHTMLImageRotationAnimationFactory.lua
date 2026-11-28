@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local Animation = java_lazy("org.allbinary.animation.Animation")
 local AnimationBehaviorFactory = java_lazy("org.allbinary.animation.AnimationBehaviorFactory")
 local GameConfigurationCentral = java_lazy("org.allbinary.game.configuration.GameConfigurationCentral")
@@ -137,7 +137,7 @@ AllBinaryHTMLImageRotationAnimationFactory.javaClassName = "org.allbinary.animat
 setmetatable(AllBinaryHTMLImageRotationAnimationFactory, {__index = BaseImageAnimationFactory})
 
 function AllBinaryHTMLImageRotationAnimationFactory:_init_fields()
-    if self.angleIncrement == nil then self.angleIncrement = nil end
+    if self.angleIncrement == nil then self.angleIncrement = 0 end
 end
 
 
@@ -177,7 +177,7 @@ java_overload(AllBinaryHTMLImageRotationAnimationFactory, "init", 2, function(ja
 function AllBinaryHTMLImageRotationAnimationFactory:getInstance(instanceId)
         local scaledImage = self.animationFactoryImageScaleUtil:createImage(self:getImage(), self.animationFactoryInitializationVisitor.width, self.animationFactoryInitializationVisitor.height, self.scaleProperties.scaleWidth, self.scaleProperties.scaleHeight)
         local copyOfScaledImage = ImageCopyUtil.getInstance():createImage(scaledImage)
-        if self.animationFactoryInitializationVisitor.dx ~= 0 or self.animationFactoryInitializationVisitor.dy ~= 0 then
+        if not rawequal(self.animationFactoryInitializationVisitor.dx, 0) or not rawequal(self.animationFactoryInitializationVisitor.dy, 0) then
             self.animationFactoryImageScaleUtil:processAdjust(self)
             return AllBinaryAdjustedHTMLImageRotationAnimation.new(scaledImage, copyOfScaledImage, AngleInfo.getInstance(self:getAngleIncrement()), AngleFactory.getInstance().TOTAL_ANGLE, self.animationFactoryInitializationVisitor.dx, self.animationFactoryInitializationVisitor.dy, self.animationBehaviorFactory:getOrCreateInstance())
         else

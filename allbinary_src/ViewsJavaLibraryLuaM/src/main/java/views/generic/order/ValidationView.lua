@@ -176,16 +176,16 @@ end
 function ValidationView:isValid()
         local try_ok, try_error, try_value = pcall(function()
             local valid = true
-            if self.order:isIdValid() == false then
+            if rawequal(self.order:isIdValid(), false) then
                 do return "__jreturn", false end
             else
                 self.orderHistory = OrderHistoryFactory.getInstance(self.order:getId())
-                if self.orderHistory == nil or self.orderHistory:isValid() == false then
+                if rawequal(self.orderHistory, nil) or rawequal(self.orderHistory:isValid(), false) then
                     do return "__jreturn", false end
                 end
                 local orderItems = OrderItemsEntity.new()
                 self.basketReview = orderItems:getBasketReview(self.order:getId())
-                if self.basketReview == nil or self.basketReview:isValid() == false then
+                if rawequal(self.basketReview, nil) or rawequal(self.basketReview:isValid(), false) then
                     do return "__jreturn", false end
                 end
             end
@@ -207,22 +207,22 @@ java_overload(ValidationView, "isValid", 0)
 function ValidationView:validationInfo()
         local try_ok, try_error, try_value = pcall(function()
             local stringBuffer = StringMaker.new()
-            if self.order:isIdValid() == false then
+            if rawequal(self.order:isIdValid(), false) then
                 stringBuffer:append(self.order:getIdValidationInfo())
             else
                 self.orderHistory = OrderHistoryFactory.getInstance(self.order:getId())
-                if self.orderHistory == nil or self.orderHistory:isValid() == false then
+                if rawequal(self.orderHistory, nil) or rawequal(self.orderHistory:isValid(), false) then
                     stringBuffer:append("Order History data error for: ")
                     stringBuffer:append(self.order:getId())
                     stringBuffer:append("<br />")
                 end
                 local orderItems = OrderItemsEntity.new()
                 self.basketReview = orderItems:getBasketReview(self.order:getId())
-                if self.basketReview == nil then
+                if rawequal(self.basketReview, nil) then
                     stringBuffer:append("Order Items data error - does not exist for: ")
                     stringBuffer:append(self.order:getId())
                     stringBuffer:append("<br />")
-                elseif self.basketReview:isValid() == false then
+                elseif rawequal(self.basketReview:isValid(), false) then
                     stringBuffer:append("Order Items data error - not valid for: ")
                     stringBuffer:append(self.order:getId())
                     stringBuffer:append("<br />")

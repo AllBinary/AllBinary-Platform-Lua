@@ -239,7 +239,7 @@ function StoreThemeCategory:addThemes(node)
         local nodeList = themesNode:getChildNodes()
         for index = 0, nodeList:getLength() - 1 do
             local themeNode = nodeList:item(index)
-            if themeNode:getNodeName():compareTo(ThemeData.getInstance().NAME) == 0 then
+            if rawequal(themeNode:getNodeName():compareTo(ThemeData.getInstance().NAME), 0) then
                 self.themeVector:add(ThemeValidation.new(self, themeNode))
             end
         end
@@ -261,7 +261,7 @@ java_overload(StoreThemeCategory, "getThemes", 0)
 
 -- throws Exception
 function StoreThemeCategory:isValid()
-        if not java_super(Category, "isValid", 0)(self) then
+        if not (java_super(Category, "isValid", 0)(self)) then
             return false
         end
         return true

@@ -70,7 +70,7 @@ end
 function AbContext._jinit(self, propertiesHashMap, pageContext)
     AbContext._init_fields(self)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("Properties HashMap: " .. tostring(propertiesHashMap), self, self.commonStrings.CONSTRUCTOR)
+            self.logUtil:putF(require("allbinary_java").to_string("Properties HashMap: ") .. require("allbinary_java").to_string(tostring(propertiesHashMap)), self, self.commonStrings.CONSTRUCTOR)
         end
         self.propertiesHashMap = propertiesHashMap
         self.pageContext = pageContext

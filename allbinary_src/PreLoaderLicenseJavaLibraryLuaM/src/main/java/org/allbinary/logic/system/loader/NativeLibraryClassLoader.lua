@@ -28,11 +28,7 @@ local function java_real(class)
     return class
 end
 
--- java.lang.ClassLoader has no Lua module
-local ClassLoader = {}
-ClassLoader.__index = ClassLoader
-ClassLoader.className = "ClassLoader"
-function ClassLoader.new() return setmetatable({}, ClassLoader) end
+local ClassLoader = require("java.lang.ClassLoader")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

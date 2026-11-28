@@ -151,7 +151,7 @@ end
 function CollidableCharacterNoDamageBehavior:collide(ownerLayer, collidableInterfaceCompositeInterface)
         local collisionTypeFactory = CollisionTypeFactory.getInstance()
         local collisionType = collidableInterfaceCompositeInterface:getCollidableInferface():getCollisionTypeWith(ownerLayer)
-        if collisionType == collisionTypeFactory.PICKUP then
+        if rawequal(collisionType, collisionTypeFactory.PICKUP) then
             local collidableDestroyableDamageableLayer = ownerLayer
             collidableDestroyableDamageableLayer:getPickupBehavior():doPickupLayer(collidableInterfaceCompositeInterface)
         else

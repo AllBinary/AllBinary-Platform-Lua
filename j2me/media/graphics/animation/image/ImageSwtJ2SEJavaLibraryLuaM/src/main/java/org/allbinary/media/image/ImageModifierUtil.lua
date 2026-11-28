@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local OpenGLFeatureFactory = java_lazy("org.allbinary.graphics.opengles.OpenGLFeatureFactory")
@@ -41,6 +41,7 @@ local ImageData = java_lazy("org.eclipse.swt.graphics.ImageData")
 local SwtImmutableImage = java_lazy("org.microemu.device.swt.SwtImmutableImage")
 local SwtMutableImage = java_lazy("org.microemu.device.swt.SwtMutableImage")
 local ImageCopyUtil = java_lazy("org.allbinary.media.image.ImageCopyUtil")
+local SwtOpenGLESImageBridge = java_lazy("org.allbinary.media.image.SwtOpenGLESImageBridge")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
@@ -118,7 +119,7 @@ function ImageModifierUtil:setColor(unusedOriginalImage, image, imageIndex, basi
         local width = image:getWidth()
         local height = image:getHeight()
         local imageData = newBufferedImage:getImageData()
-        if imageData.depth == 24 then
+        if rawequal(imageData.depth, 24) then
             local rx = 0
             local gx = 0
             local bx = 0
@@ -129,7 +130,7 @@ function ImageModifierUtil:setColor(unusedOriginalImage, image, imageIndex, basi
                     rx = (imageData.data[index3 + 1] & 0xFF) << 16
                     gx = (imageData.data[index3 + 1 + 1] & 0xFF) << 8
                     bx = (imageData.data[index3 + 2 + 1] & 0xFF)
-                    if rx ~= 0 or gx ~= 0 or bx ~= 0 then
+                    if not rawequal(rx, 0) or not rawequal(gx, 0) or not rawequal(bx, 0) then
                         imageData.data[index3 + 1] = r
                         imageData.data[index3 + 1 + 1] = g
                         imageData.data[index3 + 2 + 1] = b
@@ -167,7 +168,7 @@ function ImageModifierUtil:changeColor(unusedOriginalImage, image, imageIndex, b
         local gx = 0
         local bx = 0
         local imageData = newBufferedImage:getImageData()
-        if imageData.depth == 24 then
+        if rawequal(imageData.depth, 24) then
             local size = (imageData.data.n or #imageData.data)
             for index = 0, size - 1, 4 do
                 rx = (imageData.data[index + 1] & 0xFF) << 16

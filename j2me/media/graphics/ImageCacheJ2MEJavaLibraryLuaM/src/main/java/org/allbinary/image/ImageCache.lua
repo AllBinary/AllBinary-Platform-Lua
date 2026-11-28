@@ -28,9 +28,9 @@ local function java_real(class)
     return class
 end
 
--- local InputStream = require("java.io.InputStream")
--- local Image = require("javax.microedition.lcdui.Image")
--- local NullImage = require("javax.microedition.lcdui.NullImage")
+local InputStream = java_lazy("java.io.InputStream")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local NullImage = java_lazy("javax.microedition.lcdui.NullImage")
 local J2MEUtil = java_lazy("org.allbinary.J2MEUtil")
 local TsUtil = java_lazy("org.allbinary.TsUtil")
 local ResourceUtil = java_lazy("org.allbinary.data.resource.ResourceUtil")
@@ -185,7 +185,7 @@ function ImageCache:getIndex(key)
         local resourceStringArray = gdResources.resourceStringArray
         local size = (resourceStringArray.n or #resourceStringArray)
         for index = 0, size - 1 do
-            if resourceStringArray[index + 1] == key then
+            if rawequal(resourceStringArray[index + 1], key) then
                 return index
             end
         end
@@ -199,7 +199,7 @@ java_overload(ImageCache, "getIndex", 1)
 function ImageCache:get(caller, width, height)
         local foundIndex = self:getIndexWH(width, height)
         local image = self:getFromAvailable(foundIndex, width, height)
-        if image == NullImage.NULL_IMAGE then
+        if rawequal(image, NullImage.NULL_IMAGE) then
             self.volume = self.volume + (width * height)
             if self.volume > 32000 then
                 self.tsUtil:gc()
@@ -208,7 +208,7 @@ function ImageCache:get(caller, width, height)
             image = self:createImage(caller, width, height)
             local widths = self.widths
             if self.nextIndex > (widths.n or #widths) - 1 then
-                if foundIndex == -1 then
+                if rawequal(foundIndex, -1) then
                     foundIndex = self.nextIndex
                     widths[self.nextIndex + 1] = width
                     self.heights[self.nextIndex + 1] = height
@@ -225,10 +225,10 @@ java_overload(ImageCache, "get", 3, function(java_a1, java_a2, java_a3) return t
 -- throws Exception
 function ImageCache:getWithKey(key)
         local image = self:getImage(key)
-        if image == NullImage.NULL_IMAGE then
+        if rawequal(image, NullImage.NULL_IMAGE) then
             local resourceUtil = ResourceUtil.getInstance()
             local resourceInputStream = resourceUtil:getResourceAsStream(key)
-            if resourceInputStream == nil then
+            if rawequal(resourceInputStream, nil) then
                 error(require("java.lang.RuntimeException").new(tostring(StringMaker.new():append("Image resource is not available for key: "):append(StringUtil.getInstance():toString(key)))), 0)
             end
             local try_ok, try_error, try_value = pcall(function()
@@ -242,7 +242,7 @@ function ImageCache:getWithKey(key)
                 self.tsUtil:gc()
                 self.tsUtil:gc()
                 self.logUtil:putF(Memory.getInfo(), self, self.commonStrings.GET)
-                java_sleep(100)
+                require("java.lang.Thread").sleep(100)
                 image = self:createImageFromInputStream(key, resourceInputStream)
             end
             if J2MEUtil.isHTML() then

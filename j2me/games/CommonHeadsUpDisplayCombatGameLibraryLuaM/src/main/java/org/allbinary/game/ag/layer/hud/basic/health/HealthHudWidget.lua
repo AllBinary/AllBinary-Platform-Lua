@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local Animation = java_lazy("org.allbinary.animation.Animation")
 local BasicHud = require("org.allbinary.game.graphics.hud.BasicHud")
 local Health = java_lazy("org.allbinary.game.health.Health")
@@ -169,7 +169,7 @@ HealthHudWidget.java_implements = " PaintableInterface HealthListenerInterface "
 HealthHudWidget.java_interfaces = function() return {PaintableInterface, HealthListenerInterface} end
 
 function HealthHudWidget:_init_fields()
-    if self.healthScale == nil then self.healthScale = nil end
+    if self.healthScale == nil then self.healthScale = 0 end
     if self.animationInterface == nil then self.animationInterface = nil end
     if self.healthInterface == nil then self.healthInterface = nil end
     if self.max == nil then self.max = 0 end
@@ -206,7 +206,7 @@ end
 
 
 function HealthHudWidget:update()
-        if self.xArray ~= nil then
+        if not rawequal(self.xArray, nil) then
             for index = 0, (self.xArray.n or #self.xArray) - 1 do
                 self.xArray[index + 1] = self:getX() + (index * 16)
             end

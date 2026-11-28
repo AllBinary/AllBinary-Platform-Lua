@@ -104,7 +104,7 @@ function CellPositionsUtil:getAllSurrounding(geographicMapInterface, occupyList,
             local surroundingGeographicMapCellPositionList = self:getAllSurroundingAt(geographicMapInterface, layerGeographicMapCellPosition, self.reusableSingleThreadedSurroundingList)
             for index2 = surroundingGeographicMapCellPositionList:size() - 1, 0, -1 do
                 local geographicMapCellPosition = surroundingGeographicMapCellPositionList:get(index2)
-                if not reusableList:contains(geographicMapCellPosition) and not occupyList:contains(geographicMapCellPosition) then
+                if not (reusableList:contains(geographicMapCellPosition)) and not (occupyList:contains(geographicMapCellPosition)) then
                     reusableList:add(geographicMapCellPosition)
                 end
             end

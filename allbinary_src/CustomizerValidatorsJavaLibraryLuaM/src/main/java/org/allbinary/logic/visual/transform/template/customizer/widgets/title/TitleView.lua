@@ -146,7 +146,7 @@ function TitleView._new1_1(self, node)
             self.title = TitleView.NAME
         end
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("Title: " .. tostring(self:getTitle()), self, "Consructor()")
+            self.logUtil:putF(require("allbinary_java").to_string("Title: ") .. require("allbinary_java").to_string(self:getTitle()), self, "Consructor()")
         end
     return self
 end
@@ -155,7 +155,7 @@ end
 function TitleView._new1_2(self, hashMap)
     TitleView._init_fields(self)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("HashMap: " .. tostring(hashMap), self, self.commonStrings.CONSTRUCTOR)
+            self.logUtil:putF(require("allbinary_java").to_string("HashMap: ") .. require("allbinary_java").to_string(tostring(hashMap)), self, self.commonStrings.CONSTRUCTOR)
         end
         self:getFormData(hashMap)
     return self
@@ -186,7 +186,7 @@ end
 function TitleView:toXmlNode(document)
         local hashMap = self:toHashMap()
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("TitleView HashMap: " .. tostring(hashMap), self, "toXmlNode()")
+            self.logUtil:putF(require("allbinary_java").to_string("TitleView HashMap: ") .. require("allbinary_java").to_string(tostring(hashMap)), self, "toXmlNode()")
         end
         return ModDomHelper.createNameValueNodes(document, TitleData.getInstance().NAME, hashMap)
 end

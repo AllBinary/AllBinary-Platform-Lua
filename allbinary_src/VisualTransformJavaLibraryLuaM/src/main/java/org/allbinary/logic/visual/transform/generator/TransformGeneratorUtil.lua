@@ -123,7 +123,7 @@ end
 function TransformGeneratorUtil:generate_j3_1(abeClientInformation, transformInfoInterface, ownerTransformInfoInterface)
         local try_ok, try_error, try_value = pcall(function()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("Generating View: " .. transformInfoInterface:getName(), self, "generate()")
+                self.logUtil:putF(require("allbinary_java").to_string("Generating View: ") .. require("allbinary_java").to_string(transformInfoInterface:getName()), self, "generate()")
             end
             local componentInterface = TransformFactory.getInstance():getInstance(abeClientInformation, transformInfoInterface:getName(), ownerTransformInfoInterface)
             local result = componentInterface:view()

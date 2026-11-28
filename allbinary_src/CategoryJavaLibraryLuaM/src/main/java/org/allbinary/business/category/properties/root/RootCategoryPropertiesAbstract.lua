@@ -114,7 +114,7 @@ RootCategoryPropertiesAbstract.java_interfaces = function() return {RootCategory
 
 function RootCategoryPropertiesAbstract:_init_fields()
     self.category = CategoryData.getInstance().ROOTCATEGORY
-    self.fileName = self.category .. tostring(AbPathData.getInstance().EXTENSION_SEP) .. tostring(CategoryData.getInstance().UNCRYPTED_EXTENSION)
+    self.fileName = require("allbinary_java").to_string(require("allbinary_java").to_string(self.category) .. require("allbinary_java").to_string(AbPathData.getInstance().EXTENSION_SEP)) .. require("allbinary_java").to_string(CategoryData.getInstance().UNCRYPTED_EXTENSION)
 end
 
 

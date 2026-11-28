@@ -269,7 +269,7 @@ function DateRangeOrderHistoryView:toXmlNode(document)
                 self.logUtil:putF(tostring(stringBuffer), self, "view")
             end
             local node = document:createElement(OrderData.ORDERS)
-            if self.preprocessing ~= nil and ((self.preprocessing < self.ON and -1) or (self.preprocessing > self.ON and 1) or 0) == 0 then
+            if not rawequal(self.preprocessing, nil) and rawequal(((self.preprocessing < self.ON and -1) or (self.preprocessing > self.ON and 1) or 0), 0) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     self.logUtil:putF("Adding Preprocessing Orders", self, "toXmlNode")
                 end
@@ -280,7 +280,7 @@ function DateRangeOrderHistoryView:toXmlNode(document)
                     node:appendChild(orderHistory:toXmlNode(document))
                 end
             end
-            if self.shipped ~= nil and ((self.shipped < self.ON and -1) or (self.shipped > self.ON and 1) or 0) == 0 then
+            if not rawequal(self.shipped, nil) and rawequal(((self.shipped < self.ON and -1) or (self.shipped > self.ON and 1) or 0), 0) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     self.logUtil:putF("Adding Shipped Orders", self, "toXmlNode")
                 end
@@ -291,7 +291,7 @@ function DateRangeOrderHistoryView:toXmlNode(document)
                     node:appendChild(orderHistory:toXmlNode(document))
                 end
             end
-            if self.partiallyShipped ~= nil and ((self.partiallyShipped < self.ON and -1) or (self.partiallyShipped > self.ON and 1) or 0) == 0 then
+            if not rawequal(self.partiallyShipped, nil) and rawequal(((self.partiallyShipped < self.ON and -1) or (self.partiallyShipped > self.ON and 1) or 0), 0) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     self.logUtil:putF("Adding Partially Shipped Orders", self, "toDomNode")
                 end
@@ -302,7 +302,7 @@ function DateRangeOrderHistoryView:toXmlNode(document)
                     node:appendChild(orderHistory:toXmlNode(document))
                 end
             end
-            if self.processing ~= nil and ((self.processing < self.ON and -1) or (self.processing > self.ON and 1) or 0) == 0 then
+            if not rawequal(self.processing, nil) and rawequal(((self.processing < self.ON and -1) or (self.processing > self.ON and 1) or 0), 0) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     self.logUtil:putF("Adding Processing Orders", self, "toXmlNode")
                 end
@@ -313,7 +313,7 @@ function DateRangeOrderHistoryView:toXmlNode(document)
                     node:appendChild(orderHistory:toXmlNode(document))
                 end
             end
-            if self.cancelled ~= nil and ((self.cancelled < self.ON and -1) or (self.cancelled > self.ON and 1) or 0) == 0 then
+            if not rawequal(self.cancelled, nil) and rawequal(((self.cancelled < self.ON and -1) or (self.cancelled > self.ON and 1) or 0), 0) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     self.logUtil:putF("Adding Cancelled Orders", self, "view")
                 end
@@ -348,34 +348,34 @@ java_overload(DateRangeOrderHistoryView, "toXmlNode", 1, function(java_a1) retur
 function DateRangeOrderHistoryView:isValid()
         local try_ok, try_error, try_value = pcall(function()
             local isValid = true
-            if self.dateType == nil or (((self.dateType < OrderHistoryData.TYPELONG and -1) or (self.dateType > OrderHistoryData.TYPELONG and 1) or 0) ~= 0 and ((self.dateType < OrderHistoryData.TYPECAESAR and -1) or (self.dateType > OrderHistoryData.TYPECAESAR and 1) or 0) ~= 0) then
+            if rawequal(self.dateType, nil) or (not rawequal(((self.dateType < OrderHistoryData.TYPELONG and -1) or (self.dateType > OrderHistoryData.TYPELONG and 1) or 0), 0) and not rawequal(((self.dateType < OrderHistoryData.TYPECAESAR and -1) or (self.dateType > OrderHistoryData.TYPECAESAR and 1) or 0), 0)) then
                 isValid = false
             end
-            if self.dateType ~= nil then
-                if ((self.dateType < OrderHistoryData.TYPELONG and -1) or (self.dateType > OrderHistoryData.TYPELONG and 1) or 0) == 0 then
+            if not rawequal(self.dateType, nil) then
+                if rawequal(((self.dateType < OrderHistoryData.TYPELONG and -1) or (self.dateType > OrderHistoryData.TYPELONG and 1) or 0), 0) then
                     local calendar = Calendar.getInstance()
                     local currentTime = calendar:getTimeInMillis()
                     local rangeDate = StringUtil.getInstance().EMPTY_STRING
-                    if ((self.command < self.VIEWORDERSINLASTHOUR and -1) or (self.command > self.VIEWORDERSINLASTHOUR and 1) or 0) == 0 then
+                    if rawequal(((self.command < self.VIEWORDERSINLASTHOUR and -1) or (self.command > self.VIEWORDERSINLASTHOUR and 1) or 0), 0) then
                         local oneHour = 60 * 60 * 1000
                         rangeDate = tostring(oneHour)
-                    elseif ((self.command < self.VIEWORDERSINLASTDAY and -1) or (self.command > self.VIEWORDERSINLASTDAY and 1) or 0) == 0 then
+                    elseif rawequal(((self.command < self.VIEWORDERSINLASTDAY and -1) or (self.command > self.VIEWORDERSINLASTDAY and 1) or 0), 0) then
                         local oneDay = 24 * 60 * 60 * 1000
                         rangeDate = tostring(oneDay)
-                    elseif ((self.command < self.VIEWORDERSINLASTWEEK and -1) or (self.command > self.VIEWORDERSINLASTWEEK and 1) or 0) == 0 then
+                    elseif rawequal(((self.command < self.VIEWORDERSINLASTWEEK and -1) or (self.command > self.VIEWORDERSINLASTWEEK and 1) or 0), 0) then
                         local oneWeek = 7 * 24 * 60 * 60 * 1000
                         rangeDate = tostring(oneWeek)
-                    elseif ((self.command < self.VIEWORDERSINLAST30DAYS and -1) or (self.command > self.VIEWORDERSINLAST30DAYS and 1) or 0) == 0 then
+                    elseif rawequal(((self.command < self.VIEWORDERSINLAST30DAYS and -1) or (self.command > self.VIEWORDERSINLAST30DAYS and 1) or 0), 0) then
                         local thirtyDays = 30 * 24 * 60 * 60 * 1000
                         rangeDate = tostring(thirtyDays)
-                    elseif ((self.command < self.VIEWALLORDERS and -1) or (self.command > self.VIEWALLORDERS and 1) or 0) == 0 then
+                    elseif rawequal(((self.command < self.VIEWALLORDERS and -1) or (self.command > self.VIEWALLORDERS and 1) or 0), 0) then
                         rangeDate = tostring(currentTime)
                     end
                     local rangeDateLong = math.tointeger(rangeDate // 1)
                     self.fromDate = tostring(currentTime - rangeDateLong)
                     local time = tostring(tostring(currentTime))
                     self.toDate = time
-                elseif ((self.dateType < OrderHistoryData.TYPECAESAR and -1) or (self.dateType > OrderHistoryData.TYPECAESAR and 1) or 0) == 0 then
+                elseif rawequal(((self.dateType < OrderHistoryData.TYPECAESAR and -1) or (self.dateType > OrderHistoryData.TYPECAESAR and 1) or 0), 0) then
                     local calendar = Calendar.getInstance()
                     TimeUtil.getInstance():setCalendar(calendar, self.fromYear, self.fromMonth, self.fromDay, self.fromHour)
                     self.fromDate = tostring(calendar:getTimeInMillis())
@@ -429,7 +429,7 @@ java_overload(DateRangeOrderHistoryView, "toValidationInfoNode", 1, function(jav
 function DateRangeOrderHistoryView:validationInfo()
         local try_ok, try_error, try_value = pcall(function()
             local result = StringMaker.new()
-            if self.dateType == nil or (((self.dateType < OrderHistoryData.TYPELONG and -1) or (self.dateType > OrderHistoryData.TYPELONG and 1) or 0) ~= 0 and ((self.dateType < OrderHistoryData.TYPECAESAR and -1) or (self.dateType > OrderHistoryData.TYPECAESAR and 1) or 0) ~= 0) then
+            if rawequal(self.dateType, nil) or (not rawequal(((self.dateType < OrderHistoryData.TYPELONG and -1) or (self.dateType > OrderHistoryData.TYPELONG and 1) or 0), 0) and not rawequal(((self.dateType < OrderHistoryData.TYPECAESAR and -1) or (self.dateType > OrderHistoryData.TYPECAESAR and 1) or 0), 0)) then
                 result:append("DATETYPE not recognized")
             end
             if StringValidationUtil.getInstance():isEmpty(self.toDate) or #self.toDate > self.MAXLEN then

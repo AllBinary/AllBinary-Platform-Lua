@@ -28,9 +28,9 @@ local function java_real(class)
     return class
 end
 
--- local MediaException = require("javax.microedition.media.MediaException")
--- local Player = require("javax.microedition.media.Player")
--- local PlayerListener = require("javax.microedition.media.PlayerListener")
+local MediaException = java_lazy("javax.microedition.media.MediaException")
+local Player = java_lazy("javax.microedition.media.Player")
+local PlayerListener = java_lazy("javax.microedition.media.PlayerListener")
 local MediaPlayer = java_lazy("android.media.MediaPlayer")
 local NullAndroidCanvas = java_lazy("org.allbinary.android.NullAndroidCanvas")
 local ResourceUtil = java_lazy("org.allbinary.data.resource.ResourceUtil")
@@ -188,11 +188,11 @@ function AndroidMediaPlayerWrapper._jinit(self, resource)
     java_super_init(BasicPlayer, self)
     AndroidMediaPlayerWrapper._init_fields(self)
         local try_ok, try_error, try_value = pcall(function()
-            if resource == StringUtil.getInstance().EMPTY_STRING then
+            if rawequal(resource, StringUtil.getInstance().EMPTY_STRING) then
             else
                 local resourceUtil = ResourceUtil.getInstance()
                 local mediaPlayer = MediaPlayer.create(resourceUtil:getContext(), math.tointeger(resourceUtil:getResourceId(resource) // 1))
-                if mediaPlayer == nil then
+                if rawequal(mediaPlayer, nil) then
                     error(require("java.lang.Exception").new(tostring(StringMaker.new():append("Failed to create media player for: "):append(resource):append(" with id: "):append(tostring(resourceUtil:getResourceId(resource))))), 0)
                 end
                 self:setMediaPlayer(mediaPlayer)
@@ -202,7 +202,7 @@ function AndroidMediaPlayerWrapper._jinit(self, resource)
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-            self.logUtil:put(tostring(self.commonStrings.EXCEPTION_LABEL) .. resource, self, self.commonStrings.CONSTRUCTOR, e)
+            self.logUtil:put(require("allbinary_java").to_string(self.commonStrings.EXCEPTION_LABEL) .. require("allbinary_java").to_string(resource), self, self.commonStrings.CONSTRUCTOR, e)
             error(e, 0)
         end
     return self
@@ -217,8 +217,8 @@ end
 
 function AndroidMediaPlayerWrapper:setLoopCount(count)
         java_super(BasicPlayer, "setLoopCount", 1)(self, count)
-        if self.mediaPlayer ~= NullAndroidCanvas.NULL_MEDIA_PLAYER and self.mediaPlayer ~= nil then
-            if count == 0 then
+        if not rawequal(self.mediaPlayer, NullAndroidCanvas.NULL_MEDIA_PLAYER) and not rawequal(self.mediaPlayer, nil) then
+            if rawequal(count, 0) then
                 self.mediaPlayer:setLooping(false)
             else
             end
@@ -299,7 +299,7 @@ java_overload(AndroidMediaPlayerWrapper, "stop", 0)
 
 
 function AndroidMediaPlayerWrapper:update(event)
-        self.logUtil:putF("LineEvent: " .. event, self, self.commonStrings.UPDATE)
+        self.logUtil:putF(require("allbinary_java").to_string("LineEvent: ") .. require("allbinary_java").to_string(event), self, self.commonStrings.UPDATE)
         local size = self.listenersList:size()
         for index = 0, size - 1 do
             local listener = self.listenersList.objectArray[index + 1]

@@ -193,7 +193,7 @@ end
 
 function SmallIntegerSingletonFactory:createInstance(index)
         local integer = self:getAt(index)
-        if integer == nil then
+        if rawequal(integer, nil) then
             integer = index
         end
         return integer
@@ -202,7 +202,7 @@ end
 
 function SmallIntegerSingletonFactory:getString(index)
         local i = index + self.NEGATIVE_MAX
-        if self.STRING_ARRAY[i + 1] == nil then
+        if rawequal(self.STRING_ARRAY[i + 1], nil) then
             self.STRING_ARRAY[i + 1] = tostring(self.INTEGER_ARRAY[i + 1])
         end
         return self.STRING_ARRAY[i + 1]

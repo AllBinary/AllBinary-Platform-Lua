@@ -191,7 +191,7 @@ java_overload(RaceTrackDropCellPositionGenerator, "init", 0)
 function RaceTrackDropCellPositionGenerator:isDropAllowedAt(geographicMapCellPosition)
         local raceTrackGeographicMapCellType = self.raceTrackGeographicMap:getCellTypeAt(geographicMapCellPosition)
         local raceTrackGeographicMapCellTypeFactory = self.raceTrackGeographicMapCellTypeFactory
-        if raceTrackGeographicMapCellType == raceTrackGeographicMapCellTypeFactory.HORIZONTAL_STRAIGHT_ROAD_CELL_TYPE or raceTrackGeographicMapCellType == raceTrackGeographicMapCellTypeFactory.VERTICAL_STRAIGHT_ROAD_CELL_TYPE then
+        if rawequal(raceTrackGeographicMapCellType, raceTrackGeographicMapCellTypeFactory.HORIZONTAL_STRAIGHT_ROAD_CELL_TYPE) or rawequal(raceTrackGeographicMapCellType, raceTrackGeographicMapCellTypeFactory.VERTICAL_STRAIGHT_ROAD_CELL_TYPE) then
             return true
         end
         return false

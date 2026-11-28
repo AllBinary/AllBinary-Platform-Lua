@@ -98,14 +98,14 @@ end
 
 
 function TouchButtonFactory:toggle(save, list)
-        if list ~= BasicArrayListUtil.getInstance():getImmutableInstance() then
+        if not rawequal(list, BasicArrayListUtil.getInstance():getImmutableInstance()) then
             self.savedList = list
-            if not self.saved then
+            if not (self.saved) then
                 self.list = self.savedList
             end
         else
             if save then
-                if not self.saved then
+                if not (self.saved) then
                     self.saved = true
                     self.savedList = self.list
                     self.list = self.LIST
@@ -121,7 +121,7 @@ end
 
 -- throws Exception
 function TouchButtonFactory:setList(list)
-        if list == nil then
+        if rawequal(list, nil) then
             error(require("java.lang.Exception").new("Null List"), 0)
         end
         self.list = list

@@ -131,7 +131,7 @@ PreGameLockableFormPaintableFactory.javaClassName = "org.allbinary.game.displaya
 setmetatable(PreGameLockableFormPaintableFactory, {__index = ItemPaintableFactory})
 
 function PreGameLockableFormPaintableFactory:_init_fields()
-    if self.lockedIndex == nil then self.lockedIndex = nil end
+    if self.lockedIndex == nil then self.lockedIndex = 0 end
 end
 
 

@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local BasicHud = require("org.allbinary.game.graphics.hud.BasicHud")
@@ -191,11 +191,11 @@ java_overload(PositionWidget, "paint", 1, function(java_a1) return true and (jav
 function PositionWidget.toString(position)
         local stringBuffer = StringMaker.new()
         stringBuffer:append(tostring(position))
-        if position == 1 then
+        if rawequal(position, 1) then
             stringBuffer:append("st")
-        elseif position == 2 then
+        elseif rawequal(position, 2) then
             stringBuffer:append("nd")
-        elseif position == 3 then
+        elseif rawequal(position, 3) then
             stringBuffer:append("rd")
         else
             stringBuffer:append("th")

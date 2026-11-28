@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local NullCanvas = require("javax.microedition.lcdui.NullCanvas")
+local NullCanvas = java_lazy("javax.microedition.lcdui.NullCanvas")
 local Processor = java_lazy("org.allbinary.canvas.Processor")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
@@ -64,7 +64,7 @@ function ExitRunnable:_init_fields()
     self.commonStrings = CommonStrings.getInstance()
     if self.midlet == nil then self.midlet = nil end
     if self.processor == nil then self.processor = nil end
-    if self.isProgress == nil then self.isProgress = nil end
+    if self.isProgress == nil then self.isProgress = false end
 end
 
 

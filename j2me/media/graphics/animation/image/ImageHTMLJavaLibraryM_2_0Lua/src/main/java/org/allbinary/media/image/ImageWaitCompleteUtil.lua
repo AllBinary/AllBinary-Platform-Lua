@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local GameFeatureImageCacheFactory = java_lazy("org.allbinary.image.GameFeatureImageCacheFactory")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
@@ -179,7 +179,7 @@ java_overload(ImageWaitCompleteUtil, "waitForImage", 2, function(java_a1, java_a
 -- throws Exception
 function ImageWaitCompleteUtil:handleTimeout(name)
         if self.timeDelayHelper:isTimeTNT() then
-            error(require("java.lang.Exception").new("isReady: Timeout Waiting or GameHtmlHasLoadedResourcesProcessor does not have this Image: " .. name), 0)
+            error(require("java.lang.Exception").new(require("allbinary_java").to_string("isReady: Timeout Waiting or GameHtmlHasLoadedResourcesProcessor does not have this Image: ") .. require("allbinary_java").to_string(name)), 0)
         end
 end
 java_overload(ImageWaitCompleteUtil, "handleTimeout", 1, function(java_a1) return true and (java_a1 == nil or type(java_a1) == "string") end)
@@ -189,12 +189,12 @@ java_overload(ImageWaitCompleteUtil, "handleTimeout", 1, function(java_a1) retur
 function ImageWaitCompleteUtil:waitForATime(image, name, timeDelayHelper)
         local playnImage = image
         local playnCoreImage = playnImage:getImage()
-        while not playnCoreImage:isReady() or playnCoreImage:width() + playnCoreImage:height() <= 0 do
+        while not (playnCoreImage:isReady()) or playnCoreImage:width() + playnCoreImage:height() <= 0 do
             if timeDelayHelper:isTimeTNT() then
-                error(require("java.lang.Exception").new("waitFor: Timeout Waiting or GameHtmlHasLoadedResourcesProcessor does not have this Image: " .. name), 0)
+                error(require("java.lang.Exception").new(require("allbinary_java").to_string("waitFor: Timeout Waiting or GameHtmlHasLoadedResourcesProcessor does not have this Image: ") .. require("allbinary_java").to_string(name)), 0)
             end
         end
-        if not image:isReady() then
+        if not (image:isReady()) then
             image:init(image:getImage())
         end
 end
@@ -207,7 +207,7 @@ function ImageWaitCompleteUtil:waitForAll()
         local hashtable = GameFeatureImageCacheFactory.getInstance():getHashtableP()
         local objectArray = HashtableUtil.getInstance():getKeysAsArray(hashtable)
         local size = (objectArray.n or #objectArray)
-        PreLogUtil.put("Image Total: " .. tostring(size), self, "waitForAll")
+        PreLogUtil.put(require("allbinary_java").to_string("Image Total: ") .. require("allbinary_java").to_string(size), self, "waitForAll")
         for index = 0, size - 1 do
             self:waitForATime(hashtable:get(objectArray[index + 1]), objectArray[index + 1], self.allTimeDelayHelper)
         end

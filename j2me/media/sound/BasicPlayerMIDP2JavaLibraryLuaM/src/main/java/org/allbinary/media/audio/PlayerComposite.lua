@@ -28,12 +28,12 @@ local function java_real(class)
     return class
 end
 
--- local Control = require("javax.microedition.media.Control")
--- local Controllable = require("javax.microedition.media.Controllable")
--- local MediaException = require("javax.microedition.media.MediaException")
--- local Player = require("javax.microedition.media.Player")
--- local PlayerListener = require("javax.microedition.media.PlayerListener")
--- local TimeBase = require("javax.microedition.media.TimeBase")
+local Control = java_lazy("javax.microedition.media.Control")
+local Controllable = java_lazy("javax.microedition.media.Controllable")
+local MediaException = java_lazy("javax.microedition.media.MediaException")
+local Player = java_lazy("javax.microedition.media.Player")
+local PlayerListener = java_lazy("javax.microedition.media.PlayerListener")
+local TimeBase = java_lazy("javax.microedition.media.TimeBase")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local GameTickTimeDelayHelper = java_lazy("org.allbinary.time.GameTickTimeDelayHelper")

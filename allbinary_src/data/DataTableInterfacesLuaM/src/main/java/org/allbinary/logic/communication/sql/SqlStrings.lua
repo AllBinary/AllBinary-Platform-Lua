@@ -52,7 +52,7 @@ function SqlStrings:_init_fields()
     self.AND = " AND "
     self.UPDATE = "UPDATE "
     self.SET = " SET "
-    self.SELECT_ALL_FROM = self.SELECT_ALL .. self.FROM
+    self.SELECT_ALL_FROM = require("allbinary_java").to_string(self.SELECT_ALL) .. require("allbinary_java").to_string(self.FROM)
     self.DELETE = "DELETE"
     self.LIKE_QUOTE = " LIKE \""
     self.INSERT_INTO = "INSERT INTO "

@@ -172,9 +172,9 @@ end
 
 -- throws Exception
 function HelperTag:setHelper()
-        if self.anyType == nil then
+        if rawequal(self.anyType, nil) then
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAG) then
-                self.logUtil:putF("Creating TagHelper with: \n" .. tostring(self:getPropertiesHashMap()), self, "doStartTag")
+                self.logUtil:putF(require("allbinary_java").to_string("Creating TagHelper with: \n") .. require("allbinary_java").to_string(tostring(self:getPropertiesHashMap())), self, "doStartTag")
             end
             self.anyType = self.tagHelperFactoryInterface:getInstance(self:getPropertiesHashMap(), self.pageContext)
         end

@@ -177,15 +177,15 @@ function PaymentTag:doStartTag()
         local try_ok, try_error, try_value = pcall(function()
             self:setName("Basic Payment View")
             self:setObjectFile("views.generic.payment.ValidationView")
-            if self:getCommand() ~= nil then
-                if self:getCommand():compareTo(PaymentData.VIEW) == 0 or self:getCommand():compareTo(PaymentData.CHANGE) == 0 or self:getCommand():compareTo(PaymentData.ADDNEW) == 0 then
-                elseif self:getCommand():compareTo(self.commonStrings.INSERT) == 0 then
-                elseif self:getCommand():compareTo(self.commonStrings.DELETE) == 0 then
+            if not rawequal(self:getCommand(), nil) then
+                if rawequal(self:getCommand():compareTo(PaymentData.VIEW), 0) or rawequal(self:getCommand():compareTo(PaymentData.CHANGE), 0) or rawequal(self:getCommand():compareTo(PaymentData.ADDNEW), 0) then
+                elseif rawequal(self:getCommand():compareTo(self.commonStrings.INSERT), 0) then
+                elseif rawequal(self:getCommand():compareTo(self.commonStrings.DELETE), 0) then
                     do return "__jreturn", self.EVAL_BODY_INCLUDE end
-                elseif self:getCommand():compareTo(PaymentData.SELECT) == 0 then
+                elseif rawequal(self:getCommand():compareTo(PaymentData.SELECT), 0) then
                     do return "__jreturn", self.EVAL_BODY_INCLUDE end
                 else
-                    error(require("java.lang.Exception").new("No Such View Command: " .. tostring(self:getCommand())), 0)
+                    error(require("java.lang.Exception").new(require("allbinary_java").to_string("No Such View Command: ") .. require("allbinary_java").to_string(self:getCommand())), 0)
                 end
                 do return "__jreturn", java_super(StoreValidationTransformTag, "doStartTag", 0)(self) end
             end

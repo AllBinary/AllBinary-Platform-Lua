@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Displayable = require("javax.microedition.lcdui.Displayable")
+local Displayable = java_lazy("javax.microedition.lcdui.Displayable")
 local Processor = require("org.allbinary.canvas.Processor")
 local ScreenRepaintUtil = java_lazy("org.allbinary.graphics.displayable.screen.ScreenRepaintUtil")
 

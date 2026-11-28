@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 local CustomTextAnimation = require("org.allbinary.animation.text.CustomTextAnimation")
 
@@ -145,8 +145,8 @@ AdjustCustomTextAnimation.javaClassName = "org.allbinary.animation.text.AdjustCu
 setmetatable(AdjustCustomTextAnimation, {__index = CustomTextAnimation})
 
 function AdjustCustomTextAnimation:_init_fields()
-    if self.dx == nil then self.dx = nil end
-    if self.dy == nil then self.dy = nil end
+    if self.dx == nil then self.dx = 0 end
+    if self.dy == nil then self.dy = 0 end
 end
 
 

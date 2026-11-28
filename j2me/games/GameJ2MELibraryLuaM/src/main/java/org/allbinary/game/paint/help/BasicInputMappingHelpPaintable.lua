@@ -220,10 +220,10 @@ function BasicInputMappingHelpPaintable:get(keyList)
             key = keyList.objectArray[index + 1]
             stringBuffer:append(key:getName())
             if index + 1 < keyList:size() then
-                if keyList:size() == 2 then
+                if rawequal(keyList:size(), 2) then
                     stringBuffer:append(commonSeps.SPACE):append(AND)
                 else
-                    if index + 2 == keyList:size() then
+                    if rawequal(index + 2, keyList:size()) then
                         stringBuffer:append(commonSeps.COMMA_SEP)
                         stringBuffer:append(AND)
                     else

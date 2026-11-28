@@ -55,12 +55,12 @@ TouchButtonLocationHelper.className = "TouchButtonLocationHelper"
 TouchButtonLocationHelper.javaClassName = "org.allbinary.input.motion.button.TouchButtonLocationHelper"
 
 function TouchButtonLocationHelper:_init_fields()
-    if self.totalColumns == nil then self.totalColumns = nil end
-    if self.totalRows == nil then self.totalRows = nil end
-    if self.columnsRemainder == nil then self.columnsRemainder = nil end
-    if self.rowsRemainder == nil then self.rowsRemainder = nil end
-    if self.columnsRemainderHalf == nil then self.columnsRemainderHalf = nil end
-    if self.rowsRemainderHalf == nil then self.rowsRemainderHalf = nil end
+    if self.totalColumns == nil then self.totalColumns = 0 end
+    if self.totalRows == nil then self.totalRows = 0 end
+    if self.columnsRemainder == nil then self.columnsRemainder = 0 end
+    if self.rowsRemainder == nil then self.rowsRemainder = 0 end
+    if self.columnsRemainderHalf == nil then self.columnsRemainderHalf = 0 end
+    if self.rowsRemainderHalf == nil then self.rowsRemainderHalf = 0 end
 end
 
 

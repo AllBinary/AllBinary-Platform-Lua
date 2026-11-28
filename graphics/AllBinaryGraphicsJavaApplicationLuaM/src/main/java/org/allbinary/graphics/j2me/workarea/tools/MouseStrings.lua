@@ -58,11 +58,11 @@ function MouseStrings:_init_fields()
     self.MOUSE_CLICKED = "mouseClicked"
     self.MOUSE_DRAGGED = "mouseDragged"
     self.MOUSE_MOVED = "mouseMoved"
-    self.MOUSE_PRESSED_LABEL = "MousePressed" .. tostring(CommonSeps.getInstance().COLON_SEP)
-    self.MOUSE_RELEASED_LABEL = "MouseReleased" .. tostring(CommonSeps.getInstance().COLON_SEP)
-    self.MOUSE_CLICKED_LABEL = "MouseClicked" .. tostring(CommonSeps.getInstance().COLON_SEP)
-    self.MOUSE_DRAGGED_LABEL = "MouseDragged" .. tostring(CommonSeps.getInstance().COLON_SEP)
-    self.MOUSE_MOVED_LABEL = "MouseMoved" .. tostring(CommonSeps.getInstance().COLON_SEP)
+    self.MOUSE_PRESSED_LABEL = require("allbinary_java").to_string("MousePressed") .. require("allbinary_java").to_string(CommonSeps.getInstance().COLON_SEP)
+    self.MOUSE_RELEASED_LABEL = require("allbinary_java").to_string("MouseReleased") .. require("allbinary_java").to_string(CommonSeps.getInstance().COLON_SEP)
+    self.MOUSE_CLICKED_LABEL = require("allbinary_java").to_string("MouseClicked") .. require("allbinary_java").to_string(CommonSeps.getInstance().COLON_SEP)
+    self.MOUSE_DRAGGED_LABEL = require("allbinary_java").to_string("MouseDragged") .. require("allbinary_java").to_string(CommonSeps.getInstance().COLON_SEP)
+    self.MOUSE_MOVED_LABEL = require("allbinary_java").to_string("MouseMoved") .. require("allbinary_java").to_string(CommonSeps.getInstance().COLON_SEP)
 end
 
 function MouseStrings._jinit(self)

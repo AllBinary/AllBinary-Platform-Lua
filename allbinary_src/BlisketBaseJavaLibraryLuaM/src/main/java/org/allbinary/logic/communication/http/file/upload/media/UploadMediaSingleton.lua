@@ -147,7 +147,7 @@ end
 
 
 function UploadMediaSingleton.getInstance()
-        if UploadMediaSingleton.uploadMedia == nil then
+        if rawequal(UploadMediaSingleton.uploadMedia, nil) then
             UploadMediaSingleton.uploadMedia = UploadMediaSingleton.new()
         end
         return UploadMediaSingleton.uploadMedia
@@ -187,7 +187,7 @@ end
 function UploadMediaSingleton:isMedia_j3(mediaFileType, aMediaType, hashMap)
         if hashMap:containsKey(mediaFileType) then
             local mediaType = hashMap:get(mediaFileType)
-            if ((mediaType < aMediaType and -1) or (mediaType > aMediaType and 1) or 0) == 0 then
+            if rawequal(((mediaType < aMediaType and -1) or (mediaType > aMediaType and 1) or 0), 0) then
                 return true
             else
                 return false

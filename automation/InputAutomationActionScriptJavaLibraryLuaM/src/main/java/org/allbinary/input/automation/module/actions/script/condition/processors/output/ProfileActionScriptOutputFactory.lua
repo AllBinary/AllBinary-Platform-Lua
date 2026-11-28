@@ -84,7 +84,7 @@ end
 -- throws Exception
 function ProfileActionScriptOutputFactory.getInstance(node)
         local profileActionScriptOutputInterface = nil
-        if DomSearchHelper.getNodeNoThrow(ImageActionScriptOutputData.NAME, node:getChildNodes()) ~= nil then
+        if not rawequal(DomSearchHelper.getNodeNoThrow(ImageActionScriptOutputData.NAME, node:getChildNodes()), nil) then
             profileActionScriptOutputInterface = ImageActionScriptOutput.new(node)
         else
             error(require("java.lang.Exception").new("No Such ActionScript Output"), 0)

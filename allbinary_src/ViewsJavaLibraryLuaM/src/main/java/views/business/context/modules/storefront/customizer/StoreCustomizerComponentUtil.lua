@@ -122,7 +122,7 @@ end
 -- throws Exception
 function StoreCustomizerComponentUtil:generate_j2(abeClientInformation, transformInfoInterface)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("Generating Modified Views For: " .. transformInfoInterface:getName(), self, "generateModifiedViews()")
+            self.logUtil:putF(require("allbinary_java").to_string("Generating Modified Views For: ") .. require("allbinary_java").to_string(transformInfoInterface:getName()), self, "generateModifiedViews()")
         end
         local customizerUtil = CustomizerUtil.getInstance()
         local allCustomizedViews = customizerUtil:getTransformInfoObjectConfigGroupComponentNodes(transformInfoInterface)
@@ -131,7 +131,7 @@ function StoreCustomizerComponentUtil:generate_j2(abeClientInformation, transfor
             local nextTransformInfoInterface = allCustomizedViews:get(index)
             local allViewsToBeModified = customizerUtil:getTransformInfoObjectConfigComponentNodesToCustomize(transformInfoInterface, nextTransformInfoInterface)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("View or component that was modified by a Customizer: " .. nextTransformInfoInterface:getName(), self, "generateModifiedViews()")
+                self.logUtil:putF(require("allbinary_java").to_string("View or component that was modified by a Customizer: ") .. require("allbinary_java").to_string(nextTransformInfoInterface:getName()), self, "generateModifiedViews()")
             end
             self:generate(abeClientInformation, transformInfoInterface, allViewsToBeModified)
         end
@@ -147,7 +147,7 @@ function StoreCustomizerComponentUtil:generate_j3(abeClientInformation, transfor
             local nextTransformInfoInterface = allViewsToBeModifiedVector:get(index)
             local specifiedTransformInfoInterface = customizerUtil:getTransformInfoInterfaceToCustomize(transformInfoInterface, nextTransformInfoInterface)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("Retrieved: " .. specifiedTransformInfoInterface:getName(), self, "generateModifiedViews()")
+                self.logUtil:putF(require("allbinary_java").to_string("Retrieved: ") .. require("allbinary_java").to_string(specifiedTransformInfoInterface:getName()), self, "generateModifiedViews()")
             end
             TransformGeneratorUtil.getInstance():generate(abeClientInformation, nextTransformInfoInterface, specifiedTransformInfoInterface)
         end

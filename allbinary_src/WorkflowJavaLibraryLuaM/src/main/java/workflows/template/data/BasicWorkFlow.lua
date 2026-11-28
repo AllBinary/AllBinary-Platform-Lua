@@ -79,7 +79,7 @@ end
 function BasicWorkFlow._jinit(self, propertiesHashMap, pageContext)
     BasicWorkFlow._init_fields(self)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().WORKFLOW) then
-            self.logUtil:putF("Properties: " .. tostring(propertiesHashMap), self, "BasicWorkFlow()")
+            self.logUtil:putF(require("allbinary_java").to_string("Properties: ") .. require("allbinary_java").to_string(tostring(propertiesHashMap)), self, "BasicWorkFlow()")
         end
         self.propertiesHashMap = propertiesHashMap
         self.pageContext = pageContext

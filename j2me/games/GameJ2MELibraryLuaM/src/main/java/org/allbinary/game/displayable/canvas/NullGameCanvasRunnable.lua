@@ -28,9 +28,9 @@ local function java_real(class)
     return class
 end
 
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local Item = require("javax.microedition.lcdui.Item")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Item = java_lazy("javax.microedition.lcdui.Item")
 local GameState = java_lazy("org.allbinary.game.state.GameState")
 local GameStateFactory = java_lazy("org.allbinary.game.state.GameStateFactory")
 local StdUtil = java_lazy("org.allbinary.logic.StdUtil")

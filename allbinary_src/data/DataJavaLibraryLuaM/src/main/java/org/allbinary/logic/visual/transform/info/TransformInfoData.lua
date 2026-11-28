@@ -66,8 +66,8 @@ function TransformInfoData:_init_fields()
     self.DATAFILENAME = "TRANSFORM_INFO_DATAFILENAME"
     self.DATA = "TRANSFORM_INFO_DATA"
     self.LABEL = "TRANSFORM_INFO_LABEL"
-    self.OWNER = "OWNER_" .. self.NAME
-    self.PARTIAL = "PARTIAL_" .. self.NAME
+    self.OWNER = require("allbinary_java").to_string("OWNER_") .. require("allbinary_java").to_string(self.NAME)
+    self.PARTIAL = require("allbinary_java").to_string("PARTIAL_") .. require("allbinary_java").to_string(self.NAME)
 end
 
 

@@ -210,12 +210,12 @@ java_overload(StoreFrontTag, "getCurrentHomeLocation", 0)
 -- throws JspTagException
 function StoreFrontTag:doStartTag()
         local try_ok, try_error, try_value = pcall(function()
-            if self.command ~= nil then
+            if not rawequal(self.command, nil) then
                 self.propertiesHashMap = StdUtil.getInstance():createHashMap()
                 self.propertiesHashMap:put(StoreFrontData.getInstance().NAME, self.storeName)
-                if ((self.command < GLOBALS2.GETCURRENTLOCATION and -1) or (self.command > GLOBALS2.GETCURRENTLOCATION and 1) or 0) == 0 then
+                if rawequal(((self.command < GLOBALS2.GETCURRENTLOCATION and -1) or (self.command > GLOBALS2.GETCURRENTLOCATION and 1) or 0), 0) then
                     self.pageContext:getOut():print(self:getCurrentLocation())
-                elseif ((self.command < GLOBALS2.GETCURRENTHOMELOCATION and -1) or (self.command > GLOBALS2.GETCURRENTHOMELOCATION and 1) or 0) == 0 then
+                elseif rawequal(((self.command < GLOBALS2.GETCURRENTHOMELOCATION and -1) or (self.command > GLOBALS2.GETCURRENTHOMELOCATION and 1) or 0), 0) then
                     self.pageContext:getOut():print(self:getCurrentHomeLocation())
                 end
             end

@@ -68,7 +68,7 @@ end
 
 function PaymentGatewayPageData._jinit(self, location, paymentMethod)
     PaymentGatewayPageData._init_fields(self)
-        local paymentMethodString = tostring(PaymentGatewayPageData.NAME) .. paymentMethod
+        local paymentMethodString = require("allbinary_java").to_string(PaymentGatewayPageData.NAME) .. require("allbinary_java").to_string(paymentMethod)
         local stringBuffer = StringMaker.new()
         stringBuffer:append(location)
         stringBuffer:append("MakePayment")
@@ -126,8 +126,8 @@ end
 PaymentGatewayPageData.EXTENSION = ".jsp"
 PaymentGatewayPageData.NAME = StringUtil.getInstance().EMPTY_STRING
 PaymentGatewayPageData.FORWARDMAKEPAYMENT = "MakePayment.jsp"
-PaymentGatewayPageData.PAYMENTOPTIONS = "PaymentOptions" .. tostring(PaymentGatewayPageData.EXTENSION)
-PaymentGatewayPageData.STARTCHECKOUT = "StartCheckout" .. tostring(PaymentGatewayPageData.EXTENSION)
+PaymentGatewayPageData.PAYMENTOPTIONS = require("allbinary_java").to_string("PaymentOptions") .. require("allbinary_java").to_string(PaymentGatewayPageData.EXTENSION)
+PaymentGatewayPageData.STARTCHECKOUT = require("allbinary_java").to_string("StartCheckout") .. require("allbinary_java").to_string(PaymentGatewayPageData.EXTENSION)
 
 return PaymentGatewayPageData
 

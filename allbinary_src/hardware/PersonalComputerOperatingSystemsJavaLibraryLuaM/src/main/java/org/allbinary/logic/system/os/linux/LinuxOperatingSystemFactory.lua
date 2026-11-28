@@ -100,13 +100,13 @@ function LinuxOperatingSystemFactory:getOperatingSystemInstance()
             local operatingSystems = OperatingSystems.getInstance()
             local osName = SystemProperties.getInstance():getName()
             local operatingSystemInterface = nil
-            if ((osName < operatingSystems.LINUX and -1) or (osName > operatingSystems.LINUX and 1) or 0) == 0 then
+            if rawequal(((osName < operatingSystems.LINUX and -1) or (osName > operatingSystems.LINUX and 1) or 0), 0) then
                 operatingSystemInterface = LinuxOS.new()
             else
                 if operatingSystems:isUnknownSpecificOSAllowed() then
                     operatingSystemInterface = LinuxOS.new()
                 else
-                    error(require("java.lang.Exception").new("Specific Linux OS Not Supported: " .. osName), 0)
+                    error(require("java.lang.Exception").new(require("allbinary_java").to_string("Specific Linux OS Not Supported: ") .. require("allbinary_java").to_string(osName)), 0)
                 end
             end
             do return "__jreturn", operatingSystemInterface end

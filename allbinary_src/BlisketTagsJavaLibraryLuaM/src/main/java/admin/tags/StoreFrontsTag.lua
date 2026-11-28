@@ -231,18 +231,18 @@ java_overload(StoreFrontsTag, "sendStoreCreatedEmails", 0)
 function StoreFrontsTag:doStartTag()
         local try_ok, try_error, try_value = pcall(function()
             if self:isEnabled() then
-                if self:getCommand() ~= nil then
+                if not rawequal(self:getCommand(), nil) then
                     local storeFrontData = StoreFrontData.getInstance()
-                    if self:getCommand():compareTo(storeFrontData.SELECT) == 0 then
+                    if rawequal(self:getCommand():compareTo(storeFrontData.SELECT), 0) then
                         self.pageContext:getOut():print(self:generateSelect())
-                    elseif self:getCommand():compareTo(storeFrontData.INSTALL) == 0 then
+                    elseif rawequal(self:getCommand():compareTo(storeFrontData.INSTALL), 0) then
                         self:getPropertiesHashMap():put("current", self:getCurrent())
                         self:getPropertiesHashMap():put("total", self:getTotal())
-                        if math.tointeger(self:getCurrent() // 1) == math.tointeger(self:getTotal() // 1) then
+                        if rawequal(math.tointeger(self:getCurrent() // 1), math.tointeger(self:getTotal() // 1)) then
                             do return "__jreturn", TagSupport.EVAL_BODY_INCLUDE end
                         end
                         self:install()
-                    elseif self:getCommand():compareTo(storeFrontData.INSTALL_COMPLETE) == 0 then
+                    elseif rawequal(self:getCommand():compareTo(storeFrontData.INSTALL_COMPLETE), 0) then
                         self:sendStoreCreatedEmails()
                     else
                         do return "__jreturn", java_super(TableTag, "doStartTag", 0)(self) end

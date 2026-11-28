@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local BasicHud = require("org.allbinary.game.graphics.hud.BasicHud")
 local BasicColorFactory = java_lazy("org.allbinary.graphics.color.BasicColorFactory")
 local PaintableInterface = java_lazy("org.allbinary.graphics.paint.PaintableInterface")
@@ -157,8 +157,8 @@ LevelHudWidget.java_implements = " PaintableInterface "
 LevelHudWidget.java_interfaces = function() return {PaintableInterface} end
 
 function LevelHudWidget:_init_fields()
-    if self.level == nil then self.level = nil end
-    if self.maxlevel == nil then self.maxlevel = nil end
+    if self.level == nil then self.level = 0 end
+    if self.maxlevel == nil then self.maxlevel = 0 end
     if self.levelString == nil then self.levelString = nil end
     self.levelNumberCharArray = NullUtil.getInstance().NULL_CHAR_ARRAY
     if self.levelNumberTotalDigits == nil then self.levelNumberTotalDigits = 0 end

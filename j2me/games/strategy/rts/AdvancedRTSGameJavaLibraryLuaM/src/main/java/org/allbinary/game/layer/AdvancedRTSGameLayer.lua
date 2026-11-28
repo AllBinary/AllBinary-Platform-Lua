@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local AnimationInterfaceFactoryInterface = java_lazy("org.allbinary.animation.AnimationInterfaceFactoryInterface")
 local NullAnimationFactory = java_lazy("org.allbinary.animation.NullAnimationFactory")
 local NullIndexedAnimationFactory = java_lazy("org.allbinary.animation.NullIndexedAnimationFactory")
@@ -197,7 +197,7 @@ AdvancedRTSGameLayer.java_interfaces = function() return {DestroyedEventListener
 function AdvancedRTSGameLayer:_init_fields()
     if self.shakeListener == nil then self.shakeListener = nil end
     if self.vibration == nil then self.vibration = nil end
-    if self.duration == nil then self.duration = nil end
+    if self.duration == nil then self.duration = 0 end
     self.parentLayer = NullPathFindingLayer.NULL_PATH_FINDING_LAYER
     self.waypointBehaviorBase = NullTickable.getInstance()
 end
@@ -241,7 +241,7 @@ java_overload(AdvancedRTSGameLayer, "updateWaypointBehavior", 1, function(java_a
 
 function AdvancedRTSGameLayer:initVisibility(rtsPlayerLayerInterface)
         local advancedRTSPlayerLayerInterface = rtsPlayerLayerInterface
-        if advancedRTSPlayerLayerInterface:isLocalPlayer() or advancedRTSPlayerLayerInterface:getGameType() == GameTypeFactory.getInstance().BOT then
+        if advancedRTSPlayerLayerInterface:isLocalPlayer() or rawequal(advancedRTSPlayerLayerInterface:getGameType(), GameTypeFactory.getInstance().BOT) then
             self:setVisible(true)
         else
             self:setVisible(false)
@@ -315,9 +315,9 @@ java_overload(AdvancedRTSGameLayer, "getWaypointRunnableLogHelper", 0)
 
 
 function AdvancedRTSGameLayer:shouldAddWaypointFromBuilding()
-        if self.parentLayer ~= NullPathFindingLayer.NULL_PATH_FINDING_LAYER then
+        if not rawequal(self.parentLayer, NullPathFindingLayer.NULL_PATH_FINDING_LAYER) then
             local parentAdvancedRTSGameLayer = self.parentLayer
-            if parentAdvancedRTSGameLayer:getType() ~= 1 then
+            if not rawequal(parentAdvancedRTSGameLayer:getType(), 1) then
                 return true
             end
         end
@@ -327,7 +327,7 @@ java_overload(AdvancedRTSGameLayer, "shouldAddWaypointFromBuilding", 0)
 
 
 function AdvancedRTSGameLayer:isWaypointListEmptyOrOnlyTargets()
-        if self:getType() ~= 1 then
+        if not rawequal(self:getType(), 1) then
             return true
         end
         return false
@@ -342,7 +342,7 @@ function AdvancedRTSGameLayer:buildingChase(allbinaryLayer, cellPosition)
         local angleInfo = self:getRotationAnimationInterface():getAngleInfoP()
         local angle = FrameUtil.getInstance():adjustAngleToFrameAngle(angleInfo:getAngle() + 90)
         local gameKeyEventFactory = GameKeyEventFactory.getInstance()
-        if buildingDirection == DirectionFactory.getInstance().UP then
+        if rawequal(buildingDirection, DirectionFactory.getInstance().UP) then
             self.rtsLayer2LogHelper:buildingAbove(self)
             if angle > 180 and angle < 360 then
                 self.rtsLayer2LogHelper:buildingChaseLeft(self, angle)
@@ -357,7 +357,7 @@ function AdvancedRTSGameLayer:buildingChase(allbinaryLayer, cellPosition)
                     return true
                 end
             end
-        elseif buildingDirection == DirectionFactory.getInstance().DOWN then
+        elseif rawequal(buildingDirection, DirectionFactory.getInstance().DOWN) then
             self.rtsLayer2LogHelper:buildingDown(self)
             if angle > 180 and angle < 360 then
                 self.rtsLayer2LogHelper:buildingChaseLeft(self, angle)
@@ -372,7 +372,7 @@ function AdvancedRTSGameLayer:buildingChase(allbinaryLayer, cellPosition)
                     return true
                 end
             end
-        elseif buildingDirection == DirectionFactory.getInstance().LEFT then
+        elseif rawequal(buildingDirection, DirectionFactory.getInstance().LEFT) then
             self.rtsLayer2LogHelper:buildingLeft()
             if angle > 90 and angle < 270 then
                 self.rtsLayer2LogHelper:buildingChaseDown(self, angle)
@@ -387,7 +387,7 @@ function AdvancedRTSGameLayer:buildingChase(allbinaryLayer, cellPosition)
                     return true
                 end
             end
-        elseif buildingDirection == DirectionFactory.getInstance().RIGHT then
+        elseif rawequal(buildingDirection, DirectionFactory.getInstance().RIGHT) then
             self.rtsLayer2LogHelper:buildingRight()
             if angle > 90 and angle < 270 then
                 self.rtsLayer2LogHelper:buildingChaseDown(self, angle)
@@ -440,7 +440,7 @@ java_overload(AdvancedRTSGameLayer, "setSelected", 1, function(java_a1) return t
 function AdvancedRTSGameLayer:onDestroyed(destroyedEvent)
         local try_ok, try_error, try_value = pcall(function()
             local layerInterface = destroyedEvent:getLayerInterface()
-            if layerInterface == self then
+            if rawequal(layerInterface, self) then
                 DestroyedEventHandler.getInstance():removeListener(self)
                 local waypoint = self:getWaypointBehavior():getWaypoint()
                 waypoint:reset()

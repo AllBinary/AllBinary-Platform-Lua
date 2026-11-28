@@ -87,10 +87,10 @@ function LayerCoveringCellPositionsUtil:getAll(geographicMapInterface, topLeftGe
         reusableList:clear()
         local columns = layerInterface:getWidth() / geographicMapInterface:getAllBinaryTiledLayer():getCellWidth()
         local rows = layerInterface:getHeight() / geographicMapInterface:getAllBinaryTiledLayer():getCellHeight()
-        if columns == 0 then
+        if rawequal(columns, 0) then
             columns = 1
         end
-        if rows == 0 then
+        if rawequal(rows, 0) then
             rows = 1
         end
         return self.cellPositionsUtil:getAll(geographicMapInterface, topLeftGeographicMapCellPosition, columns, rows, reusableList)

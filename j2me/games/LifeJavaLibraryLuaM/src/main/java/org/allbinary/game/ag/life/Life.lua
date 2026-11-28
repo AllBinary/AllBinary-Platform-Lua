@@ -68,9 +68,9 @@ Life.java_implements = " LifeInterface "
 Life.java_interfaces = function() return {LifeInterface} end
 
 function Life:_init_fields()
-    if self.lives == nil then self.lives = nil end
-    if self.startLives == nil then self.startLives = nil end
-    if self.maxlives == nil then self.maxlives = nil end
+    if self.lives == nil then self.lives = 0 end
+    if self.startLives == nil then self.startLives = 0 end
+    if self.maxlives == nil then self.maxlives = 0 end
 end
 
 
@@ -121,7 +121,7 @@ end
 
 
 function Life:add(lives)
-        if not self:reachedLimit() then
+        if not (self:reachedLimit()) then
             if self.lives + lives <= self:getMaxlives() then
                 self.lives = (self.lives + lives)
             else
@@ -155,7 +155,7 @@ end
 
 
 function Life:deaths(lives)
-        if not self:reachedLimit() then
+        if not (self:reachedLimit()) then
             if self.lives - lives >= 0 then
                 self.lives = (self.lives - lives)
             else

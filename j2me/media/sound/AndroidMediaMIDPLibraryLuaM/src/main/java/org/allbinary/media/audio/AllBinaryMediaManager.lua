@@ -29,9 +29,9 @@ local function java_real(class)
 end
 
 -- local IOException = require("java.io.IOException")
--- local InputStream = require("java.io.InputStream")
--- local MediaException = require("javax.microedition.media.MediaException")
--- local Player = require("javax.microedition.media.Player")
+local InputStream = java_lazy("java.io.InputStream")
+local MediaException = java_lazy("javax.microedition.media.MediaException")
+local Player = java_lazy("javax.microedition.media.Player")
 local TsUtil = java_lazy("org.allbinary.TsUtil")
 local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
 local GameFeatureFactory = java_lazy("org.allbinary.game.configuration.feature.GameFeatureFactory")
@@ -146,15 +146,15 @@ function AllBinaryMediaManager.shutdown(soundsFactoryInterface)
             local player2 = nil
             local androidMediaPlayerWrapper = nil
             for i = 0, (soundInterfaceArray.n or #soundInterfaceArray) - 1 do
-                if soundInterfaceArray[i + 1] ~= nil then
+                if not rawequal(soundInterfaceArray[i + 1], nil) then
                     player = soundInterfaceArray[i + 1]:getPlayerP()
-                    if player ~= nil then
+                    if not rawequal(player, nil) then
                         player2 = (player):getPlayerP()
                         if java_instanceof(player2, AndroidMediaPlayerWrapper) then
                             androidMediaPlayerWrapper = player2
                             MediaPlayerUtil.getInstance():waitForMediaPlayer(androidMediaPlayerWrapper:getMediaPlayer())
                         else
-                            error(require("java.lang.Exception").new("Unknown Property Player: " .. (getmetatable(player).javaClassName or getmetatable(player).className)), 0)
+                            error(require("java.lang.Exception").new(require("allbinary_java").to_string("Unknown Property Player: ") .. require("allbinary_java").to_string((getmetatable(player).javaClassName or getmetatable(player).className))), 0)
                         end
                     end
                 end
@@ -179,7 +179,7 @@ function AllBinaryMediaManager.createPlayer(resource)
             if not try_ok then
                 local e = try_error
                 if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-                logUtil:put("Could not create AndroidMediaPlayerWrapper using NoPlayer at " .. tostring(CommonLabels.getInstance().TOTAL_LABEL) .. tostring(AllBinaryMediaManager.mostUsedTotal), AllBinaryMediaManager.THIS, "createPlayer", e)
+                logUtil:put(require("allbinary_java").to_string(require("allbinary_java").to_string("Could not create AndroidMediaPlayerWrapper using NoPlayer at ") .. require("allbinary_java").to_string(CommonLabels.getInstance().TOTAL_LABEL)) .. require("allbinary_java").to_string(AllBinaryMediaManager.mostUsedTotal), AllBinaryMediaManager.THIS, "createPlayer", e)
                 return NoPlayer.NO_PLAYER
             end
             if try_ok and try_error == "__jreturn" then return try_value end

@@ -82,10 +82,10 @@ function XmlRpcAbeClient:_init_fields()
     if self.remoteMethod == nil then self.remoteMethod = nil end
     if self.clientInfo == nil then self.clientInfo = nil end
     self.client = NullXmlRpcHandler.NULL_XML_RPC_HANDLER
-    if self.server == nil then self.server = nil end
+    if self.server == nil then self.server = 0 end
     if self.start == nil then self.start = 0 end
     if self.maxServers == nil then self.maxServers = 0 end
-    if self.isDone == nil then self.isDone = nil end
+    if self.isDone == nil then self.isDone = false end
     self.START_SERVER = "Start With Server #"
     self.TRYING = "Trying Server #"
     self.SEP = CommonLabels.getInstance().COLON_SEP
@@ -109,7 +109,7 @@ function XmlRpcAbeClient._jinit(self, clientInfo, remoteMethod)
         if clientInfo:getNumberOfLicenseServers() > 1 then
             self.maxServers = clientInfo:getNumberOfLicenseServers() - 2
             self.start = self.myRandomFactory:getAbsoluteNextInt(self.maxServers) + 1
-        elseif clientInfo:getNumberOfLicenseServers() == 1 then
+        elseif rawequal(clientInfo:getNumberOfLicenseServers(), 1) then
             self.maxServers = 0
             self.start = 0
         end
@@ -145,7 +145,7 @@ function XmlRpcAbeClient:tryAnother(anyType)
         else
             self:setServer(0)
         end
-        if self:getServer() ~= self:getStart() and not self:isIsDone() then
+        if not rawequal(self:getServer(), self:getStart()) and not (self:isIsDone()) then
             return self:get(anyType)
         else
             self:setIsDone(true)

@@ -185,7 +185,7 @@ function DirectoryOrIncludeFileExtensionBooleanFileVisitor:visit(file)
         if file:isDirectory() then
             return true
         end
-        if self.includesString == nil or file:getAbsolutePath():indexOf(self.includesString) >= 0 then
+        if rawequal(self.includesString, nil) or file:getAbsolutePath():indexOf(self.includesString) >= 0 then
             return java_super(IncludeFileExtensionsBooleanFileVisitor, "visit", 1)(self, file)
         else
             return false

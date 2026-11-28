@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Font = require("javax.microedition.lcdui.Font")
+local Font = java_lazy("javax.microedition.lcdui.Font")
 local FontDebugBase = java_lazy("org.allbinary.graphics.font.FontDebugBase")
 
 local function java_idiv(a, b)

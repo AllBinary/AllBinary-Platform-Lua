@@ -32,8 +32,8 @@ end
 local ByteArrayOutputStream = java_lazy("java.io.ByteArrayOutputStream")
 -- local DataInputStream = require("java.io.DataInputStream")
 -- local DataOutputStream = require("java.io.DataOutputStream")
--- local RecordEnumeration = require("javax.microedition.rms.RecordEnumeration")
--- local RecordStore = require("javax.microedition.rms.RecordStore")
+local RecordEnumeration = java_lazy("javax.microedition.rms.RecordEnumeration")
+local RecordStore = java_lazy("javax.microedition.rms.RecordStore")
 local TsUtil = java_lazy("org.allbinary.TsUtil")
 local BasicPersitance = require("org.allbinary.game.configuration.persistance.BasicPersitance")
 local NullRecordComparator = java_lazy("org.allbinary.game.configuration.persistance.NullRecordComparator")
@@ -194,7 +194,7 @@ function InputPersistance:loadAll(abeClientInformation)
                 stringBuffer:delete(0, stringBuffer:length())
                 self.logUtil:putF(tostring(stringBuffer:append(self.persistanceStrings.LOADING_ID):appendint(id)), self, self.persistanceStrings.LOAD_ALL)
                 recordAsBytes = self.tsUtil:getRecord(recordStore, id)
-                if recordAsBytes ~= nil then
+                if not rawequal(recordAsBytes, nil) then
                     byteArrayInputStream = ByteArrayInputStream.new(recordAsBytes)
                     inputStream = DataInputStream.new(byteArrayInputStream)
                     hashtable = stdUtil:createHashtable()
@@ -208,16 +208,16 @@ function InputPersistance:loadAll(abeClientInformation)
                         inputId = value
                         gameActionInput = gameKeyFactory:getGameKey(gameActionInputId)
                         input = inputFactory:getInstanceById(inputId)
-                        if input == inputFactory.NO_INPUT or gameActionInput == nil then
+                        if rawequal(input, inputFactory.NO_INPUT) or rawequal(gameActionInput, nil) then
                             stringBuffer:delete(0, stringBuffer:length())
-                            if input == inputFactory.NO_INPUT then
+                            if rawequal(input, inputFactory.NO_INPUT) then
                                 stringBuffer:append(self.persistanceStrings.ERROR_LOADING_ID)
                                 stringBuffer:appendlong(inputId)
                                 stringBuffer:append(self.persistanceStrings.GAME_ACTION_INPUT)
                                 stringBuffer:appendlong(gameActionInputId)
                                 PreLogUtil.put(tostring(stringBuffer), self, self.persistanceStrings.LOAD_ALL)
                             end
-                            if gameActionInput == nil then
+                            if rawequal(gameActionInput, nil) then
                                 stringBuffer:delete(0, stringBuffer:length())
                                 stringBuffer:append(self.persistanceStrings.ERROR_LOADING)
                                 stringBuffer:appendlong(gameActionInputId)
@@ -241,7 +241,7 @@ function InputPersistance:loadAll(abeClientInformation)
             error(e, 0)
         end
         do -- finally
-            if recordStore ~= nil then
+            if not rawequal(recordStore, nil) then
                 PreLogUtil.put(self.persistanceStrings.CLOSING_RECORDSTORE, self, self.persistanceStrings.LOAD_ALL)
                 recordStore:closeRecordStore()
             end
@@ -288,7 +288,7 @@ function InputPersistance:save(abeClientInformation, hashtable)
             error(e, 0)
         end
         do -- finally
-            if recordStore ~= nil then
+            if not rawequal(recordStore, nil) then
                 PreLogUtil.put(self.persistanceStrings.CLOSING_RECORDSTORE, self, self.commonStrings.SAVE)
                 recordStore:closeRecordStore()
             end

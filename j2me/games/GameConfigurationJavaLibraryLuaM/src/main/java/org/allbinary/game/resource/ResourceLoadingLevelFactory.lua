@@ -79,7 +79,7 @@ end
 
 function ResourceLoadingLevelFactory:getLevelString(level)
         for index = 0, (self.RESOURCE_LOADING_LEVEL_ARRAY.n or #self.RESOURCE_LOADING_LEVEL_ARRAY) - 1 do
-            if level == self.RESOURCE_LOADING_LEVEL_ARRAY[index + 1]:getLevel() then
+            if rawequal(level, self.RESOURCE_LOADING_LEVEL_ARRAY[index + 1]:getLevel()) then
                 return self.RESOURCE_LOADING_LEVEL_ARRAY[index + 1]:getName()
             end
         end

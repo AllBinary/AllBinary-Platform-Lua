@@ -149,13 +149,13 @@ function InGameFeatures:init()
         local orientationData = OrientationData.getInstance()
         local exclusiveOrientationSensorVector = GameFeatureChoiceGroups.getExclusiveInstance():get():get(orientationData.ORIENTATION_SENSOR_INPUT)
         local inGameFeatureChoiceGroups = InGameFeatureChoiceGroups.getExclusiveInstance()
-        if exclusiveOrientationSensorVector ~= nil then
+        if not rawequal(exclusiveOrientationSensorVector, nil) then
             local inGameExclusiveOrientationSensorVectorCanBeNull = inGameFeatureChoiceGroups:get():get(orientationData.ORIENTATION_SENSOR_INPUT)
-            if inGameExclusiveOrientationSensorVectorCanBeNull == nil then
+            if rawequal(inGameExclusiveOrientationSensorVectorCanBeNull, nil) then
                 self:addToInGameMenu()
             else
                 local inGameExclusiveOrientationSensorVector = inGameExclusiveOrientationSensorVectorCanBeNull
-                if inGameExclusiveOrientationSensorVector:size() == 0 then
+                if rawequal(inGameExclusiveOrientationSensorVector:size(), 0) then
                     self:addToInGameMenu()
                 end
             end
@@ -190,7 +190,7 @@ function InGameFeatures:isAny()
             return true
         end
         local exclusiveOrientationSensorVector = GameFeatureChoiceGroups.getExclusiveInstance():get():get(OrientationData.getInstance().ORIENTATION_SENSOR_INPUT)
-        if exclusiveOrientationSensorVector ~= nil then
+        if not rawequal(exclusiveOrientationSensorVector, nil) then
             return true
         end
         return false

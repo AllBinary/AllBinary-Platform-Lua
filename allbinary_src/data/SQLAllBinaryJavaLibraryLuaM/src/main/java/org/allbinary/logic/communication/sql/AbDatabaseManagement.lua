@@ -239,7 +239,7 @@ function AbDatabaseManagement:addDbUser_j3(db, userName, password)
         local try_ok, try_error, try_value = pcall(function()
             self:addDbUser(self.AT_LOCALHOST, db, userName, password)
             local hostName = self:getHostName()
-            if hostName ~= nil then
+            if not rawequal(hostName, nil) then
                 self:addDbUser(hostName, db, userName, password)
             end
             do return "__jreturn", true end
@@ -247,7 +247,7 @@ function AbDatabaseManagement:addDbUser_j3(db, userName, password)
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-            self.logUtil:put(self.UNABLE_TO_CREATE_USER .. userName, self, self.METHOD_ADD_USER, e)
+            self.logUtil:put(require("allbinary_java").to_string(self.UNABLE_TO_CREATE_USER) .. require("allbinary_java").to_string(userName), self, self.METHOD_ADD_USER, e)
             return false
         end
         if try_ok and try_error == "__jreturn" then return try_value end
@@ -256,6 +256,8 @@ function AbDatabaseManagement:addDbUser(...)
     local count = select("#", ...)
     if count == 4 then return self:addDbUser_j4(...) end
     if count == 3 then return self:addDbUser_j3(...) end
+    local parent = getmetatable(AbDatabaseManagement).__index
+    if parent.addDbUser then return parent.addDbUser(self, ...) end
     error("No method addDbUser takes " .. count .. " arguments")
 end
 AbDatabaseManagement.addDbUser__jdispatcher = AbDatabaseManagement.addDbUser
@@ -263,7 +265,7 @@ AbDatabaseManagement.addDbUser__jdispatcher = AbDatabaseManagement.addDbUser
 
 function AbDatabaseManagement:addDb(db)
         local try_ok, try_error, try_value = pcall(function()
-            local sqlStatement = tostring(self.sqlStrings.CREATE_DATABASE) .. db
+            local sqlStatement = require("allbinary_java").to_string(self.sqlStrings.CREATE_DATABASE) .. require("allbinary_java").to_string(db)
             self.sqlCommandLog:append(sqlStatement)
             self.sqlCommandLog:append(self.commonSeps.NEW_LINE)
             java_super(AbSqlBean, "executeSQLStatement", 1)(self, sqlStatement)
@@ -272,7 +274,7 @@ function AbDatabaseManagement:addDb(db)
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-            self.logUtil:put(self.UNABLE_TO_CREATE_DATABASE .. db, self, self.METHOD_ADD_DB, e)
+            self.logUtil:put(require("allbinary_java").to_string(self.UNABLE_TO_CREATE_DATABASE) .. require("allbinary_java").to_string(db), self, self.METHOD_ADD_DB, e)
             return false
         end
         if try_ok and try_error == "__jreturn" then return try_value end

@@ -69,7 +69,7 @@ TestRemoteLogUtil.javaClassName = "org.allbinary.logic.communication.log.TestRem
 
 
 function TestRemoteLogUtil._jinit(self)
-        Globals.getInstance():init(getmetatable(self):getClassLoader(), TestRemoteLogUtil.PATH)
+        Globals.getInstance():init(require("java.lang.ClassLoader").getSystemClassLoader(), TestRemoteLogUtil.PATH)
         local logUtil = LogUtil.getInstance()
         local commonStrings = CommonStrings.getInstance()
         logUtil:put(commonStrings.EXCEPTION, "Test", "TestClass", require("java.lang.Exception").new("Pretend Exception"))

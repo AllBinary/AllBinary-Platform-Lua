@@ -88,7 +88,7 @@ end
 
 
 function BasicTouchInputFactory.getInstance()
-        if BasicTouchInputFactory.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(BasicTouchInputFactory.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             BasicTouchInputFactory.instance_f = BasicTouchInputFactory.new()
         end
         return BasicTouchInputFactory.instance_f
@@ -96,7 +96,7 @@ end
 
 
 function BasicTouchInputFactory:init(inputToGameKeyMapping)
-        if not self.initialized then
+        if not (self.initialized) then
             self.initialized = true
             self.list:add(self.UP)
             self.list:add(self.LEFT)

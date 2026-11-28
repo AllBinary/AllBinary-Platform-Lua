@@ -79,7 +79,7 @@ end
 
 
 function ConstructorUtil.view(constructor, lineBreak)
-        if constructor ~= nil then
+        if not rawequal(constructor, nil) then
             local commonSeps = CommonSeps.getInstance()
             local stringBuffer = StringMaker.new()
             stringBuffer:append(constructor:getName())

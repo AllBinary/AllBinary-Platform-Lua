@@ -174,35 +174,35 @@ end
 -- throws JspTagException
 function WorkFlowsTag:doStartTag()
         local try_ok, try_error, try_value = pcall(function()
-            if self:getCommand() ~= nil then
-                if self:getCommand():compareTo(GLOBALS2.NEW) == 0 then
+            if not rawequal(self:getCommand(), nil) then
+                if rawequal(self:getCommand():compareTo(GLOBALS2.NEW), 0) then
                     self:setName("New WorkFlow View")
                     self:setObjectFile("views.admin.workflow.NewView")
-                elseif self:getCommand():compareTo(self.commonStrings.INSERT) == 0 then
+                elseif rawequal(self:getCommand():compareTo(self.commonStrings.INSERT), 0) then
                     self:setName("Add Validation WorkFlow View")
                     self:setObjectFile("views.admin.workflow.AddValidationView")
-                elseif self:getCommand():compareTo(GLOBALS2.VIEW) == 0 then
+                elseif rawequal(self:getCommand():compareTo(GLOBALS2.VIEW), 0) then
                     self:setName("Validation WorkFlow View")
                     self:setObjectFile("views.admin.workflow.WorkflowsValidationView")
-                elseif self:getCommand():compareTo(GLOBALS2.EDIT) == 0 then
+                elseif rawequal(self:getCommand():compareTo(GLOBALS2.EDIT), 0) then
                     self:setName("Validation WorkFlow View")
                     self:setObjectFile("views.admin.workflow.EditValidationView")
-                elseif self:getCommand():compareTo(self.commonStrings.UPDATE) == 0 then
+                elseif rawequal(self:getCommand():compareTo(self.commonStrings.UPDATE), 0) then
                     self:setName("Update Validation WorkFlow View")
                     self:setObjectFile("views.admin.workflow.UpdateValidationView")
-                elseif self:getCommand():compareTo(self.commonStrings.DELETE) == 0 then
+                elseif rawequal(self:getCommand():compareTo(self.commonStrings.DELETE), 0) then
                     self:setName("Delete Validation WorkFlow View")
                     self:setObjectFile("views.admin.workflow.DeleteValidationView")
-                elseif self:getCommand():compareTo(GLOBALS2.BACKUP) == 0 then
+                elseif rawequal(self:getCommand():compareTo(GLOBALS2.BACKUP), 0) then
                     error(require("java.lang.Exception").new("View not implemented"), 0)
-                elseif self:getCommand():compareTo(GLOBALS2.RESTORE) == 0 then
+                elseif rawequal(self:getCommand():compareTo(GLOBALS2.RESTORE), 0) then
                     error(require("java.lang.Exception").new("View not implemented"), 0)
-                elseif self:getCommand():compareTo(self.commonStrings.DROP) == 0 then
+                elseif rawequal(self:getCommand():compareTo(self.commonStrings.DROP), 0) then
                     error(require("java.lang.Exception").new("View not implemented"), 0)
-                elseif self:getCommand():compareTo(self.commonStrings.CREATE) == 0 then
+                elseif rawequal(self:getCommand():compareTo(self.commonStrings.CREATE), 0) then
                     error(require("java.lang.Exception").new("View not implemented"), 0)
                 else
-                    error(require("java.lang.Exception").new("No Such View Command: " .. tostring(self:getCommand())), 0)
+                    error(require("java.lang.Exception").new(require("allbinary_java").to_string("No Such View Command: ") .. require("allbinary_java").to_string(self:getCommand())), 0)
                 end
                 do return "__jreturn", java_super(StoreValidationTransformTag, "doStartTag", 0)(self) end
             end

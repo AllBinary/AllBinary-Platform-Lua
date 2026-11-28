@@ -250,7 +250,7 @@ end
 function BasicWorkFlow:isValid()
         local try_ok, try_error, try_value = pcall(function()
             local returnBoolean = true
-            if self.workFlowName == nil then
+            if rawequal(self.workFlowName, nil) then
                 returnBoolean = false
             end
             do return "__jreturn", returnBoolean end
@@ -270,7 +270,7 @@ end
 function BasicWorkFlow:validationInfo()
         local try_ok, try_error, try_value = pcall(function()
             local stringBuffer = StringMaker.new()
-            if self.workFlowName == nil then
+            if rawequal(self.workFlowName, nil) then
                 stringBuffer:append("No WorkFlow name specified.")
             end
             do return "__jreturn", tostring(stringBuffer) end

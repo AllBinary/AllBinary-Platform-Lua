@@ -132,7 +132,7 @@ function ZipFileUtil:create(outFilename, fileBasicArrayList)
                     if not try_ok then
                         local e = try_error
                         if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-                        self.logUtil:putF("Skipping File (Probably Local): " .. tostring(file:getPath()), self, "create()")
+                        self.logUtil:putF(require("allbinary_java").to_string("Skipping File (Probably Local): ") .. require("allbinary_java").to_string(file:getPath()), self, "create()")
                     end
                 end
                 current = current + 1
@@ -156,11 +156,11 @@ function ZipFileUtil:unzip(path, zipFile, fileName)
             local zipEntry = nil
             local stringBuffer = StringMaker.new()
             local fileUtil = FileUtil.getInstance()
-            while ((function() zipEntry = inputStream:getNextEntry() return zipEntry end)()) ~= nil do
+            while not rawequal(((function() zipEntry = inputStream:getNextEntry() return zipEntry end)()), nil) do
                 local entryName = zipEntry:getName()
                 if zipEntry:isDirectory() then
                 else
-                    local entryFile = AbFile.createAbFile(path .. entryName)
+                    local entryFile = AbFile.createAbFile(require("allbinary_java").to_string(path) .. require("allbinary_java").to_string(entryName))
                     stringBuffer:delete(0, stringBuffer:length())
                     stringBuffer:append("ZipEntry Name: ")
                     stringBuffer:append(entryName)

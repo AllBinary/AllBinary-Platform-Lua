@@ -146,7 +146,7 @@ function HealthBarAnimation:_init_fields()
     self.basicColorFactory = BasicColorFactory.getInstance()
     if self.x2 == nil then self.x2 = 0 end
     if self.thickness == nil then self.thickness = 0 end
-    if self.location == nil then self.location = nil end
+    if self.location == nil then self.location = 0 end
     if self.allbinaryLayer == nil then self.allbinaryLayer = nil end
 end
 
@@ -157,7 +157,7 @@ function HealthBarAnimation._jinit(self, layerInterface, location)
         self.allbinaryLayer = layerInterface
         self.location = location
         local basicHudFactory = BasicHudFactory.getInstance()
-        if self.location ~= basicHudFactory.TOPLEFT and self.location ~= basicHudFactory.BOTTOMLEFT then
+        if not rawequal(self.location, basicHudFactory.TOPLEFT) and not rawequal(self.location, basicHudFactory.BOTTOMLEFT) then
             error(require("java.lang.Exception").new("Location Not Valid"), 0)
         end
         if layerInterface:getWidth() > 40 then
@@ -199,9 +199,9 @@ java_overload(HealthBarAnimation, "onHealthChange", 1, function(java_a1) return 
 
 function HealthBarAnimation:getY()
         local basicHudFactory = BasicHudFactory.getInstance()
-        if self.location == basicHudFactory.TOPLEFT then
+        if rawequal(self.location, basicHudFactory.TOPLEFT) then
             return self.allbinaryLayer:getViewPosition():getY() - 4
-        elseif self.location == basicHudFactory.BOTTOMLEFT then
+        elseif rawequal(self.location, basicHudFactory.BOTTOMLEFT) then
             return self.allbinaryLayer:getViewPosition():getY2() + 4
         end
         return -1

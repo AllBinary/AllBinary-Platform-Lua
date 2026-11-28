@@ -85,9 +85,9 @@ PrimitiveLongUtil.javaClassName = "org.allbinary.logic.math.PrimitiveLongUtil"
 
 function PrimitiveLongUtil:_init_fields()
     self.logUtil = LogUtil.getInstance()
-    if self.powerOfTen == nil then self.powerOfTen = nil end
-    if self.maxValue == nil then self.maxValue = nil end
-    if self.maxDigits == nil then self.maxDigits = nil end
+    if self.powerOfTen == nil then self.powerOfTen = 0 end
+    if self.maxValue == nil then self.maxValue = 0 end
+    if self.maxDigits == nil then self.maxDigits = 0 end
     if self.charArray == nil then self.charArray = nil end
     if self.currentTotalDigits == nil then self.currentTotalDigits = 0 end
     self.primitiveLongSingleton = PrimitiveLongSingleton.getInstance()
@@ -96,7 +96,7 @@ end
 
 function PrimitiveLongUtil.createPowerOfTen(powerOfTen)
         local primitiveLongUtil = PrimitiveLongUtil.new(powerOfTen, NullUtil.getInstance().NULL_OBJECT)
-        if math.fmod(powerOfTen, 10) ~= 0 then
+        if not rawequal(math.fmod(powerOfTen, 10), 0) then
             local logUtil = LogUtil.getInstance()
             local commonStrings = CommonStrings.getInstance()
             logUtil:put(commonStrings.EXCEPTION, primitiveLongUtil, commonStrings.CONSTRUCTOR, require("java.lang.Exception").new("Max must be power of 10"))
@@ -136,7 +136,7 @@ function PrimitiveLongUtil:getCharArray(value)
         while div >= 1 do
             local digit = java_idiv((value - lastValue), div)
             if digit >= 0 and digit < 10 then
-                if digit == 0 and index == 0 then
+                if rawequal(digit, 0) and rawequal(index, 0) then
                 else
                     self.charArray[(function() local value = index index = value + 1 return value end)() + 1] = self.primitiveLongSingleton.NUMBER_CHAR_ARRAY[digit + 1]
                 end

@@ -125,13 +125,13 @@ end
 
 
 function LogFormatUtil:getO(exception)
-        if exception ~= self.nullUtil.NULL_OBJECT then
+        if not rawequal(exception, self.nullUtil.NULL_OBJECT) then
             local stringBuffer = StringMaker.new()
             stringBuffer:append(self.LOG_ERROR)
             local exceptionAsString = tostring(exception)
             stringBuffer:append(exceptionAsString)
             stringBuffer:append(self.STACK_TRACE)
-            if exception ~= self.nullUtil.NULL_OBJECT then
+            if not rawequal(exception, self.nullUtil.NULL_OBJECT) then
                 stringBuffer:append(self.exceptionUtil:getStackTrace(exception))
             else
                 stringBuffer:append(self.stringUtil.NULL_STRING)

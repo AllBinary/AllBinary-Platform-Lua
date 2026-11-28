@@ -202,11 +202,13 @@ java_overload(WorkAreaJTreeJPanel, "add", 1, function(java_a1) return true and (
 function WorkAreaJTreeJPanel:updateTree()
         self.workAreaJTree = JTree.new(self.rootTreeNode)
         self.workAreaJTree:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:workAreaJTreeMousePressed(evt)
+                ;(self.workAreaJTreeMousePressed and self or java_outer_self):workAreaJTreeMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -219,7 +221,7 @@ java_overload(WorkAreaJTreeJPanel, "updateTree", 0)
 
 function WorkAreaJTreeJPanel:getNode_j1_1(treePathArray)
         local basicArrayList = BasicArrayListD.new()
-        if treePathArray ~= nil then
+        if not rawequal(treePathArray, nil) then
             for index = 0, (treePathArray.n or #treePathArray) - 1 do
                 basicArrayList:add(self:getNode(treePathArray[index + 1]))
             end
@@ -229,9 +231,9 @@ end
 
 
 function WorkAreaJTreeJPanel:getNode_j1_2(treePath)
-        if treePath ~= nil then
+        if not rawequal(treePath, nil) then
             local obj = treePath:getPath()
-            if obj ~= nil then
+            if not rawequal(obj, nil) then
                 local node = obj[(obj.n or #obj) - 1 + 1]
                 return node
             end
@@ -241,6 +243,8 @@ end
 function WorkAreaJTreeJPanel:getNode(...)
     local count = select("#", ...)
     if count == 1 then return self:getNode_j1(...) end
+    local parent = getmetatable(WorkAreaJTreeJPanel).__index
+    if parent.getNode then return parent.getNode(self, ...) end
     error("No method getNode takes " .. count .. " arguments")
 end
 WorkAreaJTreeJPanel.getNode__jdispatcher = WorkAreaJTreeJPanel.getNode
@@ -254,7 +258,7 @@ end
 -- throws Exception
 function WorkAreaJTreeJPanel:deselectAll()
         local size = self.highlightedBasicArrayList:size()
-        self.logUtil:putF("size: " .. tostring(size), self, "deselectAll")
+        self.logUtil:putF(require("allbinary_java").to_string("size: ") .. require("allbinary_java").to_string(size), self, "deselectAll")
         for index = 0, size - 1 do
             local node = self.highlightedBasicArrayList:get(index)
             MyGraphicItemEventService.fire(MyGraphicItemEvent.new(MyGraphicItemEventSource.new(MyGraphicItemEventService.DESELECT, node)))
@@ -289,7 +293,7 @@ java_overload(WorkAreaJTreeJPanel, "removeCanvas", 1, function(java_a1) return t
 -- throws Exception
 function WorkAreaJTreeJPanel:remove(treePath)
         local node = self:getNode(treePath)
-        if node ~= nil then
+        if not rawequal(node, nil) then
             if java_instanceof(node:getUserObject(), CanvasTreeLabel) then
                 self:removeCanvas(node)
             else
@@ -315,7 +319,7 @@ end
 -- throws Exception
 function WorkAreaJTreeJPanel:copy_j1(treePath)
         local node = self:getNode(treePath)
-        if node ~= nil then
+        if not rawequal(node, nil) then
             if java_instanceof(node:getUserObject(), CanvasTreeLabel) then
                 MyCanvasEventService.fire(MyCanvasEvent.new(MyCanvasEventSource.new(MyCanvasEventService.DUPLICATE, node)))
             else
@@ -327,6 +331,8 @@ function WorkAreaJTreeJPanel:copy(...)
     local count = select("#", ...)
     if count == 0 then return self:copy_j0(...) end
     if count == 1 then return self:copy_j1(...) end
+    local parent = getmetatable(WorkAreaJTreeJPanel).__index
+    if parent.copy then return parent.copy(self, ...) end
     error("No method copy takes " .. count .. " arguments")
 end
 WorkAreaJTreeJPanel.copy__jdispatcher = WorkAreaJTreeJPanel.copy
@@ -335,7 +341,7 @@ WorkAreaJTreeJPanel.copy__jdispatcher = WorkAreaJTreeJPanel.copy
 -- throws Exception
 function WorkAreaJTreeJPanel:rotate(treePath, angle)
         local node = self:getNode(treePath)
-        if node ~= nil then
+        if not rawequal(node, nil) then
             if java_instanceof(node:getUserObject(), CanvasTreeLabel) then
                 MyCanvasEventService.fire(MyCanvasEvent.new(MyCanvasEventSource.new(MyCanvasEventService.ROTATE, angle, node)))
             else
@@ -365,6 +371,8 @@ function WorkAreaJTreeJPanel:expand(...)
     local count = select("#", ...)
     if count == 0 then return self:expand_j0(...) end
     if count == 1 then return self:expand_j1(...) end
+    local parent = getmetatable(WorkAreaJTreeJPanel).__index
+    if parent.expand then return parent.expand(self, ...) end
     error("No method expand takes " .. count .. " arguments")
 end
 WorkAreaJTreeJPanel.expand__jdispatcher = WorkAreaJTreeJPanel.expand
@@ -378,7 +386,8 @@ function WorkAreaJTreeJPanel:initComponents()
         self.itemJScrollPane1 = JScrollPane.new()
         self.workAreaPropertiesJPanel = JPanel.new()
         self.itemJPopupMenu:addPopupMenuListener((function()
-            local o = PopupMenuListener.new and PopupMenuListener.new() or setmetatable({}, {__index = PopupMenuListener})
+            local java_outer_self = self
+        local o = PopupMenuListener.new and PopupMenuListener.new() or setmetatable({}, {__index = PopupMenuListener})
             
 
             function o:popupMenuCanceled(evt)
@@ -387,24 +396,28 @@ function WorkAreaJTreeJPanel:initComponents()
             
 
             function o:popupMenuWillBecomeInvisible(evt)
-                self:itemJPopupMenuPopupMenuWillBecomeInvisible(evt)
+                ;(self.itemJPopupMenuPopupMenuWillBecomeInvisible and self or java_outer_self):itemJPopupMenuPopupMenuWillBecomeInvisible(evt)
+            
             end
             java_overload(o, "popupMenuWillBecomeInvisible", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "PopupMenuEvent")) end)
             
 
             function o:popupMenuWillBecomeVisible(evt)
-                self:itemJPopupMenuPopupMenuWillBecomeVisible(evt)
+                ;(self.itemJPopupMenuPopupMenuWillBecomeVisible and self or java_outer_self):itemJPopupMenuPopupMenuWillBecomeVisible(evt)
+            
             end
             java_overload(o, "popupMenuWillBecomeVisible", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "PopupMenuEvent")) end)
             return o
         end)())
         self.deleteJMenuItem:setText("Delete")
         self.deleteJMenuItem:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:deleteJMenuItemMousePressed(evt)
+                ;(self.deleteJMenuItemMousePressed and self or java_outer_self):deleteJMenuItemMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -412,11 +425,13 @@ function WorkAreaJTreeJPanel:initComponents()
         self.itemJPopupMenu:add(self.deleteJMenuItem)
         self.copyJMenuItem:setText("Copy")
         self.copyJMenuItem:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:copyJMenuItemMousePressed(evt)
+                ;(self.copyJMenuItemMousePressed and self or java_outer_self):copyJMenuItemMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -424,11 +439,13 @@ function WorkAreaJTreeJPanel:initComponents()
         self.itemJPopupMenu:add(self.copyJMenuItem)
         self.rotateJMenuItem:setText("Rotate 45*")
         self.rotateJMenuItem:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:rotateJMenuItemMousePressed(evt)
+                ;(self.rotateJMenuItemMousePressed and self or java_outer_self):rotateJMenuItemMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -436,11 +453,13 @@ function WorkAreaJTreeJPanel:initComponents()
         self.itemJPopupMenu:add(self.rotateJMenuItem)
         self:setLayout(GridLayout.new(1, 1))
         self.workAreaPropertiesJPanel:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:workAreaPropertiesJPanelMousePressed(evt)
+                ;(self.workAreaPropertiesJPanelMousePressed and self or java_outer_self):workAreaPropertiesJPanelMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -474,7 +493,7 @@ function WorkAreaJTreeJPanel:workAreaJTreeMousePressed(evt)
             local selectedTreePathArray = self.workAreaJTree:getSelectionPaths()
             local list = self:getNode(selectedTreePathArray)
             if list:size() > 0 then
-                if (evt:getModifiers() & evt.BUTTON3_MASK) == evt.BUTTON3_MASK then
+                if rawequal((evt:getModifiers() & evt.BUTTON3_MASK), evt.BUTTON3_MASK) then
                     for index = 0, (selectedTreePathArray.n or #selectedTreePathArray) - 1 do
                         local defaultMutableTreeNode = list:get(index)
                         if java_instanceof(defaultMutableTreeNode:getUserObject(), CanvasTreeLabel) then
@@ -484,7 +503,7 @@ function WorkAreaJTreeJPanel:workAreaJTreeMousePressed(evt)
                         end
                     end
                 end
-                if (evt:getModifiers() & evt.BUTTON1_MASK) == evt.BUTTON1_MASK then
+                if rawequal((evt:getModifiers() & evt.BUTTON1_MASK), evt.BUTTON1_MASK) then
                     self:deselectAll()
                     for index = 0, (selectedTreePathArray.n or #selectedTreePathArray) - 1 do
                         local defaultMutableTreeNode = list:get(index)

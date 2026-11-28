@@ -193,7 +193,7 @@ function InventoryView:toXmlNode(document)
             local size = itemVector:size()
             for index = 0, size - 1 do
                 local itemInterface = itemVector:get(index)
-                if itemInterface ~= nil then
+                if not rawequal(itemInterface, nil) then
                     local node = BasicItemView.new(itemInterface, BasicArrayListD.new()):toXmlNode(document)
                     inventoryNode:appendChild(node)
                 else

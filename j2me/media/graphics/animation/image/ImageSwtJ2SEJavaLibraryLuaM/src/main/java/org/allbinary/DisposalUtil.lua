@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local Resource = java_lazy("org.eclipse.swt.graphics.Resource")
 local SwtMutableImage = java_lazy("org.microemu.device.swt.SwtMutableImage")
@@ -75,7 +75,7 @@ end
 
 
 function DisposalUtil:disposeImage(image)
-        if image == nil then
+        if rawequal(image, nil) then
             return
         end
         if image:isMutable() then
@@ -87,7 +87,7 @@ end
 
 
 function DisposalUtil:disposeResource(resource)
-        if not resource:isDisposed() then
+        if not (resource:isDisposed()) then
             print(self.commonStrings.CLOSE)
             resource:dispose()
         end

@@ -74,7 +74,7 @@ function BlisketServletUtil:init(request)
         local urlGlobals = AppUrlGlobals.new()
         urlGlobals:setWebappPath(request:getServletContext():getRealPath(AbPathData.getInstance().SEPARATOR))
         URLGLOBALS.init(urlGlobals)
-        WebappClassLoaderInfo.setLoader(getmetatable(self):getClassLoader())
+        WebappClassLoaderInfo.setLoader(require("java.lang.ClassLoader").getSystemClassLoader())
 end
 
 BlisketServletUtil.instance_f = BlisketServletUtil.new()

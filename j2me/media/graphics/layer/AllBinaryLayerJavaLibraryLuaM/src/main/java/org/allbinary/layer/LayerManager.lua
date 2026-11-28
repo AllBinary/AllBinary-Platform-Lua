@@ -16,7 +16,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local TsUtil = java_lazy("org.allbinary.TsUtil")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
@@ -165,7 +165,7 @@ function LayerManager:paint(g, x, y)
                 local index = self.list:size()
                 while (function() index = index - 1 return index end)() >= 0 do
                 comp = self.list.objectArray[index + 1]
-                if comp ~= nil and comp:isVisible() then
+                if not rawequal(comp, nil) and comp:isVisible() then
                     comp:paint(g)
                 end
                 end

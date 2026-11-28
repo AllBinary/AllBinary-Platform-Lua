@@ -75,7 +75,7 @@ function StoreFrontView._jinit(self, storeFrontInterface)
     StoreFrontView._init_fields(self)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             local commonStrings = CommonStrings.getInstance()
-            self.logUtil:putF("Constructing: StoreFrontView for: " .. storeFrontInterface:getName(), self, commonStrings.GET_INSTANCE)
+            self.logUtil:putF(require("allbinary_java").to_string("Constructing: StoreFrontView for: ") .. require("allbinary_java").to_string(storeFrontInterface:getName()), self, commonStrings.GET_INSTANCE)
         end
         self.storeFrontInterface = storeFrontInterface
     return self

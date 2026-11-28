@@ -80,7 +80,7 @@ end
 function BasicComponentView._jinit(self, transformInfoInterface)
     BasicComponentView._init_fields(self)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("View Name: " .. transformInfoInterface:getName(), self, self.commonStrings.CONSTRUCTOR)
+            self.logUtil:putF(require("allbinary_java").to_string("View Name: ") .. require("allbinary_java").to_string(transformInfoInterface:getName()), self, self.commonStrings.CONSTRUCTOR)
         end
         self:setTransformInfoInterface(transformInfoInterface)
         self:setTransformDocumentInterface(TransformDocumentFactory.getInstance())
@@ -128,7 +128,7 @@ end
 function BasicComponentView:getDoc()
         local document = self:getTransformInfoInterface():getDataDocument()
         local dataNode = self:getTransformDocumentInterface():getDoc():importNode(document:getFirstChild(), true)
-        if dataNode ~= nil then
+        if not rawequal(dataNode, nil) then
             self:getTransformDocumentInterface():getBaseNode():appendChild(dataNode)
         end
         return self:getTransformDocumentInterface():getDoc()

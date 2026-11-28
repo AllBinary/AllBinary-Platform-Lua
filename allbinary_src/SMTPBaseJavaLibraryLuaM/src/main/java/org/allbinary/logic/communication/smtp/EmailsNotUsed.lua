@@ -97,7 +97,7 @@ function EmailsNotUsed:toXmlNode(document)
             for index = 0, size - 1 do
                 local email = self.emailInfoVector:get(index)
                 local emailNode = email:toXmlNode(document)
-                if emailNode ~= nil then
+                if not rawequal(emailNode, nil) then
                     node:appendChild(emailNode)
                 end
             end

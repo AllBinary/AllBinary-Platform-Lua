@@ -146,7 +146,7 @@ function TouchButtonRecognizer:pressTouchButtonInput(x, y, deviceId)
             point = rectangle:getPoint()
             if self.rectangleCollisionUtil:isInside(point:getX(), point:getY(), rectangle:getMaxX(), rectangle:getMaxY(), x, y) then
                 touchButtonInput = touchButton:getTouchButtonInput()
-                if not self.currentlyPressedTouchButtonSingleton:contains(touchButtonInput) then
+                if not (self.currentlyPressedTouchButtonSingleton:contains(touchButtonInput)) then
                     self.releaseHelper:release(touchButtonInput, deviceId)
                     self.lastPressedTouchButtonInput = touchButtonInput
                     self.currentlyPressedTouchButtonSingleton:add(touchButtonInput)

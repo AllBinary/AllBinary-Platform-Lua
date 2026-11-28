@@ -28,9 +28,9 @@ local function java_real(class)
     return class
 end
 
--- local InputStream = require("java.io.InputStream")
--- local Image = require("javax.microedition.lcdui.Image")
--- local NullImage = require("javax.microedition.lcdui.NullImage")
+local InputStream = java_lazy("java.io.InputStream")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local NullImage = java_lazy("javax.microedition.lcdui.NullImage")
 local TsUtil = java_lazy("org.allbinary.TsUtil")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
@@ -181,14 +181,14 @@ end
 function ImageCache:get_j3(caller, width, height)
         local foundIndex = self:getIndexWH(width, height)
         local image = self:getFromAvailable(foundIndex, width, height)
-        if image == NullImage.NULL_IMAGE then
+        if rawequal(image, NullImage.NULL_IMAGE) then
             self.volume = self.volume + (width * height)
             if self.volume > 32000 then
                 self.tsUtil:gc()
                 self.volume = 0
             end
             image = self:createImage(caller, width, height)
-            if foundIndex == -1 then
+            if rawequal(foundIndex, -1) then
                 foundIndex = self.nextIndex
                 self.widths[self.nextIndex + 1] = width
                 self.heights[self.nextIndex + 1] = height
@@ -205,7 +205,7 @@ function ImageCache:get_j1(key)
         local resourceUtil = ResourceUtil.getInstance()
         local resourceId = resourceUtil:getResourceId(key)
         local image = self:getImage(resourceId)
-        if image == NullImage.NULL_IMAGE then
+        if rawequal(image, NullImage.NULL_IMAGE) then
             local inputStream = nil
             local try_ok, try_error, try_value = pcall(function()
                 self.logUtil:putF(Memory.getInfo(), self, self.commonStrings.GET)
@@ -219,7 +219,7 @@ function ImageCache:get_j1(key)
                 self.tsUtil:gc()
                 self.tsUtil:gc()
                 self.logUtil:putF(Memory.getInfo(), self, self.commonStrings.GET)
-                java_sleep(100)
+                require("java.lang.Thread").sleep(100)
                 image = self:createImage(key, inputStream)
             end
             self.hashtable:put(resourceId, image)
@@ -230,6 +230,8 @@ function ImageCache:get(...)
     local count = select("#", ...)
     if count == 3 then return self:get_j3(...) end
     if count == 1 then return self:get_j1(...) end
+    local parent = getmetatable(ImageCache).__index
+    if parent.get then return parent.get(self, ...) end
     error("No method get takes " .. count .. " arguments")
 end
 ImageCache.get__jdispatcher = ImageCache.get
@@ -240,7 +242,7 @@ function ImageCache:getIndex(key)
         local resourceStringArray = gdResources.resourceStringArray
         local size = (resourceStringArray.n or #resourceStringArray)
         for index = 0, size - 1 do
-            if resourceStringArray[index + 1] == key then
+            if rawequal(resourceStringArray[index + 1], key) then
                 return index
             end
         end

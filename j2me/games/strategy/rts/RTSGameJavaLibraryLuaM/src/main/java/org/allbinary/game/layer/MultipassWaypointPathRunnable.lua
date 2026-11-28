@@ -172,6 +172,11 @@ local FirstRunnable = {}
         FirstRunnable._jinit(self, ...)
         return self
     end
+        function FirstRunnable.newEnclosed(outer, ...)
+            local self = setmetatable({__javaOuter = outer}, FirstRunnable)
+            FirstRunnable._jinit(self, ...)
+            return self
+        end
     
 
     function FirstRunnable:run()
@@ -204,6 +209,11 @@ local FirstRunnable = {}
         SecondRunnable._jinit(self, ...)
         return self
     end
+        function SecondRunnable.newEnclosed(outer, ...)
+            local self = setmetatable({__javaOuter = outer}, SecondRunnable)
+            SecondRunnable._jinit(self, ...)
+            return self
+        end
     
 
     function SecondRunnable:run()
@@ -235,6 +245,11 @@ local EndRunnable = {}
         EndRunnable._jinit(self, ...)
         return self
     end
+        function EndRunnable.newEnclosed(outer, ...)
+            local self = setmetatable({__javaOuter = outer}, EndRunnable)
+            EndRunnable._jinit(self, ...)
+            return self
+        end
     
 
     function EndRunnable:run()
@@ -250,9 +265,9 @@ function MultipassWaypointPathRunnable:_init_fields()
     self.done = false
     self.list = self.basicArrayListUtil:getImmutableInstance()
     self.pathFindingInfo = NullUtil.getInstance().NULL_OBJECT
-    self.FIRST_RUNNABLE = FirstRunnable.new(self)
-    self.SECOND_RUNNABLE = SecondRunnable.new(self)
-    self.END_RUNNABLE = EndRunnable.new(self)
+    self.FIRST_RUNNABLE = FirstRunnable.newEnclosed(self, self)
+    self.SECOND_RUNNABLE = SecondRunnable.newEnclosed(self, self)
+    self.END_RUNNABLE = EndRunnable.newEnclosed(self, self)
     self.ALREADY_ENDED_RUNNABLE = (function()
         local o = ARunnable.new and ARunnable.new() or setmetatable({}, {__index = ARunnable})
         
@@ -342,13 +357,13 @@ function MultipassWaypointPathRunnable:processFirstRunnable()
             self.pathFindingLayer:getWaypointRunnableLogHelper():start(self.pathFindingLayer)
             self:reset2()
             local geographicMapCellPosition = self.pathFindingLayer:getCurrentGeographicMapCellPosition()
-            if geographicMapCellPosition == nil then
+            if rawequal(geographicMapCellPosition, nil) then
                 error(require("java.lang.Exception").new("Should never be running here"), 0)
             end
             self.pathFindingInfo = self.targetPathFindingLayer:getWaypointBehavior():getWaypoint():getPathFindingInfo(geographicMapCellPosition)
             local localPathFindingInfo = self.pathFindingInfo
             self.list = self.targetPathFindingLayer:getWaypointBehavior():getWaypoint():getPathsList(geographicMapCellPosition, localPathFindingInfo, self.multipassState)
-            if self.list ~= self.basicArrayListUtil:getImmutableInstance() then
+            if not rawequal(self.list, self.basicArrayListUtil:getImmutableInstance()) then
                 self.END_RUNNABLE:run()
             else
                 self.currentPassRunnable = self.SECOND_RUNNABLE
@@ -371,7 +386,7 @@ function MultipassWaypointPathRunnable:processSecondRunnable()
             local geographicMapCellPosition = self.pathFindingLayer:getCurrentGeographicMapCellPosition()
             local localPathFindingInfo = self.pathFindingInfo
             self.list = self.targetPathFindingLayer:getWaypointBehavior():getWaypoint():getPathsList(geographicMapCellPosition, localPathFindingInfo, self.multipassState)
-            if self.list ~= self.basicArrayListUtil:getImmutableInstance() then
+            if not rawequal(self.list, self.basicArrayListUtil:getImmutableInstance()) then
                 self.END_RUNNABLE:run()
             end
         end)

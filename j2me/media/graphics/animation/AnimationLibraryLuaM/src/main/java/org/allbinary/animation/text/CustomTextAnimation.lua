@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 local FontDebugFactory = java_lazy("org.allbinary.graphics.font.FontDebugFactory")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
@@ -166,7 +166,7 @@ CustomTextAnimation.java_interfaces = function() return {TextInterface} end
 
 function CustomTextAnimation:_init_fields()
     self.fontDebugFactory = FontDebugFactory.getInstance()
-    if self.fontSize == nil then self.fontSize = nil end
+    if self.fontSize == nil then self.fontSize = 0 end
     if self.font == nil then self.font = nil end
     self.lastText = StringUtil.getInstance().INIT_STRING
     self.hasChanged = true
@@ -201,7 +201,7 @@ java_overload(CustomTextAnimation, "paintXY", 3, function(java_a1, java_a2, java
 
 
 function CustomTextAnimation:setScale(scaleX, scaleY)
-        if scaleX ~= scaleY then
+        if not rawequal(scaleX, scaleY) then
             error(require("java.lang.RuntimeException").new(), 0)
         end
         self.hasChanged = true
@@ -217,7 +217,7 @@ java_overload(CustomTextAnimation, "setTextWithOnMeasure", 2, function(java_a1, 
 
 
 function CustomTextAnimation:setText(text)
-        if self.lastText ~= text then
+        if not rawequal(self.lastText, text) then
             self.hasChanged = true
             self.lastText = text
             java_super(TextAnimation, "setText", 1)(self, text)

@@ -100,7 +100,7 @@ function RealTimeStoreFrontStatisticsView:toXmlNode(document)
         local storeFrontOrdersHistoryStatisticsInterface = self.storeFrontStatisticsInterface:getOrders()
         local storeFrontOrdersHistoryStatisticsDomNodeInterface = StoreFrontOrdersHistoryStatisticsView.new(storeFrontOrdersHistoryStatisticsInterface)
         node:appendChild(storeFrontOrdersHistoryStatisticsDomNodeInterface:toXmlNode(document))
-        if self.userRole == UserRoleFactory.getInstance().ADMINISTRATOR then
+        if rawequal(self.userRole, UserRoleFactory.getInstance().ADMINISTRATOR) then
             local storeFrontUsersStatisticsInterface = self.storeFrontStatisticsInterface:getUsers()
             local storeFrontUsersStatisticsDomNodeInterface = StoreFrontUsersStatisticsView.new(storeFrontUsersStatisticsInterface)
             node:appendChild(storeFrontUsersStatisticsDomNodeInterface:toXmlNode(document))

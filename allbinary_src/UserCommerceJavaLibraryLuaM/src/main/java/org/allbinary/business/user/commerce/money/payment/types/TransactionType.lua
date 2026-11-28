@@ -70,7 +70,7 @@ end
 
 
 function TransactionType:isEqual(transactionType)
-        if ((tostring(self) < tostring(transactionType) and -1) or (tostring(self) > tostring(transactionType) and 1) or 0) == 0 then
+        if rawequal(((tostring(self) < tostring(transactionType) and -1) or (tostring(self) > tostring(transactionType) and 1) or 0), 0) then
             return true
         else
             return false

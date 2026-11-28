@@ -146,7 +146,7 @@ function StoreTagWorkFlowHelper._jinit(self, hashMap, pageContext)
     java_super_init(TagHelper, self)
     StoreTagWorkFlowHelper._init_fields(self)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPER) then
-            self.logUtil:putF("Properties: " .. tostring(hashMap), self, "StoreTagWorkFlowHelper()")
+            self.logUtil:putF(require("allbinary_java").to_string("Properties: ") .. require("allbinary_java").to_string(tostring(hashMap)), self, "StoreTagWorkFlowHelper()")
         end
         self.storeWorkFlowInterface = StoreTagWorkFlowFactory.getInstance():getInstance(self.abeClientInformation, hashMap, pageContext)
     return self

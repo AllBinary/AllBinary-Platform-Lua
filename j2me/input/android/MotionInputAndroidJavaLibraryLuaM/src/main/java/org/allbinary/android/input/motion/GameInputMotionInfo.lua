@@ -52,8 +52,8 @@ GameInputMotionInfo.className = "GameInputMotionInfo"
 GameInputMotionInfo.javaClassName = "org.allbinary.android.input.motion.GameInputMotionInfo"
 
 function GameInputMotionInfo:_init_fields()
-    if self.MAX_API == nil then self.MAX_API = nil end
-    if self.MAX_POINTERS == nil then self.MAX_POINTERS = nil end
+    if self.MAX_API == nil then self.MAX_API = 0 end
+    if self.MAX_POINTERS == nil then self.MAX_POINTERS = 0 end
 end
 
 

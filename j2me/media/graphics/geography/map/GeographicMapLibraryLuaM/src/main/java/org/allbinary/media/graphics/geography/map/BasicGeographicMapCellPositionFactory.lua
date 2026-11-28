@@ -78,8 +78,8 @@ function BasicGeographicMapCellPositionFactory:_init_fields()
     if self.geographicMapCellPositionArray == nil then self.geographicMapCellPositionArray = nil end
     if self.geographicMapInterface == nil then self.geographicMapInterface = nil end
     if self.geographicMapCellPositionFactoryInterface == nil then self.geographicMapCellPositionFactoryInterface = nil end
-    if self.columns == nil then self.columns = nil end
-    if self.rows == nil then self.rows = nil end
+    if self.columns == nil then self.columns = 0 end
+    if self.rows == nil then self.rows = 0 end
     if self.tiledLayer == nil then self.tiledLayer = nil end
 end
 
@@ -157,7 +157,7 @@ end
 -- throws Exception
 function BasicGeographicMapCellPositionFactory:createInstance(i_column, i_row, width, height)
         local cellPositionCanBeNull = self.geographicMapCellPositionArray[i_row + 1][i_column + 1]
-        if cellPositionCanBeNull == nil then
+        if rawequal(cellPositionCanBeNull, nil) then
             cellPositionCanBeNull = self.geographicMapCellPositionFactoryInterface:getInstance(self.geographicMapInterface, i_column, i_row, self.columns, self.rows, width, height)
             self.geographicMapCellPositionArray[i_row + 1][i_column + 1] = cellPositionCanBeNull
         end

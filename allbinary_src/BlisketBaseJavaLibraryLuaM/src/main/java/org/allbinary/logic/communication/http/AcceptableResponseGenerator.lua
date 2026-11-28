@@ -87,18 +87,18 @@ function AcceptableResponseGenerator:get(httpServletRequest)
             local acceptable = httpServletRequest:getHeader("accept")
             local result = acceptableResponseUtil:getTagName(0)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTP) then
-                self.logUtil:putF("Request Type: " .. acceptable, self, commonStrings.GET)
+                self.logUtil:putF(require("allbinary_java").to_string("Request Type: ") .. require("allbinary_java").to_string(acceptable), self, commonStrings.GET)
             end
-            if acceptable ~= nil then
+            if not rawequal(acceptable, nil) then
                 local size = acceptableResponseUtil:size()
                 for index = 0, size - 1 do
-                    if ((acceptable < acceptableResponseUtil:get(index) and -1) or (acceptable > acceptableResponseUtil:get(index) and 1) or 0) == 0 then
+                    if rawequal(((acceptable < acceptableResponseUtil:get(index) and -1) or (acceptable > acceptableResponseUtil:get(index) and 1) or 0), 0) then
                         result = acceptableResponseUtil:getTagName(index)
                     end
                 end
             end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTP) then
-                self.logUtil:putF("Response Type: " .. result, self, commonStrings.GET)
+                self.logUtil:putF(require("allbinary_java").to_string("Response Type: ") .. require("allbinary_java").to_string(result), self, commonStrings.GET)
             end
             do return "__jreturn", result end
         end)

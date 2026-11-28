@@ -182,7 +182,7 @@ function QuoteHelper._jinit(self, hashMap, pageContext)
     java_super_init(BasicTable, self)
     QuoteHelper._init_fields(self)
         local storeName = hashMap:get(StoreFrontData.getInstance().NAME)
-        if storeName ~= nil then
+        if not rawequal(storeName, nil) then
             self.storeFrontInterface = StoreFrontFactory.getInstance(storeName)
         else
             self.storeFrontInterface = StoreFront.new()
@@ -258,7 +258,7 @@ function QuoteHelper:email()
                 end
             end
             local quoteRequest = quoteRequestEntity:get(userName, id)
-            if quoteRequest ~= nil then
+            if not rawequal(quoteRequest, nil) then
                 self:emailUser(quoteRequest)
                 self:emailAdmins(quoteRequest)
                 do return "__jreturn", "Thank You For Your Business.<p/>" end

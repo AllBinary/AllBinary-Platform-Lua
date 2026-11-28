@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
@@ -191,7 +191,7 @@ function MultiSelectPaintable:update(list)
         self.totalCharArray = self:getPrimitiveLongUtil():getCharArray(size)
         for index = list:size() - 1, 0, -1 do
             local rtsLayer = list:get(index)
-            if not self.rootNameList:contains(rtsLayer:getRootName()) then
+            if not (self.rootNameList:contains(rtsLayer:getRootName())) then
                 self.rootNameList:add(rtsLayer:getRootName())
             end
         end
@@ -200,7 +200,7 @@ function MultiSelectPaintable:update(list)
         for index = self.rootNameList:size() - 1, 0, -1 do
             local rootName = self.rootNameList:get(index)
             stringBuffer:append(rootName)
-            if index ~= 0 then
+            if not rawequal(index, 0) then
                 stringBuffer:append(COMMA_SEP)
             end
         end

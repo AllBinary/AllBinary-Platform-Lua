@@ -58,7 +58,7 @@ InputProbability.javaClassName = "org.allbinary.game.ag.ai.InputProbability"
 function InputProbability:_init_fields()
     if self.likelyhoodIntegerArray == nil then self.likelyhoodIntegerArray = nil end
     if self.repeatLikelyhoodIntegerArray == nil then self.repeatLikelyhoodIntegerArray = nil end
-    if self.max == nil then self.max = nil end
+    if self.max == nil then self.max = 0 end
     if self.timeDelayHelper == nil then self.timeDelayHelper = nil end
 end
 

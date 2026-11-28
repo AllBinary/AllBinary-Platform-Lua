@@ -32,8 +32,8 @@ end
 local ByteArrayOutputStream = java_lazy("java.io.ByteArrayOutputStream")
 -- local DataInputStream = require("java.io.DataInputStream")
 -- local DataOutputStream = require("java.io.DataOutputStream")
--- local RecordEnumeration = require("javax.microedition.rms.RecordEnumeration")
--- local RecordStore = require("javax.microedition.rms.RecordStore")
+local RecordEnumeration = java_lazy("javax.microedition.rms.RecordEnumeration")
+local RecordStore = java_lazy("javax.microedition.rms.RecordStore")
 local TsUtil = java_lazy("org.allbinary.TsUtil")
 local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
 local SmallIntegerSingletonFactory = java_lazy("org.allbinary.logic.math.SmallIntegerSingletonFactory")
@@ -189,7 +189,7 @@ function KeyValuePersistance:loadAllSize(abeClientInformation, size)
                 stringBuffer:delete(0, stringBuffer:length())
                 self.logUtil:putF(tostring(stringBuffer:append(self.persistanceStrings.LOADING_ID):appendint(id)), self, self.persistanceStrings.LOAD_ALL)
                 recordAsBytes = self.tsUtil:getRecord(recordStore, id)
-                if recordAsBytes ~= nil then
+                if not rawequal(recordAsBytes, nil) then
                     byteArrayInputStream = ByteArrayInputStream.new(recordAsBytes)
                     inputStream = DataInputStream.new(byteArrayInputStream)
                     hashtable = ABHashtable.new()
@@ -210,7 +210,7 @@ function KeyValuePersistance:loadAllSize(abeClientInformation, size)
             error(e, 0)
         end
         do -- finally
-            if recordStore ~= nil then
+            if not rawequal(recordStore, nil) then
                 PreLogUtil.put(self.persistanceStrings.CLOSING_RECORDSTORE, self, self.persistanceStrings.LOAD_ALL)
                 recordStore:closeRecordStore()
             end
@@ -249,7 +249,7 @@ function KeyValuePersistance:save(abeClientInformation, hashtable)
             error(e, 0)
         end
         do -- finally
-            if recordStore ~= nil then
+            if not rawequal(recordStore, nil) then
                 PreLogUtil.put(self.persistanceStrings.CLOSING_RECORDSTORE, self, self.commonStrings.SAVE)
                 recordStore:closeRecordStore()
             end

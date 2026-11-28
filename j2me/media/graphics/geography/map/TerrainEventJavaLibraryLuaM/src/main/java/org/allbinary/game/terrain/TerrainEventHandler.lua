@@ -164,7 +164,7 @@ end
 
 function TerrainEventHandler.getInstance(anyType)
         local eventHandlerCanBeNull = TerrainEventHandler.hashtable:get(anyType)
-        if eventHandlerCanBeNull == nil then
+        if rawequal(eventHandlerCanBeNull, nil) then
             eventHandlerCanBeNull = TerrainEventHandler.new()
             TerrainEventHandler.hashtable:put(anyType, eventHandlerCanBeNull)
         end
@@ -186,7 +186,7 @@ end
 
 
 function TerrainEventHandler:addListener(terrainEventListener)
-        if not self.list:contains(terrainEventListener) then
+        if not (self.list:contains(terrainEventListener)) then
             self.list:add(terrainEventListener)
         end
 end

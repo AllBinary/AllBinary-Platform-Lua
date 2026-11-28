@@ -200,7 +200,7 @@ function StaticPagesRequestHelper:email()
             end
             local storeFrontInterface = StoreFrontFactory.getInstance(self.storeName)
             local adminEmailSubject = "Generated Static Pages Email Notification"
-            local adminEmailTextBody = "Generated static pages for store: " .. self.storeName
+            local adminEmailTextBody = require("allbinary_java").to_string("Generated static pages for store: ") .. require("allbinary_java").to_string(self.storeName)
             local adminBasicEmailInfo = AdminEmailInfo.new(adminEmailSubject, adminEmailTextBody)
             local storeAdminBasicEmailInfo = StoreEmailInfo.new(storeFrontInterface, adminEmailSubject, adminEmailTextBody)
             local storeAdminEmailInfo = EmailInfo.new(storeAdminBasicEmailInfo)
@@ -250,7 +250,7 @@ function StaticPagesRequestHelper:makePublic()
         local try_ok, try_error, try_value = pcall(function()
             local storeFrontInterface = StoreFrontFactory.getInstance(self.storeName)
             local fromAbPath = AbPath.new(storeFrontInterface:getTestHtmlPath() + storeFrontInterface:getStaticPath(), StringUtil.getInstance().EMPTY_STRING)
-            local toAbPath = AbPath.new(tostring(URLGLOBALS.getWebappPath()) .. storeFrontInterface:getName() .. tostring(AbPathData.getInstance().SEPARATOR) .. tostring(storeFrontInterface:getStaticPath()), StringUtil.getInstance().EMPTY_STRING)
+            local toAbPath = AbPath.new(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(URLGLOBALS.getWebappPath()) .. require("allbinary_java").to_string(storeFrontInterface:getName())) .. require("allbinary_java").to_string(AbPathData.getInstance().SEPARATOR)) .. require("allbinary_java").to_string(storeFrontInterface:getStaticPath()), StringUtil.getInstance().EMPTY_STRING)
             FileUtil.getInstance():copy(fromAbPath, toAbPath)
             local success = "Made Public"
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGS) then

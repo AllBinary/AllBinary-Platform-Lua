@@ -187,39 +187,39 @@ java_overload(UserTag, "setRole", 1, function(java_a1) return true and (java_a1 
 -- throws JspTagException
 function UserTag:doStartTag()
         local try_ok, try_error, try_value = pcall(function()
-            if self:getCommand() ~= nil then
-                if self:getCommand():compareTo(GLOBALS2.EDIT + GLOBALS2.EDIT) == 0 then
+            if not rawequal(self:getCommand(), nil) then
+                if rawequal(self:getCommand():compareTo(GLOBALS2.EDIT + GLOBALS2.EDIT), 0) then
                     self:setName("Edit Session Validation User View - i.e. User Profile Edit")
                     self:setObjectFile("views.generic.user.EditValidationView")
                 end
-                if self:getCommand():compareTo(GLOBALS2.NEW) == 0 then
+                if rawequal(self:getCommand():compareTo(GLOBALS2.NEW), 0) then
                     self:setName("New User View")
                     self:setObjectFile("views.generic.user.NewUserView")
-                elseif self:getCommand():compareTo(self.commonStrings.INSERT) == 0 then
+                elseif rawequal(self:getCommand():compareTo(self.commonStrings.INSERT), 0) then
                     self:setName("Add Validation User View")
                     self:setObjectFile("views.generic.user.AddValidationUserView")
-                elseif self:getCommand():compareTo(GLOBALS2.VIEW) == 0 then
+                elseif rawequal(self:getCommand():compareTo(GLOBALS2.VIEW), 0) then
                     self:setName("Validation User View")
                     self:setObjectFile("views.generic.user.ViewValidationUserView")
-                elseif self:getCommand():compareTo(GLOBALS2.EDIT) == 0 then
+                elseif rawequal(self:getCommand():compareTo(GLOBALS2.EDIT), 0) then
                     self:setName("Validation User View")
                     self:setObjectFile("views.generic.user.EditValidationUserView")
-                elseif self:getCommand():compareTo(self.commonStrings.UPDATE) == 0 then
+                elseif rawequal(self:getCommand():compareTo(self.commonStrings.UPDATE), 0) then
                     self:setName("Update Validation User View")
                     self:setObjectFile("views.generic.user.UpdateValidationUserView")
-                elseif self:getCommand():compareTo(self.commonStrings.DELETE) == 0 then
+                elseif rawequal(self:getCommand():compareTo(self.commonStrings.DELETE), 0) then
                     self:setName("Delete Validation User View")
                     self:setObjectFile("views.generic.user.DeleteValidationUserView")
-                elseif self:getCommand():compareTo(GLOBALS2.BACKUP) == 0 then
+                elseif rawequal(self:getCommand():compareTo(GLOBALS2.BACKUP), 0) then
                     error(require("java.lang.Exception").new("View not implemented"), 0)
-                elseif self:getCommand():compareTo(GLOBALS2.RESTORE) == 0 then
+                elseif rawequal(self:getCommand():compareTo(GLOBALS2.RESTORE), 0) then
                     error(require("java.lang.Exception").new("View not implemented"), 0)
-                elseif self:getCommand():compareTo(self.commonStrings.DROP) == 0 then
+                elseif rawequal(self:getCommand():compareTo(self.commonStrings.DROP), 0) then
                     error(require("java.lang.Exception").new("View not implemented"), 0)
-                elseif self:getCommand():compareTo(self.commonStrings.CREATE) == 0 then
+                elseif rawequal(self:getCommand():compareTo(self.commonStrings.CREATE), 0) then
                     error(require("java.lang.Exception").new("View not implemented"), 0)
                 else
-                    error(require("java.lang.Exception").new("No Such View Command: " .. tostring(self:getCommand())), 0)
+                    error(require("java.lang.Exception").new(require("allbinary_java").to_string("No Such View Command: ") .. require("allbinary_java").to_string(self:getCommand())), 0)
                 end
                 do return "__jreturn", java_super(StoreValidationTransformTag, "doStartTag", 0)(self) end
             end

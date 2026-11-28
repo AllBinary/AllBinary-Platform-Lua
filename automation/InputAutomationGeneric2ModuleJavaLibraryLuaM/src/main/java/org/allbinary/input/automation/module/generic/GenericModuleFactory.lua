@@ -157,7 +157,7 @@ function GenericModuleFactory:getInstance()
 end
 java_overload(GenericModuleFactory, "getInstance", 0)
 
-GenericModuleFactory.NAME = "Generic" .. tostring(InputAutomationModuleData.MODULE_NAME_END)
+GenericModuleFactory.NAME = require("allbinary_java").to_string("Generic") .. require("allbinary_java").to_string(InputAutomationModuleData.MODULE_NAME_END)
 
 return GenericModuleFactory
 

@@ -256,14 +256,14 @@ function OrderItemsEntity:insert_j2(userName, order)
                 self:insert(vector)
             end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                self.logUtil:putF("Command Success Added: " .. tostring(items:size()), self, self.INSERT)
+                self.logUtil:putF(require("allbinary_java").to_string("Command Success Added: ") .. require("allbinary_java").to_string(items:size()), self, self.INSERT)
             end
         end)
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                self.logUtil:put("Command Failed: " .. tostring(vector), self, self.INSERT, e)
+                self.logUtil:put(require("allbinary_java").to_string("Command Failed: ") .. require("allbinary_java").to_string(tostring(vector)), self, self.INSERT, e)
             end
         end
 end
@@ -295,7 +295,7 @@ function OrderItemsEntity:isEverythingShipped(orderId)
             local size = itemStatusVector:size()
             for index = 0, size - 1 do
                 local status = itemStatusVector:get(index)
-                if ((status < OrderHistoryData.SHIPPED and -1) or (status > OrderHistoryData.SHIPPED and 1) or 0) ~= 0 then
+                if not rawequal(((status < OrderHistoryData.SHIPPED and -1) or (status > OrderHistoryData.SHIPPED and 1) or 0), 0) then
                     do return "__jreturn", false end
                 end
             end
@@ -321,7 +321,7 @@ function OrderItemsEntity:getBasketReview(orderId)
             keyValues:put(OrderData.ID, orderId)
             local items = java_super(AbSqlBean, "getRows", 1)(self, keyValues)
             local entryData = EntryData.getInstance()
-            if items ~= nil and items:size() > 0 then
+            if not rawequal(items, nil) and items:size() > 0 then
                 local EMPTY_STRING = StringUtil.getInstance().EMPTY_STRING
                 local itemsArray = items:toArray()
                 local itemsSize = (itemsArray.n or #itemsArray)
@@ -475,6 +475,8 @@ function OrderItemsEntity:insert(...)
     local count = select("#", ...)
     if count == 2 then return self:insert_j2(...) end
     if count == 1 then return self:insert_j1(...) end
+    local parent = getmetatable(OrderItemsEntity).__index
+    if parent.insert then return parent.insert(self, ...) end
     error("No method insert takes " .. count .. " arguments")
 end
 OrderItemsEntity.insert__jdispatcher = OrderItemsEntity.insert

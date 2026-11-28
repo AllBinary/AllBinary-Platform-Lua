@@ -29,7 +29,7 @@ local function java_real(class)
 end
 
 -- local BufferedImage = require("java.awt.image.BufferedImage")
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local Anchor = java_lazy("org.allbinary.graphics.Anchor")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local J2SEImmutableImage = java_lazy("org.microemu.device.j2se.J2SEImmutableImage")

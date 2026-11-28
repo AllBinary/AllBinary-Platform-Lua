@@ -175,24 +175,24 @@ end
 
 -- throws Exception
 function SVGAsJSONSimpleLoader:load(svgAsJson)
-        if svgAsJson == nil then
+        if rawequal(svgAsJson, nil) then
             return self.EMPTY_POINTS
         end
         local try_ok, try_error, try_value = pcall(function()
             local root = JSONObject.new(svgAsJson)
             local svgValue = root:opt(self.KEY_SVG)
-            local svg = (function() if svgValue == nil then return root else return self:asObject(svgValue, self.KEY_SVG) end end)()
+            local svg = (function() if rawequal(svgValue, nil) then return root else return self:asObject(svgValue, self.KEY_SVG) end end)()
             local pointVector = BasicArrayListD.new()
             local objectArray = svg:keysAsArray()
             local size = (objectArray.n or #objectArray)
             for index = 0, size - 1 do
                 local key = objectArray[index + 1]
                 local value = svg:opt(key)
-                if self.shapeTypeFactory.KEY_LINE:equals(key) then
+                if require("allbinary_java").equals(self.shapeTypeFactory.KEY_LINE, key) then
                     self:addShapes(pointVector, value, self.shapeTypeFactory.LINE)
-                elseif self.shapeTypeFactory:equals(key) then
+                elseif require("allbinary_java").equals(self.shapeTypeFactory, key) then
                     self:addShapes(pointVector, value, self.shapeTypeFactory.CIRCLE)
-                elseif self.shapeTypeFactory.KEY_RECT:equals(key) or self.shapeTypeFactory.KEY_RECTANGLE:equals(key) then
+                elseif require("allbinary_java").equals(self.shapeTypeFactory.KEY_RECT, key) or require("allbinary_java").equals(self.shapeTypeFactory.KEY_RECTANGLE, key) then
                     self:addShapes(pointVector, value, self.shapeTypeFactory.RECTANGLE)
                 end
             end
@@ -224,9 +224,9 @@ end
 -- throws Exception
 function SVGAsJSONSimpleLoader:addShape(pointVector, value, shapeType)
         local shape = self:asObject(value, shapeType:getName())
-        if shapeType == self.shapeTypeFactory.LINE then
+        if rawequal(shapeType, self.shapeTypeFactory.LINE) then
             self:addLine(pointVector, shape)
-        elseif shapeType == self.shapeTypeFactory.CIRCLE then
+        elseif rawequal(shapeType, self.shapeTypeFactory.CIRCLE) then
             self:addCircle(pointVector, shape)
         else
             self:addRectangle(pointVector, shape)
@@ -285,8 +285,8 @@ end
 -- throws Exception
 function SVGAsJSONSimpleLoader:readInt_j2(anyType, key)
         local value = anyType:get(key)
-        if value == nil then
-            error(require("java.lang.IllegalArgumentException").new(self.ERROR_MISSING_KEY_PREFIX .. key), 0)
+        if rawequal(value, nil) then
+            error(require("java.lang.IllegalArgumentException").new(require("allbinary_java").to_string(self.ERROR_MISSING_KEY_PREFIX) .. require("allbinary_java").to_string(key)), 0)
         end
         return self:toInt(value, key)
 end
@@ -323,7 +323,7 @@ function SVGAsJSONSimpleLoader:toInt(value, key)
         if java_instanceof(value, String) then
             return java_int(math.floor(tonumber(value) + 0.5))
         end
-        error(require("java.lang.IllegalArgumentException").new(self.ERROR_INVALID_NUMBER_PREFIX .. key), 0)
+        error(require("java.lang.IllegalArgumentException").new(require("allbinary_java").to_string(self.ERROR_INVALID_NUMBER_PREFIX) .. require("allbinary_java").to_string(key)), 0)
 end
 
 
@@ -331,12 +331,12 @@ function SVGAsJSONSimpleLoader:asObject(value, name)
         if java_instanceof(value, JSONObject) then
             return value
         end
-        error(require("java.lang.IllegalArgumentException").new(self.ERROR_EXPECTED_OBJECT_PREFIX .. name), 0)
+        error(require("java.lang.IllegalArgumentException").new(require("allbinary_java").to_string(self.ERROR_EXPECTED_OBJECT_PREFIX) .. require("allbinary_java").to_string(name)), 0)
 end
 
 
 function SVGAsJSONSimpleLoader:toPoints(pointVector)
-        if pointVector:size() == 0 then
+        if rawequal(pointVector:size(), 0) then
             return self.EMPTY_POINTS
         end
         local points = java_new_array(0, pointVector:size(), 2)
@@ -350,7 +350,7 @@ end
 
 -- throws Exception
 function SVGAsJSONSimpleLoader.main(args)
-        local svgAsJson = "{\"svg\": {\n" .. "    \"rect\": {\n" .. "        \"width\": 20,\n" .. "        \"fill\": \"#008c00\",\n" .. "        \"height\": 20\n" .. "    },\n" .. "    \"xmlns\": \"http://www.w3.org/2000/svg\",\n" .. "    \"width\": 20,\n" .. "    \"height\": 20\n" .. "}}\n"
+        local svgAsJson = require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("{\"svg\": {\n") .. require("allbinary_java").to_string("    \"rect\": {\n")) .. require("allbinary_java").to_string("        \"width\": 20,\n")) .. require("allbinary_java").to_string("        \"fill\": \"#008c00\",\n")) .. require("allbinary_java").to_string("        \"height\": 20\n")) .. require("allbinary_java").to_string("    },\n")) .. require("allbinary_java").to_string("    \"xmlns\": \"http://www.w3.org/2000/svg\",\n")) .. require("allbinary_java").to_string("    \"width\": 20,\n")) .. require("allbinary_java").to_string("    \"height\": 20\n")) .. require("allbinary_java").to_string("}}\n")
         local points = SVGAsJSONSimpleLoader.getInstance():load(svgAsJson)
         local stringBuilder = StringMaker.new()
         local size = (points.n or #points)

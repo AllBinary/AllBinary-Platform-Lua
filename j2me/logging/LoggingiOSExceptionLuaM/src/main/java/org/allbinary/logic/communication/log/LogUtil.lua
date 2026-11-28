@@ -80,11 +80,11 @@ end
 
 
 function LogUtil:putL(log)
-        if log == LogFactory.LOG then
+        if rawequal(log, LogFactory.LOG) then
             return
         end
         local exception = log:getThrowable()
-        if exception == nil then
+        if rawequal(exception, nil) then
             return
         end
         local specialMessage = log:getSpecialMessage()
@@ -104,7 +104,7 @@ end
 
 function LogUtil:put(specialMessage, anyType, functionName, exception)
         local className = CommonStrings.getInstance().EMPTY
-        if (getmetatable(anyType).javaClassName or getmetatable(anyType).className) ~= nil then
+        if not rawequal((getmetatable(anyType).javaClassName or getmetatable(anyType).className), nil) then
             className = tostring((getmetatable(anyType).javaClassName or getmetatable(anyType).className))
         end
         local message = self.logFormatUtil:get(className, functionName, specialMessage, exception)

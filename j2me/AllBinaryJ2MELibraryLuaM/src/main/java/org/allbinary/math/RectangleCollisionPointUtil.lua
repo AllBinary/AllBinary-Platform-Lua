@@ -73,7 +73,7 @@ function RectangleCollisionPointUtil.allPointsInside(rectX1, rectY1, rectX2, rec
             local index = list:size()
             while (function() index = index - 1 return index end)() >= 0 do
             point = list.objectArray[index + 1]
-            if not rectangleCollisionUtil:isInside(rectX1, rectY1, rectX2, rectY2, point:getX(), point:getY()) then
+            if not (rectangleCollisionUtil:isInside(rectX1, rectY1, rectX2, rectY2, point:getX(), point:getY())) then
                 return false
             end
             end
@@ -89,7 +89,7 @@ function RectangleCollisionPointUtil.allPointsInsideCell(rectX1, rectY1, rectX2,
             local index = list:size()
             while (function() index = index - 1 return index end)() >= 0 do
             point = list.objectArray[index + 1]
-            if not rectangleCollisionUtil:isInside(rectX1, rectY1, rectX2, rectY2, point:getX() * xCellSize, point:getY() * yCellSize) then
+            if not (rectangleCollisionUtil:isInside(rectX1, rectY1, rectX2, rectY2, point:getX() * xCellSize, point:getY() * yCellSize)) then
                 return false
             end
             end

@@ -29,7 +29,7 @@ local function java_real(class)
 end
 
 -- local IOException = require("java.io.IOException")
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 local HashMap = java_lazy("java.util.HashMap")
 -- local ServletException = require("javax.servlet.ServletException")
 -- local HttpServlet = require("javax.servlet.http.HttpServlet")
@@ -177,7 +177,7 @@ function UploadFileServlet:processRequest(request, response)
             BlisketServletUtil.getInstance():init(request)
             self.requestHashMap = MultipartRequestParams.new(request):toHashMap()
             local filePath = self.requestHashMap:get(FileUploadData.getInstance().UPLOAD_TO_FILE_PATH)
-            if filePath == nil then
+            if rawequal(filePath, nil) then
                 isError = true
                 response:sendError(HttpServletResponse.SC_NOT_FOUND)
                 do return "__jreturn" end
@@ -208,10 +208,10 @@ function UploadFileServlet:processRequest(request, response)
             response:sendError(HttpServletResponse.SC_NOT_FOUND)
         end
         do -- finally
-            if not isError then
+            if not (isError) then
                 StreamUtil.getInstance():close(response:getOutputStream())
             end
-            if not StreamUtil.getInstance():close(inputStream) then
+            if not (StreamUtil.getInstance():close(inputStream)) then
             end
         end
         if try_ok and try_error == "__jreturn" then return try_value end
@@ -224,12 +224,12 @@ function UploadFileServlet:saveFile(filePath)
         local fileOutputStream = nil
         local try_ok, try_error, try_value = pcall(function()
             local fileItem = self.requestHashMap:get(FileUploadData.getInstance().FILE_DATA)
-            if fileItem ~= nil and fileItem:getSize() > 1 then
+            if not rawequal(fileItem, nil) and fileItem:getSize() > 1 then
                 self.fileName = HttpRequestUtil.getInstance():generateFileName(fileItem:getName())
                 if ("/" == "" or string.sub(filePath, -#"/") == "/") or ("\\" == "" or string.sub(filePath, -#"\\") == "\\") then
-                    filePath = filePath .. self.fileName
+                    filePath = require("allbinary_java").to_string(filePath) .. require("allbinary_java").to_string(self.fileName)
                 end
-                local file = AbFile.createAbFile(tostring(URLGLOBALS.getWebappPath()) .. filePath)
+                local file = AbFile.createAbFile(require("allbinary_java").to_string(URLGLOBALS.getWebappPath()) .. require("allbinary_java").to_string(filePath))
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
                     local stringBuffer = StringMaker.new()
                     stringBuffer:append("Uploaded File: ")
@@ -249,7 +249,7 @@ function UploadFileServlet:saveFile(filePath)
             end
         end)
         do -- finally
-            if fileOutputStream ~= nil then
+            if not rawequal(fileOutputStream, nil) then
                 fileOutputStream:close()
             end
         end

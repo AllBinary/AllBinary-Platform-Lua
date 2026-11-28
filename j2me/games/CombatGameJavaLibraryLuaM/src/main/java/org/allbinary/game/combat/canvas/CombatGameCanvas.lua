@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
 local DestroyedLayerProcessor = java_lazy("org.allbinary.game.combat.destroy.DestroyedLayerProcessor")
 local DestroyEventCircularStaticPool = java_lazy("org.allbinary.game.combat.destroy.event.DestroyEventCircularStaticPool")
 local DestroyedEventHandler = java_lazy("org.allbinary.game.combat.destroy.event.DestroyedEventHandler")

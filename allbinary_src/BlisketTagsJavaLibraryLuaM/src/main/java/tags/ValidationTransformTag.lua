@@ -155,7 +155,7 @@ setmetatable(ValidationTransformTag, {__index = TransformTag})
 function ValidationTransformTag:_init_fields()
     self.logUtil = LogUtil.getInstance()
     if self.xslFile == nil then self.xslFile = nil end
-    if self.logic == nil then self.logic = nil end
+    if self.logic == nil then self.logic = false end
 end
 
 

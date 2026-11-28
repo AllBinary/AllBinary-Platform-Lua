@@ -98,11 +98,11 @@ end
 
 -- throws Exception
 function InventoryItemViewParentTagHelper:getInventoryItemView(inventoryTag)
-        if inventoryTag ~= nil then
+        if not rawequal(inventoryTag, nil) then
             self:checkForValidationViewHelper(inventoryTag:getHelper())
             local validationViewHelper = inventoryTag:getHelper()
             local viewObject = validationViewHelper:getViewObject()
-            if viewObject:getTypeId() ~= InventoryItemView.TYPE_ID then
+            if not rawequal(viewObject:getTypeId(), InventoryItemView.TYPE_ID) then
                 local stringBuffer = StringMaker.new()
                 stringBuffer:append("Must have ")
                 stringBuffer:append("InventoryItemView and not: ")
@@ -118,11 +118,11 @@ end
 
 -- throws Exception
 function InventoryItemViewParentTagHelper:getDownloadableInventoryItemView(inventoryTag)
-        if inventoryTag ~= nil then
+        if not rawequal(inventoryTag, nil) then
             self:checkForValidationViewHelper(inventoryTag:getHelper())
             local validationViewHelper = inventoryTag:getHelper()
             local viewObject = validationViewHelper:getViewObject()
-            if viewObject:getTypeId() ~= DownloadableInventoryItemView.TYPE_ID then
+            if not rawequal(viewObject:getTypeId(), DownloadableInventoryItemView.TYPE_ID) then
                 local stringBuffer = StringMaker.new()
                 stringBuffer:append("Must have ")
                 stringBuffer:append("DownloadableInventoryItemView and not: ")
@@ -138,11 +138,11 @@ end
 
 -- throws Exception
 function InventoryItemViewParentTagHelper:getRequestMapInterface(inventoryTag)
-        if inventoryTag ~= nil then
+        if not rawequal(inventoryTag, nil) then
             self:checkForValidationViewHelper(inventoryTag:getHelper())
             local validationViewHelper = inventoryTag:getHelper()
             local viewObject = validationViewHelper:getViewObject()
-            if viewObject:getTypeId() ~= InventoryItemView.TYPE_ID and viewObject:getTypeId() ~= DownloadableInventoryItemView.TYPE_ID then
+            if not rawequal(viewObject:getTypeId(), InventoryItemView.TYPE_ID) and not rawequal(viewObject:getTypeId(), DownloadableInventoryItemView.TYPE_ID) then
                 local stringBuffer = StringMaker.new()
                 stringBuffer:append("Must have ")
                 stringBuffer:append("specific TYPE_ID and not: ")
@@ -158,7 +158,7 @@ end
 
 -- throws Exception
 function InventoryItemViewParentTagHelper:checkForValidationViewHelper(helperObject)
-        if not java_instanceof(helperObject, ValidationViewHelper) then
+        if not (java_instanceof(helperObject, ValidationViewHelper)) then
             local stringBuffer = StringMaker.new()
             stringBuffer:append("Must have ")
             stringBuffer:append("ValidationViewHelper")

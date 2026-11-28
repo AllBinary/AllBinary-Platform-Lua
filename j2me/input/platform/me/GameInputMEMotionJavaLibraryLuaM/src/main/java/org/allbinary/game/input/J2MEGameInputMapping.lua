@@ -166,7 +166,7 @@ function J2MEGameInputMapping:init(abeClientInformation)
         self.logUtil:putF(self.commonStrings.START, self, self.commonStrings.INIT)
         J2MEKeyFactory.getInstance():init()
         java_super(PersistentInputMapping, "init", 1)(self, abeClientInformation)
-        if self:getTotalMapped() == 0 or self:isDefaultNew() then
+        if rawequal(self:getTotalMapped(), 0) or self:isDefaultNew() then
             self:getInputMapping():addMapping(self:getDefault())
             self:save(abeClientInformation)
         end
@@ -175,7 +175,7 @@ java_overload(J2MEGameInputMapping, "init", 1, function(java_a1) return true and
 
 
 function J2MEGameInputMapping:isDelete(input)
-        if input == GameKeyFactory.getInstance().GAME_D then
+        if rawequal(input, GameKeyFactory.getInstance().GAME_D) then
             return true
         else
             return false

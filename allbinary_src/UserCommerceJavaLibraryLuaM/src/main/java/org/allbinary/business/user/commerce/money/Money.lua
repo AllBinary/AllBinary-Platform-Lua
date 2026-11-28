@@ -134,7 +134,7 @@ end
 
 function Money._new1_2(self, usDollarStr)
     Money._init_fields(self)
-        if usDollarStr ~= nil and StringValidationUtil.getInstance():isNumber(usDollarStr) then
+        if not rawequal(usDollarStr, nil) and StringValidationUtil.getInstance():isNumber(usDollarStr) then
             self.units = self:convertUsdToUnits(usDollarStr)
         end
     return self
@@ -149,7 +149,7 @@ end
 
 
 function Money:isValid()
-        if self.units ~= nil and math.tointeger(self.units // 1) > 0 and math.tointeger(self.units // 1) < require("java.lang.Long").MAX_VALUE then
+        if not rawequal(self.units, nil) and math.tointeger(self.units // 1) > 0 and math.tointeger(self.units // 1) < require("java.lang.Long").MAX_VALUE then
             return true
         else
             return false
@@ -206,7 +206,7 @@ end
 
 function Money:convertUnitsTo(currency)
         local stringBuffer = StringMaker.new()
-        if ((currency < self.DEFAULT_CURRENCY and -1) or (currency > self.DEFAULT_CURRENCY and 1) or 0) == 0 then
+        if rawequal(((currency < self.DEFAULT_CURRENCY and -1) or (currency > self.DEFAULT_CURRENCY and 1) or 0), 0) then
             local dollar = math.tointeger(self.units // 1) / 100
             local cents = math.tointeger(self.units // 1) - (dollar * 100)
             stringBuffer:append(tostring(dollar))

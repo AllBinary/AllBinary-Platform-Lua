@@ -176,7 +176,7 @@ end
 
 
 function LayerManagerEventHandler:addListener(layerManagerEventListener)
-        if not self.list:contains(layerManagerEventListener) then
+        if not (self.list:contains(layerManagerEventListener)) then
             self.list:add(layerManagerEventListener)
         end
 end

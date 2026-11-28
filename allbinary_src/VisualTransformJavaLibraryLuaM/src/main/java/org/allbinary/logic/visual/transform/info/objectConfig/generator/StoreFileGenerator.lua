@@ -29,7 +29,7 @@ local function java_real(class)
 end
 
 -- local ByteArrayInputStream = require("java.io.ByteArrayInputStream")
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 local HashMap = java_lazy("java.util.HashMap")
 local URLGLOBALS = java_lazy("org.allbinary.globals.URLGLOBALS")
 local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
@@ -213,7 +213,7 @@ function StoreFileGenerator._jinit(self, transformInfoInterface)
         self.fileAbPath = abPath
         self.file = AbFile.createAbFileFromAbPath(self.fileAbPath)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("File: " .. tostring(self.fileAbPath), self, self.commonStrings.CONSTRUCTOR)
+            self.logUtil:putF(require("allbinary_java").to_string("File: ") .. require("allbinary_java").to_string(tostring(self.fileAbPath)), self, self.commonStrings.CONSTRUCTOR)
         end
     return self
 end
@@ -230,14 +230,14 @@ function StoreFileGenerator:process(input)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             self.logUtil:putF("Processing", self, self.commonStrings.PROCESS)
         end
-        if not self.file:exists() then
+        if not (self.file:exists()) then
             self.file:createNewFile()
         end
         if self.file:exists() then
             local inputStream = ByteArrayInputStream.new({string.byte(input, 1, -1)})
             FileUtil.getInstance():write(inputStream, self.file)
         else
-            error(require("java.lang.Exception").new("Could Not Create: " .. tostring(self.fileAbPath)), 0)
+            error(require("java.lang.Exception").new(require("allbinary_java").to_string("Could Not Create: ") .. require("allbinary_java").to_string(tostring(self.fileAbPath))), 0)
         end
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             self.logUtil:putF("Processed", self, self.commonStrings.PROCESS)

@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 
 local function java_idiv(a, b)
     local q = a / b
@@ -62,7 +62,7 @@ end
 
 
 function GameKeyUtil:isDirectionKey(key)
-        if key == Canvas.UP or key == Canvas.DOWN or key == Canvas.LEFT or key == Canvas.RIGHT then
+        if rawequal(key, Canvas.UP) or rawequal(key, Canvas.DOWN) or rawequal(key, Canvas.LEFT) or rawequal(key, Canvas.RIGHT) then
             return true
         else
             return false

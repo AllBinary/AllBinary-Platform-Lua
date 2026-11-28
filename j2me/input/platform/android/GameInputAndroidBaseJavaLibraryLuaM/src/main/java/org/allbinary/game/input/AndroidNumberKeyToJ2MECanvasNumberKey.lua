@@ -16,7 +16,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local KeyEvent = java_lazy("android.view.KeyEvent")
 
 local function java_new_array(default, size, ...)
@@ -84,7 +84,7 @@ end
 function AndroidNumberKeyToJ2MECanvasNumberKey.getKey(key)
         if key < (AndroidNumberKeyToJ2MECanvasNumberKey.androidtoJavaMicroEditionKeyMap.n or #AndroidNumberKeyToJ2MECanvasNumberKey.androidtoJavaMicroEditionKeyMap) then
             local value = AndroidNumberKeyToJ2MECanvasNumberKey.androidtoJavaMicroEditionKeyMap[key + 1]
-            if value ~= 0 then
+            if not rawequal(value, 0) then
                 return value
             end
         end

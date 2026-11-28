@@ -28,9 +28,9 @@ local function java_real(class)
     return class
 end
 
--- local ChoiceGroup = require("javax.microedition.lcdui.ChoiceGroup")
--- local Item = require("javax.microedition.lcdui.Item")
--- local ItemStateListener = require("javax.microedition.lcdui.ItemStateListener")
+local ChoiceGroup = java_lazy("javax.microedition.lcdui.ChoiceGroup")
+local Item = java_lazy("javax.microedition.lcdui.Item")
+local ItemStateListener = java_lazy("javax.microedition.lcdui.ItemStateListener")
 local GameConfigurationGauge = java_lazy("org.allbinary.game.configuration.GameConfigurationGauge")
 local GameConfigurationUtil = java_lazy("org.allbinary.game.configuration.GameConfigurationUtil")
 local GameOptionsForm = java_lazy("org.allbinary.game.configuration.GameOptionsForm")
@@ -108,7 +108,7 @@ end
 
 
 function GameFeatureItemStateListener.add(gameFeature)
-        if not GameFeatureItemStateListener.toggleList:contains(gameFeature) then
+        if not (GameFeatureItemStateListener.toggleList:contains(gameFeature)) then
             GameFeatureItemStateListener.toggleList:add(gameFeature)
         end
 end

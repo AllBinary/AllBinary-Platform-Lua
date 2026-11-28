@@ -57,11 +57,11 @@ FREEBLISKET_PATH_GLOBALS.javaClassName = "org.allbinary.globals.FREEBLISKET_PATH
 function FREEBLISKET_PATH_GLOBALS:_init_fields()
     if self.INSTALLPATH == nil then self.INSTALLPATH = nil end
     if self.XSLPATH == nil then self.XSLPATH = nil end
-    self.TEMPLATEPATH = "template" .. tostring(AbPathData.getInstance().SEPARATOR)
-    self.STYLEPATH = self.TEMPLATEPATH .. "style" .. tostring(AbPathData.getInstance().SEPARATOR)
-    self.THEMEPATH = self.STYLEPATH .. "theme" .. tostring(AbPathData.getInstance().SEPARATOR)
-    self.DBINITPATH = tostring(PATH_GLOBALS.getInstance().INIT_PATH) .. "db" .. tostring(AbPathData.getInstance().SEPARATOR)
-    self.LINEDATAPATH = tostring(PATH_GLOBALS.getInstance().INIT_PATH) .. "lineData" .. tostring(AbPathData.getInstance().SEPARATOR)
+    self.TEMPLATEPATH = require("allbinary_java").to_string("template") .. require("allbinary_java").to_string(AbPathData.getInstance().SEPARATOR)
+    self.STYLEPATH = require("allbinary_java").to_string(require("allbinary_java").to_string(self.TEMPLATEPATH) .. require("allbinary_java").to_string("style")) .. require("allbinary_java").to_string(AbPathData.getInstance().SEPARATOR)
+    self.THEMEPATH = require("allbinary_java").to_string(require("allbinary_java").to_string(self.STYLEPATH) .. require("allbinary_java").to_string("theme")) .. require("allbinary_java").to_string(AbPathData.getInstance().SEPARATOR)
+    self.DBINITPATH = require("allbinary_java").to_string(require("allbinary_java").to_string(PATH_GLOBALS.getInstance().INIT_PATH) .. require("allbinary_java").to_string("db")) .. require("allbinary_java").to_string(AbPathData.getInstance().SEPARATOR)
+    self.LINEDATAPATH = require("allbinary_java").to_string(require("allbinary_java").to_string(PATH_GLOBALS.getInstance().INIT_PATH) .. require("allbinary_java").to_string("lineData")) .. require("allbinary_java").to_string(AbPathData.getInstance().SEPARATOR)
     if self.CONFIGURATIONPATH == nil then self.CONFIGURATIONPATH = nil end
     if self.USERCONFIGURATIONPATH == nil then self.USERCONFIGURATIONPATH = nil end
     if self.CONTEXTCONFIGURATIONPATH == nil then self.CONTEXTCONFIGURATIONPATH = nil end

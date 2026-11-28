@@ -157,28 +157,28 @@ end
 
 function DownloadableItemValidation:isValid()
         local try_ok, try_error, try_value = pcall(function()
-            if self.downloadableItem:getId() == nil or self.downloadableItem:getId():length() < 1 or self.downloadableItem:getId():length() > AbSqlData.MAXNUM then
+            if rawequal(self.downloadableItem:getId(), nil) or self.downloadableItem:getId():length() < 1 or self.downloadableItem:getId():length() > AbSqlData.MAXNUM then
                 do return "__jreturn", false end
             end
-            if self.downloadableItem:getId() ~= nil and not StringValidationUtil.getInstance():isNumber(self.downloadableItem:getId()) then
+            if not rawequal(self.downloadableItem:getId(), nil) and not (StringValidationUtil.getInstance():isNumber(self.downloadableItem:getId())) then
                 do return "__jreturn", false end
             end
-            if self.downloadableItem:getSystem() == nil or self.downloadableItem:getSystem():length() < 1 or self.downloadableItem:getSystem():length() > AbSqlData.MAXSTRING then
+            if rawequal(self.downloadableItem:getSystem(), nil) or self.downloadableItem:getSystem():length() < 1 or self.downloadableItem:getSystem():length() > AbSqlData.MAXSTRING then
                 do return "__jreturn", false end
             end
-            if self.downloadableItem:getPlatform() == nil or self.downloadableItem:getPlatform():length() < 1 or self.downloadableItem:getPlatform():length() > AbSqlData.MAXSTRING then
+            if rawequal(self.downloadableItem:getPlatform(), nil) or self.downloadableItem:getPlatform():length() < 1 or self.downloadableItem:getPlatform():length() > AbSqlData.MAXSTRING then
                 do return "__jreturn", false end
             end
-            if self.downloadableItem:getSpecialName() == nil or self.downloadableItem:getSpecialName():length() < 0 or self.downloadableItem:getSpecialName():length() > AbSqlData.MAXSTRING then
+            if rawequal(self.downloadableItem:getSpecialName(), nil) or self.downloadableItem:getSpecialName():length() < 0 or self.downloadableItem:getSpecialName():length() > AbSqlData.MAXSTRING then
                 do return "__jreturn", false end
             end
-            if self.downloadableItem:getVersion() == nil or self.downloadableItem:getVersion():length() < 1 or self.downloadableItem:getVersion():length() > AbSqlData.MAXSTRING then
+            if rawequal(self.downloadableItem:getVersion(), nil) or self.downloadableItem:getVersion():length() < 1 or self.downloadableItem:getVersion():length() > AbSqlData.MAXSTRING then
                 do return "__jreturn", false end
             end
-            if self.downloadableItem:getChanges() == nil or self.downloadableItem:getChanges():length() < 1 or self.downloadableItem:getChanges():length() > AbSqlData.MAXBLOB then
+            if rawequal(self.downloadableItem:getChanges(), nil) or self.downloadableItem:getChanges():length() < 1 or self.downloadableItem:getChanges():length() > AbSqlData.MAXBLOB then
                 do return "__jreturn", false end
             end
-            if self.downloadableItem:getSize() == nil then
+            if rawequal(self.downloadableItem:getSize(), nil) then
                 do return "__jreturn", false end
             else
                 local size = tostring(self.downloadableItem:getSize())
@@ -186,7 +186,7 @@ function DownloadableItemValidation:isValid()
                     do return "__jreturn", false end
                 end
             end
-            if self.downloadableItem:getValidTime() == nil then
+            if rawequal(self.downloadableItem:getValidTime(), nil) then
                 do return "__jreturn", false end
             else
                 local size = tostring(self.downloadableItem:getValidTime())
@@ -194,7 +194,7 @@ function DownloadableItemValidation:isValid()
                     do return "__jreturn", false end
                 end
             end
-            if self.downloadableItem:getRetries() == nil then
+            if rawequal(self.downloadableItem:getRetries(), nil) then
                 do return "__jreturn", false end
             else
                 local size = tostring(self.downloadableItem:getRetries())
@@ -220,40 +220,40 @@ java_overload(DownloadableItemValidation, "isValid", 0)
 function DownloadableItemValidation:validationInfo()
         local try_ok, try_error, try_value = pcall(function()
             local stringBuffer = StringMaker.new()
-            if self.downloadableItem:getId() == nil or self.downloadableItem:getId():length() < 1 or self.downloadableItem:getId():length() > AbSqlData.MAXNUM then
+            if rawequal(self.downloadableItem:getId(), nil) or self.downloadableItem:getId():length() < 1 or self.downloadableItem:getId():length() > AbSqlData.MAXNUM then
                 stringBuffer:append("Id is invalid. Must be number < ")
                 stringBuffer:appendint(java_int(AbSqlData.MAXNUM))
                 stringBuffer:append(" and > 0 digits.<br/>")
             end
-            if self.downloadableItem:getId() ~= nil and not StringValidationUtil.getInstance():isNumber(self.downloadableItem:getId()) then
+            if not rawequal(self.downloadableItem:getId(), nil) and not (StringValidationUtil.getInstance():isNumber(self.downloadableItem:getId())) then
                 stringBuffer:append("Id is invalid. Must be > 0.<br/>")
             end
-            if self.downloadableItem:getSystem() == nil or self.downloadableItem:getSystem():length() < 1 or self.downloadableItem:getSystem():length() > AbSqlData.MAXSTRING then
+            if rawequal(self.downloadableItem:getSystem(), nil) or self.downloadableItem:getSystem():length() < 1 or self.downloadableItem:getSystem():length() > AbSqlData.MAXSTRING then
                 stringBuffer:append("System value is invalid. Must be < ")
                 stringBuffer:appendint(java_int(AbSqlData.MAXSTRING))
                 stringBuffer:append(" and > 0 characters long.<br/>")
             end
-            if self.downloadableItem:getPlatform() == nil or self.downloadableItem:getPlatform():length() < 1 or self.downloadableItem:getPlatform():length() > AbSqlData.MAXSTRING then
+            if rawequal(self.downloadableItem:getPlatform(), nil) or self.downloadableItem:getPlatform():length() < 1 or self.downloadableItem:getPlatform():length() > AbSqlData.MAXSTRING then
                 stringBuffer:append("Platform value is invalid. Must be < ")
                 stringBuffer:appendint(java_int(AbSqlData.MAXSTRING))
                 stringBuffer:append(" and > 0 characters long.<br/>")
             end
-            if self.downloadableItem:getSpecialName() == nil or self.downloadableItem:getSpecialName():length() < 0 or self.downloadableItem:getSpecialName():length() > AbSqlData.MAXSTRING then
+            if rawequal(self.downloadableItem:getSpecialName(), nil) or self.downloadableItem:getSpecialName():length() < 0 or self.downloadableItem:getSpecialName():length() > AbSqlData.MAXSTRING then
                 stringBuffer:append("Special Name value is invalid. Must be < ")
                 stringBuffer:appendint(java_int(AbSqlData.MAXSTRING))
                 stringBuffer:append(" and > 0 characters long.<br/>")
             end
-            if self.downloadableItem:getVersion() == nil or self.downloadableItem:getVersion():length() < 1 or self.downloadableItem:getVersion():length() > AbSqlData.MAXSTRING then
+            if rawequal(self.downloadableItem:getVersion(), nil) or self.downloadableItem:getVersion():length() < 1 or self.downloadableItem:getVersion():length() > AbSqlData.MAXSTRING then
                 stringBuffer:append("Version value is invalid. Must be < ")
                 stringBuffer:appendint(java_int(AbSqlData.MAXSTRING))
                 stringBuffer:append(" and > 0 characters long.<br/>")
             end
-            if self.downloadableItem:getChanges() == nil or self.downloadableItem:getChanges():length() < 0 or self.downloadableItem:getChanges():length() > AbSqlData.MAXBLOB then
+            if rawequal(self.downloadableItem:getChanges(), nil) or self.downloadableItem:getChanges():length() < 0 or self.downloadableItem:getChanges():length() > AbSqlData.MAXBLOB then
                 stringBuffer:append("Changes value is invalid. Must be < ")
                 stringBuffer:appendint(java_int(AbSqlData.MAXBLOB))
                 stringBuffer:append(" and >= 0 characters long.<br/>")
             end
-            if self.downloadableItem:getSize() == nil then
+            if rawequal(self.downloadableItem:getSize(), nil) then
                 stringBuffer:append("File Size is null")
             else
                 local size = tostring(self.downloadableItem:getSize())
@@ -263,7 +263,7 @@ function DownloadableItemValidation:validationInfo()
                     stringBuffer:append(" and > 0 digits.<br/>")
                 end
             end
-            if self.downloadableItem:getValidTime() == nil then
+            if rawequal(self.downloadableItem:getValidTime(), nil) then
                 stringBuffer:append("Valid Time is null")
             else
                 local size = tostring(self.downloadableItem:getValidTime())
@@ -273,7 +273,7 @@ function DownloadableItemValidation:validationInfo()
                     stringBuffer:append(" and > 0 digits.<br/>")
                 end
             end
-            if self.downloadableItem:getRetries() == nil then
+            if rawequal(self.downloadableItem:getRetries(), nil) then
                 stringBuffer:append("Retries is null")
             else
                 local size = tostring(self.downloadableItem:getRetries())

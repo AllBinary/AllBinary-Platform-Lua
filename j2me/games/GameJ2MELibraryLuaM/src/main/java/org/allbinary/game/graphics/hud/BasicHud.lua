@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local J2MEUtil = java_lazy("org.allbinary.J2MEUtil")
 local Anchor = java_lazy("org.allbinary.graphics.Anchor")
 local GPoint = java_lazy("org.allbinary.graphics.GPoint")
@@ -90,7 +90,7 @@ function BasicHud:_init_fields()
     if self.x == nil then self.x = 0 end
     if self.y == nil then self.y = 0 end
     self.basicColor = BasicColorFactory.getInstance().BLACK
-    if self.color == nil then self.color = nil end
+    if self.color == nil then self.color = 0 end
     if self.updateMaxWidth == nil then self.updateMaxWidth = 0 end
     if self.updateMaxHeight == nil then self.updateMaxHeight = 0 end
     if self.offsetY == nil then self.offsetY = 0 end
@@ -147,31 +147,31 @@ function BasicHud:getHudGraphicsPositionWH(width, height, maxWidth, maxHeight)
         local y = 0
         local anchor = 0
         local basicHudFactory = BasicHudFactory.getInstance()
-        if basicHudFactory.BOTTOMLEFT == self:getLocation() then
+        if rawequal(basicHudFactory.BOTTOMLEFT, self:getLocation()) then
             x = self.bufferZone + 2
             y = height - maxHeight - self.bufferZone
             anchor = Graphics.BOTTOM & Graphics.LEFT
-        elseif basicHudFactory.BOTTOMRIGHT == self:getLocation() then
+        elseif rawequal(basicHudFactory.BOTTOMRIGHT, self:getLocation()) then
             x = width - maxWidth
             y = height - maxHeight - self.bufferZone
             anchor = Graphics.BOTTOM & Graphics.RIGHT
-        elseif basicHudFactory.TOPLEFT == self:getLocation() then
+        elseif rawequal(basicHudFactory.TOPLEFT, self:getLocation()) then
             x = self.bufferZone + 2
             y = self.bufferZoneY
             anchor = Anchor.TOP_LEFT
-        elseif basicHudFactory.TOPRIGHT == self:getLocation() then
+        elseif rawequal(basicHudFactory.TOPRIGHT, self:getLocation()) then
             x = width - maxWidth
             y = self.bufferZoneY
             anchor = Graphics.TOP & Graphics.RIGHT
-        elseif basicHudFactory.TOPCENTER == self:getLocation() then
+        elseif rawequal(basicHudFactory.TOPCENTER, self:getLocation()) then
             x = (java_idiv((width - maxWidth), 2))
             y = self.bufferZoneY
             anchor = Graphics.TOP & Graphics.HCENTER
-        elseif basicHudFactory.BOTTOMCENTER == self:getLocation() then
+        elseif rawequal(basicHudFactory.BOTTOMCENTER, self:getLocation()) then
             x = (java_idiv((width - maxWidth), 2))
             y = height - maxHeight - self.bufferZone
             anchor = Graphics.BOTTOM & Graphics.HCENTER
-        elseif basicHudFactory.ABSOLUTE == self:getLocation() then
+        elseif rawequal(basicHudFactory.ABSOLUTE, self:getLocation()) then
             x = maxHeight
             y = maxWidth
             anchor = 0

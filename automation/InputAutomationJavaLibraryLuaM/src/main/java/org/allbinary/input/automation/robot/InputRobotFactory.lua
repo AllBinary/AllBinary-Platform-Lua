@@ -125,10 +125,10 @@ function InputRobotFactory._jinit(self)
             local inputRobotInterface = nil
             for i = 0, (screens.n or #screens) - 1 do
                 inputRobotInterface = InputRobot.new(screens[i + 1])
-                self.logUtil:putF("Adding Robot: " .. inputRobotInterface:getName(), self, "getRobots")
+                self.logUtil:putF(require("allbinary_java").to_string("Adding Robot: ") .. require("allbinary_java").to_string(inputRobotInterface:getName()), self, "getRobots")
                 self:get():put(inputRobotInterface:getName(), inputRobotInterface)
             end
-            self.logUtil:putF("Number Of Robots: " .. tostring(self.hashtable:size()), self, "getRobots")
+            self.logUtil:putF(require("allbinary_java").to_string("Number Of Robots: ") .. require("allbinary_java").to_string(self.hashtable:size()), self, "getRobots")
         end)
         if not try_ok then
             local e = try_error
@@ -152,17 +152,17 @@ end
 
 -- throws Exception
 function InputRobotFactory:add(inputRobotInterface)
-        self.logUtil:putF("Adding InputRobotInterface: " .. inputRobotInterface:getName(), self, "add")
+        self.logUtil:putF(require("allbinary_java").to_string("Adding InputRobotInterface: ") .. require("allbinary_java").to_string(inputRobotInterface:getName()), self, "add")
         self:get():put(inputRobotInterface:getName(), inputRobotInterface)
         local helpSet = inputRobotInterface:getHelpSet()
-        if self.helpSetListenerInterface ~= nil then
-            if helpSet ~= nil then
-                if not JavaHelpSetNotifier.isNotified(helpSet) then
+        if not rawequal(self.helpSetListenerInterface, nil) then
+            if not rawequal(helpSet, nil) then
+                if not (JavaHelpSetNotifier.isNotified(helpSet)) then
                     local helpSetEvent = HelpSetEvent.new(self, helpSet, HelpSetEvent.HELPSET_ADDED)
                     self.helpSetListenerInterface:helpSetAdded(helpSetEvent)
                 end
             else
-                self.logUtil:putF("Null HelpSet For: " .. inputRobotInterface:getName(), self, "add")
+                self.logUtil:putF(require("allbinary_java").to_string("Null HelpSet For: ") .. require("allbinary_java").to_string(inputRobotInterface:getName()), self, "add")
             end
         else
             self.logUtil:putF("No HelpSet Listener", self, "add")
@@ -198,7 +198,7 @@ end
 function InputRobotFactory.loadLibrary(inputRobotInterface)
         local logUtil = LogUtil.getInstance()
         if InterfaceUtil.isImplemented(SecuredNativeLibraryInterface, inputRobotInterface) then
-            logUtil:putF("Loading Library: " .. inputRobotInterface:getName(), "InputRobotFactory", "loadLibraries")
+            logUtil:putF(require("allbinary_java").to_string("Loading Library: ") .. require("allbinary_java").to_string(inputRobotInterface:getName()), "InputRobotFactory", "loadLibraries")
             local securedNativeLibraryInterface = inputRobotInterface
             securedNativeLibraryInterface:load()
         end
@@ -215,7 +215,7 @@ function InputRobotFactory:unloadLibraries()
         for index = 0, size - 1 do
             inputRobotInterface = self:get(inputRobotArray[index + 1])
             if InterfaceUtil.isImplemented(SecuredNativeLibraryInterface, inputRobotInterface) then
-                self.logUtil:putF("Unloading Library: " .. inputRobotInterface:getName(), self, "unloadLibraries")
+                self.logUtil:putF(require("allbinary_java").to_string("Unloading Library: ") .. require("allbinary_java").to_string(inputRobotInterface:getName()), self, "unloadLibraries")
                 local securedNativeLibraryInterface = inputRobotInterface
                 securedNativeLibraryInterface:unload()
             end
@@ -230,7 +230,7 @@ end
 
 
 function InputRobotFactory:get_j1(name)
-        self.logUtil:putF("Getting Robot: " .. name, self, "getRobots")
+        self.logUtil:putF(require("allbinary_java").to_string("Getting Robot: ") .. require("allbinary_java").to_string(name), self, "getRobots")
         return self.hashtable:get(name)
 end
 function InputRobotFactory:get(...)

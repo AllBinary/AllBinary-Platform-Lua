@@ -112,7 +112,7 @@ function CssPropertiesValidationFactory.getInstance_j1_1(nodeList)
         local propertiesVector = BasicArrayListD.new()
         for index = 0, nodeList:getLength() - 1 do
             local node = nodeList:item(index)
-            if node:getNodeName():compareTo(CssPropertyData.getInstance().NAME) == 0 then
+            if rawequal(node:getNodeName():compareTo(CssPropertyData.getInstance().NAME), 0) then
                 local cssPropertyValidationInterface = CssPropertyValidationFactory.getInstance(node)
                 propertiesVector:add(cssPropertyValidationInterface)
             end

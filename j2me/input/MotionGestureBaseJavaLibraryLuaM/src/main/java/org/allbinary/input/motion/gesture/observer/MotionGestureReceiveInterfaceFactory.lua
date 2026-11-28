@@ -67,7 +67,7 @@ end
 
 function MotionGestureReceiveInterfaceFactory.getInstance()
         local configuration = MotionGestureConfigurationFactory.getInstance()
-        if not configuration:isExecutingActionsAllowed() then
+        if not (configuration:isExecutingActionsAllowed()) then
             return NullCompleteMotionGestureReceiver.new()
         else
             return ResolveCompleteMotionGestureListener.new()

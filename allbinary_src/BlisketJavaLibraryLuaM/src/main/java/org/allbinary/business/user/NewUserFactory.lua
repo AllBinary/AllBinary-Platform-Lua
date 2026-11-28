@@ -139,7 +139,7 @@ end
 
 -- throws Exception
 function NewUserFactory.getInstance_j2(httpServletRequest, propertiesHashMap)
-        if propertiesHashMap ~= nil then
+        if not rawequal(propertiesHashMap, nil) then
             local requestHashMap = RequestParams.new(httpServletRequest):toHashMap()
             local roleString = propertiesHashMap:get(tostring(UserRoleData.NAME))
             requestHashMap:put(tostring(UserRoleData.NAME), roleString)

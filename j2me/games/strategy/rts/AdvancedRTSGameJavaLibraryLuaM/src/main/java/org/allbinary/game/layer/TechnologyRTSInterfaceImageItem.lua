@@ -28,10 +28,10 @@ local function java_real(class)
     return class
 end
 
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local Image = require("javax.microedition.lcdui.Image")
--- local NullImage = require("javax.microedition.lcdui.NullImage")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local NullImage = java_lazy("javax.microedition.lcdui.NullImage")
 local ABCustomImageItem = require("org.allbinary.graphics.form.item.ABCustomImageItem")
 local CharArrayFactory = java_lazy("org.allbinary.logic.java.character.CharArrayFactory")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
@@ -195,7 +195,7 @@ function TechnologyRTSInterfaceImageItem:updateMeasurement(graphics)
         local fontHeight = font:getHeight()
         local imageHeight = 0
         local image = self:getImage()
-        if image ~= NullImage.NULL_IMAGE then
+        if not rawequal(image, NullImage.NULL_IMAGE) then
             imageHeight = image:getHeight()
         end
         self.adjustedCostLabelY = -self.yOffset + imageHeight - (3 * fontHeight)

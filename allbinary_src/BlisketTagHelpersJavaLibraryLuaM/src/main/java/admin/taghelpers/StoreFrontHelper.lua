@@ -146,7 +146,7 @@ function StoreFrontHelper._jinit(self, hashMap, pageContext)
     java_super_init(TagHelper, self)
     StoreFrontHelper._init_fields(self)
         local storeName = hashMap:get(StoreFrontData.getInstance().NAME)
-        if storeName ~= nil then
+        if not rawequal(storeName, nil) then
             self.storeFrontInterface = StoreFrontFactory.getInstance(storeName)
             self.currentLocation = Replace.new(CommonSeps.getInstance().SPACE, "%20"):all(self.storeFrontInterface:getCurrentHostName() + self.storeFrontInterface:getCurrentHostNamePath())
             self.currentHomeLocation = Replace.new(CommonSeps.getInstance().SPACE, "%20"):all(self.storeFrontInterface:getCurrentHomeHostName() + self.storeFrontInterface:getCurrentHomeHostNamePath())

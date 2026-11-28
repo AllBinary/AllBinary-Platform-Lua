@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Font = require("javax.microedition.lcdui.Font")
--- local TextField = require("javax.microedition.lcdui.TextField")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local TextField = java_lazy("javax.microedition.lcdui.TextField")
 local CustomTextBox = java_lazy("org.allbinary.graphics.form.item.CustomTextBox")
 local Animation = java_lazy("org.allbinary.animation.Animation")
 local AnimationInterfaceFactoryInterface = java_lazy("org.allbinary.animation.AnimationInterfaceFactoryInterface")
@@ -69,7 +69,7 @@ CustomTextBoxIndexedAnimationFactory.java_interfaces = function() return {Animat
 function CustomTextBoxIndexedAnimationFactory:_init_fields()
     self.logUtil = LogUtil.getInstance()
     if self.scaleProperties == nil then self.scaleProperties = nil end
-    if self.maxLength == nil then self.maxLength = nil end
+    if self.maxLength == nil then self.maxLength = 0 end
 end
 
 

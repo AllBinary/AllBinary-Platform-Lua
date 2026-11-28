@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local PickedUpLayerInterfaceFactoryInterface = java_lazy("org.allbinary.game.layer.pickup.PickedUpLayerInterfaceFactoryInterface")
 local DisplayInfoSingleton = java_lazy("org.allbinary.graphics.displayable.DisplayInfoSingleton")
 local MyFontProcessor = java_lazy("org.allbinary.graphics.font.MyFontProcessor")
@@ -67,10 +67,10 @@ CountedLayersHudPaintable.java_interfaces = function() return {PaintableInterfac
 function CountedLayersHudPaintable:_init_fields()
     self.displayInfoSingleton = DisplayInfoSingleton.getInstance()
     if self.partInterfaceArray == nil then self.partInterfaceArray = nil end
-    if self.countedTotalStringColor == nil then self.countedTotalStringColor = nil end
-    if self.countedPartsBorder == nil then self.countedPartsBorder = nil end
-    if self.startIndex == nil then self.startIndex = nil end
-    if self.dropSize == nil then self.dropSize = nil end
+    if self.countedTotalStringColor == nil then self.countedTotalStringColor = 0 end
+    if self.countedPartsBorder == nil then self.countedPartsBorder = 0 end
+    if self.startIndex == nil then self.startIndex = 0 end
+    if self.dropSize == nil then self.dropSize = 0 end
     self.myFontProcessor = UpdateMyFontProcessor.new(self)
     if self.height == nil then self.height = 0 end
 end
@@ -99,7 +99,7 @@ function CountedLayersHudPaintable:updateMeasurement(graphics)
         if self.dropSize > font:getHeight() then
             self.height = self.dropSize
         end
-        if CountedLayersHudPaintable.XXStringWidth == 0 then
+        if rawequal(CountedLayersHudPaintable.XXStringWidth, 0) then
             local XXString = "XX"
             CountedLayersHudPaintable.XXStringWidth = font:stringWidth(XXString)
         end

@@ -129,9 +129,9 @@ GameKeyEvent.javaClassName = "org.allbinary.game.input.event.GameKeyEvent"
 setmetatable(GameKeyEvent, {__index = AllBinaryEventObject})
 
 function GameKeyEvent:_init_fields()
-    if self.sourceId == nil then self.sourceId = nil end
+    if self.sourceId == nil then self.sourceId = 0 end
     if self.repeated == nil then self.repeated = false end
-    if self.key == nil then self.key = nil end
+    if self.key == nil then self.key = 0 end
     if self.gameActionKey == nil then self.gameActionKey = 0 end
     if self.originalKey == nil then self.originalKey = 0 end
 end

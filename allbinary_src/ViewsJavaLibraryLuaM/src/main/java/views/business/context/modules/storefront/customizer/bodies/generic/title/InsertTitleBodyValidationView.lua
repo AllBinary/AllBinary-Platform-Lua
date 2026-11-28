@@ -192,7 +192,7 @@ function InsertTitleBodyValidationView:isValid()
                 self.logUtil:putF("Started Validation", self, self.commonStrings.IS_VALID)
             end
             local isValid = self.titleBody:isValid()
-            if isValid == true then
+            if rawequal(isValid, true) then
                 CustomizerUtil.getInstance():insert(self:getTransformInfoInterface(), self.titleBody)
             end
             do return "__jreturn", isValid end

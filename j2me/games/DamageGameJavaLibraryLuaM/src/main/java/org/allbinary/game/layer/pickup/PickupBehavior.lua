@@ -72,13 +72,13 @@ PickupBehavior.java_interfaces = function() return {PickupBehaviorInterface} end
 
 function PickupBehavior:_init_fields()
     self.logUtil = LogUtil.getInstance()
-    if self.countedIndex == nil then self.countedIndex = nil end
+    if self.countedIndex == nil then self.countedIndex = 0 end
     if self.ownerLayerInterface == nil then self.ownerLayerInterface = nil end
 end
 
 
 function PickupBehavior.getNullInstance()
-        if PickupBehavior.NULL_PICKUP_BEHAVIOR == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(PickupBehavior.NULL_PICKUP_BEHAVIOR, NullUtil.getInstance().NULL_OBJECT) then
             PickupBehavior.NULL_PICKUP_BEHAVIOR = PickupBehavior.new(CollidableCompositeLayer.getNullInstance(), 0)
         end
         return PickupBehavior.NULL_PICKUP_BEHAVIOR
@@ -120,12 +120,12 @@ function PickupBehavior:doPickupLayer(pickupLayerInterface)
             local pickedUpLayerInterfaceFactoryInterface = pickupLayerInterface:getPickedUpLayerInterfaceFactoryInterface()
             local pickedUpLayerType = pickedUpLayerInterfaceFactoryInterface:getPickedUpLayerType()
             local pickedUpLayerTypeFactory = PickedUpLayerTypeFactory.getInstance()
-            if pickedUpLayerType == pickedUpLayerTypeFactory.BEAM or pickedUpLayerType == pickedUpLayerTypeFactory.MINE or pickedUpLayerType == pickedUpLayerTypeFactory.PROJECTILE or pickedUpLayerType == pickedUpLayerTypeFactory.ENHANCEMENT then
+            if rawequal(pickedUpLayerType, pickedUpLayerTypeFactory.BEAM) or rawequal(pickedUpLayerType, pickedUpLayerTypeFactory.MINE) or rawequal(pickedUpLayerType, pickedUpLayerTypeFactory.PROJECTILE) or rawequal(pickedUpLayerType, pickedUpLayerTypeFactory.ENHANCEMENT) then
                 self:add(pickedUpLayerInterfaceFactoryInterface)
-            elseif pickedUpLayerInterfaceFactoryInterface:getPickedUpLayerType() == pickedUpLayerTypeFactory.PART then
+            elseif rawequal(pickedUpLayerInterfaceFactoryInterface:getPickedUpLayerType(), pickedUpLayerTypeFactory.PART) then
                 local collidableDestroyableDamageableLayer = self.ownerLayerInterface
                 collidableDestroyableDamageableLayer:addPart(pickedUpLayerInterfaceFactoryInterface)
-            elseif pickedUpLayerType == pickedUpLayerTypeFactory.NONE then
+            elseif rawequal(pickedUpLayerType, pickedUpLayerTypeFactory.NONE) then
             else
                 local pickupProcessorInterface = pickedUpLayerInterfaceFactoryInterface
                 self:doPickup(pickupProcessorInterface)
@@ -166,7 +166,7 @@ function PickupBehavior:getFirstAvailableCountedLayerInterfaceFactory(pickedUpLa
             do
                 local index2 = (pickedUpLayerTypeArray.n or #pickedUpLayerTypeArray)
                 while (function() index2 = index2 - 1 return index2 end)() >= 0 do
-                if countedPickedUpLayerInterfaceFactory:getPickedUpLayerType() == pickedUpLayerTypeArray[index2 + 1] then
+                if rawequal(countedPickedUpLayerInterfaceFactory:getPickedUpLayerType(), pickedUpLayerTypeArray[index2 + 1]) then
                     if nextCountedLayerInterfaceFactory:getTotal() > 0 then
                         return nextCountedLayerInterfaceFactory
                     end
@@ -188,7 +188,7 @@ function PickupBehavior:getCountedLayerInterfaceFactoryForSlot(slotIndex)
         for index = self.countedIndex, size - 1 do
             nextCountedLayerInterfaceFactory = collidableDestroyableDamageableLayer:getPartInterfaceArray()[index + 1]
             if nextCountedLayerInterfaceFactory:getTotal() > 0 then
-                if currentSlot == slotIndex then
+                if rawequal(currentSlot, slotIndex) then
                     return nextCountedLayerInterfaceFactory
                 else
                     currentSlot = currentSlot + 1

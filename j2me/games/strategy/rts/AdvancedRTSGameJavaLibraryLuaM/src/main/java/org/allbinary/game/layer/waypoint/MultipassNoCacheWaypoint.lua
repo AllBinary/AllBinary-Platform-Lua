@@ -218,14 +218,14 @@ java_overload(MultipassNoCacheWaypoint, "releaseCachedPaths", 0)
 function MultipassNoCacheWaypoint:getPathFindingInfo(geographicMapCellPosition)
         local startGeographicMapCellPosition = geographicMapCellPosition
         local endGeographicMapCellPosition = self:getEndGeographicMapCellPosition(startGeographicMapCellPosition)
-        if endGeographicMapCellPosition == nil then
+        if rawequal(endGeographicMapCellPosition, nil) then
             return PathFindingInfo.NULL_PATH_FINDING_INFO
         end
-        if startGeographicMapCellPosition == endGeographicMapCellPosition then
+        if rawequal(startGeographicMapCellPosition, endGeographicMapCellPosition) then
             if self.ownerLayer:shouldHandleStartSameAsEnd() then
                 return PathFindingInfo.NULL_PATH_FINDING_INFO
             else
-                error(require("java.lang.Exception").new("Start should not be End: " .. tostring(endGeographicMapCellPosition)), 0)
+                error(require("java.lang.Exception").new(require("allbinary_java").to_string("Start should not be End: ") .. require("allbinary_java").to_string(endGeographicMapCellPosition)), 0)
             end
         end
         local geographicMapCompositeInterface = self.allBinaryGameLayerManagerP
@@ -246,14 +246,14 @@ java_overload(MultipassNoCacheWaypoint, "getPathFindingInfo", 1, function(java_a
 -- throws Exception
 function MultipassNoCacheWaypoint:getPathsList(geographicMapCellPosition, pathFindingInfo, multipassState)
         local try_ok, try_error, try_value = pcall(function()
-            if pathFindingInfo == nil then
-                self.logUtil:putF("pathFindingInfo: " .. tostring(pathFindingInfo), self, "getPathsList")
+            if rawequal(pathFindingInfo, nil) then
+                self.logUtil:putF(require("allbinary_java").to_string("pathFindingInfo: ") .. require("allbinary_java").to_string(pathFindingInfo), self, "getPathsList")
                 do return "__jreturn", BasicArrayListUtil.getInstance():getImmutableInstance() end
             end
             local geographicMapCompositeInterface = self.allBinaryGameLayerManagerP
             local geographicMapInterface = geographicMapCompositeInterface:getGeographicMapInterface()[1]
             local list = PathGenerator.getInstance():createN(geographicMapInterface, pathFindingInfo, 2, multipassState)
-            if list ~= nil and list ~= BasicArrayListUtil.getInstance():getImmutableInstance() then
+            if not rawequal(list, nil) and not rawequal(list, BasicArrayListUtil.getInstance():getImmutableInstance()) then
                 if list:size() < 1 then
                     error(require("java.lang.Exception").new("Path may have been cleared by clearing caching"), 0)
                 end
@@ -277,10 +277,10 @@ java_overload(MultipassNoCacheWaypoint, "getPathsList", 3, function(java_a1, jav
 function MultipassNoCacheWaypoint:getEndGeographicMapCellPosition(startGeographicMapCellPosition)
         local endList = self.ownerLayer:getEndGeographicMapCellPositionList()
         local endGeographicMapCellPosition = BasicArrayListUtil.getInstance():getRandom(endList)
-        if startGeographicMapCellPosition == endGeographicMapCellPosition then
+        if rawequal(startGeographicMapCellPosition, endGeographicMapCellPosition) then
             for index = endList:size() - 1, 0, -1 do
                 endGeographicMapCellPosition = endList:get(index)
-                if startGeographicMapCellPosition ~= endGeographicMapCellPosition then
+                if not rawequal(startGeographicMapCellPosition, endGeographicMapCellPosition) then
                     break
                 end
             end
@@ -310,7 +310,7 @@ java_overload(MultipassNoCacheWaypoint, "reset", 0)
 
 -- throws Exception
 function MultipassNoCacheWaypoint:visit(unitLayer)
-        if unitLayer:getGroupInterface()[1] ~= self.ownerLayer:getGroupInterface()[1] then
+        if not rawequal(unitLayer:getGroupInterface()[1], self.ownerLayer:getGroupInterface()[1]) then
             return
         end
         local size = self:getConnectedWaypointList():size()

@@ -235,7 +235,7 @@ function TransactionResultEntity:getTransactionResultInterface(orderNumber)
             local updateKeyAndValue = StdUtil.getInstance():createHashMap()
             updateKeyAndValue:put(OrderData.ID, orderNumber)
             resultHashMap = java_super(AbSqlBean, "getRow", 1)(self, updateKeyAndValue)
-            if resultHashMap ~= nil then
+            if not rawequal(resultHashMap, nil) then
                 local transactionResult = TransactionResult.new(resultHashMap)
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                     self.logUtil:putF(self.commonStrings.SUCCESS, self, "getTransactionResultInterface")

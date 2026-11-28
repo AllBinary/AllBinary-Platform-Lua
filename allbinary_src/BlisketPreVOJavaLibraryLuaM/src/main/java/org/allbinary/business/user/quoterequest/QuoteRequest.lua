@@ -141,7 +141,7 @@ function QuoteRequest._new2(self, userName, request)
         self:setTimeFrame(request:getParameter(quoteRequestData.TIMEFRAME))
         self:setComments(request:getParameter(quoteRequestData.COMMENTS))
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPER) then
-            self.logUtil:putF("Created with: " .. tostring(self:toHashMap()), self, self.commonStrings.CONSTRUCTOR)
+            self.logUtil:putF(require("allbinary_java").to_string("Created with: ") .. require("allbinary_java").to_string(self:toHashMap()), self, self.commonStrings.CONSTRUCTOR)
         end
     return self
 end
@@ -158,7 +158,7 @@ function QuoteRequest._new1(self, hashMap)
         self:setTimeFrame(hashMap:get(quoteRequestData.TIMEFRAME))
         self:setComments(hashMap:get(quoteRequestData.COMMENTS))
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPER) then
-            self.logUtil:putF("Created with: " .. tostring(self:toHashMap()), self, self.commonStrings.CONSTRUCTOR)
+            self.logUtil:putF(require("allbinary_java").to_string("Created with: ") .. require("allbinary_java").to_string(self:toHashMap()), self, self.commonStrings.CONSTRUCTOR)
         end
     return self
 end
@@ -167,22 +167,22 @@ end
 function QuoteRequest:isValid()
         local try_ok, try_error, try_value = pcall(function()
             local valid = true
-            if self.userName == nil or #self.userName < 4 or #self.userName > 250 then
+            if rawequal(self.userName, nil) or #self.userName < 4 or #self.userName > 250 then
                 valid = false
             end
-            if self.projectInfo == nil or #self.projectInfo < 0 or #self.projectInfo > AbSqlData.MAXBLOB then
+            if rawequal(self.projectInfo, nil) or #self.projectInfo < 0 or #self.projectInfo > AbSqlData.MAXBLOB then
                 valid = false
             end
-            if self.userComments == nil or #self.userComments < 0 or #self.userComments > AbSqlData.MAXBLOB then
+            if rawequal(self.userComments, nil) or #self.userComments < 0 or #self.userComments > AbSqlData.MAXBLOB then
                 valid = false
             end
-            if self.budget == nil or #self.budget < 0 or #self.budget > AbSqlData.MAXBLOB then
+            if rawequal(self.budget, nil) or #self.budget < 0 or #self.budget > AbSqlData.MAXBLOB then
                 valid = false
             end
-            if self.timeFrame == nil or #self.timeFrame < 0 or #self.timeFrame > AbSqlData.MAXBLOB then
+            if rawequal(self.timeFrame, nil) or #self.timeFrame < 0 or #self.timeFrame > AbSqlData.MAXBLOB then
                 valid = false
             end
-            if self.comments == nil or #self.comments < 0 or #self.comments > AbSqlData.MAXBLOB then
+            if rawequal(self.comments, nil) or #self.comments < 0 or #self.comments > AbSqlData.MAXBLOB then
                 valid = false
             end
             do return "__jreturn", valid end
@@ -202,23 +202,23 @@ end
 function QuoteRequest:validationInfo()
         local try_ok, try_error, try_value = pcall(function()
             local stringBuffer = StringMaker.new()
-            if self.userName == nil or #self.userName < 4 or #self.userName > 250 then
+            if rawequal(self.userName, nil) or #self.userName < 4 or #self.userName > 250 then
                 stringBuffer:append("Please enter a User Name with more than 4 characters.<br>")
             end
-            if self.projectInfo == nil or #self.projectInfo < 0 or #self.projectInfo > AbSqlData.MAXBLOB then
-                stringBuffer:append("Please enter Project Info with less than " .. tostring(AbSqlData.MAXBLOB) .. " characters.<br>")
+            if rawequal(self.projectInfo, nil) or #self.projectInfo < 0 or #self.projectInfo > AbSqlData.MAXBLOB then
+                stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string("Please enter Project Info with less than ") .. require("allbinary_java").to_string(AbSqlData.MAXBLOB)) .. require("allbinary_java").to_string(" characters.<br>"))
             end
-            if self.userComments == nil or #self.userComments < 0 or #self.userComments > AbSqlData.MAXBLOB then
-                stringBuffer:append("Please enter User Comments with less than " .. tostring(AbSqlData.MAXBLOB) .. " characters.<br>")
+            if rawequal(self.userComments, nil) or #self.userComments < 0 or #self.userComments > AbSqlData.MAXBLOB then
+                stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string("Please enter User Comments with less than ") .. require("allbinary_java").to_string(AbSqlData.MAXBLOB)) .. require("allbinary_java").to_string(" characters.<br>"))
             end
-            if self.budget == nil or #self.budget < 0 or #self.budget > AbSqlData.MAXBLOB then
-                stringBuffer:append("Please enter Budget with less than " .. tostring(AbSqlData.MAXBLOB) .. " characters.<br>")
+            if rawequal(self.budget, nil) or #self.budget < 0 or #self.budget > AbSqlData.MAXBLOB then
+                stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string("Please enter Budget with less than ") .. require("allbinary_java").to_string(AbSqlData.MAXBLOB)) .. require("allbinary_java").to_string(" characters.<br>"))
             end
-            if self.timeFrame == nil or #self.timeFrame < 0 or #self.timeFrame > AbSqlData.MAXBLOB then
-                stringBuffer:append("Please enter time frame with less than " .. tostring(AbSqlData.MAXBLOB) .. " characters.<br>")
+            if rawequal(self.timeFrame, nil) or #self.timeFrame < 0 or #self.timeFrame > AbSqlData.MAXBLOB then
+                stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string("Please enter time frame with less than ") .. require("allbinary_java").to_string(AbSqlData.MAXBLOB)) .. require("allbinary_java").to_string(" characters.<br>"))
             end
-            if self.comments == nil or #self.comments < 0 or #self.comments > AbSqlData.MAXBLOB then
-                stringBuffer:append("Please enter comments with less than " .. tostring(AbSqlData.MAXBLOB) .. " characters.<br>")
+            if rawequal(self.comments, nil) or #self.comments < 0 or #self.comments > AbSqlData.MAXBLOB then
+                stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string("Please enter comments with less than ") .. require("allbinary_java").to_string(AbSqlData.MAXBLOB)) .. require("allbinary_java").to_string(" characters.<br>"))
             end
             do return "__jreturn", tostring(stringBuffer) end
         end)
@@ -295,7 +295,7 @@ end
 function QuoteRequest:setComments(value)
         self.comments = value
         local stringUtil = StringUtil.getInstance()
-        if self.comments == nil then
+        if rawequal(self.comments, nil) then
             self.comments = stringUtil.EMPTY_STRING
         end
 end

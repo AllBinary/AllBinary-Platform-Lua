@@ -115,7 +115,7 @@ end
 
 
 function LicenseInitInfo:setServerList(servers)
-        if DebugFactory.getInstance() == NoDebug.getInstance() then
+        if rawequal(DebugFactory.getInstance(), NoDebug.getInstance()) then
             self.serverVector = servers
         end
 end

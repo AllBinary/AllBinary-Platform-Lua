@@ -77,7 +77,7 @@ function DirectoryFileVisitor:visit(anyType)
         local file = anyType
         local index = 1
         local aFile = file:getParentFile()
-        while ((function() aFile = aFile:getParentFile() return aFile end)()) ~= nil do
+        while not rawequal(((function() aFile = aFile:getParentFile() return aFile end)()), nil) do
             index = index + 1
         end
         if file:isDirectory() and index < 5 then

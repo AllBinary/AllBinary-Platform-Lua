@@ -75,7 +75,7 @@ end
 
 
 function GameKeyMappingFactory.getInstance()
-        if GameKeyMappingFactory.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(GameKeyMappingFactory.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             GameKeyMappingFactory.instance_f = GameKeyMappingFactory.new()
         end
         return GameKeyMappingFactory.instance_f

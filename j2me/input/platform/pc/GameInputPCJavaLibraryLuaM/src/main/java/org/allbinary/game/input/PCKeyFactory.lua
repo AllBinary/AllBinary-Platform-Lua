@@ -157,7 +157,7 @@ end
 
 
 function PCKeyFactory:isSubmission(input)
-        if input == self.ENTER then
+        if rawequal(input, self.ENTER) then
             return true
         end
         return false
@@ -165,7 +165,7 @@ end
 
 
 function PCKeyFactory:isDelete(input)
-        if input == self.DEL then
+        if rawequal(input, self.DEL) then
             return true
         end
         return false
@@ -173,7 +173,7 @@ end
 
 
 function PCKeyFactory:isBackSpace(input)
-        if input == self.BACK_SPACE then
+        if rawequal(input, self.BACK_SPACE) then
             return true
         end
         return false
@@ -181,7 +181,7 @@ end
 
 
 function PCKeyFactory:isUp(input)
-        if input == self.DPAD_UP or input == self.DPAD_UP2 then
+        if rawequal(input, self.DPAD_UP) or rawequal(input, self.DPAD_UP2) then
             return true
         end
         return false
@@ -189,7 +189,7 @@ end
 
 
 function PCKeyFactory:isDown(input)
-        if input == self.DPAD_DOWN or input == self.DPAD_DOWN2 then
+        if rawequal(input, self.DPAD_DOWN) or rawequal(input, self.DPAD_DOWN2) then
             return true
         end
         return false
@@ -197,7 +197,7 @@ end
 
 
 function PCKeyFactory:isLeft(input)
-        if input == self.DPAD_LEFT or input == self.DPAD_LEFT2 then
+        if rawequal(input, self.DPAD_LEFT) or rawequal(input, self.DPAD_LEFT2) then
             return true
         end
         return false
@@ -205,7 +205,7 @@ end
 
 
 function PCKeyFactory:isRight(input)
-        if input == self.DPAD_RIGHT or input == self.DPAD_RIGHT2 then
+        if rawequal(input, self.DPAD_RIGHT) or rawequal(input, self.DPAD_RIGHT2) then
             return true
         end
         return false
@@ -213,7 +213,7 @@ end
 
 
 function PCKeyFactory:isEnter(input)
-        if input == self.ENTER then
+        if rawequal(input, self.ENTER) then
             return true
         end
         return false

@@ -203,7 +203,7 @@ function QuoteRequestEntity:get(userName, id)
         row:put(UserData.USERNAME, userName)
         row:put(QuoteRequestData.getInstance().ID, tostring(id))
         local quoteRequestHashMap = java_super(AbSqlBean, "getRow", 1)(self, row)
-        if quoteRequestHashMap ~= nil then
+        if not rawequal(quoteRequestHashMap, nil) then
             return QuoteRequest.new(quoteRequestHashMap)
         else
             return nil

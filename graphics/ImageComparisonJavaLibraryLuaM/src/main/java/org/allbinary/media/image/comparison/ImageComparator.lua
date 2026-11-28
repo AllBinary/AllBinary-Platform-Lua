@@ -131,7 +131,7 @@ end
 -- throws Exception
 function ImageComparator:process(imageComparisonInfo, point)
         local isCollsionWithAvoidRectangles = self.imageComparatorConstraintsInterface:isCollisionWithAvoidRectangles(point)
-        if not isCollsionWithAvoidRectangles then
+        if not (isCollsionWithAvoidRectangles) then
             local rgb1 = imageComparisonInfo:getBufferedImages()[1]:getRGB(point:getX(), point:getY())
             local rgb2 = imageComparisonInfo:getBufferedImages()[2]:getRGB(point:getX(), point:getY())
             local automaticCacheInterface = ColorCacheFactory.getInstance()
@@ -162,7 +162,7 @@ end
 
 -- throws Exception
 function ImageComparator:compare_j6(bufferedImage1, bufferedImage2, frameOne, frameTwo, tolerance, name)
-        if bufferedImage1 == nil or bufferedImage2 == nil then
+        if rawequal(bufferedImage1, nil) or rawequal(bufferedImage2, nil) then
             error(require("java.lang.Exception").new("Input images must not be null."), 0)
         end
         local imageComparisonInfo = ImageComparisonResult.new(name, bufferedImage1, bufferedImage2, frameOne, frameTwo, tolerance)

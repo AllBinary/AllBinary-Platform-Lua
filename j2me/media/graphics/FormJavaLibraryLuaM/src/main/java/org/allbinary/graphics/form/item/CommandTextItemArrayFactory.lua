@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Command = require("javax.microedition.lcdui.Command")
--- local ImageItem = require("javax.microedition.lcdui.ImageItem")
+local Command = java_lazy("javax.microedition.lcdui.Command")
+local ImageItem = java_lazy("javax.microedition.lcdui.ImageItem")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local DisplayInfoSingleton = java_lazy("org.allbinary.graphics.displayable.DisplayInfoSingleton")
 local ScreenInfo = java_lazy("org.allbinary.graphics.form.ScreenInfo")
@@ -103,8 +103,8 @@ function CommandTextItemArrayFactory:getInstance(vector, backgroundBasicColor, f
         local textItem = nil
         local priorityLimit = 7
         local displayInfo = DisplayInfoSingleton.getInstance()
-        local isLargeEnoughDisplayForBigMenu = (displayInfo:isPortrait() and displayInfo:getLastHeight() >= ScreenInfo.getInstance().MEDIUM_WIDTH) or (not displayInfo:isPortrait() and displayInfo:getLastWidth() >= ScreenInfo.getInstance().MEDIUM_WIDTH)
-        if not isLargeEnoughDisplayForBigMenu and size > 3 then
+        local isLargeEnoughDisplayForBigMenu = (displayInfo:isPortrait() and displayInfo:getLastHeight() >= ScreenInfo.getInstance().MEDIUM_WIDTH) or (not (displayInfo:isPortrait()) and displayInfo:getLastWidth() >= ScreenInfo.getInstance().MEDIUM_WIDTH)
+        if not (isLargeEnoughDisplayForBigMenu) and size > 3 then
             priorityLimit = 3
         end
         local command = nil

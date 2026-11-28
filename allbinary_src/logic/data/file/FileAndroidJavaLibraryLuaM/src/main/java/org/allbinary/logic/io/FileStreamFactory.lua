@@ -62,7 +62,7 @@ end
 
 
 function FileStreamFactory.getInstance()
-        if FileStreamFactory.SINGLETON == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(FileStreamFactory.SINGLETON, NullUtil.getInstance().NULL_OBJECT) then
             FileStreamFactory.SINGLETON = FileStreamFactory.new(ResourceUtil.getInstance():getContext())
         end
         return FileStreamFactory.SINGLETON

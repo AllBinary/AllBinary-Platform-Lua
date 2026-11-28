@@ -28,9 +28,9 @@ local function java_real(class)
     return class
 end
 
--- local Command = require("javax.microedition.lcdui.Command")
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Command = java_lazy("javax.microedition.lcdui.Command")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local GameCommandsFactory = java_lazy("org.allbinary.game.commands.GameCommandsFactory")
 local GameKey = java_lazy("org.allbinary.game.input.GameKey")
 local GameKeyFactory = java_lazy("org.allbinary.game.input.GameKeyFactory")
@@ -197,7 +197,7 @@ function GameInputMappingCanvas._jinit(self, abeClientInformation, commandListen
     GameInputMappingCanvas._init_fields(self)
         -- super(...) made self above
         self.logUtil:putF(self.commonStrings.START, self, self.commonStrings.CONSTRUCTOR)
-        if helpPaintable == nil then
+        if rawequal(helpPaintable, nil) then
             error(require("java.lang.Exception").new("Help Paintable Exception"), 0)
         end
         self.abeClientInformation = abeClientInformation
@@ -285,7 +285,7 @@ function GameInputMappingCanvas:processInputMapping(gameKey, input)
         stringBuffer:append(" Input: ")
         stringBuffer:append(self.stringUtil:toString(input))
         self.logUtil:putF(tostring(stringBuffer), self, self.commonStrings.PROCESS)
-        if self.selectedGameKey ~= self.NONE then
+        if not rawequal(self.selectedGameKey, self.NONE) then
             self:gameActionCrud(gameKey, input)
         else
             self:setSelectedAction(gameKey)
@@ -312,7 +312,7 @@ function GameInputMappingCanvas:gameActionCrud(gameKey, input)
         stringBuffer:append(" Input: ")
         stringBuffer:append(self.stringUtil:toString(self.selectedInput))
         self.logUtil:putF(tostring(stringBuffer), self, "gameActionCrud")
-        if self.selectedInput == self.NONE then
+        if rawequal(self.selectedInput, self.NONE) then
             local list = self.inputMapping:getInputMapping():getMappedInput(self.selectedGameKey)
             local isInputAlreadyMappedToSelectedAction = list:contains(input)
             if isInputAlreadyMappedToSelectedAction then
@@ -337,7 +337,7 @@ function GameInputMappingCanvas:addNewMapping(gameKey, input)
         local METHOD_NAME = "addNewMapping"
         self.logUtil:putF(self.commonStrings.START, self, METHOD_NAME)
         local isInputAlreadyMapped = self.inputMapping:getInputMapping():isMapped(input)
-        if not isInputAlreadyMapped and not self.inputMapping:isSystemInput(input) then
+        if not (isInputAlreadyMapped) and not (self.inputMapping:isSystemInput(input)) then
             local stringBuffer = StringMaker.new()
             stringBuffer:append("Add Key Mapping : GameKey: ")
             stringBuffer:append(self.stringUtil:toString(self.selectedGameKey))

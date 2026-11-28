@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local MyFontProcessor = java_lazy("org.allbinary.graphics.font.MyFontProcessor")
 local UpdateMyFontInterface = java_lazy("org.allbinary.graphics.font.UpdateMyFontInterface")
 local UpdateMyFontProcessor = java_lazy("org.allbinary.graphics.font.UpdateMyFontProcessor")
@@ -62,8 +62,8 @@ CanvasDrawLineString.java_interfaces = function() return {UpdateMyFontInterface}
 function CanvasDrawLineString:_init_fields()
     self.drawStringUtil = DrawStringUtil.getInstance()
     self.myFontProcessor = UpdateMyFontProcessor.new(self)
-    if self.x == nil then self.x = nil end
-    if self.y == nil then self.y = nil end
+    if self.x == nil then self.x = 0 end
+    if self.y == nil then self.y = 0 end
     self.fontHeight = 0
 end
 

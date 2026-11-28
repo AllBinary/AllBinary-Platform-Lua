@@ -207,11 +207,11 @@ function PaymentTag:doStartTag()
             if self:isEnabled() then
                 self.propertiesHashMap = StdUtil.getInstance():createHashMap()
                 self.propertiesHashMap:put(StoreFrontData.getInstance().NAME, self.storeName)
-                if self:getCommand() ~= nil then
-                    if self:getCommand():compareTo(PaymentData.SELECT) == 0 then
+                if not rawequal(self:getCommand(), nil) then
+                    if rawequal(self:getCommand():compareTo(PaymentData.SELECT), 0) then
                         local output = self:select()
                         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAGEXTRAOUTPUT) then
-                            self.pageContext:getOut():print(output .. "<br />")
+                            self.pageContext:getOut():print(require("allbinary_java").to_string(output) .. require("allbinary_java").to_string("<br />"))
                         end
                         do return "__jreturn", self.EVAL_BODY_INCLUDE end
                     else

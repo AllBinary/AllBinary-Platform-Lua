@@ -73,7 +73,7 @@ end
 
 
 function Advertisements:addPage(advertisementProcessorInterface)
-        if not self.pageList:contains(advertisementProcessorInterface) then
+        if not (self.pageList:contains(advertisementProcessorInterface)) then
             self.pageList:add(advertisementProcessorInterface)
         end
 end
@@ -113,7 +113,7 @@ end
 
 
 function Advertisements:addBanner(advertisementProcessorInterface)
-        if not self.bannerList:contains(advertisementProcessorInterface) then
+        if not (self.bannerList:contains(advertisementProcessorInterface)) then
             self.bannerList:add(advertisementProcessorInterface)
         end
 end

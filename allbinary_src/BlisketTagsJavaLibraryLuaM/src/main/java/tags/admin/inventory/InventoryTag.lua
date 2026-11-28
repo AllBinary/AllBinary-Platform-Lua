@@ -175,26 +175,26 @@ end
 -- throws JspTagException
 function InventoryTag:doStartTag()
         local try_ok, try_error, try_value = pcall(function()
-            if self:getCommand() ~= nil then
-                if self:getCommand():compareTo(GLOBALS2.VIEW) == 0 then
-                    error(require("java.lang.Exception").new("No Such View Command: " .. tostring(self:getCommand())), 0)
-                elseif self:getCommand():compareTo(self.commonStrings.INSERT) == 0 then
+            if not rawequal(self:getCommand(), nil) then
+                if rawequal(self:getCommand():compareTo(GLOBALS2.VIEW), 0) then
+                    error(require("java.lang.Exception").new(require("allbinary_java").to_string("No Such View Command: ") .. require("allbinary_java").to_string(self:getCommand())), 0)
+                elseif rawequal(self:getCommand():compareTo(self.commonStrings.INSERT), 0) then
                     self:setName("Add Inventory Item Validation View")
                     self:setObjectFile("views.admin.inventory.AddFileValidationView")
-                elseif self:getCommand():compareTo(self.commonStrings.DELETE) == 0 then
+                elseif rawequal(self:getCommand():compareTo(self.commonStrings.DELETE), 0) then
                     self:setName("Delete Inventory Item Validation View")
                     self:setObjectFile("views.admin.inventory.DeleteFileValidationView")
-                elseif self:getCommand():compareTo(GLOBALS2.EDIT) == 0 then
+                elseif rawequal(self:getCommand():compareTo(GLOBALS2.EDIT), 0) then
                     self:setName("Edit Inventory Item Validation View")
                     self:setObjectFile("views.admin.inventory.EditValidationView")
-                elseif self:getCommand():compareTo(GLOBALS2.NEW) == 0 then
+                elseif rawequal(self:getCommand():compareTo(GLOBALS2.NEW), 0) then
                     self:setName("New Inventory Item Validation View")
                     self:setObjectFile("views.admin.inventory.NewValidationView")
-                elseif self:getCommand():compareTo(self.commonStrings.UPDATE) == 0 then
+                elseif rawequal(self:getCommand():compareTo(self.commonStrings.UPDATE), 0) then
                     self:setName("Update Inventory Item Validation View")
                     self:setObjectFile("views.admin.inventory.UpdateFileValidationView")
                 else
-                    error(require("java.lang.Exception").new("No Such View Command: " .. tostring(self:getCommand())), 0)
+                    error(require("java.lang.Exception").new(require("allbinary_java").to_string("No Such View Command: ") .. require("allbinary_java").to_string(self:getCommand())), 0)
                 end
                 do return "__jreturn", java_super(StoreValidationTransformTag, "doStartTag", 0)(self) end
             end

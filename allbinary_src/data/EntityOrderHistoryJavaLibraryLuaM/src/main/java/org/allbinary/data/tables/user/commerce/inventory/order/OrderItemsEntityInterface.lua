@@ -122,6 +122,8 @@ function OrderItemsEntityInterface:insert(...)
     local count = select("#", ...)
     if count == 2 then return self:insert_j2(...) end
     if count == 1 then return self:insert_j1(...) end
+    local parent = getmetatable(OrderItemsEntityInterface).__index
+    if parent.insert then return parent.insert(self, ...) end
     error("No method insert takes " .. count .. " arguments")
 end
 OrderItemsEntityInterface.insert__jdispatcher = OrderItemsEntityInterface.insert

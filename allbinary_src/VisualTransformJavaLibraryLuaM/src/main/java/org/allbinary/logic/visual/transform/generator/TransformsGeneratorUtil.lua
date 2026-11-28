@@ -135,12 +135,12 @@ end
 -- throws Exception
 function TransformsGeneratorUtil:generateComponentsFromObjectConfig_j3(abeClientInformation, transformInfoInterface, group)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("Started Group: " .. group, self, "generateComponentsFromObjectConfig(2)")
+            self.logUtil:putF(require("allbinary_java").to_string("Started Group: ") .. require("allbinary_java").to_string(group), self, "generateComponentsFromObjectConfig(2)")
         end
         local transformInfoObjectConfigInterface = transformInfoInterface:getObjectConfigInterface()
         local result = self:generateComponentsFromObjectConfig(abeClientInformation, transformInfoObjectConfigInterface, transformInfoInterface, group)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("End Group: " .. group, self, "generateComponentsFromObjectConfig(2)")
+            self.logUtil:putF(require("allbinary_java").to_string("End Group: ") .. require("allbinary_java").to_string(group), self, "generateComponentsFromObjectConfig(2)")
         end
         return result
 end
@@ -149,7 +149,7 @@ end
 -- throws Exception
 function TransformsGeneratorUtil:generateComponentsFromObjectConfig_j4(abeClientInformation, transformInfoObjectConfigInterface, transformInfoInterface, group)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("Started Group: " .. group, self, "generateComponentsFromObjectConfig()")
+            self.logUtil:putF(require("allbinary_java").to_string("Started Group: ") .. require("allbinary_java").to_string(group), self, "generateComponentsFromObjectConfig()")
         end
         local transformInfoObjectConfigComponentVector = transformInfoObjectConfigInterface:getTransformsGroup(group)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
@@ -169,7 +169,7 @@ function TransformsGeneratorUtil:generateComponentsFromObjectConfig_j4(abeClient
             TransformGeneratorUtil.getInstance():generate(abeClientInformation, transformInfoObjectConfigComponent, transformInfoInterface)
         end
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("Done Group: " .. group, self, "generateComponentsFromObjectConfig()")
+            self.logUtil:putF(require("allbinary_java").to_string("Done Group: ") .. require("allbinary_java").to_string(group), self, "generateComponentsFromObjectConfig()")
         end
         local stringBuffer = StringMaker.new()
         stringBuffer:append("<!-- Generated all template views successfully for View: ")

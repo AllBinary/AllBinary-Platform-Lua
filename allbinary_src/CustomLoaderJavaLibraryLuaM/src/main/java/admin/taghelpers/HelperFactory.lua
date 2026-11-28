@@ -144,9 +144,9 @@ function HelperFactory.getInstance_j5_1(abeClientInformation, factoryName, class
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-            local error = "Failed To Get Instance Args: HashMap=" .. tostring(hashMap) .. " HttpServletRequest=" .. tostring(httpServletRequest)
+            local error = require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Failed To Get Instance Args: HashMap=") .. require("allbinary_java").to_string(tostring(hashMap))) .. require("allbinary_java").to_string(" HttpServletRequest=")) .. require("allbinary_java").to_string(httpServletRequest)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERFACTORYERROR) then
-                logUtil:put(error, factoryName .. "->HelperFactory", "getInstance(String, String, HashMap, PageContext)", e)
+                logUtil:put(error, require("allbinary_java").to_string(factoryName) .. require("allbinary_java").to_string("->HelperFactory"), "getInstance(String, String, HashMap, PageContext)", e)
             end
             error(e, 0)
         end
@@ -172,8 +172,8 @@ function HelperFactory.getInstance_j5_2(abeClientInformation, factoryName, class
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERFACTORYERROR) then
-                local error = "Failed To Get Instance Args: HashMap=" .. tostring(hashMap) .. " PageContext=" .. tostring(pageContext)
-                logUtil:put(error, factoryName .. "->HelperFactory", "getInstance(String, String, HashMap, PageContext)", e)
+                local error = require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Failed To Get Instance Args: HashMap=") .. require("allbinary_java").to_string(tostring(hashMap))) .. require("allbinary_java").to_string(" PageContext=")) .. require("allbinary_java").to_string(pageContext)
+                logUtil:put(error, require("allbinary_java").to_string(factoryName) .. require("allbinary_java").to_string("->HelperFactory"), "getInstance(String, String, HashMap, PageContext)", e)
             end
             error(e, 0)
         end
@@ -201,8 +201,8 @@ function HelperFactory.getInstance_j6(abeClientInformation, factoryName, classNa
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERFACTORYERROR) then
-                local error = "Failed To Get Instance Args: HashMap=" .. tostring(hashMap) .. " PageContext=" .. tostring(pageContext)
-                logUtil:put(error, factoryName .. "->HelperFactory", "getInstance(String, String, HashMap, PageContext)", e)
+                local error = require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Failed To Get Instance Args: HashMap=") .. require("allbinary_java").to_string(tostring(hashMap))) .. require("allbinary_java").to_string(" PageContext=")) .. require("allbinary_java").to_string(pageContext)
+                logUtil:put(error, require("allbinary_java").to_string(factoryName) .. require("allbinary_java").to_string("->HelperFactory"), "getInstance(String, String, HashMap, PageContext)", e)
             end
             error(e, 0)
         end
@@ -222,7 +222,7 @@ function HelperFactory.getInstance_j3(abeClientInformation, factoryName, classNa
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERFACTORYERROR) then
                 local commonStrings = CommonStrings.getInstance()
-                logUtil:put(commonStrings.EXCEPTION, factoryName .. "->HelperFactory", "getInstance(String, String, HashMap, PageContext)", e)
+                logUtil:put(commonStrings.EXCEPTION, require("allbinary_java").to_string(factoryName) .. require("allbinary_java").to_string("->HelperFactory"), "getInstance(String, String, HashMap, PageContext)", e)
             end
             error(e, 0)
         end

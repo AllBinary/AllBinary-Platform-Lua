@@ -94,9 +94,9 @@ end
 
 -- throws Exception
 function ParentInventoryTagHelper:isValid(tagClass, parentTag)
-        if parentTag == nil then
+        if rawequal(parentTag, nil) then
             error(require("java.lang.Exception").new("Must have parent tag."), 0)
-        elseif not java_instanceof(parentTag, HelperTag) then
+        elseif not (java_instanceof(parentTag, HelperTag)) then
             local stringBuffer = StringMaker.new()
             stringBuffer:append("Must have at least a ")
             stringBuffer:append("tags.HelperTag")

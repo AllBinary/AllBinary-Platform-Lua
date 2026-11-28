@@ -57,7 +57,7 @@ TimeDelayHelper.javaClassName = "org.allbinary.time.TimeDelayHelper"
 function TimeDelayHelper:_init_fields()
     self.startTime = -1
     self.elapsedTimeAtPause = require("java.lang.Long").MIN_VALUE
-    if self.delay == nil then self.delay = nil end
+    if self.delay == nil then self.delay = 0 end
 end
 
 
@@ -171,7 +171,7 @@ end
 
 
 function TimeDelayHelper:resume()
-        if self.elapsedTimeAtPause ~= require("java.lang.Long").MIN_VALUE then
+        if not rawequal(self.elapsedTimeAtPause, require("java.lang.Long").MIN_VALUE) then
             self.startTime = math.floor(os.time() * 1000) + self.elapsedTimeAtPause
             self.elapsedTimeAtPause = require("java.lang.Long").MIN_VALUE
             self:setStartTimeTNT()

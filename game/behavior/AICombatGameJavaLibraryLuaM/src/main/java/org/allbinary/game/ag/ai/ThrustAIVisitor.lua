@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local BasicAI = java_lazy("org.allbinary.game.ai.BasicAI")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local BooleanFactory = java_lazy("org.allbinary.logic.java.bool.BooleanFactory")

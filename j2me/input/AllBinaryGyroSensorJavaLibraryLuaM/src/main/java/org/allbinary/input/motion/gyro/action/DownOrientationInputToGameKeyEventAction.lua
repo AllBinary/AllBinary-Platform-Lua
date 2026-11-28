@@ -131,7 +131,7 @@ setmetatable(DownOrientationInputToGameKeyEventAction, {__index = GameKeyComplet
 
 
 function DownOrientationInputToGameKeyEventAction.getInstance()
-        if DownOrientationInputToGameKeyEventAction.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(DownOrientationInputToGameKeyEventAction.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             DownOrientationInputToGameKeyEventAction.instance_f = DownOrientationInputToGameKeyEventAction.new()
         end
         return DownOrientationInputToGameKeyEventAction.instance_f

@@ -73,7 +73,7 @@ end
 
 
 function TouchMotionGestureFactory.getInstance()
-        if TouchMotionGestureFactory.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(TouchMotionGestureFactory.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             TouchMotionGestureFactory.instance_f = TouchMotionGestureFactory.new()
         end
         return TouchMotionGestureFactory.instance_f

@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local TextField = require("javax.microedition.lcdui.TextField")
+local TextField = java_lazy("javax.microedition.lcdui.TextField")
 local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local ABHashtable = java_lazy("org.allbinary.util.ABHashtable")

@@ -84,7 +84,7 @@ end
 
 
 function MathUtil:sqrtd(x)
-        if x == 0 then
+        if rawequal(x, 0) then
             return 0.0
         end
         if x < 0 then

@@ -166,7 +166,7 @@ function DeleteValidationView._jinit(self, transformInfoInterface)
         -- super(...) made self above
         self.workFlowName = self:getPageContext():getRequest():getParameter(WorkFlowData.getInstance().NAME)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("Name: " .. self.workFlowName, self, self.commonStrings.CONSTRUCTOR)
+            self.logUtil:putF(require("allbinary_java").to_string("Name: ") .. require("allbinary_java").to_string(self.workFlowName), self, self.commonStrings.CONSTRUCTOR)
         end
     return self
 end
@@ -180,10 +180,10 @@ end
 
 function DeleteValidationView:isValid()
         local try_ok, try_error, try_value = pcall(function()
-            if self.workFlowName == nil then
+            if rawequal(self.workFlowName, nil) then
                 do return "__jreturn", false end
             end
-            if WorkFlowEntityFactory.getInstance():create2():get(self.workFlowName, self:getWeblisketSession():getStoreName()) == nil then
+            if rawequal(WorkFlowEntityFactory.getInstance():create2():get(self.workFlowName, self:getWeblisketSession():getStoreName()), nil) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     self.logUtil:putF("WorkFlow does not exist.", self, self.commonStrings.IS_VALID)
                 end
@@ -207,10 +207,10 @@ java_overload(DeleteValidationView, "isValid", 0)
 function DeleteValidationView:validationInfo()
         local try_ok, try_error, try_value = pcall(function()
             local stringBuffer = StringMaker.new()
-            if self.workFlowName == nil then
+            if rawequal(self.workFlowName, nil) then
                 stringBuffer:append("WorkFlow name is invalid<br />")
             end
-            if WorkFlowEntityFactory.getInstance():create2():get(self.workFlowName, self:getWeblisketSession():getStoreName()) == nil then
+            if rawequal(WorkFlowEntityFactory.getInstance():create2():get(self.workFlowName, self:getWeblisketSession():getStoreName()), nil) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     self.logUtil:putF("WorkFlow does not exist.", self, "validationInfo()")
                 end

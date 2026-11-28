@@ -163,11 +163,13 @@ function RemoveActionScriptItemJPanel:initComponents()
         self:setLayout(GridLayout.new())
         self.removeJButton:setText("Remove")
         self.removeJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:removeJButtonActionPerformed(evt)
+                ;(self.removeJButtonActionPerformed and self or java_outer_self):removeJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -179,7 +181,7 @@ java_overload(RemoveActionScriptItemJPanel, "initComponents", 0)
 
 function RemoveActionScriptItemJPanel:removeJButtonActionPerformed(evt)
         local genericProfileAction = self.genericProfileActionJPanel:getGenericProfileAction()
-        if genericProfileAction == nil then
+        if rawequal(genericProfileAction, nil) then
             self.logUtil:putF("GenericProfileAction was null", self, "removeJButtonActionPerformed")
             return
         end

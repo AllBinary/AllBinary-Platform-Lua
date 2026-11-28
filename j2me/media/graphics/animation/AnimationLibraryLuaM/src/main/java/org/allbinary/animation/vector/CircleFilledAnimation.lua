@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local Animation = require("org.allbinary.animation.Animation")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local ColorCompositeInterface = java_lazy("org.allbinary.graphics.color.ColorCompositeInterface")
@@ -148,8 +148,8 @@ CircleFilledAnimation.java_implements = " ColorCompositeInterface "
 CircleFilledAnimation.java_interfaces = function() return {ColorCompositeInterface} end
 
 function CircleFilledAnimation:_init_fields()
-    if self.width == nil then self.width = nil end
-    if self.height == nil then self.height = nil end
+    if self.width == nil then self.width = 0 end
+    if self.height == nil then self.height = 0 end
 end
 
 

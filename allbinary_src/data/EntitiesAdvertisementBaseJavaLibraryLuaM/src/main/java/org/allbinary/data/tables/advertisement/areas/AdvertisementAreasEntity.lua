@@ -208,7 +208,7 @@ function AdvertisementAreasEntity:get_j1(storeName)
         local size = hashMapVector:size()
         for index = 0, size - 1 do
             local hashMap = hashMapVector:get(index)
-            if hashMap ~= nil then
+            if not rawequal(hashMap, nil) then
                 vector:add(AdvertisementArea.new(hashMap))
             end
         end
@@ -222,7 +222,7 @@ function AdvertisementAreasEntity:get_j2(storeName, advertisementAreaName)
         keysAndValues:put(StoreFrontData.getInstance().NAME, storeName)
         keysAndValues:put(AdvertisementAreaData.getInstance().NAME, advertisementAreaName)
         local hashMap = java_super(AbSqlBean, "getRow", 1)(self, keysAndValues)
-        if hashMap ~= nil then
+        if not rawequal(hashMap, nil) then
             return AdvertisementArea.new(hashMap)
         else
             return nil
@@ -232,6 +232,8 @@ function AdvertisementAreasEntity:get(...)
     local count = select("#", ...)
     if count == 1 then return self:get_j1(...) end
     if count == 2 then return self:get_j2(...) end
+    local parent = getmetatable(AdvertisementAreasEntity).__index
+    if parent.get then return parent.get(self, ...) end
     error("No method get takes " .. count .. " arguments")
 end
 AdvertisementAreasEntity.get__jdispatcher = AdvertisementAreasEntity.get

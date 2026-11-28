@@ -73,8 +73,8 @@ PathFindingNodeCostInfo.java_interfaces = function() return {Comparable} end
 
 function PathFindingNodeCostInfo:_init_fields()
     self.pathFindingNodeCostInfoData = PathFindingNodeCostInfoData.getInstance()
-    if self.costFromStartP == nil then self.costFromStartP = nil end
-    if self.costToEndP == nil then self.costToEndP = nil end
+    if self.costFromStartP == nil then self.costFromStartP = 0 end
+    if self.costToEndP == nil then self.costToEndP = 0 end
     if self.totalCostP == nil then self.totalCostP = 0 end
 end
 

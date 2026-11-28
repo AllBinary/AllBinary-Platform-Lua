@@ -164,7 +164,7 @@ end
 
 
 function CollidableCompositeLayer.getNullInstance()
-        if CollidableCompositeLayer.NULL_COLLIDABLE_COMPOSITE_LAYER == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(CollidableCompositeLayer.NULL_COLLIDABLE_COMPOSITE_LAYER, NullUtil.getInstance().NULL_OBJECT) then
             CollidableCompositeLayer.NULL_COLLIDABLE_COMPOSITE_LAYER = CollidableCompositeLayer.new(StringUtil.getInstance().EMPTY_STRING, RectangleFactory.SINGLETON, ViewPositionBase.NULL_VIEW_POSITION, CollidableNeverCollideBehaviorFactory.getInstance())
         end
         return CollidableCompositeLayer.NULL_COLLIDABLE_COMPOSITE_LAYER
@@ -175,7 +175,7 @@ function CollidableCompositeLayer._jinit(self, name, layerInfo, viewPosition, co
     java_super_init(AllBinaryGameLayer, self, name, layerInfo, viewPosition)
     CollidableCompositeLayer._init_fields(self)
         -- super(...) made self above
-        if collidableBaseBehaviorFactory ~= CollidableNeverCollideBehaviorFactory.getInstance() then
+        if not rawequal(collidableBaseBehaviorFactory, CollidableNeverCollideBehaviorFactory.getInstance()) then
             self:setCollidableInferface(collidableBaseBehaviorFactory:createBehavior())
         end
     return self

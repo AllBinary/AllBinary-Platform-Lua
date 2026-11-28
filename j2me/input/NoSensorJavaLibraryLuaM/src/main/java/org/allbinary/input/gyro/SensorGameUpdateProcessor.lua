@@ -88,7 +88,7 @@ end
 
 
 function SensorGameUpdateProcessor:isAnySensor()
-        if self.inputSensor == NoAllBinarySensor.getInstance() then
+        if rawequal(self.inputSensor, NoAllBinarySensor.getInstance()) then
             return false
         else
             return true

@@ -179,7 +179,7 @@ java_overload(SequenceAI, "processAI", 1, function(java_a1) return true and (jav
 function SequenceAI:next()
         self.index = self.index + 1
         local artificialIntelligenceInterface = self:getSelectedArtificialIntelligenceInterface()
-        if artificialIntelligenceInterface:getId() == ArtificialIntelligence.AI_ID then
+        if rawequal(artificialIntelligenceInterface:getId(), ArtificialIntelligence.AI_ID) then
             local artificialIntelligenceTransitionInterface = artificialIntelligenceInterface
             artificialIntelligenceTransitionInterface:transition()
         end

@@ -32,7 +32,7 @@ end
 -- local DataInputStream = require("java.io.DataInputStream")
 -- local EOFException = require("java.io.EOFException")
 -- local IOException = require("java.io.IOException")
--- local RecordComparator = require("javax.microedition.rms.RecordComparator")
+local RecordComparator = java_lazy("javax.microedition.rms.RecordComparator")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 
@@ -62,7 +62,7 @@ ScoreComparator.java_interfaces = function() return {RecordComparator} end
 
 function ScoreComparator:_init_fields()
     self.logUtil = LogUtil.getInstance()
-    if self.isHighestBest == nil then self.isHighestBest = nil end
+    if self.isHighestBest == nil then self.isHighestBest = false end
 end
 
 

@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local GameFeatureImageCacheFactory = java_lazy("org.allbinary.image.GameFeatureImageCacheFactory")
 local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
 local TimeDelayHelper = java_lazy("org.allbinary.time.TimeDelayHelper")
@@ -100,9 +100,9 @@ end
 -- throws Exception
 function ImageCompleteUtil:isReady(image, name, timeDelayHelper)
         local playnImage = image
-        if not playnImage:getImage():isReady() and playnImage:getImage():width() + playnImage:getImage():height() == 0 then
+        if not (playnImage:getImage():isReady()) and rawequal(playnImage:getImage():width() + playnImage:getImage():height(), 0) then
             if timeDelayHelper:isTime() then
-                error(require("java.lang.Exception").new("isReady: Timeout Waiting or GameHtmlHasLoadedResourcesProcessor does not have this Image: " .. name), 0)
+                error(require("java.lang.Exception").new(require("allbinary_java").to_string("isReady: Timeout Waiting or GameHtmlHasLoadedResourcesProcessor does not have this Image: ") .. require("allbinary_java").to_string(name)), 0)
             end
             return false
         end
@@ -113,9 +113,9 @@ end
 -- throws Exception
 function ImageCompleteUtil:waitForATime(image, name, timeDelayHelper)
         local playnImage = image
-        while not playnImage:getImage():isReady() and playnImage:getImage():width() + playnImage:getImage():height() == 0 do
+        while not (playnImage:getImage():isReady()) and rawequal(playnImage:getImage():width() + playnImage:getImage():height(), 0) do
             if timeDelayHelper:isTime() then
-                error(require("java.lang.Exception").new("waitFor: Timeout Waiting or GameHtmlHasLoadedResourcesProcessor does not have this Image: " .. name), 0)
+                error(require("java.lang.Exception").new(require("allbinary_java").to_string("waitFor: Timeout Waiting or GameHtmlHasLoadedResourcesProcessor does not have this Image: ") .. require("allbinary_java").to_string(name)), 0)
             end
         end
 end
@@ -127,7 +127,7 @@ function ImageCompleteUtil:waitForAll()
         local hashtable = GameFeatureImageCacheFactory.getInstance():getHashtable()
         local objectArray = HashtableUtil.getInstance():getKeysAsArray(hashtable)
         local size = (objectArray.n or #objectArray)
-        PreLogUtil.put("Total: " .. tostring(size), self, "waitForAll")
+        PreLogUtil.put(require("allbinary_java").to_string("Total: ") .. require("allbinary_java").to_string(size), self, "waitForAll")
         for index = 0, size - 1 do
             self:waitForATime(hashtable:get(objectArray[index + 1]), objectArray[index + 1], self.allTimeDelayHelper)
         end

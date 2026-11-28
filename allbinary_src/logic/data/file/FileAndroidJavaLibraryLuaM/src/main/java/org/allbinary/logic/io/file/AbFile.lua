@@ -30,7 +30,7 @@ end
 
 local File = java_lazy("java.io.File")
 -- local FileFilter = require("java.io.FileFilter")
--- local FilenameFilter = require("java.io.FilenameFilter")
+local FilenameFilter = java_lazy("java.io.FilenameFilter")
 -- local IOException = require("java.io.IOException")
 -- local URI = require("java.net.URI")
 local TsUtil = java_lazy("org.allbinary.TsUtil")
@@ -284,7 +284,7 @@ AbFile.__eq = function(self, other) return self:equals(other) end
 
 
 function AbFile:hashCode()
-        return self.file:hashCode()
+        return require("allbinary_java").hash_code(self.file)
 end
 
 

@@ -155,7 +155,7 @@ function ShippingHelper._jinit(self, hashMap, pageContext)
         self.pageContext = pageContext
         self.request = pageContext:getRequest()
         local storeName = hashMap:get(StoreFrontData.getInstance().NAME)
-        if storeName ~= nil then
+        if not rawequal(storeName, nil) then
             self.storeFrontInterface = StoreFrontFactory.getInstance(storeName)
         end
         self.weblisketSession = WeblisketSession.new(hashMap, pageContext)

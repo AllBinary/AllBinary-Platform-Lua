@@ -195,11 +195,11 @@ function AlwaysActionScriptCondition._new1(self, node)
     AlwaysActionScriptCondition._init_fields(self)
         -- super(...) made self above
         local actionNode = DomSearchHelper.getNode(AlwaysActionScriptConditionData.NAME, node:getChildNodes())
-        if actionNode ~= nil then
+        if not rawequal(actionNode, nil) then
             local nodeList = actionNode:getChildNodes()
             for index = 0, nodeList:getLength() - 1 do
                 local childNode = nodeList:item(index)
-                if childNode:getNodeName():compareTo(AlwaysActionScriptConditionData.IS_ON) == 0 then
+                if rawequal(childNode:getNodeName():compareTo(AlwaysActionScriptConditionData.IS_ON), 0) then
                     local booleanString = DomNodeHelper.getTextNodeValue(childNode)
                     self:setIsOn(booleanString)
                 else
@@ -250,7 +250,7 @@ java_overload(AlwaysActionScriptCondition, "showDialog", 0)
 function AlwaysActionScriptCondition:toHashMap()
         local hashMap = StdUtil.getInstance():createHashMap()
         hashMap:put(AlwaysActionScriptConditionData.IS_ON, tostring(self:isIsOn()))
-        self.logUtil:putF("HashMap: " .. tostring(hashMap), self, "toHashMap()")
+        self.logUtil:putF(require("allbinary_java").to_string("HashMap: ") .. require("allbinary_java").to_string(tostring(hashMap)), self, "toHashMap()")
         return hashMap
 end
 java_overload(AlwaysActionScriptCondition, "toHashMap", 0)
@@ -276,7 +276,7 @@ java_overload(AlwaysActionScriptCondition, "shouldProcess", 1, function(java_a1)
 
 
 function AlwaysActionScriptCondition:log()
-        self.logUtil:putF("Is On: " .. tostring(self:isIsOn()), self, "log")
+        self.logUtil:putF(require("allbinary_java").to_string("Is On: ") .. require("allbinary_java").to_string(self:isIsOn()), self, "log")
 end
 java_overload(AlwaysActionScriptCondition, "log", 0)
 

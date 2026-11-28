@@ -89,7 +89,7 @@ end
 
 
 function HighScoresHelperBase:setHighScoresArray(highScoresArrayP)
-        if highScoresArrayP ~= nil then
+        if not rawequal(highScoresArrayP, nil) then
             local commonStrings = CommonStrings.getInstance()
             self.logUtil:putF(tostring(StringMaker.new():append(commonStrings.START):appendint((highScoresArrayP.n or #highScoresArrayP))), self, "setHighScoresArray")
         else

@@ -124,7 +124,7 @@ function InputAutomationRobotOSGIServiceVisitor:visit_j1_2(osgiServiceInterface)
             local inputAutomationRobotServiceInterface = osgiServiceInterface
             local inputRobotInterfaceArray = inputAutomationRobotServiceInterface:getInputRobotInterfaceArray()
             for index = 0, (inputRobotInterfaceArray.n or #inputRobotInterfaceArray) - 1 do
-                self.logUtil:putF("Adding: " .. inputRobotInterfaceArray[index + 1]:getName(), self, "visit")
+                self.logUtil:putF(require("allbinary_java").to_string("Adding: ") .. require("allbinary_java").to_string(inputRobotInterfaceArray[index + 1]:getName()), self, "visit")
                 InputRobotFactory.getInstance():add(inputRobotInterfaceArray[index + 1])
             end
             do return "__jreturn", true end

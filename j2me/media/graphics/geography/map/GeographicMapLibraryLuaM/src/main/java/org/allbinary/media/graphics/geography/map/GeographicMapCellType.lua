@@ -83,20 +83,20 @@ GeographicMapCellType.javaClassName = "org.allbinary.media.graphics.geography.ma
 
 function GeographicMapCellType:_init_fields()
     self.logUtil = LogUtil.getInstance()
-    if self.type == nil then self.type = nil end
+    if self.type == nil then self.type = 0 end
 end
 
 
 function GeographicMapCellType._jinit(self, type, reset)
     GeographicMapCellType._init_fields(self)
         self.type = type
-        if type ~= require("java.lang.Integer").MIN_VALUE then
+        if not rawequal(type, require("java.lang.Integer").MIN_VALUE) then
             local geographicMapCellTypeFactory = GeographicMapCellTypeFactory.getInstance()
             local geographicMapCellTypeArray = geographicMapCellTypeFactory:getGeographicMapCellTypeArray()
-            if geographicMapCellTypeArray[type + 1] == nil or reset == 1 then
+            if rawequal(geographicMapCellTypeArray[type + 1], nil) or rawequal(reset, 1) then
                 geographicMapCellTypeArray[type + 1] = self
             else
-                if reset ~= -1 then
+                if not rawequal(reset, -1) then
                     error(require("java.lang.RuntimeException").new(), 0)
                 end
             end

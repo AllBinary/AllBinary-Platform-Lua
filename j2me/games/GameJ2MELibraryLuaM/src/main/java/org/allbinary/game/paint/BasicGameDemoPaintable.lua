@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local NullPaintable = java_lazy("org.allbinary.graphics.paint.NullPaintable")
 local Paintable = java_lazy("org.allbinary.graphics.paint.Paintable")
 local StatePaintable = require("org.allbinary.graphics.paint.StatePaintable")
@@ -155,9 +155,9 @@ end
 
 
 function BasicGameDemoPaintable:setState(state)
-        if state == 0 then
+        if rawequal(state, 0) then
             self:setCurrentStatePaintable(self:getMainDemoStatePaintable())
-        elseif state == 1 then
+        elseif rawequal(state, 1) then
             self:setCurrentStatePaintable(self.helpPaintableInterface)
         else
             self:setCurrentStatePaintable(self.ownershipPaintable)

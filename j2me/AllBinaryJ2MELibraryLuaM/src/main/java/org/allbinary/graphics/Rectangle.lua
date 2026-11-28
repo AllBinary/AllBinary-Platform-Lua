@@ -57,8 +57,8 @@ Rectangle.javaClassName = "org.allbinary.graphics.Rectangle"
 
 function Rectangle:_init_fields()
     if self.point == nil then self.point = nil end
-    if self.width == nil then self.width = nil end
-    if self.height == nil then self.height = nil end
+    if self.width == nil then self.width = 0 end
+    if self.height == nil then self.height = 0 end
 end
 
 

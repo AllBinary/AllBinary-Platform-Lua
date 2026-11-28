@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local Anchor = java_lazy("org.allbinary.graphics.Anchor")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local BasicColorFactory = java_lazy("org.allbinary.graphics.color.BasicColorFactory")
@@ -162,13 +162,13 @@ function StartIntermissionPaintable:_init_fields()
     self.basicSetColorUtil = BasicColorSetUtil.getInstance()
     if self.gameCanvas == nil then self.gameCanvas = nil end
     if self.stringArray == nil then self.stringArray = nil end
-    if self.fontSize == nil then self.fontSize = nil end
+    if self.fontSize == nil then self.fontSize = 0 end
     if self.font == nil then self.font = nil end
     if self.lastWidth == nil then self.lastWidth = nil end
     self.updateMyFontProcessor = UpdateMyFontProcessor.new(self)
     self.myFontProcessor = self.updateMyFontProcessor
     self.basicColor = BasicColorFactory.getInstance().BLACK
-    if self.color == nil then self.color = nil end
+    if self.color == nil then self.color = 0 end
     self.lineYOffsetArray = NullUtil.getInstance().NULL_INT_ARRAY
     self.hasChanged = true
     self.anchor = Anchor.TOP_LEFT

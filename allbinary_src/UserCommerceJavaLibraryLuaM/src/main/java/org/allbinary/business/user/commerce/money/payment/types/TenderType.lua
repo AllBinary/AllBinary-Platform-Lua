@@ -70,7 +70,7 @@ end
 
 
 function TenderType:isEqual(tenderType)
-        if ((tostring(self) < tostring(tenderType) and -1) or (tostring(self) > tostring(tenderType) and 1) or 0) == 0 then
+        if rawequal(((tostring(self) < tostring(tenderType) and -1) or (tostring(self) > tostring(tenderType) and 1) or 0), 0) then
             return true
         else
             return false

@@ -181,7 +181,7 @@ java_overload(ProfilingRefreshHelper, "initView", 1, function(java_a1) return tr
 
 function ProfilingRefreshHelper:nextFrame()
         self.frameProcessingTimeElapsed = math.floor(os.time() * 1000) - self.frameProcessingTimeElapsed
-        if self.firstTime ~= true then
+        if not rawequal(self.firstTime, true) then
             if self.frameProcessingTimeElapsed > self.worstFrameProcessingTime then
                 self.worstFrameProcessingTime = self.frameProcessingTimeElapsed
             end

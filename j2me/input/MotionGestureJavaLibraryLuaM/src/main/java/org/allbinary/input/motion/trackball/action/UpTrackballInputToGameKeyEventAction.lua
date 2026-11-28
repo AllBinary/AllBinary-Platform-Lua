@@ -131,7 +131,7 @@ setmetatable(UpTrackballInputToGameKeyEventAction, {__index = GameKeyCompleteMot
 
 
 function UpTrackballInputToGameKeyEventAction.getInstance()
-        if UpTrackballInputToGameKeyEventAction.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(UpTrackballInputToGameKeyEventAction.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             UpTrackballInputToGameKeyEventAction.instance_f = UpTrackballInputToGameKeyEventAction.new()
         end
         return UpTrackballInputToGameKeyEventAction.instance_f

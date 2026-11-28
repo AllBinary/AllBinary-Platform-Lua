@@ -169,8 +169,8 @@ end
 function DownloadItemsTag:doStartTag()
         local try_ok, try_error, try_value = pcall(function()
             if self:isEnabled() then
-                if self:getCommand() ~= nil then
-                    if self:getCommand():compareTo(GLOBALS2.BACKUP) ~= 0 and self:getCommand():compareTo(GLOBALS2.RESTORE) ~= 0 and self:getCommand():compareTo(self.commonStrings.CREATE) ~= 0 and self:getCommand():compareTo(self.commonStrings.DROP) ~= 0 then
+                if not rawequal(self:getCommand(), nil) then
+                    if not rawequal(self:getCommand():compareTo(GLOBALS2.BACKUP), 0) and not rawequal(self:getCommand():compareTo(GLOBALS2.RESTORE), 0) and not rawequal(self:getCommand():compareTo(self.commonStrings.CREATE), 0) and not rawequal(self:getCommand():compareTo(self.commonStrings.DROP), 0) then
                         local parentTag = self:getParent()
                         ParentInventoryTagHelper.getInstance():isValid(self, parentTag)
                         self:getPropertiesHashMap():put(AbTagData.PARENT, parentTag)

@@ -131,7 +131,7 @@ setmetatable(InputAutomationRobotServiceConsumer, {__index = InputAutomationServ
 
 
 function InputAutomationRobotServiceConsumer._jinit(self, bundleContext)
-    java_super_init(InputAutomationServiceConsumer, self, InputAutomationRobotServiceInterface:getName(), bundleContext, InputAutomationRobotOSGIServiceVisitor.new())
+    java_super_init(InputAutomationServiceConsumer, self, InputAutomationRobotServiceInterface.javaClassName, bundleContext, InputAutomationRobotOSGIServiceVisitor.new())
         -- super(...) made self above
     return self
 end

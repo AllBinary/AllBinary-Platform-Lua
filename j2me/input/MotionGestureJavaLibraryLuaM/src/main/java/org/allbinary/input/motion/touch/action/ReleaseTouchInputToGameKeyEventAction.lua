@@ -139,7 +139,7 @@ end
 
 
 function ReleaseTouchInputToGameKeyEventAction.getInstance()
-        if ReleaseTouchInputToGameKeyEventAction.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(ReleaseTouchInputToGameKeyEventAction.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             ReleaseTouchInputToGameKeyEventAction.instance_f = ReleaseTouchInputToGameKeyEventAction.new()
         end
         return ReleaseTouchInputToGameKeyEventAction.instance_f

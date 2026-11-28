@@ -57,7 +57,7 @@ InputImageType.javaClassName = "org.allbinary.input.media.image.InputImageType"
 
 function InputImageType:_init_fields()
     if self.name_f == nil then self.name_f = nil end
-    if self.index == nil then self.index = nil end
+    if self.index == nil then self.index = 0 end
 end
 
 
@@ -78,7 +78,7 @@ end
 
 
 function InputImageType:toString()
-        return "ImageType: " .. self:getName()
+        return require("allbinary_java").to_string("ImageType: ") .. require("allbinary_java").to_string(self:getName())
 end
 InputImageType.__tostring = function(self) return self:toString() end
 

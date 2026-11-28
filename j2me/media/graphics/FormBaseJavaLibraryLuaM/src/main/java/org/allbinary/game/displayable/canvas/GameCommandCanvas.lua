@@ -28,10 +28,10 @@ local function java_real(class)
     return class
 end
 
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local NullCommandListener = require("javax.microedition.lcdui.NullCommandListener")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local NullCommandListener = java_lazy("javax.microedition.lcdui.NullCommandListener")
 local Processor = java_lazy("org.allbinary.canvas.Processor")
 local GameCommandsFactory = java_lazy("org.allbinary.game.commands.GameCommandsFactory")
 local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
@@ -208,8 +208,8 @@ function GameCommandCanvas:_init_fields()
     if self.repaintBehavior == nil then self.repaintBehavior = nil end
     self.updateMyFontProcessor = UpdateMyFontProcessor.new(self)
     self.myFontProcessor = self.updateMyFontProcessor
-    if self.foregroundColor == nil then self.foregroundColor = nil end
-    if self.backgroundColor == nil then self.backgroundColor = nil end
+    if self.foregroundColor == nil then self.foregroundColor = 0 end
+    if self.backgroundColor == nil then self.backgroundColor = 0 end
     self.menuInputProcessor = NoMenuInputProcessor.getInstance()
     self.menuPaintable = NullPaintable.getInstance()
     self.menuForm = PaintableForm.getNullPaintableForm()
@@ -228,7 +228,7 @@ function GameCommandCanvas._jinit(self, cmdListener, name, backgroundBasicColor,
         self.foregroundColor = math.tointeger(self.foregroundBasicColor // 1)
         self.backgroundColor = math.tointeger(self.backgroundBasicColor // 1)
         self:initCommands(cmdListener)
-        if cmdListener ~= NullCommandListener.NULL_COMMAND_LISTENER then
+        if not rawequal(cmdListener, NullCommandListener.NULL_COMMAND_LISTENER) then
             local try_ok, try_error, try_value = pcall(function()
                 self:initMenu()
                 self.repaintProcessor:process()
@@ -293,7 +293,7 @@ java_overload(GameCommandCanvas, "initCommands", 1, function(java_a1) return tru
 function GameCommandCanvas:initMenu()
         local form = self:createForm()
         self.menuForm = form
-        if form ~= ScrollSelectionFormNoneFactory.getInstance() then
+        if not rawequal(form, ScrollSelectionFormNoneFactory.getInstance()) then
             self:setMenuInputProcessor(ImmediateCommandFormInputProcessor.new(BasicArrayListD.new(), -1, self, form))
             self.menuPaintable = FormPaintable.new(form)
         end
@@ -395,7 +395,7 @@ java_overload(GameCommandCanvas, "keyRepeatedByDevice", 2, function(java_a1, jav
 function GameCommandCanvas:addGameKeyEvent(keyCode, deviceId, repeated)
         local try_ok, try_error, try_value = pcall(function()
             local gameKey = self.inputToGameKeyMapping:getInstanceForCanvas(self, keyCode)
-            if gameKey ~= self.gameKeyFactory.NONE then
+            if not rawequal(gameKey, self.gameKeyFactory.NONE) then
                 local gameKeyEvent = self.gameKeyEventFactory:getInstanceForInput(self, gameKey)
                 self.downGameKeyEventHandler:fireEvent(gameKeyEvent)
                 self.downGameKeyEventHandler:getInstanceForDevice(deviceId):fireEvent(gameKeyEvent)
@@ -415,7 +415,7 @@ java_overload(GameCommandCanvas, "addGameKeyEvent", 3, function(java_a1, java_a2
 function GameCommandCanvas:removeGameKeyEvent(keyCode, deviceId, repeated)
         local try_ok, try_error, try_value = pcall(function()
             local gameKey = self.inputToGameKeyMapping:getInstanceForCanvas(self, keyCode)
-            if gameKey ~= self.gameKeyFactory.NONE then
+            if not rawequal(gameKey, self.gameKeyFactory.NONE) then
                 local gameKeyEvent = self.gameKeyEventFactory:getInstanceForInput(self, gameKey)
                 self.upGameKeyEventHandler:fireEvent(gameKeyEvent)
                 self.upGameKeyEventHandler:getInstanceForDevice(deviceId):fireEvent(gameKeyEvent)

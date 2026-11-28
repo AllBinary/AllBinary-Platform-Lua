@@ -90,7 +90,7 @@ end
 
 
 function J2MEKeyFactory:isSubmission(input)
-        if input == self.gameKeyFactory.FIRE then
+        if rawequal(input, self.gameKeyFactory.FIRE) then
             return true
         end
         return false
@@ -98,7 +98,7 @@ end
 
 
 function J2MEKeyFactory:isDelete(input)
-        if input == self.gameKeyFactory.GAME_D then
+        if rawequal(input, self.gameKeyFactory.GAME_D) then
             return true
         end
         return false
@@ -111,7 +111,7 @@ end
 
 
 function J2MEKeyFactory:isUp(input)
-        if input == self.gameKeyFactory.UP then
+        if rawequal(input, self.gameKeyFactory.UP) then
             return true
         end
         return false
@@ -119,7 +119,7 @@ end
 
 
 function J2MEKeyFactory:isDown(input)
-        if input == self.gameKeyFactory.DOWN then
+        if rawequal(input, self.gameKeyFactory.DOWN) then
             return true
         end
         return false
@@ -127,7 +127,7 @@ end
 
 
 function J2MEKeyFactory:isLeft(input)
-        if input == self.gameKeyFactory.LEFT then
+        if rawequal(input, self.gameKeyFactory.LEFT) then
             return true
         end
         return false
@@ -135,7 +135,7 @@ end
 
 
 function J2MEKeyFactory:isRight(input)
-        if input == self.gameKeyFactory.RIGHT then
+        if rawequal(input, self.gameKeyFactory.RIGHT) then
             return true
         end
         return false
@@ -143,7 +143,7 @@ end
 
 
 function J2MEKeyFactory:isEnter(input)
-        if input == self.gameKeyFactory.FIRE then
+        if rawequal(input, self.gameKeyFactory.FIRE) then
             return true
         end
         return false

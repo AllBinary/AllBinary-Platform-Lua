@@ -74,13 +74,13 @@ function HttpFilePermissions._jinit(self, fullPath)
     HttpFilePermissions._init_fields(self)
         self.file = AbFile.createAbFileFromAbPath(AbPath.new(fullPath:toFileSystemString(), FileUploadData.getInstance().FILE))
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEWERROR) then
-            self.logUtil:putF("Loading Privileges: " .. tostring(fullPath:toFileSystemString()), self, self.commonStrings.CONSTRUCTOR)
+            self.logUtil:putF(require("allbinary_java").to_string("Loading Privileges: ") .. require("allbinary_java").to_string(fullPath:toFileSystemString()), self, self.commonStrings.CONSTRUCTOR)
         end
         if self:isFile() then
             self.userRoles:add(BasicUserRoleFactory.getInstance().ADMINISTRATOR)
         end
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEWERROR) then
-            self.logUtil:putF("User Roles: " .. tostring(self.userRoles), self, self.commonStrings.CONSTRUCTOR)
+            self.logUtil:putF(require("allbinary_java").to_string("User Roles: ") .. require("allbinary_java").to_string(self.userRoles), self, self.commonStrings.CONSTRUCTOR)
         end
     return self
 end

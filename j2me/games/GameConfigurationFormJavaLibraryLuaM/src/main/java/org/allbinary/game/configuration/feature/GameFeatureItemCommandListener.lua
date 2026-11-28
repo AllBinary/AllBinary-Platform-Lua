@@ -28,9 +28,9 @@ local function java_real(class)
     return class
 end
 
--- local Command = require("javax.microedition.lcdui.Command")
--- local Item = require("javax.microedition.lcdui.Item")
--- local ItemCommandListener = require("javax.microedition.lcdui.ItemCommandListener")
+local Command = java_lazy("javax.microedition.lcdui.Command")
+local Item = java_lazy("javax.microedition.lcdui.Item")
+local ItemCommandListener = java_lazy("javax.microedition.lcdui.ItemCommandListener")
 local GameConfigurationGauge = java_lazy("org.allbinary.game.configuration.GameConfigurationGauge")
 local GameConfigurationUtil = java_lazy("org.allbinary.game.configuration.GameConfigurationUtil")
 local GameOptionsForm = java_lazy("org.allbinary.game.configuration.GameOptionsForm")

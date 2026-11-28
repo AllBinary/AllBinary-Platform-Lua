@@ -178,7 +178,7 @@ function FontFamilyValidation:isValid()
                 self.logUtil:putF("FontFamilyValidation", self, self.commonStrings.IS_VALID)
             end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("CssValidation: " .. tostring(valid), self, self.commonStrings.IS_VALID)
+                self.logUtil:putF(require("allbinary_java").to_string("CssValidation: ") .. require("allbinary_java").to_string(valid), self, self.commonStrings.IS_VALID)
             end
             do return "__jreturn", valid end
         end)

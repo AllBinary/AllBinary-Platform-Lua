@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local RTSGameStrings = java_lazy("org.allbinary.game.layer.RTSGameStrings")
 local RTSLayer = java_lazy("org.allbinary.game.layer.RTSLayer")
 local RTSLayerInfoPaintable = java_lazy("org.allbinary.game.layer.RTSLayerInfoPaintable")
@@ -246,12 +246,12 @@ function SelectedRTSLayersPlayerGameInput:upgrade()
                     self.rtsPlayerLayerInterface:add(UpgradeSound.getInstance())
                     rtsLayer:upgrade()
                     capital:removeMoney(upgradeCost)
-                    if not self.rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface() then
+                    if not (self.rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface()) then
                         GameNotificationEventHandler.getInstance():fireEvent(self.upgradeGameNotificationEvent)
                     end
                 else
                     self.rtsPlayerLayerInterface:add(ErrorSound.getInstance())
-                    if not self.rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface() then
+                    if not (self.rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface()) then
                         GameNotificationEventHandler.getInstance():fireEvent(self.noMoneyGameNotificationEvent)
                     end
                 end
@@ -279,7 +279,7 @@ function SelectedRTSLayersPlayerGameInput:downgrade()
                 rtsLayer:downgrade()
                 local capital = self.rtsPlayerLayerInterface:getCapital()
                 capital:addMoney(downgradeCost)
-                if not self.rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface() then
+                if not (self.rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface()) then
                     GameNotificationEventHandler.getInstance():fireEvent(self.downgradeGameNotificationEvent)
                 end
             end
@@ -303,7 +303,7 @@ java_overload(SelectedRTSLayersPlayerGameInput, "initInputProcessors", 0)
 
 -- throws Exception
 function SelectedRTSLayersPlayerGameInput:processInputKey(key)
-        if self.selectedRTSLayersList ~= nil then
+        if not rawequal(self.selectedRTSLayersList, nil) then
             self.inputProcessorArray[key + 1]:processEvent(AllBinaryGameLayerManager.getNullInstance(), GameKeyEvent.NONE)
         end
 end
@@ -343,11 +343,11 @@ java_overload(SelectedRTSLayersPlayerGameInput, "getSelectedBasicArrayList", 0)
 
 function SelectedRTSLayersPlayerGameInput:addSelectedRTSLayer(selectedLayer)
         self.paintSelectedRTSLayersList = BasicArrayListUtil.getInstance():getImmutableInstance()
-        if selectedLayer == CollidableDestroyableDamageableLayer.getNullInstance() then
+        if rawequal(selectedLayer, CollidableDestroyableDamageableLayer.getNullInstance()) then
             self:deselectAll()
             self.selectedRTSLayersList:clear()
         else
-            if not self.selectedRTSLayersList:contains(selectedLayer) then
+            if not (self.selectedRTSLayersList:contains(selectedLayer)) then
                 self.selectedRTSLayersList:add(selectedLayer)
             end
         end
@@ -359,7 +359,7 @@ java_overload(SelectedRTSLayersPlayerGameInput, "addSelectedRTSLayer", 1, functi
 function SelectedRTSLayersPlayerGameInput:setSelectedRTSLayer(selectedLayer)
         local stringBuffer = StringMaker.new()
         stringBuffer:append("Selected Layer: ")
-        if selectedLayer ~= nil then
+        if not rawequal(selectedLayer, nil) then
             stringBuffer:append(selectedLayer:getName())
         end
         self.logUtil:putF(tostring(stringBuffer), self, "setSelectedRTSLayer")
@@ -373,7 +373,7 @@ function SelectedRTSLayersPlayerGameInput:setSelectedRTSLayer(selectedLayer)
             self.selectedRTSLayersList = tempList
             self.logUtil:putF(tostring(StringMaker.new():append("Preselected: "):append(tostring(self.preSelectedRTSLayersList))), self, "setSelectedRTSLayer")
         end
-        if selectedLayer ~= CollidableDestroyableDamageableLayer.getNullInstance() then
+        if not rawequal(selectedLayer, CollidableDestroyableDamageableLayer.getNullInstance()) then
             self.selectedRTSLayersList:add(selectedLayer)
         end
         self.paintSelectedRTSLayersList = self.selectedRTSLayersList
@@ -428,7 +428,7 @@ java_overload(SelectedRTSLayersPlayerGameInput, "deselectAll", 0)
 
 
 function SelectedRTSLayersPlayerGameInput:isAnyRTSLayerSelected()
-        if self.selectedRTSLayersList:size() == 0 then
+        if rawequal(self.selectedRTSLayersList:size(), 0) then
             return false
         end
         return true

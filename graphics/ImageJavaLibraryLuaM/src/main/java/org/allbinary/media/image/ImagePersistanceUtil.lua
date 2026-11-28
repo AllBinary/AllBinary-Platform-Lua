@@ -125,7 +125,7 @@ function ImagePersistanceUtil:saveWithBatik(file, bufferedImage)
             StreamUtil.getInstance():close(fileOutputStream)
         end
         if not try_ok then error(try_error, 0) end
-        self.logUtil:putF("Wrote Image: " .. tostring(file:getAbsolutePath()), self, self.commonStrings.SAVE)
+        self.logUtil:putF(require("allbinary_java").to_string("Wrote Image: ") .. require("allbinary_java").to_string(file:getAbsolutePath()), self, self.commonStrings.SAVE)
 end
 
 
@@ -139,7 +139,7 @@ function ImagePersistanceUtil:saveWithImageIO_j2_2(file, bufferedImage)
         local ios = nil
         local try_ok, try_error, try_value = pcall(function()
             local iter = ImageIO.getImageWritersByFormatName("jpeg")
-            if not iter:hasNext() then
+            if not (iter:hasNext()) then
                 self.logUtil:putF("Unable to save image to jpeg file type.", self, self.commonStrings.SAVE)
                 do return "__jreturn" end
             end
@@ -150,7 +150,7 @@ function ImagePersistanceUtil:saveWithImageIO_j2_2(file, bufferedImage)
             iwp:setCompressionMode(ImageWriteParam.MODE_EXPLICIT)
             iwp:setCompressionQuality(0.95)
             writer:write(nil, IIOImage.new(bufferedImage, nil, nil), iwp)
-            self.logUtil:putF("Wrote Image: " .. tostring(file:getAbsolutePath()), self, self.commonStrings.SAVE)
+            self.logUtil:putF(require("allbinary_java").to_string("Wrote Image: ") .. require("allbinary_java").to_string(file:getAbsolutePath()), self, self.commonStrings.SAVE)
         end)
         if not try_ok then
             local e = try_error
@@ -159,10 +159,10 @@ function ImagePersistanceUtil:saveWithImageIO_j2_2(file, bufferedImage)
         end
         do -- finally
             local try_ok, try_error, try_value = pcall(function()
-                if ios ~= nil then
+                if not rawequal(ios, nil) then
                     ios:flush()
                     local try_ok, try_error, try_value = pcall(function()
-                        if ios ~= nil then
+                        if not rawequal(ios, nil) then
                             self.logUtil:putF(tostring(ios), ios, self.commonStrings.CLOSE)
                             ios:close()
                         end
@@ -173,7 +173,7 @@ function ImagePersistanceUtil:saveWithImageIO_j2_2(file, bufferedImage)
                         self.logUtil:put(self.commonStrings.EXCEPTION, ios, self.commonStrings.CLOSE, e)
                     end
                 end
-                if writer ~= nil then
+                if not rawequal(writer, nil) then
                     writer:dispose()
                 end
             end)

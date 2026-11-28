@@ -159,7 +159,7 @@ end
 
 
 function AllBinaryGameLayerManager.getNullInstance()
-        if AllBinaryGameLayerManager.NULL_ALLBINARY_LAYER_MANAGER == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(AllBinaryGameLayerManager.NULL_ALLBINARY_LAYER_MANAGER, NullUtil.getInstance().NULL_OBJECT) then
             AllBinaryGameLayerManager.NULL_ALLBINARY_LAYER_MANAGER = AllBinaryGameLayerManager.new(BasicColorFactory.getInstance().BLACK, BasicColorFactory.getInstance().WHITE, GameInfo.NONE)
         end
         return AllBinaryGameLayerManager.NULL_ALLBINARY_LAYER_MANAGER

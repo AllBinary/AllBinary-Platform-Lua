@@ -97,7 +97,7 @@ end
 function ThreadFactoryUtil:getInstanceType(runnable, type)
         local commonStrings = CommonStrings.getInstance()
         if J2MEUtil.isHTML() then
-            if type == DemoCanvas.TYPE or type == AllBinaryGameCanvas.TYPE then
+            if rawequal(type, DemoCanvas.TYPE) or rawequal(type, AllBinaryGameCanvas.TYPE) then
                 local demoGameSingleThreadStartRunnable = RunnableCanvasSingleThreadStartRunnable.new(runnable)
                 PreLogUtil.put(tostring(StringMaker.new():append("Using Pseudo Thread for DemoCanvas/AllBinaryGameCanvas under PlayN/HTML5: "):append(StringUtil.getInstance():toString(runnable))), self, commonStrings.CONSTRUCTOR)
                 local primaryThreadPool = PrimaryThreadPool.getInstance()

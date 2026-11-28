@@ -28,11 +28,11 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
--- local Command = require("javax.microedition.lcdui.Command")
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local NullCommandListener = require("javax.microedition.lcdui.NullCommandListener")
+local Canvas = require("javax.microedition.lcdui.Canvas")
+local Command = java_lazy("javax.microedition.lcdui.Command")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local NullCommandListener = java_lazy("javax.microedition.lcdui.NullCommandListener")
 local MyCommandInterface = java_lazy("org.allbinary.graphics.displayable.command.MyCommandInterface")
 local MyCommandsFactory = java_lazy("org.allbinary.graphics.displayable.command.MyCommandsFactory")
 local TouchJ2ME = java_lazy("org.allbinary.input.TouchJ2ME")
@@ -232,7 +232,7 @@ java_overload(MyCanvas, "isCommand", 1, function(java_a1) return true and (java_
 
 
 function MyCanvas:addCommand(command)
-        if not self.commandStack:contains(command) then
+        if not (self.commandStack:contains(command)) then
             self.commandStack:push(command)
             java_super(Canvas, "addCommand", 1)(self, command)
         end

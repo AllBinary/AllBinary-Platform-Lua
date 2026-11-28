@@ -186,7 +186,7 @@ function RequestHandler:processRequest(request, response)
             response:setContentType("text/html")
             local out = response:getWriter()
             local workflowInterface = RequestWorkFlowFactory.getInstance(request, response, self:getServletConfig(), self:getServletContext())
-            if workflowInterface ~= nil then
+            if not rawequal(workflowInterface, nil) then
                 out:print(workflowInterface:process())
             end
             out:flush()

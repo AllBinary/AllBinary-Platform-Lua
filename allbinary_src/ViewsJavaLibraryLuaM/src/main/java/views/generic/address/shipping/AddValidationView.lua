@@ -166,7 +166,7 @@ end
 -- throws Exception
 function AddValidationView:isValid()
         self.streetAddress = StreetAddress.new(self:getRequest())
-        if self.streetAddress:isValid() == false then
+        if rawequal(self.streetAddress:isValid(), false) then
             return false
         end
         return true

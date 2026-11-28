@@ -101,7 +101,7 @@ end
 
 function DropCellPositionHistory:removeAll(layerInterface)
         local index = 0
-        while index ~= -1 do
+        while not rawequal(index, -1) do
             index = self.layerList:indexOf(layerInterface)
             if index >= 0 then
                 self.positionList:removeAt(index)

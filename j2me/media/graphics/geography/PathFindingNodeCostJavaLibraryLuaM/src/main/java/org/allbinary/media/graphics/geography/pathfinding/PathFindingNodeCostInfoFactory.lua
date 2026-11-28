@@ -172,7 +172,7 @@ java_overload(PathFindingNodeCostInfoFactory, "create", 5, function(java_a1, jav
 -- throws Exception
 function PathFindingNodeCostInfoFactory:getInstance_j4(goingToGeographicMapCellPosition, geographicMapCellPosition, costFromStart, costToEnd)
         local pathFindingNodeCostInfo = self:getInstance(goingToGeographicMapCellPosition, geographicMapCellPosition)
-        if pathFindingNodeCostInfo == nil then
+        if rawequal(pathFindingNodeCostInfo, nil) then
             pathFindingNodeCostInfo = PathFindingNodeCostInfo.new(costFromStart, costToEnd)
             pathFindingNodeCostInfo:setCalculatedTotalCost()
             self.pathFindingNodeCostInfoAdjacencyList[geographicMapCellPosition:getId() + 1][goingToGeographicMapCellPosition:getId() + 1] = pathFindingNodeCostInfo
@@ -192,6 +192,8 @@ function PathFindingNodeCostInfoFactory:getInstance(...)
     local count = select("#", ...)
     if count == 4 then return self:getInstance_j4(...) end
     if count == 2 then return self:getInstance_j2(...) end
+    local parent = getmetatable(PathFindingNodeCostInfoFactory).__index
+    if parent.getInstance then return parent.getInstance(self, ...) end
     error("No method getInstance takes " .. count .. " arguments")
 end
 PathFindingNodeCostInfoFactory.getInstance__jdispatcher = PathFindingNodeCostInfoFactory.getInstance

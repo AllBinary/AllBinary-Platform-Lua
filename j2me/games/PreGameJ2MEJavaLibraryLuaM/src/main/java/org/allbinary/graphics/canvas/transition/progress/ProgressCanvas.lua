@@ -28,11 +28,11 @@ local function java_real(class)
     return class
 end
 
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local NullCanvas = require("javax.microedition.lcdui.NullCanvas")
--- local NullCommandListener = require("javax.microedition.lcdui.NullCommandListener")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local NullCanvas = java_lazy("javax.microedition.lcdui.NullCanvas")
+local NullCommandListener = java_lazy("javax.microedition.lcdui.NullCommandListener")
 local Processor = java_lazy("org.allbinary.canvas.Processor")
 local RunnableCanvas = require("org.allbinary.canvas.RunnableCanvas")
 local GameCommandsFactory = java_lazy("org.allbinary.game.commands.GameCommandsFactory")
@@ -296,7 +296,7 @@ java_overload(ProgressCanvas, "endFromInitialLazyLoadingComplete", 0)
 
 
 function ProgressCanvas:isInGame()
-        if self.inGameProcessor == self.IN_GAME_PROCESSOR then
+        if rawequal(self.inGameProcessor, self.IN_GAME_PROCESSOR) then
             return true
         end
         return false
@@ -325,7 +325,7 @@ java_overload(ProgressCanvas, "addPortion", 3, function(java_a1, java_a2, java_a
 
 
 function ProgressCanvas:addNormalPortion(value, text)
-        if self.text ~= text then
+        if not rawequal(self.text, text) then
             PreLogUtil.put(text, self, self.ADD_PORTION)
         end
         self:setText(text)

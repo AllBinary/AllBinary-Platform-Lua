@@ -89,7 +89,7 @@ function AbeClientLicense._jinit(self, hashtable)
         self.hashtable = StdUtil.getInstance():createHashtable()
         local abeClientInformationData = AbeClientInformationData.getInstance()
         local keyValue = hashtable:get(abeClientInformationData.KEY)
-        if keyValue ~= nil then
+        if not rawequal(keyValue, nil) then
             if java_instanceof(keyValue, String) then
                 self.hashtable:put(abeClientInformationData.KEY, keyValue)
             end
@@ -147,7 +147,7 @@ end
 
 function AbeClientLicense:isValid()
         local stringValidationUtil = StringValidationUtil.getInstance()
-        if not stringValidationUtil:isEmpty(self:getKey(AbeClientInformationData.getInstance().KEY)) then
+        if not (stringValidationUtil:isEmpty(self:getKey(AbeClientInformationData.getInstance().KEY))) then
             return true
         end
         return false

@@ -199,7 +199,7 @@ java_overload(TransformTag, "view", 0)
 function TransformTag:doStartTag()
         local try_ok, try_error, try_value = pcall(function()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAG) then
-                self.logUtil:putF("Creating with: \n" .. tostring(self:getPropertiesHashMap()), self, self.tagStrings.DO_START_TAG)
+                self.logUtil:putF(require("allbinary_java").to_string("Creating with: \n") .. require("allbinary_java").to_string(tostring(self:getPropertiesHashMap())), self, self.tagStrings.DO_START_TAG)
             end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAG) then
                 local stringBuffer = StringMaker.new()

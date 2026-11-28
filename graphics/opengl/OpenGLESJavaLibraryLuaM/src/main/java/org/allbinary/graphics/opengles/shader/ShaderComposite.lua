@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local GL10 = require("javax.microedition.khronos.opengles.GL10")
+local GL10 = java_lazy("javax.microedition.khronos.opengles.GL10")
 local OpenGLProcessor = java_lazy("org.allbinary.graphics.opengles.OpenGLProcessor")
 local NullOpenGLProcessorFactory = java_lazy("org.allbinary.graphics.opengles.NullOpenGLProcessorFactory")
 local CompositeShaderUpdater = java_lazy("org.allbinary.graphics.opengles.shader.CompositeShaderUpdater")

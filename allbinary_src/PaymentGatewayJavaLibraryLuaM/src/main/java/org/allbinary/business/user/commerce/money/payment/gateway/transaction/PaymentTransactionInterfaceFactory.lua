@@ -134,13 +134,13 @@ end
 function PaymentTransactionInterfaceFactory:getInstance(orderReview)
         local try_ok, try_error, try_value = pcall(function()
             local gatewayName = orderReview:getPaymentMethod()
-            if gatewayName ~= nil then
+            if not rawequal(gatewayName, nil) then
                 local paymentType = PaymentTypeUtil.getInstance():get(gatewayName)
                 local paymentTransactionInterfaceFactoryInterface = paymentType:getPaymentTransactionInterfaceFactoryInterface()
                 local paymentTransactionInterface = paymentTransactionInterfaceFactoryInterface:getInstance(orderReview)
                 do return "__jreturn", paymentTransactionInterface end
             end
-            error(require("java.lang.Exception").new("Failed to create PaymentTransactionInterface: " .. "GatewayName is: " .. gatewayName), 0)
+            error(require("java.lang.Exception").new(require("allbinary_java").to_string(require("allbinary_java").to_string("Failed to create PaymentTransactionInterface: ") .. require("allbinary_java").to_string("GatewayName is: ")) .. require("allbinary_java").to_string(gatewayName)), 0)
         end)
         if not try_ok then
             local e = try_error

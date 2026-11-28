@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local NullImage = require("javax.microedition.lcdui.NullImage")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local NullImage = java_lazy("javax.microedition.lcdui.NullImage")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
 local PrimitiveIntUtil = java_lazy("org.allbinary.logic.math.PrimitiveIntUtil")
@@ -201,7 +201,7 @@ end
 
 function VectorAnimation:setBasicColorP(basicColor)
         local changed = false
-        if self:getBasicColorP() == nil or math.tointeger(self:getBasicColorP() // 1) ~= math.tointeger(basicColor // 1) then
+        if rawequal(self:getBasicColorP(), nil) or not rawequal(math.tointeger(self:getBasicColorP() // 1), math.tointeger(basicColor // 1)) then
             changed = true
         end
         java_super(IndexedAnimation, "setBasicColorP", 1)(self, basicColor)
@@ -214,7 +214,7 @@ java_overload(VectorAnimation, "setBasicColorP", 1, function(java_a1) return tru
 
 function VectorAnimation:changeBasicColor(basicColor)
         local changed = false
-        if self:getChangeBasicColor() == nil or math.tointeger(self:getChangeBasicColor() // 1) ~= math.tointeger(basicColor // 1) then
+        if rawequal(self:getChangeBasicColor(), nil) or not rawequal(math.tointeger(self:getChangeBasicColor() // 1), math.tointeger(basicColor // 1)) then
             changed = true
         end
         java_super(IndexedAnimation, "changeBasicColor", 1)(self, basicColor)
@@ -227,7 +227,7 @@ java_overload(VectorAnimation, "changeBasicColor", 1, function(java_a1) return t
 
 function VectorAnimation:setAlpha(alpha)
         local changed = false
-        if self.alphaP ~= alpha then
+        if not rawequal(self.alphaP, alpha) then
             changed = true
         end
         java_super(IndexedAnimation, "setAlpha", 1)(self, alpha)
@@ -303,7 +303,7 @@ function VectorAnimation:paintVectors(graphics, x, y)
                 point = currentPointsFrame[index + 1 + 1]
                 nextPointX = nextPoint[1]
                 nextPointY = nextPoint[2]
-                if nextPointX ~= 1000 then
+                if not rawequal(nextPointX, 1000) then
                     graphics:drawLine(point[1] + x, point[2] + y, nextPointX + x, nextPointY + y)
                 else
                     index = index - 1

@@ -233,7 +233,7 @@ function DownloadItemsEntity:getForItem_j1(id)
             returnVector:add(DownloadableItem.new(hashMap))
         end
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-            self.logUtil:putF("Found: " .. tostring(size), self, "getForItem")
+            self.logUtil:putF(require("allbinary_java").to_string("Found: ") .. require("allbinary_java").to_string(size), self, "getForItem")
         end
         return returnVector
 end
@@ -251,7 +251,7 @@ function DownloadItemsEntity:getForItem_j2(id, downloadItemId)
             returnVector:add(DownloadableItem.new(hashMap))
         end
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-            self.logUtil:putF("Found: " .. tostring(size), self, "getForItem")
+            self.logUtil:putF(require("allbinary_java").to_string("Found: ") .. require("allbinary_java").to_string(size), self, "getForItem")
         end
         return returnVector
 end
@@ -259,6 +259,8 @@ function DownloadItemsEntity:getForItem(...)
     local count = select("#", ...)
     if count == 1 then return self:getForItem_j1(...) end
     if count == 2 then return self:getForItem_j2(...) end
+    local parent = getmetatable(DownloadItemsEntity).__index
+    if parent.getForItem then return parent.getForItem(self, ...) end
     error("No method getForItem takes " .. count .. " arguments")
 end
 DownloadItemsEntity.getForItem__jdispatcher = DownloadItemsEntity.getForItem

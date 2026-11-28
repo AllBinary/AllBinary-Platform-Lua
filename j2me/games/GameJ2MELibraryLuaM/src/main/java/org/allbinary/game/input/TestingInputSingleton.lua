@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local GameKeyEvent = java_lazy("org.allbinary.game.input.event.GameKeyEvent")
 local AllBinaryGameLayer = require("org.allbinary.game.layer.AllBinaryGameLayer")
 local RectangleFactory = java_lazy("org.allbinary.graphics.RectangleFactory")

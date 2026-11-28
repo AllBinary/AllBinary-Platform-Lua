@@ -107,21 +107,21 @@ end
 
 -- throws Exception
 function InputAutomationRobotBundleActivator:registerAsService(bundleContext)
-        OSGIActivatorUtil.registerAsService(bundleContext, self:getServiceFactory(), InputAutomationRobotServiceInterface:getName())
+        OSGIActivatorUtil.registerAsService(bundleContext, self:getServiceFactory(), InputAutomationRobotServiceInterface.javaClassName)
 end
 
 
 -- throws Exception
 function InputAutomationRobotBundleActivator:getInputAutomationRobotChangeListener(context)
-        local serviceReference = context:getServiceReference(InputAutomationRobotChangeListener:getName())
-        if serviceReference ~= nil then
+        local serviceReference = context:getServiceReference(InputAutomationRobotChangeListener.javaClassName)
+        if not rawequal(serviceReference, nil) then
             local inputAutomationRobotChangeListener = context:getService(serviceReference)
-            if inputAutomationRobotChangeListener == nil then
+            if rawequal(inputAutomationRobotChangeListener, nil) then
                 error(require("java.lang.Exception").new("No Service For ServiceReference"), 0)
             end
             return inputAutomationRobotChangeListener
         else
-            self.logUtil:putF("No ServiceReference: " .. InputAutomationRobotChangeListener:getName(), self, "getInputAutomationRobotChangeListener")
+            self.logUtil:putF(require("allbinary_java").to_string("No ServiceReference: ") .. require("allbinary_java").to_string(InputAutomationRobotChangeListener.javaClassName), self, "getInputAutomationRobotChangeListener")
             return nil
         end
 end
@@ -131,7 +131,7 @@ function InputAutomationRobotBundleActivator:addRobots(context)
         local try_ok, try_error, try_value = pcall(function()
             self.logUtil:putF(self.commonStrings.START, self, "addRobots")
             local inputAutomationRobotChangeListener = self:getInputAutomationRobotChangeListener(context)
-            if inputAutomationRobotChangeListener ~= nil then
+            if not rawequal(inputAutomationRobotChangeListener, nil) then
                 for index = 0, (self:getInputRobotInterface().n or #self:getInputRobotInterface()) - 1 do
                     local inputAutomationRobotChangeEvent = InputAutomationRobotUtil.getChangeEvent(self:getInputRobotInterface()[index + 1])
                     inputAutomationRobotChangeListener:onAdd(inputAutomationRobotChangeEvent)
@@ -150,7 +150,7 @@ function InputAutomationRobotBundleActivator:removeRobots(context)
         local try_ok, try_error, try_value = pcall(function()
             self.logUtil:putF(self.commonStrings.START, self, "removeRobots")
             local inputAutomationRobotChangeListener = self:getInputAutomationRobotChangeListener(context)
-            if inputAutomationRobotChangeListener ~= nil then
+            if not rawequal(inputAutomationRobotChangeListener, nil) then
                 for index = 0, (self:getInputRobotInterface().n or #self:getInputRobotInterface()) - 1 do
                     local inputAutomationRobotChangeEvent = InputAutomationRobotUtil.getChangeEvent(self:getInputRobotInterface()[index + 1])
                     inputAutomationRobotChangeListener:onRemove(inputAutomationRobotChangeEvent)

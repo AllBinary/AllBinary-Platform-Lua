@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local Animation = java_lazy("org.allbinary.animation.Animation")
 local AnimationBehaviorFactory = java_lazy("org.allbinary.animation.AnimationBehaviorFactory")
 local GameConfigurationCentral = java_lazy("org.allbinary.game.configuration.GameConfigurationCentral")
@@ -139,8 +139,8 @@ AllBinaryAndroidImageRotationAnimationFactory.javaClassName = "org.allbinary.ani
 setmetatable(AllBinaryAndroidImageRotationAnimationFactory, {__index = BaseImageAnimationFactory})
 
 function AllBinaryAndroidImageRotationAnimationFactory:_init_fields()
-    if self.angleIncrement == nil then self.angleIncrement = nil end
-    if self.resizeCanvasForRotation == nil then self.resizeCanvasForRotation = nil end
+    if self.angleIncrement == nil then self.angleIncrement = 0 end
+    if self.resizeCanvasForRotation == nil then self.resizeCanvasForRotation = false end
 end
 
 
@@ -208,7 +208,7 @@ end
 -- throws Exception
 function AllBinaryAndroidImageRotationAnimationFactory:getCanvasImage()
         local features = Features.getInstance()
-        if self.resizeCanvasForRotation and not features:isDefault(OpenGLFeatureFactory.getInstance().OPENGL) then
+        if self.resizeCanvasForRotation and not (features:isDefault(OpenGLFeatureFactory.getInstance().OPENGL)) then
             return ImageCopyUtil.getInstance():createImageScale(self:getImage(), 1.44, false)
         else
             return self:getImage()
@@ -222,7 +222,7 @@ function AllBinaryAndroidImageRotationAnimationFactory:getInstance(instanceId)
         local canvasImage = self:getCanvasImage()
         local scaledImage = self.animationFactoryImageScaleUtil:createImage(canvasImage, self.animationFactoryInitializationVisitor.width, self.animationFactoryInitializationVisitor.height, self.scaleProperties.scaleWidth, self.scaleProperties.scaleHeight)
         local copyOfScaledImage = ImageCopyUtil.getInstance():createImage(scaledImage)
-        if self.animationFactoryInitializationVisitor.dx ~= 0 or self.animationFactoryInitializationVisitor.dy ~= 0 then
+        if not rawequal(self.animationFactoryInitializationVisitor.dx, 0) or not rawequal(self.animationFactoryInitializationVisitor.dy, 0) then
             self.animationFactoryImageScaleUtil:processAdjust(self)
             return AllBinaryAdjustedAndroidImageRotationAnimation.new(scaledImage, copyOfScaledImage, AngleInfo.getInstance(self.angleIncrement), AngleFactory.getInstance().TOTAL_ANGLE, self.animationFactoryInitializationVisitor.dx, self.animationFactoryInitializationVisitor.dy, self.animationBehaviorFactory:getOrCreateInstance())
         else

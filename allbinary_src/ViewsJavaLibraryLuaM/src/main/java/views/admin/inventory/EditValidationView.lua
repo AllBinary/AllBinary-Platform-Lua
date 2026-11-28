@@ -194,7 +194,7 @@ end
 -- throws Exception
 function EditValidationView:getFormData()
         local hashMap = RequestParams.new(self.request):toHashMap()
-        if hashMap == nil then
+        if rawequal(hashMap, nil) then
             error(require("java.lang.Exception").new("No Request Params Found"), 0)
         end
         self.id = hashMap:get(self.basicItemData.ID)
@@ -204,15 +204,15 @@ java_overload(EditValidationView, "getFormData", 0)
 
 -- throws Exception
 function EditValidationView:isValid()
-        if self.id == nil or not StringValidationUtil.getInstance():isNumber(self.id) then
+        if rawequal(self.id, nil) or not (StringValidationUtil.getInstance():isNumber(self.id)) then
             return false
         end
         self.itemInterface = InventoryEntityFactory.getInstance():getInventoryEntityInstance():getItem(self.id)
-        if self.itemInterface == nil then
+        if rawequal(self.itemInterface, nil) then
             return false
         end
         local downloadable = math.tointeger(tonumber(self.itemInterface:getDownloads()))
-        if downloadable ~= 0 then
+        if not rawequal(downloadable, 0) then
             local downloadItemsEntity = DownloadItemsEntityFactory.getInstance():getDownloadItemsEntityInstance()
             self.downloadableItemVector = downloadItemsEntity:getForItem(self.itemInterface:getId())
         end
@@ -236,10 +236,10 @@ java_overload(EditValidationView, "toValidationInfoNode", 1, function(java_a1) r
 -- throws MoneyException
 function EditValidationView:validationInfo()
         local stringBuffer = StringMaker.new()
-        if self.id == nil or not StringValidationUtil.getInstance():isNumber(self.id) then
+        if rawequal(self.id, nil) or not (StringValidationUtil.getInstance():isNumber(self.id)) then
             stringBuffer:append("Id is not valid.<br />")
         end
-        if InventoryEntityFactory.getInstance():getInventoryEntityInstance():getItem(self.id) == nil then
+        if rawequal(InventoryEntityFactory.getInstance():getInventoryEntityInstance():getItem(self.id), nil) then
             stringBuffer:append("Item does not exist.<br />")
         end
         return tostring(stringBuffer)

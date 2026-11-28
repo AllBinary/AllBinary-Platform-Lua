@@ -176,7 +176,7 @@ function GameScrollMenuPaintable:setColor(basicColor)
         for index = scrollSelectionForm:size() - 1, 0, -1 do
             item = scrollSelectionForm:get(index)
             stringComponent = item:getLabelStringComponent()
-            if stringComponent ~= nil then
+            if not rawequal(stringComponent, nil) then
                 stringComponent:setForegroundBasicColor(basicColor)
             end
         end

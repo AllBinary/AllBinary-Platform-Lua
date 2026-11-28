@@ -29,7 +29,7 @@ local function java_real(class)
 end
 
 -- local DataInputStream = require("java.io.DataInputStream")
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

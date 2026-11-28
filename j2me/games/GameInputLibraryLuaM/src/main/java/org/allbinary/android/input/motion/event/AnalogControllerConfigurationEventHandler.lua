@@ -173,7 +173,7 @@ end
 
 
 function AnalogControllerConfigurationEventHandler:addListener(analogControllerConfigurationEventListenerInterface)
-        if not self.list:contains(analogControllerConfigurationEventListenerInterface) then
+        if not (self.list:contains(analogControllerConfigurationEventListenerInterface)) then
             self.list:add(analogControllerConfigurationEventListenerInterface)
         end
 end

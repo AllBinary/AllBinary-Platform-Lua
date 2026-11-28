@@ -30,10 +30,10 @@ end
 
 local ARunnable = java_lazy("org.allbinary.thread.ARunnable")
 -- local ByteArrayInputStream = require("java.io.ByteArrayInputStream")
--- local InputStream = require("java.io.InputStream")
--- local Control = require("javax.microedition.media.Control")
--- local MediaException = require("javax.microedition.media.MediaException")
--- local PlayerListener = require("javax.microedition.media.PlayerListener")
+local InputStream = java_lazy("java.io.InputStream")
+local Control = java_lazy("javax.microedition.media.Control")
+local MediaException = java_lazy("javax.microedition.media.MediaException")
+local PlayerListener = java_lazy("javax.microedition.media.PlayerListener")
 -- local AudioInputStream = require("javax.sound.sampled.AudioInputStream")
 -- local AudioSystem = require("javax.sound.sampled.AudioSystem")
 -- local Clip = require("javax.sound.sampled.Clip")
@@ -206,7 +206,7 @@ function PCClipWavPlayer._jinit(self, inputStream)
         local try_ok, try_error, try_value = pcall(function()
             audioInputStream = AudioSystem.getAudioInputStream(inputStream)
             clip = self:create(audioInputStream)
-            if clip == nil then
+            if rawequal(clip, nil) then
                 self.logUtil:put("Clip was null", self, self.commonStrings.CONSTRUCTOR, require("java.lang.Exception").new())
                 error(require("java.lang.RuntimeException").new(), 0)
             end
@@ -230,12 +230,14 @@ end
 
 function PCClipWavPlayer:close()
         MusicThreadPool.getInstance():runTask((function()
-            local o = ARunnable.new and ARunnable.new() or setmetatable({}, {__index = ARunnable})
+            local java_outer_self = self
+        local o = ARunnable.new and ARunnable.new() or setmetatable({}, {__index = ARunnable})
             
 
             function o:run()
                 local try_ok, try_error, try_value = pcall(function()
-                    self:close2()
+                    ;(self.close2 and self or java_outer_self):close2()
+            
                 end)
                 if not try_ok then
                     local e = try_error
@@ -268,12 +270,14 @@ java_overload(PCClipWavPlayer, "getContentType", 0)
 -- throws MediaException
 function PCClipWavPlayer:start()
         MusicThreadPool.getInstance():runTask((function()
-            local o = ARunnable.new and ARunnable.new() or setmetatable({}, {__index = ARunnable})
+            local java_outer_self = self
+        local o = ARunnable.new and ARunnable.new() or setmetatable({}, {__index = ARunnable})
             
 
             function o:run()
                 local try_ok, try_error, try_value = pcall(function()
-                    self:start2()
+                    ;(self.start2 and self or java_outer_self):start2()
+            
                 end)
                 if not try_ok then
                     local e = try_error
@@ -311,12 +315,14 @@ java_overload(PCClipWavPlayer, "create", 1, function(java_a1) return true and (j
 -- throws MediaException
 function PCClipWavPlayer:stop()
         MusicThreadPool.getInstance():runTask((function()
-            local o = ARunnable.new and ARunnable.new() or setmetatable({}, {__index = ARunnable})
+            local java_outer_self = self
+        local o = ARunnable.new and ARunnable.new() or setmetatable({}, {__index = ARunnable})
             
 
             function o:run()
                 local try_ok, try_error, try_value = pcall(function()
-                    self:stop2()
+                    ;(self.stop2 and self or java_outer_self):stop2()
+            
                 end)
                 if not try_ok then
                     local e = try_error
@@ -366,7 +372,7 @@ java_overload(PCClipWavPlayer, "getVolume", 0)
 
 function PCClipWavPlayer:setVolumeF(volume)
         if volume < 0.0 or volume > 1.0 then
-            error(require("java.lang.IllegalArgumentException").new("Volume: " .. tostring(volume)), 0)
+            error(require("java.lang.IllegalArgumentException").new(require("allbinary_java").to_string("Volume: ") .. require("allbinary_java").to_string(volume)), 0)
         end
         local masterGainFloatControl = self.clip:getControl(FloatControl.Type.MASTER_GAIN)
         masterGainFloatControl:setValue(20.0 * (require("java.lang.Math").log10(volume) + 0.0))
@@ -381,7 +387,7 @@ java_overload(PCClipWavPlayer, "getDuration", 0)
 
 
 function PCClipWavPlayer:update(event)
-        if event:getType():equals(LineEvent.Type.STOP) then
+        if require("allbinary_java").equals(event:getType(), LineEvent.Type.STOP) then
             local size = self.listenersList:size()
             for index = 0, size - 1 do
                 local listener = self.listenersList:get(size)

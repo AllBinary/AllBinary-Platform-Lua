@@ -134,12 +134,12 @@ end
 function HardwareFactory:getInstance(os)
         local try_ok, try_error, try_value = pcall(function()
             local operatingSystems = OperatingSystems.getInstance()
-            if self.tsUtil:compareTo(os:getName(), operatingSystems.ANDROID) == 0 then
+            if rawequal(self.tsUtil:compareTo(os:getName(), operatingSystems.ANDROID), 0) then
                 do return "__jreturn", AndroidHardware.new() end
-            elseif self.tsUtil:compareTo(os:getName(), operatingSystems.HARMONY) == 0 then
+            elseif rawequal(self.tsUtil:compareTo(os:getName(), operatingSystems.HARMONY), 0) then
                 do return "__jreturn", AndroidHardware.new() end
             end
-            error(require("java.lang.Exception").new("No Hardware Imp for: " .. os:getName()), 0)
+            error(require("java.lang.Exception").new(require("allbinary_java").to_string("No Hardware Imp for: ") .. require("allbinary_java").to_string(os:getName())), 0)
         end)
         if not try_ok then
             local e = try_error

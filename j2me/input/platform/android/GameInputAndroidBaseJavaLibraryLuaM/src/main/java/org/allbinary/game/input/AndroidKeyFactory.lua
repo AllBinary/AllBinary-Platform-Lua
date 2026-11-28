@@ -260,9 +260,9 @@ java_overload(AndroidKeyFactory, "init", 0)
 
 
 function AndroidKeyFactory:isSubmission(input)
-        if input == self.ENTER then
+        if rawequal(input, self.ENTER) then
             return true
-        elseif input == self.DPAD_CENTER then
+        elseif rawequal(input, self.DPAD_CENTER) then
             return true
         end
         return false
@@ -277,7 +277,7 @@ java_overload(AndroidKeyFactory, "isDelete", 1, function(java_a1) return true an
 
 
 function AndroidKeyFactory:isBackSpace(input)
-        if input == self.DEL then
+        if rawequal(input, self.DEL) then
             return true
         end
         return false
@@ -286,7 +286,7 @@ java_overload(AndroidKeyFactory, "isBackSpace", 1, function(java_a1) return true
 
 
 function AndroidKeyFactory:isLeft(input)
-        if input == self.DPAD_LEFT then
+        if rawequal(input, self.DPAD_LEFT) then
             return true
         end
         return false
@@ -295,7 +295,7 @@ java_overload(AndroidKeyFactory, "isLeft", 1, function(java_a1) return true and 
 
 
 function AndroidKeyFactory:isRight(input)
-        if input == self.DPAD_RIGHT then
+        if rawequal(input, self.DPAD_RIGHT) then
             return true
         end
         return false
@@ -304,7 +304,7 @@ java_overload(AndroidKeyFactory, "isRight", 1, function(java_a1) return true and
 
 
 function AndroidKeyFactory:isUp(input)
-        if input == self.DPAD_UP then
+        if rawequal(input, self.DPAD_UP) then
             return true
         end
         return false
@@ -313,7 +313,7 @@ java_overload(AndroidKeyFactory, "isUp", 1, function(java_a1) return true and (j
 
 
 function AndroidKeyFactory:isDown(input)
-        if input == self.DPAD_DOWN then
+        if rawequal(input, self.DPAD_DOWN) then
             return true
         end
         return false
@@ -322,11 +322,11 @@ java_overload(AndroidKeyFactory, "isDown", 1, function(java_a1) return true and 
 
 
 function AndroidKeyFactory:isEnter(input)
-        if input == self.DPAD_CENTER then
+        if rawequal(input, self.DPAD_CENTER) then
             return true
-        elseif input == self.ENTER then
+        elseif rawequal(input, self.ENTER) then
             return true
-        elseif input == self.CALL then
+        elseif rawequal(input, self.CALL) then
             return true
         end
         return false

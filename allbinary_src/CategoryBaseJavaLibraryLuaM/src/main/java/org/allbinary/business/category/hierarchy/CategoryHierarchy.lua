@@ -96,7 +96,7 @@ CategoryHierarchy.java_interfaces = function() return {CategoryHierarchyInterfac
 function CategoryHierarchy:_init_fields()
     if self.rootCategoryInterface == nil then self.rootCategoryInterface = nil end
     if self.parentCategoryInterface == nil then self.parentCategoryInterface = nil end
-    if self.level == nil then self.level = nil end
+    if self.level == nil then self.level = 0 end
 end
 
 function CategoryHierarchy._jinit(self, ...)

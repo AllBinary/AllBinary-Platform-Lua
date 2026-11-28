@@ -135,7 +135,7 @@ end
 -- throws Exception
 function BaseResourceAnimationInterfaceFactoryInterfaceFactory:getBasicAnimationInterfaceFactoryInstance(resource)
         local basicAnimationInterfaceFactoryInterfaceCanBeNull = self.hashtable:get(resource)
-        if basicAnimationInterfaceFactoryInterfaceCanBeNull == nil then
+        if rawequal(basicAnimationInterfaceFactoryInterfaceCanBeNull, nil) then
             return NullAnimationFactory.NULL_NOT_FOR_USE_ANIMATION_FACTORY
         end
         return basicAnimationInterfaceFactoryInterfaceCanBeNull
@@ -145,7 +145,7 @@ end
 -- throws Exception
 function BaseResourceAnimationInterfaceFactoryInterfaceFactory:getRectangle(resource)
         local rectangleCanBeNull = self.rectangleHashtable:get(resource)
-        if rectangleCanBeNull == nil then
+        if rawequal(rectangleCanBeNull, nil) then
             return RectangleFactory.SINGLETON
         end
         return rectangleCanBeNull
@@ -161,7 +161,7 @@ end
 -- throws Exception
 function BaseResourceAnimationInterfaceFactoryInterfaceFactory:getRectangleArrayOfArrays(resource)
         local valueCanBeNull = self.rectangleArrayOfArraysHashtable:get(resource)
-        if valueCanBeNull ~= nil then
+        if not rawequal(valueCanBeNull, nil) then
             local rectangleArrayOfArrays = valueCanBeNull
             return rectangleArrayOfArrays
         else
@@ -183,7 +183,7 @@ end
 
 function BaseResourceAnimationInterfaceFactoryInterfaceFactory:isLoadingLevel(level)
         local resourceLoadingLevelFactory = ResourceLoadingLevelFactory.getInstance()
-        if level == resourceLoadingLevelFactory.LOAD_ALL:getLevel() then
+        if rawequal(level, resourceLoadingLevelFactory.LOAD_ALL:getLevel()) then
             return true
         else
             return false

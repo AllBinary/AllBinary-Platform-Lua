@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Player = require("javax.microedition.media.Player")
+local Player = java_lazy("javax.microedition.media.Player")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
@@ -96,7 +96,7 @@ function Sounds:init()
         local stringBuffer = StringMaker.new()
         for i = 0, (soundInterfaceArray.n or #soundInterfaceArray) - 1 do
             local soundInterface = soundInterfaceArray[i + 1]
-            if soundInterface ~= nil then
+            if not rawequal(soundInterface, nil) then
                 indexInteger = smallIntegerSingletonFactory:getAt(i)
                 indexString = tostring(indexInteger)
                 stringBuffer:delete(0, stringBuffer:length())
@@ -121,9 +121,9 @@ function Sounds:stopAll()
         local progressCanvas = ProgressCanvasFactory.getInstance()
         local player = nil
         for index = 0, (soundInterfaceArray.n or #soundInterfaceArray) - 1 do
-            if soundInterfaceArray[index + 1] ~= nil then
+            if not rawequal(soundInterfaceArray[index + 1], nil) then
                 player = soundInterfaceArray[index + 1]:getPlayerP()
-                if player ~= nil then
+                if not rawequal(player, nil) then
                     player:stop()
                     progressCanvas:addPortion(100, self.soundStrings.STOPPING_SOUND, index)
                 end
@@ -139,9 +139,9 @@ function Sounds:closeAll()
         local progressCanvas = ProgressCanvasFactory.getInstance()
         local player = nil
         for index = 0, (soundInterfaceArray.n or #soundInterfaceArray) - 1 do
-            if soundInterfaceArray[index + 1] ~= nil then
+            if not rawequal(soundInterfaceArray[index + 1], nil) then
                 player = soundInterfaceArray[index + 1]:getPlayerP()
-                if player ~= nil then
+                if not rawequal(player, nil) then
                     player:close()
                     progressCanvas:addPortion(100, self.soundStrings.CLOSING_SOUND, index)
                 end

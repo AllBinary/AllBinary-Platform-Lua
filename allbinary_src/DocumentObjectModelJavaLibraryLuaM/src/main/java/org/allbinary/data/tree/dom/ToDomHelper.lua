@@ -65,7 +65,7 @@ end
 
 
 function ToDomHelper.convertNull(value)
-        if value == nil then
+        if rawequal(value, nil) then
             value = StringUtil.getInstance().NULL_STRING
         end
         return value

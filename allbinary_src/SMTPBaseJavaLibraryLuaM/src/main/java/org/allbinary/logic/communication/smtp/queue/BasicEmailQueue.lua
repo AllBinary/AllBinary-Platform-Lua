@@ -153,7 +153,7 @@ end
 
 
 function BasicEmailQueue.getInstance()
-        if BasicEmailQueue.basicEmailQueue == nil then
+        if rawequal(BasicEmailQueue.basicEmailQueue, nil) then
             BasicEmailQueue.basicEmailQueue = BasicEmailQueue.new()
         end
         return BasicEmailQueue.basicEmailQueue
@@ -181,6 +181,8 @@ function BasicEmailQueue:remove(...)
     local count = select("#", ...)
     if count == 1 then return self:remove_j1(...) end
     if count == 0 then return self:remove_j0(...) end
+    local parent = getmetatable(BasicEmailQueue).__index
+    if parent.remove then return parent.remove(self, ...) end
     error("No method remove takes " .. count .. " arguments")
 end
 BasicEmailQueue.remove__jdispatcher = BasicEmailQueue.remove
@@ -213,11 +215,11 @@ java_overload(BasicEmailQueue, "processAllUnsent", 0)
 function BasicEmailQueue:send(emailInterface)
         local try_ok, try_error, try_value = pcall(function()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().EMAILLOGGING) then
-                self.logUtil:putF("Sending: " .. tostring(emailInterface:log()), self, "send")
+                self.logUtil:putF(require("allbinary_java").to_string("Sending: ") .. require("allbinary_java").to_string(emailInterface:log()), self, "send")
             end
             Transport.send(emailInterface:getMimeMessage())
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().EMAILLOGGING) then
-                self.logUtil:putF("Email Send Debug: " .. tostring(emailInterface:getDebugInfo()), self, "send")
+                self.logUtil:putF(require("allbinary_java").to_string("Email Send Debug: ") .. require("allbinary_java").to_string(emailInterface:getDebugInfo()), self, "send")
             end
             do return "__jreturn", true end
         end)
@@ -225,7 +227,7 @@ function BasicEmailQueue:send(emailInterface)
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().EMAILLOGGING) then
-                self.logUtil:put("Failed Email Send Debug: " .. tostring(emailInterface:getDebugInfo()), self, "send", e)
+                self.logUtil:put(require("allbinary_java").to_string("Failed Email Send Debug: ") .. require("allbinary_java").to_string(emailInterface:getDebugInfo()), self, "send", e)
             end
             return false
         end

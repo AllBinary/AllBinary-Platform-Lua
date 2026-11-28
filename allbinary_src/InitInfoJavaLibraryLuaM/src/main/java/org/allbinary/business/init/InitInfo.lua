@@ -131,7 +131,7 @@ function InitInfo:set_j0()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRELOADER) then
                 PreLogUtil.put("created entity", "InitInfo", "set()")
             end
-            if not initInfoEntity:is() then
+            if not (initInfoEntity:is()) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRELOADER) then
                     PreLogUtil.put("adding", "InitInfo", "set()")
                 end
@@ -203,7 +203,7 @@ end
 
 function InitInfo:updateIfNeeded()
         local try_ok, try_error, try_value = pcall(function()
-            if not self.hasRead then
+            if not (self.hasRead) then
                 self.hasRead = true
                 self:get()
             end
@@ -244,7 +244,7 @@ end
 
 function InitInfo:getTestHtmlPath()
         self:updateIfNeeded()
-        if self.testHtmlPath ~= nil then
+        if not rawequal(self.testHtmlPath, nil) then
             return tostring(self.testHtmlPath)
         else
             return nil
@@ -254,7 +254,7 @@ end
 
 function InitInfo:getMainPath()
         self:updateIfNeeded()
-        if self.mainPath ~= nil then
+        if not rawequal(self.mainPath, nil) then
             return tostring(self.mainPath)
         else
             return nil

@@ -75,7 +75,7 @@ end
 
 function PreLogUtil.putOE(specialMessage, anyType, functionName, exception)
         local className = CommonStrings.getInstance().EMPTY
-        if (getmetatable(anyType).javaClassName or getmetatable(anyType).className) ~= nil then
+        if not rawequal((getmetatable(anyType).javaClassName or getmetatable(anyType).className), nil) then
             className = tostring((getmetatable(anyType).javaClassName or getmetatable(anyType).className))
         end
         local message = LogFormatUtil.getInstance():get(className, functionName, specialMessage, exception)

@@ -67,7 +67,7 @@ end
 
 
 function DisposalUtil:dispose(resource)
-        if not resource:isDisposed() then
+        if not (resource:isDisposed()) then
             resource:dispose()
         end
 end

@@ -170,10 +170,10 @@ java_overload(OrderItemsRequestHelper, "getFormData", 0)
 
 function OrderItemsRequestHelper:setOrderStatus_j1(newStatus)
         local try_ok, try_error, try_value = pcall(function()
-            if newStatus == nil then
+            if rawequal(newStatus, nil) then
                 newStatus = self.status
             end
-            local success = "Status successfully set to: " .. newStatus
+            local success = require("allbinary_java").to_string("Status successfully set to: ") .. require("allbinary_java").to_string(newStatus)
             OrderItemsEntityFactory.getInstance():setStatus(self.id, self.groupId, newStatus)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGS) then
                 self.logUtil:putF(success, self, "setOrderStatus(newStatus)")
@@ -195,7 +195,7 @@ end
 
 function OrderItemsRequestHelper:setOrderStatus_j0()
         local try_ok, try_error, try_value = pcall(function()
-            local success = "Status successfully set to: " .. self.status
+            local success = require("allbinary_java").to_string("Status successfully set to: ") .. require("allbinary_java").to_string(self.status)
             OrderItemsEntityFactory.getInstance():setStatus(self.id, self.groupId, self.status)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGS) then
                 self.logUtil:putF(success, self, "setOrderStatus(newStatus)")
@@ -217,6 +217,8 @@ function OrderItemsRequestHelper:setOrderStatus(...)
     local count = select("#", ...)
     if count == 1 then return self:setOrderStatus_j1(...) end
     if count == 0 then return self:setOrderStatus_j0(...) end
+    local parent = getmetatable(OrderItemsRequestHelper).__index
+    if parent.setOrderStatus then return parent.setOrderStatus(self, ...) end
     error("No method setOrderStatus takes " .. count .. " arguments")
 end
 OrderItemsRequestHelper.setOrderStatus__jdispatcher = OrderItemsRequestHelper.setOrderStatus

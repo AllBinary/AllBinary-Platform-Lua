@@ -170,7 +170,7 @@ java_overload(HighScoresHelper, "setHighScoresArray", 1, function(java_a1) retur
 function HighScoresHelper:getNextHighScores()
         local highScores = self.highScoresArrayP[self.circularIndexUtil:getIndex() + 1]
         local index = 0
-        while (highScores:getTotal() < 1 or self.lastIndex == self.circularIndexUtil:getIndex()) and index < (self.highScoresArrayP.n or #self.highScoresArrayP) do
+        while (highScores:getTotal() < 1 or rawequal(self.lastIndex, self.circularIndexUtil:getIndex())) and index < (self.highScoresArrayP.n or #self.highScoresArrayP) do
             self.circularIndexUtil:next()
             highScores = self.highScoresArrayP[self.circularIndexUtil:getIndex() + 1]
             index = index + 1

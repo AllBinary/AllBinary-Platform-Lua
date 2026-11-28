@@ -136,7 +136,7 @@ function AllMotionRecognizer:_init_fields()
     if self.motionGestureRecognizer == nil then self.motionGestureRecognizer = nil end
     self.touchButtonProcessing = false
     if self.touchButtonRecognizer == nil then self.touchButtonRecognizer = nil end
-    if self.id == nil then self.id = nil end
+    if self.id == nil then self.id = 0 end
     if self.lastX == nil then self.lastX = 0 end
     if self.lastY == nil then self.lastY = 0 end
 end
@@ -163,7 +163,7 @@ function AllMotionRecognizer:processStartMotionEvent(x, y, deviceId, modifiers)
         if self.touchButtonRecognizer:pressTouchButtonInput(x, y, deviceId) then
             self.touchButtonProcessing = true
         end
-        if not self.touchButtonProcessing then
+        if not (self.touchButtonProcessing) then
             local point = AllMotionRecognizer.pointCircularPool:getNextInstance()
             point:setX(x)
             point:setY(y)
@@ -177,7 +177,7 @@ java_overload(AllMotionRecognizer, "processStartMotionEvent", 4, function(java_a
 function AllMotionRecognizer:processEndMotionEvent(x, y, deviceId, modifiers)
         if self.touchButtonRecognizer:releaseTouchButtonInput(x, y, deviceId) then
         end
-        if not self.touchButtonProcessing then
+        if not (self.touchButtonProcessing) then
             local point = AllMotionRecognizer.pointCircularPool:getNextInstance()
             point:setX(x)
             point:setY(y)
@@ -195,7 +195,7 @@ function AllMotionRecognizer:processDraggedMotionEvent(x, y, deviceId, modifiers
         if self.touchButtonProcessing then
             self.touchButtonRecognizer:pressTouchButtonInput(x, y, deviceId)
         end
-        if not self.touchButtonProcessing then
+        if not (self.touchButtonProcessing) then
             local point = AllMotionRecognizer.pointCircularPool:getNextInstance()
             point:setX(x)
             point:setY(y)
@@ -207,7 +207,7 @@ java_overload(AllMotionRecognizer, "processDraggedMotionEvent", 4, function(java
 
 -- throws Exception
 function AllMotionRecognizer:processMovedMotionEvent(x, y, deviceId, modifiers)
-        if x ~= self.lastX or y ~= self.lastY then
+        if not rawequal(x, self.lastX) or not rawequal(y, self.lastY) then
             self.lastX = x
             self.lastY = y
             local point = AllMotionRecognizer.pointCircularPool:getNextInstance()

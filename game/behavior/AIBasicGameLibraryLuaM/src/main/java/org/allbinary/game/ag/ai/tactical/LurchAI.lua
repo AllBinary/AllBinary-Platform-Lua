@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local BasicAI = require("org.allbinary.game.ai.BasicAI")
 local GameInput = java_lazy("org.allbinary.game.input.GameInput")
 local DisplayInfoSingleton = java_lazy("org.allbinary.graphics.displayable.DisplayInfoSingleton")
@@ -169,7 +169,7 @@ end
 
 -- throws Exception
 function LurchAI:processAI(allBinaryLayerManager)
-        if self.currentSpeed == -1 then
+        if rawequal(self.currentSpeed, -1) then
             self.currentSpeed = 5
         else
             self.currentSpeed = -1
@@ -185,15 +185,15 @@ function LurchAI:processAI(allBinaryLayerManager)
             self:accelerate()
             self:drop()
         end
-        if self.currentRelativeAngle == 0 then
+        if rawequal(self.currentRelativeAngle, 0) then
             x = x + (self.currentSpeed)
-        elseif self.currentRelativeAngle == 180 then
+        elseif rawequal(self.currentRelativeAngle, 180) then
             x = x - (self.currentSpeed)
         end
         ownerLayerInterface:setPosition(x, ownerLayerInterface:getYP(), ownerLayerInterface:getZP())
-        if self.currentRelativeAngle == 0 then
+        if rawequal(self.currentRelativeAngle, 0) then
             java_super(BasicAI, "processKeyAI", 1)(self, Canvas.KEY_NUM0)
-        elseif self.currentRelativeAngle == 180 then
+        elseif rawequal(self.currentRelativeAngle, 180) then
             java_super(BasicAI, "processKeyAI", 1)(self, Canvas.KEY_POUND)
         end
 end
@@ -201,9 +201,9 @@ java_overload(LurchAI, "processAI", 1, function(java_a1) return true and (java_a
 
 
 function LurchAI:reverse()
-        if self.currentRelativeAngle == 180 then
+        if rawequal(self.currentRelativeAngle, 180) then
             self.currentRelativeAngle = 0
-        elseif self.currentRelativeAngle == 0 then
+        elseif rawequal(self.currentRelativeAngle, 0) then
             self.currentRelativeAngle = 180
         end
 end

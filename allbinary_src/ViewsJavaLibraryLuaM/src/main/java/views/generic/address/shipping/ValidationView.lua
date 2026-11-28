@@ -167,13 +167,13 @@ end
 function ValidationView:isValid()
         local billingAddressesEntity = ShippingAddressesEntity.new(self:getWeblisketSession():getUserName())
         self.streetAddressList = billingAddressesEntity:get()
-        if self.streetAddressList == nil then
+        if rawequal(self.streetAddressList, nil) then
             return false
         end
         local size = self.streetAddressList:size()
         for index = 0, size - 1 do
             local streetAddress = self.streetAddressList:get(index)
-            if streetAddress:isValid() == false then
+            if rawequal(streetAddress:isValid(), false) then
                 self.streetAddressList:remove(streetAddress)
             end
         end

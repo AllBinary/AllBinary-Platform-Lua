@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local SimpleTiledLayer = require("javax.microedition.lcdui.game.SimpleTiledLayer")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local SimpleTiledLayer = java_lazy("javax.microedition.lcdui.game.SimpleTiledLayer")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local RTSLayerEvent = java_lazy("org.allbinary.game.layer.RTSLayerEvent")
 local BuildingEventListenerInterface = java_lazy("org.allbinary.game.layer.building.event.BuildingEventListenerInterface")
 local LocalPlayerBuildingEventHandler = java_lazy("org.allbinary.game.layer.building.event.LocalPlayerBuildingEventHandler")
@@ -157,7 +157,7 @@ end
 
 
 function VisibleCellPositionsSingleton:update()
-        if self.currentIndex == 0 then
+        if rawequal(self.currentIndex, 0) then
             local temp = self.currentlyVisibleCellPositions
             self.currentlyVisibleCellPositions = self.visibleCellPositions
             self.visibleCellPositions = temp
@@ -175,7 +175,7 @@ end
 
 
 function VisibleCellPositionsSingleton:shouldProcess()
-        if self.currentIndex == 0 then
+        if rawequal(self.currentIndex, 0) then
             return true
         else
             return false

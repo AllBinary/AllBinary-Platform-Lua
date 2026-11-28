@@ -107,7 +107,7 @@ function InventorySearchProductUtil:getProduct(abeClientInformation, searchReque
         local try_ok, try_error, try_value = pcall(function()
             local inventoryEntityInterface = InventoryEntityFactory.getInstance():getInventoryEntityInstance()
             local itemInterface = inventoryEntityInterface:getItem(product)
-            if itemInterface ~= nil then
+            if not rawequal(itemInterface, nil) then
                 local viewDocumentInterface = TransformStoreDocumentFactory.getInstance(searchRequest)
                 viewDocumentInterface:getBaseNode():appendChild(BasicItemView.new(itemInterface, BasicArrayListD.new()):toXmlNode(viewDocumentInterface:getDoc()))
                 local success = XmlDocumentHelper.toString(viewDocumentInterface:getDoc())

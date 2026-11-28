@@ -130,7 +130,7 @@ function AbeFactory:getInstance_j2(abeClientInformation, className)
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().LOADERERROR) then
-                self.logUtil:put("Failure for: " .. className, self, "getInstance(classname)", e)
+                self.logUtil:put(require("allbinary_java").to_string("Failure for: ") .. require("allbinary_java").to_string(className), self, "getInstance(classname)", e)
             end
             error(e, 0)
         end
@@ -195,7 +195,7 @@ function AbeFactory:getClass(abeClientInformation, className)
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().LOADERERROR) then
-                self.logUtil:put("Failure for: " .. className, self, "getClass(className)", e)
+                self.logUtil:put(require("allbinary_java").to_string("Failure for: ") .. require("allbinary_java").to_string(className), self, "getClass(className)", e)
             end
             error(e, 0)
         end

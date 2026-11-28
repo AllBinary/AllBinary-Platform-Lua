@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
--- local Sprite = require("javax.microedition.lcdui.game.Sprite")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local Sprite = java_lazy("javax.microedition.lcdui.game.Sprite")
 local Animation = java_lazy("org.allbinary.animation.Animation")
 local AnimationBehaviorFactory = java_lazy("org.allbinary.animation.AnimationBehaviorFactory")
 local ProceduralAnimationInterfaceFactoryInterface = java_lazy("org.allbinary.animation.ProceduralAnimationInterfaceFactoryInterface")
@@ -189,7 +189,7 @@ function AllBinarySpriteRotationAnimationFactory._jinit(self, image, sequenceArr
     java_super_init(BaseImageAnimationFactory, self, image, sequenceArray, width, height, dx, dy, animationBehaviorFactory)
     AllBinarySpriteRotationAnimationFactory._init_fields(self)
         -- super(...) made self above
-        if animationBehaviorFactory == AnimationBehaviorFactory.getInstance() then
+        if rawequal(animationBehaviorFactory, AnimationBehaviorFactory.getInstance()) then
             ForcedLogUtil.log("Using default AnimationBehaviorFactory with IndexedAnimationFactory", self)
         end
     return self
@@ -220,7 +220,7 @@ java_overload(AllBinarySpriteRotationAnimationFactory, "initWH", 2, function(jav
 -- throws Exception
 function AllBinarySpriteRotationAnimationFactory:getInstance(instanceId)
         local sprite = self.animationFactorySpriteScaleUtil:createImage(self:getImage(), self.animationFactoryInitializationVisitor.width, self.animationFactoryInitializationVisitor.height, self.scaleProperties.scaleWidth, self.scaleProperties.scaleHeight)
-        if self.animationFactoryInitializationVisitor.dx ~= 0 or self.animationFactoryInitializationVisitor.dy ~= 0 then
+        if not rawequal(self.animationFactoryInitializationVisitor.dx, 0) or not rawequal(self.animationFactoryInitializationVisitor.dy, 0) then
             return AllBinaryAdjustedSpriteRotationAnimation.new(sprite, self:getImage(), self.animationFactoryInitializationVisitor.dx, self.animationFactoryInitializationVisitor.dy, self.animationBehaviorFactory:getOrCreateInstance())
         else
             return AllBinarySpriteRotationAnimation.new(sprite, self:getImage(), self.animationBehaviorFactory:getOrCreateInstance())

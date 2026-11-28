@@ -72,7 +72,7 @@ end
 
 
 function PlatformFormInputMappingFactory.getInstance()
-        if PlatformFormInputMappingFactory.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(PlatformFormInputMappingFactory.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             PlatformFormInputMappingFactory.instance_f = PlatformFormInputMappingFactory.new()
         end
         return PlatformFormInputMappingFactory.instance_f
@@ -81,7 +81,7 @@ end
 
 function PlatformFormInputMappingFactory:getOrCreate()
         local try_ok, try_error, try_value = pcall(function()
-            if self.inputToGameKeyMapping == InputToGameKeyMapping.getNullInstance() then
+            if rawequal(self.inputToGameKeyMapping, InputToGameKeyMapping.getNullInstance()) then
                 local inputToGameKeyMapping = InputToGameKeyMapping.new()
                 local gameKeyFactory = GameKeyFactory.getInstance()
                 inputToGameKeyMapping:add(gameKeyFactory.UP, gameKeyFactory.UP)

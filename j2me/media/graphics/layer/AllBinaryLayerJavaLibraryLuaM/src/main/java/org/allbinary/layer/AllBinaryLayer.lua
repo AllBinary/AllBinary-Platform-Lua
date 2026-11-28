@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local BasicGroupFactory = java_lazy("org.allbinary.game.identification.BasicGroupFactory")
 local Group = java_lazy("org.allbinary.game.identification.Group")
 local GPoint = java_lazy("org.allbinary.graphics.GPoint")

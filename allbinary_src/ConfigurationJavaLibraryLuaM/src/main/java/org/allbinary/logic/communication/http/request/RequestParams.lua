@@ -139,7 +139,7 @@ end
 function RequestParams._new1_1(self, request)
     RequestParams._init_fields(self)
         self.map = request:getParameterMap()
-        self.logUtil:putF("RequestParams Size: " .. tostring(self:getMap():keySet():size()), self, self.commonStrings.CONSTRUCTOR)
+        self.logUtil:putF(require("allbinary_java").to_string("RequestParams Size: ") .. require("allbinary_java").to_string(self:getMap():keySet():size()), self, self.commonStrings.CONSTRUCTOR)
     return self
 end
 
@@ -147,7 +147,7 @@ end
 function RequestParams._new1_2(self, pageContext)
     RequestParams._init_fields(self)
         self.map = pageContext:getRequest():getParameterMap()
-        self.logUtil:putF("Request Params Size: " .. tostring(self:getMap():keySet():size()), self, self.commonStrings.CONSTRUCTOR)
+        self.logUtil:putF(require("allbinary_java").to_string("Request Params Size: ") .. require("allbinary_java").to_string(self:getMap():keySet():size()), self, self.commonStrings.CONSTRUCTOR)
     return self
 end
 

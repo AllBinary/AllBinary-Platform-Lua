@@ -69,8 +69,8 @@ Direction.javaClassName = "org.allbinary.direction.Direction"
 function Direction:_init_fields()
     if self.name_f == nil then self.name_f = nil end
     if self.otherName == nil then self.otherName = nil end
-    if self.value == nil then self.value = nil end
-    if self.frameFactor == nil then self.frameFactor = nil end
+    if self.value == nil then self.value = 0 end
+    if self.frameFactor == nil then self.frameFactor = 0 end
 end
 
 

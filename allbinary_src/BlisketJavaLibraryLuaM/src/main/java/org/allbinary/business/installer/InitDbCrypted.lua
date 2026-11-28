@@ -192,36 +192,36 @@ function InitDbCrypted:addUsers()
             local CUSTOMERDB = self.userDbInitInfo:getName()
             local CUSTOMERDBUSER = self.userDbInitInfo:getUserName()
             local CUSTOMERDBPASSWORD = self.userDbInitInfo:getPassword()
-            if not self:addDbUser(CUSTOMERDB, CUSTOMERDBUSER, CUSTOMERDBPASSWORD) then
-                self.logUtil:putF(tostring(self.UNABLE_TO_CREATE_USER) .. CUSTOMERDBUSER, self, self.METHOD_ADD_USERS)
+            if not (self:addDbUser(CUSTOMERDB, CUSTOMERDBUSER, CUSTOMERDBPASSWORD)) then
+                self.logUtil:putF(require("allbinary_java").to_string(self.UNABLE_TO_CREATE_USER) .. require("allbinary_java").to_string(CUSTOMERDBUSER), self, self.METHOD_ADD_USERS)
                 do return "__jreturn", false end
             end
             local INVENTORYDB = self.inventoryDbInitInfo:getName()
             local INVENTORYDBUSER = self.inventoryDbInitInfo:getUserName()
             local INVENTORYDBPASSWORD = self.inventoryDbInitInfo:getPassword()
-            if not self:addDbUser(INVENTORYDB, INVENTORYDBUSER, INVENTORYDBPASSWORD) then
-                self.logUtil:putF(tostring(self.UNABLE_TO_CREATE_USER) .. INVENTORYDBUSER, self, self.METHOD_ADD_USERS)
+            if not (self:addDbUser(INVENTORYDB, INVENTORYDBUSER, INVENTORYDBPASSWORD)) then
+                self.logUtil:putF(require("allbinary_java").to_string(self.UNABLE_TO_CREATE_USER) .. require("allbinary_java").to_string(INVENTORYDBUSER), self, self.METHOD_ADD_USERS)
                 do return "__jreturn", false end
             end
             local HISTORYDB = self.historyDbInitInfo:getName()
             local HISTORYDBUSER = self.historyDbInitInfo:getUserName()
             local HISTORYDBPASSWORD = self.historyDbInitInfo:getPassword()
-            if not self:addDbUser(HISTORYDB, HISTORYDBUSER, HISTORYDBPASSWORD) then
-                self.logUtil:putF(tostring(self.UNABLE_TO_CREATE_USER) .. HISTORYDBUSER, self, self.METHOD_ADD_USERS)
+            if not (self:addDbUser(HISTORYDB, HISTORYDBUSER, HISTORYDBPASSWORD)) then
+                self.logUtil:putF(require("allbinary_java").to_string(self.UNABLE_TO_CREATE_USER) .. require("allbinary_java").to_string(HISTORYDBUSER), self, self.METHOD_ADD_USERS)
                 do return "__jreturn", false end
             end
             local STATICPAGESDB = self.staticpagesDbInitInfo:getName()
             local STATICPAGESDBUSER = self.staticpagesDbInitInfo:getUserName()
             local STATICPAGESDBPASSWORD = self.staticpagesDbInitInfo:getPassword()
-            if not self:addDbUser(STATICPAGESDB, STATICPAGESDBUSER, STATICPAGESDBPASSWORD) then
-                self.logUtil:putF(tostring(self.UNABLE_TO_CREATE_USER) .. STATICPAGESDBUSER, self, self.METHOD_ADD_USERS)
+            if not (self:addDbUser(STATICPAGESDB, STATICPAGESDBUSER, STATICPAGESDBPASSWORD)) then
+                self.logUtil:putF(require("allbinary_java").to_string(self.UNABLE_TO_CREATE_USER) .. require("allbinary_java").to_string(STATICPAGESDBUSER), self, self.METHOD_ADD_USERS)
                 do return "__jreturn", false end
             end
             local LOGDB = self.logDbInitInfo:getName()
             local LOGDBUSER = self.logDbInitInfo:getUserName()
             local LOGDBPASSWORD = self.logDbInitInfo:getPassword()
-            if not self:addDbUser(LOGDB, LOGDBUSER, LOGDBPASSWORD) then
-                self.logUtil:putF(tostring(self.UNABLE_TO_CREATE_USER) .. LOGDBUSER, self, self.METHOD_ADD_USERS)
+            if not (self:addDbUser(LOGDB, LOGDBUSER, LOGDBPASSWORD)) then
+                self.logUtil:putF(require("allbinary_java").to_string(self.UNABLE_TO_CREATE_USER) .. require("allbinary_java").to_string(LOGDBUSER), self, self.METHOD_ADD_USERS)
                 do return "__jreturn", false end
             end
             self.logUtil:putF(self.commonStrings.END, self, self.METHOD_ADD_USERS)
@@ -247,28 +247,28 @@ function InitDbCrypted:addDatabases()
             self.staticpagesDbInitInfo = StaticPagesDbInitInfo.new()
             self.logDbInitInfo = LogDbInitInfo.new()
             local CUSTOMERDB = self.userDbInitInfo:getName()
-            if not self:addDb(CUSTOMERDB) then
-                self.logUtil:putF(tostring(self.UNABLE_TO_CREATE_DATABASE) .. CUSTOMERDB, self, self.METHOD_ADD_DATABASES)
+            if not (self:addDb(CUSTOMERDB)) then
+                self.logUtil:putF(require("allbinary_java").to_string(self.UNABLE_TO_CREATE_DATABASE) .. require("allbinary_java").to_string(CUSTOMERDB), self, self.METHOD_ADD_DATABASES)
                 do return "__jreturn", false end
             end
             local INVENTORYDB = self.inventoryDbInitInfo:getName()
-            if not self:addDb(INVENTORYDB) then
-                self.logUtil:putF(tostring(self.UNABLE_TO_CREATE_DATABASE) .. INVENTORYDB, self, self.METHOD_ADD_DATABASES)
+            if not (self:addDb(INVENTORYDB)) then
+                self.logUtil:putF(require("allbinary_java").to_string(self.UNABLE_TO_CREATE_DATABASE) .. require("allbinary_java").to_string(INVENTORYDB), self, self.METHOD_ADD_DATABASES)
                 do return "__jreturn", false end
             end
             local HISTORYDB = self.historyDbInitInfo:getName()
-            if not self:addDb(HISTORYDB) then
-                self.logUtil:putF(tostring(self.UNABLE_TO_CREATE_DATABASE) .. HISTORYDB, self, self.METHOD_ADD_DATABASES)
+            if not (self:addDb(HISTORYDB)) then
+                self.logUtil:putF(require("allbinary_java").to_string(self.UNABLE_TO_CREATE_DATABASE) .. require("allbinary_java").to_string(HISTORYDB), self, self.METHOD_ADD_DATABASES)
                 do return "__jreturn", false end
             end
             local STATICPAGESDB = self.staticpagesDbInitInfo:getName()
-            if not self:addDb(STATICPAGESDB) then
-                self.logUtil:putF(tostring(self.UNABLE_TO_CREATE_DATABASE) .. STATICPAGESDB, self, self.METHOD_ADD_DATABASES)
+            if not (self:addDb(STATICPAGESDB)) then
+                self.logUtil:putF(require("allbinary_java").to_string(self.UNABLE_TO_CREATE_DATABASE) .. require("allbinary_java").to_string(STATICPAGESDB), self, self.METHOD_ADD_DATABASES)
                 do return "__jreturn", false end
             end
             local LOGDB = self.logDbInitInfo:getName()
-            if not self:addDb(LOGDB) then
-                self.logUtil:putF(tostring(self.UNABLE_TO_CREATE_DATABASE) .. LOGDB, self, self.METHOD_ADD_DATABASES)
+            if not (self:addDb(LOGDB)) then
+                self.logUtil:putF(require("allbinary_java").to_string(self.UNABLE_TO_CREATE_DATABASE) .. require("allbinary_java").to_string(LOGDB), self, self.METHOD_ADD_DATABASES)
                 do return "__jreturn", false end
             end
             local file = FileFactory.getInstance():getInstance(self.SQL_FILE)
@@ -308,7 +308,7 @@ function InitDbCrypted:addTables()
             stringBuffer:append(LogTableEntityFactory.getInstance():getLogTableEntityInstance():createTable())
             stringBuffer:append(StaticPagesEntityFactory.getInstance():getStaticPagesEntityInstance():createTable())
             stringBuffer:append(TransformInfoEntityBuilder.getInstance():createTable())
-            self.logUtil:putF(tostring(self.ADD_TABLES_RESULTS_LABEL) .. tostring(stringBuffer), self, self.METHOD_ADD_TABLES)
+            self.logUtil:putF(require("allbinary_java").to_string(self.ADD_TABLES_RESULTS_LABEL) .. require("allbinary_java").to_string(tostring(stringBuffer)), self, self.METHOD_ADD_TABLES)
             do return "__jreturn", true end
         end)
         if not try_ok then

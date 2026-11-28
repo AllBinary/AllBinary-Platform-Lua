@@ -211,7 +211,7 @@ function BuildingAdvancedRTSFormInput:isBuildAttemptValid(rtsPlayerLayerInterfac
         local totalHouses = advancedPlayerOwnedRTSLayers:getHouseList():size()
         if totalHouses < 1 and layerInterface:getName():indexOf(" House") < 0 then
             rtsPlayerLayerInterface:add(ErrorSound.getInstance())
-            if not rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface() then
+            if not (rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface()) then
                 GameNotificationEventHandler.getInstance():fireEvent(self.atLeastOneHouseGameNotificationEvent)
             end
             return false

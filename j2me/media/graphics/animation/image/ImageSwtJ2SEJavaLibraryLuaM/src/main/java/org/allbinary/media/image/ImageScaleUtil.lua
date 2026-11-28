@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
 local GameFeatureFactory = java_lazy("org.allbinary.game.configuration.feature.GameFeatureFactory")
 local ImageCache = java_lazy("org.allbinary.image.ImageCache")
@@ -93,7 +93,7 @@ end
 
 -- throws Exception
 function ImageScaleUtil:createImage3(imageCache, originalImage, scaleNominatorX, scaleDenominatorX, scaleNominatorY, scaleDenominatorY, cached, mutable)
-        if not self.features:isFeature(self.gameFeatureFactory.POST_IMAGE_LOADING_MODIFICATION) then
+        if not (self.features:isFeature(self.gameFeatureFactory.POST_IMAGE_LOADING_MODIFICATION)) then
             self.logUtil:putF(self.NO_COPY, self, self.commonStrings.CONSTRUCTOR)
             return originalImage
         end

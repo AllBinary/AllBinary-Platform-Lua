@@ -175,7 +175,7 @@ function ProfileActionScriptItem._new2(self, label, node)
     ProfileActionScriptItem._init_fields(self)
         -- super(...) made self above
         self:init()
-        self.logUtil:putF("Label: " .. label, self, self.commonStrings.CONSTRUCTOR)
+        self.logUtil:putF(require("allbinary_java").to_string("Label: ") .. require("allbinary_java").to_string(label), self, self.commonStrings.CONSTRUCTOR)
     return self
 end
 
@@ -185,7 +185,7 @@ function ProfileActionScriptItem._new1(self, label)
     ProfileActionScriptItem._init_fields(self)
         -- super(...) made self above
         self:init()
-        self.logUtil:putF("Label: " .. label, self, self.commonStrings.CONSTRUCTOR)
+        self.logUtil:putF(require("allbinary_java").to_string("Label: ") .. require("allbinary_java").to_string(label), self, self.commonStrings.CONSTRUCTOR)
     return self
 end
 
@@ -222,7 +222,7 @@ java_overload(ProfileActionScriptItem, "showDialog", 0)
 
 
 function ProfileActionScriptItem:actionPerformed(actionEvent)
-        if actionEvent:getActionCommand():compareTo(ProfileActionScriptItem.EDIT) == 0 then
+        if rawequal(actionEvent:getActionCommand():compareTo(ProfileActionScriptItem.EDIT), 0) then
             self:showDialog()
         end
 end

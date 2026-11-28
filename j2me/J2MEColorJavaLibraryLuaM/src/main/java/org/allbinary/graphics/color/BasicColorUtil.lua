@@ -95,20 +95,20 @@ function BasicColorUtil:getRGB(red, green, blue)
                 value = self.ALPHA
             end
         end
-        value = (red << 16) | value
-        value = (green << 8) | value
+        value = ((((((red) << ((16) & 31)) + 0x80000000) & 0xffffffff) - 0x80000000)) | value
+        value = ((((((green) << ((8) & 31)) + 0x80000000) & 0xffffffff) - 0x80000000)) | value
         value = blue | value
         return value
 end
 
 
 function BasicColorUtil:getARGB(alphaValue, r, g, b)
-        return ((alphaValue << 24) & self.ALPHA) + ((r << 16) & 0x00FF0000) + ((g << 8) & 0x0000FF00) + (b & 0x000000FF)
+        return (((((((alphaValue) << ((24) & 31)) + 0x80000000) & 0xffffffff) - 0x80000000)) & self.ALPHA) + (((((((r) << ((16) & 31)) + 0x80000000) & 0xffffffff) - 0x80000000)) & 0x00FF0000) + (((((((g) << ((8) & 31)) + 0x80000000) & 0xffffffff) - 0x80000000)) & 0x0000FF00) + (b & 0x000000FF)
 end
 
 
 function BasicColorUtil:get(alphaValue, color)
-        return ((alphaValue << 24) & self.ALPHA) + color
+        return (((((((alphaValue) << ((24) & 31)) + 0x80000000) & 0xffffffff) - 0x80000000)) & self.ALPHA) + color
 end
 
 

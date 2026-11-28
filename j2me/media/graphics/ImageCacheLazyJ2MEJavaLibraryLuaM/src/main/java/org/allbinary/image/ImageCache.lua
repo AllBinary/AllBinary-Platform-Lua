@@ -28,9 +28,9 @@ local function java_real(class)
     return class
 end
 
--- local InputStream = require("java.io.InputStream")
--- local Image = require("javax.microedition.lcdui.Image")
--- local NullImage = require("javax.microedition.lcdui.NullImage")
+local InputStream = java_lazy("java.io.InputStream")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local NullImage = java_lazy("javax.microedition.lcdui.NullImage")
 local J2MEUtil = java_lazy("org.allbinary.J2MEUtil")
 local TsUtil = java_lazy("org.allbinary.TsUtil")
 local LazyImageRotationAnimation = java_lazy("org.allbinary.animation.image.LazyImageRotationAnimation")
@@ -186,10 +186,13 @@ local NotHTMLProcessor = {}
     function NotHTMLProcessor.new()
         return NotHTMLProcessor._jinit(setmetatable({}, NotHTMLProcessor))
     end
+    function NotHTMLProcessor.newEnclosed(outer)
+        return NotHTMLProcessor._jinit(setmetatable({__javaOuter = outer}, NotHTMLProcessor))
+    end
     
 
     function NotHTMLProcessor:process()
-            self.concurrentImageLoadingProcessor:runTask()
+            self.__javaOuter.concurrentImageLoadingProcessor:runTask()
     end
     java_overload(NotHTMLProcessor, "process", 0)
 
@@ -207,6 +210,9 @@ local NotHTMLEndProcessor = {}
 
     function NotHTMLEndProcessor.new()
         return NotHTMLEndProcessor._jinit(setmetatable({}, NotHTMLEndProcessor))
+    end
+    function NotHTMLEndProcessor.newEnclosed(outer)
+        return NotHTMLEndProcessor._jinit(setmetatable({__javaOuter = outer}, NotHTMLEndProcessor))
     end
     
 
@@ -231,17 +237,20 @@ local HTMLEndProcessor = {}
     function HTMLEndProcessor.new()
         return HTMLEndProcessor._jinit(setmetatable({}, HTMLEndProcessor))
     end
+    function HTMLEndProcessor.newEnclosed(outer)
+        return HTMLEndProcessor._jinit(setmetatable({__javaOuter = outer}, HTMLEndProcessor))
+    end
     
 
     function HTMLEndProcessor:process()
-            local size = self.gdResources.currentLayoutRequiredTotal
-            if size == 0 then
+            local size = self.__javaOuter.gdResources.currentLayoutRequiredTotal
+            if rawequal(size, 0) then
                 local progressCanvas = ProgressCanvasFactory.getInstance()
                 progressCanvas:endIfPaintedSinceStart()
-            elseif self.totalLoaded > java_idiv(size, 12) then
+            elseif self.__javaOuter.totalLoaded > java_idiv(size, 12) then
                 local progressCanvas = ProgressCanvasFactory.getInstance()
                 progressCanvas:endIfPaintedSinceStart()
-                self.endProcessor = NotHTMLEndProcessor.new()
+                self.__javaOuter.endProcessor = NotHTMLEndProcessor.newEnclosed(self)
             end
     end
     java_overload(HTMLEndProcessor, "process", 0)
@@ -261,10 +270,13 @@ local FirstProcessor = {}
     function FirstProcessor.new()
         return FirstProcessor._jinit(setmetatable({}, FirstProcessor))
     end
+    function FirstProcessor.newEnclosed(outer)
+        return FirstProcessor._jinit(setmetatable({__javaOuter = outer}, FirstProcessor))
+    end
     
 
     function FirstProcessor:process()
-            self:firstProcess()
+            self.__javaOuter:firstProcess()
     end
     java_overload(FirstProcessor, "process", 0)
 
@@ -286,7 +298,7 @@ function ImageCache:_init_fields()
     self.totalLoaded = 0
     self.progressEnded_f = false
     self.hasAnyLazyAnimationFactories = false
-    self.processor = FirstProcessor.new()
+    self.processor = FirstProcessor.newEnclosed(self)
     self.endProcessor = Processor.getInstance()
     self.LOAD_IMAGE_FOR_ANIMATION = "Load Image Animation"
 end
@@ -310,10 +322,10 @@ function ImageCache:firstProcess()
         local isHTML = J2MEUtil.isHTML()
         if isHTML then
             self.processor = Processor.getInstance()
-            self.endProcessor = HTMLEndProcessor.new()
+            self.endProcessor = HTMLEndProcessor.newEnclosed(self)
         else
-            self.processor = NotHTMLProcessor.new()
-            self.endProcessor = NotHTMLEndProcessor.new()
+            self.processor = NotHTMLProcessor.newEnclosed(self)
+            self.endProcessor = NotHTMLEndProcessor.newEnclosed(self)
             local try_ok, try_error, try_value = pcall(function()
                 self:runTask()
             end)
@@ -337,8 +349,8 @@ function ImageCache:waitForLoadNow()
         if self.firstTime then
             local abToGBUtil = ABToGBUtil.getInstance()
             local abCanvas = abToGBUtil.abCanvas
-            while self.loadNowList:isEmpty() and (not abCanvas:isInitialized() or (abCanvas:isInitialized() and self.hasAnyLazyAnimationFactories)) and not self.progressEnded_f do
-                java_sleep(120)
+            while self.loadNowList:isEmpty() and (not (abCanvas:isInitialized()) or (abCanvas:isInitialized() and self.hasAnyLazyAnimationFactories)) and not (self.progressEnded_f) do
+                require("java.lang.Thread").sleep(120)
             end
             self.firstTime = false
         end
@@ -380,7 +392,7 @@ function ImageCache:loadImageForAnimation()
             do -- synchronized (self.lock)
                 self.loadNowList:remove(lazyImageRotationAnimation)
             end
-            if lazyImageRotationAnimation.layoutIndex ~= 0 then
+            if not rawequal(lazyImageRotationAnimation.layoutIndex, 0) then
                 local list = self:getAssociated(lazyImageRotationAnimation)
                 do -- synchronized (self.lock)
                     local size = list:size()
@@ -391,10 +403,10 @@ function ImageCache:loadImageForAnimation()
             end
             local progressCanvas = ProgressCanvasFactory.getInstance()
             local isHTML = J2MEUtil.isHTML()
-            if self.loadNowList:isEmpty() and (not isHTML or self.firstTime) then
+            if self.loadNowList:isEmpty() and (not (isHTML) or self.firstTime) then
                 progressCanvas:endFromInitialLazyLoadingComplete()
             else
-                if math.fmod(self.totalLoaded, 10) == 0 then
+                if rawequal(math.fmod(self.totalLoaded, 10), 0) then
                     progressCanvas:addNormalPortion(1, self.LOAD_IMAGE_FOR_ANIMATION)
                 end
             end
@@ -405,7 +417,7 @@ java_overload(ImageCache, "loadImageForAnimation", 0)
 
 -- throws Exception
 function ImageCache:loadImages()
-        while not self.loadList:isEmpty() or not self.loadNowList:isEmpty() do
+        while not (self.loadList:isEmpty()) or not (self.loadNowList:isEmpty()) do
             self:loadImageForAnimations()
             self:loadNextImage()
         end
@@ -415,7 +427,7 @@ java_overload(ImageCache, "loadImages", 0)
 
 -- throws Exception
 function ImageCache:loadImageForAnimations()
-        while not self.loadNowList:isEmpty() do
+        while not (self.loadNowList:isEmpty()) do
             self:loadImageForAnimation()
         end
 end
@@ -424,17 +436,17 @@ java_overload(ImageCache, "loadImageForAnimations", 0)
 
 -- throws Exception
 function ImageCache:loadRemainingAnimations()
-        while not self.loadAfterList:isEmpty() or not self.loadNowList:isEmpty() do
-            while not self.loadNowList:isEmpty() do
+        while not (self.loadAfterList:isEmpty()) or not (self.loadNowList:isEmpty()) do
+            while not (self.loadNowList:isEmpty()) do
                 self:loadImageForAnimation()
             end
             local lazyImageRotationAnimation = nil
             do -- synchronized (self.lock)
-                if not self.loadAfterList:isEmpty() then
+                if not (self.loadAfterList:isEmpty()) then
                     lazyImageRotationAnimation = self.loadAfterList:removeAt(0)
                 end
             end
-            if lazyImageRotationAnimation ~= nil then
+            if not rawequal(lazyImageRotationAnimation, nil) then
                 self:loadImageForLazyAnimation(lazyImageRotationAnimation)
             end
         end
@@ -458,7 +470,7 @@ java_overload(ImageCache, "loadImageForLazyAnimation", 1, function(java_a1) retu
 function ImageCache:loadNextImage()
         local image = nil
         do -- synchronized (self.lock)
-            if self.loadList:size() == 0 then
+            if rawequal(self.loadList:size(), 0) then
                 return
             end
             image = self.loadList:removeAt(0)
@@ -473,7 +485,7 @@ function ImageCache:loadImage(image)
         if image:isReady() then
             return true
         else
-            if image:getImage() ~= nil then
+            if not rawequal(image:getImage(), nil) then
                 if image:setReady() then
                     if image:isReady() then
                         self.totalLoaded = self.totalLoaded + 1
@@ -517,7 +529,7 @@ java_overload(ImageCache, "creatImage", 1, function(java_a1) return true and (ja
 function ImageCache:get(caller, width, height)
         local foundIndex = self:getIndexWH(width, height)
         local image = self:getFromAvailable(foundIndex, width, height)
-        if image == NullImage.NULL_IMAGE then
+        if rawequal(image, NullImage.NULL_IMAGE) then
             self.volume = self.volume + (width * height)
             if self.volume > 32000 then
                 self.tsUtil:gc()
@@ -525,7 +537,7 @@ function ImageCache:get(caller, width, height)
             end
             image = self:createImage(caller, width, height)
             if self.nextIndex > (self.widths.n or #self.widths) - 1 then
-                if foundIndex == -1 then
+                if rawequal(foundIndex, -1) then
                     foundIndex = self.nextIndex
                     self.widths[self.nextIndex + 1] = width
                     self.heights[self.nextIndex + 1] = height
@@ -542,7 +554,7 @@ java_overload(ImageCache, "get", 3, function(java_a1, java_a2, java_a3) return t
 -- throws Exception
 function ImageCache:getWithKey(key)
         local image = self:getImage(key)
-        if image == NullImage.NULL_IMAGE then
+        if rawequal(image, NullImage.NULL_IMAGE) then
             local inputStream = nil
             local try_ok, try_error, try_value = pcall(function()
                 image = self:createImageFromInputStream(key, inputStream)
@@ -555,7 +567,7 @@ function ImageCache:getWithKey(key)
                 self.tsUtil:gc()
                 self.tsUtil:gc()
                 self.logUtil:putF(Memory.getInfo(), self, self.commonStrings.GET)
-                java_sleep(100)
+                require("java.lang.Thread").sleep(100)
                 image = self:createImageFromInputStream(key, inputStream)
             end
             self.hashtable:put(key, image)
@@ -570,7 +582,7 @@ function ImageCache:getIndex(key)
         local resourceStringArray = gdResources.resourceStringArray
         local size = (resourceStringArray.n or #resourceStringArray)
         for index = 0, size - 1 do
-            if resourceStringArray[index + 1] == key then
+            if rawequal(resourceStringArray[index + 1], key) then
                 return index
             end
         end
@@ -586,7 +598,7 @@ function ImageCache:createImageFromInputStream(key, inputStream)
         local resourceStringArray = gdLazyResources.requiredResourcesBeforeLoadingArray
         local size = (resourceStringArray.n or #resourceStringArray)
         for index = 0, size - 1 do
-            if key == resourceStringArray[index + 1] then
+            if rawequal(key, resourceStringArray[index + 1]) then
                 return self:creatImage(key)
             end
         end
@@ -617,7 +629,7 @@ function ImageCache:getAssociated(lazyImageRotationAnimation)
             local size = self.loadAfterList:size()
             for index = 0, size - 1 do
                 lazyImageRotationAnimation2 = self.loadAfterList:get(index)
-                if lazyImageRotationAnimation2.instanceId == lazyImageRotationAnimation.instanceId then
+                if rawequal(lazyImageRotationAnimation2.instanceId, lazyImageRotationAnimation.instanceId) then
                     list:add(lazyImageRotationAnimation2)
                 end
             end

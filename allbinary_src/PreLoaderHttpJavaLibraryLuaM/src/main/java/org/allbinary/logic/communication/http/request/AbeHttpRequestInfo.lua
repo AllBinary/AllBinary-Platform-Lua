@@ -150,7 +150,7 @@ function AbeHttpRequestInfo._new1_2(self, httpServletRequest)
             local key = enumuration:nextElement()
             local value = httpServletRequest:getHeader(key)
             if ((string.find(key, "user", 1, true) or 0) - 1) >= 0 then
-                self.httpUserAgent = "key: " .. key .. " value: " .. value
+                self.httpUserAgent = require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("key: ") .. require("allbinary_java").to_string(key)) .. require("allbinary_java").to_string(" value: ")) .. require("allbinary_java").to_string(value)
             end
         end
         self.remoteHostByAddr = stringUtil.EMPTY_STRING

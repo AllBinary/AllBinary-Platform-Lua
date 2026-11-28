@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local BasicAI = require("org.allbinary.game.ai.BasicAI")
 local GameInput = java_lazy("org.allbinary.game.input.GameInput")
 local AllBinaryLayer = java_lazy("org.allbinary.layer.AllBinaryLayer")
@@ -152,7 +152,7 @@ setmetatable(TimedFireAI, {__index = BasicAI})
 
 function TimedFireAI:_init_fields()
     self.maxFireDelayTimeHelper = TimeDelayHelper.new(0)
-    if self.delay == nil then self.delay = nil end
+    if self.delay == nil then self.delay = 0 end
 end
 
 

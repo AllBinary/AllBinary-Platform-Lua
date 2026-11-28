@@ -140,7 +140,7 @@ function ImageTypes._new1(self, node)
         local nodeList = node:getChildNodes()
         for index = 0, nodeList:getLength() - 1 do
             local childNode = nodeList:item(index)
-            if childNode:getNodeName():compareTo(ImageActionScriptOutputData.TYPE) == 0 then
+            if rawequal(childNode:getNodeName():compareTo(ImageActionScriptOutputData.TYPE), 0) then
                 local nextImageTypeString = DomNodeHelper.getTextNodeValue(childNode)
                 self:getVector():add(InputImageType.getInstance(nextImageTypeString))
             else

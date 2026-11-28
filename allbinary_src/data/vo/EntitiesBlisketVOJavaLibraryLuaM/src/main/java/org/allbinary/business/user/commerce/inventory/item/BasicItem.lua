@@ -351,9 +351,9 @@ end
 
 function BasicItem:setDownloads(value)
         self.downloads = value
-        if not StringValidationUtil.getInstance():isEmpty(self.downloads) then
+        if not (StringValidationUtil.getInstance():isEmpty(self.downloads)) then
             local downloadInteger = tostring(self.downloads)
-            if math.tointeger(downloadInteger // 1) ~= 0 then
+            if not rawequal(math.tointeger(downloadInteger // 1), 0) then
                 self:setDownloadable(true)
             end
         end

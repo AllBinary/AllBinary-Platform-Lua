@@ -28,9 +28,9 @@ local function java_real(class)
     return class
 end
 
--- local Command = require("javax.microedition.lcdui.Command")
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Command = java_lazy("javax.microedition.lcdui.Command")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local GameInfo = java_lazy("org.allbinary.game.GameInfo")
 local GameCommandsFactory = java_lazy("org.allbinary.game.commands.GameCommandsFactory")
 local GameCommandCanvas = require("org.allbinary.game.displayable.canvas.GameCommandCanvas")
@@ -198,7 +198,7 @@ function HighScoresCanvas._jinit(self, commandListener, allBinaryGameLayerManage
         self.waitPaintable:setBasicColorP(allBinaryGameLayerManager:getForegroundBasicColor())
         self:getHighScoresPaintable():setBasicColorP(allBinaryGameLayerManager:getForegroundBasicColor())
         self.colorFillPaintable = ColorFillPaintableFactory.getInstance():getInstance(allBinaryGameLayerManager:getBackgroundBasicColor(), false)
-        if (self.highScoresHelper:getHighScoresArray().n or #self.highScoresHelper:getHighScoresArray()) == (NoHighScoresFactory.getInstance().NO_HIGH_SCORES.n or #NoHighScoresFactory.getInstance().NO_HIGH_SCORES) then
+        if rawequal((self.highScoresHelper:getHighScoresArray().n or #self.highScoresHelper:getHighScoresArray()), (NoHighScoresFactory.getInstance().NO_HIGH_SCORES.n or #NoHighScoresFactory.getInstance().NO_HIGH_SCORES)) then
             self:setPaintable(self.waitPaintable)
         else
             self.logUtil:putF("Show HighScores that are already loaded", self, self.commonStrings.CONSTRUCTOR)
@@ -242,7 +242,7 @@ java_overload(HighScoresCanvas, "close", 0)
 function HighScoresCanvas:paint(graphics)
         self.colorFillPaintable:paint(graphics)
         self.paintable:paint(graphics)
-        if self.waitPaintable ~= self.paintable then
+        if not rawequal(self.waitPaintable, self.paintable) then
             self.highScoresCanvasInputProcessor:paint(graphics)
         end
         java_super(GameCommandCanvas, "paint", 1)(self, graphics)
@@ -272,7 +272,7 @@ java_overload(HighScoresCanvas, "getHighScoresPaintable", 0)
 
 function HighScoresCanvas:setHighScoresArray(highScoresArray)
         local try_ok, try_error, try_value = pcall(function()
-            if highScoresArray ~= nil then
+            if not rawequal(highScoresArray, nil) then
                 self.logUtil:putF(tostring(StringMaker.new():append(self.commonStrings.START):appendint((highScoresArray.n or #highScoresArray))), self, "setHighScoresArray")
             else
                 self.logUtil:putF(self.commonStrings.START, self, "setHighScoresArray")
@@ -306,7 +306,7 @@ function HighScoresCanvas:updateCommand(command)
             else
                 self:getHighScoresPaintable():setHighScores(NullHighScoresSingletonFactory.getInstance())
             end
-            if index ~= nextIndex then
+            if not rawequal(index, nextIndex) then
                 self:removeAllCommands()
                 self:addCommand(gameCommandsFactory.CLOSE_AND_SHOW_GAME_CANVAS)
                 self:addCommand(self.highScoreCommandsFactory.HIGH_SCORE_COMMANDS[nextIndex + 1])

@@ -195,11 +195,13 @@ function BasicTextJDialog:initComponents()
         self:setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE)
         self.jButton1:setText("OK")
         self.jButton1:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:jButton1ActionPerformed(evt)
+                ;(self.jButton1ActionPerformed and self or java_outer_self):jButton1ActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -216,7 +218,7 @@ java_overload(BasicTextJDialog, "initComponents", 0)
 
 function BasicTextJDialog:jButton1ActionPerformed(evt)
         self:setVisible(false)
-        if self.closeListenerInterface ~= nil then
+        if not rawequal(self.closeListenerInterface, nil) then
             self.closeListenerInterface:onClose()
         end
 end

@@ -214,8 +214,8 @@ java_overload(StoreFrontsRequestHelper, "update", 0)
 
 -- throws Exception
 function StoreFrontsRequestHelper:sendStoreCreatedEmails()
-        local storeManagerEmailSubject = "Store Manager Nofification For Store: " .. self.modifyingStoreFrontInterface:getName()
-        local adminEmailSubject = "Admin Notification For Store: " .. self.modifyingStoreFrontInterface:getName()
+        local storeManagerEmailSubject = require("allbinary_java").to_string("Store Manager Nofification For Store: ") .. require("allbinary_java").to_string(self.modifyingStoreFrontInterface:getName())
+        local adminEmailSubject = require("allbinary_java").to_string("Admin Notification For Store: ") .. require("allbinary_java").to_string(self.modifyingStoreFrontInterface:getName())
         local stringBuffer = StringMaker.new()
         stringBuffer:append("Store Created: ")
         stringBuffer:append(self.modifyingStoreFrontInterface:getName())

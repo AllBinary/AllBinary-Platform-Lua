@@ -166,7 +166,7 @@ end
 function ValidationView:isValid()
         local billingAddressesEntity = BillingAddressesEntity.new(self:getWeblisketSession():getUserName())
         self.streetAddresses = billingAddressesEntity:get()
-        if self.streetAddresses == nil then
+        if rawequal(self.streetAddresses, nil) then
             return false
         end
         if self.streetAddresses:size() < 1 then

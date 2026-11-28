@@ -302,7 +302,7 @@ java_overload(BasicGeographicMap, "getCellPositionNoThrow", 2, function(java_a1,
 -- throws Exception
 function BasicGeographicMap:isOfFourDirections(oldGeographicMapCellPosition, newGeographicMapCellPosition)
         for index = 0, 4 - 1 do
-            if newGeographicMapCellPosition == self:getCellPositionNoThrow(index, oldGeographicMapCellPosition) then
+            if rawequal(newGeographicMapCellPosition, self:getCellPositionNoThrow(index, oldGeographicMapCellPosition)) then
                 return true
             end
         end
@@ -388,7 +388,7 @@ function BasicGeographicMap:getCellPositionsAt(layer, currentCellPositionArray, 
                 local x = xPortion * index
                 local y = yPortion * index
                 cellPositionArray[index + 1][index2 + 1] = self:getCellPositionAtXY(x, y)
-                if currentCellPositionArray[index + 1][index2 + 1] ~= cellPositionArray[index + 1][index2 + 1] then
+                if not rawequal(currentCellPositionArray[index + 1][index2 + 1], cellPositionArray[index + 1][index2 + 1]) then
                     hasChanged = true
                 end
             end

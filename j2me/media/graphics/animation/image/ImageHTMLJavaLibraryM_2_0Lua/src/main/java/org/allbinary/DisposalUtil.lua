@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local Resource = java_lazy("org.eclipse.swt.graphics.Resource")
 
 local function java_idiv(a, b)
@@ -72,7 +72,7 @@ end
 
 
 function DisposalUtil:disposeResource(resource)
-        if not resource:isDisposed() then
+        if not (resource:isDisposed()) then
             resource:dispose()
         end
 end

@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
 local GameFeatureFactory = java_lazy("org.allbinary.game.configuration.feature.GameFeatureFactory")
 local DisplayInfoSingleton = java_lazy("org.allbinary.graphics.displayable.DisplayInfoSingleton")
@@ -46,6 +46,7 @@ local PostLoadSwtImmutableImageProcessor = java_lazy("org.microemu.device.swt.Po
 local PostLoadSwtMutableImageProcessor = java_lazy("org.microemu.device.swt.PostLoadSwtMutableImageProcessor")
 local SwtImmutableImage = java_lazy("org.microemu.device.swt.SwtImmutableImage")
 local SwtMutableImage = java_lazy("org.microemu.device.swt.SwtMutableImage")
+local SwtOpenGLESImageBridge = java_lazy("org.allbinary.media.image.SwtOpenGLESImageBridge")
 
 local function java_new_array(default, size, ...)
     local array = {n = size}
@@ -129,7 +130,7 @@ end
 
 -- throws Exception
 function ImageCopyUtil:createImage(originalImage)
-        if not self.features:isFeature(self.gameFeatureFactory.POST_IMAGE_LOADING_MODIFICATION) then
+        if not (self.features:isFeature(self.gameFeatureFactory.POST_IMAGE_LOADING_MODIFICATION)) then
             self.logUtil:putF(self.NO_COPY, self, self.commonStrings.CONSTRUCTOR)
             return originalImage
         end
@@ -156,7 +157,7 @@ end
 -- throws Exception
 function ImageCopyUtil:createImageWH(originalImage, width, height, mutable)
         local originalImage2 = originalImage
-        if not self.features:isFeature(self.gameFeatureFactory.POST_IMAGE_LOADING_MODIFICATION) then
+        if not (self.features:isFeature(self.gameFeatureFactory.POST_IMAGE_LOADING_MODIFICATION)) then
             self.logUtil:putF(self.NO_COPY, self, self.commonStrings.CONSTRUCTOR)
             return originalImage
         end
@@ -172,7 +173,7 @@ function ImageCopyUtil:createImageWH(originalImage, width, height, mutable)
         local image = nil
         if originalImage2:isMutable() and mutable then
             local originalMutableImage = originalImage2
-            if originalMutableImage:getImage() ~= nil then
+            if not rawequal(originalMutableImage:getImage(), nil) then
                 local imageData2 = originalMutableImage.image:getImageData()
                 local imageData = imageData2:scaledTo(width, height)
                 image = SwtMutableImage.new(SwtDeviceComponent.createImage(imageData))
@@ -181,7 +182,7 @@ function ImageCopyUtil:createImageWH(originalImage, width, height, mutable)
             end
         else
             local originalImmutableImage = originalImage2
-            if originalImmutableImage:getImage() ~= nil then
+            if not rawequal(originalImmutableImage:getImage(), nil) then
                 local imageData2 = originalImmutableImage.image:getImageData()
                 if width > 0 and height > 0 then
                     local imageData = imageData2:scaledTo(width, height)
@@ -202,7 +203,7 @@ end
 -- throws Exception
 function ImageCopyUtil:createImage2(originalImage, width, height, mutable)
         local originalImage2 = originalImage
-        if not self.features:isFeature(self.gameFeatureFactory.POST_IMAGE_LOADING_MODIFICATION) then
+        if not (self.features:isFeature(self.gameFeatureFactory.POST_IMAGE_LOADING_MODIFICATION)) then
             self.logUtil:putF(self.NO_COPY, self, self.commonStrings.CONSTRUCTOR)
             return originalImage
         end
@@ -220,7 +221,7 @@ function ImageCopyUtil:createImage2(originalImage, width, height, mutable)
                 openGLESImageProperties.scaleY = openGLESImageProperties.scaleY2
                 openGLESImageProperties.scaleX = openGLESImageProperties.scaleX * 0.75
                 openGLESImageProperties.scaleY = openGLESImageProperties.scaleY * 0.75
-                if originalImage:getHeight() % 2 ~= 0 then
+                if not rawequal(originalImage:getHeight() % 2, 0) then
                     openGLESImageProperties.scaleX2 = openGLESImageProperties.scaleX2 + (1.0 / (openGLWidth + 0.0))
                     openGLESImageProperties.scaleY2 = openGLESImageProperties.scaleY2 + (1.0 / (openGLHeight + 0.0))
                 end
@@ -259,7 +260,7 @@ function ImageCopyUtil:createImage2(originalImage, width, height, mutable)
         else
             if originalImage2:isMutable() and mutable then
                 local originalMutableImage = originalImage2
-                if originalMutableImage:getImage() ~= nil then
+                if not rawequal(originalMutableImage:getImage(), nil) then
                     local imageData2 = originalMutableImage.image:getImageData()
                     local imageData = imageData2:scaledTo(width, height)
                     image = SwtMutableImage.new(SwtDeviceComponent.createImage(imageData))
@@ -268,7 +269,7 @@ function ImageCopyUtil:createImage2(originalImage, width, height, mutable)
                 end
             else
                 local originalImmutableImage = originalImage2
-                if originalImmutableImage:getImage() ~= nil then
+                if not rawequal(originalImmutableImage:getImage(), nil) then
                     local imageData2 = originalImmutableImage.image:getImageData()
                     local imageData = imageData2:scaledTo(width, height)
                     image = SwtImmutableImage.new(originalImage:getName(), SwtDeviceComponent.createImage(imageData))
@@ -284,7 +285,7 @@ end
 
 -- throws Exception
 function ImageCopyUtil:createImageScale(originalImage, canvasScale, resize)
-        if not self.features:isFeature(self.gameFeatureFactory.POST_IMAGE_LOADING_MODIFICATION) then
+        if not (self.features:isFeature(self.gameFeatureFactory.POST_IMAGE_LOADING_MODIFICATION)) then
             self.logUtil:putF(self.NO_COPY, self, self.commonStrings.CONSTRUCTOR)
             return originalImage
         end

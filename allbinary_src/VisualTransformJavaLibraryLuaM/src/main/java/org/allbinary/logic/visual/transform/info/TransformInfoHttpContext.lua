@@ -178,7 +178,7 @@ function TransformInfoHttpContext._new2(self, propertiesHashMap, pageContext)
     TransformInfoHttpContext._init_fields(self)
         -- super(...) made self above
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("Properties HashMap: " .. tostring(propertiesHashMap), self, self.commonStrings.CONSTRUCTOR)
+            self.logUtil:putF(require("allbinary_java").to_string("Properties HashMap: ") .. require("allbinary_java").to_string(tostring(propertiesHashMap)), self, self.commonStrings.CONSTRUCTOR)
         end
         self:setStoreName(StringUtil.getInstance().EMPTY_STRING)
     return self

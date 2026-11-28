@@ -116,11 +116,11 @@ end
 
 
 function WeaponLayerArrayLayerCircularStaticPool:getWeaponLayerArrays(size)
-        if size == 1 then
+        if rawequal(size, 1) then
             return self.WEAPONLAYER_ARRAY
-        elseif size == 2 then
+        elseif rawequal(size, 2) then
             return self.TWO_WEAPONLAYER_ARRAY
-        elseif size == 3 then
+        elseif rawequal(size, 3) then
             return self.THREE_WEAPONLAYER_ARRAY
         end
         error(require("java.lang.RuntimeException").new(), 0)

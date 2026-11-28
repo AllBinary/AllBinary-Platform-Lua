@@ -125,12 +125,12 @@ end
 function HardwareFactory.getInstance_j1(os)
         local try_ok, try_error, try_value = pcall(function()
             local operatingSystems = OperatingSystems.getInstance()
-            if os:getName():compareTo(operatingSystems.LINUX) == 0 then
+            if rawequal(os:getName():compareTo(operatingSystems.LINUX), 0) then
                 do return "__jreturn", LinuxHardware.new() end
             elseif os:getName():indexOf(operatingSystems.WINDOWS) >= 0 then
                 do return "__jreturn", WindowsHardware.new() end
             end
-            error(require("java.lang.Exception").new("No Hardware Imp for: " .. os:getName()), 0)
+            error(require("java.lang.Exception").new(require("allbinary_java").to_string("No Hardware Imp for: ") .. require("allbinary_java").to_string(os:getName())), 0)
         end)
         if not try_ok then
             local e = try_error

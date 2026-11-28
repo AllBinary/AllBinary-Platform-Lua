@@ -188,7 +188,7 @@ function FeaturedAnimationInterfaceFactoryInterfaceFactory:getRectangleXY(resour
             local featureInterface = list.objectArray[index + 1]
             if featureInterface:isFeature() then
                 local rectangle = featureInterface:getRectangle(resource)
-                if rectangle ~= RectangleFactory.SINGLETON then
+                if not rawequal(rectangle, RectangleFactory.SINGLETON) then
                     return Rectangle.new(pointFactory:createXY(x, y), ((((rectangle:getWidth() * scale)) // (1 << (1)))), ((((rectangle:getHeight() * scale)) // (1 << (1)))))
                 end
             end
@@ -224,7 +224,7 @@ function FeaturedAnimationInterfaceFactoryInterfaceFactory:getBasicAnimationInte
             if featureInterface:isFeature() then
                 resourceTypeAvailableList:add(featureInterface)
                 animationInterfaceFactoryInterface = featureInterface:getBasicAnimationInterfaceFactoryInstance(resource)
-                if animationInterfaceFactoryInterface ~= NullAnimationFactory.NULL_NOT_FOR_USE_ANIMATION_FACTORY then
+                if not rawequal(animationInterfaceFactoryInterface, NullAnimationFactory.NULL_NOT_FOR_USE_ANIMATION_FACTORY) then
                     return animationInterfaceFactoryInterface
                 end
             end

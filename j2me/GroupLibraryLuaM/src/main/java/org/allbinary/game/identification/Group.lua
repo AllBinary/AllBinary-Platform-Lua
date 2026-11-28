@@ -59,7 +59,7 @@ Group.java_interfaces = function() return {GroupInterface} end
 
 function Group:_init_fields()
     self.name_f = StringUtil.getInstance().EMPTY_STRING
-    if self.teamId == nil then self.teamId = nil end
+    if self.teamId == nil then self.teamId = 0 end
     self.string_ = StringUtil.getInstance().EMPTY_STRING
 end
 

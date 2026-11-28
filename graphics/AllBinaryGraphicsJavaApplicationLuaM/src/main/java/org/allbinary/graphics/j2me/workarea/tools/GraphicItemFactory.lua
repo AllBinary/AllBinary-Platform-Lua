@@ -124,7 +124,7 @@ end
 
 function GraphicItemFactory:getInstance_j1_1(itemName)
         local graphicsItemInterfaceFactoryInterface = self.graphicItems:get(itemName)
-        if graphicsItemInterfaceFactoryInterface == nil then
+        if rawequal(graphicsItemInterfaceFactoryInterface, nil) then
             graphicsItemInterfaceFactoryInterface = self.DEFAULT
         end
         return graphicsItemInterfaceFactoryInterface

@@ -193,11 +193,13 @@ function ToolJPanel:initComponents()
         self.lineJButton:setFont(Font.new("Dialog", 0, 10))
         self.lineJButton:setText(LinesGraphicItem.getStaticName())
         self.lineJButton:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mouseClicked(evt)
-                self:lineJButtonMouseClicked(evt)
+                ;(self.lineJButtonMouseClicked and self or java_outer_self):lineJButtonMouseClicked(evt)
+            
             end
             java_overload(o, "mouseClicked", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -206,11 +208,13 @@ function ToolJPanel:initComponents()
         self.rectJButton:setFont(Font.new("Dialog", 0, 10))
         self.rectJButton:setText("Rect")
         self.rectJButton:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mouseClicked(evt)
-                self:rectJButtonMouseClicked(evt)
+                ;(self.rectJButtonMouseClicked and self or java_outer_self):rectJButtonMouseClicked(evt)
+            
             end
             java_overload(o, "mouseClicked", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -219,11 +223,13 @@ function ToolJPanel:initComponents()
         self.arcJButton:setFont(Font.new("Dialog", 0, 10))
         self.arcJButton:setText("Arc")
         self.arcJButton:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:arcJButtonMousePressed(evt)
+                ;(self.arcJButtonMousePressed and self or java_outer_self):arcJButtonMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -232,11 +238,13 @@ function ToolJPanel:initComponents()
         self.stringJButton:setFont(Font.new("Dialog", 0, 10))
         self.stringJButton:setText("String")
         self.stringJButton:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:stringJButtonMousePressed(evt)
+                ;(self.stringJButtonMousePressed and self or java_outer_self):stringJButtonMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -245,11 +253,13 @@ function ToolJPanel:initComponents()
         self.charJButton:setFont(Font.new("Dialog", 0, 10))
         self.charJButton:setText("Char")
         self.charJButton:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:charJButtonMousePressed(evt)
+                ;(self.charJButtonMousePressed and self or java_outer_self):charJButtonMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -258,11 +268,13 @@ function ToolJPanel:initComponents()
         self.roundRectJButton:setFont(Font.new("Dialog", 0, 10))
         self.roundRectJButton:setText("Round Rect")
         self.roundRectJButton:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:roundRectJButtonMousePressed(evt)
+                ;(self.roundRectJButtonMousePressed and self or java_outer_self):roundRectJButtonMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -271,11 +283,13 @@ function ToolJPanel:initComponents()
         self.imageJButton:setFont(Font.new("Dialog", 0, 10))
         self.imageJButton:setText("Image")
         self.imageJButton:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:imageJButtonMousePressed(evt)
+                ;(self.imageJButtonMousePressed and self or java_outer_self):imageJButtonMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -284,11 +298,13 @@ function ToolJPanel:initComponents()
         self.fillArcJButton:setFont(Font.new("Dialog", 0, 10))
         self.fillArcJButton:setText("Fill Arc")
         self.fillArcJButton:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:fillArcJButtonMousePressed(evt)
+                ;(self.fillArcJButtonMousePressed and self or java_outer_self):fillArcJButtonMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -297,11 +313,13 @@ function ToolJPanel:initComponents()
         self.fillRectJButton:setFont(Font.new("Dialog", 0, 10))
         self.fillRectJButton:setText("Fill Rect")
         self.fillRectJButton:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:fillRectJButtonMousePressed(evt)
+                ;(self.fillRectJButtonMousePressed and self or java_outer_self):fillRectJButtonMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -310,11 +328,13 @@ function ToolJPanel:initComponents()
         self.fillRoundRectJButton:setFont(Font.new("Dialog", 0, 10))
         self.fillRoundRectJButton:setText("Fill Rnd Rect")
         self.fillRoundRectJButton:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:fillRoundRectJButtonMousePressed(evt)
+                ;(self.fillRoundRectJButtonMousePressed and self or java_outer_self):fillRoundRectJButtonMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -323,11 +343,13 @@ function ToolJPanel:initComponents()
         self.dottedLineJButton:setFont(Font.new("Dialog", 0, 10))
         self.dottedLineJButton:setText("Dot Line")
         self.dottedLineJButton:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:dottedLineJButtonMousePressed(evt)
+                ;(self.dottedLineJButtonMousePressed and self or java_outer_self):dottedLineJButtonMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -336,11 +358,13 @@ function ToolJPanel:initComponents()
         self.dottedRectButton:setFont(Font.new("Dialog", 0, 10))
         self.dottedRectButton:setText("Dot Rect")
         self.dottedRectButton:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:dottedRectButtonMousePressed(evt)
+                ;(self.dottedRectButtonMousePressed and self or java_outer_self):dottedRectButtonMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -349,11 +373,13 @@ function ToolJPanel:initComponents()
         self.dottedArcJButton:setFont(Font.new("Dialog", 0, 10))
         self.dottedArcJButton:setText("Dot Arc")
         self.dottedArcJButton:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:dottedArcJButtonMousePressed(evt)
+                ;(self.dottedArcJButtonMousePressed and self or java_outer_self):dottedArcJButtonMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -362,11 +388,13 @@ function ToolJPanel:initComponents()
         self.dottedFillRectJButton:setFont(Font.new("Dialog", 0, 10))
         self.dottedFillRectJButton:setText("Dot Fill Rect")
         self.dottedFillRectJButton:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:dottedFillRectJButtonMousePressed(evt)
+                ;(self.dottedFillRectJButtonMousePressed and self or java_outer_self):dottedFillRectJButtonMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -375,11 +403,13 @@ function ToolJPanel:initComponents()
         self.dottedFillArcJButton:setFont(Font.new("Dialog", 0, 10))
         self.dottedFillArcJButton:setText("Dot Fill Arc")
         self.dottedFillArcJButton:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:dottedFillArcJButtonMousePressed(evt)
+                ;(self.dottedFillArcJButtonMousePressed and self or java_outer_self):dottedFillArcJButtonMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -388,11 +418,13 @@ function ToolJPanel:initComponents()
         self.dottedFillRountRectJButton:setFont(Font.new("Dialog", 0, 10))
         self.dottedFillRountRectJButton:setText("Dot Fill Rnd Rect")
         self.dottedFillRountRectJButton:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mousePressed(evt)
-                self:dottedFillRountRectJButtonMousePressed(evt)
+                ;(self.dottedFillRountRectJButtonMousePressed and self or java_outer_self):dottedFillRountRectJButtonMousePressed(evt)
+            
             end
             java_overload(o, "mousePressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o

@@ -166,14 +166,14 @@ function CssElementView._new1(self, node)
             local valueNode = DomSearchHelper.getNode(DomData.VALUE, node:getChildNodes())
             self.value = DomNodeHelper.getTextNodeValue(valueNode)
             local titleValueNode = DomSearchHelper.getNodeNoThrow(self.TITLE, node:getChildNodes())
-            if titleValueNode ~= nil then
+            if not rawequal(titleValueNode, nil) then
                 self.title = DomNodeHelper.getTextNodeValue(titleValueNode)
             else
                 local stringUtil = StringUtil.getInstance()
                 self.title = stringUtil.EMPTY_STRING
             end
             local descriptionValueNode = DomSearchHelper.getNodeNoThrow(self.DESCRIPTION, node:getChildNodes())
-            if descriptionValueNode ~= nil then
+            if not rawequal(descriptionValueNode, nil) then
                 self.description = DomNodeHelper.getTextNodeValue(descriptionValueNode)
             else
                 self.description = StringUtil.getInstance().EMPTY_STRING
@@ -183,7 +183,7 @@ function CssElementView._new1(self, node)
             end
             local cssElementStyleNodeVector = DomSearchHelper.getAllNodes(CssElementData.getInstance().NAME, node:getChildNodes())
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("Child Css Elements: " .. tostring(cssElementStyleNodeVector:size()), self, "CssElementView()")
+                self.logUtil:putF(require("allbinary_java").to_string("Child Css Elements: ") .. require("allbinary_java").to_string(cssElementStyleNodeVector:size()), self, "CssElementView()")
             end
             self.cssElementVector = CssElementsValidationFactory.getInstance(cssElementStyleNodeVector)
             local nodeList = node:getChildNodes()
@@ -219,7 +219,7 @@ end
 function CssElementView:toXmlNode(document)
         local hashMap = self:toHashMap()
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("CssView HashMap: " .. tostring(hashMap), self, "toXmlNode")
+            self.logUtil:putF(require("allbinary_java").to_string("CssView HashMap: ") .. require("allbinary_java").to_string(tostring(hashMap)), self, "toXmlNode")
         end
         local node = ModDomHelper.createNodeWithValueNodes(document, CssElementData.getInstance().NAME, hashMap)
         local size = self.cssPropertyVector:size()

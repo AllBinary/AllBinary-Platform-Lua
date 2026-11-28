@@ -191,7 +191,7 @@ end
 -- throws Exception
 function TransformHttpRequestDocument:log()
         local stringBuffer = StringMaker.new()
-        if self.baseNode ~= nil then
+        if not rawequal(self.baseNode, nil) then
             stringBuffer:append("BaseNode: ")
             stringBuffer:append(self.baseNode:getNodeName())
         else

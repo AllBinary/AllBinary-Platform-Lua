@@ -98,15 +98,15 @@ end
 
 -- throws SQLException
 function SqlConnectionPool:get(url)
-        if self.connectionHashMap == nil then
+        if rawequal(self.connectionHashMap, nil) then
             self.connectionHashMap = self.stdUtil:createHashMap()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGPOOL) then
-                self.logUtil:putF(self.FIRST_NEW_CONNECTION_CREATED .. url, self, self.METHOD_GET)
+                self.logUtil:putF(require("allbinary_java").to_string(self.FIRST_NEW_CONNECTION_CREATED) .. require("allbinary_java").to_string(url), self, self.METHOD_GET)
             end
             return DriverManager.getConnection(url)
         else
             local connectionVector = self.connectionHashMap:get(url)
-            if connectionVector == nil then
+            if rawequal(connectionVector, nil) then
                 connectionVector = BasicArrayListD.new()
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGPOOL) then
                     local stringBuffer = StringMaker.new()
@@ -117,7 +117,7 @@ function SqlConnectionPool:get(url)
                     self.logUtil:putF(tostring(stringBuffer), self, self.METHOD_GET)
                 end
                 return DriverManager.getConnection(url)
-            elseif connectionVector:size() == 0 then
+            elseif rawequal(connectionVector:size(), 0) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGPOOL) then
                     self.logUtil:putF(tostring(StringMaker.new():append(self.NEW_CONNECTION_FOR):append(url):append(self.CREATED)), self, self.METHOD_GET)
                 end
@@ -127,7 +127,7 @@ function SqlConnectionPool:get(url)
                 local size = connectionVector:size()
                 for i = 0, size - 1 do
                     local sqlConnection = connectionVector:get(i)
-                    if not sqlConnection:isClosed() then
+                    if not (sqlConnection:isClosed()) then
                         connectionVector:remove(sqlConnection)
                         self.connectionHashMap:put(url, connectionVector)
                         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGPOOL) then
@@ -136,7 +136,7 @@ function SqlConnectionPool:get(url)
                             stringBuffer:append(url)
                             stringBuffer:append(self.IS)
                             stringBuffer:appendint(connectionVector:size())
-                            self.logUtil:putF(self.NUMBER_OF_SQL_CONNECTION_VECTORS .. tostring(self.connectionHashMap:size()), self, self.METHOD_GET)
+                            self.logUtil:putF(require("allbinary_java").to_string(self.NUMBER_OF_SQL_CONNECTION_VECTORS) .. require("allbinary_java").to_string(self.connectionHashMap:size()), self, self.METHOD_GET)
                             self.logUtil:putF(tostring(stringBuffer), self, self.METHOD_GET)
                         end
                         return sqlConnection
@@ -157,15 +157,15 @@ end
 
 -- throws SQLException
 function SqlConnectionPool:add(url, sqlConnection)
-        if not sqlConnection:isClosed() then
+        if not (sqlConnection:isClosed()) then
             local connectionVector = nil
-            if self.connectionHashMap == nil then
+            if rawequal(self.connectionHashMap, nil) then
                 self.connectionHashMap = self.stdUtil:createHashMap()
                 connectionVector = BasicArrayListD.new()
                 connectionVector:add(sqlConnection)
             else
                 connectionVector = self.connectionHashMap:get(url)
-                if connectionVector == nil then
+                if rawequal(connectionVector, nil) then
                     connectionVector = BasicArrayListD.new()
                 end
                 connectionVector:add(sqlConnection)
@@ -177,7 +177,7 @@ function SqlConnectionPool:add(url, sqlConnection)
                 stringBuffer:append(url)
                 stringBuffer:append(self.IS)
                 stringBuffer:appendint(connectionVector:size())
-                self.logUtil:putF(self.NUMBER_OF_SQL_CONNECTION_VECTORS .. tostring(self.connectionHashMap:size()), self, self.METHOD_ADD)
+                self.logUtil:putF(require("allbinary_java").to_string(self.NUMBER_OF_SQL_CONNECTION_VECTORS) .. require("allbinary_java").to_string(self.connectionHashMap:size()), self, self.METHOD_ADD)
                 self.logUtil:putF(tostring(stringBuffer), self, self.METHOD_ADD)
             end
         end

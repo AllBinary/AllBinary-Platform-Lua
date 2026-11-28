@@ -184,29 +184,30 @@ end
 
 function MirrorSpriteImageJPanel:process()
         ;(function()
-            local o = Thread.new and Thread.new() or setmetatable({}, {__index = Thread})
+            local java_outer_self = self
+        local o = Thread.new and Thread.new() or setmetatable({}, {__index = Thread})
             
 
             function o:run()
                 local logUtil = LogUtil.getInstance()
                 local try_ok, try_error, try_value = pcall(function()
                     local generatedBufferedImageArray = nil
-                    local imageProcessorInput = self:getImageProcessorInput()
+                    local imageProcessorInput = java_outer_self:getImageProcessorInput()
                     local bufferedImageArray = imageProcessorInput:getBufferedImageArray()
                     for index = 0, (bufferedImageArray.n or #bufferedImageArray) - 1 do
-                        generatedBufferedImageArray = MirrorImageUtil.getInstance():getImages(bufferedImageArray[index + 1], self.verticleJCheckBox:isSelected(), self.horizontalJCheckBox:isSelected())
-                        self.result = BufferedImageUtil2.getInstance():createSpriteImage(generatedBufferedImageArray)
-                        self:getParent():repaint()
+                        generatedBufferedImageArray = MirrorImageUtil.getInstance():getImages(bufferedImageArray[index + 1], java_outer_self.verticleJCheckBox:isSelected(), java_outer_self.horizontalJCheckBox:isSelected())
+                        java_outer_self.result = BufferedImageUtil2.getInstance():createSpriteImage(generatedBufferedImageArray)
+                        java_outer_self:getParent():repaint()
                         local file = imageProcessorInput:getFiles()[index + 1]
-                        if not self.writeOverOriginalJCheckBox:isSelected() then
+                        if not (java_outer_self.writeOverOriginalJCheckBox:isSelected()) then
                             local filePath = file:getAbsolutePath()
                             local extensionIndex = ((string.find(filePath, self.imageStrings.PNG_EXTENSION, 1, true) or 0) - 1)
-                            filePath = string.sub(filePath, (0) + 1, extensionIndex) .. "_mirror" .. tostring(self.imageStrings.PNG_EXTENSION)
-                            logUtil:putF("Renamed File: " .. filePath, self, self.commonStrings.RUN)
+                            filePath = require("allbinary_java").to_string(require("allbinary_java").to_string(string.sub(filePath, (0) + 1, extensionIndex)) .. require("allbinary_java").to_string("_mirror")) .. require("allbinary_java").to_string(self.imageStrings.PNG_EXTENSION)
+                            logUtil:putF(require("allbinary_java").to_string("Renamed File: ") .. require("allbinary_java").to_string(filePath), self, self.commonStrings.RUN)
                             file = File.new(filePath)
                         end
-                        local isWritten = ImageIO.write(self.result, self.imageStrings.PNG, file)
-                        logUtil:putF("File: " .. tostring(file) .. " Wrote: " .. tostring(isWritten), self, self.commonStrings.RUN)
+                        local isWritten = ImageIO.write(java_outer_self.result, self.imageStrings.PNG, file)
+                        logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("File: ") .. require("allbinary_java").to_string(file)) .. require("allbinary_java").to_string(" Wrote: ")) .. require("allbinary_java").to_string(isWritten), self, self.commonStrings.RUN)
                     end
                 end)
                 if not try_ok then
@@ -225,12 +226,13 @@ java_overload(MirrorSpriteImageJPanel, "process", 0)
 function MirrorSpriteImageJPanel:initComponents()
         self.jLayeredPane1 = JLayeredPane.new()
         self.jPanel1 = (function()
-            local o = JPanel.new and JPanel.new() or setmetatable({}, {__index = JPanel})
+            local java_outer_self = self
+        local o = JPanel.new and JPanel.new() or setmetatable({}, {__index = JPanel})
             
 
             function o:paint(graphics)
-                if self.result ~= nil then
-                    graphics:drawImage(self.result, 0, 0, self.result:getWidth(nil), self.result:getHeight(nil), nil)
+                if not rawequal(java_outer_self.result, nil) then
+                    graphics:drawImage(java_outer_self.result, 0, 0, java_outer_self.result:getWidth(nil), java_outer_self.result:getHeight(nil), nil)
                 end
             end
             java_overload(o, "paint", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "Graphics")) end)
@@ -252,11 +254,13 @@ function MirrorSpriteImageJPanel:initComponents()
         self.imageHeightIsFrameSizeJCheckBox:setText("Image Height Is Frame Size")
         self.imageHeightIsFrameSizeJCheckBox:setEnabled(false)
         self.imageHeightIsFrameSizeJCheckBox:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:imageHeightIsFrameSizeJCheckBoxActionPerformed(evt)
+                ;(self.imageHeightIsFrameSizeJCheckBoxActionPerformed and self or java_outer_self):imageHeightIsFrameSizeJCheckBoxActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -269,11 +273,13 @@ function MirrorSpriteImageJPanel:initComponents()
         self.writeOverOriginalJCheckBox:setText("Write Over Original")
         self.generateJButton:setText("Generate")
         self.generateJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:generateJButtonActionPerformed(evt)
+                ;(self.generateJButtonActionPerformed and self or java_outer_self):generateJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o

@@ -197,7 +197,7 @@ function AbSqlRow:updateWhere_j3(key, value, updatedKeyValuePairs)
                 stringBuffer:append(columnName)
                 stringBuffer:append(self.EQUAL_QUOTE)
                 local columnValue = updatedKeyValuePairs:get(columnName)
-                if columnValue == nil then
+                if rawequal(columnValue, nil) then
                     columnValue = self.stringUtil.EMPTY_STRING
                 else
                     columnValue = Replace.new(self.sqlStrings.CLOSE_QUOTE, self.ESCAPE_QUOTES):all(columnValue)
@@ -216,7 +216,7 @@ function AbSqlRow:updateWhere_j3(key, value, updatedKeyValuePairs)
             local sqlStatement = tostring(stringBuffer)
             self:executeSQLStatement(sqlStatement)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                self.logUtil:putF(tostring(self.SUCCESS_SQL_STATEMENT) .. sqlStatement, self, self.METHOD_UPDATE_WHERE)
+                self.logUtil:putF(require("allbinary_java").to_string(self.SUCCESS_SQL_STATEMENT) .. require("allbinary_java").to_string(sqlStatement), self, self.METHOD_UPDATE_WHERE)
             end
         end)
         if not try_ok then
@@ -244,10 +244,10 @@ function AbSqlRow:updateWhere_j2(whereKeyValuePairs, updatedKeyValuePairs)
                 stringBuffer:append(columnName)
                 stringBuffer:append(self.EQUAL_QUOTE)
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                    self.logUtil:putF(self.COLUMN_NAME_LABEL .. columnName, self, self.METHOD_UPDATE_WHERE)
+                    self.logUtil:putF(require("allbinary_java").to_string(self.COLUMN_NAME_LABEL) .. require("allbinary_java").to_string(columnName), self, self.METHOD_UPDATE_WHERE)
                 end
                 local columnValue = updatedKeyValuePairs:get(columnName)
-                if columnValue == nil then
+                if rawequal(columnValue, nil) then
                     columnValue = self.stringUtil.EMPTY_STRING
                 else
                     columnValue = Replace.new(self.sqlStrings.CLOSE_QUOTE, self.ESCAPE_QUOTES):all(columnValue)
@@ -278,7 +278,7 @@ function AbSqlRow:updateWhere_j2(whereKeyValuePairs, updatedKeyValuePairs)
             local sqlStatement = tostring(stringBuffer)
             self:executeSQLStatement(sqlStatement)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                self.logUtil:putF(tostring(self.SUCCESS_SQL_STATEMENT) .. sqlStatement, self, self.METHOD_UPDATE_WHERE)
+                self.logUtil:putF(require("allbinary_java").to_string(self.SUCCESS_SQL_STATEMENT) .. require("allbinary_java").to_string(sqlStatement), self, self.METHOD_UPDATE_WHERE)
             end
         end)
         if not try_ok then
@@ -294,6 +294,8 @@ function AbSqlRow:updateWhere(...)
     local count = select("#", ...)
     if count == 3 then return self:updateWhere_j3(...) end
     if count == 2 then return self:updateWhere_j2(...) end
+    local parent = getmetatable(AbSqlRow).__index
+    if parent.updateWhere then return parent.updateWhere(self, ...) end
     error("No method updateWhere takes " .. count .. " arguments")
 end
 AbSqlRow.updateWhere__jdispatcher = AbSqlRow.updateWhere
@@ -313,14 +315,14 @@ function AbSqlRow:deleteWhere_j2(key, value)
             local sqlStatement = tostring(stringBuffer)
             self:executeSQLStatement(sqlStatement)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                self.logUtil:putF(tostring(self.SUCCESS_SQL_STATEMENT) .. sqlStatement, self, self.METHOD_DELETE_WHERE)
+                self.logUtil:putF(require("allbinary_java").to_string(self.SUCCESS_SQL_STATEMENT) .. require("allbinary_java").to_string(sqlStatement), self, self.METHOD_DELETE_WHERE)
             end
         end)
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
-                self.logUtil:put(tostring(self.FAILED_SQL_STATEMENT) .. tostring(stringBuffer), self, self.METHOD_DELETE_WHERE, e)
+                self.logUtil:put(require("allbinary_java").to_string(self.FAILED_SQL_STATEMENT) .. require("allbinary_java").to_string(tostring(stringBuffer)), self, self.METHOD_DELETE_WHERE, e)
             end
         end
 end
@@ -350,14 +352,14 @@ function AbSqlRow:deleteWhere_j1(keysAndValues)
             local sqlStatement = tostring(stringBuffer)
             self:executeSQLStatement(sqlStatement)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                self.logUtil:putF(tostring(self.SUCCESS_SQL_STATEMENT) .. sqlStatement, self, self.METHOD_DELETE_WHERE)
+                self.logUtil:putF(require("allbinary_java").to_string(self.SUCCESS_SQL_STATEMENT) .. require("allbinary_java").to_string(sqlStatement), self, self.METHOD_DELETE_WHERE)
             end
         end)
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
-                self.logUtil:put(tostring(self.FAILED_SQL_STATEMENT) .. tostring(stringBuffer), self, self.METHOD_DELETE_WHERE, e)
+                self.logUtil:put(require("allbinary_java").to_string(self.FAILED_SQL_STATEMENT) .. require("allbinary_java").to_string(tostring(stringBuffer)), self, self.METHOD_DELETE_WHERE, e)
             end
         end
 end
@@ -365,6 +367,8 @@ function AbSqlRow:deleteWhere(...)
     local count = select("#", ...)
     if count == 2 then return self:deleteWhere_j2(...) end
     if count == 1 then return self:deleteWhere_j1(...) end
+    local parent = getmetatable(AbSqlRow).__index
+    if parent.deleteWhere then return parent.deleteWhere(self, ...) end
     error("No method deleteWhere takes " .. count .. " arguments")
 end
 AbSqlRow.deleteWhere__jdispatcher = AbSqlRow.deleteWhere
@@ -389,14 +393,14 @@ function AbSqlRow:insert(values)
             local sqlStatement = tostring(stringBuffer)
             self:executeSQLStatement(sqlStatement)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                self.logUtil:putF(tostring(self.SUCCESS_SQL_STATEMENT) .. sqlStatement, self, self.INSERT)
+                self.logUtil:putF(require("allbinary_java").to_string(self.SUCCESS_SQL_STATEMENT) .. require("allbinary_java").to_string(sqlStatement), self, self.INSERT)
             end
         end)
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
-                self.logUtil:put(tostring(self.FAILED_SQL_STATEMENT) .. tostring(stringBuffer), self, self.INSERT, e)
+                self.logUtil:put(require("allbinary_java").to_string(self.FAILED_SQL_STATEMENT) .. require("allbinary_java").to_string(tostring(stringBuffer)), self, self.INSERT, e)
             end
         end
 end
@@ -426,7 +430,7 @@ function AbSqlRow:getRow(keysAndValues)
             end
             local sqlStatement = tostring(stringBuffer)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                self.logUtil:putF(tostring(self.sqlStrings.SQL_STATEMENT_LABEL) .. sqlStatement, self, self.METHOD_GET_ROW)
+                self.logUtil:putF(require("allbinary_java").to_string(self.sqlStrings.SQL_STATEMENT_LABEL) .. require("allbinary_java").to_string(sqlStatement), self, self.METHOD_GET_ROW)
             end
             local rset = self:executeSQLStatement(sqlStatement)
             local resultSetMetaData = rset:getMetaData()
@@ -439,7 +443,7 @@ function AbSqlRow:getRow(keysAndValues)
                     result:put(columnName, field)
                 end
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                    self.logUtil:putF(self.ROW_VALUE_LABEL .. tostring(result), self, self.METHOD_GET_ROW)
+                    self.logUtil:putF(require("allbinary_java").to_string(self.ROW_VALUE_LABEL) .. require("allbinary_java").to_string(tostring(result)), self, self.METHOD_GET_ROW)
                 end
                 do return "__jreturn", result end
             end
@@ -504,7 +508,7 @@ function AbSqlRow:getRows_j2(keysAndValues, more)
                 end
                 local resultAsString = tostring(result)
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                    self.logUtil:putF(self.GET_ROW .. resultAsString, self, self.METHOD_GET_ROWS)
+                    self.logUtil:putF(require("allbinary_java").to_string(self.GET_ROW) .. require("allbinary_java").to_string(resultAsString), self, self.METHOD_GET_ROWS)
                 end
                 rows:add(result)
             end
@@ -524,6 +528,8 @@ function AbSqlRow:getRows(...)
     local count = select("#", ...)
     if count == 1 then return self:getRows_j1(...) end
     if count == 2 then return self:getRows_j2(...) end
+    local parent = getmetatable(AbSqlRow).__index
+    if parent.getRows then return parent.getRows(self, ...) end
     error("No method getRows takes " .. count .. " arguments")
 end
 AbSqlRow.getRows__jdispatcher = AbSqlRow.getRows
@@ -550,7 +556,7 @@ function AbSqlRow:getAllRows()
                     result:put(columnName, field)
                 end
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                    self.logUtil:putF(self.ROW_VALUES_LABEL .. tostring(result), self, self.METHOD_GET_ALL_ROWS)
+                    self.logUtil:putF(require("allbinary_java").to_string(self.ROW_VALUES_LABEL) .. require("allbinary_java").to_string(tostring(result)), self, self.METHOD_GET_ALL_ROWS)
                 end
                 rows:add(result)
             end
@@ -601,7 +607,7 @@ function AbSqlRow:getRowsWhereBetween_j4(whereKeyValuePairs, betweenColumn, smal
             stringBuffer:append(self.sqlStrings.CLOSE_QUOTE)
             local sqlStatement = tostring(stringBuffer)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                self.logUtil:putF(tostring(self.sqlStrings.SQL_STATEMENT_LABEL) .. sqlStatement, self, self.METHOD_GET_ROWS_WHERE_BETWEEN)
+                self.logUtil:putF(require("allbinary_java").to_string(self.sqlStrings.SQL_STATEMENT_LABEL) .. require("allbinary_java").to_string(sqlStatement), self, self.METHOD_GET_ROWS_WHERE_BETWEEN)
             end
             local rset = self:executeSQLStatement(sqlStatement)
             local resultSetMetaData = rset:getMetaData()
@@ -620,7 +626,7 @@ function AbSqlRow:getRowsWhereBetween_j4(whereKeyValuePairs, betweenColumn, smal
                     result:put(columnName, field)
                 end
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                    self.logUtil:putF(self.ROW_VALUE_LABEL .. tostring(result), self, self.METHOD_GET_ROWS_WHERE_BETWEEN)
+                    self.logUtil:putF(require("allbinary_java").to_string(self.ROW_VALUE_LABEL) .. require("allbinary_java").to_string(tostring(result)), self, self.METHOD_GET_ROWS_WHERE_BETWEEN)
                 end
                 rows:add(result)
             end
@@ -656,7 +662,7 @@ function AbSqlRow:getRowsWhereBetween_j3(betweenColumn, smallest, largest)
             stringBuffer:append(self.sqlStrings.CLOSE_QUOTE)
             local sqlStatement = tostring(stringBuffer)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                self.logUtil:putF(tostring(self.sqlStrings.SQL_STATEMENT_LABEL) .. sqlStatement, self, self.METHOD_GET_ROWS_WHERE_BETWEEN)
+                self.logUtil:putF(require("allbinary_java").to_string(self.sqlStrings.SQL_STATEMENT_LABEL) .. require("allbinary_java").to_string(sqlStatement), self, self.METHOD_GET_ROWS_WHERE_BETWEEN)
             end
             local rset = self:executeSQLStatement(sqlStatement)
             local resultSetMetaData = rset:getMetaData()
@@ -675,7 +681,7 @@ function AbSqlRow:getRowsWhereBetween_j3(betweenColumn, smallest, largest)
                     result:put(columnName, field)
                 end
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                    self.logUtil:putF(self.ROW_VALUE_LABEL .. tostring(result), self, self.METHOD_GET_ROWS_WHERE_BETWEEN)
+                    self.logUtil:putF(require("allbinary_java").to_string(self.ROW_VALUE_LABEL) .. require("allbinary_java").to_string(tostring(result)), self, self.METHOD_GET_ROWS_WHERE_BETWEEN)
                 end
                 rows:add(result)
             end
@@ -695,6 +701,8 @@ function AbSqlRow:getRowsWhereBetween(...)
     local count = select("#", ...)
     if count == 4 then return self:getRowsWhereBetween_j4(...) end
     if count == 3 then return self:getRowsWhereBetween_j3(...) end
+    local parent = getmetatable(AbSqlRow).__index
+    if parent.getRowsWhereBetween then return parent.getRowsWhereBetween(self, ...) end
     error("No method getRowsWhereBetween takes " .. count .. " arguments")
 end
 AbSqlRow.getRowsWhereBetween__jdispatcher = AbSqlRow.getRowsWhereBetween

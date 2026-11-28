@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local GL10 = require("javax.microedition.khronos.opengles.GL10")
--- local GL11 = require("javax.microedition.khronos.opengles.GL11")
+local GL10 = java_lazy("javax.microedition.khronos.opengles.GL10")
+local GL11 = java_lazy("javax.microedition.khronos.opengles.GL11")
 local AndroidUtil = java_lazy("org.allbinary.AndroidUtil")
 local OpenGLESGL10ImageFactory = java_lazy("org.allbinary.image.opengles.OpenGLESGL10ImageFactory")
 local OpenGLESGL11VBOImageFactory = java_lazy("org.allbinary.image.opengles.OpenGLESGL11VBOImageFactory")
@@ -164,11 +164,11 @@ function OpenGLCapabilities:initCapabilities(gl)
             self.glVersionString = gl:glGetString(GL10.GL_VERSION)
             local GL_SHADING_LANGUAGE_VERSION = 0x8b8c
             self.glShaderVersionString = gl:glGetString(GL_SHADING_LANGUAGE_VERSION)
-            if self.glShaderVersionString == nil then
+            if rawequal(self.glShaderVersionString, nil) then
                 self.glShaderVersionString = self.stringUtil.EMPTY_STRING
             end
             local try_ok, try_error, try_value = pcall(function()
-                if self.glShaderVersionString ~= nil and ((string.find(self.glShaderVersionString, ".", 1, true) or 0) - 1) >= 0 then
+                if not rawequal(self.glShaderVersionString, nil) and ((string.find(self.glShaderVersionString, ".", 1, true) or 0) - 1) >= 0 then
                     local startIndex = self.glShaderVersionString:lastIndexOf(" ")
                     if startIndex >= 0 then
                         self.glShaderVersionString = string.sub(self.glShaderVersionString, (startIndex + 1) + 1)
@@ -195,18 +195,18 @@ function OpenGLCapabilities:initCapabilities(gl)
             else
                 self.glExtensionGPUShader4 = false
             end
-            if self.glRenderer == nil then
+            if rawequal(self.glRenderer, nil) then
                 self.glRenderer = self.stringUtil.EMPTY_STRING
             end
             if ((string.find(string.lower(self.glRenderer), "pixelflinger", 1, true) or 0) - 1) >= 0 then
-                self.acceleratedString = "Probably Not for " .. self.glRenderer
+                self.acceleratedString = require("allbinary_java").to_string("Probably Not for ") .. require("allbinary_java").to_string(self.glRenderer)
                 self.possiblyAccelerated = false
             else
-                self.acceleratedString = "Probably for " .. self.glRenderer
+                self.acceleratedString = require("allbinary_java").to_string("Probably for ") .. require("allbinary_java").to_string(self.glRenderer)
                 self.possiblyAccelerated = true
             end
             self.glExtensionDrawTexture = false
-            if self.glVersionString == nil then
+            if rawequal(self.glVersionString, nil) then
                 self.glVersionString = self.stringUtil.EMPTY_STRING
                 self.glVersion = self.VERSION_UNK
             elseif ((string.find(self.glVersionString, " 1.0", 1, true) or 0) - 1) >= 0 then
@@ -221,15 +221,15 @@ function OpenGLCapabilities:initCapabilities(gl)
             elseif java_instanceof(gl, GL10) then
                 self.glInstanceVersion = self.VERSION_1_0
             end
-            if self.glVendor == nil then
+            if rawequal(self.glVendor, nil) then
                 self.glVendor = self.stringUtil.EMPTY_STRING
             end
-            if self.glExtensions == nil then
+            if rawequal(self.glExtensions, nil) then
                 self.glExtensions = self.stringUtil.EMPTY_STRING
             end
             if self.possiblyAccelerated then
-                PreLogUtil.put(tostring(StringMaker.new():append("VBO:?"):appendboolean((self.glInstanceVersion == self.VERSION_1_1)):append("||"):appendboolean(self:isExtension(openGLFeatureFactory.OPENGL_VERTEX_BUFFER_OBJECT))), self, METHOD_NAME)
-                if (self.glInstanceVersion == self.VERSION_1_1 or self:isExtension(openGLFeatureFactory.OPENGL_VERTEX_BUFFER_OBJECT)) then
+                PreLogUtil.put(tostring(StringMaker.new():append("VBO:?"):appendboolean((rawequal(self.glInstanceVersion, self.VERSION_1_1))):append("||"):appendboolean(self:isExtension(openGLFeatureFactory.OPENGL_VERTEX_BUFFER_OBJECT))), self, METHOD_NAME)
+                if (rawequal(self.glInstanceVersion, self.VERSION_1_1) or self:isExtension(openGLFeatureFactory.OPENGL_VERTEX_BUFFER_OBJECT)) then
                     if AndroidUtil.isAndroid() then
                         PreLogUtil.put("VBO implementation was detected, but disabled by default for Android", self, METHOD_NAME)
                     else

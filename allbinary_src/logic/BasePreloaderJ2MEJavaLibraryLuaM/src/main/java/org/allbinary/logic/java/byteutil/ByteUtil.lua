@@ -110,28 +110,28 @@ end
 
 function ByteUtil:xorByte(array, index)
         local mask = 0
-        if index == 0 then
+        if rawequal(index, 0) then
             mask = 1
         end
-        if index == 1 then
+        if rawequal(index, 1) then
             mask = 2
         end
-        if index == 2 then
+        if rawequal(index, 2) then
             mask = 4
         end
-        if index == 3 then
+        if rawequal(index, 3) then
             mask = 8
         end
-        if index == 4 then
+        if rawequal(index, 4) then
             mask = 16
         end
-        if index == 5 then
+        if rawequal(index, 5) then
             mask = 32
         end
-        if index == 6 then
+        if rawequal(index, 6) then
             mask = 64
         end
-        if index == 7 then
+        if rawequal(index, 7) then
             mask = -127
         end
         return self:xor(array, mask)
@@ -139,13 +139,13 @@ end
 
 
 function ByteUtil:compare(newByteArray, oldByteArray)
-        if (newByteArray.n or #newByteArray) ~= (oldByteArray.n or #oldByteArray) then
+        if not rawequal((newByteArray.n or #newByteArray), (oldByteArray.n or #oldByteArray)) then
             return false
         else
         end
         local size = (newByteArray.n or #newByteArray)
         for index = 0, size - 1 do
-            if newByteArray[index + 1] ~= oldByteArray[index + 1] then
+            if not rawequal(newByteArray[index + 1], oldByteArray[index + 1]) then
                 return false
             end
         end
@@ -154,7 +154,7 @@ end
 
 
 function ByteUtil:compareWithStats(newByteArray, newSize, oldByteArray, stats)
-        if newSize ~= (oldByteArray.n or #oldByteArray) then
+        if not rawequal(newSize, (oldByteArray.n or #oldByteArray)) then
             stats[1] = -1
             stats[3] = newSize
             stats[4] = (oldByteArray.n or #oldByteArray)
@@ -165,7 +165,7 @@ function ByteUtil:compareWithStats(newByteArray, newSize, oldByteArray, stats)
         stats[2] = 0
         local size = newSize
         for index = 0, size - 1 do
-            if newByteArray[index + 1] ~= oldByteArray[index + 1] then
+            if not rawequal(newByteArray[index + 1], oldByteArray[index + 1]) then
                 return false
             end
             stats[2] = stats[2] + 1

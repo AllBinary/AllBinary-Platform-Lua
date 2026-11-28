@@ -170,7 +170,7 @@ java_overload(VirtualKeyboardEventHandler, "process", 2, function(java_a1, java_
 
 function VirtualKeyboardEventHandler:open()
         local try_ok, try_error, try_value = pcall(function()
-            java_sleep(120)
+            require("java.lang.Thread").sleep(120)
             self:fireEvent(self.SHOW_EVENT)
         end)
         if not try_ok then
@@ -185,7 +185,7 @@ java_overload(VirtualKeyboardEventHandler, "open", 0)
 -- throws Exception
 function VirtualKeyboardEventHandler:close()
         local try_ok, try_error, try_value = pcall(function()
-            java_sleep(120)
+            require("java.lang.Thread").sleep(120)
             self:fireEvent(self.HIDE_EVENT)
         end)
         if not try_ok then

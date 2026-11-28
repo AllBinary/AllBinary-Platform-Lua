@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
--- local ItemStateListener = require("javax.microedition.lcdui.ItemStateListener")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
+local ItemStateListener = require("javax.microedition.lcdui.ItemStateListener")
 local GameStateCompositeInterface = require("org.allbinary.game.state.GameStateCompositeInterface")
 local PaintableInterface = require("org.allbinary.graphics.paint.PaintableInterface")
 local RunnableInterface = require("org.allbinary.thread.RunnableInterface")

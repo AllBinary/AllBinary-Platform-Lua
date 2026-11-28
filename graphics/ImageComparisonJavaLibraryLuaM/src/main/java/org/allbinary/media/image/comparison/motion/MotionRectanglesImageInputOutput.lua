@@ -151,7 +151,7 @@ end
 function MotionRectanglesImageInputOutput:save_j1(frame)
         local commonStrings = CommonStrings.getInstance()
         local motionRectanglesResultsFrameCacheable = (AllMotionRectanglesResultsCacheSingleton.getInstance()):get(frame)
-        if motionRectanglesResultsFrameCacheable ~= nil then
+        if not rawequal(motionRectanglesResultsFrameCacheable, nil) then
             local motionRectangles = motionRectanglesResultsFrameCacheable:getMotionRectangles()
             self:save(motionRectangles, frame)
             motionRectanglesResultsFrameCacheable = (ConsolidatedMotionRectanglesResultsCacheSingleton.getInstance()):get(frame)
@@ -161,7 +161,7 @@ function MotionRectanglesImageInputOutput:save_j1(frame)
             motionRectangles = motionRectanglesResultsFrameCacheable:getMotionRectangles()
             self:save(motionRectangles, frame)
         else
-            self.logUtil:putF("No Motion Rectangle Results for Frame: " .. tostring(frame), self, commonStrings.SAVE)
+            self.logUtil:putF(require("allbinary_java").to_string("No Motion Rectangle Results for Frame: ") .. require("allbinary_java").to_string(frame), self, commonStrings.SAVE)
         end
 end
 
@@ -185,9 +185,9 @@ function MotionRectanglesImageInputOutput:save_j2(motionRectangles, frame)
         local filePathStringBuffer3 = StringMaker.new()
         filePathStringBuffer3:append(tostring(filePathStringBuffer))
         filePathStringBuffer3:append(MediaDataFactory.getInstance().JPG:getExtension())
-        self.logUtil:putF("Motion Image File Path 1: " .. tostring(filePathStringBuffer1), self, commonStrings.SAVE)
-        self.logUtil:putF("Motion Image File Path 2: " .. tostring(filePathStringBuffer2), self, commonStrings.SAVE)
-        self.logUtil:putF("Motion Image File Path 2: " .. tostring(filePathStringBuffer3), self, commonStrings.SAVE)
+        self.logUtil:putF(require("allbinary_java").to_string("Motion Image File Path 1: ") .. require("allbinary_java").to_string(tostring(filePathStringBuffer1)), self, commonStrings.SAVE)
+        self.logUtil:putF(require("allbinary_java").to_string("Motion Image File Path 2: ") .. require("allbinary_java").to_string(tostring(filePathStringBuffer2)), self, commonStrings.SAVE)
+        self.logUtil:putF(require("allbinary_java").to_string("Motion Image File Path 2: ") .. require("allbinary_java").to_string(tostring(filePathStringBuffer3)), self, commonStrings.SAVE)
         local bufferedImageCacheables = java_new_array(nil, self.NUMBER_OF_IMAGES)
         local imageComparisonInfo = motionRectangles:getImageComparisonResult()
         local originalBufferedImage = imageComparisonInfo:getBufferedImages()[1]

@@ -91,7 +91,7 @@ end
 
 function LogUtil:putF(specialMessage, anyType, functionName)
         local className = CommonStrings.getInstance().EMPTY
-        if (getmetatable(anyType).javaClassName or getmetatable(anyType).className) ~= nil then
+        if not rawequal((getmetatable(anyType).javaClassName or getmetatable(anyType).className), nil) then
             className = tostring(tostring(StringMaker.new():append((getmetatable(anyType).javaClassName or getmetatable(anyType).className)):append(CommonSeps.getInstance().COLON):append(string.format("%x", TsUtil.getInstance():hashCode(anyType)))))
         end
         local message = self.logFormatUtil:getS(className, functionName, specialMessage)
@@ -110,7 +110,7 @@ end
 
 function LogUtil:put(specialMessage, anyType, functionName, exception)
         local className = CommonStrings.getInstance().EMPTY
-        if (getmetatable(anyType).javaClassName or getmetatable(anyType).className) ~= nil then
+        if not rawequal((getmetatable(anyType).javaClassName or getmetatable(anyType).className), nil) then
             className = tostring(tostring(StringMaker.new():append((getmetatable(anyType).javaClassName or getmetatable(anyType).className)):append(CommonSeps.getInstance().COLON):append(string.format("%x", TsUtil.getInstance():hashCode(anyType)))))
         end
         local message = self.logFormatUtil:get(className, functionName, specialMessage, exception)

@@ -133,7 +133,7 @@ function AbBasicCrypt:encrypt(array)
             local ivArray = self.secretKey:getEncoded()
             local encrypted = self.cipher:doFinal(array)
             local result = java_typed_array("B", java_new_array(0, (ivArray.n or #ivArray) + (encrypted.n or #encrypted)))
-            PreLogUtil.put("ivArray Length: " .. tostring((ivArray.n or #ivArray)), self, "encrypt")
+            PreLogUtil.put(require("allbinary_java").to_string("ivArray Length: ") .. require("allbinary_java").to_string((ivArray.n or #ivArray)), self, "encrypt")
             for index = 0, (ivArray.n or #ivArray) - 1 do
                 result[index + 1] = ivArray[index + 1]
             end
@@ -159,7 +159,7 @@ function AbBasicCrypt:decrypt(array)
             for index = 0, 8 - 1 do
                 ivArray[index + 1] = array[index + 1]
             end
-            PreLogUtil.put("ivArray Length: " .. tostring((ivArray.n or #ivArray)), self, "encrypt")
+            PreLogUtil.put(require("allbinary_java").to_string("ivArray Length: ") .. require("allbinary_java").to_string((ivArray.n or #ivArray)), self, "encrypt")
             local result = java_typed_array("B", java_new_array(0, (array.n or #array) - (ivArray.n or #ivArray)))
             for index = (ivArray.n or #ivArray), (array.n or #array) - 1 do
                 result[index - (ivArray.n or #ivArray) + 1] = array[index + 1]

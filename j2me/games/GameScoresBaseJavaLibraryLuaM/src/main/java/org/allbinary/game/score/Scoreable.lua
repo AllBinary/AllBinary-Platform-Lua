@@ -56,7 +56,7 @@ Scoreable.java_implements = " ScoreableInterface "
 Scoreable.java_interfaces = function() return {ScoreableInterface} end
 
 function Scoreable:_init_fields()
-    if self.points == nil then self.points = nil end
+    if self.points == nil then self.points = 0 end
 end
 
 

@@ -105,8 +105,8 @@ function AbeLicenseInterfaceFactory:get(abeClientInformation)
             self.abeLicenseInterface = AbeNoLicense.getInstance()
             local licenseClient = AbeLicenseClient.new()
             self.abeLicenseInterface = licenseClient:get(abeClientInformation)
-            if self.abeLicenseInterface ~= nil then
-                self.logUtil:putF("Default Key: " .. tostring(self.abeLicenseInterface:getKey(AbeClientInformationData.getInstance().KEY)), self, self.commonStrings.GET)
+            if not rawequal(self.abeLicenseInterface, nil) then
+                self.logUtil:putF(require("allbinary_java").to_string("Default Key: ") .. require("allbinary_java").to_string(self.abeLicenseInterface:getKey(AbeClientInformationData.getInstance().KEY)), self, self.commonStrings.GET)
             end
             do return "__jreturn", self.abeLicenseInterface end
         end)
@@ -123,7 +123,7 @@ end
 function AbeLicenseInterfaceFactory:isTimeToGetKey()
         local calendar = Calendar.getInstance()
         local currentTime = calendar:getTimeInMillis()
-        if self.abeLicenseInterface == nil or self.abeLicenseInterface == AbeNoLicense.getInstance() or not self.abeLicenseInterface:hasKey() or self:isCheck() or currentTime - self.checkPeriod > self.time then
+        if rawequal(self.abeLicenseInterface, nil) or rawequal(self.abeLicenseInterface, AbeNoLicense.getInstance()) or not (self.abeLicenseInterface:hasKey()) or self:isCheck() or currentTime - self.checkPeriod > self.time then
             self.abeLicenseInterface = nil
             self.time = currentTime
             return true

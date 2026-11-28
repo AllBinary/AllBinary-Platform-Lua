@@ -76,7 +76,7 @@ end
 
 
 function AbIOSystem:isType(type)
-        if ((self.type < type and -1) or (self.type > type and 1) or 0) == 0 then
+        if rawequal(((self.type < type and -1) or (self.type > type and 1) or 0), 0) then
             return true
         else
             return false

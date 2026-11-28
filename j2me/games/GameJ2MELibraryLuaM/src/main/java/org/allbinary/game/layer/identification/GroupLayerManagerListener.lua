@@ -216,9 +216,9 @@ function GroupLayerManagerListener:areAllOtherGroupsEmpty(groupInterface)
         local id = java_int(groupInterface:getGroupId())
         local size = self.list:size()
         for index = size - 1, 0, -1 do
-            if id ~= index then
+            if not rawequal(id, index) then
                 local groupSize = self:getGroupSizeById(index)
-                if groupSize ~= 0 then
+                if not rawequal(groupSize, 0) then
                     self.logUtil:putF(tostring(StringMaker.new():append("Group Size: "):appendint(groupSize)), self, "areAllOtherGroupsEmpty")
                     return false
                 end
@@ -240,7 +240,7 @@ function GroupLayerManagerListener:isIdInList(id, excludeGroupList)
             for index2 = 0, size2 - 1 do
                 groupInterface = groupInterfaceArray[index2 + 1]
                 groupId = java_int(groupInterface:getGroupId())
-                if groupId == id then
+                if rawequal(groupId, id) then
                     return true
                 end
             end
@@ -253,7 +253,7 @@ java_overload(GroupLayerManagerListener, "isIdInList", 2, function(java_a1, java
 function GroupLayerManagerListener:areAllOtherGroupsLessThan(excludeGroupList, maxSize)
         local size = self.list:size()
         for index = size - 1, 0, -1 do
-            if not self:isIdInList(index, excludeGroupList) then
+            if not (self:isIdInList(index, excludeGroupList)) then
                 local groupSize = self:getGroupSizeById(index)
                 if groupSize >= maxSize then
                     return false
@@ -289,10 +289,10 @@ function GroupLayerManagerListener:onCreateLayerManagerEvent(layerManagerEvent)
         for index = 0, size - 1 do
             id = java_int(groupInterfaceArray[index + 1]:getGroupId())
             groupList = self.list.objectArray[id + 1]
-            if groupList == nil then
+            if rawequal(groupList, nil) then
                 self.logUtil:putF(tostring(StringMaker.new():append("id: "):appendint(id)), self, "onCreateLayerManagerEvent")
             end
-            if not groupList:contains(layerInterface) then
+            if not (groupList:contains(layerInterface)) then
                 groupList:add(layerInterface)
             else
             end

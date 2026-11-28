@@ -164,6 +164,8 @@ function IntPermutationVisitor:print(...)
     local count = select("#", ...)
     if count == 1 then return self:print_j1(...) end
     if count == 2 then return self:print_j2(...) end
+    local parent = getmetatable(IntPermutationVisitor).__index
+    if parent.print then return parent.print(self, ...) end
     error("No method print takes " .. count .. " arguments")
 end
 IntPermutationVisitor.print__jdispatcher = IntPermutationVisitor.print

@@ -201,17 +201,17 @@ function ImageActionScriptOutput._new1(self, node)
         -- super(...) made self above
         self.logUtil:putF(self.commonStrings.START, self, self.commonStrings.CONSTRUCTOR)
         local actionNode = DomSearchHelper.getNode(ImageActionScriptOutputData.NAME, node:getChildNodes())
-        if actionNode ~= nil then
+        if not rawequal(actionNode, nil) then
             local nodeList = actionNode:getChildNodes()
             for index = 0, nodeList:getLength() - 1 do
                 local childNode = nodeList:item(index)
-                if childNode:getNodeName():compareTo(ImageActionScriptOutputData.SAVE) == 0 then
+                if rawequal(childNode:getNodeName():compareTo(ImageActionScriptOutputData.SAVE), 0) then
                     local booleanString = DomNodeHelper.getTextNodeValue(childNode)
                     self:setSaved(booleanString)
-                elseif childNode:getNodeName():compareTo(ImageActionScriptOutputData.DISPLAY) == 0 then
+                elseif rawequal(childNode:getNodeName():compareTo(ImageActionScriptOutputData.DISPLAY), 0) then
                     local booleanString = DomNodeHelper.getTextNodeValue(childNode)
                     self:setSaved(booleanString)
-                elseif childNode:getNodeName():compareTo(ImageActionScriptOutputData.TYPES) == 0 then
+                elseif rawequal(childNode:getNodeName():compareTo(ImageActionScriptOutputData.TYPES), 0) then
                     self:setImageTypes(ImageTypes.new(childNode))
                 else
                     error(require("java.lang.Exception").new("Action Script Output Unknown Node"), 0)
@@ -247,7 +247,7 @@ function ImageActionScriptOutput:toHashMap()
         local hashMap = StdUtil.getInstance():createHashMap()
         hashMap:put(ImageActionScriptOutputData.DISPLAY, tostring(self:isDisplay()))
         hashMap:put(ImageActionScriptOutputData.SAVE, tostring(self:isSaved()))
-        self.logUtil:putF("HashMap: " .. tostring(hashMap), self, "toHashMap()")
+        self.logUtil:putF(require("allbinary_java").to_string("HashMap: ") .. require("allbinary_java").to_string(tostring(hashMap)), self, "toHashMap()")
         return hashMap
 end
 java_overload(ImageActionScriptOutput, "toHashMap", 0)

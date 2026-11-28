@@ -165,7 +165,7 @@ function OrderHelper._jinit(self, propertiesHashMap, pageContext)
         self.pageContext = pageContext
         self.request = pageContext:getRequest()
         local storeName = propertiesHashMap:get(StoreFrontData.getInstance().NAME)
-        if not StringValidationUtil.getInstance():isEmpty(storeName) then
+        if not (StringValidationUtil.getInstance():isEmpty(storeName)) then
             self.storeFrontInterface = StoreFrontFactory.getInstance(storeName)
         end
         self.weblisketSession = WeblisketSession.new(self.propertiesHashMap, self.pageContext)
@@ -184,14 +184,14 @@ function OrderHelper:setPaymentGateway()
             local paymentGatewayBoolean = false
             local orderInterface = self.weblisketSession:getOrder()
             local requestPaymentGateway = self.request:getParameter(tostring(PaymentGatewayData.NAME))
-            if not StringValidationUtil.getInstance():isEmpty(requestPaymentGateway) then
+            if not (StringValidationUtil.getInstance():isEmpty(requestPaymentGateway)) then
                 self.weblisketSession:setPaymentMethod(requestPaymentGateway)
                 orderInterface:setPaymentMethod(requestPaymentGateway)
                 paymentGatewayBoolean = true
             end
             local paymentGatewayEntityInterface = PaymentGatewayEntityFactory.getInstance()
             local paymentTypeVector = paymentGatewayEntityInterface:findPaymentTypeVectorByStore(self.weblisketSession:getStoreName())
-            if paymentTypeVector:size() == 1 then
+            if rawequal(paymentTypeVector:size(), 1) then
                 local paymentType = paymentTypeVector:get(0)
                 local paymentGatewayInterface = paymentGatewayEntityInterface:getPaymentGatewayInterface(self.weblisketSession:getStoreName(), paymentType)
                 local paymentGateway = paymentGatewayInterface:getName()
@@ -217,7 +217,7 @@ function OrderHelper:setPaymentGateway()
                 stringBuffer:append("Failed to set PaymentGateway for Order: ")
                 local try_ok, try_error, try_value = pcall(function()
                     local orderInterface = self.weblisketSession:getOrder()
-                    if orderInterface ~= nil then
+                    if not rawequal(orderInterface, nil) then
                         stringBuffer:append(orderInterface:getId())
                         stringBuffer:append(" to: ")
                         stringBuffer:append(orderInterface:getPaymentMethod())
@@ -243,7 +243,7 @@ function OrderHelper:process()
             order:setStoreName(self.storeFrontInterface:getName())
             local result = OrderProcessorUtil.getInstance():process(self.weblisketSession:getUserName(), order)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGS) then
-                self.logUtil:putF("Successfully Processed Order: " .. result, self, "processOrder()")
+                self.logUtil:putF(require("allbinary_java").to_string("Successfully Processed Order: ") .. require("allbinary_java").to_string(result), self, "processOrder()")
             end
             do return "__jreturn", result end
         end)

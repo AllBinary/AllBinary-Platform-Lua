@@ -179,6 +179,8 @@ function GL10:glDeleteTextures(...)
     local count = select("#", ...)
     if count == 3 then return self:glDeleteTextures_j3(...) end
     if count == 2 then return self:glDeleteTextures_j2(...) end
+    local parent = getmetatable(GL10).__index
+    if parent.glDeleteTextures then return parent.glDeleteTextures(self, ...) end
     error("No method glDeleteTextures takes " .. count .. " arguments")
 end
 GL10.glDeleteTextures__jdispatcher = GL10.glDeleteTextures
@@ -256,6 +258,8 @@ function GL10:glFogfv(...)
     local count = select("#", ...)
     if count == 3 then return self:glFogfv_j3(...) end
     if count == 2 then return self:glFogfv_j2(...) end
+    local parent = getmetatable(GL10).__index
+    if parent.glFogfv then return parent.glFogfv(self, ...) end
     error("No method glFogfv takes " .. count .. " arguments")
 end
 GL10.glFogfv__jdispatcher = GL10.glFogfv
@@ -283,6 +287,8 @@ function GL10:glGenTextures(...)
     local count = select("#", ...)
     if count == 3 then return self:glGenTextures_j3(...) end
     if count == 2 then return self:glGenTextures_j2(...) end
+    local parent = getmetatable(GL10).__index
+    if parent.glGenTextures then return parent.glGenTextures(self, ...) end
     error("No method glGenTextures takes " .. count .. " arguments")
 end
 GL10.glGenTextures__jdispatcher = GL10.glGenTextures
@@ -305,6 +311,8 @@ function GL10:glGetIntegerv(...)
     local count = select("#", ...)
     if count == 3 then return self:glGetIntegerv_j3(...) end
     if count == 2 then return self:glGetIntegerv_j2(...) end
+    local parent = getmetatable(GL10).__index
+    if parent.glGetIntegerv then return parent.glGetIntegerv(self, ...) end
     error("No method glGetIntegerv takes " .. count .. " arguments")
 end
 GL10.glGetIntegerv__jdispatcher = GL10.glGetIntegerv
@@ -337,6 +345,8 @@ function GL10:glLightModelfv(...)
     local count = select("#", ...)
     if count == 3 then return self:glLightModelfv_j3(...) end
     if count == 2 then return self:glLightModelfv_j2(...) end
+    local parent = getmetatable(GL10).__index
+    if parent.glLightModelfv then return parent.glLightModelfv(self, ...) end
     error("No method glLightModelfv takes " .. count .. " arguments")
 end
 GL10.glLightModelfv__jdispatcher = GL10.glLightModelfv
@@ -359,6 +369,8 @@ function GL10:glLightfv(...)
     local count = select("#", ...)
     if count == 4 then return self:glLightfv_j4(...) end
     if count == 3 then return self:glLightfv_j3(...) end
+    local parent = getmetatable(GL10).__index
+    if parent.glLightfv then return parent.glLightfv(self, ...) end
     error("No method glLightfv takes " .. count .. " arguments")
 end
 GL10.glLightfv__jdispatcher = GL10.glLightfv
@@ -386,6 +398,8 @@ function GL10:glLoadMatrixf(...)
     local count = select("#", ...)
     if count == 2 then return self:glLoadMatrixf_j2(...) end
     if count == 1 then return self:glLoadMatrixf_j1(...) end
+    local parent = getmetatable(GL10).__index
+    if parent.glLoadMatrixf then return parent.glLoadMatrixf(self, ...) end
     error("No method glLoadMatrixf takes " .. count .. " arguments")
 end
 GL10.glLoadMatrixf__jdispatcher = GL10.glLoadMatrixf
@@ -413,6 +427,8 @@ function GL10:glMaterialfv(...)
     local count = select("#", ...)
     if count == 4 then return self:glMaterialfv_j4(...) end
     if count == 3 then return self:glMaterialfv_j3(...) end
+    local parent = getmetatable(GL10).__index
+    if parent.glMaterialfv then return parent.glMaterialfv(self, ...) end
     error("No method glMaterialfv takes " .. count .. " arguments")
 end
 GL10.glMaterialfv__jdispatcher = GL10.glMaterialfv
@@ -435,6 +451,8 @@ function GL10:glMultMatrixf(...)
     local count = select("#", ...)
     if count == 2 then return self:glMultMatrixf_j2(...) end
     if count == 1 then return self:glMultMatrixf_j1(...) end
+    local parent = getmetatable(GL10).__index
+    if parent.glMultMatrixf then return parent.glMultMatrixf(self, ...) end
     error("No method glMultMatrixf takes " .. count .. " arguments")
 end
 GL10.glMultMatrixf__jdispatcher = GL10.glMultMatrixf
@@ -562,6 +580,8 @@ function GL10:glTexEnvfv(...)
     local count = select("#", ...)
     if count == 4 then return self:glTexEnvfv_j4(...) end
     if count == 3 then return self:glTexEnvfv_j3(...) end
+    local parent = getmetatable(GL10).__index
+    if parent.glTexEnvfv then return parent.glTexEnvfv(self, ...) end
     error("No method glTexEnvfv takes " .. count .. " arguments")
 end
 GL10.glTexEnvfv__jdispatcher = GL10.glTexEnvfv

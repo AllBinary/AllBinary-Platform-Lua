@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 -- local URIResolver = require("javax.xml.transform.URIResolver")
 local BasicUriResolver = java_lazy("org.allbinary.data.tree.dom.BasicUriResolver")
 local StoreUriResolver = java_lazy("org.allbinary.data.tree.dom.StoreUriResolver")
@@ -150,7 +150,7 @@ function CompoundTransform._jinit(self, transformInfoInterface)
         self:setURIResolver(StoreUriResolver.new(self:getTransformInfoInterface(), self:getURIResolver()))
         local objectConfig = CompoundContextTransformInfoObjectConfig.new(self.abeClientInformation, self:getTransformInfoInterface(), self:getTransformInfoInterface():getObjectConfigInterface():toXmlDoc())
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("\nObjectConfig: \n" .. tostring(objectConfig), self, self.commonStrings.CONSTRUCTOR)
+            self.logUtil:putF(require("allbinary_java").to_string("\nObjectConfig: \n") .. require("allbinary_java").to_string(tostring(objectConfig)), self, self.commonStrings.CONSTRUCTOR)
         end
         local templateInputStream = objectConfig:createInputStream()
         self:setInputStream(templateInputStream)

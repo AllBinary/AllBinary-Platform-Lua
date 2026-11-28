@@ -138,7 +138,7 @@ function BasicPlatormGeographicMapCellTypeFactory:_init_fields()
     if self.BLOCK_CELL_TYPE == nil then self.BLOCK_CELL_TYPE = nil end
     if self.JUMP_THRU_CELL_TYPE == nil then self.JUMP_THRU_CELL_TYPE = nil end
     if self.LADDER_CELL_TYPE == nil then self.LADDER_CELL_TYPE = nil end
-    if self.maxTileId == nil then self.maxTileId = nil end
+    if self.maxTileId == nil then self.maxTileId = 0 end
 end
 
 
@@ -208,7 +208,7 @@ java_overload(BasicPlatormGeographicMapCellTypeFactory, "getEmptyType", 0)
 
 
 function BasicPlatormGeographicMapCellTypeFactory:isPath(cellType)
-        if cellType:getType() == 0 then
+        if rawequal(cellType:getType(), 0) then
             return true
         end
         return false

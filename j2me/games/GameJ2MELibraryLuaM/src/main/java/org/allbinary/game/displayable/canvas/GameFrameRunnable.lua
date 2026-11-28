@@ -160,7 +160,7 @@ function GameFrameRunnable:run()
             allBinaryGameCanvas:getLoopTimeHelperP():setStartTime(self.gameTickTimeDelayHelper:setStartTime())
             self.gameTickDisplayInfoSingleton:update()
             allBinaryGameCanvas:processGame()
-            if not allBinaryGameCanvas:isRunning() or allBinaryGameCanvas:isPaused() then
+            if not (allBinaryGameCanvas:isRunning()) or allBinaryGameCanvas:isPaused() then
                 allBinaryGameCanvas:notifyDonePainting()
             end
         end)

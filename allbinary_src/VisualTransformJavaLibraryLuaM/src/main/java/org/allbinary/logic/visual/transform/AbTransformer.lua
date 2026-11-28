@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 -- local StringBufferInputStream = require("java.io.StringBufferInputStream")
 -- local URIResolver = require("javax.xml.transform.URIResolver")
 -- local StreamSource = require("javax.xml.transform.stream.StreamSource")
@@ -135,14 +135,14 @@ end
 function AbTransformer:translate(xmlDocumentStr)
         local try_ok, try_error, try_value = pcall(function()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().XMLLOGGING) then
-                self.logUtil:putF("xml: \n" .. xmlDocumentStr, self, "translate(String xmlDocumentStr)")
+                self.logUtil:putF(require("allbinary_java").to_string("xml: \n") .. require("allbinary_java").to_string(xmlDocumentStr), self, "translate(String xmlDocumentStr)")
             end
-            if self:getURIResolver() == nil then
+            if rawequal(self:getURIResolver(), nil) then
                 error(require("java.lang.Exception").new("No URIResolver"), 0)
             end
             local result = XslHelper.getInstance():translate(self:getURIResolver(), StreamSource.new(self:getInputStream()), StreamSource.new(StringBufferInputStream.new(xmlDocumentStr)))
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().XSLLOGGING) then
-                self.logUtil:putF("translated xml: " .. result, self, "translate(String xmlDocumentStr)")
+                self.logUtil:putF(require("allbinary_java").to_string("translated xml: ") .. require("allbinary_java").to_string(result), self, "translate(String xmlDocumentStr)")
             end
             local transformInfoObjectConfigGeneratorInterface = TransformInfoObjectConfigGeneratorFactory.getInstance():getInstance(self:getTransformInfoInterface())
             do return "__jreturn", transformInfoObjectConfigGeneratorInterface:process(result) end

@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
 local TsUtil = java_lazy("org.allbinary.TsUtil")
 local NullWaitGameRunnable = java_lazy("org.allbinary.game.displayable.canvas.NullWaitGameRunnable")
 local MyCanvas = require("org.allbinary.graphics.displayable.MyCanvas")
@@ -181,7 +181,7 @@ function RunnableCanvas._jinit(self, commandListener, childNameList, hasParam)
         -- super(...) made self above
         self.logUtil:putF(tostring(StringMaker.new():append("RunnableCanvas delay: "):appendint(java_int(self.loopTimeHelper.delay))), self, self.commonStrings.CONSTRUCTOR)
         self.runnableCanvasRefreshHelper = RunnableCanvasRefreshHelper.new(self)
-        if commandListener ~= nil then
+        if not rawequal(commandListener, nil) then
             self:initCommands(commandListener)
         elseif hasParam then
             self.logUtil:putF("commandListener was null", self, "initCommands")
@@ -203,7 +203,7 @@ java_overload(RunnableCanvas, "initCommands", 1, function(java_a1) return true a
 
 
 function RunnableCanvas:isMainCanvas()
-        if self:getCustomCommandListener() ~= nil then
+        if not rawequal(self:getCustomCommandListener(), nil) then
             return true
         else
             return false
@@ -220,7 +220,7 @@ java_overload(RunnableCanvas, "setThread", 1, function(java_a1) return true and 
 
 function RunnableCanvas:setRunning(running)
         self.running = running
-        if not self.running then
+        if not (self.running) then
             self.thread = NullThread.NULL_THREAD
             do -- synchronized (self)
                 self.threadObjectUtil:notifyObject(self)
@@ -232,16 +232,16 @@ java_overload(RunnableCanvas, "setRunning", 1, function(java_a1) return true and
 
 
 function RunnableCanvas:isRunning()
-        if self.thread == self.currentThread then
+        if rawequal(self.thread, self.currentThread) then
             return self.running
         else
             local stringBuffer = StringMaker.new()
             stringBuffer:append(self.THREAD)
-            if self.thread ~= nil then
+            if not rawequal(self.thread, nil) then
                 stringBuffer:append(tostring(self.thread))
             end
             stringBuffer:append(self.NOT_EQUAL)
-            if self.currentThread ~= nil then
+            if not rawequal(self.currentThread, nil) then
                 stringBuffer:append(StringUtil.getInstance():toString(self.currentThread))
             end
             self.logUtil:putF(tostring(stringBuffer), self, self.IS_RUNNING)
@@ -309,7 +309,7 @@ java_overload(RunnableCanvas, "stopWaiting", 0)
 
 -- throws Exception
 function RunnableCanvas:waitOnNotify(wait)
-        if not self.notified then
+        if not (self.notified) then
             if wait > 0 then
                 self.threadObjectUtil:waitObjectFor(self, wait)
             else
@@ -322,7 +322,7 @@ java_overload(RunnableCanvas, "waitOnNotify", 1, function(java_a1) return true a
 
 -- throws Exception
 function RunnableCanvas:processSleep()
-        java_sleep(self.pauseWait)
+        require("java.lang.Thread").sleep(self.pauseWait)
 end
 java_overload(RunnableCanvas, "processSleep", 0)
 
@@ -335,7 +335,7 @@ java_overload(RunnableCanvas, "isPausable", 0)
 
 -- throws Exception
 function RunnableCanvas:processGameSleep(sleep)
-        java_sleep(sleep)
+        require("java.lang.Thread").sleep(sleep)
 end
 java_overload(RunnableCanvas, "processGameSleep", 1, function(java_a1) return true and type(java_a1) == "number" end)
 
@@ -345,13 +345,13 @@ function RunnableCanvas:processLoopSleep()
         self.runnableCanvasRefreshHelper:process()
         if self:isPaused() then
             local stringMaker = StringMaker.new()
-            if self:isRunning() and not self:isSingleThread() then
+            if self:isRunning() and not (self:isSingleThread()) then
                 stringMaker:delete(0, stringMaker:length())
                 local currentTimeMillis = self.systemWrapper:currentTimeMillis()
                 self.logUtil:putF(tostring(stringMaker:append(self.START_PAUSE):appendlong(currentTimeMillis):append(self.PAUSE_SLEEP):appendlong(self.pauseWait)), self, self.PROCESS_LOOP_SLEEP)
-                while self:isPaused() and self:isRunning() and not self:isSingleThread() do
+                while self:isPaused() and self:isRunning() and not (self:isSingleThread()) do
                     self:processSleep()
-                    if not self:isPausable() then
+                    if not (self:isPausable()) then
                         stringMaker:delete(0, stringMaker:length())
                         self.logUtil:putF(tostring(stringMaker:append(self.END_PAUSE):appendlong(currentTimeMillis)), self, self.PROCESS_LOOP_SLEEP)
                         return

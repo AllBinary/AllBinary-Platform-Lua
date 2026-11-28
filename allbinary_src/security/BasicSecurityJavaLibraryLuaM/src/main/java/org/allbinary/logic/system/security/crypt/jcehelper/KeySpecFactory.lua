@@ -132,9 +132,9 @@ end
 function KeySpecFactory:getInstance(algorithm, keyData)
         local try_ok, try_error, try_value = pcall(function()
             local tsUtil = TsUtil.getInstance()
-            if tsUtil:compareTo(algorithm, self.DES) == 0 then
+            if rawequal(tsUtil:compareTo(algorithm, self.DES), 0) then
                 do return "__jreturn", DESKeySpec.new(keyData) end
-            elseif tsUtil:compareTo(algorithm, self.DESEDE) == 0 then
+            elseif rawequal(tsUtil:compareTo(algorithm, self.DESEDE), 0) then
                 do return "__jreturn", DESedeKeySpec.new(keyData) end
             else
                 error(require("java.lang.RuntimeException").new(), 0)

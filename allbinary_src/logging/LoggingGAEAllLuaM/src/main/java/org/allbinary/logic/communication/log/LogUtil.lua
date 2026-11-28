@@ -59,7 +59,7 @@ LogUtil.className = "LogUtil"
 LogUtil.javaClassName = "org.allbinary.logic.communication.log.LogUtil"
 
 function LogUtil:_init_fields()
-    self.logger = Logger.getLogger(LogUtil:getName())
+    self.logger = Logger.getLogger(LogUtil.javaClassName)
     self.logFormatUtil = LogFormatUtil.getInstance()
 end
 
@@ -104,11 +104,11 @@ function LogUtil:put(specialMessage, anyType, functionName, exception)
         local try_ok, try_error, try_value = pcall(function()
             local className = CommonStrings.getInstance().EMPTY
             local clazz = getmetatable(anyType)
-            if (clazz.javaClassName or clazz.className) ~= nil then
+            if not rawequal((clazz.javaClassName or clazz.className), nil) then
                 className = (clazz.javaClassName or clazz.className)
             end
             local message = self.logFormatUtil:getS(className, functionName, specialMessage)
-            if exception ~= nil then
+            if not rawequal(exception, nil) then
                 self.logger:log(Level.SEVERE, message, exception)
             else
                 self.logger:log(Level.INFO, message)
@@ -124,7 +124,7 @@ end
 function LogUtil:putS(specialMessage, className, functionName, exception)
         local try_ok, try_error, try_value = pcall(function()
             local message = self.logFormatUtil:getS(className, functionName, specialMessage)
-            if exception ~= nil then
+            if not rawequal(exception, nil) then
                 self.logger:log(Level.SEVERE, message, exception)
             else
                 self.logger:log(Level.INFO, message)

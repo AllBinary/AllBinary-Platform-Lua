@@ -195,9 +195,9 @@ end
 function UpdateFileValidationView:isValid_j0()
         local try_ok, try_error, try_value = pcall(function()
             local command = self:getRequestHashMap():get(GLOBALS2.ADMINCOMMAND)
-            if StringValidationUtil.getInstance():isEmpty(command) or ((command < self.commonStrings.UPDATE and -1) or (command > self.commonStrings.UPDATE and 1) or 0) ~= 0 then
+            if StringValidationUtil.getInstance():isEmpty(command) or not rawequal(((command < self.commonStrings.UPDATE and -1) or (command > self.commonStrings.UPDATE and 1) or 0), 0) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                    self.logUtil:putF("Invalid AdminCommand=" .. command, self, self.commonStrings.IS_VALID)
+                    self.logUtil:putF(require("allbinary_java").to_string("Invalid AdminCommand=") .. require("allbinary_java").to_string(command), self, self.commonStrings.IS_VALID)
                 end
                 do return "__jreturn", false end
             end
@@ -212,13 +212,13 @@ function UpdateFileValidationView:isValid_j0()
                     self.logUtil:put("Existing Item With MoneyException", self, self.commonStrings.IS_VALID, e)
                 end
             end
-            if self.itemInterface == nil then
+            if rawequal(self.itemInterface, nil) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     self.logUtil:putF("Item Does Not Exist", self, self.commonStrings.IS_VALID)
                 end
                 do return "__jreturn", false end
             end
-            if BasicItemValidation.new(self.itemInterface):isValid() == false then
+            if rawequal(BasicItemValidation.new(self.itemInterface):isValid(), false) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     self.logUtil:putF("BasicItem is not valid", self, self.commonStrings.IS_VALID)
                 end
@@ -227,9 +227,9 @@ function UpdateFileValidationView:isValid_j0()
             local storeFrontInterface = StoreFrontFactory.getInstance(self:getWeblisketSession():getStoreName())
             local fullCategory = tostring(StringMaker.new():append(URLGLOBALS.getWebappPath()):append(storeFrontInterface:getCurrentHostNamePath()):append(self.itemInterface:getCategory()))
             local categoryFile = AbFile.createAbFile(fullCategory)
-            if not categoryFile:isDirectory() then
+            if not (categoryFile:isDirectory()) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                    self.logUtil:putF("Category Does Not Exist: " .. fullCategory, self, self.commonStrings.IS_VALID)
+                    self.logUtil:putF(require("allbinary_java").to_string("Category Does Not Exist: ") .. require("allbinary_java").to_string(fullCategory), self, self.commonStrings.IS_VALID)
                 end
                 do return "__jreturn", false end
             end
@@ -239,7 +239,7 @@ function UpdateFileValidationView:isValid_j0()
                 local fileName = fileItem:getName()
                 local size = fileItem:getSize()
                 HttpFileUploadUtil.log(fileItem)
-                if self:isValid(fileName, size) == false then
+                if rawequal(self:isValid(fileName, size), false) then
                     do return "__jreturn", false end
                 else
                     self:processFile(fileItem)
@@ -254,7 +254,7 @@ function UpdateFileValidationView:isValid_j0()
                 local fileName = fileItem:getName()
                 local size = fileItem:getSize()
                 HttpFileUploadUtil.log(fileItem)
-                if self:isValid(fileName, size) == false then
+                if rawequal(self:isValid(fileName, size), false) then
                 else
                     self:processFile(fileItem)
                 end
@@ -267,7 +267,7 @@ function UpdateFileValidationView:isValid_j0()
                 local fileName = fileItem:getName()
                 local size = fileItem:getSize()
                 HttpFileUploadUtil.log(fileItem)
-                if self:isValid(fileName, size) == false then
+                if rawequal(self:isValid(fileName, size), false) then
                 else
                     self:processFile(fileItem)
                     self:unzip(fileItem)
@@ -278,20 +278,20 @@ function UpdateFileValidationView:isValid_j0()
             local hashMap = self:getRequestHashMap()
             hashMap:put(self.basicItemData.ID, self.itemInterface:getId())
             local licenseObject = hashMap:get(DownloadItemData.LICENSE_FILE)
-            if licenseObject ~= nil then
+            if not rawequal(licenseObject, nil) then
                 hashMap:put(DownloadItemData.LICENSE_FILE, (licenseObject):getName())
             else
                 hashMap:put(DownloadItemData.LICENSE_FILE, StringUtil.getInstance().EMPTY_STRING)
             end
             local fileObject = hashMap:get(DownloadItemData.FILE)
-            if fileObject ~= nil then
+            if not rawequal(fileObject, nil) then
                 hashMap:put(DownloadItemData.FILE, (fileObject):getName())
             else
                 hashMap:put(DownloadItemData.FILE, StringUtil.getInstance().EMPTY_STRING)
             end
             self.downloadableItem = DownloadableItem.new(hashMap)
             local downloadableItemValidation = DownloadableItemValidation.new(self.downloadableItem)
-            if downloadableItemValidation:isValid() == false then
+            if rawequal(downloadableItemValidation:isValid(), false) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     self.logUtil:putF("DownloadableItem is not valid", self, self.commonStrings.IS_VALID)
                 end
@@ -327,10 +327,10 @@ function UpdateFileValidationView:validationInfo_j0()
         local try_ok, try_error, try_value = pcall(function()
             local stringBuffer = StringMaker.new()
             local command = self:getRequestHashMap():get(GLOBALS2.ADMINCOMMAND)
-            if StringValidationUtil.getInstance():isEmpty(command) or ((command < self.commonStrings.UPDATE and -1) or (command > self.commonStrings.UPDATE and 1) or 0) ~= 0 then
+            if StringValidationUtil.getInstance():isEmpty(command) or not rawequal(((command < self.commonStrings.UPDATE and -1) or (command > self.commonStrings.UPDATE and 1) or 0), 0) then
                 do return "__jreturn", StringUtil.getInstance().EMPTY_STRING end
             end
-            if self.itemInterface == nil then
+            if rawequal(self.itemInterface, nil) then
                 local ITEM_NOT_FOUND = "Item Does Not Exist"
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     self.logUtil:putF(ITEM_NOT_FOUND, self, "validationInfo()")
@@ -338,17 +338,17 @@ function UpdateFileValidationView:validationInfo_j0()
                 do return "__jreturn", ITEM_NOT_FOUND end
             end
             local basicItemValidation = BasicItemValidation.new(self.itemInterface)
-            if basicItemValidation:isValid() == false then
+            if rawequal(basicItemValidation:isValid(), false) then
                 stringBuffer:append(basicItemValidation:validationInfo())
                 stringBuffer:append("<br/>")
             end
             local storeFrontInterface = StoreFrontFactory.getInstance(self:getWeblisketSession():getStoreName())
             local fullCategory = tostring(StringMaker.new():append(URLGLOBALS.getWebappPath()):append(storeFrontInterface:getCurrentHostNamePath()):append(self.itemInterface:getCategory()))
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("Category: " .. fullCategory, self, "validationInfo()")
+                self.logUtil:putF(require("allbinary_java").to_string("Category: ") .. require("allbinary_java").to_string(fullCategory), self, "validationInfo()")
             end
             local categoryFile = AbFile.createAbFile(fullCategory)
-            if not categoryFile:isDirectory() then
+            if not (categoryFile:isDirectory()) then
                 stringBuffer:append("Category ")
                 stringBuffer:append(self.itemInterface:getCategory())
                 stringBuffer:append(" does not exist.")
@@ -380,9 +380,9 @@ function UpdateFileValidationView:validationInfo_j0()
                 self:validationInfo(stringBuffer, fileName, size)
             else
             end
-            if self.downloadableItem ~= nil then
+            if not rawequal(self.downloadableItem, nil) then
                 local downloadableItemValidation = DownloadableItemValidation.new(self.downloadableItem)
-                if downloadableItemValidation:isValid() == false then
+                if rawequal(downloadableItemValidation:isValid(), false) then
                     local log = downloadableItemValidation:validationInfo()
                     if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                         self.logUtil:putF(log, self, self.commonStrings.IS_VALID)
@@ -410,7 +410,7 @@ function UpdateFileValidationView:isValid_j2(fileName, size)
         local fileData = FileData.getInstance()
         if size > fileData.MINDOWNLOADABLEFILESIZE then
             if size < fileData.MAXDOWNLOADABLEFILESIZE then
-                if not StringValidationUtil.getInstance():isValidRequired(fileName, fileData.MINLEN, fileData.MAXLEN) then
+                if not (StringValidationUtil.getInstance():isValidRequired(fileName, fileData.MINLEN, fileData.MAXLEN)) then
                     if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                         local stringBuffer = StringMaker.new()
                         stringBuffer:append("File name is not valid: ")
@@ -448,6 +448,8 @@ function UpdateFileValidationView:isValid(...)
     local count = select("#", ...)
     if count == 0 then return self:isValid_j0(...) end
     if count == 2 then return self:isValid_j2(...) end
+    local parent = getmetatable(UpdateFileValidationView).__index
+    if parent.isValid then return parent.isValid(self, ...) end
     error("No method isValid takes " .. count .. " arguments")
 end
 UpdateFileValidationView.isValid__jdispatcher = UpdateFileValidationView.isValid
@@ -457,7 +459,7 @@ function UpdateFileValidationView:validationInfo_j3(stringBuffer, fileName, size
         local fileData = FileData.getInstance()
         if size > fileData.MINDOWNLOADABLEFILESIZE then
             if size < fileData.MAXDOWNLOADABLEFILESIZE then
-                if not StringValidationUtil.getInstance():isValidRequired(fileName, fileData.MINLEN, fileData.MAXLEN) then
+                if not (StringValidationUtil.getInstance():isValidRequired(fileName, fileData.MINLEN, fileData.MAXLEN)) then
                     stringBuffer:append("File Name must be more than ")
                     stringBuffer:appendint(java_int(fileData.MINLEN))
                     stringBuffer:append(" and less than ")
@@ -480,6 +482,8 @@ function UpdateFileValidationView:validationInfo(...)
     local count = select("#", ...)
     if count == 0 then return self:validationInfo_j0(...) end
     if count == 3 then return self:validationInfo_j3(...) end
+    local parent = getmetatable(UpdateFileValidationView).__index
+    if parent.validationInfo then return parent.validationInfo(self, ...) end
     error("No method validationInfo takes " .. count .. " arguments")
 end
 UpdateFileValidationView.validationInfo__jdispatcher = UpdateFileValidationView.validationInfo

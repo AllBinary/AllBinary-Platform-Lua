@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
--- local Sprite = require("javax.microedition.lcdui.game.Sprite")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local Sprite = java_lazy("javax.microedition.lcdui.game.Sprite")
 local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")

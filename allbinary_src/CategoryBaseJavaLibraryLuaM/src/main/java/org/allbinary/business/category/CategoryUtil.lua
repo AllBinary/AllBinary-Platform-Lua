@@ -82,11 +82,11 @@ end
 function CategoryUtil.getNameFromNode(node)
         local attributes = node:getAttributes()
         local attrNode = attributes:getNamedItem(CategoryData.getInstance().LABEL)
-        if attrNode ~= nil then
+        if not rawequal(attrNode, nil) then
             return attrNode:getValue()
         else
             local labelNode = DomSearchHelper.getNodeNoThrow(CategoryData.getInstance().LABEL, node:getChildNodes())
-            if labelNode ~= nil then
+            if not rawequal(labelNode, nil) then
                 return DomNodeHelper.getTextNodeValue(labelNode)
             end
         end

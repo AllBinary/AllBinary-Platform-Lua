@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local PaintableInterface = java_lazy("org.allbinary.graphics.paint.PaintableInterface")
@@ -151,12 +151,12 @@ AllBinaryTiledLayer.java_implements = " NamedInterface PaintableInterface "
 AllBinaryTiledLayer.java_interfaces = function() return {NamedInterface, PaintableInterface} end
 
 function AllBinaryTiledLayer:_init_fields()
-    if self.cellWidth == nil then self.cellWidth = nil end
-    if self.cellHeight == nil then self.cellHeight = nil end
-    if self.halfWidth == nil then self.halfWidth = nil end
-    if self.halfHeight == nil then self.halfHeight = nil end
-    if self.halfCellWidth == nil then self.halfCellWidth = nil end
-    if self.halfCellHeight == nil then self.halfCellHeight = nil end
+    if self.cellWidth == nil then self.cellWidth = 0 end
+    if self.cellHeight == nil then self.cellHeight = 0 end
+    if self.halfWidth == nil then self.halfWidth = 0 end
+    if self.halfHeight == nil then self.halfHeight = 0 end
+    if self.halfCellWidth == nil then self.halfCellWidth = 0 end
+    if self.halfCellHeight == nil then self.halfCellHeight = 0 end
     if self.dataId == nil then self.dataId = nil end
 end
 
@@ -212,7 +212,7 @@ function AllBinaryTiledLayer:updateCells(mapTwoDArray, fromTileId, toTileId)
         local columns = self:getColumns()
         for col = 0, columns - 1 do
             for row = 0, rows - 1 do
-                if fromTileId == mapTwoDArray[row + 1][col + 1] then
+                if rawequal(fromTileId, mapTwoDArray[row + 1][col + 1]) then
                     mapTwoDArray[row + 1][col + 1] = toTileId
                     self:setCell(col, row, mapTwoDArray[row + 1][col + 1])
                 end

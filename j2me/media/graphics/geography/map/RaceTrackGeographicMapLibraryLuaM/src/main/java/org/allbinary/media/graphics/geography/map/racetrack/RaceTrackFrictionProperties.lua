@@ -53,8 +53,8 @@ RaceTrackFrictionProperties.className = "RaceTrackFrictionProperties"
 RaceTrackFrictionProperties.javaClassName = "org.allbinary.media.graphics.geography.map.racetrack.RaceTrackFrictionProperties"
 
 function RaceTrackFrictionProperties:_init_fields()
-    if self.ROAD_FRICTION_NOMINATOR == nil then self.ROAD_FRICTION_NOMINATOR = nil end
-    if self.GROUND_FRICTION_NOMINATOR == nil then self.GROUND_FRICTION_NOMINATOR = nil end
+    if self.ROAD_FRICTION_NOMINATOR == nil then self.ROAD_FRICTION_NOMINATOR = 0 end
+    if self.GROUND_FRICTION_NOMINATOR == nil then self.GROUND_FRICTION_NOMINATOR = 0 end
 end
 
 

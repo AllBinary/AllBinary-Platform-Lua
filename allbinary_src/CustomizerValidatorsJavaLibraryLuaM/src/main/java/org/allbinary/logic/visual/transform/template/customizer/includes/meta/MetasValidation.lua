@@ -203,7 +203,7 @@ function MetasValidation._new1_1(self, storeName)
     MetasValidation._init_fields(self)
         self.storeFrontInterface = StoreFrontFactory.getInstance(storeName)
         self.metaValidationVector = BasicArrayListD.new()
-        local contentValue = self.storeFrontInterface:getName() .. " E-Commerce Site"
+        local contentValue = require("allbinary_java").to_string(self.storeFrontInterface:getName()) .. require("allbinary_java").to_string(" E-Commerce Site")
         local keywordsMetaValidation = MetaValidation.new(HtmlMetaAttributeDataFactory.getInstance().NAME, "Keywords", HtmlMetaAttributeValuesData.getInstance().KEYWORDS, contentValue)
         local abstractMetaValidation = MetaValidation.new(HtmlMetaAttributeDataFactory.getInstance().NAME, "Abstract", HtmlMetaAttributeValuesData.getInstance().ABSTRACT, contentValue)
         local descriptionMetaValidation = MetaValidation.new(HtmlMetaAttributeDataFactory.getInstance().NAME, "Description", HtmlMetaAttributeValuesData.getInstance().DESCRIPTION, contentValue)

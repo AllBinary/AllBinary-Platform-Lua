@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Command = require("javax.microedition.lcdui.Command")
+local Command = java_lazy("javax.microedition.lcdui.Command")
 local CanvasStrings = java_lazy("org.allbinary.graphics.displayable.CanvasStrings")
 local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
@@ -88,7 +88,7 @@ end
 
 
 function GameCommandsFactory.getInstance()
-        if GameCommandsFactory.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(GameCommandsFactory.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             GameCommandsFactory.instance_f = GameCommandsFactory.new()
         end
         return GameCommandsFactory.instance_f

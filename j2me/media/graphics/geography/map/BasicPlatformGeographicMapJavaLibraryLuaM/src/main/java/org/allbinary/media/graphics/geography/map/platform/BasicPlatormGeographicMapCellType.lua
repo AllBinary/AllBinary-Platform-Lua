@@ -113,7 +113,7 @@ end
 function BasicPlatormGeographicMapCellType:hasType(type)
         local size = (self.types.n or #self.types)
         for index = 0, size - 1 do
-            if self.types[index + 1] == type then
+            if rawequal(self.types[index + 1], type) then
                 return true
             end
         end

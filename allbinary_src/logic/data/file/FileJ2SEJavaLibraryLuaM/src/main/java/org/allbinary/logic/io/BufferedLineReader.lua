@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local BufferedReader = require("java.io.BufferedReader")
+local BufferedReader = java_lazy("java.io.BufferedReader")
 -- local FileReader = require("java.io.FileReader")
 local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
 local AbFileNativeUtil = java_lazy("org.allbinary.logic.io.file.AbFileNativeUtil")

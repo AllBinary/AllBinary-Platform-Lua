@@ -149,7 +149,7 @@ end
 
 
 function AndroidGameKey:toString()
-        return "AndroidGameKey: " .. tostring(Input)
+        return require("allbinary_java").to_string("AndroidGameKey: ") .. require("allbinary_java").to_string(tostring(Input))
 end
 java_overload(AndroidGameKey, "toString", 0)
 AndroidGameKey.__tostring = function(self) return self:toString() end
@@ -157,7 +157,7 @@ AndroidGameKey.__tostring = function(self) return self:toString() end
 
 function AndroidGameKey.getString(keyCode)
         local input = InputFactory.getInstance():getInstanceById(keyCode)
-        if input ~= nil then
+        if not rawequal(input, nil) then
             return input:getName()
         else
             return StringUtil.getInstance().EMPTY_STRING

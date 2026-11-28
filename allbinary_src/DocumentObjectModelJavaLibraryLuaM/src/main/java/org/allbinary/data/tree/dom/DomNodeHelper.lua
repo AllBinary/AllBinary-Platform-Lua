@@ -105,11 +105,11 @@ end
 
 function DomNodeHelper.getFirstChildElement(parentNode)
         local node = parentNode:getFirstChild()
-        if node ~= nil and node:getNodeType() ~= Node.ELEMENT_NODE then
+        if not rawequal(node, nil) and not rawequal(node:getNodeType(), Node.ELEMENT_NODE) then
             local nodeList = parentNode:getChildNodes()
             for index = 0, nodeList:getLength() - 1 do
                 node = nodeList:item(index)
-                if node:getNodeType() == 1 then
+                if rawequal(node:getNodeType(), 1) then
                     break
                 end
             end
@@ -120,7 +120,7 @@ end
 
 function DomNodeHelper.getTextNodeValue_j1(node)
         local nodeTextNode = node:getFirstChild()
-        if nodeTextNode ~= nil then
+        if not rawequal(nodeTextNode, nil) then
             return nodeTextNode:getNodeValue()
         else
             return StringUtil.getInstance().EMPTY_STRING
@@ -147,8 +147,8 @@ function DomNodeHelper.getTextNodesValue(node)
         local nodeList = node:getChildNodes()
         for index = 0, nodeList:getLength() - 1 do
             local nodeTextNode = nodeList:item(index)
-            if nodeTextNode:getNodeType() == Node.TEXT_NODE then
-                if nodeTextNode ~= nil then
+            if rawequal(nodeTextNode:getNodeType(), Node.TEXT_NODE) then
+                if not rawequal(nodeTextNode, nil) then
                     stringBuffer:append(nodeTextNode:getNodeValue())
                 end
             end

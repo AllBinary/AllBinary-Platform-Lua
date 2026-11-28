@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local DisplayInfoSingleton = java_lazy("org.allbinary.graphics.displayable.DisplayInfoSingleton")
 local ColorFillBasePaintable = require("org.allbinary.game.paint.ColorFillBasePaintable")

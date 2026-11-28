@@ -78,7 +78,7 @@ end
 -- throws Exception
 function LogUserEmailEventListenerModule:onEmailSendRequest(userEmailInfoEvent)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().EMAILLOGGING) then
-            local message = "Logging EmailEvent - Temporary Listener for debugging.\n\n" .. tostring(userEmailInfoEvent)
+            local message = require("allbinary_java").to_string("Logging EmailEvent - Temporary Listener for debugging.\n\n") .. require("allbinary_java").to_string(tostring(userEmailInfoEvent))
             self.logUtil:putF(message, self, "onEmailSendRequest")
         end
 end

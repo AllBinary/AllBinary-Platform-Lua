@@ -74,7 +74,7 @@ end
 -- throws Exception
 function DecalAnimationInterfaceFactory:getAnimationFactory(basicGameResources, basicColor)
         local animationInterfaceFactoryInterface = nil
-        if basicColor == BasicColorFactory.getInstance().RED then
+        if rawequal(basicColor, BasicColorFactory.getInstance().RED) then
             animationInterfaceFactoryInterface = FeaturedAnimationInterfaceFactoryInterfaceFactory.getInstance():get(basicGameResources.RESOURCE)
         else
             animationInterfaceFactoryInterface = NullRotationAnimationFactory.getFactoryInstance()

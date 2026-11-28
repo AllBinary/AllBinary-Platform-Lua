@@ -126,7 +126,7 @@ function MultipartRequestParamForwardHelper:getParams()
         for index = 0, size - 1 do
             local key = self.paramVector:get(index)
             local value = hashMap:get(key)
-            if index ~= 0 then
+            if not rawequal(index, 0) then
                 stringBuffer:append(AMP)
             else
                 stringBuffer:append(QUESTION)
@@ -142,7 +142,7 @@ end
 function MultipartRequestParamForwardHelper:shouldForward()
         local hashMap = self.requestMapInterface:getRequestHashMap()
         local requestCommand = hashMap:get(GLOBALS2.ADMINCOMMAND)
-        if StringValidationUtil.getInstance():isEmpty(self.command) or (not StringValidationUtil.getInstance():isEmpty(requestCommand) and ((self.command < requestCommand and -1) or (self.command > requestCommand and 1) or 0) == 0) then
+        if StringValidationUtil.getInstance():isEmpty(self.command) or (not (StringValidationUtil.getInstance():isEmpty(requestCommand)) and rawequal(((self.command < requestCommand and -1) or (self.command > requestCommand and 1) or 0), 0)) then
             return true
         end
         return false

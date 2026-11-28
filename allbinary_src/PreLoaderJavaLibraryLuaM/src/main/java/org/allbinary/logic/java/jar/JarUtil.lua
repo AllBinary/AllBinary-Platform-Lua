@@ -95,11 +95,11 @@ function JarUtil:show()
             local jis = JarInputStream.new(conn:getInputStream())
             while true do
                 local entry = jis:getNextJarEntry()
-                if entry ~= nil then
-                    if not entry:isDirectory() then
+                if not rawequal(entry, nil) then
+                    if not (entry:isDirectory()) then
                         local offset = 0
                         local i = 0
-                        while ((function() i = jis:read(cache, offset, (cache.n or #cache) - offset) return i end)()) ~= -1 do
+                        while not rawequal(((function() i = jis:read(cache, offset, (cache.n or #cache) - offset) return i end)()), -1) do
                             offset = offset + (i)
                             if offset >= (cache.n or #cache) then
                                 local newcache = java_typed_array("B", java_new_array(0, (cache.n or #cache) + 1024))

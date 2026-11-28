@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
--- local TextField = require("javax.microedition.lcdui.TextField")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
+local TextField = java_lazy("javax.microedition.lcdui.TextField")
 local MIDPUtil = java_lazy("org.allbinary.MIDPUtil")
 local GameCommandsFactory = java_lazy("org.allbinary.game.commands.GameCommandsFactory")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")

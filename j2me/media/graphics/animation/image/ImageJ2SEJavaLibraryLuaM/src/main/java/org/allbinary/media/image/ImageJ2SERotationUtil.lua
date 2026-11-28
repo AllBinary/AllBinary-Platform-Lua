@@ -147,7 +147,7 @@ function ImageJ2SERotationUtil:createSpriteImage(bufferedImageArray)
             columns = size
         end
         rows = (java_idiv(size, columns))
-        if math.fmod(size, columns) ~= 0 then
+        if not rawequal(math.fmod(size, columns), 0) then
             rows = rows + 1
         end
         local firstBufferedImage = bufferedImageArray[1]
@@ -157,7 +157,7 @@ function ImageJ2SERotationUtil:createSpriteImage(bufferedImageArray)
         local rowIndex = 0
         local nextBufferedImage = nil
         for index = 0, size - 1 do
-            if java_idiv(index, 9) ~= 0 and math.fmod(index, 9) == 0 then
+            if not rawequal(java_idiv(index, 9), 0) and rawequal(math.fmod(index, 9), 0) then
                 rowIndex = rowIndex + 1
                 columnIndex = 0
             end

@@ -31,9 +31,9 @@ end
 -- local ByteBuffer = require("java.nio.ByteBuffer")
 -- local ByteOrder = require("java.nio.ByteOrder")
 -- local FloatBuffer = require("java.nio.FloatBuffer")
--- local GL = require("javax.microedition.khronos.opengles.GL")
--- local GL10 = require("javax.microedition.khronos.opengles.GL10")
--- local Image = require("javax.microedition.lcdui.Image")
+local GL = java_lazy("javax.microedition.khronos.opengles.GL")
+local GL10 = java_lazy("javax.microedition.khronos.opengles.GL10")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local OpenGLLogUtil = java_lazy("org.allbinary.graphics.opengles.OpenGLLogUtil")
 local DisplayInfoSingleton = java_lazy("org.allbinary.graphics.displayable.DisplayInfoSingleton")
 local GLUtil = java_lazy("org.allbinary.opengles.GLUtil")
@@ -183,8 +183,8 @@ function OpenGLESGL11VBOImage._jinit(self, image, bitmapFactory, textureFactory)
     OpenGLESGL11VBOImage._init_fields(self)
         -- super(...) made self above
         self:initVertices()
-        self.regionRectangleVertexFloatBuffer:put(self.regionRectangleFloatArray)
-        self.regionTextureVertexFloatBuffer:put(self.regionTextureRectangleFloatArray)
+        self.regionRectangleVertexFloatBuffer:put(FloatBuffer.wrap(self.regionRectangleFloatArray))
+        self.regionTextureVertexFloatBuffer:put(FloatBuffer.wrap(self.regionTextureRectangleFloatArray))
     return self
 end
 

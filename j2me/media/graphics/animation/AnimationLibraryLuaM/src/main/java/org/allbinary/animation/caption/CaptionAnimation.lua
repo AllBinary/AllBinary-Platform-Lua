@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local Animation = require("org.allbinary.animation.Animation")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
@@ -130,10 +130,10 @@ setmetatable(CaptionAnimation, {__index = Animation})
 function CaptionAnimation:_init_fields()
     if self.animationInterface == nil then self.animationInterface = nil end
     if self.overlayAnimationInterface == nil then self.overlayAnimationInterface = nil end
-    if self.captionDx == nil then self.captionDx = nil end
-    if self.captionDy == nil then self.captionDy = nil end
-    if self.dx == nil then self.dx = nil end
-    if self.dy == nil then self.dy = nil end
+    if self.captionDx == nil then self.captionDx = 0 end
+    if self.captionDy == nil then self.captionDy = 0 end
+    if self.dx == nil then self.dx = 0 end
+    if self.dy == nil then self.dy = 0 end
 end
 
 

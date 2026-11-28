@@ -196,11 +196,11 @@ function TimeIntervalActionScriptCondition._new1(self, node)
     TimeIntervalActionScriptCondition._init_fields(self)
         -- super(...) made self above
         local actionNode = DomSearchHelper.getNode(TimeIntervalActionScriptConditionData.NAME, node:getChildNodes())
-        if actionNode ~= nil then
+        if not rawequal(actionNode, nil) then
             local nodeList = actionNode:getChildNodes()
             for index = 0, nodeList:getLength() - 1 do
                 local childNode = nodeList:item(index)
-                if childNode:getNodeName():compareTo(TimeIntervalActionScriptConditionData.TIME) == 0 then
+                if rawequal(childNode:getNodeName():compareTo(TimeIntervalActionScriptConditionData.TIME), 0) then
                     local interval = DomNodeHelper.getTextNodeValue(childNode)
                     self:setTimeDelayHelper(TimeDelayHelper.new(tostring(interval)))
                 else
@@ -240,7 +240,7 @@ java_overload(TimeIntervalActionScriptCondition, "showDialog", 0)
 function TimeIntervalActionScriptCondition:toHashMap()
         local hashMap = StdUtil.getInstance():createHashMap()
         hashMap:put(TimeIntervalActionScriptConditionData.TIME, tostring(self.timeHelper.delay))
-        self.logUtil:putF("HashMap: " .. tostring(hashMap), self, "toHashMap()")
+        self.logUtil:putF(require("allbinary_java").to_string("HashMap: ") .. require("allbinary_java").to_string(tostring(hashMap)), self, "toHashMap()")
         return hashMap
 end
 java_overload(TimeIntervalActionScriptCondition, "toHashMap", 0)
@@ -256,7 +256,7 @@ java_overload(TimeIntervalActionScriptCondition, "toXmlNode", 1, function(java_a
 
 
 function TimeIntervalActionScriptCondition:log()
-        self.logUtil:putF("Time Interval: " .. tostring(self.timeHelper.delay), self, "log")
+        self.logUtil:putF(require("allbinary_java").to_string("Time Interval: ") .. require("allbinary_java").to_string(self.timeHelper.delay), self, "log")
 end
 java_overload(TimeIntervalActionScriptCondition, "log", 0)
 

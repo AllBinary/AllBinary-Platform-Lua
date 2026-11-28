@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Command = require("javax.microedition.lcdui.Command")
+local Command = java_lazy("javax.microedition.lcdui.Command")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local ABTextItem = require("org.allbinary.graphics.form.item.ABTextItem")
 

@@ -151,7 +151,7 @@ function Payment._new1_1(self, payment)
         self.number = SuperCrypt.new(math.tointeger(self.encryption // 1)):decrypt(payment:get(PaymentData.NUMBER))
         self.id = payment:get(PaymentData.ID)
         local def = payment:get(EntryData.getInstance().DEFAULT)
-        if def ~= nil and ((def < EntryData.getInstance().DEFAULT and -1) or (def > EntryData.getInstance().DEFAULT and 1) or 0) == 0 then
+        if not rawequal(def, nil) and rawequal(((def < EntryData.getInstance().DEFAULT and -1) or (def > EntryData.getInstance().DEFAULT and 1) or 0), 0) then
             self.isDefault_f = true
         else
             self.isDefault_f = false
@@ -199,16 +199,16 @@ end
 function Payment:isValid()
         local stringUtil = StringUtil.getInstance()
         local aFalse = false
-        if self.name_f == nil or ((self.name_f < stringUtil.EMPTY_STRING and -1) or (self.name_f > stringUtil.EMPTY_STRING and 1) or 0) == 0 then
+        if rawequal(self.name_f, nil) or rawequal(((self.name_f < stringUtil.EMPTY_STRING and -1) or (self.name_f > stringUtil.EMPTY_STRING and 1) or 0), 0) then
             return aFalse
         end
-        if self.type == nil or ((self.type < stringUtil.EMPTY_STRING and -1) or (self.type > stringUtil.EMPTY_STRING and 1) or 0) == 0 then
+        if rawequal(self.type, nil) or rawequal(((self.type < stringUtil.EMPTY_STRING and -1) or (self.type > stringUtil.EMPTY_STRING and 1) or 0), 0) then
             return aFalse
         end
-        if self.expiration == nil or ((self.expiration < stringUtil.EMPTY_STRING and -1) or (self.expiration > stringUtil.EMPTY_STRING and 1) or 0) == 0 then
+        if rawequal(self.expiration, nil) or rawequal(((self.expiration < stringUtil.EMPTY_STRING and -1) or (self.expiration > stringUtil.EMPTY_STRING and 1) or 0), 0) then
             return aFalse
         end
-        if self.number == nil or ((self.number < stringUtil.EMPTY_STRING and -1) or (self.number > stringUtil.EMPTY_STRING and 1) or 0) == 0 then
+        if rawequal(self.number, nil) or rawequal(((self.number < stringUtil.EMPTY_STRING and -1) or (self.number > stringUtil.EMPTY_STRING and 1) or 0), 0) then
             return aFalse
         end
         if #self.number > CreditCardType.MAXLEN then

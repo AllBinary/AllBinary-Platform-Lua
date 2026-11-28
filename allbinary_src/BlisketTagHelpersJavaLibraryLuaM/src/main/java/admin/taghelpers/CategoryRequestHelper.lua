@@ -214,7 +214,7 @@ function CategoryRequestHelper:getXmlData()
             if size > 0 then
                 local xmlRequest = keyArray[1]
                 local index = 1
-                while index < size and not (string.sub(xmlRequest, 1, #CategoryRequestHelper.categoryRequest) == CategoryRequestHelper.categoryRequest) do
+                while index < size and not ((string.sub(xmlRequest, 1, #CategoryRequestHelper.categoryRequest) == CategoryRequestHelper.categoryRequest)) do
                     xmlRequest = keyArray[index + 1]
                     if (string.sub(xmlRequest, 1, #CategoryRequestHelper.categoryRequest) == CategoryRequestHelper.categoryRequest) then
                         break
@@ -238,7 +238,7 @@ function CategoryRequestHelper:getXmlData()
                     self.logUtil:putF("Loaded Parent Category", self, "getXmlData()")
                 end
                 local childCategoryNode = DomSearchHelper.getNodeNoThrow(categoryData.NAME, requestNode:getChildNodes())
-                if childCategoryNode ~= nil then
+                if not rawequal(childCategoryNode, nil) then
                     if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPER) then
                         self.logUtil:putF("Loading Child Category", self, "getXmlData()")
                     end
@@ -266,18 +266,18 @@ java_overload(CategoryRequestHelper, "getXmlData", 0)
 -- throws Exception
 function CategoryRequestHelper:setCategoryLoader(requestNode)
         local storeNameNode = DomSearchHelper.getNode(StoreFrontData.getInstance().NAME, requestNode:getChildNodes())
-        if storeNameNode ~= nil then
+        if not rawequal(storeNameNode, nil) then
             local storeName = DomNodeHelper.getTextNodeValue(storeNameNode)
-            if storeName ~= nil then
+            if not rawequal(storeName, nil) then
                 local storeFrontInterface = StoreFrontFactory.getInstance(storeName)
                 self.transformInfoInterface = TransformInfoBasic.new(storeFrontInterface, self.hashMap, self.pageContext)
-                if self.transformInfoInterface == nil then
+                if rawequal(self.transformInfoInterface, nil) then
                     error(require("java.lang.Exception").new("TransformInfo null"), 0)
                 end
                 local storeCategoryFactory = StoreCategoryFactory.new(self.transformInfoInterface)
                 self.categoryLoaderInterface = CategoryLoaderFactory.getInstance(storeCategoryFactory)
             else
-                error(require("java.lang.Exception").new("Store Name Error: " .. storeName), 0)
+                error(require("java.lang.Exception").new(require("allbinary_java").to_string("Store Name Error: ") .. require("allbinary_java").to_string(storeName)), 0)
             end
         end
 end
@@ -312,7 +312,7 @@ java_overload(CategoryRequestHelper, "insert", 0)
 
 function CategoryRequestHelper:delete()
         local try_ok, try_error, try_value = pcall(function()
-            local success = "Successfully Removed " .. tostring(CategoryData.getInstance().NAME) .. "=" .. tostring(self.childCategoryInterface:getPath())
+            local success = require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Successfully Removed ") .. require("allbinary_java").to_string(CategoryData.getInstance().NAME)) .. require("allbinary_java").to_string("=")) .. require("allbinary_java").to_string(self.childCategoryInterface:getPath())
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGS) then
                 self.logUtil:putF("Deleting", self, "delete()")
             end
@@ -326,7 +326,7 @@ function CategoryRequestHelper:delete()
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local try_ok, try_error, try_value = pcall(function()
-                local error = "Failed to remove category: " .. tostring(self.childCategoryInterface:getPath())
+                local error = require("allbinary_java").to_string("Failed to remove category: ") .. require("allbinary_java").to_string(self.childCategoryInterface:getPath())
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                     self.logUtil:put(self.commonStrings.EXCEPTION, self, "delete()", e)
                 end

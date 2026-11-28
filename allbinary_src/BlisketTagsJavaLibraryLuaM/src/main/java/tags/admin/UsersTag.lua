@@ -188,11 +188,11 @@ function UsersTag:doStartTag()
         local try_ok, try_error, try_value = pcall(function()
             self:setName("Admin Users View")
             self:setObjectFile("views.admin.user.UsersValidationView")
-            if self:getCommand() ~= nil then
+            if not rawequal(self:getCommand(), nil) then
                 self:getPropertiesHashMap():put(UserRoleData.NAME, self.role)
-                if self:getCommand():compareTo(GLOBALS2.VIEW) == 0 then
+                if rawequal(self:getCommand():compareTo(GLOBALS2.VIEW), 0) then
                 else
-                    error(require("java.lang.Exception").new("No Such View Command: " .. tostring(self:getCommand())), 0)
+                    error(require("java.lang.Exception").new(require("allbinary_java").to_string("No Such View Command: ") .. require("allbinary_java").to_string(self:getCommand())), 0)
                 end
                 do return "__jreturn", java_super(StoreValidationTransformTag, "doStartTag", 0)(self) end
             end

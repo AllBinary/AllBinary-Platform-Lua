@@ -28,9 +28,9 @@ local function java_real(class)
     return class
 end
 
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local TiledLayer = require("javax.microedition.lcdui.game.TiledLayer")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local TiledLayer = java_lazy("javax.microedition.lcdui.game.TiledLayer")
 local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local AllBinaryTiledLayer = require("org.allbinary.game.layer.AllBinaryTiledLayer")
@@ -149,7 +149,7 @@ setmetatable(AllBinaryJ2METiledLayer, {__index = AllBinaryTiledLayer})
 
 function AllBinaryJ2METiledLayer:_init_fields()
     if self.tiledLayerP == nil then self.tiledLayerP = nil end
-    if self.debugColor == nil then self.debugColor = nil end
+    if self.debugColor == nil then self.debugColor = 0 end
     self.font2 = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, 4)
 end
 
@@ -205,7 +205,7 @@ function AllBinaryJ2METiledLayer:paintDebug(graphics)
                 if tile < 0 then
                     tile = self.tiledLayerP:getAnimatedTile(tile)
                 end
-                if tile == 0 then
+                if rawequal(tile, 0) then
                     goto continue_N66931
                 end
                 tile = tile - 1

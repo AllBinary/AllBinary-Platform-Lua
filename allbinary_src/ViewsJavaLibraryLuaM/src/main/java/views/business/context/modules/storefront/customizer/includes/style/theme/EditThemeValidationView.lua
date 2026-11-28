@@ -195,7 +195,7 @@ function EditThemeValidationView:isValid()
             document:appendChild(domNodeInterface:toXmlNode(document))
             local documentString = XmlDocumentHelper.toString(document)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEWERROR) then
-                self.logUtil:putF("Setting Data: " .. documentString, self, self.commonStrings.CONSTRUCTOR)
+                self.logUtil:putF(require("allbinary_java").to_string("Setting Data: ") .. require("allbinary_java").to_string(documentString), self, self.commonStrings.CONSTRUCTOR)
             end
             self:getTransformInfoInterface():setData(documentString)
             do return "__jreturn", isValid end

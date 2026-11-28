@@ -180,7 +180,7 @@ function CreateIconImagesJPanel._jinit(self, imageProcessorInput)
             numberStringArray[index + 1] = tostring(index)
         end
         local araster = self.imageProcessorInput:getBufferedImageArray()[1]:getAlphaRaster()
-        if araster == nil then
+        if rawequal(araster, nil) then
             print("there is no Alpha channel!!!!!!!!!")
         else
             print("Alpha channel found !")
@@ -197,7 +197,8 @@ end
 
 function CreateIconImagesJPanel:process()
         ;(function()
-            local o = Thread.new and Thread.new() or setmetatable({}, {__index = Thread})
+            local java_outer_self = self
+        local o = Thread.new and Thread.new() or setmetatable({}, {__index = Thread})
             
 
             function o:run()
@@ -205,7 +206,7 @@ function CreateIconImagesJPanel:process()
                 local try_ok, try_error, try_value = pcall(function()
                     local imageUtil = ImageUtil.getInstance()
                     local stringMaker = StringMaker.new()
-                    local imageProcessorInput = self:getImageProcessorInput()
+                    local imageProcessorInput = java_outer_self:getImageProcessorInput()
                     local files = imageProcessorInput:getFiles()
                     local iconWidthList = BasicArrayListD.new()
                     local iconHeightList = BasicArrayListD.new()
@@ -235,7 +236,7 @@ function CreateIconImagesJPanel:process()
                             imagePersistanceUtil:saveWithBatik(AbFile.createAbFile(newFilePath), generatedBufferedImageArray[index + 1])
                         end
                     end
-                    self:getParent():repaint()
+                    java_outer_self:getParent():repaint()
                 end)
                 if not try_ok then
                     local e = try_error
@@ -266,11 +267,13 @@ function CreateIconImagesJPanel:initComponents()
         self.aboveJButton = JButton.new()
         self.aboveJButton:setText("Process")
         self.aboveJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:aboveJButtonActionPerformed(evt)
+                ;(self.aboveJButtonActionPerformed and self or java_outer_self):aboveJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o

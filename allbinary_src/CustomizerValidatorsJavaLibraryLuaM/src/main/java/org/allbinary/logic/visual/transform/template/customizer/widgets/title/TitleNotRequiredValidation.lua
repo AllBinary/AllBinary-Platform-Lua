@@ -193,7 +193,7 @@ function TitleNotRequiredValidation:isValid()
                 self.logUtil:putF(self.commonStrings.START, self, self.commonStrings.IS_VALID)
             end
             local valid = true
-            if not StringValidationUtil.getInstance():isValidNotRequired(self:getTitle(), 0, TitleData.getInstance().MAXLEN) then
+            if not (StringValidationUtil.getInstance():isValidNotRequired(self:getTitle(), 0, TitleData.getInstance().MAXLEN)) then
                 valid = false
             end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then

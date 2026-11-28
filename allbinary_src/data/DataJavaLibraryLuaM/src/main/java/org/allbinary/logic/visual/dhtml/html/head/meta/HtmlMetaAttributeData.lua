@@ -52,7 +52,7 @@ HtmlMetaAttributeData.className = "HtmlMetaAttributeData"
 HtmlMetaAttributeData.javaClassName = "org.allbinary.logic.visual.dhtml.html.head.meta.HtmlMetaAttributeData"
 
 function HtmlMetaAttributeData:_init_fields()
-    if self.id == nil then self.id = nil end
+    if self.id == nil then self.id = 0 end
     if self.name_f == nil then self.name_f = nil end
 end
 
@@ -72,7 +72,7 @@ end
 
 
 function HtmlMetaAttributeData:equals(htmlMetaAttributeData)
-        if htmlMetaAttributeData.id == self.id then
+        if rawequal(htmlMetaAttributeData.id, self.id) then
             return true
         else
             return false

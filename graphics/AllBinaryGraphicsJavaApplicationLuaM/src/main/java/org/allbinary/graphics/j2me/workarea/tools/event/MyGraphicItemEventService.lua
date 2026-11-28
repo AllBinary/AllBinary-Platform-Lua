@@ -81,16 +81,16 @@ end
 function MyGraphicItemEventService.fire(evt)
         local listeners = MyGraphicItemEventService.listenerList:getListenerList()
         for i = 0, (listeners.n or #listeners) - 1, 2 do
-            if listeners[i + 1] == getmetatable(listeners[i + 1 + 1]) then
-                if evt:getCommand():compareTo(MyGraphicItemEventService.SELECT) == 0 then
+            if rawequal(listeners[i + 1], getmetatable(listeners[i + 1 + 1])) then
+                if rawequal(evt:getCommand():compareTo(MyGraphicItemEventService.SELECT), 0) then
                     ;(listeners[i + 1 + 1]):highlight(evt)
-                elseif evt:getCommand():compareTo(MyGraphicItemEventService.DESELECT) == 0 then
+                elseif rawequal(evt:getCommand():compareTo(MyGraphicItemEventService.DESELECT), 0) then
                     ;(listeners[i + 1 + 1]):deselect(evt)
-                elseif evt:getCommand():compareTo(MyGraphicItemEventService.DELETE) == 0 then
+                elseif rawequal(evt:getCommand():compareTo(MyGraphicItemEventService.DELETE), 0) then
                     ;(listeners[i + 1 + 1]):delete(evt)
-                elseif evt:getCommand():compareTo(MyGraphicItemEventService.DUPLICATE) == 0 then
+                elseif rawequal(evt:getCommand():compareTo(MyGraphicItemEventService.DUPLICATE), 0) then
                     ;(listeners[i + 1 + 1]):duplicate(evt)
-                elseif evt:getCommand():compareTo(MyGraphicItemEventService.ROTATE) == 0 then
+                elseif rawequal(evt:getCommand():compareTo(MyGraphicItemEventService.ROTATE), 0) then
                     ;(listeners[i + 1 + 1]):rotate(evt)
                 end
             end

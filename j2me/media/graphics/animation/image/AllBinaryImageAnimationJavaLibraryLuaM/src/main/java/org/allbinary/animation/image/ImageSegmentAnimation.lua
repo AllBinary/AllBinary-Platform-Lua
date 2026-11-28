@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local Image = require("javax.microedition.lcdui.Image")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 local CircularIndexUtil = java_lazy("org.allbinary.util.CircularIndexUtil")
 local ImageAnimation = require("org.allbinary.animation.image.ImageAnimation")
@@ -131,10 +131,10 @@ ImageSegmentAnimation.javaClassName = "org.allbinary.animation.image.ImageSegmen
 setmetatable(ImageSegmentAnimation, {__index = ImageAnimation})
 
 function ImageSegmentAnimation:_init_fields()
-    if self.startX == nil then self.startX = nil end
-    if self.startY == nil then self.startY = nil end
-    if self.drawWidth == nil then self.drawWidth = nil end
-    if self.drawHeight == nil then self.drawHeight = nil end
+    if self.startX == nil then self.startX = 0 end
+    if self.startY == nil then self.startY = 0 end
+    if self.drawWidth == nil then self.drawWidth = 0 end
+    if self.drawHeight == nil then self.drawHeight = 0 end
     if self.circularIndexUtil == nil then self.circularIndexUtil = nil end
     if self.sequenceArray == nil then self.sequenceArray = nil end
 end

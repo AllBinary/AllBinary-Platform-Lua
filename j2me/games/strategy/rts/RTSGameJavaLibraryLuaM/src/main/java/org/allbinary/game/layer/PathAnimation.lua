@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local Animation = require("org.allbinary.animation.Animation")
 local GPoint = java_lazy("org.allbinary.graphics.GPoint")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
@@ -185,7 +185,7 @@ java_overload(PathAnimation, "nextFrame", 0)
 function PathAnimation:paintXY(graphics, x, y)
         local try_ok, try_error, try_value = pcall(function()
             local waypointBehaviorBase = self.pathFindingLayer:getWaypointBehavior()
-            if waypointBehaviorBase ~= nil then
+            if not rawequal(waypointBehaviorBase, nil) then
                 local geographicMapCellHistory = waypointBehaviorBase:getCurrentGeographicMapCellHistory()
                 local list = geographicMapCellHistory:getTracked()
                 local size = list:size()
@@ -198,7 +198,7 @@ function PathAnimation:paintXY(graphics, x, y)
                     local point = nil
                     local start = size - 2
                     for index = 0, size - 1 - 1 do
-                        if index == start then
+                        if rawequal(index, start) then
                             self:setBasicColorP(self.startColor)
                             self.basicSetColorUtil:setBasicColorP3(graphics, self:getBasicColorP(), self:getColor())
                         elseif geographicMapCellHistory:isVisited(geographicMapCellPosition) then

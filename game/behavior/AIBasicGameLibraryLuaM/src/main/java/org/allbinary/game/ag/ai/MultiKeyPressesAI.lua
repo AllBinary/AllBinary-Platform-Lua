@@ -184,14 +184,14 @@ function MultiKeyPressesAI:update()
         if self:isOn() then
             for index = 0, size - 1 do
                 local key = math.tointeger(keys[index + 1] // 1)
-                if key ~= -1 then
+                if not rawequal(key, -1) then
                     gameInput:add(self.gameKeyEventFactory:getInstanceForKey(self, key))
                 end
             end
         else
             for index = 0, size - 1 do
                 local key = math.tointeger(keys[index + 1] // 1)
-                if key ~= -1 then
+                if not rawequal(key, -1) then
                     gameInput:addForRemoval(self.gameKeyEventFactory:getInstanceForKey(self, key))
                 end
             end

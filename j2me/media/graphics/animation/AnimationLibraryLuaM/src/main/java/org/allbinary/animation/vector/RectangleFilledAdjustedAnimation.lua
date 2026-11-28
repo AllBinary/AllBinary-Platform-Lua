@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local ColorCompositeInterface = java_lazy("org.allbinary.graphics.color.ColorCompositeInterface")
 local RectangleFilledAnimation = require("org.allbinary.animation.vector.RectangleFilledAnimation")
@@ -148,8 +148,8 @@ RectangleFilledAdjustedAnimation.java_implements = " ColorCompositeInterface "
 RectangleFilledAdjustedAnimation.java_interfaces = function() return {ColorCompositeInterface} end
 
 function RectangleFilledAdjustedAnimation:_init_fields()
-    if self.offsetX == nil then self.offsetX = nil end
-    if self.offsetY == nil then self.offsetY = nil end
+    if self.offsetX == nil then self.offsetX = 0 end
+    if self.offsetY == nil then self.offsetY = 0 end
 end
 
 

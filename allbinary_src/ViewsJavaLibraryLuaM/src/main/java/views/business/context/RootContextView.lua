@@ -163,7 +163,7 @@ function RootContextView._jinit(self, transformInfoInterface)
     RootContextView._init_fields(self)
         -- super(...) made self above
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("View Name: " .. transformInfoInterface:getName(), self, "RootContextView()")
+            self.logUtil:putF(require("allbinary_java").to_string("View Name: ") .. require("allbinary_java").to_string(transformInfoInterface:getName()), self, "RootContextView()")
         end
     return self
 end
@@ -179,7 +179,7 @@ end
 function RootContextView:view()
         local try_ok, try_error, try_value = pcall(function()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("View Name: " .. self:getTransformInfoInterface():getName(), self, "view()")
+                self.logUtil:putF(require("allbinary_java").to_string("View Name: ") .. require("allbinary_java").to_string(self:getTransformInfoInterface():getName()), self, "view()")
             end
             local viewName = self:getName()
             local componentInterface = TransformFactory.getInstance():getInstance(self.abeClientInformation, viewName, self:getTransformInfoInterface())
@@ -203,16 +203,16 @@ function RootContextView:getName()
         local try_ok, try_error, try_value = pcall(function()
             local objectConfig = NoTemplateTransformInfoObjectConfig.new(self:getTransformInfoInterface(), self:getTransformInfoInterface():getObjectConfigInterface():toXmlDoc())
             local componentsVector = objectConfig:getTransforms()
-            if componentsVector:size() == 0 then
+            if rawequal(componentsVector:size(), 0) then
                 error(require("java.lang.Exception").new("Template View Not Set - No Components"), 0)
             end
             if componentsVector:size() > 1 then
-                error(require("java.lang.Exception").new("To Many Root Template Views: " .. tostring(componentsVector:size())), 0)
+                error(require("java.lang.Exception").new(require("allbinary_java").to_string("To Many Root Template Views: ") .. require("allbinary_java").to_string(componentsVector:size())), 0)
             end
             local transformInfoInterface = componentsVector:get(0)
             local viewName = transformInfoInterface:getName()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("Root Template With View Name: " .. viewName, self, "getName()")
+                self.logUtil:putF(require("allbinary_java").to_string("Root Template With View Name: ") .. require("allbinary_java").to_string(viewName), self, "getName()")
             end
             if StringValidationUtil.getInstance():isEmpty(viewName) then
                 error(require("java.lang.Exception").new("Template View Not Set - No View Name"), 0)

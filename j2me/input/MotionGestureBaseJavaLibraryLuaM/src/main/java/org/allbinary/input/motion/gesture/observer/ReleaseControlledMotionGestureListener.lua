@@ -148,7 +148,7 @@ end
 
 function ReleaseControlledMotionGestureListener:released(ev)
         local try_ok, try_error, try_value = pcall(function()
-            if self.isMouseGestureOccurring == false then
+            if rawequal(self.isMouseGestureOccurring, false) then
                 do return "__jreturn" end
             end
             self.isMouseGestureOccurring = false
@@ -165,16 +165,16 @@ end
 
 
 function ReleaseControlledMotionGestureListener:onMotionGestureEvent(ev)
-        if self.isMouseGestureOccurring == false then
+        if rawequal(self.isMouseGestureOccurring, false) then
             return
         end
         local motionGestureInput = ev:getMotionGesture()
-        if motionGestureInput == TouchMotionGestureFactory.getInstance().PRESSED then
+        if rawequal(motionGestureInput, TouchMotionGestureFactory.getInstance().PRESSED) then
             self:onPressedMotionGestureEvent(ev)
-        elseif motionGestureInput == TouchMotionGestureFactory.getInstance().RELEASED then
+        elseif rawequal(motionGestureInput, TouchMotionGestureFactory.getInstance().RELEASED) then
             self:released(ev)
         else
-            if self.currentMotionGesture ~= motionGestureInput then
+            if not rawequal(self.currentMotionGesture, motionGestureInput) then
                 self.currentMotionGesture = motionGestureInput
                 self.motionGestureCollection:add(ev:getMotionGesture())
             end

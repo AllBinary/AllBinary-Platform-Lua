@@ -141,7 +141,7 @@ end
 
 
 function BasicGeographicMapExtractedPathCacheFactory:init(maxConcurrentPaths, maxPaths)
-        if maxConcurrentPaths ~= self.maxConcurrentPaths then
+        if not rawequal(maxConcurrentPaths, self.maxConcurrentPaths) then
             for index = maxConcurrentPaths, self.maxConcurrentPaths, -1 do
                 self.list:add(BasicArrayListS.new(maxPaths))
             end

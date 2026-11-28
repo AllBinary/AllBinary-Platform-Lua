@@ -33,7 +33,7 @@ local GL2 = java_lazy("com.jogamp.opengl.GL2")
 -- local Buffer = require("java.nio.Buffer")
 -- local FloatBuffer = require("java.nio.FloatBuffer")
 -- local IntBuffer = require("java.nio.IntBuffer")
--- local GL11 = require("javax.microedition.khronos.opengles.GL11")
+local GL11 = java_lazy("javax.microedition.khronos.opengles.GL11")
 local JOGL10 = require("org.allbinary.opengles.JOGL10")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
@@ -200,6 +200,8 @@ function JOGL11:glClipPlanef(...)
     local count = select("#", ...)
     if count == 3 then return self:glClipPlanef_j3(...) end
     if count == 2 then return self:glClipPlanef_j2(...) end
+    local parent = getmetatable(JOGL11).__index
+    if parent.glClipPlanef then return parent.glClipPlanef(self, ...) end
     error("No method glClipPlanef takes " .. count .. " arguments")
 end
 JOGL11.glClipPlanef__jdispatcher = JOGL11.glClipPlanef
@@ -229,6 +231,8 @@ function JOGL11:glDeleteBuffers(...)
     local count = select("#", ...)
     if count == 3 then return self:glDeleteBuffers_j3(...) end
     if count == 2 then return self:glDeleteBuffers_j2(...) end
+    local parent = getmetatable(JOGL11).__index
+    if parent.glDeleteBuffers then return parent.glDeleteBuffers(self, ...) end
     error("No method glDeleteBuffers takes " .. count .. " arguments")
 end
 JOGL11.glDeleteBuffers__jdispatcher = JOGL11.glDeleteBuffers
@@ -252,6 +256,8 @@ function JOGL11:glGenBuffers(...)
     local count = select("#", ...)
     if count == 3 then return self:glGenBuffers_j3(...) end
     if count == 2 then return self:glGenBuffers_j2(...) end
+    local parent = getmetatable(JOGL11).__index
+    if parent.glGenBuffers then return parent.glGenBuffers(self, ...) end
     error("No method glGenBuffers takes " .. count .. " arguments")
 end
 JOGL11.glGenBuffers__jdispatcher = JOGL11.glGenBuffers
@@ -269,6 +275,8 @@ function JOGL11:glGetBufferParameteriv(...)
     local count = select("#", ...)
     if count == 4 then return self:glGetBufferParameteriv_j4(...) end
     if count == 3 then return self:glGetBufferParameteriv_j3(...) end
+    local parent = getmetatable(JOGL11).__index
+    if parent.glGetBufferParameteriv then return parent.glGetBufferParameteriv(self, ...) end
     error("No method glGetBufferParameteriv takes " .. count .. " arguments")
 end
 JOGL11.glGetBufferParameteriv__jdispatcher = JOGL11.glGetBufferParameteriv
@@ -286,6 +294,8 @@ function JOGL11:glGetClipPlanef(...)
     local count = select("#", ...)
     if count == 3 then return self:glGetClipPlanef_j3(...) end
     if count == 2 then return self:glGetClipPlanef_j2(...) end
+    local parent = getmetatable(JOGL11).__index
+    if parent.glGetClipPlanef then return parent.glGetClipPlanef(self, ...) end
     error("No method glGetClipPlanef takes " .. count .. " arguments")
 end
 JOGL11.glGetClipPlanef__jdispatcher = JOGL11.glGetClipPlanef
@@ -303,6 +313,8 @@ function JOGL11:glGetFloatv(...)
     local count = select("#", ...)
     if count == 3 then return self:glGetFloatv_j3(...) end
     if count == 2 then return self:glGetFloatv_j2(...) end
+    local parent = getmetatable(JOGL11).__index
+    if parent.glGetFloatv then return parent.glGetFloatv(self, ...) end
     error("No method glGetFloatv takes " .. count .. " arguments")
 end
 JOGL11.glGetFloatv__jdispatcher = JOGL11.glGetFloatv
@@ -320,6 +332,8 @@ function JOGL11:glGetLightfv(...)
     local count = select("#", ...)
     if count == 4 then return self:glGetLightfv_j4(...) end
     if count == 3 then return self:glGetLightfv_j3(...) end
+    local parent = getmetatable(JOGL11).__index
+    if parent.glGetLightfv then return parent.glGetLightfv(self, ...) end
     error("No method glGetLightfv takes " .. count .. " arguments")
 end
 JOGL11.glGetLightfv__jdispatcher = JOGL11.glGetLightfv
@@ -337,6 +351,8 @@ function JOGL11:glGetMaterialfv(...)
     local count = select("#", ...)
     if count == 4 then return self:glGetMaterialfv_j4(...) end
     if count == 3 then return self:glGetMaterialfv_j3(...) end
+    local parent = getmetatable(JOGL11).__index
+    if parent.glGetMaterialfv then return parent.glGetMaterialfv(self, ...) end
     error("No method glGetMaterialfv takes " .. count .. " arguments")
 end
 JOGL11.glGetMaterialfv__jdispatcher = JOGL11.glGetMaterialfv
@@ -354,6 +370,8 @@ function JOGL11:glGetTexEnviv(...)
     local count = select("#", ...)
     if count == 4 then return self:glGetTexEnviv_j4(...) end
     if count == 3 then return self:glGetTexEnviv_j3(...) end
+    local parent = getmetatable(JOGL11).__index
+    if parent.glGetTexEnviv then return parent.glGetTexEnviv(self, ...) end
     error("No method glGetTexEnviv takes " .. count .. " arguments")
 end
 JOGL11.glGetTexEnviv__jdispatcher = JOGL11.glGetTexEnviv
@@ -371,6 +389,8 @@ function JOGL11:glGetTexParameterfv(...)
     local count = select("#", ...)
     if count == 4 then return self:glGetTexParameterfv_j4(...) end
     if count == 3 then return self:glGetTexParameterfv_j3(...) end
+    local parent = getmetatable(JOGL11).__index
+    if parent.glGetTexParameterfv then return parent.glGetTexParameterfv(self, ...) end
     error("No method glGetTexParameterfv takes " .. count .. " arguments")
 end
 JOGL11.glGetTexParameterfv__jdispatcher = JOGL11.glGetTexParameterfv
@@ -388,6 +408,8 @@ function JOGL11:glGetTexParameteriv(...)
     local count = select("#", ...)
     if count == 4 then return self:glGetTexParameteriv_j4(...) end
     if count == 3 then return self:glGetTexParameteriv_j3(...) end
+    local parent = getmetatable(JOGL11).__index
+    if parent.glGetTexParameteriv then return parent.glGetTexParameteriv(self, ...) end
     error("No method glGetTexParameteriv takes " .. count .. " arguments")
 end
 JOGL11.glGetTexParameteriv__jdispatcher = JOGL11.glGetTexParameteriv
@@ -435,6 +457,8 @@ function JOGL11:glPointParameterfv(...)
     local count = select("#", ...)
     if count == 3 then return self:glPointParameterfv_j3(...) end
     if count == 2 then return self:glPointParameterfv_j2(...) end
+    local parent = getmetatable(JOGL11).__index
+    if parent.glPointParameterfv then return parent.glPointParameterfv(self, ...) end
     error("No method glPointParameterfv takes " .. count .. " arguments")
 end
 JOGL11.glPointParameterfv__jdispatcher = JOGL11.glPointParameterfv
@@ -464,6 +488,8 @@ function JOGL11:glTexEnviv(...)
     local count = select("#", ...)
     if count == 4 then return self:glTexEnviv_j4(...) end
     if count == 3 then return self:glTexEnviv_j3(...) end
+    local parent = getmetatable(JOGL11).__index
+    if parent.glTexEnviv then return parent.glTexEnviv(self, ...) end
     error("No method glTexEnviv takes " .. count .. " arguments")
 end
 JOGL11.glTexEnviv__jdispatcher = JOGL11.glTexEnviv
@@ -481,6 +507,8 @@ function JOGL11:glTexParameterfv(...)
     local count = select("#", ...)
     if count == 4 then return self:glTexParameterfv_j4(...) end
     if count == 3 then return self:glTexParameterfv_j3(...) end
+    local parent = getmetatable(JOGL11).__index
+    if parent.glTexParameterfv then return parent.glTexParameterfv(self, ...) end
     error("No method glTexParameterfv takes " .. count .. " arguments")
 end
 JOGL11.glTexParameterfv__jdispatcher = JOGL11.glTexParameterfv
@@ -504,6 +532,8 @@ function JOGL11:glTexParameteriv(...)
     local count = select("#", ...)
     if count == 4 then return self:glTexParameteriv_j4(...) end
     if count == 3 then return self:glTexParameteriv_j3(...) end
+    local parent = getmetatable(JOGL11).__index
+    if parent.glTexParameteriv then return parent.glTexParameteriv(self, ...) end
     error("No method glTexParameteriv takes " .. count .. " arguments")
 end
 JOGL11.glTexParameteriv__jdispatcher = JOGL11.glTexParameteriv

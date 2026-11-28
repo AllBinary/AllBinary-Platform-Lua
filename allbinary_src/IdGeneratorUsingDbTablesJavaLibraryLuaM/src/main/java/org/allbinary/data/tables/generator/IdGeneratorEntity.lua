@@ -195,7 +195,7 @@ function IdGeneratorEntity:get(name)
         local keysAndValues = StdUtil.getInstance():createHashMap()
         keysAndValues:put(self.NAME, name)
         local hashMap = java_super(AbSqlBean, "getRow", 1)(self, keysAndValues)
-        if (hashMap:get(self.NAME)):compareTo(name) ~= 0 then
+        if not rawequal((hashMap:get(self.NAME)):compareTo(name), 0) then
             error(require("java.lang.Exception").new("results do not match"), 0)
         end
         local value = hashMap:get(self.VALUE)
@@ -247,6 +247,8 @@ function IdGeneratorEntity:update(...)
     local count = select("#", ...)
     if count == 2 then return self:update_j2(...) end
     if count == 1 then return self:update_j1(...) end
+    local parent = getmetatable(IdGeneratorEntity).__index
+    if parent.update then return parent.update(self, ...) end
     error("No method update takes " .. count .. " arguments")
 end
 IdGeneratorEntity.update__jdispatcher = IdGeneratorEntity.update

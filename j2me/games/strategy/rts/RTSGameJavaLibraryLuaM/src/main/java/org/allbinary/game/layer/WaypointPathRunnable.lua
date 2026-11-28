@@ -171,12 +171,12 @@ function WaypointPathRunnable:run()
             self.pathFindingLayer:getWaypointRunnableLogHelper():start(self.pathFindingLayer)
             local waypointBehavior = self.pathFindingLayer:getWaypointBehavior()
             local geographicMapCellPosition = self.pathFindingLayer:getCurrentGeographicMapCellPosition()
-            if geographicMapCellPosition == nil then
+            if rawequal(geographicMapCellPosition, nil) then
                 error(require("java.lang.Exception").new("Should never be running here"), 0)
             end
             waypointBehavior:setWaypointPathsList(self.targetPathFindingLayer:getWaypointBehavior():getWaypoint():getPathsListRunnable(geographicMapCellPosition))
             self.pathFindingLayer:getWaypointRunnableLogHelper():end_(self.pathFindingLayer)
-            java_sleep(15 + (self.priorityP * 2))
+            require("java.lang.Thread").sleep(15 + (self.priorityP * 2))
         end)
         if not try_ok then
             local e = try_error

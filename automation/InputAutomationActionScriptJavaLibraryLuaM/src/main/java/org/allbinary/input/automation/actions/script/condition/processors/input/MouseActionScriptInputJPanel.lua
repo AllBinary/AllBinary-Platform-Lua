@@ -200,12 +200,12 @@ end
 function MouseActionScriptInputJPanel:set()
         local inputTypeComboBoxModel = self.inputAutomationTypeJComboBox:getModel()
         inputTypeComboBoxModel:setSelectedItem(self.mouseActionScriptInputInterface:getInputRobotInterface():getName())
-        if (self.mouseActionScriptInputInterface:getButtonClicks() & InputEvent.BUTTON1_MASK) ~= 0 then
+        if not rawequal((self.mouseActionScriptInputInterface:getButtonClicks() & InputEvent.BUTTON1_MASK), 0) then
             self.button1JCheckBox:setSelected(true)
         else
             self.button1JCheckBox:setSelected(false)
         end
-        if (self.mouseActionScriptInputInterface:getButtonClicks() & InputEvent.BUTTON2_MASK) ~= 0 then
+        if not rawequal((self.mouseActionScriptInputInterface:getButtonClicks() & InputEvent.BUTTON2_MASK), 0) then
             self.button2JCheckBox:setSelected(true)
         else
             self.button2JCheckBox:setSelected(false)
@@ -222,7 +222,7 @@ java_overload(MouseActionScriptInputJPanel, "set", 0)
 function MouseActionScriptInputJPanel:updateInputType()
         local comboBoxModel = self.inputAutomationTypeJComboBox:getModel()
         local selectedItem = comboBoxModel:getSelectedItem()
-        if not StringValidationUtil.getInstance():isEmpty(selectedItem) then
+        if not (StringValidationUtil.getInstance():isEmpty(selectedItem)) then
             self.mouseActionScriptInputInterface:setInputRobotInterface(InputRobotFactory.getInstance():get(selectedItem))
         end
 end
@@ -233,35 +233,35 @@ java_overload(MouseActionScriptInputJPanel, "updateInputType", 0)
 function MouseActionScriptInputJPanel:update()
         self:updateInputType()
         self.mouseActionScriptInputInterface:setTime(tostring(self.mouseDelayJTextField:getText()))
-        self.logUtil:putF("Button State: " .. tostring(self.mouseActionScriptInputInterface:getButtonClicks()), self, "update")
+        self.logUtil:putF(require("allbinary_java").to_string("Button State: ") .. require("allbinary_java").to_string(self.mouseActionScriptInputInterface:getButtonClicks()), self, "update")
         if self.button1JCheckBox:isSelected() then
-            if (self.mouseActionScriptInputInterface:getButtonClicks() & InputEvent.BUTTON1_MASK) == 0 then
+            if rawequal((self.mouseActionScriptInputInterface:getButtonClicks() & InputEvent.BUTTON1_MASK), 0) then
                 self.mouseActionScriptInputInterface:setButtonClicks(self.mouseActionScriptInputInterface:getButtonClicks() | InputEvent.BUTTON1_MASK)
-                self.logUtil:putF("Button 1 Selected: " .. tostring(self.mouseActionScriptInputInterface:getButtonClicks()), self, "update")
+                self.logUtil:putF(require("allbinary_java").to_string("Button 1 Selected: ") .. require("allbinary_java").to_string(self.mouseActionScriptInputInterface:getButtonClicks()), self, "update")
             end
         else
-            if (self.mouseActionScriptInputInterface:getButtonClicks() & InputEvent.BUTTON1_MASK) ~= 0 then
+            if not rawequal((self.mouseActionScriptInputInterface:getButtonClicks() & InputEvent.BUTTON1_MASK), 0) then
                 self.mouseActionScriptInputInterface:setButtonClicks(self.mouseActionScriptInputInterface:getButtonClicks() ~ InputEvent.BUTTON1_MASK)
-                self.logUtil:putF("Button 1 Deselected: " .. tostring(self.mouseActionScriptInputInterface:getButtonClicks()), self, "update")
+                self.logUtil:putF(require("allbinary_java").to_string("Button 1 Deselected: ") .. require("allbinary_java").to_string(self.mouseActionScriptInputInterface:getButtonClicks()), self, "update")
             end
         end
         if self.button2JCheckBox:isSelected() then
-            if (self.mouseActionScriptInputInterface:getButtonClicks() & InputEvent.BUTTON2_MASK) == 0 then
+            if rawequal((self.mouseActionScriptInputInterface:getButtonClicks() & InputEvent.BUTTON2_MASK), 0) then
                 self.mouseActionScriptInputInterface:setButtonClicks(self.mouseActionScriptInputInterface:getButtonClicks() | InputEvent.BUTTON2_MASK)
-                self.logUtil:putF("Button 2 Selected: " .. tostring(self.mouseActionScriptInputInterface:getButtonClicks()), self, "update")
+                self.logUtil:putF(require("allbinary_java").to_string("Button 2 Selected: ") .. require("allbinary_java").to_string(self.mouseActionScriptInputInterface:getButtonClicks()), self, "update")
             end
         else
-            if (self.mouseActionScriptInputInterface:getButtonClicks() & InputEvent.BUTTON2_MASK) ~= 0 then
+            if not rawequal((self.mouseActionScriptInputInterface:getButtonClicks() & InputEvent.BUTTON2_MASK), 0) then
                 self.mouseActionScriptInputInterface:setButtonClicks(self.mouseActionScriptInputInterface:getButtonClicks() ~ InputEvent.BUTTON2_MASK)
-                self.logUtil:putF("Button 2 Deselected: " .. tostring(self.mouseActionScriptInputInterface:getButtonClicks()), self, "update")
+                self.logUtil:putF(require("allbinary_java").to_string("Button 2 Deselected: ") .. require("allbinary_java").to_string(self.mouseActionScriptInputInterface:getButtonClicks()), self, "update")
             end
         end
         local mouseXString = self.mouseXJTextField:getText()
-        if not StringValidationUtil.getInstance():isEmpty(mouseXString) and StringValidationUtil.getInstance():isNumber(mouseXString) then
+        if not (StringValidationUtil.getInstance():isEmpty(mouseXString)) and StringValidationUtil.getInstance():isNumber(mouseXString) then
             self.mouseActionScriptInputInterface:getPoint().x = math.tointeger(tonumber(mouseXString))
         end
         local mouseYString = self.mouseYJTextField:getText()
-        if not StringValidationUtil.getInstance():isEmpty(mouseYString) and StringValidationUtil.getInstance():isNumber(mouseYString) then
+        if not (StringValidationUtil.getInstance():isEmpty(mouseYString)) and StringValidationUtil.getInstance():isNumber(mouseYString) then
             self.mouseActionScriptInputInterface:getPoint().y = math.tointeger(tonumber(mouseYString))
         end
         self.mouseActionScriptInputInterface:log()
@@ -303,11 +303,13 @@ function MouseActionScriptInputJPanel:initComponents()
         self.titleJLabel:setText("Mouse Input Options")
         self.okJButton:setText("OK")
         self.okJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:okJButtonActionPerformed(evt)
+                ;(self.okJButtonActionPerformed and self or java_outer_self):okJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -321,11 +323,13 @@ function MouseActionScriptInputJPanel:initComponents()
         self.button2JCheckBox:setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0))
         self.button2JCheckBox:setMargin(Insets.new(0, 0, 0, 0))
         self.button2JCheckBox:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:button2JCheckBoxActionPerformed(evt)
+                ;(self.button2JCheckBoxActionPerformed and self or java_outer_self):button2JCheckBoxActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -344,11 +348,13 @@ function MouseActionScriptInputJPanel:initComponents()
         self:setMinimumSize(Dimension.new(100, 0))
         self.mouseActionJButton:setText("Edit")
         self.mouseActionJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:mouseActionJButtonActionPerformed(evt)
+                ;(self.mouseActionJButtonActionPerformed and self or java_outer_self):mouseActionJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o

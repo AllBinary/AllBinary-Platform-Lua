@@ -156,6 +156,11 @@ local ImageCacheRunnable = {}
         ImageCacheRunnable._jinit(self, ...)
         return self
     end
+        function ImageCacheRunnable.newEnclosed(outer, ...)
+            local self = setmetatable({__javaOuter = outer}, ImageCacheRunnable)
+            ImageCacheRunnable._jinit(self, ...)
+            return self
+        end
     
 
     function ImageCacheRunnable:run()
@@ -167,7 +172,7 @@ local ImageCacheRunnable = {}
                 self.imageCache:loadRemainingAnimations()
                 self:setRunning(false)
                 local progressCanvas = ProgressCanvasFactory.getInstance()
-                if not progressCanvas.inProgress then
+                if not (progressCanvas.inProgress) then
                     progressCanvas:endFromInitialLazyLoadingComplete()
                 end
             end)
@@ -191,7 +196,7 @@ end
 function ConcurrentImageLoadingProcessor._jinit(self, imageCache)
     java_super_init(BaseImageLoadingProcessor, self)
     ConcurrentImageLoadingProcessor._init_fields(self)
-        self.runnable = ImageCacheRunnable.new(imageCache)
+        self.runnable = ImageCacheRunnable.newEnclosed(self, imageCache)
     return self
 end
 
@@ -203,7 +208,7 @@ end
 
 
 function ConcurrentImageLoadingProcessor:runTask()
-        if not self.runnable:isRunning() then
+        if not (self.runnable:isRunning()) then
             ImageThreadPool.getInstance():runTask(self.runnable)
         end
 end

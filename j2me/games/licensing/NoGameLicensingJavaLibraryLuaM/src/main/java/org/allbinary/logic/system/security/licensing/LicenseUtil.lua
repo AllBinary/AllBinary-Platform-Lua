@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
 
 local function java_idiv(a, b)
     local q = a / b

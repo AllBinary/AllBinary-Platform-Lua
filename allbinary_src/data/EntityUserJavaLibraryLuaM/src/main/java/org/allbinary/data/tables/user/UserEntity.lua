@@ -230,7 +230,7 @@ function UserEntity:getStoreManagers(storeFrontInterface)
         local size = usersHashMapVector:size()
         for i = 0, size - 1 do
             local userHashMap = usersHashMapVector:get(i)
-            if userHashMap ~= nil then
+            if not rawequal(userHashMap, nil) then
                 usersVector:add(User.new(userHashMap))
             end
         end
@@ -255,7 +255,7 @@ function UserEntity:getUsersWithRole(userRole)
         local size = usersHashMapVector:size()
         for index = 0, size - 1 do
             local userHashMap = usersHashMapVector:get(index)
-            if userHashMap ~= nil then
+            if not rawequal(userHashMap, nil) then
                 usersVector:add(User.new(userHashMap))
             end
         end
@@ -273,7 +273,7 @@ function UserEntity:getUsers(storeFrontInterface)
         local size = usersHashMapVector:size()
         for index = 0, size - 1 do
             local userHashMap = usersHashMapVector:get(index)
-            if userHashMap ~= nil then
+            if not rawequal(userHashMap, nil) then
                 usersVector:add(User.new(userHashMap))
             end
         end
@@ -287,7 +287,7 @@ function UserEntity:getUser(userName)
         local row = StdUtil.getInstance():createHashMap()
         row:put(UserData.USERNAME, userName)
         local userHashMap = java_super(AbSqlBean, "getRow", 1)(self, row)
-        if userHashMap ~= nil then
+        if not rawequal(userHashMap, nil) then
             return CreateUserFactory.getInstance(userHashMap)
         else
             return nil
@@ -319,15 +319,15 @@ function UserEntity:login(userName, password)
             local isUserNameAndPasswordCorrect = 0
             local result = java_super(AbSqlBean, "getField", 3)(self, UserData.USERNAME, userName, UserData.PASSWORD)
             local encryption = java_super(AbSqlBean, "getField", 3)(self, UserData.USERNAME, userName, EntryData.getInstance().ENCRYPTION)
-            if encryption ~= nil and ((encryption < self.stringUtil.EMPTY_STRING and -1) or (encryption > self.stringUtil.EMPTY_STRING and 1) or 0) ~= 0 then
+            if not rawequal(encryption, nil) and not rawequal(((encryption < self.stringUtil.EMPTY_STRING and -1) or (encryption > self.stringUtil.EMPTY_STRING and 1) or 0), 0) then
                 isUserNameAndPasswordCorrect = ((result < SuperCrypt.new(math.tointeger(encryption // 1)):encrypt(password) and -1) or (result > SuperCrypt.new(math.tointeger(encryption // 1)):encrypt(password) and 1) or 0)
             else
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                    self.logUtil:putF("Command Success but login failed for user: " .. userName .. " because user did not exist", self, "login")
+                    self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string("Command Success but login failed for user: ") .. require("allbinary_java").to_string(userName)) .. require("allbinary_java").to_string(" because user did not exist"), self, "login")
                 end
                 do return "__jreturn", GLOBALS2.LOGINFAILED end
             end
-            if isUserNameAndPasswordCorrect == 0 then
+            if rawequal(isUserNameAndPasswordCorrect, 0) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                     local stringBuffer = StringMaker.new()
                     stringBuffer:append(self.COMMAND_SUCCESS_FOR_USER)

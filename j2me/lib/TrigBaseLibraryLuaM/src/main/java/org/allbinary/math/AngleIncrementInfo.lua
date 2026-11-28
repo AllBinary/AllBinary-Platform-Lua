@@ -60,7 +60,7 @@ AngleIncrementInfo.className = "AngleIncrementInfo"
 AngleIncrementInfo.javaClassName = "org.allbinary.math.AngleIncrementInfo"
 
 function AngleIncrementInfo:_init_fields()
-    if self.angleIncrement == nil then self.angleIncrement = nil end
+    if self.angleIncrement == nil then self.angleIncrement = 0 end
     if self.DOWN_FRAME == nil then self.DOWN_FRAME = nil end
     if self.UP_FRAME == nil then self.UP_FRAME = nil end
     if self.LEFT_FRAME == nil then self.LEFT_FRAME = nil end

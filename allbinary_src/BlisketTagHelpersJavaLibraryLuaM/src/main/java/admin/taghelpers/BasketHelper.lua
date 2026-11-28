@@ -152,7 +152,7 @@ function BasketHelper._jinit(self, hashMap, pageContext)
         self.propertiesHashMap = hashMap
         self.pageContext = pageContext
         local storeName = self.propertiesHashMap:get(StoreFrontData.getInstance().NAME)
-        if storeName ~= nil then
+        if not rawequal(storeName, nil) then
             self.storeFrontInterface = StoreFrontFactory.getInstance(storeName)
         end
         self.weblisketSession = WeblisketSession.new(hashMap, pageContext)

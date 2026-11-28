@@ -29,7 +29,7 @@ local function java_real(class)
 end
 
 local File = java_lazy("java.io.File")
--- local FileInputStream = require("java.io.FileInputStream")
+local FileInputStream = java_lazy("java.io.FileInputStream")
 local HashMap = java_lazy("java.util.HashMap")
 -- local List = require("java.util.List")
 local DomDocumentHelper = java_lazy("org.allbinary.data.tree.dom.document.DomDocumentHelper")
@@ -152,7 +152,7 @@ function InputAutomationModuleConfigurations._new2_1(self, abeClientInformation,
         local nodeList = document:getElementsByTagName(NewInputAutomationModulesData.NAME)
         if nodeList:getLength() > 0 then
             local nameNodeList = document:getElementsByTagName(InputAutomationModuleData.NAME)
-            self.logUtil:putF("Number Of Module(s) Specified: " .. tostring(nameNodeList:getLength()), self, "Contructor")
+            self.logUtil:putF(require("allbinary_java").to_string("Number Of Module(s) Specified: ") .. require("allbinary_java").to_string(nameNodeList:getLength()), self, "Contructor")
             for index = 0, nameNodeList:getLength() - 1 do
                 local node = nameNodeList:item(index)
                 self:add(InputAutomationModuleConfiguration.new(abeClientInformation, node))
@@ -166,7 +166,7 @@ function InputAutomationModuleConfigurations._new2_2(self, abeClientInformation,
     InputAutomationModuleConfigurations._init_fields(self)
         self:setHashMap(HashMap.new())
         local nameNodeList = document:getElementsByTagName(InputAutomationModuleData.NAME)
-        self.logUtil:putF("Number Of Module(s) Specified: " .. tostring(nameNodeList:getLength()), self, "Contructor")
+        self.logUtil:putF(require("allbinary_java").to_string("Number Of Module(s) Specified: ") .. require("allbinary_java").to_string(nameNodeList:getLength()), self, "Contructor")
         for index = 0, nameNodeList:getLength() - 1 do
             local node = nameNodeList:item(index)
             self:add(InputAutomationModuleConfiguration.new(abeClientInformation, node))

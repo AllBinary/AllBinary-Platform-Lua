@@ -76,7 +76,7 @@ end
 
 
 function GameNotification:add(string_, seconds, basicColor)
-        if not self.stringList:contains(string_) then
+        if not (self.stringList:contains(string_)) then
             self.stringList:add(string_)
             self.timeList:add(seconds)
             self.colorList:add(basicColor)

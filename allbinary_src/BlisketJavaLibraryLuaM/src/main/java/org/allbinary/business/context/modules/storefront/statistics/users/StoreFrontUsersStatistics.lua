@@ -96,7 +96,7 @@ end
 
 function StoreFrontUsersStatistics:getNewTotal(userRole)
         local numberOfUsersForRoleLong = self.totalUsersByRoleHashMap:get(userRole)
-        if numberOfUsersForRoleLong == nil then
+        if rawequal(numberOfUsersForRoleLong, nil) then
             numberOfUsersForRoleLong = 0
         end
         return math.tointeger(numberOfUsersForRoleLong // 1) + 1

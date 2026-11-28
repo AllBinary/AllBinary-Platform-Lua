@@ -152,7 +152,7 @@ end
 
 -- throws Exception
 function WorkWaypoint:visit(unitLayer)
-        if unitLayer:getGroupInterface()[1] ~= self.ownerLayer:getGroupInterface()[1] then
+        if not rawequal(unitLayer:getGroupInterface()[1], self.ownerLayer:getGroupInterface()[1]) then
             return
         end
         local size = self:getConnectedWaypointList():size()
@@ -175,10 +175,10 @@ function WorkWaypoint:visit(unitLayer)
                 end
             end
             local waypointInfoHudPaintable = self.ownerLayer:getHudPaintable()
-            if self.ownerLayer == waypointInfoHudPaintable:getRtsLayer() then
+            if rawequal(self.ownerLayer, waypointInfoHudPaintable:getRtsLayer()) then
                 waypointInfoHudPaintable:updateSelectionInfo()
             end
-            if not outOfResources then
+            if not (outOfResources) then
                 local unitWaypointBehavior = unitLayer:getWaypointBehavior()
                 local rtsLayer = nil
                 while self:getConnectedWaypointList():size() > 0 do

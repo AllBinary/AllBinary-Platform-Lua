@@ -28,11 +28,11 @@ local function java_real(class)
     return class
 end
 
--- local BufferedReader = require("java.io.BufferedReader")
+local BufferedReader = java_lazy("java.io.BufferedReader")
 -- local BufferedWriter = require("java.io.BufferedWriter")
 local File = java_lazy("java.io.File")
 -- local FileReader = require("java.io.FileReader")
--- local FileWriter = require("java.io.FileWriter")
+local FileWriter = java_lazy("java.io.FileWriter")
 -- local RandomAccessFile = require("java.io.RandomAccessFile")
 local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
@@ -111,7 +111,7 @@ end
 function FileLog.createLogFile()
         local try_ok, try_error, try_value = pcall(function()
             FileLog.logFile = File.new(FileLog.logPath, FileLog.fileName)
-            if not FileLog.firstTime then
+            if not (FileLog.firstTime) then
                 FileLog.fileOut = BufferedWriter.new(FileWriter.new(FileLog.logFile))
             else
                 FileLog.firstTime = false
@@ -125,7 +125,7 @@ function FileLog.createLogFile()
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-            print("Error Creating Log: " .. tostring(e))
+            print(require("allbinary_java").to_string("Error Creating Log: ") .. require("allbinary_java").to_string(e))
             return false
         end
         if try_ok and try_error == "__jreturn" then return try_value end
@@ -158,7 +158,7 @@ function FileLog.createLogFileBackup()
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-            print("Error Creating Backup: " .. tostring(e))
+            print(require("allbinary_java").to_string("Error Creating Backup: ") .. require("allbinary_java").to_string(e))
             return false
         end
         if try_ok and try_error == "__jreturn" then return try_value end
@@ -172,38 +172,38 @@ end
 
 function FileLog.put_j4_1(specialMessage, anyType, functionName, exception)
         local try_ok, try_error, try_value = pcall(function()
-            if FileLog.firstTime == true then
+            if rawequal(FileLog.firstTime, true) then
                 FileLog.createLogFileBackup()
-                if FileLog.createLogFile() == false then
+                if rawequal(FileLog.createLogFile(), false) then
                     do return "__jreturn", tostring("Log File Creation Error") end
                 end
             end
             local length = FileLog.logFile:length()
             if length > FileLog.logLength then
-                if not FileLog.createLogFileBackup() or FileLog.createLogFile() == false then
+                if not (FileLog.createLogFileBackup()) or rawequal(FileLog.createLogFile(), false) then
                     do return "__jreturn", tostring("Couldn't Create a Backup file") end
                 end
             end
             local className = tostring(FileLog.stringUtil.NULL_STRING)
-            if functionName == nil then
+            if rawequal(functionName, nil) then
                 functionName = tostring(FileLog.stringUtil.NULL_STRING)
             end
-            if specialMessage == nil then
+            if rawequal(specialMessage, nil) then
                 specialMessage = tostring(FileLog.stringUtil.NULL_STRING)
             end
-            if (getmetatable(anyType).javaClassName or getmetatable(anyType).className) ~= nil then
+            if not rawequal((getmetatable(anyType).javaClassName or getmetatable(anyType).className), nil) then
                 className = tostring((getmetatable(anyType).javaClassName or getmetatable(anyType).className))
             end
             local message = LogFormatUtil.getInstance():get(className, functionName, specialMessage, exception)
             FileLog.fileOut:write(message, 0, #message)
             FileLog.fileOut:newLine()
             FileLog.fileOut:flush()
-            do return "__jreturn", tostring(tostring(FileLog.ORG_ALLBINARY) .. message) end
+            do return "__jreturn", tostring(require("allbinary_java").to_string(FileLog.ORG_ALLBINARY) .. require("allbinary_java").to_string(message)) end
         end)
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-            return tostring("Error: " .. tostring(e))
+            return tostring(require("allbinary_java").to_string("Error: ") .. require("allbinary_java").to_string(e))
         end
         if try_ok and try_error == "__jreturn" then return try_value end
 end
@@ -216,34 +216,34 @@ end
 
 function FileLog.put_j4_2(specialMessage, className, functionName, exception)
         local try_ok, try_error, try_value = pcall(function()
-            if FileLog.firstTime == true then
+            if rawequal(FileLog.firstTime, true) then
                 FileLog.createLogFileBackup()
-                if FileLog.createLogFile() == false then
+                if rawequal(FileLog.createLogFile(), false) then
                     do return "__jreturn", tostring("Log File Creation Error") end
                 end
             end
             local length = FileLog.logFile:length()
             if length > FileLog.logLength then
-                if not FileLog.createLogFileBackup() or FileLog.createLogFile() == false then
+                if not (FileLog.createLogFileBackup()) or rawequal(FileLog.createLogFile(), false) then
                     do return "__jreturn", tostring("Couldn't Create a Backup file") end
                 end
             end
-            if functionName == nil then
+            if rawequal(functionName, nil) then
                 functionName = tostring(FileLog.stringUtil.NULL_STRING)
             end
-            if specialMessage == nil then
+            if rawequal(specialMessage, nil) then
                 specialMessage = tostring(FileLog.stringUtil.NULL_STRING)
             end
             local message = LogFormatUtil.getInstance():get(className, functionName, specialMessage, exception)
             FileLog.fileOut:write(message, 0, #message)
             FileLog.fileOut:newLine()
             FileLog.fileOut:flush()
-            do return "__jreturn", tostring(tostring(FileLog.ORG_ALLBINARY) .. message) end
+            do return "__jreturn", tostring(require("allbinary_java").to_string(FileLog.ORG_ALLBINARY) .. require("allbinary_java").to_string(message)) end
         end)
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-            return tostring("Error: " .. tostring(e))
+            return tostring(require("allbinary_java").to_string("Error: ") .. require("allbinary_java").to_string(e))
         end
         if try_ok and try_error == "__jreturn" then return try_value end
 end
@@ -274,7 +274,7 @@ FileLog.stringUtil = StringUtil.getInstance()
 FileLog.logLength = 33000000
 FileLog.logPath = "g:\\log\\"
 FileLog.extension = tostring("dat")
-FileLog.fileName = tostring("log." .. tostring(FileLog.extension))
+FileLog.fileName = tostring(require("allbinary_java").to_string("log.") .. require("allbinary_java").to_string(FileLog.extension))
 FileLog.backupFileName = FileLog.fileName:concat(".bak")
 FileLog.ORG_ALLBINARY = "org.allbinary: "
 FileLog.firstTime = true

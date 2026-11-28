@@ -238,7 +238,7 @@ function StoreFront._new1_2(self, hashMap)
     StoreFront._init_fields(self)
         self:getFormData(hashMap)
         local domDocumentString = hashMap:get(StoreFrontData.getInstance().CONFIGURATION)
-        if domDocumentString == nil then
+        if rawequal(domDocumentString, nil) then
             local document = DomDocumentHelper.create(domDocumentString)
             self:setContextConfigurationInterface(ContextConfigurationInterfaceFactory.getInstance():getInstance(document))
         end
@@ -247,7 +247,7 @@ end
 
 
 function StoreFront:isColumn(columnName)
-        if ((columnName < StoreFrontData.getInstance().NAME and -1) or (columnName > StoreFrontData.getInstance().NAME and 1) or 0) == 0 or ((columnName < UserData.MAINEMAIL and -1) or (columnName > UserData.MAINEMAIL and 1) or 0) == 0 then
+        if rawequal(((columnName < StoreFrontData.getInstance().NAME and -1) or (columnName > StoreFrontData.getInstance().NAME and 1) or 0), 0) or rawequal(((columnName < UserData.MAINEMAIL and -1) or (columnName > UserData.MAINEMAIL and 1) or 0), 0) then
             return true
         else
             return false
@@ -285,7 +285,7 @@ function StoreFront:create(append, key, hashMap)
             return self.EMPTY_STRING
         else
             if self:isColumn(path) then
-                return tostring(hashMap:get(path)) .. append
+                return require("allbinary_java").to_string(hashMap:get(path)) .. require("allbinary_java").to_string(append)
             else
                 return path
             end
@@ -307,7 +307,7 @@ function StoreFront:getFormData(storeHashMap)
         self.testHostName = storeHashMap:get(storeFrontData.TESTHOSTNAME)
         self.testHostNamePath = self:createPath(storeFrontData.TESTHOSTNAMEPATH, storeHashMap)
         self.imagePath = self:createPath(StoreFront.RESOURCES, storeFrontData.IMAGEPATH, storeHashMap)
-        self.staticPath = self:createPath(" Products" .. tostring(AbPathData.getInstance().SEPARATOR), storeFrontData.STATICPATH, storeHashMap)
+        self.staticPath = self:createPath(require("allbinary_java").to_string(" Products") .. require("allbinary_java").to_string(AbPathData.getInstance().SEPARATOR), storeFrontData.STATICPATH, storeHashMap)
         self.categoryPath = self:createPath(StoreFront.RESOURCES, storeFrontData.CATEGORYPATH, storeHashMap)
         self.inventoryControl = storeHashMap:get(storeFrontData.INVENTORYCONTROL)
         self.subStores = storeHashMap:get(storeFrontData.SUBSTORES)
@@ -327,12 +327,12 @@ end
 
 
 function StoreFront:isNameValid()
-        if not StringValidationUtil.getInstance():isValidRequired(self.name_f, self.MINSTORENAMELENGTH, self.MAXCHAR) then
+        if not (StringValidationUtil.getInstance():isValidRequired(self.name_f, self.MINSTORENAMELENGTH, self.MAXCHAR)) then
             return false
         else
             local isEscapedCharactersContained = false
             local storeNameEscaped = StringEscapeUtils.escapeHtml3(self.name_f)
-            if ((self.name_f < storeNameEscaped and -1) or (self.name_f > storeNameEscaped and 1) or 0) ~= 0 then
+            if not rawequal(((self.name_f < storeNameEscaped and -1) or (self.name_f > storeNameEscaped and 1) or 0), 0) then
                 isEscapedCharactersContained = true
             end
             local stringValidationUtil = StringValidationUtil.getInstance()
@@ -354,79 +354,79 @@ function StoreFront:isValid()
         local valid = true
         valid = self:isNameValid()
         local stringValidationUtil = StringValidationUtil.getInstance()
-        if not stringValidationUtil:isValidRequired(self.basketName, self.MINCHAR, self.MAXCHAR) then
+        if not (stringValidationUtil:isValidRequired(self.basketName, self.MINCHAR, self.MAXCHAR)) then
             valid = false
         end
-        if not stringValidationUtil:isValidRequired(self.homeHostName, self.MINCHAR, self.MAXCHAR) then
+        if not (stringValidationUtil:isValidRequired(self.homeHostName, self.MINCHAR, self.MAXCHAR)) then
             valid = false
         end
-        if not stringValidationUtil:isValidNotRequired(tostring(self.homeHostNamePath), self.MINCHAR, self.MAXCHAR) then
+        if not (stringValidationUtil:isValidNotRequired(tostring(self.homeHostNamePath), self.MINCHAR, self.MAXCHAR)) then
             valid = false
         end
-        if not stringValidationUtil:isValidRequired(self.hostName, self.MINCHAR, self.MAXCHAR) then
+        if not (stringValidationUtil:isValidRequired(self.hostName, self.MINCHAR, self.MAXCHAR)) then
             valid = false
         end
-        if not stringValidationUtil:isValidRequired(tostring(self.hostNamePath), self.MINCHAR, self.MAXCHAR) then
+        if not (stringValidationUtil:isValidRequired(tostring(self.hostNamePath), self.MINCHAR, self.MAXCHAR)) then
             valid = false
         end
-        if not stringValidationUtil:isValidNotRequired(self.testHomeHostName, self.MINCHAR, self.MAXCHAR) then
+        if not (stringValidationUtil:isValidNotRequired(self.testHomeHostName, self.MINCHAR, self.MAXCHAR)) then
             valid = false
         end
-        if not stringValidationUtil:isValidNotRequired(tostring(self.testHomeHostNamePath), self.MINCHAR, self.MAXCHAR) then
+        if not (stringValidationUtil:isValidNotRequired(tostring(self.testHomeHostNamePath), self.MINCHAR, self.MAXCHAR)) then
             valid = false
         end
-        if not stringValidationUtil:isValidNotRequired(self.testHostName, self.MINCHAR, self.MAXCHAR) then
+        if not (stringValidationUtil:isValidNotRequired(self.testHostName, self.MINCHAR, self.MAXCHAR)) then
             valid = false
         end
-        if not stringValidationUtil:isValidNotRequired(tostring(self.testHostNamePath), self.MINCHAR, self.MAXCHAR) then
+        if not (stringValidationUtil:isValidNotRequired(tostring(self.testHostNamePath), self.MINCHAR, self.MAXCHAR)) then
             valid = false
         end
-        if not stringValidationUtil:isValidRequired(tostring(self.imagePath), self.MINCHAR, self.MAXCHAR) then
+        if not (stringValidationUtil:isValidRequired(tostring(self.imagePath), self.MINCHAR, self.MAXCHAR)) then
             valid = false
         end
-        if not stringValidationUtil:isValidRequired(tostring(self.staticPath), self.MINCHAR, self.MAXCHAR) then
+        if not (stringValidationUtil:isValidRequired(tostring(self.staticPath), self.MINCHAR, self.MAXCHAR)) then
             valid = false
         end
-        if not stringValidationUtil:isValidRequired(tostring(self.categoryPath), self.MINCHAR, self.MAXCHAR) then
+        if not (stringValidationUtil:isValidRequired(tostring(self.categoryPath), self.MINCHAR, self.MAXCHAR)) then
             valid = false
         end
-        if not stringValidationUtil:isValidRequired(self.inventoryControl, self.MINCHAR, self.MAXCHAR) then
+        if not (stringValidationUtil:isValidRequired(self.inventoryControl, self.MINCHAR, self.MAXCHAR)) then
             valid = false
         end
-        if not stringValidationUtil:isValidNotRequired(self.subStores, self.MINCHAR, self.MAXCHAR) then
+        if not (stringValidationUtil:isValidNotRequired(self.subStores, self.MINCHAR, self.MAXCHAR)) then
             valid = false
         end
-        if not stringValidationUtil:isValidNotRequired(self.tagLocation, self.MINCHAR, self.MAXCHAR) then
+        if not (stringValidationUtil:isValidNotRequired(self.tagLocation, self.MINCHAR, self.MAXCHAR)) then
             valid = false
         end
-        if not stringValidationUtil:isValidRequired(self.packageLocation, self.MINCHAR, self.MAXCHAR) then
+        if not (stringValidationUtil:isValidRequired(self.packageLocation, self.MINCHAR, self.MAXCHAR)) then
             valid = false
         end
-        if not stringValidationUtil:isValidNotRequired(self.ftp, self.MINCHAR, self.MAXCHAR) then
+        if not (stringValidationUtil:isValidNotRequired(self.ftp, self.MINCHAR, self.MAXCHAR)) then
             valid = false
         end
-        if not stringValidationUtil:isValidNotRequired(tostring(self.ftpPath), self.MINCHAR, self.MAXCHAR) then
+        if not (stringValidationUtil:isValidNotRequired(tostring(self.ftpPath), self.MINCHAR, self.MAXCHAR)) then
             valid = false
         end
-        if not stringValidationUtil:isValidNotRequired(self.ftpUserName, self.MINCHAR, self.MAXCHAR) then
+        if not (stringValidationUtil:isValidNotRequired(self.ftpUserName, self.MINCHAR, self.MAXCHAR)) then
             valid = false
         end
-        if not stringValidationUtil:isValidNotRequired(self.ftpPassword, self.MINCHAR, self.MAXCHAR) then
+        if not (stringValidationUtil:isValidNotRequired(self.ftpPassword, self.MINCHAR, self.MAXCHAR)) then
             valid = false
         end
-        if not stringValidationUtil:isValidNotRequired(self.testFtp, self.MINCHAR, self.MAXCHAR) then
+        if not (stringValidationUtil:isValidNotRequired(self.testFtp, self.MINCHAR, self.MAXCHAR)) then
             valid = false
         end
-        if not stringValidationUtil:isValidNotRequired(tostring(self.testFtpPath), self.MINCHAR, self.MAXCHAR) then
+        if not (stringValidationUtil:isValidNotRequired(tostring(self.testFtpPath), self.MINCHAR, self.MAXCHAR)) then
             valid = false
         end
-        if not stringValidationUtil:isValidNotRequired(self.testFtpUserName, self.MINCHAR, self.MAXCHAR) then
+        if not (stringValidationUtil:isValidNotRequired(self.testFtpUserName, self.MINCHAR, self.MAXCHAR)) then
             valid = false
         end
-        if not stringValidationUtil:isValidNotRequired(self.testFtpPassword, self.MINCHAR, self.MAXCHAR) then
+        if not (stringValidationUtil:isValidNotRequired(self.testFtpPassword, self.MINCHAR, self.MAXCHAR)) then
             valid = false
         end
-        if valid == true then
+        if rawequal(valid, true) then
             return true
         else
             return false
@@ -436,7 +436,7 @@ end
 
 function StoreFront:nameValidationInfo()
         local stringValidationUtil = StringValidationUtil.getInstance()
-        if not stringValidationUtil:isValidRequired(self.name_f, self.MINCHAR, self.MAXCHAR) then
+        if not (stringValidationUtil:isValidRequired(self.name_f, self.MINCHAR, self.MAXCHAR)) then
             local stringBuffer = StringMaker.new()
             stringBuffer:append("Name is invalid. Must be < ")
             stringBuffer:appendint(self.MAXCHAR)
@@ -452,87 +452,87 @@ function StoreFront:validationInfo()
             local stringValidationUtil = StringValidationUtil.getInstance()
             local stringBuffer = StringMaker.new()
             stringBuffer:append(self:nameValidationInfo())
-            if not stringValidationUtil:isValidRequired(self.basketName, self.MINCHAR, self.MAXCHAR) then
+            if not (stringValidationUtil:isValidRequired(self.basketName, self.MINCHAR, self.MAXCHAR)) then
                 stringBuffer:append("Basket name is invalid. Must be < ")
                 stringBuffer:appendint(self.MAXCHAR)
                 stringBuffer:append(" and > 0 characters.<br>")
             end
-            if not stringValidationUtil:isValidRequired(self.homeHostName, self.MINCHAR, self.MAXCHAR) then
+            if not (stringValidationUtil:isValidRequired(self.homeHostName, self.MINCHAR, self.MAXCHAR)) then
                 stringBuffer:append("Home host name is invalid. Must be < ")
                 stringBuffer:appendint(self.MAXCHAR)
                 stringBuffer:append(" and > 0 characters.<br>")
             end
-            if not stringValidationUtil:isValidNotRequired(tostring(self.homeHostNamePath), self.MINCHAR, self.MAXCHAR) then
+            if not (stringValidationUtil:isValidNotRequired(tostring(self.homeHostNamePath), self.MINCHAR, self.MAXCHAR)) then
                 stringBuffer:append("Home host name path is invalid. Must be < ")
                 stringBuffer:appendint(self.MAXCHAR)
                 stringBuffer:append(" and > 0 characters.<br>")
             end
-            if not stringValidationUtil:isValidRequired(self.hostName, self.MINCHAR, self.MAXCHAR) then
+            if not (stringValidationUtil:isValidRequired(self.hostName, self.MINCHAR, self.MAXCHAR)) then
                 stringBuffer:append("Host name is invalid. Must be < ")
                 stringBuffer:appendint(self.MAXCHAR)
                 stringBuffer:append(" and > 0 characters.<br>")
             end
-            if not stringValidationUtil:isValidRequired(tostring(self.hostNamePath), self.MINCHAR, self.MAXCHAR) then
+            if not (stringValidationUtil:isValidRequired(tostring(self.hostNamePath), self.MINCHAR, self.MAXCHAR)) then
                 stringBuffer:append("Host name path is invalid. Must be < ")
                 stringBuffer:appendint(self.MAXCHAR)
                 stringBuffer:append(" and > 0 characters.<br>")
             end
-            if not stringValidationUtil:isValidNotRequired(self.testHomeHostName, self.MINCHAR, self.MAXCHAR) then
-                stringBuffer:append("Test home host name is invalid. Must be < " .. tostring(self.MAXCHAR) .. " and > 0 characters.<br>")
+            if not (stringValidationUtil:isValidNotRequired(self.testHomeHostName, self.MINCHAR, self.MAXCHAR)) then
+                stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string("Test home host name is invalid. Must be < ") .. require("allbinary_java").to_string(self.MAXCHAR)) .. require("allbinary_java").to_string(" and > 0 characters.<br>"))
             end
-            if not stringValidationUtil:isValidNotRequired(tostring(self.testHomeHostNamePath), self.MINCHAR, self.MAXCHAR) then
-                stringBuffer:append("Test home host name path is invalid. Must be < " .. tostring(self.MAXCHAR) .. " and > 0 characters.<br>")
+            if not (stringValidationUtil:isValidNotRequired(tostring(self.testHomeHostNamePath), self.MINCHAR, self.MAXCHAR)) then
+                stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string("Test home host name path is invalid. Must be < ") .. require("allbinary_java").to_string(self.MAXCHAR)) .. require("allbinary_java").to_string(" and > 0 characters.<br>"))
             end
-            if not stringValidationUtil:isValidNotRequired(self.testHostName, self.MINCHAR, self.MAXCHAR) then
-                stringBuffer:append("Test host name is invalid. Must be < " .. tostring(self.MAXCHAR) .. " and > 0 characters.<br>")
+            if not (stringValidationUtil:isValidNotRequired(self.testHostName, self.MINCHAR, self.MAXCHAR)) then
+                stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string("Test host name is invalid. Must be < ") .. require("allbinary_java").to_string(self.MAXCHAR)) .. require("allbinary_java").to_string(" and > 0 characters.<br>"))
             end
-            if not stringValidationUtil:isValidNotRequired(tostring(self.testHostNamePath), self.MINCHAR, self.MAXCHAR) then
-                stringBuffer:append("Test host name path is invalid. Must be < " .. tostring(self.MAXCHAR) .. " and > 0 characters.<br>")
+            if not (stringValidationUtil:isValidNotRequired(tostring(self.testHostNamePath), self.MINCHAR, self.MAXCHAR)) then
+                stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string("Test host name path is invalid. Must be < ") .. require("allbinary_java").to_string(self.MAXCHAR)) .. require("allbinary_java").to_string(" and > 0 characters.<br>"))
             end
-            if not stringValidationUtil:isValidRequired(tostring(self.imagePath), self.MINCHAR, self.MAXCHAR) then
-                stringBuffer:append("Image path is invalid. Must be < " .. tostring(self.MAXCHAR) .. " and > 0 characters.<br>")
+            if not (stringValidationUtil:isValidRequired(tostring(self.imagePath), self.MINCHAR, self.MAXCHAR)) then
+                stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string("Image path is invalid. Must be < ") .. require("allbinary_java").to_string(self.MAXCHAR)) .. require("allbinary_java").to_string(" and > 0 characters.<br>"))
             end
-            if not stringValidationUtil:isValidRequired(tostring(self.staticPath), self.MINCHAR, self.MAXCHAR) then
-                stringBuffer:append("Static path is invalid. Must be < " .. tostring(self.MAXCHAR) .. " and > 0 characters.<br>")
+            if not (stringValidationUtil:isValidRequired(tostring(self.staticPath), self.MINCHAR, self.MAXCHAR)) then
+                stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string("Static path is invalid. Must be < ") .. require("allbinary_java").to_string(self.MAXCHAR)) .. require("allbinary_java").to_string(" and > 0 characters.<br>"))
             end
-            if not stringValidationUtil:isValidRequired(tostring(self.categoryPath), self.MINCHAR, self.MAXCHAR) then
-                stringBuffer:append("Category path is invalid. Must be < " .. tostring(self.MAXCHAR) .. " and > 0 characters.<br>")
+            if not (stringValidationUtil:isValidRequired(tostring(self.categoryPath), self.MINCHAR, self.MAXCHAR)) then
+                stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string("Category path is invalid. Must be < ") .. require("allbinary_java").to_string(self.MAXCHAR)) .. require("allbinary_java").to_string(" and > 0 characters.<br>"))
             end
-            if not stringValidationUtil:isValidRequired(self.inventoryControl, self.MINCHAR, self.MAXCHAR) then
-                stringBuffer:append("Inventory control is invalid. Must be < " .. tostring(self.MAXCHAR) .. " and > 0 characters.<br>")
+            if not (stringValidationUtil:isValidRequired(self.inventoryControl, self.MINCHAR, self.MAXCHAR)) then
+                stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string("Inventory control is invalid. Must be < ") .. require("allbinary_java").to_string(self.MAXCHAR)) .. require("allbinary_java").to_string(" and > 0 characters.<br>"))
             end
-            if not stringValidationUtil:isValidNotRequired(self.subStores, self.MINCHAR, self.MAXCHAR) then
-                stringBuffer:append("Sub stores is invalid. Must be < " .. tostring(self.MAXCHAR) .. " and > 0 characters.<br>")
+            if not (stringValidationUtil:isValidNotRequired(self.subStores, self.MINCHAR, self.MAXCHAR)) then
+                stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string("Sub stores is invalid. Must be < ") .. require("allbinary_java").to_string(self.MAXCHAR)) .. require("allbinary_java").to_string(" and > 0 characters.<br>"))
             end
-            if not stringValidationUtil:isValidNotRequired(self.tagLocation, self.MINCHAR, self.MAXCHAR) then
-                stringBuffer:append("Tag location is invalid. Must be < " .. tostring(self.MAXCHAR) .. " and > 0 characters.<br>")
+            if not (stringValidationUtil:isValidNotRequired(self.tagLocation, self.MINCHAR, self.MAXCHAR)) then
+                stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string("Tag location is invalid. Must be < ") .. require("allbinary_java").to_string(self.MAXCHAR)) .. require("allbinary_java").to_string(" and > 0 characters.<br>"))
             end
-            if not stringValidationUtil:isValidRequired(self.packageLocation, self.MINCHAR, self.MAXCHAR) then
-                stringBuffer:append("Package location is invalid. Must be < " .. tostring(self.MAXCHAR) .. " and > 0 characters.<br>")
+            if not (stringValidationUtil:isValidRequired(self.packageLocation, self.MINCHAR, self.MAXCHAR)) then
+                stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string("Package location is invalid. Must be < ") .. require("allbinary_java").to_string(self.MAXCHAR)) .. require("allbinary_java").to_string(" and > 0 characters.<br>"))
             end
-            if not stringValidationUtil:isValidNotRequired(self.ftp, self.MINCHAR, self.MAXCHAR) then
-                stringBuffer:append("Ftp is invalid. Must be < " .. tostring(self.MAXCHAR) .. " and > 0 characters.<br>")
+            if not (stringValidationUtil:isValidNotRequired(self.ftp, self.MINCHAR, self.MAXCHAR)) then
+                stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string("Ftp is invalid. Must be < ") .. require("allbinary_java").to_string(self.MAXCHAR)) .. require("allbinary_java").to_string(" and > 0 characters.<br>"))
             end
-            if not stringValidationUtil:isValidNotRequired(tostring(self.ftpPath), self.MINCHAR, self.MAXCHAR) then
-                stringBuffer:append("Ftp path is invalid. Must be < " .. tostring(self.MAXCHAR) .. " and > 0 characters.<br>")
+            if not (stringValidationUtil:isValidNotRequired(tostring(self.ftpPath), self.MINCHAR, self.MAXCHAR)) then
+                stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string("Ftp path is invalid. Must be < ") .. require("allbinary_java").to_string(self.MAXCHAR)) .. require("allbinary_java").to_string(" and > 0 characters.<br>"))
             end
-            if not stringValidationUtil:isValidNotRequired(self.ftpUserName, self.MINCHAR, self.MAXCHAR) then
-                stringBuffer:append("Ftp username is invalid. Must be < " .. tostring(self.MAXCHAR) .. " and > 0 characters.<br>")
+            if not (stringValidationUtil:isValidNotRequired(self.ftpUserName, self.MINCHAR, self.MAXCHAR)) then
+                stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string("Ftp username is invalid. Must be < ") .. require("allbinary_java").to_string(self.MAXCHAR)) .. require("allbinary_java").to_string(" and > 0 characters.<br>"))
             end
-            if not stringValidationUtil:isValidNotRequired(self.ftpPassword, self.MINCHAR, self.MAXCHAR) then
-                stringBuffer:append("Ftp password is invalid. Must be < " .. tostring(self.MAXCHAR) .. " and > 0 characters.<br>")
+            if not (stringValidationUtil:isValidNotRequired(self.ftpPassword, self.MINCHAR, self.MAXCHAR)) then
+                stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string("Ftp password is invalid. Must be < ") .. require("allbinary_java").to_string(self.MAXCHAR)) .. require("allbinary_java").to_string(" and > 0 characters.<br>"))
             end
-            if not stringValidationUtil:isValidNotRequired(self.testFtp, self.MINCHAR, self.MAXCHAR) then
-                stringBuffer:append("Test ftp is invalid. Must be < " .. tostring(self.MAXCHAR) .. " and > 0 characters.<br>")
+            if not (stringValidationUtil:isValidNotRequired(self.testFtp, self.MINCHAR, self.MAXCHAR)) then
+                stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string("Test ftp is invalid. Must be < ") .. require("allbinary_java").to_string(self.MAXCHAR)) .. require("allbinary_java").to_string(" and > 0 characters.<br>"))
             end
-            if not stringValidationUtil:isValidNotRequired(tostring(self.testFtpPath), self.MINCHAR, self.MAXCHAR) then
-                stringBuffer:append("Test ftp Path is invalid. Must be < " .. tostring(self.MAXCHAR) .. " and > 0 characters.<br>")
+            if not (stringValidationUtil:isValidNotRequired(tostring(self.testFtpPath), self.MINCHAR, self.MAXCHAR)) then
+                stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string("Test ftp Path is invalid. Must be < ") .. require("allbinary_java").to_string(self.MAXCHAR)) .. require("allbinary_java").to_string(" and > 0 characters.<br>"))
             end
-            if not stringValidationUtil:isValidNotRequired(self.testFtpUserName, self.MINCHAR, self.MAXCHAR) then
-                stringBuffer:append("Test ftp username is invalid. Must be < " .. tostring(self.MAXCHAR) .. " and > 0 characters.<br>")
+            if not (stringValidationUtil:isValidNotRequired(self.testFtpUserName, self.MINCHAR, self.MAXCHAR)) then
+                stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string("Test ftp username is invalid. Must be < ") .. require("allbinary_java").to_string(self.MAXCHAR)) .. require("allbinary_java").to_string(" and > 0 characters.<br>"))
             end
-            if not stringValidationUtil:isValidNotRequired(self.testFtpPassword, self.MINCHAR, self.MAXCHAR) then
-                stringBuffer:append("Test ftp password is invalid. Must be < " .. tostring(self.MAXCHAR) .. " and > 0 characters.<br>")
+            if not (stringValidationUtil:isValidNotRequired(self.testFtpPassword, self.MINCHAR, self.MAXCHAR)) then
+                stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string("Test ftp password is invalid. Must be < ") .. require("allbinary_java").to_string(self.MAXCHAR)) .. require("allbinary_java").to_string(" and > 0 characters.<br>"))
             end
             do return "__jreturn", tostring(stringBuffer) end
         end)
@@ -897,13 +897,13 @@ end
 -- throws Exception
 function StoreFront:createDirectories()
         local storeAbPath = AbPath.new(URLGLOBALS.getWebappPath() + self:getCurrentHomeHostNamePath(), StringUtil.getInstance().EMPTY_STRING)
-        if not self.directory:create(storeAbPath) then
+        if not (self.directory:create(storeAbPath)) then
             return false
         end
-        if not self.directory:create(AbPath.new(storeAbPath + self:getCategoryPath(), StringUtil.getInstance().EMPTY_STRING)) then
+        if not (self.directory:create(AbPath.new(storeAbPath + self:getCategoryPath(), StringUtil.getInstance().EMPTY_STRING))) then
             return false
         end
-        if not self.directory:create(AbPath.new(storeAbPath + self:getStaticPath(), StringUtil.getInstance().EMPTY_STRING)) then
+        if not (self.directory:create(AbPath.new(storeAbPath + self:getStaticPath(), StringUtil.getInstance().EMPTY_STRING))) then
             return false
         end
         return true
@@ -913,7 +913,7 @@ end
 -- throws Exception
 function StoreFront:install(current, total)
         local try_ok, try_error, try_value = pcall(function()
-            if not self:createDirectories() then
+            if not (self:createDirectories()) then
                 error(require("java.lang.Exception").new("Unable to create store directories"), 0)
             end
             local stringBuffer = StringMaker.new()
@@ -935,9 +935,9 @@ function StoreFront:install(current, total)
             stringBuffer:append(self:getName())
             stringBuffer:append(AbPathData.getInstance().SEPARATOR)
             local toDirectoryAbPath = AbPath.new(tostring(stringBuffer), StringUtil.getInstance().EMPTY_STRING)
-            if current == 0 then
-                if not self.directory:create(toDirectoryAbPath) then
-                    error(require("java.lang.Exception").new("Unable to create store view directory: " .. tostring(toDirectoryAbPath)), 0)
+            if rawequal(current, 0) then
+                if not (self.directory:create(toDirectoryAbPath)) then
+                    error(require("java.lang.Exception").new(require("allbinary_java").to_string("Unable to create store view directory: ") .. require("allbinary_java").to_string(tostring(toDirectoryAbPath))), 0)
                 end
             end
             local viewTotal = java_idiv((total * 85), 100)
@@ -1097,7 +1097,7 @@ function StoreFront:setContextConfigurationInterface(contextConfigurationInterfa
         self.contextConfigurationInterface = contextConfigurationInterface
 end
 
-StoreFront.RESOURCES = " Resources" .. tostring(AbPathData.getInstance().SEPARATOR)
+StoreFront.RESOURCES = require("allbinary_java").to_string(" Resources") .. require("allbinary_java").to_string(AbPathData.getInstance().SEPARATOR)
 
 return StoreFront
 

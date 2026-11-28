@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local FileInputStream = require("java.io.FileInputStream")
+local FileInputStream = java_lazy("java.io.FileInputStream")
 -- local IOException = require("java.io.IOException")
 -- local Map = require("java.util.Map")
 local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
@@ -42,11 +42,7 @@ local AbCryptUtil = java_lazy("org.allbinary.logic.system.security.AbCryptUtil")
 local URLGLOBALS = java_lazy("org.allbinary.globals.URLGLOBALS")
 local LogConfigTypeFactory = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypeFactory")
 local LogConfigTypes = java_lazy("org.allbinary.logic.communication.log.config.type.LogConfigTypes")
--- java.lang.ClassLoader has no Lua module
-local ClassLoader = {}
-ClassLoader.__index = ClassLoader
-ClassLoader.className = "ClassLoader"
-function ClassLoader.new() return setmetatable({}, ClassLoader) end
+local ClassLoader = require("java.lang.ClassLoader")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.
 local function java_exception(className, message, cause)
@@ -177,7 +173,7 @@ function AbeClassLoader:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.abCryptUtil = AbCryptUtil.getInstance()
     self.LOAD_CLASS = "loadClass"
-    self.ENCRYPTED_EXTENSION = tostring(AbPathData.getInstance().EXTENSION_SEP) .. "abc"
+    self.ENCRYPTED_EXTENSION = require("allbinary_java").to_string(AbPathData.getInstance().EXTENSION_SEP) .. require("allbinary_java").to_string("abc")
     if self.key == nil then self.key = nil end
 end
 
@@ -187,7 +183,7 @@ function AbeClassLoader._jinit(self, parent, key)
     AbeClassLoader._init_fields(self)
         -- super(...) made self above
         self.key = key
-        AbeClassLoader.PATH = tostring(URLGLOBALS.getWebappPath()) .. "WEB-INF/classes/"
+        AbeClassLoader.PATH = require("allbinary_java").to_string(URLGLOBALS.getWebappPath()) .. require("allbinary_java").to_string("WEB-INF/classes/")
     return self
 end
 
@@ -216,31 +212,31 @@ function AbeClassLoader:loadClass_j2(name, resolve)
         local logBuffer = LogBuffer.new()
         local try_ok, try_error, try_value = pcall(function()
             local myClass = self:findLoadedClass1(name)
-            if myClass == nil then
+            if rawequal(myClass, nil) then
                 local try_ok, try_error, try_value = pcall(function()
                     loadedWith = "super.loadClass"
                     local normalClass = java_super(ClassLoader, "loadClass", 2)(self, name, resolve)
-                    if normalClass ~= nil then
+                    if not rawequal(normalClass, nil) then
                         do return "__jreturn", normalClass end
                     end
                 end)
                 if not try_ok then
                     local e = try_error
                     if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-                    logBuffer:add(LogFactory.getInstance("Failed to Load Class: " .. name .. "\nwith: " .. loadedWith, self, self.LOAD_CLASS, e))
+                    logBuffer:add(LogFactory.getInstance(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Failed to Load Class: ") .. require("allbinary_java").to_string(name)) .. require("allbinary_java").to_string("\nwith: ")) .. require("allbinary_java").to_string(loadedWith), self, self.LOAD_CLASS, e))
                 end
                 if try_ok and try_error == "__jreturn" then return try_error, try_value end
                 local classBytes = self:loadClassBytesFromFile(name)
-                if classBytes == nil then
-                    error(require("java.lang.ClassNotFoundException").new("My Bytes not loaded for: " .. name .. "\nwith: " .. "loadClassBytes"), 0)
+                if rawequal(classBytes, nil) then
+                    error(require("java.lang.ClassNotFoundException").new(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("My Bytes not loaded for: ") .. require("allbinary_java").to_string(name)) .. require("allbinary_java").to_string("\nwith: ")) .. require("allbinary_java").to_string("loadClassBytes")), 0)
                 end
                 myClass = self:defineClass(name, classBytes, 0, (classBytes.n or #classBytes))
-                if myClass == nil then
-                    error(require("java.lang.ClassNotFoundException").new("My Class Not Defineable for: " .. name .. "\nwith: " .. "loadClassBytes"), 0)
+                if rawequal(myClass, nil) then
+                    error(require("java.lang.ClassNotFoundException").new(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("My Class Not Defineable for: ") .. require("allbinary_java").to_string(name)) .. require("allbinary_java").to_string("\nwith: ")) .. require("allbinary_java").to_string("loadClassBytes")), 0)
                 end
                 AbeClassLoader.classes:put(name, myClass)
             else
-                logBuffer:add(LogFactory.getInstanceF("Already Loaded: " .. name .. "\nwith: " .. loadedWith, self, self.LOAD_CLASS))
+                logBuffer:add(LogFactory.getInstanceF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Already Loaded: ") .. require("allbinary_java").to_string(name)) .. require("allbinary_java").to_string("\nwith: ")) .. require("allbinary_java").to_string(loadedWith), self, self.LOAD_CLASS))
             end
             self:resolveClass(myClass)
             do return "__jreturn", myClass end
@@ -250,7 +246,7 @@ function AbeClassLoader:loadClass_j2(name, resolve)
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().LOADERERROR) then
                 logBuffer:logAll()
-                self.logUtil:put("Failure loading: " .. name .. "\nwith: " .. loadedWith, self, self.LOAD_CLASS, e)
+                self.logUtil:put(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Failure loading: ") .. require("allbinary_java").to_string(name)) .. require("allbinary_java").to_string("\nwith: ")) .. require("allbinary_java").to_string(loadedWith), self, self.LOAD_CLASS, e)
             end
             return nil
         end
@@ -260,6 +256,8 @@ function AbeClassLoader:loadClass(...)
     local count = select("#", ...)
     if count == 1 then return self:loadClass_j1(...) end
     if count == 2 then return self:loadClass_j2(...) end
+    local parent = getmetatable(AbeClassLoader).__index
+    if parent.loadClass then return parent.loadClass(self, ...) end
     error("No method loadClass takes " .. count .. " arguments")
 end
 AbeClassLoader.loadClass__jdispatcher = AbeClassLoader.loadClass
@@ -269,7 +267,7 @@ function AbeClassLoader:loadClassBytesFromFile(name)
         local in_ = nil
         local cname = StringUtil.getInstance().EMPTY_STRING
         local try_ok, try_error, try_value = pcall(function()
-            cname = tostring(AbeClassLoader.PATH) .. name:replace(".", AbPathData.getInstance().SEPARATORCHAR) .. self.ENCRYPTED_EXTENSION
+            cname = require("allbinary_java").to_string(require("allbinary_java").to_string(AbeClassLoader.PATH) .. require("allbinary_java").to_string(name:replace(".", AbPathData.getInstance().SEPARATORCHAR))) .. require("allbinary_java").to_string(self.ENCRYPTED_EXTENSION)
             in_ = FileInputStream.new(cname)
             local decrypted = self.abCryptUtil:decrypt(in_, self.key)
             do return "__jreturn", decrypted end
@@ -278,7 +276,7 @@ function AbeClassLoader:loadClassBytesFromFile(name)
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().LOADERERROR) then
-                self.logUtil:put("(Before LogBuffer Output) Failure loading Encrypted: " .. name .. " File: " .. cname, "AbeClassLoader", "loadClassBytes", e)
+                self.logUtil:put(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("(Before LogBuffer Output) Failure loading Encrypted: ") .. require("allbinary_java").to_string(name)) .. require("allbinary_java").to_string(" File: ")) .. require("allbinary_java").to_string(cname), "AbeClassLoader", "loadClassBytes", e)
             end
             StreamUtil.getInstance():close(in_)
         end
@@ -293,11 +291,11 @@ function AbeClassLoader:oldLoadClass(name, resolve)
         local loadedWith = "findLoadedClass1"
         local try_ok, try_error, try_value = pcall(function()
             local myClass = self:findLoadedClass1(name)
-            if myClass == nil then
+            if rawequal(myClass, nil) then
                 local try_ok, try_error, try_value = pcall(function()
                     loadedWith = "super.loadClass"
                     local normalClass = java_super(ClassLoader, "loadClass", 2)(self, name, resolve)
-                    if normalClass ~= nil then
+                    if not rawequal(normalClass, nil) then
                         do return "__jreturn", normalClass end
                     end
                 end)
@@ -305,23 +303,23 @@ function AbeClassLoader:oldLoadClass(name, resolve)
                     local e = try_error
                     if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
                     if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().LOADER) then
-                        self.logUtil:putF("Failed Loaded Class: " .. name .. " with: " .. loadedWith, self, self.LOAD_CLASS)
+                        self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Failed Loaded Class: ") .. require("allbinary_java").to_string(name)) .. require("allbinary_java").to_string(" with: ")) .. require("allbinary_java").to_string(loadedWith), self, self.LOAD_CLASS)
                     end
                 end
                 if try_ok and try_error == "__jreturn" then return try_error, try_value end
                 loadedWith = "loadClassBytes"
                 local classBytes = self:loadClassBytesFromFile(name)
-                if classBytes == nil then
-                    error(require("java.lang.ClassNotFoundException").new("Bytes not loaded for: " .. name), 0)
+                if rawequal(classBytes, nil) then
+                    error(require("java.lang.ClassNotFoundException").new(require("allbinary_java").to_string("Bytes not loaded for: ") .. require("allbinary_java").to_string(name)), 0)
                 end
                 myClass = self:defineClass(name, classBytes, 0, (classBytes.n or #classBytes))
-                if myClass == nil then
-                    error(require("java.lang.ClassNotFoundException").new("Class Not Defineable for: " .. name), 0)
+                if rawequal(myClass, nil) then
+                    error(require("java.lang.ClassNotFoundException").new(require("allbinary_java").to_string("Class Not Defineable for: ") .. require("allbinary_java").to_string(name)), 0)
                 end
                 AbeClassLoader.classes:put(name, myClass)
             else
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().LOADER) then
-                    self.logUtil:putF("Already Loaded: " .. name .. " with: " .. loadedWith, self, self.LOAD_CLASS)
+                    self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Already Loaded: ") .. require("allbinary_java").to_string(name)) .. require("allbinary_java").to_string(" with: ")) .. require("allbinary_java").to_string(loadedWith), self, self.LOAD_CLASS)
                 end
             end
             self:resolveClass(myClass)
@@ -331,7 +329,7 @@ function AbeClassLoader:oldLoadClass(name, resolve)
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().LOADERERROR) then
-                self.logUtil:put("Failure loading: " .. name, "AbeClassLoader", self.LOAD_CLASS, e)
+                self.logUtil:put(require("allbinary_java").to_string("Failure loading: ") .. require("allbinary_java").to_string(name), "AbeClassLoader", self.LOAD_CLASS, e)
             end
             return nil
         end

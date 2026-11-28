@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Command = require("javax.microedition.lcdui.Command")
+local Command = java_lazy("javax.microedition.lcdui.Command")
 local GameCommandsFactory = java_lazy("org.allbinary.game.commands.GameCommandsFactory")
 local DisplayInfoSingleton = java_lazy("org.allbinary.graphics.displayable.DisplayInfoSingleton")
 local ScreenInfo = java_lazy("org.allbinary.graphics.form.ScreenInfo")
@@ -132,7 +132,7 @@ LimitCommandsVisitor.javaClassName = "org.allbinary.graphics.form.item.LimitComm
 setmetatable(LimitCommandsVisitor, {__index = Visitor})
 
 function LimitCommandsVisitor:_init_fields()
-    if self.isNotSmallDisplay == nil then self.isNotSmallDisplay = nil end
+    if self.isNotSmallDisplay == nil then self.isNotSmallDisplay = false end
 end
 
 
@@ -140,7 +140,7 @@ function LimitCommandsVisitor._jinit(self)
     java_super_init(Visitor, self)
     LimitCommandsVisitor._init_fields(self)
         local displayInfo = DisplayInfoSingleton.getInstance()
-        self.isNotSmallDisplay = (displayInfo:isPortrait() and displayInfo:getLastHeight() > ScreenInfo.getInstance().SMALL_WIDTH) or (not displayInfo:isPortrait() and displayInfo:getLastHeight() > ScreenInfo.getInstance().SMALL_HEIGHT)
+        self.isNotSmallDisplay = (displayInfo:isPortrait() and displayInfo:getLastHeight() > ScreenInfo.getInstance().SMALL_WIDTH) or (not (displayInfo:isPortrait()) and displayInfo:getLastHeight() > ScreenInfo.getInstance().SMALL_HEIGHT)
     return self
 end
 
@@ -154,7 +154,7 @@ end
 function LimitCommandsVisitor:visit(anyType)
         local command = anyType
         local booleanFactory = BooleanFactory.getInstance()
-        if self.isNotSmallDisplay or command:getPriority() == 1 or command == GameCommandsFactory.getInstance().EXIT_COMMAND or command == GameCommandsFactory.getInstance().EXIT_WITHOUT_PROGRESS_COMMAND then
+        if self.isNotSmallDisplay or rawequal(command:getPriority(), 1) or rawequal(command, GameCommandsFactory.getInstance().EXIT_COMMAND) or rawequal(command, GameCommandsFactory.getInstance().EXIT_WITHOUT_PROGRESS_COMMAND) then
             return booleanFactory.TRUE
         else
             return booleanFactory.FALSE

@@ -17,7 +17,7 @@ local function java_real(class)
 end
 
 -- local Closeable = require("java.io.Closeable")
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 -- local OutputStream = require("java.io.OutputStream")
 local Feature = java_lazy("org.allbinary.game.configuration.feature.Feature")
 local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
@@ -79,7 +79,7 @@ end
 
 
 function ApplicationConfiguration.getInstance()
-        if ApplicationConfiguration.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(ApplicationConfiguration.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             ApplicationConfiguration.instance_f = ApplicationConfiguration.new()
         end
         return ApplicationConfiguration.instance_f
@@ -117,30 +117,30 @@ function ApplicationConfiguration:read()
         local fileInputStream = fileInputStreamFactory:getFileInputStreamInstance(StringUtil.getInstance().EMPTY_STRING, self.FILE)
         local dataInputStream = AbDataInputStream.new(fileInputStream)
         local fullScreen = dataInputStream:readInt()
-        if fullScreen == 0 then
+        if rawequal(fullScreen, 0) then
             self:setFullscreen(false)
-        elseif fullScreen == 1 then
+        elseif rawequal(fullScreen, 1) then
             self:setFullscreen(true)
         else
             error(require("java.lang.Exception").new("Invalid FullScreen ActivityConfiguration"), 0)
         end
         local progressBarView = dataInputStream:readInt()
-        if progressBarView == 0 then
+        if rawequal(progressBarView, 0) then
             self:setProgressBarView(false)
-        elseif progressBarView == 1 then
+        elseif rawequal(progressBarView, 1) then
             self:setProgressBarView(true)
         else
             error(require("java.lang.Exception").new("Invalid ProgressBarView ActivityConfiguration"), 0)
         end
         local showTitleBar = dataInputStream:readInt()
-        if showTitleBar == 0 then
+        if rawequal(showTitleBar, 0) then
             self:setShowTitleBar(false)
-        elseif showTitleBar == 1 then
+        elseif rawequal(showTitleBar, 1) then
             self:setShowTitleBar(true)
         else
             error(require("java.lang.Exception").new("Invalid ShowTitleBar ActivityConfiguration"), 0)
         end
-        self.logUtil:putF("Read Configuration: " .. tostring(self), self, "read")
+        self.logUtil:putF(require("allbinary_java").to_string("Read Configuration: ") .. require("allbinary_java").to_string(tostring(self)), self, "read")
 end
 
 
@@ -148,7 +148,7 @@ end
 function ApplicationConfiguration:write()
         local closeable = NullCloseable.NULL_CLOSEABLE
         local try_ok, try_error, try_value = pcall(function()
-            self.logUtil:putF("Write Configuration: " .. tostring(self), self, "write")
+            self.logUtil:putF(require("allbinary_java").to_string("Write Configuration: ") .. require("allbinary_java").to_string(tostring(self)), self, "write")
             local fileInputStreamFactory = FileStreamFactory.getInstance()
             local fileOutputStream = fileInputStreamFactory:getFileOutputStreamInstance(StringUtil.getInstance().EMPTY_STRING, self.FILE)
             local dataOutputStream = AbDataOutputStream.new(fileOutputStream)
@@ -183,10 +183,10 @@ end
 
 -- throws Exception
 function ApplicationConfiguration:update(gameFeature)
-        if gameFeature == MainFeatureFactory.getInstance().FULL_SCREEN then
+        if rawequal(gameFeature, MainFeatureFactory.getInstance().FULL_SCREEN) then
             local features = Features.getInstance()
             if features:isFeature(gameFeature) then
-                if not self:isFullscreen() then
+                if not (self:isFullscreen()) then
                     self:setFullscreen(true)
                     self:write()
                 end

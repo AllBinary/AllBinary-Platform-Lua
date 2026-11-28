@@ -194,7 +194,7 @@ function AbSqlColumn:getLargestIntegerInColumnWhere(columnName, key, value)
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
-                self.logUtil:put(tostring(self.FAILED_SQL_STATEMENT) .. sqlStatement, self, self.METHOD_GET_LARGETS_INTEGER_IN_COLUMN, e)
+                self.logUtil:put(require("allbinary_java").to_string(self.FAILED_SQL_STATEMENT) .. require("allbinary_java").to_string(sqlStatement), self, self.METHOD_GET_LARGETS_INTEGER_IN_COLUMN, e)
             end
             return self.INVALID_RESULT
         end
@@ -231,7 +231,7 @@ function AbSqlColumn:getColumn(columnName)
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
-                self.logUtil:put(tostring(self.FAILED_SQL_STATEMENT) .. sqlStatement, self, self.METHOD_GET_COLUMN, e)
+                self.logUtil:put(require("allbinary_java").to_string(self.FAILED_SQL_STATEMENT) .. require("allbinary_java").to_string(sqlStatement), self, self.METHOD_GET_COLUMN, e)
             end
             return column
         end
@@ -275,7 +275,7 @@ function AbSqlColumn:getColumnWhere(columnName, key, value)
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
-                self.logUtil:put(tostring(self.FAILED_SQL_STATEMENT) .. sqlStatement, self, self.METHOD_GET_COLUMN_WHERE, e)
+                self.logUtil:put(require("allbinary_java").to_string(self.FAILED_SQL_STATEMENT) .. require("allbinary_java").to_string(sqlStatement), self, self.METHOD_GET_COLUMN_WHERE, e)
             end
             return column
         end

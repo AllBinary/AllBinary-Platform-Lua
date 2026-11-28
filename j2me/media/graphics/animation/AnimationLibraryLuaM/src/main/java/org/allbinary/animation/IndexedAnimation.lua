@@ -210,7 +210,7 @@ java_overload(IndexedAnimation, "previousFrame", 0)
 
 
 function IndexedAnimation:isLastFrame()
-        if self:getFrame() == self:getSize() - 1 then
+        if rawequal(self:getFrame(), self:getSize() - 1) then
             return true
         else
             return false

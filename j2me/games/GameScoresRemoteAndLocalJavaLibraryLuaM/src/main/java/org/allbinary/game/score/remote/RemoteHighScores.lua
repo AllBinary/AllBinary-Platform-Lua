@@ -182,7 +182,7 @@ function RemoteHighScores.getInstancePreload(abeClientInformation, softwareInfor
         local logUtil = LogUtil.getInstance()
         local try_ok, try_error, try_value = pcall(function()
             local highScores = RemoteHighScores.hashTable:get(gameInfo)
-            if highScores == nil then
+            if rawequal(highScores, nil) then
                 highScores = RemoteHighScores.new(abeClientInformation, softwareInformation, gameInfo, heading, columnTwoHeading, isAscending, preload)
                 RemoteHighScores.hashTable:put(gameInfo, highScores)
             end
@@ -208,7 +208,7 @@ java_overload(RemoteHighScores, "addHighScore", 1, function(java_a1) return true
 function RemoteHighScores:update(hashtable)
         self:getList():clear()
         local vector = hashtable:get(RemoteHighScoresData.getInstance().HIGH_SCORES)
-        if vector ~= nil then
+        if not rawequal(vector, nil) then
             local size = vector:size()
             for index = 0, size - 1 do
                 local highScoreVector = vector:get(index)
@@ -225,7 +225,7 @@ function RemoteHighScores:update(hashtable)
             local nextElement = nil
             while self.enumerationUtil:hasMoreElements(enumeration) do
                 nextElement = self.enumerationUtil:nextElement(enumeration)
-                self.logUtil:putF(NEXT_ELEMENT .. tostring(nextElement), self, commonStrings.PROCESS)
+                self.logUtil:putF(require("allbinary_java").to_string(NEXT_ELEMENT) .. require("allbinary_java").to_string(nextElement), self, commonStrings.PROCESS)
             end
         end
 end

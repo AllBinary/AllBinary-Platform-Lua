@@ -198,7 +198,7 @@ java_overload(FlagGameResources, "append", 2, function(java_a1, java_a2) return 
 FlagGameResources.ICON = "_icon"
 FlagGameResources.BUILD = "_build"
 FlagGameResources.DESTROY = "_destroy"
-FlagGameResources.ICON_BUILD = "_icon" .. tostring(FlagGameResources.BUILD)
+FlagGameResources.ICON_BUILD = require("allbinary_java").to_string("_icon") .. require("allbinary_java").to_string(FlagGameResources.BUILD)
 
 return FlagGameResources
 

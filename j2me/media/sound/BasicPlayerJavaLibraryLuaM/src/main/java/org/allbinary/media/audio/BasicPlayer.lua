@@ -28,10 +28,10 @@ local function java_real(class)
     return class
 end
 
--- local Control = require("javax.microedition.media.Control")
--- local MediaException = require("javax.microedition.media.MediaException")
--- local Player = require("javax.microedition.media.Player")
--- local PlayerListener = require("javax.microedition.media.PlayerListener")
+local Control = java_lazy("javax.microedition.media.Control")
+local MediaException = java_lazy("javax.microedition.media.MediaException")
+local Player = java_lazy("javax.microedition.media.Player")
+local PlayerListener = java_lazy("javax.microedition.media.PlayerListener")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
@@ -120,7 +120,7 @@ end
 
 
 function BasicPlayer:addPlayerListener(playerListener)
-        if not self.listenersList:contains(playerListener) then
+        if not (self.listenersList:contains(playerListener)) then
             self.listenersList:add(playerListener)
         end
 end

@@ -141,8 +141,8 @@ function GeographicMapTopViewGameLayerBehavior1:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.gravityUtil = GravityUtil.getInstance()
     self.geographicMapBehavior = MultiGeographicMapBehavior.new()
-    if self.autoStepBlocks == nil then self.autoStepBlocks = nil end
-    if self.offsetY == nil then self.offsetY = nil end
+    if self.autoStepBlocks == nil then self.autoStepBlocks = false end
+    if self.offsetY == nil then self.offsetY = 0 end
     self.previousGeographicMapCellPosition = SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION
 end
 
@@ -165,10 +165,10 @@ end
 
 -- throws Exception
 function GeographicMapTopViewGameLayerBehavior1:gravity(velocityProperties, geographicMapInterfaceArray, geographicMapCellTypeArray, geographicMapCellPosition)
-        if geographicMapCellPosition ~= SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION then
+        if not rawequal(geographicMapCellPosition, SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION) then
             self.geographicMapBehavior:getCellTypeAt(geographicMapInterfaceArray, geographicMapCellTypeArray, geographicMapCellPosition)
             local hasSolidBlock = self:hasSolidBlock(geographicMapInterfaceArray, geographicMapCellTypeArray)
-            if not hasSolidBlock then
+            if not (hasSolidBlock) then
                 self.gravityUtil:process(velocityProperties, self.gravityUtil.GAME_GRAVITY_VELOCITY)
                 velocityProperties:limitXYToForwardAndReverseMaxVelocity()
                 self:gravity()
@@ -209,7 +209,7 @@ java_overload(GeographicMapTopViewGameLayerBehavior1, "getRightPosition", 2, fun
 -- throws Exception
 function GeographicMapTopViewGameLayerBehavior1:getGeographicMapCellPositionIfNotSolidBlockOrOffMapLocation(geographicMapInterfaceArray, geographicMapCellTypeArray, velocityProperties, layer, x, y)
         local geographicMapCellPosition = self:getPosition(geographicMapInterfaceArray, layer, x, y)
-        if self.previousGeographicMapCellPosition ~= geographicMapCellPosition and geographicMapCellPosition ~= SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION then
+        if not rawequal(self.previousGeographicMapCellPosition, geographicMapCellPosition) and not rawequal(geographicMapCellPosition, SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION) then
             local possibleStepGeographicMapCellPosition = geographicMapCellPosition
             local tiledLayer = geographicMapInterfaceArray[1]:getAllBinaryTiledLayer()
             if possibleStepGeographicMapCellPosition:getColumn() > 0 and possibleStepGeographicMapCellPosition:getRow() > 0 and possibleStepGeographicMapCellPosition:getColumn() < tiledLayer:getColumns() and possibleStepGeographicMapCellPosition:getRow() < tiledLayer:getRows() then
@@ -233,7 +233,7 @@ java_overload(GeographicMapTopViewGameLayerBehavior1, "getGeographicMapCellPosit
 
 -- throws Exception
 function GeographicMapTopViewGameLayerBehavior1:moveAndLand(geographicMapInterfaceArray, geographicMapCellTypeArray, geographicMapCellPosition, velocityProperties, layer, x, y)
-        if geographicMapCellPosition ~= SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION then
+        if not rawequal(geographicMapCellPosition, SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION) then
             local topViewCharacterInterface = (layer)
             topViewCharacterInterface:terrainMove(geographicMapInterfaceArray, geographicMapCellTypeArray, x, y)
         else
@@ -246,7 +246,7 @@ java_overload(GeographicMapTopViewGameLayerBehavior1, "moveAndLand", 7, function
 function GeographicMapTopViewGameLayerBehavior1:move(geographicMapInterfaceArray, geographicMapCellTypeArray, velocityProperties, layer, x, y)
         local geographicMapCellPosition = self:getGeographicMapCellPositionIfNotSolidBlockOrOffMapLocation(geographicMapInterfaceArray, geographicMapCellTypeArray, velocityProperties, layer, x, y)
         self:moveAndLand(geographicMapInterfaceArray, geographicMapCellTypeArray, geographicMapCellPosition, velocityProperties, layer, x, y)
-        if geographicMapCellPosition == SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION then
+        if rawequal(geographicMapCellPosition, SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION) then
             return false
         else
             return true
@@ -258,7 +258,7 @@ java_overload(GeographicMapTopViewGameLayerBehavior1, "move", 6, function(java_a
 -- throws Exception
 function GeographicMapTopViewGameLayerBehavior1:left(geographicMapInterfaceArray, geographicMapCellTypeArray, velocityProperties, layer)
         local geographicMapCellPosition = self:getLeftPosition(geographicMapInterfaceArray, layer)
-        if geographicMapCellPosition ~= SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION then
+        if not rawequal(geographicMapCellPosition, SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION) then
             local possibleStepGeographicMapCellPosition = geographicMapInterfaceArray[1]:getGeographicMapCellPositionFactory():getAt(geographicMapCellPosition:getColumn(), geographicMapCellPosition:getRow() - 1)
             self.geographicMapBehavior:getCellTypeAt(geographicMapInterfaceArray, geographicMapCellTypeArray, possibleStepGeographicMapCellPosition)
             local hasSolidBlock = self:hasSolidBlock(geographicMapInterfaceArray, geographicMapCellTypeArray)
@@ -281,7 +281,7 @@ java_overload(GeographicMapTopViewGameLayerBehavior1, "left", 4, function(java_a
 -- throws Exception
 function GeographicMapTopViewGameLayerBehavior1:right(geographicMapInterfaceArray, geographicMapCellTypeArray, velocityProperties, layer)
         local geographicMapCellPosition = self:getRightPosition(geographicMapInterfaceArray, layer)
-        if geographicMapCellPosition ~= SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION then
+        if not rawequal(geographicMapCellPosition, SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION) then
             local possibleStepGeographicMapCellPosition = geographicMapInterfaceArray[1]:getGeographicMapCellPositionFactory():getAt(geographicMapCellPosition:getColumn(), geographicMapCellPosition:getRow() - 1)
             self.geographicMapBehavior:getCellTypeAt(geographicMapInterfaceArray, geographicMapCellTypeArray, possibleStepGeographicMapCellPosition)
             local hasSolidBlock = self:hasSolidBlock(geographicMapInterfaceArray, geographicMapCellTypeArray)

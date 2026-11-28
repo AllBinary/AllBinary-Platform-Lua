@@ -195,24 +195,25 @@ java_overload(BasicHighScoresFactory, "fetchHighScores", 2, function(java_a1, ja
 
 function BasicHighScoresFactory:fetchHighScoresPreload(gameInfo, highScoresResultsListener, preload)
         SecondaryThreadPool.getInstance():runTask((function()
-            local o = ARunnable.new and ARunnable.new() or setmetatable({}, {__index = ARunnable})
+            local java_outer_self = self
+        local o = ARunnable.new and ARunnable.new() or setmetatable({}, {__index = ARunnable})
             
 
             function o:run()
                 local logUtil = LogUtil.getInstance()
                 local try_ok, try_error, try_value = pcall(function()
-                    logUtil:putF(self.commonStrings.START, self, self.FETCH)
+                    logUtil:putF(java_outer_self.commonStrings.START, self, self.FETCH)
                     self.highScoresArray[1] = RecordStoreHighScores.getInstance(self.abeClientInformation, gameInfo, self.TOP, self.PERSONAL_HIGH_SCORES, self.SCORES, ScoreComparator.new(true))
                     local gameType = gameInfo:getGameType()
                     local gameTypeFactory = GameTypeFactory.getInstance()
                     local gameInfo2 = gameInfo
-                    if gameType == gameTypeFactory.SINGLE_PLAYER or gameType == gameTypeFactory.BOT then
+                    if rawequal(gameType, gameTypeFactory.SINGLE_PLAYER) or rawequal(gameType, gameTypeFactory.BOT) then
                         gameInfo2 = BasicHighScoresGameInfoFactory.getInstance().SINGLE_PLAYER_SERVER
-                    elseif gameType == gameTypeFactory.MULTI_PLAYER then
+                    elseif rawequal(gameType, gameTypeFactory.MULTI_PLAYER) then
                         gameInfo2 = BasicHighScoresGameInfoFactory.getInstance().MULTI_PLAYER_SERVER
                     end
                     self.highScoresArray[2] = RemoteHighScores.getInstancePreload(self.abeClientInformation, self.softwareInformation, gameInfo2, self.WORLD_TOP_SCORES, self.SCORES, BooleanFactory.getInstance().FALSE, preload)
-                    logUtil:putF(self.commonStrings.END, self, self.FETCH)
+                    logUtil:putF(java_outer_self.commonStrings.END, self, self.FETCH)
                     LastFetchHighScoresFactory.getInstance().highScoresArray = self.highScoresArray
                     highScoresResultsListener:setHighScoresArray(self.highScoresArray)
                 end)

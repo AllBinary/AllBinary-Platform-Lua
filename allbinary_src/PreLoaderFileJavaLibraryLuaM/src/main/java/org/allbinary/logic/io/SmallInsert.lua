@@ -84,7 +84,7 @@ function SmallInsert:atBeginning(text)
         local try_ok, try_error, try_value = pcall(function()
             local idFile = FileOutputStream.new(self.fileName)
             local idOutData = DataOutputStream.new(idFile)
-            idOutData:writeBytes(text .. self.string_)
+            idOutData:writeBytes(require("allbinary_java").to_string(text) .. require("allbinary_java").to_string(self.string_))
             do return "__jreturn", true end
         end)
         if not try_ok then
@@ -103,7 +103,7 @@ function SmallInsert:after(text, after)
         local try_ok, try_error, try_value = pcall(function()
             local index = ((string.find(self.string_, after, 1, true) or 0) - 1)
             if index < 0 then
-                print("No such start: " .. after .. " in: " .. self.string_)
+                print(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("No such start: ") .. require("allbinary_java").to_string(after)) .. require("allbinary_java").to_string(" in: ")) .. require("allbinary_java").to_string(self.string_))
                 do return "__jreturn", false end
             end
             index = index + #after
@@ -111,7 +111,7 @@ function SmallInsert:after(text, after)
             local end_ = string.sub(self.string_, (index + 1) + 1, #self.string_)
             local idFile = FileOutputStream.new(self.fileName)
             local idOutData = DataOutputStream.new(idFile)
-            idOutData:writeBytes(start .. text .. end_)
+            idOutData:writeBytes(require("allbinary_java").to_string(require("allbinary_java").to_string(start) .. require("allbinary_java").to_string(text)) .. require("allbinary_java").to_string(end_))
             idOutData:close()
             idFile:close()
             do return "__jreturn", true end
@@ -132,7 +132,7 @@ function SmallInsert:atEnd(text)
         local try_ok, try_error, try_value = pcall(function()
             local idFile = FileOutputStream.new(self.fileName)
             local idOutData = DataOutputStream.new(idFile)
-            idOutData:writeBytes(self.string_ .. text)
+            idOutData:writeBytes(require("allbinary_java").to_string(self.string_) .. require("allbinary_java").to_string(text))
             do return "__jreturn", true end
         end)
         if not try_ok then

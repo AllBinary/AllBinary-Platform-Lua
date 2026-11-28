@@ -119,7 +119,7 @@ function AbPathData:getNameFromPath(path)
         if endIndex < 0 then
             return path
         end
-        if #path == endIndex + 1 then
+        if rawequal(#path, endIndex + 1) then
             local categoryName = string.sub(path, (0) + 1, endIndex)
             return self:getNameFromPath(categoryName)
         else
@@ -137,7 +137,7 @@ function AbPathData:removeNameFromPath(path)
         if endIndex < 0 then
             return StringUtil.getInstance().EMPTY_STRING
         end
-        if #path == endIndex + 1 then
+        if rawequal(#path, endIndex + 1) then
             return self:removeNameFromPath(string.sub(path, (0) + 1, endIndex - 1))
         else
             local pathWithoutName = string.sub(path, (0) + 1, endIndex)

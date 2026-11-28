@@ -103,7 +103,7 @@ end
 function SmallBasicColorCacheFactory:getAndOrCreate(colorAsInt)
         local basicColor = nil
         for index = 0, self.SIZE - 1 do
-            if self.INDEX_TO_COLOR[index + 1] == colorAsInt then
+            if rawequal(self.INDEX_TO_COLOR[index + 1], colorAsInt) then
                 return self.BASIC_COLOR_ARRAY[index + 1]
             end
         end

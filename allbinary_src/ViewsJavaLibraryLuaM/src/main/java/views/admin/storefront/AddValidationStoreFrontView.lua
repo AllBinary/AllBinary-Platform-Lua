@@ -173,7 +173,7 @@ function AddValidationStoreFrontView._jinit(self, transformInfoInterface)
     AddValidationStoreFrontView._init_fields(self)
         -- super(...) made self above
         self.newStoreFrontInterface = StoreFront.new(self:getPageContext():getRequest())
-        if self.newStoreFrontInterface:getName() == nil then
+        if rawequal(self.newStoreFrontInterface:getName(), nil) then
             self.newStoreFrontInterface:setName(self:getWeblisketSession():getStoreName())
         end
     return self
@@ -189,10 +189,10 @@ end
 function AddValidationStoreFrontView:isValid()
         local try_ok, try_error, try_value = pcall(function()
             local valid = true
-            if self.newStoreFrontInterface:isValid() == false then
+            if rawequal(self.newStoreFrontInterface:isValid(), false) then
                 valid = false
             end
-            if StoreFrontFactory.getInstance(self.newStoreFrontInterface:getName()) ~= nil then
+            if not rawequal(StoreFrontFactory.getInstance(self.newStoreFrontInterface:getName()), nil) then
                 valid = false
             end
             if AbFile.createAbFileFromAbPath(AbPath.new(self:getStoreViewsPath(), StringUtil.getInstance().EMPTY_STRING)):isFile() then
@@ -227,10 +227,10 @@ java_overload(AddValidationStoreFrontView, "getStoreViewsPath", 0)
 function AddValidationStoreFrontView:validationInfo()
         local try_ok, try_error, try_value = pcall(function()
             local stringBuffer = StringMaker.new()
-            if self.newStoreFrontInterface:isValid() == false then
+            if rawequal(self.newStoreFrontInterface:isValid(), false) then
                 stringBuffer:append(self.newStoreFrontInterface:validationInfo())
             end
-            if StoreFrontFactory.getInstance(self.newStoreFrontInterface:getName()) ~= nil then
+            if not rawequal(StoreFrontFactory.getInstance(self.newStoreFrontInterface:getName()), nil) then
                 stringBuffer:append("Store name already used<br/>")
             end
             if AbFile.createAbFileFromAbPath(AbPath.new(self:getStoreViewsPath(), StringUtil.getInstance().EMPTY_STRING)):isFile() then

@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 local ResourceUtil = java_lazy("org.allbinary.data.resource.ResourceUtil")
 
 local function java_idiv(a, b)

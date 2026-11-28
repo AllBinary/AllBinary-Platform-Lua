@@ -111,8 +111,8 @@ function OperatingSystemFactory:getOperatingSystemInstance()
             local osName = systemProperties:getName()
             local osArch = systemProperties:getArch()
             local osVersion = systemProperties:getVersion()
-            if not self.hasDetected then
-                self.logUtil:putF("osName: " .. osName, self, self.commonStrings.GET_INSTANCE)
+            if not (self.hasDetected) then
+                self.logUtil:putF(require("allbinary_java").to_string("osName: ") .. require("allbinary_java").to_string(osName), self, self.commonStrings.GET_INSTANCE)
                 self.hasDetected = true
                 if ((string.find(osName, operatingSystems.LINUX, 1, true) or 0) - 1) >= 0 then
                     if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().FACTORYERROR) then

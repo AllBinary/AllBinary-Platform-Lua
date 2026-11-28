@@ -62,7 +62,7 @@ MotionEventFactory.java_interfaces = function() return {AllBinaryEventObjectFact
 
 function MotionEventFactory:_init_fields()
     if self.source == nil then self.source = nil end
-    if self.id == nil then self.id = nil end
+    if self.id == nil then self.id = 0 end
 end
 
 
@@ -84,7 +84,7 @@ end
 function MotionEventFactory:getInstance()
         local inputFactory = InputFactory.getInstance()
         local input = inputFactory:getInstanceById((function() local value = MotionEventFactory.index MotionEventFactory.index = value + 1 return value end)())
-        if input == inputFactory.NO_INPUT then
+        if rawequal(input, inputFactory.NO_INPUT) then
             return MotionGestureEvent.new(self.source, self.id, TouchMotionGestureFactory.getInstance().NO_MOTION)
         else
             return MotionGestureEvent.new(self.source, self.id, input)

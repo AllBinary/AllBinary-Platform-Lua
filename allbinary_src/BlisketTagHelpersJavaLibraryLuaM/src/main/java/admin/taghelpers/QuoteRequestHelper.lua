@@ -156,7 +156,7 @@ function QuoteRequestHelper._jinit(self, hashMap, pageContext)
         self.weblisketSession = WeblisketSession.new(hashMap, pageContext)
         self.quoteRequest = QuoteRequest.new(self.weblisketSession:getUserName(), request)
         local storeName = hashMap:get(StoreFrontData.getInstance().NAME)
-        if storeName ~= nil then
+        if not rawequal(storeName, nil) then
             self.storeFrontInterface = StoreFrontFactory.getInstance(storeName)
         end
     return self

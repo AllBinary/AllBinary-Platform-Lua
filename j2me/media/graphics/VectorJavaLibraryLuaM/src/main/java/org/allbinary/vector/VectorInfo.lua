@@ -52,10 +52,10 @@ VectorInfo.className = "VectorInfo"
 VectorInfo.javaClassName = "org.allbinary.vector.VectorInfo"
 
 function VectorInfo:_init_fields()
-    if self.width == nil then self.width = nil end
-    if self.height == nil then self.height = nil end
+    if self.width == nil then self.width = 0 end
+    if self.height == nil then self.height = 0 end
     if self.points == nil then self.points = nil end
-    if self.totalFrames == nil then self.totalFrames = nil end
+    if self.totalFrames == nil then self.totalFrames = 0 end
 end
 
 

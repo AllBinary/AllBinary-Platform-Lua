@@ -92,7 +92,7 @@ function StupidTimer:visit(visitorInterface, timeDelayHelper)
         PreLogUtil.put(tostring(StringMaker.new():append(WAITING_FOR):append(StringUtil.getInstance():toString(visitorInterface))), self, self.commonStrings.VISIT)
         local index = 0
         while self:visitBool(visitorInterface) do
-            if math.fmod(index, 10) == 0 then
+            if rawequal(math.fmod(index, 10), 0) then
                 PreLogUtil.put(tostring(StringMaker.new():append(WAITING_FOR):appendint(index)), self, self.commonStrings.VISIT)
             end
             index = index + 1

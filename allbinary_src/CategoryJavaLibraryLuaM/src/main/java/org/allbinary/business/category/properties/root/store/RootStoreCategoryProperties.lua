@@ -119,7 +119,7 @@ function RootStoreCategoryProperties:_init_fields()
     if self.fileAbPath == nil then self.fileAbPath = nil end
     if self.abPath == nil then self.abPath = nil end
     if self.category == nil then self.category = nil end
-    if self.isRealRoot_f == nil then self.isRealRoot_f = nil end
+    if self.isRealRoot_f == nil then self.isRealRoot_f = false end
     if self.webAppAbPath == nil then self.webAppAbPath = nil end
     if self.transformInfoInterface == nil then self.transformInfoInterface = nil end
 end
@@ -211,8 +211,8 @@ function RootStoreCategoryProperties:initPath()
         local storeFrontInterface = StoreFrontFactory.getInstance(transformInfoHttpStoreInterface:getStoreName())
         local postPath = storeFrontInterface:getCurrentHostNamePath() + storeFrontInterface:getCategoryPath()
         local httpServletRequest = transformInfoHttpStoreInterface:getPageContext():getRequest()
-        self.webAppAbPath = AbPath.new(tostring(httpServletRequest:getContextPath()) .. postPath, StringUtil.getInstance().EMPTY_STRING)
-        self:setRootFilePath(AbPath.new(tostring(URLGLOBALS.getMainPath()) .. postPath, StringUtil.getInstance().EMPTY_STRING))
+        self.webAppAbPath = AbPath.new(require("allbinary_java").to_string(httpServletRequest:getContextPath()) .. require("allbinary_java").to_string(postPath), StringUtil.getInstance().EMPTY_STRING)
+        self:setRootFilePath(AbPath.new(require("allbinary_java").to_string(URLGLOBALS.getMainPath()) .. require("allbinary_java").to_string(postPath), StringUtil.getInstance().EMPTY_STRING))
 end
 
 

@@ -41,7 +41,7 @@ AnalogLocationInput.className = "AnalogLocationInput"
 AnalogLocationInput.javaClassName = "org.allbinary.game.input.analog.AnalogLocationInput"
 
 function AnalogLocationInput:_init_fields()
-    if self.playerId == nil then self.playerId = nil end
+    if self.playerId == nil then self.playerId = 0 end
     if self.customGPoint == nil then self.customGPoint = nil end
     if self.rz == nil then self.rz = 0 end
     if self.rightTrigger == nil then self.rightTrigger = 0 end

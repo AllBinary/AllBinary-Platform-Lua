@@ -121,7 +121,7 @@ end
 
 
 function AbstractInputAutomationWorker:isAnyDataWorkerRunning()
-        if self.captureThread ~= nil and (self.captureThread:isAlive() or self:getCaptureWorker():isRunning() or self:getMotionRectanglesWorker():isRunning() or self:getImageComparisonWorker():isRunning()) then
+        if not rawequal(self.captureThread, nil) and (self.captureThread:isAlive() or self:getCaptureWorker():isRunning() or self:getMotionRectanglesWorker():isRunning() or self:getImageComparisonWorker():isRunning()) then
             return true
         end
         return false
@@ -130,9 +130,9 @@ end
 
 -- throws Exception
 function AbstractInputAutomationWorker:startDataWorkers()
-        if not self:isAnyDataWorkerRunning() then
+        if not (self:isAnyDataWorkerRunning()) then
             self.captureThread = require("java.lang.Thread").new(self:getCaptureWorker())
-            self.logUtil:putF("Starting CaptureWorkers - Need more images - Thread State: " .. tostring(self.captureThread:getState()), self, "startCaptureWorkers")
+            self.logUtil:putF(require("allbinary_java").to_string("Starting CaptureWorkers - Need more images - Thread State: ") .. require("allbinary_java").to_string(tostring(self.captureThread:getState())), self, "startCaptureWorkers")
             self.captureThread:start()
         end
 end
@@ -142,7 +142,7 @@ end
 function AbstractInputAutomationWorker:waitForDataWorkers()
         while self:isAnyDataWorkerRunning() do
             self.logUtil:putF("Waiting", self, self.commonStrings.RUN)
-            java_sleep(250)
+            require("java.lang.Thread").sleep(250)
         end
 end
 
@@ -168,7 +168,7 @@ function AbstractInputAutomationWorker:run()
                 timeHelper:setStartTimeTNT()
                 self:process()
                 self.index = self.index + 1
-                self.logUtil:putF(tostring(CommonLabels.getInstance().ELAPSED + timeHelper:getElapsedTNT()) .. " Index: " .. tostring(self.index), self, self.commonStrings.RUN)
+                self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(CommonLabels.getInstance().ELAPSED + timeHelper:getElapsedTNT()) .. require("allbinary_java").to_string(" Index: ")) .. require("allbinary_java").to_string(self.index), self, self.commonStrings.RUN)
             end
             self:stopDataWorkers()
             self:waitForDataWorkers()

@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local BoundsVisitorInterface = java_lazy("org.allbinary.bounds.BoundsVisitorInterface")
 local LayerBounds = java_lazy("org.allbinary.bounds.LayerBounds")
 local BasicAI = require("org.allbinary.game.ai.BasicAI")

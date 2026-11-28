@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local GameKey = java_lazy("org.allbinary.game.input.GameKey")
 local GameKeyFactory = java_lazy("org.allbinary.game.input.GameKeyFactory")
 local Input = java_lazy("org.allbinary.game.input.Input")
@@ -191,7 +191,7 @@ end
 
 
 function InputToGameKeyMapping.getNullInstance()
-        if InputToGameKeyMapping.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(InputToGameKeyMapping.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             InputToGameKeyMapping.instance_f = InputToGameKeyMapping.new()
         end
         return InputToGameKeyMapping.instance_f
@@ -231,7 +231,7 @@ java_overload(InputToGameKeyMapping, "removeAll", 0)
 function InputToGameKeyMapping:addMapping(inputToGameKeyMapping)
         for index = inputToGameKeyMapping:getMaxMappable() - 1, 0, -1 do
             local input = inputToGameKeyMapping:getInstance(index)
-            if input ~= self.gameKeyFactory.NONE then
+            if not rawequal(input, self.gameKeyFactory.NONE) then
                 self:addAll(input, inputToGameKeyMapping:getMappedInput(input))
             end
         end
@@ -282,9 +282,9 @@ function InputToGameKeyMapping:getReverseInstance(id)
         local list = BasicArrayListD.new()
         local inputFactory = InputFactory.getInstance()
         for index = 0, (self.platformToGameKeyMapping.n or #self.platformToGameKeyMapping) - 1 do
-            if self.platformToGameKeyMapping[index + 1]:getId() == id then
+            if rawequal(self.platformToGameKeyMapping[index + 1]:getId(), id) then
                 local input = inputFactory:getInstanceById(index)
-                if input ~= nil then
+                if not rawequal(input, nil) then
                     list:add(input)
                 end
             end
@@ -300,7 +300,7 @@ function InputToGameKeyMapping:initGameKey(canvas, gameKey)
         if key < 0 and -key < (self.negativePlatformToGameKeyMapping.n or #self.negativePlatformToGameKeyMapping) then
             self.negativePlatformToGameKeyMapping[-key + 1] = gameKey
         elseif key > 0 then
-            if self.platformToGameKeyMapping[key + 1] == self.gameKeyFactory.NONE then
+            if rawequal(self.platformToGameKeyMapping[key + 1], self.gameKeyFactory.NONE) then
                 self.platformToGameKeyMapping[key + 1] = gameKey
             end
         else

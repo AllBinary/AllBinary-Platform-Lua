@@ -84,7 +84,7 @@ function PixelDeltaFactory.getInstance(x, y, rgb1, rgb2)
         local point = PointFactory.getInstance():createXY(x, y)
         local colorDelta = ColorDeltaFactory.getInstance(rgb1, rgb2)
         local pixelDelta = PixelDeltaFactory.cacheInterface:get(PixelDelta.getKey(point, colorDelta))
-        if pixelDelta == nil then
+        if rawequal(pixelDelta, nil) then
             pixelDelta = PixelDelta.new(point, colorDelta)
         end
         return pixelDelta

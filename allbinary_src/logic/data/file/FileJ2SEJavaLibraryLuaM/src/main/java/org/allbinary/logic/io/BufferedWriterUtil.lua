@@ -29,7 +29,7 @@ local function java_real(class)
 end
 
 -- local BufferedWriter = require("java.io.BufferedWriter")
--- local FileWriter = require("java.io.FileWriter")
+local FileWriter = java_lazy("java.io.FileWriter")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
 local AbFileNativeUtil = java_lazy("org.allbinary.logic.io.file.AbFileNativeUtil")
@@ -121,7 +121,7 @@ end
 function BufferedWriterUtil:overwrite_j2_1(path, data)
         local abFile = AbFile.createAbFile(path)
         if abFile:exists() then
-            self.logUtil:putF(self.REMOVING_OLD .. path, self, self.commonStrings.CREATE)
+            self.logUtil:putF(require("allbinary_java").to_string(self.REMOVING_OLD) .. require("allbinary_java").to_string(path), self, self.commonStrings.CREATE)
             abFile:delete()
         else
             local name = AbPathData.getInstance():removeNameFromPath(path)
@@ -142,7 +142,7 @@ end
 -- throws Exception
 function BufferedWriterUtil:overwrite_j2_2(abFile, data)
         if abFile:exists() then
-            self.logUtil:putF(self.REMOVING_OLD .. tostring(abFile:getPath()), self, self.commonStrings.CREATE)
+            self.logUtil:putF(require("allbinary_java").to_string(self.REMOVING_OLD) .. require("allbinary_java").to_string(abFile:getPath()), self, self.commonStrings.CREATE)
             abFile:delete()
         else
             local name = AbPathData.getInstance():removeNameFromPath(abFile:getAbsolutePath())

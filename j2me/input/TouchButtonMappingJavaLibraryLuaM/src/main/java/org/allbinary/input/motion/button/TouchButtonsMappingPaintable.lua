@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local CellPositionFactory = java_lazy("org.allbinary.graphics.CellPositionFactory")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local Paintable = require("org.allbinary.graphics.paint.Paintable")
@@ -152,7 +152,7 @@ setmetatable(TouchButtonsMappingPaintable, {__index = Paintable})
 
 function TouchButtonsMappingPaintable:_init_fields()
     self.logUtil = LogUtil.getInstance()
-    if self.foregroundColor == nil then self.foregroundColor = nil end
+    if self.foregroundColor == nil then self.foregroundColor = 0 end
     self.paintableTable = java_new_array(nil, 0, 0)
     self.touchButtonLocationHelper = TouchButtonLocationHelper.new()
 end

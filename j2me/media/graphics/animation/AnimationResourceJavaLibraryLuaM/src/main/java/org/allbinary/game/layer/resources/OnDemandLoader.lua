@@ -93,7 +93,7 @@ function OnDemandLoader:init(imageCache, level, loadingString)
                 return
             end
             self:initAll(imageCache, loadingString)
-        elseif level ~= resourceLoadingLevelFactory.LOAD_ALL:getLevel() then
+        elseif not rawequal(level, resourceLoadingLevelFactory.LOAD_ALL:getLevel()) then
             local layerPlacementInterfaceBasicArrayListFactoryInterface = self.gameLayerPlacementInterfaceBasicArrayListFactoryInterfaceFactory:getInstance(level)
             self:initLevel(layerPlacementInterfaceBasicArrayListFactoryInterface, imageCache, level, loadingString)
         end
@@ -109,7 +109,7 @@ function OnDemandLoader:initAll(imageCache, loadingString)
             local onDemandIndex = self.onDemandResourcesFactory:size()
             while (function() onDemandIndex = onDemandIndex - 1 return onDemandIndex end)() >= 0 do
             onDemandResources = self.onDemandResourcesFactory:remove(onDemandIndex)
-            if onDemandResources ~= OnDemandResources.NULL_ON_DEMAND_RESOURCES then
+            if not rawequal(onDemandResources, OnDemandResources.NULL_ON_DEMAND_RESOURCES) then
                 index = onDemandResources:initAt(imageCache, self.resourceAnimationInterfaceFactoryInterfaceFactory, portion, loadingString, index)
             end
             end
@@ -129,7 +129,7 @@ function OnDemandLoader:initLevel(layerPlacementInterfaceBasicArrayListFactoryIn
             local onDemandIndex = (onDemandArray.n or #onDemandArray)
             while (function() onDemandIndex = onDemandIndex - 1 return onDemandIndex end)() >= 0 do
             onDemandResources = self.onDemandResourcesFactory:remove(onDemandArray[onDemandIndex + 1])
-            if onDemandResources ~= OnDemandResources.NULL_ON_DEMAND_RESOURCES then
+            if not rawequal(onDemandResources, OnDemandResources.NULL_ON_DEMAND_RESOURCES) then
                 index = onDemandResources:initAt(imageCache, self.resourceAnimationInterfaceFactoryInterfaceFactory, portion, loadingString, index)
             end
             end

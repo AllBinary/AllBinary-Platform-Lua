@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local TimeDelayHelper = java_lazy("org.allbinary.time.TimeDelayHelper")
@@ -85,18 +85,18 @@ end
 function ImageCompleteUtil:isReady(image, name, timeDelayHelper)
         local playnImage = image
         local playnCoreImage = playnImage:getImage()
-        if not playnCoreImage:isReady() or playnCoreImage:width() + playnCoreImage:height() <= 0 then
+        if not (playnCoreImage:isReady()) or playnCoreImage:width() + playnCoreImage:height() <= 0 then
             self:handleTimeout(name)
             return false
         end
-        if not image:isReady() then
+        if not (image:isReady()) then
             image:init(image:getImage())
-            if not image:isReady() then
-                PreLogUtil.put("Waiting for Not Ready Image: " .. image:getName(), self, self.ISREADY)
+            if not (image:isReady()) then
+                PreLogUtil.put(require("allbinary_java").to_string("Waiting for Not Ready Image: ") .. require("allbinary_java").to_string(image:getName()), self, self.ISREADY)
             end
         end
         local commonStrings = CommonStrings.getInstance()
-        PreLogUtil.put(self.COMPLETE .. image:getName(), self, commonStrings.SUCCESS)
+        PreLogUtil.put(require("allbinary_java").to_string(self.COMPLETE) .. require("allbinary_java").to_string(image:getName()), self, commonStrings.SUCCESS)
         return true
 end
 

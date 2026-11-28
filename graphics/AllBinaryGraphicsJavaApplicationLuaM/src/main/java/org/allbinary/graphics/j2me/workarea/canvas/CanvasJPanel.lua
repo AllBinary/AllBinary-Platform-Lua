@@ -278,7 +278,7 @@ end
 
 -- throws Exception
 function CanvasJPanel:initMyComponents()
-        self.frameLabel = CanvasTreeLabel.new("FrameLabel" .. tostring(CanvasJPanel.frame))
+        self.frameLabel = CanvasTreeLabel.new(require("allbinary_java").to_string("FrameLabel") .. require("allbinary_java").to_string(tostring(CanvasJPanel.frame)))
         self.canvasTreeNode = DefaultMutableTreeNode.new(self.frameLabel)
         CanvasJPanel.frame = CanvasJPanel.frame + 1
         self.workAreaJTreeJPanel:add(self:getTreeNode())
@@ -311,11 +311,11 @@ function CanvasJPanel:setCanvasSize(x, y)
         self.grid.isGridPossible_f = true
         if x <= 0 then
             self.grid.isGridPossible_f = false
-            error(GraphicsException.new("X Size Error: " .. tostring(x), self, "setWorkAreaSize"), 0)
+            error(GraphicsException.new(require("allbinary_java").to_string("X Size Error: ") .. require("allbinary_java").to_string(x), self, "setWorkAreaSize"), 0)
         end
         if y <= 0 then
             self.grid.isGridPossible_f = false
-            error(GraphicsException.new("Y Size Error: " .. tostring(y), self, "setWorkAreaSize"), 0)
+            error(GraphicsException.new(require("allbinary_java").to_string("Y Size Error: ") .. require("allbinary_java").to_string(y), self, "setWorkAreaSize"), 0)
         end
         if x > self:getWidth() then
             self.grid.isGridPossible_f = false
@@ -337,10 +337,10 @@ end
 function CanvasJPanel:setGrid_j2(xSize, ySize)
         local try_ok, try_error, try_value = pcall(function()
             if xSize >= self:getCanvasDimension():getWidth() / 2 or xSize < 1 then
-                error(GraphicsException.new("X Size Error: " .. tostring(xSize) .. " WorkArea X: " .. tostring(self:getCanvasDimension():getWidth()), self, "setGrid"), 0)
+                error(GraphicsException.new(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("X Size Error: ") .. require("allbinary_java").to_string(xSize)) .. require("allbinary_java").to_string(" WorkArea X: ")) .. require("allbinary_java").to_string(self:getCanvasDimension():getWidth()), self, "setGrid"), 0)
             end
             if ySize >= self:getCanvasDimension():getHeight() / 2 or ySize < 1 then
-                error(GraphicsException.new("Y Size Error" .. tostring(ySize) .. " WorkArea Y: " .. tostring(self:getCanvasDimension():getHeight()), self, "setGrid"), 0)
+                error(GraphicsException.new(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Y Size Error") .. require("allbinary_java").to_string(ySize)) .. require("allbinary_java").to_string(" WorkArea Y: ")) .. require("allbinary_java").to_string(self:getCanvasDimension():getHeight()), self, "setGrid"), 0)
             end
             self.grid.grid = PointFactory.getInstance():createXY(xSize, ySize)
             self.grid.isChanged = true
@@ -354,6 +354,8 @@ function CanvasJPanel:setGrid(...)
     local count = select("#", ...)
     if count == 1 then return self:setGrid_j1(...) end
     if count == 2 then return self:setGrid_j2(...) end
+    local parent = getmetatable(CanvasJPanel).__index
+    if parent.setGrid then return parent.setGrid(self, ...) end
     error("No method setGrid takes " .. count .. " arguments")
 end
 CanvasJPanel.setGrid__jdispatcher = CanvasJPanel.setGrid
@@ -394,12 +396,12 @@ function CanvasJPanel:explodeAll()
         for index = 0, size - 1 do
             local graphicItemNode = graphicItemArray[index + 1]
             local graphicItem = self:getGraphicItemHashMap():get(graphicItemNode)
-            if graphicItem:getName() == LinesGraphicItem.getStaticName() then
+            if rawequal(graphicItem:getName(), LinesGraphicItem.getStaticName()) then
                 while graphicItem:getPointsInterface():getSize() > 2 do
                     local newGraphicItem = GraphicItemFactory.getInstance():getInstance(graphicItem:getName()):getInstance(self)
                     local pointOne = GPoint.getInstance(graphicItem:removePoint())
                     local pointTwo = GPoint.getInstance(graphicItem:removePoint())
-                    if pointOne ~= nil and pointTwo ~= nil then
+                    if not rawequal(pointOne, nil) and not rawequal(pointTwo, nil) then
                         newGraphicItem:addPoint(pointOne)
                         newGraphicItem:addPoint(pointTwo)
                     end
@@ -470,7 +472,7 @@ function CanvasJPanel:setNewTool()
             local newNode = self.selectedTool:getTreeNode()
             self:getGraphicItemHashMap():put(newNode, self.selectedTool)
             self.canvasTreeNode:add(newNode)
-            if self:getSelectedTool() == nil then
+            if rawequal(self:getSelectedTool(), nil) then
                 error(GraphicsException.new("No Tool Selected", self, "setSelectedTool"), 0)
             end
         end)
@@ -512,7 +514,7 @@ java_overload(CanvasJPanel, "getGraphicItemHashMap", 0)
 
 function CanvasJPanel:getXPixelsPerWorkAreaPixel()
         local x = self:getGrid().grid:getX() * (self:getWidth() - 10) / self:getCanvasDimension():getWidth()
-        if self:getGrid():getZoom() == 1 then
+        if rawequal(self:getGrid():getZoom(), 1) then
             return 1
         else
             return x
@@ -523,7 +525,7 @@ java_overload(CanvasJPanel, "getXPixelsPerWorkAreaPixel", 0)
 
 function CanvasJPanel:getYPixelsPerWorkAreaPixel()
         local y = self:getGrid().grid:getY() * (self:getHeight() - 10) / self:getCanvasDimension():getHeight()
-        if self:getGrid():getZoom() == 1 then
+        if rawequal(self:getGrid():getZoom(), 1) then
             return 1
         else
             return y
@@ -591,7 +593,7 @@ java_overload(CanvasJPanel, "paint", 1, function(java_a1) return true and (java_
 
 
 function CanvasJPanel:repaint()
-        if self.grid ~= nil then
+        if not rawequal(self.grid, nil) then
             self.grid.isChanged = true
         end
         java_super(JPanel, "repaint", 0)(self)
@@ -614,13 +616,13 @@ java_overload(CanvasJPanel, "changed", 0)
 
 function CanvasJPanel:mouseClicked(mouseEvent)
         StatusFactory.getInstance():setStatusNoLog(MouseStrings.getInstance().MOUSE_CLICKED_LABEL + self:logMouseEvent(mouseEvent))
-        if self:getSelectedTool() ~= nil and self:getSelectedTool():isActive() then
+        if not rawequal(self:getSelectedTool(), nil) and self:getSelectedTool():isActive() then
             local graphicItem = self:getSelectedTool()
             graphicItem:mouseClicked(mouseEvent, self:getXPixelsPerWorkAreaPixel(), self:getYPixelsPerWorkAreaPixel())
         else
             self:setNewTool()
             local graphicItem = self:getSelectedTool()
-            if graphicItem ~= nil then
+            if not rawequal(graphicItem, nil) then
                 graphicItem:mouseClicked(mouseEvent, self:getXPixelsPerWorkAreaPixel(), self:getYPixelsPerWorkAreaPixel())
             end
         end
@@ -647,7 +649,7 @@ java_overload(CanvasJPanel, "mouseExited", 1, function(java_a1) return true and 
 
 function CanvasJPanel:mousePressed(mouseEvent)
         StatusFactory.getInstance():setStatusNoLog(MouseStrings.getInstance().MOUSE_PRESSED_LABEL + self:logMouseEvent(mouseEvent))
-        if self:getSelectedTool() ~= nil then
+        if not rawequal(self:getSelectedTool(), nil) then
             local graphicItem = self:getSelectedTool()
             graphicItem:mousePressed(mouseEvent, self:getXPixelsPerWorkAreaPixel(), self:getYPixelsPerWorkAreaPixel())
         end
@@ -661,7 +663,7 @@ java_overload(CanvasJPanel, "mousePressed", 1, function(java_a1) return true and
 function CanvasJPanel:mouseReleased(mouseEvent)
         StatusFactory.getInstance():setStatusNoLog(MouseStrings.getInstance().MOUSE_RELEASED_LABEL + self:logMouseEvent(mouseEvent))
         local graphicItem = self:getSelectedTool()
-        if graphicItem ~= nil then
+        if not rawequal(graphicItem, nil) then
             graphicItem:mouseReleased(mouseEvent, self:getXPixelsPerWorkAreaPixel(), self:getYPixelsPerWorkAreaPixel())
         end
         self:requestFocus()
@@ -674,7 +676,7 @@ java_overload(CanvasJPanel, "mouseReleased", 1, function(java_a1) return true an
 function CanvasJPanel:mouseDragged(mouseEvent)
         StatusFactory.getInstance():setStatusNoLog(MouseStrings.getInstance().MOUSE_DRAGGED_LABEL + self:logMouseEvent(mouseEvent))
         local graphicItem = self:getSelectedTool()
-        if graphicItem ~= nil then
+        if not rawequal(graphicItem, nil) then
             graphicItem:mouseDragged(mouseEvent, self:getXPixelsPerWorkAreaPixel(), self:getYPixelsPerWorkAreaPixel())
         end
         self:requestFocus()
@@ -686,7 +688,7 @@ java_overload(CanvasJPanel, "mouseDragged", 1, function(java_a1) return true and
 
 function CanvasJPanel:mouseMoved(mouseEvent)
         StatusFactory.getInstance():setStatusNoLog(MouseStrings.getInstance().MOUSE_MOVED_LABEL + self:logMouseEvent(mouseEvent))
-        if self:getSelectedTool() ~= nil and self:getSelectedTool():isActive() then
+        if not rawequal(self:getSelectedTool(), nil) and self:getSelectedTool():isActive() then
             local graphicItem = self:getSelectedTool()
             graphicItem:mouseMoved(mouseEvent, self:getXPixelsPerWorkAreaPixel(), self:getYPixelsPerWorkAreaPixel())
         end
@@ -718,13 +720,13 @@ function CanvasJPanel:keyPressed(keyEvent)
                 local graphicItemInterface = self.graphicItemHashMap:get(graphicItemArray[index + 1])
                 local keyCode = keyEvent:getKeyCode()
                 if graphicItemInterface:isActive() then
-                    if keyCode == keyEvent.VK_UP then
+                    if rawequal(keyCode, keyEvent.VK_UP) then
                         graphicItemInterface:translate(0, -1)
-                    elseif keyCode == keyEvent.VK_DOWN then
+                    elseif rawequal(keyCode, keyEvent.VK_DOWN) then
                         graphicItemInterface:translate(0, 1)
-                    elseif keyCode == keyEvent.VK_LEFT then
+                    elseif rawequal(keyCode, keyEvent.VK_LEFT) then
                         graphicItemInterface:translate(-1, 0)
-                    elseif keyCode == keyEvent.VK_RIGHT then
+                    elseif rawequal(keyCode, keyEvent.VK_RIGHT) then
                         graphicItemInterface:translate(1, 0)
                     end
                 end
@@ -736,7 +738,7 @@ function CanvasJPanel:keyPressed(keyEvent)
             local commonStrings = CommonStrings.getInstance()
             self.logUtil:put(commonStrings.EXCEPTION, self, self.gameInputStrings.KEY_PRESSED, e)
         end
-        if self:getSelectedTool() ~= nil and self:getSelectedTool():isActive() then
+        if not rawequal(self:getSelectedTool(), nil) and self:getSelectedTool():isActive() then
             StatusFactory.getInstance():setStatus("Key Pressed for Tool")
             local graphicItem = self:getSelectedTool()
             graphicItem:keyPressed(keyEvent)
@@ -770,7 +772,7 @@ java_overload(CanvasJPanel, "delete", 1, function(java_a1) return true and (java
 
 function CanvasJPanel:deselect(evt)
         local graphicItemInterface = self:getGraphicItemHashMap():get(evt:getTreeNode())
-        if graphicItemInterface ~= nil then
+        if not rawequal(graphicItemInterface, nil) then
             graphicItemInterface:setColor(Color.WHITE)
             graphicItemInterface:deactivate()
             self.workAreaJTreeJPanel:repaint()
@@ -781,7 +783,7 @@ java_overload(CanvasJPanel, "deselect", 1, function(java_a1) return true and (ja
 
 function CanvasJPanel:highlight(evt)
         local graphicItemInterface = self:getGraphicItemHashMap():get(evt:getTreeNode())
-        if graphicItemInterface ~= nil then
+        if not rawequal(graphicItemInterface, nil) then
             graphicItemInterface:setColor(Color.YELLOW)
             graphicItemInterface:activate()
             self.workAreaJTreeJPanel:repaint()
@@ -807,7 +809,7 @@ end
 function CanvasJPanel:duplicate_j1(event)
         local treeNode = event:getTreeNode()
         local graphicItem = self:getGraphicItemHashMap():get(treeNode)
-        if graphicItem ~= nil then
+        if not rawequal(graphicItem, nil) then
             self:duplicateGraphicItem(graphicItem)
             self.workAreaJTreeJPanel:updateTree()
             self.workAreaJTreeJPanel:expand()
@@ -818,6 +820,8 @@ function CanvasJPanel:duplicate(...)
     local count = select("#", ...)
     if count == 0 then return self:duplicate_j0(...) end
     if count == 1 then return self:duplicate_j1(...) end
+    local parent = getmetatable(CanvasJPanel).__index
+    if parent.duplicate then return parent.duplicate(self, ...) end
     error("No method duplicate takes " .. count .. " arguments")
 end
 CanvasJPanel.duplicate__jdispatcher = CanvasJPanel.duplicate
@@ -826,7 +830,7 @@ CanvasJPanel.duplicate__jdispatcher = CanvasJPanel.duplicate
 function CanvasJPanel:rotate(event)
         local treeNode = event:getTreeNode()
         local graphicItem = self:getGraphicItemHashMap():get(treeNode)
-        if graphicItem ~= nil then
+        if not rawequal(graphicItem, nil) then
             graphicItem:addAngle(event:getAngle())
         end
 end

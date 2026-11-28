@@ -100,8 +100,8 @@ function BasePathFindingInfoFactory:init(geographicMapInterface, pathFindingInfo
         RaceTrackGeographicMapCellPositionFactoryInitVisitor.java_interfaces = function() return {GeographicMapCellPositionFactoryInitVisitorInterface} end
 
         function RaceTrackGeographicMapCellPositionFactoryInitVisitor:_init_fields()
-            if self.startLineId == nil then self.startLineId = nil end
-            if self.finishLineId == nil then self.finishLineId = nil end
+            if self.startLineId == nil then self.startLineId = 0 end
+            if self.finishLineId == nil then self.finishLineId = 0 end
             if self.pathFindingInfoFactory == nil then self.pathFindingInfoFactory = nil end
             if self.geographicMapInterface == nil then self.geographicMapInterface = nil end
             if self.pathFindingInfo == nil then self.pathFindingInfo = nil end
@@ -126,6 +126,11 @@ function BasePathFindingInfoFactory:init(geographicMapInterface, pathFindingInfo
             RaceTrackGeographicMapCellPositionFactoryInitVisitor._jinit(self, ...)
             return self
         end
+            function RaceTrackGeographicMapCellPositionFactoryInitVisitor.newEnclosed(outer, ...)
+                local self = setmetatable({__javaOuter = outer}, RaceTrackGeographicMapCellPositionFactoryInitVisitor)
+                RaceTrackGeographicMapCellPositionFactoryInitVisitor._jinit(self, ...)
+                return self
+            end
         
 
         -- throws Exception
@@ -135,11 +140,11 @@ function BasePathFindingInfoFactory:init(geographicMapInterface, pathFindingInfo
                 local try_ok, try_error, try_value = pcall(function()
                     local cellTypeId = self.mapArray[row + 1][column + 1]
                     local geographicCellType = self.geographicMapInterface:getCellTypeFromMapCellTypeInt(cellTypeId)
-                    if geographicCellType == self.startLineId then
+                    if rawequal(geographicCellType, self.startLineId) then
                         self.pathFindingInfoFactory:addStartPathFindingNode(self.pathFindingInfo, cellPosition)
                     end
-                    if geographicCellType == self.finishLineId then
-                        if geographicCellType == self.startLineId then
+                    if rawequal(geographicCellType, self.finishLineId) then
+                        if rawequal(geographicCellType, self.startLineId) then
                             self.pathFindingInfoFactory:addEndPathFindingNode(self.pathFindingInfo, self.geographicMapInterface:getGeographicMapCellPositionFactoryInterface():getInstance(self.geographicMapInterface, cellPosition:getColumn(), cellPosition:getRow(), tiledLayer:getColumns(), tiledLayer:getRows(), tiledLayer:getCellWidth(), tiledLayer:getCellHeight()))
                         else
                             self.pathFindingInfoFactory:addEndPathFindingNode(self.pathFindingInfo, cellPosition)
@@ -161,7 +166,7 @@ function BasePathFindingInfoFactory:init(geographicMapInterface, pathFindingInfo
                 end
         end
 
-        geographicMapInterface:getGeographicMapCellPositionFactory():visit(RaceTrackGeographicMapCellPositionFactoryInitVisitor.new(self, geographicMapInterface, pathFindingInfo, mapArray))
+        geographicMapInterface:getGeographicMapCellPositionFactory():visit(RaceTrackGeographicMapCellPositionFactoryInitVisitor.newEnclosed(self, self, geographicMapInterface, pathFindingInfo, mapArray))
 end
 
 

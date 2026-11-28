@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Command = require("javax.microedition.lcdui.Command")
+local Command = java_lazy("javax.microedition.lcdui.Command")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 
 local function java_idiv(a, b)

@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local GPoint = java_lazy("org.allbinary.graphics.GPoint")
 local Rectangle = java_lazy("org.allbinary.graphics.Rectangle")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
@@ -198,19 +198,19 @@ setmetatable(ScrollSelectionForm, {__index = PaintableForm})
 
 function ScrollSelectionForm:_init_fields()
     self.rectangleCollisionUtil = RectangleCollisionUtil.getInstance()
-    if self.border == nil then self.border = nil end
-    if self.halfBorder == nil then self.halfBorder = nil end
+    if self.border == nil then self.border = 0 end
+    if self.halfBorder == nil then self.halfBorder = 0 end
     if self.buttonBasicColor == nil then self.buttonBasicColor = nil end
     self.scrollSelectionFormFormTypeItemIndexPaintable = ItemIndexPaintable.getInstance()
     self.formTypeItemIndexDx = ItemIndexDx.getInstance()
     self.paintable = ItemPaintableFactory.getInstance()
-    if self.adjustedExtraBorder == nil then self.adjustedExtraBorder = nil end
+    if self.adjustedExtraBorder == nil then self.adjustedExtraBorder = 0 end
 end
 
 
 function ScrollSelectionForm.createForm(title, items, formPaintableFactory, border, backgroundBasicColor, foregroundBasicColor)
         local try_ok, try_error, try_value = pcall(function()
-            if formPaintableFactory == ItemPaintableFactory.getInstance() then
+            if rawequal(formPaintableFactory, ItemPaintableFactory.getInstance()) then
                 do return "__jreturn", ScrollSelectionForm.new(title, items, formPaintableFactory, border, -3, backgroundBasicColor, foregroundBasicColor) end
             else
                 local commonStrings = CommonStrings.getInstance()
@@ -232,7 +232,7 @@ end
 
 
 function ScrollSelectionForm.getNullScrollSelectionForm()
-        if ScrollSelectionForm.NULL_SCROLL_SELECTION_FORM == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(ScrollSelectionForm.NULL_SCROLL_SELECTION_FORM, NullUtil.getInstance().NULL_OBJECT) then
             ScrollSelectionForm.NULL_SCROLL_SELECTION_FORM = ScrollSelectionForm.createForm(StringUtil.getInstance().EMPTY_STRING, java_new_array(nil, 0), ItemPaintableFactory.getInstance(), 0, BasicColorFactory.getInstance().BLACK, BasicColorFactory.getInstance().WHITE)
         end
         return ScrollSelectionForm.NULL_SCROLL_SELECTION_FORM
@@ -240,7 +240,7 @@ end
 
 
 function ScrollSelectionForm.getNullScrollSelectionFormHorizontal()
-        if ScrollSelectionForm.NULL_SCROLL_SELECTION_HORIZONTAL_FORM == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(ScrollSelectionForm.NULL_SCROLL_SELECTION_HORIZONTAL_FORM, NullUtil.getInstance().NULL_OBJECT) then
             ScrollSelectionForm.NULL_SCROLL_SELECTION_HORIZONTAL_FORM = ScrollSelectionForm.createForm(StringUtil.getInstance().EMPTY_STRING, java_new_array(nil, 0), ItemPaintableFactory.getInstance(), 0, BasicColorFactory.getInstance().BLACK, BasicColorFactory.getInstance().WHITE)
         end
         return ScrollSelectionForm.NULL_SCROLL_SELECTION_HORIZONTAL_FORM
@@ -270,16 +270,16 @@ end
 function ScrollSelectionForm:init(rectangle, formType)
         java_super(PaintableForm, "init", 2)(self, rectangle, formType)
         local formTypeFactory = FormTypeFactory.getInstance()
-        if formType == formTypeFactory.HORIZONTAL_FORM then
+        if rawequal(formType, formTypeFactory.HORIZONTAL_FORM) then
             self.scrollSelectionFormFormTypeItemIndexPaintable = ScrollSelectionFormHorizontalPaintable.new(self)
             self.formTypeItemIndexDx = ScrollSelectionFormHorizontalDx.new(self)
-        elseif formType == formTypeFactory.VERTICAL_CENTER_FORM then
+        elseif rawequal(formType, formTypeFactory.VERTICAL_CENTER_FORM) then
             self.scrollSelectionFormFormTypeItemIndexPaintable = ScrollSelectionFormVerticalPaintable.new(self)
             self.formTypeItemIndexDx = ScrollSelectionFormVericalDx.new(self)
-        elseif formType == formTypeFactory.TEMP_HORIZONTAL_FORM then
+        elseif rawequal(formType, formTypeFactory.TEMP_HORIZONTAL_FORM) then
             self.scrollSelectionFormFormTypeItemIndexPaintable = ScrollSelectionFormTempHorizontalPaintable.new(self)
             self.formTypeItemIndexDx = ScrollSelectionFormTempHorizontalDx.new(self)
-        elseif formType == formTypeFactory.NULL_FORM_TYPE then
+        elseif rawequal(formType, formTypeFactory.NULL_FORM_TYPE) then
         else
             error(require("java.lang.Exception").new(formTypeFactory.UNK), 0)
         end
@@ -334,7 +334,7 @@ java_overload(ScrollSelectionForm, "append", 1, function(java_a1) return true an
 -- throws Exception
 function ScrollSelectionForm:getSelectedItem(point)
         local index = self:getSelectedIndexForPoint(point)
-        if index ~= -1 then
+        if not rawequal(index, -1) then
             return self:get(index)
         else
             return ABCustomItem.getNullInstance()
@@ -349,7 +349,7 @@ function ScrollSelectionForm:getItemIndex(item)
         local size = self:size()
         for index = 0, size - 1 do
             nextItem = self:get(index)
-            if nextItem == item then
+            if rawequal(nextItem, item) then
                 return index
             end
         end
@@ -398,17 +398,17 @@ function ScrollSelectionForm:getSelectedIndexForPoint(point)
                 self.logUtil:putF(tostring(stringBuffer), self, ScrollSelectionForm.GET_SELECTED_INDEX)
                 return index
             end
-            if self.formType == formTypeFactory.HORIZONTAL_FORM then
+            if rawequal(self.formType, formTypeFactory.HORIZONTAL_FORM) then
                 dx = dx + width + self.border
                 if dx > self.rectangle:getMaxX() then
                     break
                 end
-            elseif self.formType == formTypeFactory.VERTICAL_CENTER_FORM then
+            elseif rawequal(self.formType, formTypeFactory.VERTICAL_CENTER_FORM) then
                 dy = dy + height + self.border
                 if dy > self.rectangle:getMaxY() then
                     break
                 end
-            elseif self.formType == formTypeFactory.NULL_FORM_TYPE then
+            elseif rawequal(self.formType, formTypeFactory.NULL_FORM_TYPE) then
             else
                 error(require("java.lang.Exception").new(formTypeFactory.UNK), 0)
             end
@@ -421,23 +421,23 @@ java_overload(ScrollSelectionForm, "getSelectedIndexForPoint", 1, function(java_
 -- throws Exception
 function ScrollSelectionForm:processInputKey(gameKeyCode)
         local formTypeFactory = FormTypeFactory.getInstance()
-        if self:size() == 0 then
+        if rawequal(self:size(), 0) then
             return -1
         end
         local index = self:getSelectedIndex()
-        if self.formType == formTypeFactory.HORIZONTAL_FORM or self.formType == formTypeFactory.TEMP_HORIZONTAL_FORM then
-            if gameKeyCode == Canvas.RIGHT then
+        if rawequal(self.formType, formTypeFactory.HORIZONTAL_FORM) or rawequal(self.formType, formTypeFactory.TEMP_HORIZONTAL_FORM) then
+            if rawequal(gameKeyCode, Canvas.RIGHT) then
                 index = index + 1
-            elseif gameKeyCode == Canvas.LEFT then
+            elseif rawequal(gameKeyCode, Canvas.LEFT) then
                 index = index - 1
             end
-        elseif self.formType == formTypeFactory.VERTICAL_CENTER_FORM then
-            if gameKeyCode == Canvas.DOWN then
+        elseif rawequal(self.formType, formTypeFactory.VERTICAL_CENTER_FORM) then
+            if rawequal(gameKeyCode, Canvas.DOWN) then
                 index = index + 1
-            elseif gameKeyCode == Canvas.UP then
+            elseif rawequal(gameKeyCode, Canvas.UP) then
                 index = index - 1
             end
-        elseif self.formType == formTypeFactory.NULL_FORM_TYPE then
+        elseif rawequal(self.formType, formTypeFactory.NULL_FORM_TYPE) then
         else
             error(require("java.lang.Exception").new(formTypeFactory.UNK), 0)
         end

@@ -183,7 +183,7 @@ function HtmlRow:toString()
         for i = 0, attributeSize - 1 do
             local key = attributeKeys[i + 1]
             local value = self.otherAttributes:get(key)
-            if value ~= nil and ((value < stringUtil.EMPTY_STRING and -1) or (value > stringUtil.EMPTY_STRING and 1) or 0) ~= 0 then
+            if not rawequal(value, nil) and not rawequal(((value < stringUtil.EMPTY_STRING and -1) or (value > stringUtil.EMPTY_STRING and 1) or 0), 0) then
                 result = result .. tostring(key)
                 result = result .. tostring("=\"")
                 result = result .. tostring(value)

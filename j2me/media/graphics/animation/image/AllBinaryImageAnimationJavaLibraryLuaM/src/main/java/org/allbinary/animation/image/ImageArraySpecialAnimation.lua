@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local Image = require("javax.microedition.lcdui.Image")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 local SpecialAnimationInterface = java_lazy("org.allbinary.animation.special.SpecialAnimationInterface")
 local DisplayInfoSingleton = java_lazy("org.allbinary.graphics.displayable.DisplayInfoSingleton")
@@ -196,7 +196,7 @@ function ImageArraySpecialAnimation:nextFrame()
         if self:getFrame() > 0 then
             if self.timeDelayHelper:isTime(GameTickTimeDelayHelperFactory.getInstance().startTime) then
                 self:previousFrame()
-                if self:getFrame() == 0 then
+                if rawequal(self:getFrame(), 0) then
                     self.loopCount = self.loopCount + 1
                 end
             end
@@ -206,7 +206,7 @@ java_overload(ImageArraySpecialAnimation, "nextFrame", 0)
 
 
 function ImageArraySpecialAnimation:isComplete()
-        if self.loopCount < self.loopCountTotal or self:getFrame() ~= 0 then
+        if self.loopCount < self.loopCountTotal or not rawequal(self:getFrame(), 0) then
             return false
         else
             return true

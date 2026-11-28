@@ -96,7 +96,7 @@ end
 -- throws Exception
 function IndependentVectorExplosionRotationAnimationFactory:getInstanceAnimation(animationInterface)
         local frame = 0
-        if animationInterface ~= nil then
+        if not rawequal(animationInterface, nil) then
             local rotationAnimationInterface = animationInterface
             frame = rotationAnimationInterface:getFrame()
         end

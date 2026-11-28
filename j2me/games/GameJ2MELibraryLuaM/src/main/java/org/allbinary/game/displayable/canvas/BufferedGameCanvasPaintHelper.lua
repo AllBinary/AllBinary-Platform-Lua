@@ -28,11 +28,11 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local Image = require("javax.microedition.lcdui.Image")
--- local NullCanvas = require("javax.microedition.lcdui.NullCanvas")
--- local NullImage = require("javax.microedition.lcdui.NullImage")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local NullCanvas = java_lazy("javax.microedition.lcdui.NullCanvas")
+local NullImage = java_lazy("javax.microedition.lcdui.NullImage")
 local Anchor = java_lazy("org.allbinary.graphics.Anchor")
 local MyCanvas = java_lazy("org.allbinary.graphics.displayable.MyCanvas")
 local ProcessPaintable = require("org.allbinary.graphics.paint.ProcessPaintable")

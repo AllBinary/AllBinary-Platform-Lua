@@ -162,14 +162,14 @@ function NonPlayerTopViewCharacterBehavior:terrainEvent(layer, direction, x, y, 
         if geographicMapCellPosition:getColumn() > 0 and geographicMapCellPosition:getColumn() < maxColumns then
             local nextTerrainGeographicMapCellPosition = SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION
             local geographicMapCellPositionFactory = geographicMapInterfaceArray[1]:getGeographicMapCellPositionFactory()
-            if direction == DirectionFactory.getInstance().LEFT then
+            if rawequal(direction, DirectionFactory.getInstance().LEFT) then
                 nextTerrainGeographicMapCellPosition = geographicMapCellPositionFactory:getAt(geographicMapCellPosition:getColumn() - 1, geographicMapCellPosition:getRow())
-            elseif direction == DirectionFactory.getInstance().RIGHT then
+            elseif rawequal(direction, DirectionFactory.getInstance().RIGHT) then
                 nextTerrainGeographicMapCellPosition = geographicMapCellPositionFactory:getAt(geographicMapCellPosition:getColumn() + 1, geographicMapCellPosition:getRow())
             end
             self.geographicMapBehavior:getCellTypeAt(geographicMapInterfaceArray, geographicMapCellTypeArray, nextTerrainGeographicMapCellPosition)
             local hasSolidBlock = self:hasSolidBlock(geographicMapInterfaceArray, geographicMapCellTypeArray)
-            if not hasSolidBlock then
+            if not (hasSolidBlock) then
                 local terrainEvent = TerrainEventCircularStaticPool.getInstance():getNext(self.CLIFF)
                 TerrainEventHandler.getInstance(layer):fireEvent(terrainEvent)
             end

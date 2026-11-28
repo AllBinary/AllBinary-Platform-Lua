@@ -81,20 +81,20 @@ end
 function MyCanvasEventService.fire(evt)
         local listeners = MyCanvasEventService.listenerList:getListenerList()
         for i = 0, (listeners.n or #listeners) - 1, 2 do
-            if listeners[i + 1] == getmetatable(listeners[i + 1 + 1]) then
-                if evt:getCommand():compareTo(MyCanvasEventService.DELETE) == 0 then
+            if rawequal(listeners[i + 1], getmetatable(listeners[i + 1 + 1])) then
+                if rawequal(evt:getCommand():compareTo(MyCanvasEventService.DELETE), 0) then
                     ;(listeners[i + 1 + 1]):delete(evt)
-                elseif evt:getCommand():compareTo(MyCanvasEventService.DUPLICATE) == 0 then
+                elseif rawequal(evt:getCommand():compareTo(MyCanvasEventService.DUPLICATE), 0) then
                     ;(listeners[i + 1 + 1]):duplicate(evt)
-                elseif evt:getCommand():compareTo(MyCanvasEventService.SELECT) == 0 then
+                elseif rawequal(evt:getCommand():compareTo(MyCanvasEventService.SELECT), 0) then
                     ;(listeners[i + 1 + 1]):select(evt)
-                elseif evt:getCommand():compareTo(MyCanvasEventService.ROTATE) == 0 then
+                elseif rawequal(evt:getCommand():compareTo(MyCanvasEventService.ROTATE), 0) then
                     ;(listeners[i + 1 + 1]):rotate(evt)
-                elseif evt:getCommand():compareTo(MyCanvasEventService.EXPLODE) == 0 then
+                elseif rawequal(evt:getCommand():compareTo(MyCanvasEventService.EXPLODE), 0) then
                     ;(listeners[i + 1 + 1]):explode(evt)
-                elseif evt:getCommand():compareTo(MyCanvasEventService.AUTOEXPLODE) == 0 then
+                elseif rawequal(evt:getCommand():compareTo(MyCanvasEventService.AUTOEXPLODE), 0) then
                     ;(listeners[i + 1 + 1]):autoExplode(evt)
-                elseif evt:getCommand():compareTo(MyCanvasEventService.CENTER) == 0 then
+                elseif rawequal(evt:getCommand():compareTo(MyCanvasEventService.CENTER), 0) then
                     ;(listeners[i + 1 + 1]):center(evt)
                 end
             end

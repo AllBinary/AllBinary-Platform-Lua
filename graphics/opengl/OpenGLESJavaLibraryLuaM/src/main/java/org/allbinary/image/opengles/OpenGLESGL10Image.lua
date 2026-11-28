@@ -31,9 +31,9 @@ end
 -- local ByteBuffer = require("java.nio.ByteBuffer")
 -- local ByteOrder = require("java.nio.ByteOrder")
 -- local FloatBuffer = require("java.nio.FloatBuffer")
--- local GL = require("javax.microedition.khronos.opengles.GL")
--- local GL10 = require("javax.microedition.khronos.opengles.GL10")
--- local Image = require("javax.microedition.lcdui.Image")
+local GL = java_lazy("javax.microedition.khronos.opengles.GL")
+local GL10 = java_lazy("javax.microedition.khronos.opengles.GL10")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local DisplayInfoSingleton = java_lazy("org.allbinary.graphics.displayable.DisplayInfoSingleton")
 local OpenGLLogUtil = java_lazy("org.allbinary.graphics.opengles.OpenGLLogUtil")
 local GLUtil = java_lazy("org.allbinary.opengles.GLUtil")
@@ -173,20 +173,21 @@ setmetatable(OpenGLESGL10Image, {__index = OpenGLESImage})
 function OpenGLESGL10Image:_init_fields()
     self.textureVertexFloatBuffer = ByteBuffer.allocateDirect(4 * 4 * 2):order(ByteOrder.nativeOrder()):asFloatBuffer()
     self.realOpenGLESImageDraw = (function()
-        local o = OpenGLESImageDraw.new and OpenGLESImageDraw.new() or setmetatable({}, {__index = OpenGLESImageDraw})
+        local java_outer_self = self
+    local o = OpenGLESImageDraw.new and OpenGLESImageDraw.new() or setmetatable({}, {__index = OpenGLESImageDraw})
         self.glUtil = GLUtil.getInstance()
         self.displayInfoSingleton = DisplayInfoSingleton.getInstance()
-        self.textureVertexFloatBuffer = self.textureVertexFloatBuffer
+        self.textureVertexFloatBuffer = java_outer_self.textureVertexFloatBuffer
         self.regionTextureRectangleFloatArray = java_typed_array("F", java_new_array(0.0, 8))
         self.regionTextureVertexFloatBuffer = ByteBuffer.allocateDirect(4 * 4 * 2):order(ByteOrder.nativeOrder()):asFloatBuffer()
         self.regionRectangleFloatArray = {jt = "F", 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}
         self.regionRectangleVertexFloatBuffer = ByteBuffer.allocateDirect(4 * 4 * 3):order(ByteOrder.nativeOrder()):asFloatBuffer()
-        self.openGLESImageProperties = self.openGLESImageProperties
+        self.openGLESImageProperties = java_outer_self.openGLESImageProperties
         
 
         function o:drawRegion(gl, viewHeight, x_src, y_src, width, height, x, y, z)
-            local imageWidth = self:getWidth()
-            local imageHeight = self:getHeight()
+            local imageWidth = java_outer_self:getWidth()
+            local imageHeight = java_outer_self:getHeight()
             self.regionRectangleFloatArray[8] = (viewHeight + 0.0)
             self.regionRectangleFloatArray[2] = self.regionRectangleFloatArray[8] - height
             self.regionRectangleFloatArray[4] = width
@@ -205,11 +206,11 @@ function OpenGLESGL10Image:_init_fields()
             local v_center = (self.regionTextureRectangleFloatArray[6] + self.regionTextureRectangleFloatArray[2]) / 2.0
             self.glUtil:rotateUVs(self.regionTextureRectangleFloatArray, (-self.openGLESImageProperties.angle + 0.0), u_center, v_center)
             gl:glPushMatrix()
-            local imageProcessor = self.imageProcessor
-            self.openGLESImageTranslate:translate(gl, self, (x + 0.0), (-y + 0.0))
+            local imageProcessor = java_outer_self.imageProcessor
+            java_outer_self.openGLESImageTranslate:translate(gl, java_outer_self, (x + 0.0), (-y + 0.0))
             imageProcessor:scale(gl, self.openGLESImageProperties.scaleX, self.openGLESImageProperties.scaleY)
             imageProcessor:colorMask(gl, self.openGLESImageProperties.redf, self.openGLESImageProperties.greenf, self.openGLESImageProperties.bluef, self.openGLESImageProperties.alphaf)
-            self.openGLESImageTranslate:translate2(gl, self)
+            java_outer_self.openGLESImageTranslate:translate2(gl, java_outer_self)
             self.regionRectangleVertexFloatBuffer:put(self.regionRectangleFloatArray)
             self.glUtil:position(self.regionRectangleVertexFloatBuffer, 0)
             gl:glVertexPointer(3, GL10.GL_FLOAT, 0, self.regionRectangleVertexFloatBuffer)
@@ -230,8 +231,8 @@ function OpenGLESGL10Image:_init_fields()
         
 
         function o:draw(gl, x, y, z)
-            local width = self:getWidth()
-            local height = self:getHeight()
+            local width = java_outer_self:getWidth()
+            local height = java_outer_self:getHeight()
             self.regionRectangleFloatArray[8] = (self.displayInfoSingleton:getLastHeight() + 0.0)
             self.regionRectangleFloatArray[2] = self.regionRectangleFloatArray[8] - height
             self.regionRectangleFloatArray[4] = (width + 0.0)
@@ -247,11 +248,11 @@ function OpenGLESGL10Image:_init_fields()
             self.regionTextureRectangleFloatArray[7] = 1.0
             self.regionTextureRectangleFloatArray[8] = 0.0
             gl:glPushMatrix()
-            self.openGLESImageTranslate:translate(gl, self, (x + 0.0), (-y + 0.0))
-            local imageProcessor = self.imageProcessor
+            java_outer_self.openGLESImageTranslate:translate(gl, java_outer_self, (x + 0.0), (-y + 0.0))
+            local imageProcessor = java_outer_self.imageProcessor
             imageProcessor:scale(gl, self.openGLESImageProperties.scaleX, self.openGLESImageProperties.scaleY)
             imageProcessor:colorMask(gl, self.openGLESImageProperties.redf, self.openGLESImageProperties.greenf, self.openGLESImageProperties.bluef, self.openGLESImageProperties.alphaf)
-            self.openGLESImageTranslate:translate2(gl, self)
+            java_outer_self.openGLESImageTranslate:translate2(gl, java_outer_self)
             self.regionRectangleVertexFloatBuffer:put(self.regionRectangleFloatArray)
             self.glUtil:position(self.regionRectangleVertexFloatBuffer, 0)
             gl:glVertexPointer(3, GL10.GL_FLOAT, 0, self.regionRectangleVertexFloatBuffer)

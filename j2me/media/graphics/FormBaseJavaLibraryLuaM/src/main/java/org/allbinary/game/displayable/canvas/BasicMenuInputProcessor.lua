@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
--- local NullCanvas = require("javax.microedition.lcdui.NullCanvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
+local NullCanvas = java_lazy("javax.microedition.lcdui.NullCanvas")
 local PlayerGameInput = require("org.allbinary.game.input.PlayerGameInput")
 local MyCanvas = java_lazy("org.allbinary.graphics.displayable.MyCanvas")
 local BaseMotionGestureEventListener = java_lazy("org.allbinary.input.motion.gesture.observer.BaseMotionGestureEventListener")

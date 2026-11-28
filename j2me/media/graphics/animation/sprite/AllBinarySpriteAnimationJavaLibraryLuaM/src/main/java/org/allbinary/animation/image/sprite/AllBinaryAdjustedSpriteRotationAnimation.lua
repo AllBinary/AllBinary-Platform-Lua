@@ -28,9 +28,9 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local Image = require("javax.microedition.lcdui.Image")
--- local Sprite = require("javax.microedition.lcdui.game.Sprite")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local Sprite = java_lazy("javax.microedition.lcdui.game.Sprite")
 local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 local AllBinarySpriteRotationAnimation = require("org.allbinary.animation.image.sprite.AllBinarySpriteRotationAnimation")
 
@@ -131,8 +131,8 @@ AllBinaryAdjustedSpriteRotationAnimation.javaClassName = "org.allbinary.animatio
 setmetatable(AllBinaryAdjustedSpriteRotationAnimation, {__index = AllBinarySpriteRotationAnimation})
 
 function AllBinaryAdjustedSpriteRotationAnimation:_init_fields()
-    if self.dx == nil then self.dx = nil end
-    if self.dy == nil then self.dy = nil end
+    if self.dx == nil then self.dx = 0 end
+    if self.dy == nil then self.dy = 0 end
 end
 
 

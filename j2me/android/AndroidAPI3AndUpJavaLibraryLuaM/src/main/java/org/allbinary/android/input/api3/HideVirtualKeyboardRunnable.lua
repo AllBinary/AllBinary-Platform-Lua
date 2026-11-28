@@ -87,11 +87,11 @@ function HideVirtualKeyboardRunnable:run()
         local try_ok, try_error, try_value = pcall(function()
             local inputMethodManager = self.activity:getSystemService(Context.INPUT_METHOD_SERVICE)
             local viewCompositeInterface = self.activity
-            if viewCompositeInterface == nil then
+            if rawequal(viewCompositeInterface, nil) then
                 ForcedLogUtil.log("Activity Null", self)
             end
             local view = viewCompositeInterface:getView()
-            if view:getWindowToken() == nil then
+            if rawequal(view:getWindowToken(), nil) then
                 self.logUtil:putF("Unable to hide virtual keyboard as window token is null - This usually happens during loading when the view is not attached to a window", self, commonStrings.RUN)
                 do return "__jreturn" end
             end

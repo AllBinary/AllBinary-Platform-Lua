@@ -55,7 +55,7 @@ OpenGLFeatureUtil.className = "OpenGLFeatureUtil"
 OpenGLFeatureUtil.javaClassName = "org.allbinary.graphics.opengles.OpenGLFeatureUtil"
 
 function OpenGLFeatureUtil:_init_fields()
-    if self.anyThreed == nil then self.anyThreed = nil end
+    if self.anyThreed == nil then self.anyThreed = false end
 end
 
 

@@ -262,7 +262,7 @@ function UserNameOrderHistoryView:isValid()
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             self.logUtil:putF("Started", self, self.commonStrings.IS_VALID)
         end
-        if UserName.getInstance():isValid(self.userName) == true then
+        if rawequal(UserName.getInstance():isValid(self.userName), true) then
             return true
         end
         return false
@@ -283,10 +283,10 @@ java_overload(UserNameOrderHistoryView, "toValidationInfoNode", 1, function(java
 
 
 function UserNameOrderHistoryView:validationInfo()
-        if self.userName == nil then
+        if rawequal(self.userName, nil) then
             return "No User Name Specified<br />"
         end
-        if UserName.getInstance():isValid(self.userName) == false then
+        if rawequal(UserName.getInstance():isValid(self.userName), false) then
             return "Invalid User Name<br />"
         end
         return "Unknown Error<br />"

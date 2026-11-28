@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local ExplosionBasicSound = java_lazy("org.allbinary.ag.weapon.media.audio.ExplosionBasicSound")
 local NullAnimationFactory = java_lazy("org.allbinary.animation.NullAnimationFactory")
 local NullIndexedAnimationFactory = java_lazy("org.allbinary.animation.NullIndexedAnimationFactory")
@@ -196,8 +196,8 @@ BuildingLayer.java_interfaces = function() return {RotationAnimationInterfaceCom
 function BuildingLayer:_init_fields()
     if self.buildingLevelCost == nil then self.buildingLevelCost = 0 end
     if self.productivity == nil then self.productivity = 0 end
-    if self.efficiency == nil then self.efficiency = nil end
-    if self.efficiencyPerLevel == nil then self.efficiencyPerLevel = nil end
+    if self.efficiency == nil then self.efficiency = 0 end
+    if self.efficiencyPerLevel == nil then self.efficiencyPerLevel = 0 end
     if self.trackingEvent == nil then self.trackingEvent = nil end
     if self.damageFloaters == nil then self.damageFloaters = nil end
     if self.damageFloatersPaintableInterface == nil then self.damageFloatersPaintableInterface = nil end
@@ -267,7 +267,7 @@ java_overload(BuildingLayer, "construct", 1, function(java_a1) return true and (
 function BuildingLayer:onMovement(trackingEvent)
         local try_ok, try_error, try_value = pcall(function()
             local layerInterface = trackingEvent:getLayerInterface()
-            if layerInterface:getGroupInterface()[1] ~= self:getGroupInterface()[1] then
+            if not rawequal(layerInterface:getGroupInterface()[1], self:getGroupInterface()[1]) then
                 layerInterface:onMovementFound(self.trackingEvent)
             end
         end)
@@ -285,12 +285,12 @@ function BuildingLayer:processBuiltTick(allBinaryLayerManager)
         if self:getHealthInterface():isDamaged() then
             self:setAnimationInterface(self.destroyAnimationInterface)
         end
-        if not self:getHealthInterface():isAlive() then
+        if not (self:getHealthInterface():isAlive()) then
             if self:isReadyForExplosion() then
                 local currentFrame = self.destroyAnimationInterface:getFrame()
                 local size = self.destroyAnimationInterface:getSize() - 1
-                if currentFrame == size and not self.timeDelayHelper:isTimeTNT() then
-                    if not self:getHealthInterface():isAlive() then
+                if rawequal(currentFrame, size) and not (self.timeDelayHelper:isTimeTNT()) then
+                    if not (self:getHealthInterface():isAlive()) then
                         self:setDestroyed(true)
                     end
                 else
@@ -327,7 +327,7 @@ java_overload(BuildingLayer, "getCost", 0)
 
 function BuildingLayer:getDowngradeCost()
         local downgradeCost = RTSLayerUtil.getInstance():getCostExponential(java_int(((self:getLevel() - 1) * self:getBuildingLevelCost())))
-        self.logUtil:putF("Cost: " .. tostring(downgradeCost), self, "getDowngradeCost")
+        self.logUtil:putF(require("allbinary_java").to_string("Cost: ") .. require("allbinary_java").to_string(downgradeCost), self, "getDowngradeCost")
         return java_idiv(downgradeCost * 9, 10)
 end
 java_overload(BuildingLayer, "getDowngradeCost", 0)
@@ -409,7 +409,7 @@ function BuildingLayer:generateMoveOutOfBuildAreaPaths()
             occupyGeographicMapCellPosition = occupyList:get(index2)
             for index = surroundList:size() - 1, 0, -1 do
                 surroundGeographicMapCellPosition = surroundList:get(index)
-                if geographicMapDirectionUtil:getEightDirectionFromCellPositionToAdjacentCellPosition(surroundGeographicMapCellPosition, occupyGeographicMapCellPosition) ~= NO_DIRECTION then
+                if not rawequal(geographicMapDirectionUtil:getEightDirectionFromCellPositionToAdjacentCellPosition(surroundGeographicMapCellPosition, occupyGeographicMapCellPosition), NO_DIRECTION) then
                     list = BasicArrayListS.new(1)
                     list:add(surroundGeographicMapCellPosition)
                     pathsList:add(list)
@@ -496,7 +496,7 @@ function BuildingLayer:setDestroyed(destroyed)
             if self.local_ then
                 self:removeVisibility()
             end
-            if not self:getHealthInterface():isAlive() then
+            if not (self:getHealthInterface():isAlive()) then
                 local damage = self:getHealthInterface():getMaxHealth()
                 if damage > 10 then
                     SecondaryPlayerQueueFactory.getInstance():add(ExplosionBasicSound.getInstance())

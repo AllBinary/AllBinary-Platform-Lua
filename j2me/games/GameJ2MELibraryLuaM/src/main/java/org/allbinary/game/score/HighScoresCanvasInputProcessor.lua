@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local PlayerGameInput = require("org.allbinary.game.input.PlayerGameInput")
 local GameKeyEvent = java_lazy("org.allbinary.game.input.event.GameKeyEvent")
 local HighScoresCanvas = java_lazy("org.allbinary.game.score.displayable.HighScoresCanvas")

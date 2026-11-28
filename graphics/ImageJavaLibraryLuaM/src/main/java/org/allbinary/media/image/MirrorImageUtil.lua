@@ -129,7 +129,7 @@ function MirrorImageUtil:getImages(bufferedImage, verticle, horizontal)
         if horizontal then
             numberOfFrames = numberOfFrames * (2)
         end
-        self.logUtil:putF("numberOfFramesPerOrientation: " .. tostring(numberOfFramesPerOrientation) .. " numberOfFrames: " .. tostring(numberOfFrames), self, "getImages")
+        self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("numberOfFramesPerOrientation: ") .. require("allbinary_java").to_string(numberOfFramesPerOrientation)) .. require("allbinary_java").to_string(" numberOfFrames: ")) .. require("allbinary_java").to_string(numberOfFrames), self, "getImages")
         local bufferedImageArray = java_new_array(nil, numberOfFrames)
         local y = 0
         for index = 0, numberOfFramesPerOrientation - 1 do

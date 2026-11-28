@@ -146,8 +146,8 @@ XYOscillateVelocityMovement.javaClassName = "org.allbinary.physics.movement.XYOs
 setmetatable(XYOscillateVelocityMovement, {__index = BasicConstantVelocityMovement})
 
 function XYOscillateVelocityMovement:_init_fields()
-    if self.oscillateMin == nil then self.oscillateMin = nil end
-    if self.oscillateMax == nil then self.oscillateMax = nil end
+    if self.oscillateMin == nil then self.oscillateMin = 0 end
+    if self.oscillateMax == nil then self.oscillateMax = 0 end
     if self.oscillate == nil then self.oscillate = 0 end
     if self.oscillatePositive == nil then self.oscillatePositive = false end
 end

@@ -94,12 +94,12 @@ function TransformInfoHttpFactory.getInstance(propertiesHashMap, pageContext)
         local logUtil = LogUtil.getInstance()
         local try_ok, try_error, try_value = pcall(function()
             local weblisketSession = WeblisketSession.new(propertiesHashMap, pageContext)
-            if not StringValidationUtil.getInstance():isEmpty(weblisketSession:getStoreName()) then
+            if not (StringValidationUtil.getInstance():isEmpty(weblisketSession:getStoreName())) then
                 local storeFrontInterface = StoreFrontFactory.getInstance(weblisketSession:getStoreName())
-                if storeFrontInterface ~= nil then
+                if not rawequal(storeFrontInterface, nil) then
                     do return "__jreturn", TransformInfoHttpStore.new(storeFrontInterface, propertiesHashMap, pageContext) end
                 else
-                    error(require("java.lang.Exception").new("No StoreFront with: " .. tostring(weblisketSession:getStoreName())), 0)
+                    error(require("java.lang.Exception").new(require("allbinary_java").to_string("No StoreFront with: ") .. require("allbinary_java").to_string(weblisketSession:getStoreName())), 0)
                 end
             else
                 do return "__jreturn", TransformInfoHttpContext.new(propertiesHashMap, pageContext) end

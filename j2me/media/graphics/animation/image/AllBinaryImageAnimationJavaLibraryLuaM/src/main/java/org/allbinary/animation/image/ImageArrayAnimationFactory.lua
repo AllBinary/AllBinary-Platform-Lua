@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local Animation = java_lazy("org.allbinary.animation.Animation")
 local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 local AnimationBehaviorFactory = java_lazy("org.allbinary.animation.AnimationBehaviorFactory")
@@ -88,7 +88,7 @@ end
 
 -- throws Exception
 function ImageArrayAnimationFactory:getInstance(instanceId)
-        if self.dx ~= 0 or self.dy ~= 0 then
+        if not rawequal(self.dx, 0) or not rawequal(self.dy, 0) then
             return AdjustedImageArrayAnimation.new(self.imageArray, self.dx, self.dy, self.animationBehaviorFactory:getOrCreateInstance())
         else
             return ImageArrayAnimation.new(self.imageArray, AnimationBehavior.getInstance())

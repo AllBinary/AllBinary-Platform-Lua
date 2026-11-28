@@ -85,7 +85,7 @@ end
 
 
 function GameConfigurationCentral.getInstance()
-        if GameConfigurationCentral.SINGLETON == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(GameConfigurationCentral.SINGLETON, NullUtil.getInstance().NULL_OBJECT) then
             GameConfigurationCentral.SINGLETON = GameConfigurationCentral.new()
         end
         return GameConfigurationCentral.SINGLETON

@@ -72,7 +72,7 @@ function LayerCollisionUtil._jinit(self)
     LayerCollisionUtil._init_fields(self)
         local features = Features.getInstance()
         local gameFeatureFactory = GameFeatureFactory.getInstance()
-        if OpenGLFeatureUtil.getInstance():isAnyThreed() and not features:isFeature(gameFeatureFactory.COLLISIONS_FORCED_TWO_DIMENSIONAL) then
+        if OpenGLFeatureUtil.getInstance():isAnyThreed() and not (features:isFeature(gameFeatureFactory.COLLISIONS_FORCED_TWO_DIMENSIONAL)) then
             self.collisionProcessor = CollisionThreedProcessor.new()
         else
             self.collisionProcessor = Collision2DProcessor.new()

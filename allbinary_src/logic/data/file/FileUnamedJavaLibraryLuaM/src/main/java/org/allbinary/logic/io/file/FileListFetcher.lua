@@ -122,7 +122,7 @@ function FileListFetcher:getFiles_j1(path)
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             print(debug.traceback(tostring(e)))
-            print("Error: " .. tostring(e) .. "\nMsg: " .. tostring(e))
+            print(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Error: ") .. require("allbinary_java").to_string(e)) .. require("allbinary_java").to_string("\nMsg: ")) .. require("allbinary_java").to_string(tostring(e)))
         end
         if try_ok and try_error == "__jreturn" then return try_value end
         return nil
@@ -144,7 +144,7 @@ function FileListFetcher:getFiles_j2_1(path, includeExtensions)
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             print(debug.traceback(tostring(e)))
-            print("Error: " .. tostring(e) .. "\nMsg: " .. tostring(e))
+            print(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Error: ") .. require("allbinary_java").to_string(e)) .. require("allbinary_java").to_string("\nMsg: ")) .. require("allbinary_java").to_string(tostring(e)))
         end
         if try_ok and try_error == "__jreturn" then return try_value end
         return nil
@@ -163,7 +163,7 @@ function FileListFetcher:getFiles_j2_2(path, includeExtension)
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             print(debug.traceback(tostring(e)))
-            print("Error: " .. tostring(e) .. "\nMsg: " .. tostring(e))
+            print(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Error: ") .. require("allbinary_java").to_string(e)) .. require("allbinary_java").to_string("\nMsg: ")) .. require("allbinary_java").to_string(tostring(e)))
         end
         if try_ok and try_error == "__jreturn" then return try_value end
         return nil
@@ -182,7 +182,7 @@ function FileListFetcher:getFiles_j3(path, pathIncludes, includeExtension)
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             print(debug.traceback(tostring(e)))
-            print("Error: " .. tostring(e) .. "\nMsg: " .. tostring(e))
+            print(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Error: ") .. require("allbinary_java").to_string(e)) .. require("allbinary_java").to_string("\nMsg: ")) .. require("allbinary_java").to_string(tostring(e)))
         end
         if try_ok and try_error == "__jreturn" then return try_value end
         return nil
@@ -217,7 +217,7 @@ function FileListFetcher:getTrackedFiles_j2_1(path, includeExtensions)
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             print(debug.traceback(tostring(e)))
-            print("Error: " .. tostring(e) .. "\nMsg: " .. tostring(e))
+            print(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Error: ") .. require("allbinary_java").to_string(e)) .. require("allbinary_java").to_string("\nMsg: ")) .. require("allbinary_java").to_string(tostring(e)))
         end
         if try_ok and try_error == "__jreturn" then return try_value end
         return nil
@@ -236,7 +236,7 @@ function FileListFetcher:getTrackedFiles_j2_2(path, includeExtension)
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             print(debug.traceback(tostring(e)))
-            print("Error: " .. tostring(e) .. "\nMsg: " .. tostring(e))
+            print(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Error: ") .. require("allbinary_java").to_string(e)) .. require("allbinary_java").to_string("\nMsg: ")) .. require("allbinary_java").to_string(tostring(e)))
         end
         if try_ok and try_error == "__jreturn" then return try_value end
         return nil
@@ -264,7 +264,7 @@ function FileListFetcher:getDirectories(path)
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             print(debug.traceback(tostring(e)))
-            print("Error: " .. tostring(e) .. "\nMsg: " .. tostring(e))
+            print(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Error: ") .. require("allbinary_java").to_string(e)) .. require("allbinary_java").to_string("\nMsg: ")) .. require("allbinary_java").to_string(tostring(e)))
         end
         if try_ok and try_error == "__jreturn" then return try_value end
         return nil

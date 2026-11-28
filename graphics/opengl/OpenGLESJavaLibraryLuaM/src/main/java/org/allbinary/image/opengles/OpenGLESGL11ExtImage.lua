@@ -28,11 +28,11 @@ local function java_real(class)
     return class
 end
 
--- local GL = require("javax.microedition.khronos.opengles.GL")
--- local GL10 = require("javax.microedition.khronos.opengles.GL10")
--- local GL11 = require("javax.microedition.khronos.opengles.GL11")
--- local GL11Ext = require("javax.microedition.khronos.opengles.GL11Ext")
--- local Image = require("javax.microedition.lcdui.Image")
+local GL = java_lazy("javax.microedition.khronos.opengles.GL")
+local GL10 = java_lazy("javax.microedition.khronos.opengles.GL10")
+local GL11 = java_lazy("javax.microedition.khronos.opengles.GL11")
+local GL11Ext = java_lazy("javax.microedition.khronos.opengles.GL11Ext")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local DisplayInfoSingleton = java_lazy("org.allbinary.graphics.displayable.DisplayInfoSingleton")
 local DisplayChangeEvent = java_lazy("org.allbinary.graphics.displayable.event.DisplayChangeEvent")
 local OpenGLLogUtil = java_lazy("org.allbinary.graphics.opengles.OpenGLLogUtil")

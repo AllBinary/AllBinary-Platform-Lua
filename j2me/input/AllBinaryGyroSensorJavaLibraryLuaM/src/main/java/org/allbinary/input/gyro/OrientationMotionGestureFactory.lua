@@ -65,7 +65,7 @@ end
 
 
 function OrientationMotionGestureFactory.getInstance()
-        if OrientationMotionGestureFactory.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(OrientationMotionGestureFactory.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             OrientationMotionGestureFactory.instance_f = OrientationMotionGestureFactory.new()
         end
         return OrientationMotionGestureFactory.instance_f

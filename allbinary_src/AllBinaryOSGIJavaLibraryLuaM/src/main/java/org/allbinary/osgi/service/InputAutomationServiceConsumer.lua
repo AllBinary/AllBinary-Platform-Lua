@@ -102,13 +102,13 @@ end
 function InputAutomationServiceConsumer:process()
         self.logUtil:putF(self.commonStrings.START, self, self.commonStrings.PROCESS)
         local vector = self.osgiServiceUtil:getServicesObjectVector(self:getBundleContext(), self:getServiceReferences())
-        self.logUtil:putF("Processing " .. tostring(vector:size()) .. " Services", self, self.commonStrings.PROCESS)
+        self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string("Processing ") .. require("allbinary_java").to_string(vector:size())) .. require("allbinary_java").to_string(" Services"), self, self.commonStrings.PROCESS)
         local size = vector:size()
         local osgiServiceInterface = nil
         for index = 0, size - 1 do
             osgiServiceInterface = vector:get(index)
-            if not self:getOsgiServiceVisitorInterface():visit(osgiServiceInterface) then
-                error(require("java.lang.Exception").new("Unable to process service: " .. tostring(osgiServiceInterface)), 0)
+            if not (self:getOsgiServiceVisitorInterface():visit(osgiServiceInterface)) then
+                error(require("java.lang.Exception").new(require("allbinary_java").to_string("Unable to process service: ") .. require("allbinary_java").to_string(osgiServiceInterface)), 0)
             end
         end
 end

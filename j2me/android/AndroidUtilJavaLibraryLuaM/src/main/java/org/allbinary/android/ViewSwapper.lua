@@ -57,7 +57,7 @@ ViewSwapper.className = "ViewSwapper"
 ViewSwapper.javaClassName = "org.allbinary.android.ViewSwapper"
 
 function ViewSwapper:_init_fields()
-    if self.rootViewId == nil then self.rootViewId = nil end
+    if self.rootViewId == nil then self.rootViewId = 0 end
     if self.activity == nil then self.activity = nil end
     self.currentMainViewId = -1
     self.mainViewArray = ViewSwapper.NULL_VIEW_ARRAY
@@ -91,17 +91,17 @@ end
 
 function ViewSwapper:setMainView(id)
         local viewGroup = self.activity:findViewById(self.rootViewId)
-        if id ~= self.currentMainViewId then
+        if not rawequal(id, self.currentMainViewId) then
             for index = 0, (self.topViewArray.n or #self.topViewArray) - 1 do
                 viewGroup:removeView(self.topViewArray[index + 1])
             end
             for index = 0, (self.mainViewArray.n or #self.mainViewArray) - 1 do
-                if id ~= self.mainViewArray[index + 1]:getId() then
+                if not rawequal(id, self.mainViewArray[index + 1]:getId()) then
                     viewGroup:removeView(self.mainViewArray[index + 1])
                 end
             end
             for index = 0, (self.mainViewArray.n or #self.mainViewArray) - 1 do
-                if id == self.mainViewArray[index + 1]:getId() then
+                if rawequal(id, self.mainViewArray[index + 1]:getId()) then
                     viewGroup:addView(self.mainViewArray[index + 1])
                     self.currentMainViewId = id
                 end

@@ -141,7 +141,7 @@ function BlisketBackupFactory:backup_j0()
             local backupPath = tostring(stringBuffer)
             local path = AbPath.new(backupPath, self.stringUtil.EMPTY_STRING)
             local fileBasicArrayList = self:getFileBasicArrayList(backupPath)
-            self:backup(fileBasicArrayList, tostring(path:toFileSystemString()) .. "backup.zip")
+            self:backup(fileBasicArrayList, require("allbinary_java").to_string(path:toFileSystemString()) .. require("allbinary_java").to_string("backup.zip"))
         end)
         if not try_ok then
             local e = try_error
@@ -180,7 +180,7 @@ function BlisketBackupFactory:backupViews()
                 PreLogUtil.put(tostring(stringBuffer), self, "backupViews()")
                 fileBasicArrayList:addAllList(self:getFileBasicArrayList(viewsPath))
             end
-            self:backup(fileBasicArrayList, tostring(path:toFileSystemString()) .. "backupViews.zip")
+            self:backup(fileBasicArrayList, require("allbinary_java").to_string(path:toFileSystemString()) .. require("allbinary_java").to_string("backupViews.zip"))
         end)
         if not try_ok then
             local e = try_error
@@ -221,7 +221,7 @@ function BlisketBackupFactory:backupResources()
                 PreLogUtil.put(tostring(stringBuffer), self, "backupResources()")
                 fileBasicArrayList:addAllList(self:getFileBasicArrayList(resourcesPath))
             end
-            self:backup(fileBasicArrayList, tostring(path:toFileSystemString()) .. "backupResources.zip")
+            self:backup(fileBasicArrayList, require("allbinary_java").to_string(path:toFileSystemString()) .. require("allbinary_java").to_string("backupResources.zip"))
         end)
         if not try_ok then
             local e = try_error
@@ -246,13 +246,13 @@ function BlisketBackupFactory:backupJsps()
             local nextStore = nil
             for index = 0, size - 1 do
                 nextStore = storeFrontNamesBasicArrayList:get(index)
-                PreLogUtil.put("Backup Store Jsps: " .. nextStore, self, "backupJsps()")
+                PreLogUtil.put(require("allbinary_java").to_string("Backup Store Jsps: ") .. require("allbinary_java").to_string(nextStore), self, "backupJsps()")
                 stringBuffer:delete(0, stringBuffer:length())
                 stringBuffer:append(URLGLOBALS.getWebappPath())
                 stringBuffer:append(nextStore)
                 fileBasicArrayList:addAllList(self:getFileBasicArrayList(tostring(stringBuffer)))
             end
-            self:backup(fileBasicArrayList, tostring(path:toFileSystemString()) .. "backupJsps.zip")
+            self:backup(fileBasicArrayList, require("allbinary_java").to_string(path:toFileSystemString()) .. require("allbinary_java").to_string("backupJsps.zip"))
         end)
         if not try_ok then
             local e = try_error
@@ -270,7 +270,7 @@ function BlisketBackupFactory:backup_j2(fileBasicArrayList, zipFile)
             stringBuffer:append(zipFile)
             stringBuffer:append(" BasicArrayList: ")
             stringBuffer:appendint(fileBasicArrayList:size())
-            PreLogUtil.put("Creating Backup Zip File: " .. tostring(stringBuffer), self, "backup()")
+            PreLogUtil.put(require("allbinary_java").to_string("Creating Backup Zip File: ") .. require("allbinary_java").to_string(tostring(stringBuffer)), self, "backup()")
             ZipFileUtil.getInstance():create(zipFile, fileBasicArrayList)
             self.logUtil:putF("Created Backup Zip File", self, "backup()")
         end)

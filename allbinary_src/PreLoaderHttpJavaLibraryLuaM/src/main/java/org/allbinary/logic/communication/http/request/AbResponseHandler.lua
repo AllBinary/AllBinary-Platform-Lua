@@ -185,7 +185,7 @@ function AbResponseHandler.sendRedirect(pageContext, page)
             if not try_ok then
                 local e = try_error
                 if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-                pageContext:getOut():print("Error: " .. page)
+                pageContext:getOut():print(require("allbinary_java").to_string("Error: ") .. require("allbinary_java").to_string(page))
             end
         end
 end

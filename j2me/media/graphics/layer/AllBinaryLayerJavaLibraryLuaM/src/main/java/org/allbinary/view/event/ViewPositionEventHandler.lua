@@ -174,7 +174,7 @@ end
 
 
 function ViewPositionEventHandler:addListener(layerInterface)
-        if not self.list:contains(layerInterface) then
+        if not (self.list:contains(layerInterface)) then
             self.list:add(layerInterface)
         end
 end

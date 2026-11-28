@@ -210,11 +210,11 @@ function ColorAtActionScriptConditionJPanel:update()
         colorRangeInterface:setMinBlue(math.tointeger(tostring(self:getMinBlueJTextField():getText()) // 1))
         colorRangeInterface:setMaxBlue(math.tointeger(tostring(self:getMaxBlueJTextField():getText()) // 1))
         local xString = self:getColorAtXJTextField():getText()
-        if not StringValidationUtil.getInstance():isEmpty(xString) and StringValidationUtil.getInstance():isNumber(xString) then
+        if not (StringValidationUtil.getInstance():isEmpty(xString)) and StringValidationUtil.getInstance():isNumber(xString) then
             self.colorAtActionScriptConditionInterface:getPoint().x = math.tointeger(tonumber(xString))
         end
         local yString = self:getColorAtYJTextField():getText()
-        if not StringValidationUtil.getInstance():isEmpty(yString) and StringValidationUtil.getInstance():isNumber(yString) then
+        if not (StringValidationUtil.getInstance():isEmpty(yString)) and StringValidationUtil.getInstance():isNumber(yString) then
             self.colorAtActionScriptConditionInterface:getPoint().y = math.tointeger(tonumber(xString))
         end
         self.colorAtActionScriptConditionInterface:log()
@@ -378,11 +378,13 @@ function ColorAtActionScriptConditionJPanel:initComponents()
         self.blueJLabel:setText("Blue:")
         self.okJButton:setText("OK")
         self.okJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:okJButtonActionPerformed(evt)
+                ;(self.okJButtonActionPerformed and self or java_outer_self):okJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -394,11 +396,13 @@ function ColorAtActionScriptConditionJPanel:initComponents()
         self:setPreferredSize(Dimension.new(100, 0))
         self.colorAtActionJButton:setText("Edit")
         self.colorAtActionJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:colorAtActionJButtonActionPerformed(evt)
+                ;(self.colorAtActionJButtonActionPerformed and self or java_outer_self):colorAtActionJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o

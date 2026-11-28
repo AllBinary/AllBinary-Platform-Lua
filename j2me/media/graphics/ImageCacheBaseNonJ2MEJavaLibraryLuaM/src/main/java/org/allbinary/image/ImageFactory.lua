@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local InputStream = require("java.io.InputStream")
--- local Image = require("javax.microedition.lcdui.Image")
+local InputStream = java_lazy("java.io.InputStream")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)

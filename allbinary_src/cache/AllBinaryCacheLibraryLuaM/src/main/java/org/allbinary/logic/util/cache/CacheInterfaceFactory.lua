@@ -81,7 +81,7 @@ end
 
 -- throws Exception
 function CacheInterfaceFactory.getInstance(cacheType, cachePolicy)
-        error(require("java.lang.Exception").new("No such " .. tostring(cacheType)), 0)
+        error(require("java.lang.Exception").new(require("allbinary_java").to_string("No such ") .. require("allbinary_java").to_string(tostring(cacheType))), 0)
 end
 
 return CacheInterfaceFactory

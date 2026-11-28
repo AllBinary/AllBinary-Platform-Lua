@@ -94,7 +94,7 @@ end
 
 
 function PersistentInputMapping.getNullInstance()
-        if PersistentInputMapping.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(PersistentInputMapping.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             PersistentInputMapping.instance_f = PersistentInputMapping.new(GamePersistanceStrings.getInstance().SAVED_INPUT_CONFIGURATION_RECORD_ID)
         end
         return PersistentInputMapping.instance_f
@@ -148,7 +148,7 @@ end
 function PersistentInputMapping:save(abeClientInformation)
         self.inputPersistance:save(abeClientInformation, self:getInputMapping():getHashtable())
         self.inputMappingEvent:setInputToGameKeyMapping(self:getInputMapping())
-        if self:getInputMappingEventListenerInterface() ~= nil then
+        if not rawequal(self:getInputMappingEventListenerInterface(), nil) then
             self:getInputMappingEventListenerInterface():onInputMappingEvent(self.inputMappingEvent)
         end
 end

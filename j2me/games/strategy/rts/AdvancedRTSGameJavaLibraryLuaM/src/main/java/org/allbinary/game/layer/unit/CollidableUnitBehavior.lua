@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local SteeringVisitor = require("org.allbinary.game.layer.SteeringVisitor")
 local AdvancedRTSGameLayer = java_lazy("org.allbinary.game.layer.AdvancedRTSGameLayer")
 local CollidableCompositeLayer = java_lazy("org.allbinary.game.layer.CollidableCompositeLayer")
@@ -171,6 +171,9 @@ local SimpleSteeringVisitor = {}
     function SimpleSteeringVisitor.new()
         return SimpleSteeringVisitor._jinit(setmetatable({}, SimpleSteeringVisitor))
     end
+    function SimpleSteeringVisitor.newEnclosed(outer)
+        return SimpleSteeringVisitor._jinit(setmetatable({__javaOuter = outer}, SimpleSteeringVisitor))
+    end
     
 
     function SimpleSteeringVisitor:visit(anyType)
@@ -179,7 +182,7 @@ local SimpleSteeringVisitor = {}
                 local ownerLayer = anyType
                 if self:getList():size() > 0 then
                     local allbinaryLayer = self:getList():get(0)
-                    local clear = self:steer(ownerLayer, allbinaryLayer)
+                    local clear = self.__javaOuter:steer(ownerLayer, allbinaryLayer)
                     if clear then
                         self:getList():clear()
                         do return "__jreturn", NullUtil.getInstance().NULL_OBJECT end
@@ -202,7 +205,7 @@ local SimpleSteeringVisitor = {}
 
 function CollidableUnitBehavior:_init_fields()
     self.layerPartialCellPositionsUtil = LayerPartialCellPositionsUtil.getInstance()
-    self.simpleSteeringVisitor = SimpleSteeringVisitor.new()
+    self.simpleSteeringVisitor = SimpleSteeringVisitor.newEnclosed(self)
 end
 
 
@@ -224,7 +227,7 @@ end
 function CollidableUnitBehavior:collideNone(ownerLayer, collidableInterfaceCompositeInterface)
         self:chase(ownerLayer, collidableInterfaceCompositeInterface)
         local rtsLayer = collidableInterfaceCompositeInterface
-        if rtsLayer:getType() == UnitLayer.getStaticType() then
+        if rawequal(rtsLayer:getType(), UnitLayer.getStaticType()) then
             self:collideUnit(ownerLayer, rtsLayer)
         end
 end
@@ -252,13 +255,13 @@ java_overload(CollidableUnitBehavior, "steer", 2, function(java_a1, java_a2) ret
 -- throws Exception
 function CollidableUnitBehavior:chase(ownerLayer, collidableInterfaceCompositeInterface)
         local rtsLayer = collidableInterfaceCompositeInterface
-        if rtsLayer:getType() == UnitLayer.getStaticType() then
-            if not self.simpleSteeringVisitor:getList():contains(collidableInterfaceCompositeInterface) then
+        if rawequal(rtsLayer:getType(), UnitLayer.getStaticType()) then
+            if not (self.simpleSteeringVisitor:getList():contains(collidableInterfaceCompositeInterface)) then
                 self.simpleSteeringVisitor:getList():add(collidableInterfaceCompositeInterface)
             end
             local ownerUnitLayer = ownerLayer
             local list = ownerUnitLayer:getUnitWaypointBehavior():getSteeringVisitorList()
-            if not list:contains(self.simpleSteeringVisitor) then
+            if not (list:contains(self.simpleSteeringVisitor)) then
                 list:add(self.simpleSteeringVisitor)
             end
         end
@@ -279,7 +282,7 @@ function CollidableUnitBehavior:collideUnit(ownerLayer, unitLayer)
         if ownerLayer:getXP() < unitLayer:getXP() and ownerLayer:getX2() > unitLayer:getXP() then
             local diff = ownerLayer:getWidth() + 1
             self.layerPartialCellPositionsUtil:getAllDXY(basicGeographicMap, ownerLayer, -diff, 0, partialPositionList)
-            if not dropCellPositionHistory:anyCellPositionWithDrop(partialPositionList) then
+            if not (dropCellPositionHistory:anyCellPositionWithDrop(partialPositionList)) then
                 local x = unitLayer:getXP() - diff
                 local y = ownerLayer:getYP()
                 x = tiledLayerUtil:keepOnMapX(tiledLayer, x, ownerLayer:getWidth())
@@ -287,7 +290,7 @@ function CollidableUnitBehavior:collideUnit(ownerLayer, unitLayer)
                 ownerLayer:setPosition(x, y, ownerLayer:getZP())
             end
             self.layerPartialCellPositionsUtil:getAllDXY(basicGeographicMap, unitLayer, diff, 0, partialPositionList)
-            if not dropCellPositionHistory:anyCellPositionWithDrop(partialPositionList) then
+            if not (dropCellPositionHistory:anyCellPositionWithDrop(partialPositionList)) then
                 local x = unitLayer:getXP() + diff
                 local y = unitLayer:getYP()
                 x = tiledLayerUtil:keepOnMapX(tiledLayer, x, unitLayer:getWidth())
@@ -298,7 +301,7 @@ function CollidableUnitBehavior:collideUnit(ownerLayer, unitLayer)
         if ownerLayer:getYP() < unitLayer:getYP() and ownerLayer:getY2() > unitLayer:getYP() then
             local diff = ownerLayer:getHeight() + 1
             self.layerPartialCellPositionsUtil:getAllDXY(basicGeographicMap, ownerLayer, 0, -diff, partialPositionList)
-            if not dropCellPositionHistory:anyCellPositionWithDrop(partialPositionList) then
+            if not (dropCellPositionHistory:anyCellPositionWithDrop(partialPositionList)) then
                 local x = ownerLayer:getXP()
                 local y = unitLayer:getYP() - diff
                 x = tiledLayerUtil:keepOnMapX(tiledLayer, x, ownerLayer:getWidth())
@@ -306,7 +309,7 @@ function CollidableUnitBehavior:collideUnit(ownerLayer, unitLayer)
                 ownerLayer:setPosition(x, y, ownerLayer:getZP())
             end
             self.layerPartialCellPositionsUtil:getAllDXY(basicGeographicMap, unitLayer, 0, diff, partialPositionList)
-            if not dropCellPositionHistory:anyCellPositionWithDrop(partialPositionList) then
+            if not (dropCellPositionHistory:anyCellPositionWithDrop(partialPositionList)) then
                 local x = unitLayer:getXP()
                 local y = unitLayer:getYP() + diff
                 x = tiledLayerUtil:keepOnMapX(tiledLayer, x, unitLayer:getWidth())

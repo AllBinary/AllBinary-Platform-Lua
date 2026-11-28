@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local Direction = java_lazy("org.allbinary.direction.Direction")
 local DirectionCompositeInterface = java_lazy("org.allbinary.direction.DirectionCompositeInterface")
 local DirectionFactory = java_lazy("org.allbinary.direction.DirectionFactory")
@@ -189,16 +189,16 @@ function PacePatrolAI:processAI(allBinaryLayerManager)
         self:update()
         local direction = self:setFiringDirectionForTargetIfInRange()
         local directionFactory = DirectionFactory.getInstance()
-        if direction == directionFactory.LEFT then
-            if self.lastKeyDirection ~= self.keyDirection or not self.isFollowLimitedByTerrain then
+        if rawequal(direction, directionFactory.LEFT) then
+            if not rawequal(self.lastKeyDirection, self.keyDirection) or not (self.isFollowLimitedByTerrain) then
                 java_super(BasePatrolAI, "processKeyAI", 1)(self, Canvas.LEFT)
             end
             self.keyDirection = Canvas.LEFT
             self.lastKeyDirection = self.keyDirection
             self.xTotalDistance = 0
             java_super(BasePatrolAI, "processKeyAI", 1)(self, Canvas.KEY_NUM1)
-        elseif direction == directionFactory.RIGHT then
-            if self.lastKeyDirection ~= self.keyDirection or not self.isFollowLimitedByTerrain then
+        elseif rawequal(direction, directionFactory.RIGHT) then
+            if not rawequal(self.lastKeyDirection, self.keyDirection) or not (self.isFollowLimitedByTerrain) then
                 java_super(BasePatrolAI, "processKeyAI", 1)(self, Canvas.RIGHT)
             end
             self.keyDirection = Canvas.RIGHT
@@ -232,9 +232,9 @@ function PacePatrolAI:setFiringDirectionForTargetIfInRange()
             if absYDistance <= 100 then
                 if absXDistance < java_idiv(self:getFiringDistance(), 2) then
                     directionCompositeInterface = self:getOwnerLayerInterface()
-                    if xDistance < 0 and directionCompositeInterface:getDirection() == directionFactory.RIGHT then
+                    if xDistance < 0 and rawequal(directionCompositeInterface:getDirection(), directionFactory.RIGHT) then
                         direction = directionFactory.RIGHT
-                    elseif xDistance > 0 and directionCompositeInterface:getDirection() == directionFactory.LEFT then
+                    elseif xDistance > 0 and rawequal(directionCompositeInterface:getDirection(), directionFactory.LEFT) then
                         direction = directionFactory.LEFT
                     end
                 end

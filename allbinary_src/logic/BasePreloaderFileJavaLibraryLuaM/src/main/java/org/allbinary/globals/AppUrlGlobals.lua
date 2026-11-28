@@ -157,8 +157,8 @@ java_overload(AppUrlGlobals, "getWebappPath", 0)
 
 function AppUrlGlobals:setWebappPath(path)
         self.path = path
-        if not ("\\" == "" or string.sub(self.path, -#"\\") == "\\") or ("/" == "" or string.sub(self.path, -#"/") == "/") then
-            self.path = self.path .. "\\"
+        if not (("\\" == "" or string.sub(self.path, -#"\\") == "\\") or ("/" == "" or string.sub(self.path, -#"/") == "/")) then
+            self.path = require("allbinary_java").to_string(self.path) .. require("allbinary_java").to_string("\\")
         end
 end
 java_overload(AppUrlGlobals, "setWebappPath", 1, function(java_a1) return true and (java_a1 == nil or type(java_a1) == "string") end)

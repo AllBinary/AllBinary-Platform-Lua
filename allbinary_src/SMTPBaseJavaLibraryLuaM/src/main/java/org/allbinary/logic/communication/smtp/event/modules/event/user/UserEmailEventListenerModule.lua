@@ -92,7 +92,7 @@ end
 -- throws Exception
 function UserEmailEventListenerModule:onEmailSendRequest(emailEvent)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().EMAILLOGGING) then
-            self.logUtil:putF("Add Email To Que For Sending: " .. tostring(emailEvent), self, "onEmailSendRequest")
+            self.logUtil:putF(require("allbinary_java").to_string("Add Email To Que For Sending: ") .. require("allbinary_java").to_string(tostring(emailEvent)), self, "onEmailSendRequest")
         end
         local to = self.userInterface:getMainEmail()
         local email = BasicEmail.new(emailEvent:getEmailInfo(), to)

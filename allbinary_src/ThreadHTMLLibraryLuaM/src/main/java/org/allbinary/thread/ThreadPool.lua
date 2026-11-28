@@ -87,15 +87,15 @@ end
 
 -- throws Exception
 function ThreadPool:runAPriorityTask()
-        if not self.currentPriorityRunnable:isDone() then
+        if not (self.currentPriorityRunnable:isDone()) then
             self.currentPriorityRunnable:run()
         else
             local runnable = self:getTask()
-            if runnable == self.NULL_RUNNABLE then
+            if rawequal(runnable, self.NULL_RUNNABLE) then
                 return
             end
             self.currentPriorityRunnable = runnable
-            if not self.currentPriorityRunnable == self.threadObjectUtil.NULL_PRIORITY_RUNNABLE then
+            if not (rawequal(self.currentPriorityRunnable, self.threadObjectUtil.NULL_PRIORITY_RUNNABLE)) then
                 self.currentPriorityRunnable:reset()
                 self.currentPriorityRunnable:run()
             end
@@ -106,14 +106,14 @@ end
 -- throws Exception
 function ThreadPool:runATask()
         local runnable = self:getTask()
-        if runnable ~= nil then
+        if not rawequal(runnable, nil) then
             runnable:run()
         end
 end
 
 
 function ThreadPool:init()
-        if not self.isAlive then
+        if not (self.isAlive) then
             self.isAlive = true
             self.taskQueue = BasicArrayListD.new()
         end
@@ -121,10 +121,10 @@ end
 
 
 function ThreadPool:runTaskWithPriority(task)
-        if not self.isAlive then
+        if not (self.isAlive) then
             self:init()
         end
-        if task ~= nil then
+        if not rawequal(task, nil) then
             local size = self.taskQueue:size()
             local runnable = nil
             local lowerPriorityRunnable = self.threadObjectUtil.NULL_PRIORITY_RUNNABLE
@@ -135,7 +135,7 @@ function ThreadPool:runTaskWithPriority(task)
                     break
                 end
             end
-            if lowerPriorityRunnable == self.threadObjectUtil.NULL_PRIORITY_RUNNABLE then
+            if rawequal(lowerPriorityRunnable, self.threadObjectUtil.NULL_PRIORITY_RUNNABLE) then
                 self.taskQueue:add(task)
             else
                 local index = self.taskQueue:indexOf(lowerPriorityRunnable)
@@ -146,10 +146,10 @@ end
 
 
 function ThreadPool:runTask(task)
-        if not self.isAlive then
+        if not (self.isAlive) then
             self:init()
         end
-        if task ~= nil then
+        if not rawequal(task, nil) then
             self.taskQueue:add(task)
         end
 end
@@ -186,7 +186,7 @@ end
 
 
 function ThreadPool:isBusy()
-        if not self.isAlive then
+        if not (self.isAlive) then
             return false
         end
         if self.taskQueue:size() > 0 then
@@ -204,7 +204,7 @@ end
 
 
 function ThreadPool:threadStopped()
-        if self.numThreads == 1 then
+        if rawequal(self.numThreads, 1) then
             self.isAlive = false
             self.taskQueue:clear()
             self.currentPriorityRunnable = self.threadObjectUtil.NULL_PRIORITY_RUNNABLE

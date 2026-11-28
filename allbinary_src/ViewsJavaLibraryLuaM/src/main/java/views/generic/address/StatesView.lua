@@ -86,7 +86,7 @@ end
 function StatesView:toXmlNode(document)
         local try_ok, try_error, try_value = pcall(function()
             local node = document:createElement(StreetAddressData.STATES)
-            local statesFile = tostring(URLGLOBALS.getMainPath() + FREEBLISKET_PATH_GLOBALS.getInstance().LINEDATAPATH) .. "states.txt"
+            local statesFile = require("allbinary_java").to_string(URLGLOBALS.getMainPath() + FREEBLISKET_PATH_GLOBALS.getInstance().LINEDATAPATH) .. require("allbinary_java").to_string("states.txt")
             local lineReader = LineReader.new(statesFile)
             while lineReader:hasNext() do
                 local option = lineReader:next()

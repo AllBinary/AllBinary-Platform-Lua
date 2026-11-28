@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
 local ResourceInitialization = java_lazy("org.allbinary.game.resource.ResourceInitialization")
 local ResourceLoadingLevelFactory = java_lazy("org.allbinary.game.resource.ResourceLoadingLevelFactory")
 local PointFactory = java_lazy("org.allbinary.graphics.PointFactory")
@@ -188,7 +188,7 @@ end
 function CommonGameInitialization:init(abeClientInformation, commandListener, level)
         java_super(BaseGameInitialization, "init", 3)(self, abeClientInformation, commandListener, level)
         local resourceLoadingLevelFactory = ResourceLoadingLevelFactory.getInstance()
-        if not self:isGameInitialized() and level == resourceLoadingLevelFactory.LOAD_ALL:getLevel() then
+        if not (self:isGameInitialized()) and rawequal(level, resourceLoadingLevelFactory.LOAD_ALL:getLevel()) then
             self:setGameInitialized(true)
             local progressCanvas = ProgressCanvasFactory.getInstance()
             SmallIntegerSingletonFactory.getInstance():init()

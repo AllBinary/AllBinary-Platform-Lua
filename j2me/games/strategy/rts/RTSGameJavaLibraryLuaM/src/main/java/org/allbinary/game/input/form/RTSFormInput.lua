@@ -106,7 +106,7 @@ function RTSFormInput._jinit(self, groupInterfaceArray)
         end
         self.groupInterfaceArray = groupInterfaceArray
         self.hashtable:put(DirectionFactory.getInstance().NAME, DirectionFactory.getInstance().DOWN)
-        if groupInterfaceArray ~= nil then
+        if not rawequal(groupInterfaceArray, nil) then
             self.hashtable:put(self.groupCommonFactory.ID, groupInterfaceArray)
         end
     return self
@@ -132,7 +132,7 @@ function RTSFormInput:processAtPoint(associatedRtsLayer, rtsPlayerLayerInterface
         end
         local scrollSelectionForm = rtsPlayerLayerInterface:getCurrentScrollSelectionForm()
         local item = scrollSelectionForm:get(index)
-        if item == nil then
+        if rawequal(item, nil) then
             return
         end
         self:processGameSpecific(associatedRtsLayer, rtsPlayerLayerInterface, layerManager, item, index)
@@ -158,7 +158,7 @@ function RTSFormInput:processSticky(associatedRtsLayer, rtsPlayerLayerInterface,
         end
         local scrollSelectionForm = rtsPlayerLayerInterface:getCurrentScrollSelectionForm()
         local item = scrollSelectionForm:get(index)
-        if item == nil then
+        if rawequal(item, nil) then
             return false
         end
         self:processStickyGameSpecific(associatedRtsLayer, rtsPlayerLayerInterface, layerManager, item, index)
@@ -192,7 +192,7 @@ function RTSFormInput:getInstance(layerManager, aItem, geographicMapCellPosition
         local item = aItem
         local layerInterfaceFactoryInterface = item:getLayerInterfaceFactoryInterface()
         local cellPoint = geographicMapCellPosition:getPoint()
-        if layerInterfaceFactoryInterface ~= nil then
+        if not rawequal(layerInterfaceFactoryInterface, nil) then
             self.hashtable:put(AllBinaryGameLayerManager.ID, layerManager)
             return layerInterfaceFactoryInterface:getNextInstance(self:getHashtable(), cellPoint:getX(), cellPoint:getY(), cellPoint:getZ())
         end

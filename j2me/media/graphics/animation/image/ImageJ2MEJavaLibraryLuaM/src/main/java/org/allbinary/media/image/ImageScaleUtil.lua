@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local ImageCache = java_lazy("org.allbinary.image.ImageCache")
 
 local function java_idiv(a, b)

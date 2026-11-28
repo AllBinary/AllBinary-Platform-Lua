@@ -195,12 +195,12 @@ java_overload(PaymentGatewayTag, "process", 0)
 function PaymentGatewayTag:doStartTag()
         local try_ok, try_error, try_value = pcall(function()
             if self:isEnabled() then
-                if self:getCommand():compareTo(GLOBALS2.AUTHORIZEORDEREVALBODYONERROR) == 0 or self:getCommand():compareTo(GLOBALS2.AUTHORIZEORDERANDEVALBODY) == 0 or self:getCommand():compareTo(GLOBALS2.AUTHORIZEFORMEVALBODYONERROR) == 0 then
+                if rawequal(self:getCommand():compareTo(GLOBALS2.AUTHORIZEORDEREVALBODYONERROR), 0) or rawequal(self:getCommand():compareTo(GLOBALS2.AUTHORIZEORDERANDEVALBODY), 0) or rawequal(self:getCommand():compareTo(GLOBALS2.AUTHORIZEFORMEVALBODYONERROR), 0) then
                     local output = self:process()
                     do
-                        self.pageContext:getOut():print(output .. "<br />")
+                        self.pageContext:getOut():print(require("allbinary_java").to_string(output) .. require("allbinary_java").to_string("<br />"))
                     end
-                    if self:getCommand():compareTo(GLOBALS2.AUTHORIZEORDEREVALBODYONERROR) == 0 then
+                    if rawequal(self:getCommand():compareTo(GLOBALS2.AUTHORIZEORDEREVALBODYONERROR), 0) then
                         do return "__jreturn", self.SKIP_BODY end
                     else
                         do return "__jreturn", self.EVAL_BODY_INCLUDE end

@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local Image = require("javax.microedition.lcdui.Image")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
 local GameFeatureFactory = java_lazy("org.allbinary.game.configuration.feature.GameFeatureFactory")
 local Anchor = java_lazy("org.allbinary.graphics.Anchor")
@@ -108,7 +108,7 @@ end
 
 -- throws Exception
 function ImageCopyUtil:createImage(originalImage)
-        if not self.features:isFeature(self.gameFeatureFactory.POST_IMAGE_LOADING_MODIFICATION) then
+        if not (self.features:isFeature(self.gameFeatureFactory.POST_IMAGE_LOADING_MODIFICATION)) then
             self.logUtil:put(self.NO_COPY, self, self.commonStrings.CONSTRUCTOR, require("java.lang.Exception").new())
             return originalImage
         end
@@ -124,7 +124,7 @@ end
 
 -- throws Exception
 function ImageCopyUtil:createImageScale(originalImage, canvasScale, resize)
-        if not self.features:isFeature(self.gameFeatureFactory.POST_IMAGE_LOADING_MODIFICATION) then
+        if not (self.features:isFeature(self.gameFeatureFactory.POST_IMAGE_LOADING_MODIFICATION)) then
             self.logUtil:put(self.NO_COPY, self, self.commonStrings.CONSTRUCTOR, require("java.lang.Exception").new())
             return originalImage
         end

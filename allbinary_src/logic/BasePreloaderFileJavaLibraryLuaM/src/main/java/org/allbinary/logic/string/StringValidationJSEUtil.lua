@@ -67,7 +67,7 @@ function StringValidationJSEUtil.isBlank(string_)
         local len = #string_
         for i = 0, len - 1 do
             local c = string.sub(string_, (i) + 1, (i) + 1)
-            if (string.match(c, "^%s$") ~= nil) == false then
+            if rawequal((string.match(c, "^%s$") ~= nil), false) then
                 return false
             end
         end

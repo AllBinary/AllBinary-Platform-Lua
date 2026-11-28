@@ -186,11 +186,11 @@ function BasicProfileActionScriptInput._new2(self, label, node)
     java_super_init(BasicProfileActionScriptProcessor, self, label, node)
     BasicProfileActionScriptInput._init_fields(self)
         -- super(...) made self above
-        self.logUtil:putF(tostring(self.commonStrings.START) .. label, self, self.commonStrings.CONSTRUCTOR)
+        self.logUtil:putF(require("allbinary_java").to_string(self.commonStrings.START) .. require("allbinary_java").to_string(label), self, self.commonStrings.CONSTRUCTOR)
         local actionNode = DomSearchHelper.getNode(GenericProfileActionScriptInputData.TYPE, node:getChildNodes())
         local inputTypeString = DomNodeHelper.getTextNodeValue(actionNode)
         local timeNode = DomSearchHelper.getNodeNoThrow(GenericProfileActionScriptInputData.DELAY, node:getChildNodes())
-        if timeNode ~= nil then
+        if not rawequal(timeNode, nil) then
             local delayString = DomNodeHelper.getTextNodeValue(timeNode)
             self:setTime(math.tointeger(tostring(delayString) // 1))
         else
@@ -205,7 +205,7 @@ function BasicProfileActionScriptInput._new1(self, label)
     java_super_init(BasicProfileActionScriptProcessor, self, label)
     BasicProfileActionScriptInput._init_fields(self)
         -- super(...) made self above
-        self.logUtil:putF(tostring(self.commonStrings.START) .. label, self, self.commonStrings.CONSTRUCTOR)
+        self.logUtil:putF(require("allbinary_java").to_string(self.commonStrings.START) .. require("allbinary_java").to_string(label), self, self.commonStrings.CONSTRUCTOR)
         local inputRobotFactory = InputRobotFactory.getInstance()
         local hashtable = inputRobotFactory:get()
         local set = hashtable:keySet()
@@ -232,7 +232,7 @@ function BasicProfileActionScriptInput:BasicProfileActionScriptInput_toHashMap()
         local hashMap = StdUtil.getInstance():createHashMap()
         hashMap:put(GenericProfileActionScriptInputData.TYPE, self:getInputRobotInterface():getName())
         hashMap:put(GenericProfileActionScriptInputData.DELAY, tostring(self:getTime()))
-        self.logUtil:putF("HashMap: " .. tostring(hashMap), self, "toHashMap()")
+        self.logUtil:putF(require("allbinary_java").to_string("HashMap: ") .. require("allbinary_java").to_string(tostring(hashMap)), self, "toHashMap()")
         return hashMap
 end
 java_overload(BasicProfileActionScriptInput, "BasicProfileActionScriptInput_toHashMap", 0)
@@ -262,7 +262,7 @@ function BasicProfileActionScriptInput:toString()
         local stringBuffer = StringMaker.new()
         stringBuffer:append(tostring(BasicProfileActionScriptProcessor))
         stringBuffer:append(" Input Type: ")
-        if self:getInputRobotInterface() ~= nil then
+        if not rawequal(self:getInputRobotInterface(), nil) then
             stringBuffer:append(self:getInputRobotInterface():getName())
         else
             stringBuffer:append(StringUtil.getInstance().NULL_STRING)

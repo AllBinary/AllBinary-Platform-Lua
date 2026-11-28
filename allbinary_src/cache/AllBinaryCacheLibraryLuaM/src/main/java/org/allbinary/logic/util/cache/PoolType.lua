@@ -77,7 +77,7 @@ end
 
 function PoolType:toString()
         local POOL_TYPE = "PoolType: "
-        return POOL_TYPE .. tostring(self:getCacheType())
+        return require("allbinary_java").to_string(POOL_TYPE) .. require("allbinary_java").to_string(tostring(self:getCacheType()))
 end
 PoolType.__tostring = function(self) return self:toString() end
 

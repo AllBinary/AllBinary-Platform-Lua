@@ -77,7 +77,7 @@ end
 
 function PlatformInputMappingFactory:getPersistentInputMappingInstance()
         local try_ok, try_error, try_value = pcall(function()
-            if self.inputToGameKeyMapping == PersistentInputMapping.getNullInstance() then
+            if rawequal(self.inputToGameKeyMapping, PersistentInputMapping.getNullInstance()) then
                 self.inputToGameKeyMapping = NormalJ2MEGameInputMapping.new()
             end
         end)

@@ -93,13 +93,13 @@ end
 
 -- throws Exception
 function LogoImageFileUtil:saveFiles(fileItem)
-        if self.fileName == nil then
+        if rawequal(self.fileName, nil) then
             error(require("java.lang.Exception").new("Image File Name Was Null"), 0)
         end
-        if not self.directory:create(self.imageFileAbPath) then
+        if not (self.directory:create(self.imageFileAbPath)) then
             error(require("java.lang.Exception").new("Unable to save file to non creatable directory"), 0)
         end
-        local originalImageFile = AbFile.createAbFile(tostring(self.imageFileAbPath) .. self.fileName)
+        local originalImageFile = AbFile.createAbFile(require("allbinary_java").to_string(tostring(self.imageFileAbPath)) .. require("allbinary_java").to_string(self.fileName))
         originalImageFile:createNewFile()
         FileUtil.getInstance():write(ByteArrayInputStream.new(fileItem:get()), originalImageFile)
 end

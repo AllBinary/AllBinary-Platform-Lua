@@ -28,9 +28,9 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
--- local Sprite = require("javax.microedition.lcdui.game.Sprite")
--- local Player = require("javax.microedition.media.Player")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local Sprite = java_lazy("javax.microedition.lcdui.game.Sprite")
+local Player = java_lazy("javax.microedition.media.Player")
 local Animation = java_lazy("org.allbinary.animation.Animation")
 local AnimationBehaviorFactory = java_lazy("org.allbinary.animation.AnimationBehaviorFactory")
 local AnimationInterfaceFactoryInterface = java_lazy("org.allbinary.animation.AnimationInterfaceFactoryInterface")
@@ -87,13 +87,13 @@ function ImageCaptionIndexedAnimationFactory:_init_fields()
     self.animationFactorySpriteScaleUtil = AnimationFactorySpriteScaleUtil.getInstance()
     if self.captionImage == nil then self.captionImage = nil end
     if self.spriteMovieImage == nil then self.spriteMovieImage = nil end
-    if self.frameWidth == nil then self.frameWidth = nil end
-    if self.frameHeight == nil then self.frameHeight = nil end
-    if self.captionDx == nil then self.captionDx = nil end
-    if self.captionDy == nil then self.captionDy = nil end
-    if self.dx == nil then self.dx = nil end
-    if self.dy == nil then self.dy = nil end
-    if self.time == nil then self.time = nil end
+    if self.frameWidth == nil then self.frameWidth = 0 end
+    if self.frameHeight == nil then self.frameHeight = 0 end
+    if self.captionDx == nil then self.captionDx = 0 end
+    if self.captionDy == nil then self.captionDy = 0 end
+    if self.dx == nil then self.dx = 0 end
+    if self.dy == nil then self.dy = 0 end
+    if self.time == nil then self.time = 0 end
     if self.soundInterface == nil then self.soundInterface = nil end
     self.scaleProperties = ScaleProperties.instance_f
     if self.animationBehaviorFactory == nil then self.animationBehaviorFactory = nil end
@@ -102,7 +102,7 @@ end
 
 function ImageCaptionIndexedAnimationFactory._jinit(self, captionImage, spriteMovieImage, soundInterface, frameWidth, frameHeight, captionDx, captionDy, dx, dy, time, animationBehaviorFactory)
     ImageCaptionIndexedAnimationFactory._init_fields(self)
-        if animationBehaviorFactory == AnimationBehaviorFactory.getInstance() then
+        if rawequal(animationBehaviorFactory, AnimationBehaviorFactory.getInstance()) then
             ForcedLogUtil.log("Using default AnimationBehaviorFactory with IndexedAnimationFactory", self)
         end
         self.captionImage = captionImage
@@ -133,7 +133,7 @@ function ImageCaptionIndexedAnimationFactory:getInstance(instanceId)
         local sprite = self.animationFactorySpriteScaleUtil:createImage(self.spriteMovieImage, self.frameWidth, self.frameHeight, self.scaleProperties.scaleWidth, self.scaleProperties.scaleHeight)
         local movieIndexedAnimationInterface = SpriteIndexedAnimation.new(sprite, self.spriteMovieImage, BasicColorUtil.getInstance().ZERO_ARRAY, self.animationBehaviorFactory:getOrCreateInstance())
         local player = self.soundInterface:getPlayerP()
-        if player == nil then
+        if rawequal(player, nil) then
             error(require("java.lang.Exception").new("Sound Was not Initialized"), 0)
         end
         return CaptionIndexedAnimation.new(animationInterface, movieIndexedAnimationInterface, player, self.captionDx, self.captionDy, self.dx, self.dy, self.time, self.animationBehaviorFactory:getOrCreateInstance())

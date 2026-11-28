@@ -131,7 +131,7 @@ function TransformTemplateFactory:getInstance(abeClientInformation, templateName
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local error = "Failed To Get Instance"
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERFACTORYERROR) then
-                self.logUtil:put(error .. templateName .. "->TemplateFactory", self, "getInstance(viewName, HashMap, PageContext)", e)
+                self.logUtil:put(require("allbinary_java").to_string(require("allbinary_java").to_string(error) .. require("allbinary_java").to_string(templateName)) .. require("allbinary_java").to_string("->TemplateFactory"), self, "getInstance(viewName, HashMap, PageContext)", e)
             end
             error(e, 0)
         end

@@ -28,10 +28,10 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
 local MainFeatureFactory = java_lazy("org.allbinary.game.configuration.feature.MainFeatureFactory")
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
 local RunnableCanvas = java_lazy("org.allbinary.canvas.RunnableCanvas")
 
 local function java_idiv(a, b)
@@ -73,7 +73,7 @@ end
 -- throws Exception
 function FullScreenUtil:initOnRun(fullScreenInterface, commandListener)
         ;(fullScreenInterface):waitOnNotify(0)
-        if commandListener ~= nil then
+        if not rawequal(commandListener, nil) then
             self:init(fullScreenInterface)
         end
 end
@@ -93,7 +93,7 @@ end
 function FullScreenUtil:isScreenChange(isFullScreen)
         local mainFeatureFactory = MainFeatureFactory.getInstance()
         local features = Features.getInstance()
-        if features:isFeature(mainFeatureFactory.FULL_SCREEN) ~= isFullScreen then
+        if not rawequal(features:isFeature(mainFeatureFactory.FULL_SCREEN), isFullScreen) then
             return true
         end
         return false

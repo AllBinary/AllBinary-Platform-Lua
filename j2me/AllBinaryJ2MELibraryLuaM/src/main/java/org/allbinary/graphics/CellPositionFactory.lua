@@ -131,7 +131,7 @@ end
 
 function CellPositionFactory:createInstance(i_column, i_row)
         local cellPositionCanBeNull = self.cellPositionArray[i_column + 1][i_row + 1]
-        if cellPositionCanBeNull == nil then
+        if rawequal(cellPositionCanBeNull, nil) then
             cellPositionCanBeNull = CellPosition.new(i_column, i_row, self.columns, self.rows)
             self.cellPositionArray[i_column + 1][i_row + 1] = cellPositionCanBeNull
         end

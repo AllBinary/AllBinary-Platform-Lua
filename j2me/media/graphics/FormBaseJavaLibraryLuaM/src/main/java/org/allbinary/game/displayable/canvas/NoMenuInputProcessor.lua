@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local NullCanvas = require("javax.microedition.lcdui.NullCanvas")
+local NullCanvas = java_lazy("javax.microedition.lcdui.NullCanvas")
 local GameKeyEvent = java_lazy("org.allbinary.game.input.event.GameKeyEvent")
 local MotionGestureEvent = java_lazy("org.allbinary.input.motion.gesture.observer.MotionGestureEvent")
 local BasicArrayListUtil = java_lazy("org.allbinary.util.BasicArrayListUtil")

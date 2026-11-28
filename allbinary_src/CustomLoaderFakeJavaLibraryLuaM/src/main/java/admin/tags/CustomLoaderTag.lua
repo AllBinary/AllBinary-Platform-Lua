@@ -191,8 +191,8 @@ function CustomLoaderTag:doStartTag()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAG) then
                 self.logUtil:putF(self.commonStrings.START, self, self.tagStrings.DO_START_TAG)
             end
-            if self.command ~= nil then
-                if ((self.command < GLOBALS2.SET and -1) or (self.command > GLOBALS2.SET and 1) or 0) == 0 then
+            if not rawequal(self.command, nil) then
+                if rawequal(((self.command < GLOBALS2.SET and -1) or (self.command > GLOBALS2.SET and 1) or 0), 0) then
                     self:setCustomLoaderWebappPath()
                 end
             end

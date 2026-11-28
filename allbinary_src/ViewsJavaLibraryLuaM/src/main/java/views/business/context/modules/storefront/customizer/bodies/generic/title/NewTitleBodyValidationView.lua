@@ -166,7 +166,7 @@ function NewTitleBodyValidationView._jinit(self, transformInfoInterface)
     NewTitleBodyValidationView._init_fields(self)
         -- super(...) made self above
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("View Name: " .. transformInfoInterface:getName(), self, "NewTitleBodyValidationView()")
+            self.logUtil:putF(require("allbinary_java").to_string("View Name: ") .. require("allbinary_java").to_string(transformInfoInterface:getName()), self, "NewTitleBodyValidationView()")
         end
         self.titleBody = TitleBodyValidation.new()
     return self
@@ -189,7 +189,7 @@ java_overload(NewTitleBodyValidationView, "toXmlDoc", 0)
 function NewTitleBodyValidationView:isValid()
         local try_ok, try_error, try_value = pcall(function()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("View Name: " .. self:getTransformInfoInterface():getName(), self, self.commonStrings.IS_VALID)
+                self.logUtil:putF(require("allbinary_java").to_string("View Name: ") .. require("allbinary_java").to_string(self:getTransformInfoInterface():getName()), self, self.commonStrings.IS_VALID)
             end
             do
                 CustomizerUtil.getInstance():insert(self:getTransformInfoInterface(), self.titleBody)

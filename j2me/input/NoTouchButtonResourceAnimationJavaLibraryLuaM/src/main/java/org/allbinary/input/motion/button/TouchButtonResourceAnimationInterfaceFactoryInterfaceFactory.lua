@@ -186,7 +186,7 @@ java_overload(TouchButtonResourceAnimationInterfaceFactoryInterfaceFactory, "ini
 
 function TouchButtonResourceAnimationInterfaceFactoryInterfaceFactory:isLoadingLevel(level)
         local resourceLoadingLevelFactory = ResourceLoadingLevelFactory.getInstance()
-        if level == resourceLoadingLevelFactory.LOAD_TOUCH:getLevel() then
+        if rawequal(level, resourceLoadingLevelFactory.LOAD_TOUCH:getLevel()) then
             return true
         else
             return java_super(BaseResourceAnimationInterfaceFactoryInterfaceFactory, "isLoadingLevel", 1)(self, level)
@@ -196,7 +196,7 @@ java_overload(TouchButtonResourceAnimationInterfaceFactoryInterfaceFactory, "isL
 
 
 function TouchButtonResourceAnimationInterfaceFactoryInterfaceFactory:isFeature()
-        if not Features.getInstance():isDefault(OpenGLFeatureFactory.getInstance().OPENGL) then
+        if not (Features.getInstance():isDefault(OpenGLFeatureFactory.getInstance().OPENGL)) then
             return true
         else
             return false

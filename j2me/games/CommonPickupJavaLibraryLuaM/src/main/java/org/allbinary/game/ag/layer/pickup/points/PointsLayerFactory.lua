@@ -57,7 +57,7 @@ PointsLayerFactory.java_implements = " AllBinaryLayerFactoryInterface "
 PointsLayerFactory.java_interfaces = function() return {AllBinaryLayerFactoryInterface} end
 
 function PointsLayerFactory:_init_fields()
-    if self.points == nil then self.points = nil end
+    if self.points == nil then self.points = 0 end
 end
 
 

@@ -91,7 +91,7 @@ function AbeLicenseClient:get(abeClientInformation)
             local isNewLicenseId = false
             local isBetterServerList = false
             local stringValidationUtil = StringValidationUtil.getInstance()
-            if stringValidationUtil:isEmpty(abeClientInformation:getLicenseId()) and not abeClientInformation:isSameId(licenseId) then
+            if stringValidationUtil:isEmpty(abeClientInformation:getLicenseId()) and not (abeClientInformation:isSameId(licenseId)) then
                 isNewLicenseId = true
             end
             if servers:size() >= self.MINSERVERS and abeClientInformation:isLargerOrDifferentServerList(servers) then

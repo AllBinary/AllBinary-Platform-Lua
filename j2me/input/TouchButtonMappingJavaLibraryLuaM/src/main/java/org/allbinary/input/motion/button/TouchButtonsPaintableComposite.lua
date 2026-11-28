@@ -189,16 +189,16 @@ function TouchButtonsPaintableComposite:onCompleteMotionGestureInputEvent(comple
             local gameKeyCompleteMotionGestureInputEvent = completeMotionGestureInputEvent
             local gameKey = gameKeyCompleteMotionGestureInputEvent:getGameKey()
             local motionGestureInput = completeMotionGestureInputEvent:getMotionGestureInput()
-            if motionGestureInput == touchMotionGestureFactory.RELEASED then
+            if rawequal(motionGestureInput, touchMotionGestureFactory.RELEASED) then
                 self.logUtil:putF(self.RELEASE, self, self.METHOD_NAME)
                 self.released = true
                 do return "__jreturn" end
             end
-            if motionGestureInput == TouchMotionGestureFactory.getInstance().NO_MOTION and not self.timeHelper:isTimeTNT() then
+            if rawequal(motionGestureInput, TouchMotionGestureFactory.getInstance().NO_MOTION) and not (self.timeHelper:isTimeTNT()) then
                 self.logUtil:putF(self.FAST_REPEAT, self, self.METHOD_NAME)
                 do return "__jreturn" end
             end
-            if not self.released then
+            if not (self.released) then
                 self.logUtil:putF(self.IGNORE, self, self.METHOD_NAME)
                 do return "__jreturn" end
             end

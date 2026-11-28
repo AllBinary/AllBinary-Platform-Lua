@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local AngleFactory = java_lazy("org.allbinary.math.AngleFactory")
 local AngleInfo = java_lazy("org.allbinary.math.AngleInfo")
 local CircularIndexUtil = java_lazy("org.allbinary.util.CircularIndexUtil")

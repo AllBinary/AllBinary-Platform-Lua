@@ -58,12 +58,12 @@ ColorRange.java_implements = " ColorRangeInterface "
 ColorRange.java_interfaces = function() return {ColorRangeInterface} end
 
 function ColorRange:_init_fields()
-    if self.minRed == nil then self.minRed = nil end
-    if self.maxRed == nil then self.maxRed = nil end
-    if self.minGreen == nil then self.minGreen = nil end
-    if self.maxGreen == nil then self.maxGreen = nil end
-    if self.minBlue == nil then self.minBlue = nil end
-    if self.maxBlue == nil then self.maxBlue = nil end
+    if self.minRed == nil then self.minRed = 0 end
+    if self.maxRed == nil then self.maxRed = 0 end
+    if self.minGreen == nil then self.minGreen = 0 end
+    if self.maxGreen == nil then self.maxGreen = 0 end
+    if self.minBlue == nil then self.minBlue = 0 end
+    if self.maxBlue == nil then self.maxBlue = 0 end
 end
 
 

@@ -133,7 +133,7 @@ function UserEmailEventHandlerSingletons:getInstance(abeClientInformation, userE
             self.logUtil:putF(self.commonStrings.START, self, self.commonStrings.GET_INSTANCE)
         end
         local userEmailEventHandler = self.userEmailEventHandlerHashMap:get(userEmailEventNameData)
-        if userEmailEventHandler == nil then
+        if rawequal(userEmailEventHandler, nil) then
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().EMAILLOGGING) then
                 self.logUtil:putF("Creating New Named UserEmailEventHandler", self, self.commonStrings.GET_INSTANCE)
             end

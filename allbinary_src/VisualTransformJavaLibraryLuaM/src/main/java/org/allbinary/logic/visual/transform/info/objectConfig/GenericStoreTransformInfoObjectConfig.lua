@@ -203,7 +203,7 @@ function GenericStoreTransformInfoObjectConfig:generate_j1(objectConfigDocument)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             local stringBuffer = StringMaker.new()
             stringBuffer:append("TransformInfo: ")
-            if self:getTransformInfoInterface() ~= nil then
+            if not rawequal(self:getTransformInfoInterface(), nil) then
                 stringBuffer:append(self:getTransformInfoInterface():getName())
             else
                 stringBuffer:append("No Owner!?#@")
@@ -237,7 +237,7 @@ function GenericStoreTransformInfoObjectConfig:createHashMap(transformInfoHttpSt
         local propertiesHashMap = transformInfoHttpStoreInterface:getPropertiesHashMap()
         local templateNameOverride = StringUtil.getInstance():getNonNull(propertiesHashMap:get(TransformInfoData.getInstance().PARTIAL))
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("TemplateNameOverride: " .. templateNameOverride, self, "generate()")
+            self.logUtil:putF(require("allbinary_java").to_string("TemplateNameOverride: ") .. require("allbinary_java").to_string(templateNameOverride), self, "generate()")
         end
         local templateNameStringBuffer = StringMaker.new()
         templateNameStringBuffer:append(storeName)
@@ -245,7 +245,7 @@ function GenericStoreTransformInfoObjectConfig:createHashMap(transformInfoHttpSt
         templateNameStringBuffer:append(CommonSeps.getInstance().SPACE)
         templateNameStringBuffer:append(RootTransformInfoData.NAME)
         local templateNameKey = TransformInfoObjectConfigData.getInstance().VARKEY + TransformInfoData.getInstance().OWNER
-        if ((string.find(objectConfigDocumentString, templateNameKey, 1, true) or 0) - 1) ~= -1 then
+        if not rawequal(((string.find(objectConfigDocumentString, templateNameKey, 1, true) or 0) - 1), -1) then
             local templateInterface = TransformTemplateFactory.getInstance():getInstance(self.abeClientInformation, tostring(templateNameStringBuffer), transformInfoHttpStoreInterface:getPropertiesHashMap(), transformInfoHttpStoreInterface:getPageContext())
             local selectedTemplate = templateInterface:getName()
             hashMap:put(templateNameKey, selectedTemplate)
@@ -260,7 +260,7 @@ function GenericStoreTransformInfoObjectConfig:generate_j2(objectConfigDocumentS
         local replace = Replace.new(hashMap)
         local newObjectConfigDocument = DomDocumentHelper.create(replace:all(objectConfigDocumentString))
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("Final ObjectConfig: " .. XmlDocumentHelper.toString(newObjectConfigDocument), self, "generate()")
+            self.logUtil:putF(require("allbinary_java").to_string("Final ObjectConfig: ") .. require("allbinary_java").to_string(XmlDocumentHelper.toString(newObjectConfigDocument)), self, "generate()")
         end
         return newObjectConfigDocument
 end
@@ -268,6 +268,8 @@ function GenericStoreTransformInfoObjectConfig:generate(...)
     local count = select("#", ...)
     if count == 1 then return self:generate_j1(...) end
     if count == 2 then return self:generate_j2(...) end
+    local parent = getmetatable(GenericStoreTransformInfoObjectConfig).__index
+    if parent.generate then return parent.generate(self, ...) end
     error("No method generate takes " .. count .. " arguments")
 end
 GenericStoreTransformInfoObjectConfig.generate__jdispatcher = GenericStoreTransformInfoObjectConfig.generate

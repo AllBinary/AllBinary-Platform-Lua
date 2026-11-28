@@ -140,7 +140,7 @@ PlayerGameInput.java_interfaces = function() return {GameKeyEventListenerInterfa
 
 function PlayerGameInput:_init_fields()
     self.gameInputStrings = GameInputStrings.getInstance()
-    if self.playerInputId == nil then self.playerInputId = nil end
+    if self.playerInputId == nil then self.playerInputId = 0 end
 end
 
 

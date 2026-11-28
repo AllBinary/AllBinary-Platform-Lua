@@ -182,7 +182,7 @@ java_overload(HighScoresHelper2, "setHighScoresArray", 1, function(java_a1) retu
 
 
 function HighScoresHelper2:selectHighScores()
-        if (self.highScoresArrayP.n or #self.highScoresArrayP) == 0 then
+        if rawequal((self.highScoresArrayP.n or #self.highScoresArrayP), 0) then
             self:setSelectedHighScores(NullHighScoresSingletonFactory.getInstance())
             return
         end

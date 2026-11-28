@@ -86,7 +86,7 @@ end
 
 -- throws Exception
 function GameRunnable:processLoopSleep()
-        java_sleep(self.waitInMillis)
+        require("java.lang.Thread").sleep(self.waitInMillis)
 end
 
 return GameRunnable

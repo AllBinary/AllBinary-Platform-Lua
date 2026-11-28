@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local GameKey = java_lazy("org.allbinary.game.input.GameKey")
 local GameKeyEventSourceInterface = java_lazy("org.allbinary.game.input.GameKeyEventSourceInterface")
 local GameKeyFactory = java_lazy("org.allbinary.game.input.GameKeyFactory")
@@ -172,7 +172,7 @@ end
 function GameCanvasInputProcessor:keyPressedByDevice(keyCode, deviceId)
         local try_ok, try_error, try_value = pcall(function()
             local gameKey = self.inputToGameKeyMapping:getInstanceForCanvas(self.allBinaryGameCanvas, keyCode)
-            if gameKey ~= self.NONE then
+            if not rawequal(gameKey, self.NONE) then
                 local gameKeyEvent = self.gameKeyEventFactory:getInstanceForInput(self.allBinaryGameCanvas, gameKey)
                 self.downGameKeyEventHandler:fireEvent(gameKeyEvent)
                 self.downGameKeyEventHandler:getInstanceForDevice(deviceId):fireEvent(gameKeyEvent)
@@ -201,7 +201,7 @@ java_overload(GameCanvasInputProcessor, "keyReleasedByDevice", 3, function(java_
 function GameCanvasInputProcessor:removeGameKeyEvent(canvas, keyCode, deviceId, repeated)
         local try_ok, try_error, try_value = pcall(function()
             local gameKey = self.inputToGameKeyMapping:getInstanceForCanvas(canvas, keyCode)
-            if gameKey ~= self.NONE then
+            if not rawequal(gameKey, self.NONE) then
                 local gameKeyEventSourceInterface = canvas
                 local gameKeyEvent = self.gameKeyEventFactory:getInstanceForInput(gameKeyEventSourceInterface, gameKey)
                 self.upGameKeyEventHandler:fireEvent(gameKeyEvent)

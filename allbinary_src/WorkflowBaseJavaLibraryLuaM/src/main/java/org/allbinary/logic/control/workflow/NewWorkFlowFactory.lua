@@ -178,7 +178,7 @@ end
 function NewWorkFlowFactory:getInstance_j2(abeClientInformation, className)
         local try_ok, try_error, try_value = pcall(function()
             local stringUtil = StringUtil.getInstance()
-            if className ~= nil and ((className < stringUtil.EMPTY_STRING and -1) or (className > stringUtil.EMPTY_STRING and 1) or 0) ~= 0 then
+            if not rawequal(className, nil) and not rawequal(((className < stringUtil.EMPTY_STRING and -1) or (className > stringUtil.EMPTY_STRING and 1) or 0), 0) then
                 local anyType = AbeFactory.getInstance():getInstance(abeClientInformation, className, nil, nil)
                 do return "__jreturn", WorkFlowWrapper.new(anyType) end
             else

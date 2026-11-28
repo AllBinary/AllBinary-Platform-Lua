@@ -256,11 +256,11 @@ function NameSpaceRequestParams:createPackageMultiNode(document, nameSpaceReques
         local multiElementPackage = string.sub(packageName, (0) + 1, beginIndex)
         local selectedValue = nameSpaceRequestParam:getValue()
         local propertyValue = packagePropertiesHashMap:get(DomData.VALUE)
-        if ((propertyValue < NameSpaceRequestParamData.VALUE and -1) or (propertyValue > NameSpaceRequestParamData.VALUE and 1) or 0) ~= 0 then
+        if not rawequal(((propertyValue < NameSpaceRequestParamData.VALUE and -1) or (propertyValue > NameSpaceRequestParamData.VALUE and 1) or 0), 0) then
             selectedValue = propertyValue
         end
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
-            self.logUtil:putF("\nAppending Multinode Element: " .. multiElementPackage .. "[" .. indexValue .. "] " .. selectedValue, self, "createPackageMultiNode")
+            self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("\nAppending Multinode Element: ") .. require("allbinary_java").to_string(multiElementPackage)) .. require("allbinary_java").to_string("[")) .. require("allbinary_java").to_string(indexValue)) .. require("allbinary_java").to_string("] ")) .. require("allbinary_java").to_string(selectedValue), self, "createPackageMultiNode")
         end
         local nextNode = ModDomHelper.createNameValueNodes(document, multiElementPackage, selectedValue)
         local indexNode = ModDomHelper.createTextNode(document, DomData.INDEX, indexValue)
@@ -273,14 +273,14 @@ java_overload(NameSpaceRequestParams, "createPackageMultiNode", 4, function(java
 -- throws Exception
 function NameSpaceRequestParams:getRootNode(rootElementPackage, packagePropertiesHashMap, document)
         local rootNode = DomSearchHelper.getNodeNoThrow(rootElementPackage, document:getChildNodes())
-        if rootNode == nil then
+        if rawequal(rootNode, nil) then
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
-                self.logUtil:putF("\nAppending Document Root: " .. "\nElementName: " .. rootElementPackage .. "\nProperties: " .. tostring(packagePropertiesHashMap), self, "getRootNode")
+                self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("\nAppending Document Root: ") .. require("allbinary_java").to_string("\nElementName: ")) .. require("allbinary_java").to_string(rootElementPackage)) .. require("allbinary_java").to_string("\nProperties: ")) .. require("allbinary_java").to_string(tostring(packagePropertiesHashMap)), self, "getRootNode")
             end
             local node = self:createPackageNode(document, rootElementPackage, packagePropertiesHashMap)
             document:appendChild(node)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
-                self.logUtil:putF("\nAppended Document Created: " .. XmlDocumentHelper.toString(document), self, "getRootNode")
+                self.logUtil:putF(require("allbinary_java").to_string("\nAppended Document Created: ") .. require("allbinary_java").to_string(XmlDocumentHelper.toString(document)), self, "getRootNode")
             end
             return node
         else
@@ -305,12 +305,12 @@ function NameSpaceRequestParams:addNewProperties(document, node, nextPackageProp
             local nextPropertyName = propertyNameSetArray[index + 1]
             local propertyValue = StringUtil.getInstance():getNonNull(nextPackagePropertiesHashMap:get(nextPropertyName))
             local valueNode = DomSearchHelper.getNodeNoThrow(nextPropertyName, node:getChildNodes())
-            if valueNode ~= nil then
+            if not rawequal(valueNode, nil) then
                 local existingElementNodeTextNodeValue = DomNodeHelper.getTextNodeValue(valueNode)
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
-                    self.logUtil:putF("\nIf property: \"" .. nextPropertyName .. " is the same as:\n" .. "Node: " .. tostring(node:getNodeName()) .. " then: " .. propertyValue .. "==" .. existingElementNodeTextNodeValue, self, "addNewProperties")
+                    self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("\nIf property: \"") .. require("allbinary_java").to_string(nextPropertyName)) .. require("allbinary_java").to_string(" is the same as:\n")) .. require("allbinary_java").to_string("Node: ")) .. require("allbinary_java").to_string(node:getNodeName())) .. require("allbinary_java").to_string(" then: ")) .. require("allbinary_java").to_string(propertyValue)) .. require("allbinary_java").to_string("==")) .. require("allbinary_java").to_string(existingElementNodeTextNodeValue), self, "addNewProperties")
                 end
-                if ((propertyValue < existingElementNodeTextNodeValue and -1) or (propertyValue > existingElementNodeTextNodeValue and 1) or 0) ~= 0 then
+                if not rawequal(((propertyValue < existingElementNodeTextNodeValue and -1) or (propertyValue > existingElementNodeTextNodeValue and 1) or 0), 0) then
                     if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
                         self.logUtil:putF("At least one Property from NameSpaceRequest Package was different from Node", self, "addNewProperties")
                     end
@@ -318,7 +318,7 @@ function NameSpaceRequestParams:addNewProperties(document, node, nextPackageProp
                 end
             else
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
-                    self.logUtil:putF("Adding a new Property: " .. nextPropertyName .. "=" .. propertyValue, self, "addNewProperties")
+                    self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Adding a new Property: ") .. require("allbinary_java").to_string(nextPropertyName)) .. require("allbinary_java").to_string("=")) .. require("allbinary_java").to_string(propertyValue), self, "addNewProperties")
                 end
                 local newPropertyNode = ModDomHelper.createTextNode(document, nextPropertyName, propertyValue)
                 node:appendChild(newPropertyNode)
@@ -332,13 +332,13 @@ java_overload(NameSpaceRequestParams, "addNewProperties", 3, function(java_a1, j
 -- throws Exception
 function NameSpaceRequestParams:isElementValueTextNodeEqual(nextPackagePropertiesHashMap, node)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
-            self.logUtil:putF("\nComparing the value property in: " .. tostring(nextPackagePropertiesHashMap) .. "\nto node child leaves of node: " .. tostring(node:getNodeName()), self, "isElementValueTextNodeEqual")
+            self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("\nComparing the value property in: ") .. require("allbinary_java").to_string(tostring(nextPackagePropertiesHashMap))) .. require("allbinary_java").to_string("\nto node child leaves of node: ")) .. require("allbinary_java").to_string(node:getNodeName()), self, "isElementValueTextNodeEqual")
         end
         local propertyValue = nextPackagePropertiesHashMap:get(DomData.VALUE)
         local valueNode = DomSearchHelper.getNodeNoThrow(DomData.VALUE, node:getChildNodes())
-        if valueNode ~= nil then
+        if not rawequal(valueNode, nil) then
             local existingElementNodeTextNodeValue = DomNodeHelper.getTextNodeValue(valueNode)
-            if ((propertyValue < existingElementNodeTextNodeValue and -1) or (propertyValue > existingElementNodeTextNodeValue and 1) or 0) == 0 then
+            if rawequal(((propertyValue < existingElementNodeTextNodeValue and -1) or (propertyValue > existingElementNodeTextNodeValue and 1) or 0), 0) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
                     self.logUtil:putF("Value Node is the same", self, "isElementValueTextNodeEqual")
                 end
@@ -355,7 +355,7 @@ java_overload(NameSpaceRequestParams, "isElementValueTextNodeEqual", 2, function
 -- throws Exception
 function NameSpaceRequestParams:isElementValueTextNodeUnique(nextPackagePropertiesHashMap, elementNodeVector)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
-            self.logUtil:putF("\nComparing Properties of: " .. tostring(elementNodeVector:size()) .. " Nodes", self, "isElementValueTextNodeUnique")
+            self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string("\nComparing Properties of: ") .. require("allbinary_java").to_string(elementNodeVector:size())) .. require("allbinary_java").to_string(" Nodes"), self, "isElementValueTextNodeUnique")
         end
         local size = elementNodeVector:size()
         for index = 0, size - 1 do
@@ -382,16 +382,16 @@ function NameSpaceRequestParams:addChildren(document, rootNode, nameSpaceRequest
             local nextPackagePropertiesHashMap = nameSpaceRequestParam:getPackageProperties(index)
             local elementNodeVector = DomSearchHelper.getAllNodesNoThrow(nextPackageName, node:getChildNodes())
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
-                self.logUtil:putF("\nDocument Contains " .. tostring(elementNodeVector:size()) .. " Node(s) With Same Name", self, "addChildren")
+                self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string("\nDocument Contains ") .. require("allbinary_java").to_string(elementNodeVector:size())) .. require("allbinary_java").to_string(" Node(s) With Same Name"), self, "addChildren")
             end
             local isElementValueTextNodeUniqueIndex = self:isElementValueTextNodeUnique(nextPackagePropertiesHashMap, elementNodeVector)
-            if (elementNodeVector:size() == 0 or isElementValueTextNodeUniqueIndex == -1) and not (CommonSeps.getInstance().BRACKET_CLOSE == "" or string.sub(nextPackageName, -#CommonSeps.getInstance().BRACKET_CLOSE) == CommonSeps.getInstance().BRACKET_CLOSE) then
+            if (rawequal(elementNodeVector:size(), 0) or rawequal(isElementValueTextNodeUniqueIndex, -1)) and not ((CommonSeps.getInstance().BRACKET_CLOSE == "" or string.sub(nextPackageName, -#CommonSeps.getInstance().BRACKET_CLOSE) == CommonSeps.getInstance().BRACKET_CLOSE)) then
                 local nextNode = self:createPackageNode(document, nextPackageName, nextPackagePropertiesHashMap)
                 node:appendChild(nextNode)
                 node = nextNode
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
-                    self.logUtil:putF("\nAppended Package: " .. tostring(node:getNodeName()), self, "addChildren")
-                    self.logUtil:putF("\nAppended Document Created: " .. XmlDocumentHelper.toString(document), self, "addChildren")
+                    self.logUtil:putF(require("allbinary_java").to_string("\nAppended Package: ") .. require("allbinary_java").to_string(node:getNodeName()), self, "addChildren")
+                    self.logUtil:putF(require("allbinary_java").to_string("\nAppended Document Created: ") .. require("allbinary_java").to_string(XmlDocumentHelper.toString(document)), self, "addChildren")
                 end
             elseif (CommonSeps.getInstance().BRACKET_CLOSE == "" or string.sub(nextPackageName, -#CommonSeps.getInstance().BRACKET_CLOSE) == CommonSeps.getInstance().BRACKET_CLOSE) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
@@ -401,7 +401,7 @@ function NameSpaceRequestParams:addChildren(document, rootNode, nameSpaceRequest
                 node:appendChild(nextNode)
                 node = nextNode
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
-                    self.logUtil:putF("\nAppended Multinode Element: " .. XmlDocumentHelper.toString(document), self, "addChildren")
+                    self.logUtil:putF(require("allbinary_java").to_string("\nAppended Multinode Element: ") .. require("allbinary_java").to_string(XmlDocumentHelper.toString(document)), self, "addChildren")
                 end
             else
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
@@ -448,20 +448,20 @@ function NameSpaceRequestParams:toHashMap()
         local keyArray = keys:toArray()
         local keySize = (keyArray.n or #keyArray)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
-            self.logUtil:putF("NameSpace Request Size: " .. tostring(keys:size()), self, "toHashMap")
+            self.logUtil:putF(require("allbinary_java").to_string("NameSpace Request Size: ") .. require("allbinary_java").to_string(keys:size()), self, "toHashMap")
         end
         for i = 0, keySize - 1 do
             local key = keyArray[i + 1]
             local anyType = self:getMap():get(key)
             local className = (getmetatable(anyType).javaClassName or getmetatable(anyType).className)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
-                self.logUtil:putF("Request Param Class: " .. className, self, "toHashMap")
+                self.logUtil:putF(require("allbinary_java").to_string("Request Param Class: ") .. require("allbinary_java").to_string(className), self, "toHashMap")
             end
             if java_instanceof(self:getMap():get(key), String) then
                 local value = self:getMap():get(key)
                 if ((string.find(key, NameSpaceRequestParamData.NAME, 1, true) or 0) - 1) < 0 then
                     if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
-                        self.logUtil:putF("Not NameSpace key: " .. key .. " Value: " .. value, self, "toHashMap()")
+                        self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Not NameSpace key: ") .. require("allbinary_java").to_string(key)) .. require("allbinary_java").to_string(" Value: ")) .. require("allbinary_java").to_string(value), self, "toHashMap()")
                     end
                     hashMap:put(tostring(key), tostring(value))
                 else
@@ -471,7 +471,7 @@ function NameSpaceRequestParams:toHashMap()
                 local values = self:getMap():get(key)
                 if ((string.find(key, NameSpaceRequestParamData.NAME, 1, true) or 0) - 1) < 0 then
                     if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
-                        self.logUtil:putF("Not NameSpace key: " .. key .. " Value: " .. tostring(values[1]), self, "toHashMap()")
+                        self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Not NameSpace key: ") .. require("allbinary_java").to_string(key)) .. require("allbinary_java").to_string(" Value: ")) .. require("allbinary_java").to_string(values[1]), self, "toHashMap()")
                     end
                     hashMap:put(tostring(key), tostring(values[1]))
                 else
@@ -480,7 +480,7 @@ function NameSpaceRequestParams:toHashMap()
             end
         end
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
-            self.logUtil:putF("NameSpaceRequestParams: " .. tostring(self:getMap()) .. "\ntoHashMap(): " .. tostring(hashMap) .. "\nDocument Created: " .. XmlDocumentHelper.toString(document), self, "toHashMap()")
+            self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("NameSpaceRequestParams: ") .. require("allbinary_java").to_string(tostring(self:getMap()))) .. require("allbinary_java").to_string("\ntoHashMap(): ")) .. require("allbinary_java").to_string(tostring(hashMap))) .. require("allbinary_java").to_string("\nDocument Created: ")) .. require("allbinary_java").to_string(XmlDocumentHelper.toString(document)), self, "toHashMap()")
         end
         hashMap:put(NameSpaceRequestParamData.DOCUMENT, document)
         return hashMap

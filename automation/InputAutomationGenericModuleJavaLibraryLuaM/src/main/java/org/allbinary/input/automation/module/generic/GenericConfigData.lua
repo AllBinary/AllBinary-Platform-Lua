@@ -64,9 +64,9 @@ end
 
 GenericConfigData.RELATIVE_PATH = "./"
 GenericConfigData.CONFIG_PATH = "modules/configs/"
-GenericConfigData.MODULE_RELATIVE_PATH = tostring(GenericConfigData.RELATIVE_PATH + GenericConfigData.CONFIG_PATH) .. "allbinary/input/automation/module/"
-GenericConfigData.GAME_MODULE_RELATIVE_PATH = tostring(GenericConfigData.MODULE_RELATIVE_PATH) .. "game/"
-GenericConfigData.MMO_GAME_MODULE_RELATIVE_PATH = tostring(GenericConfigData.GAME_MODULE_RELATIVE_PATH) .. "mmog/"
+GenericConfigData.MODULE_RELATIVE_PATH = require("allbinary_java").to_string(GenericConfigData.RELATIVE_PATH + GenericConfigData.CONFIG_PATH) .. require("allbinary_java").to_string("allbinary/input/automation/module/")
+GenericConfigData.GAME_MODULE_RELATIVE_PATH = require("allbinary_java").to_string(GenericConfigData.MODULE_RELATIVE_PATH) .. require("allbinary_java").to_string("game/")
+GenericConfigData.MMO_GAME_MODULE_RELATIVE_PATH = require("allbinary_java").to_string(GenericConfigData.GAME_MODULE_RELATIVE_PATH) .. require("allbinary_java").to_string("mmog/")
 GenericConfigData.FREE_MMO_GAME_MODULE_RELATIVE_PATH = "free/"
 
 return GenericConfigData

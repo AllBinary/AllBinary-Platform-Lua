@@ -31,7 +31,7 @@ end
 local Paint = java_lazy("android.graphics.Paint")
 local PorterDuff = java_lazy("android.graphics.PorterDuff")
 local PorterDuffColorFilter = java_lazy("android.graphics.PorterDuffColorFilter")
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 
 local function java_idiv(a, b)
@@ -86,7 +86,7 @@ end
 
 
 function ImageModifierUtil:setAlpha(originalImage, image, imageIndex, alphaInt)
-        if alphaInt ~= self.paint:getAlpha() then
+        if not rawequal(alphaInt, self.paint:getAlpha()) then
             self.paint:setAlpha(alphaInt)
         end
 end

@@ -79,7 +79,7 @@ function ImageTypeUtil:isSupported(mediaFileType)
         mediaFileType = string.lower(mediaFileType)
         for index = self.list:size() - 1, 0, -1 do
             local name = self.list.objectArray[index + 1]
-            if ((mediaFileType < name and -1) or (mediaFileType > name and 1) or 0) == 0 then
+            if rawequal(((mediaFileType < name and -1) or (mediaFileType > name and 1) or 0), 0) then
                 return true
             end
         end

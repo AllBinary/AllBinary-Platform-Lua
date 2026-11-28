@@ -107,7 +107,7 @@ end
 
 function BaseChangedGameFeatureListener:setChanged(initialized)
         self.changed = initialized
-        if not self:isChanged() then
+        if not (self:isChanged()) then
             self.list:clear()
         end
 end

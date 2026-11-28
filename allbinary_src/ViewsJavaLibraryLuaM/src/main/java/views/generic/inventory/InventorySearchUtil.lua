@@ -128,7 +128,7 @@ function InventorySearchUtil:getBasicItemIdColumn(searchRequest)
         local inventorySearchUtil = InventoryColumnUtil.getInstance()
         local column = inventorySearchUtil:getColumnWhereLike(inventoryEntityInterface, storeFrontInterface:getCategoryPath(), self.basicItemData.ID)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRODUCTSEARCHLOGGING) then
-            self.logUtil:putF("Number Of Items Found: " .. tostring(column:size()), self, "search")
+            self.logUtil:putF(require("allbinary_java").to_string("Number Of Items Found: ") .. require("allbinary_java").to_string(column:size()), self, "search")
         end
         local subStoreVector = storeFrontInterface:getSubStores()
         local size = subStoreVector:size()
@@ -138,7 +138,7 @@ function InventorySearchUtil:getBasicItemIdColumn(searchRequest)
             column:addAllList(substoreIdColumn)
         end
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRODUCTSEARCHLOGGING) then
-            self.logUtil:putF("Number Of Items Found Including SubStores: " .. tostring(column:size()), self, "search")
+            self.logUtil:putF(require("allbinary_java").to_string("Number Of Items Found Including SubStores: ") .. require("allbinary_java").to_string(column:size()), self, "search")
         end
         return column
 end
@@ -150,7 +150,7 @@ function InventorySearchUtil:getNoResults(viewDocumentInterface, inventoryNode)
         inventoryNode:appendChild(ModDomHelper.createNameValueNodes(viewDocumentInterface:getDoc(), SearchData.TOTAL_NUMBER_ITEMS, self.commonPhoneStrings.ZERO))
         local success = XmlDocumentHelper.toString(viewDocumentInterface:getDoc())
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PRODUCTSEARCHLOGGING) then
-            self.logUtil:putF("No Results Xml: " .. success, self, "search")
+            self.logUtil:putF(require("allbinary_java").to_string("No Results Xml: ") .. require("allbinary_java").to_string(success), self, "search")
         end
         return success
 end
@@ -171,7 +171,7 @@ function InventorySearchUtil:search(abeClientInformation, searchRequest, column)
             end
             local stringBuffer = StringMaker.new()
             if startPage >= 0 then
-                if pageLength == 0 then
+                if rawequal(pageLength, 0) then
                     pageLength = SearchData.DEFAULT_PAGE_LENGTH
                 end
                 local MAXPAGES = 100
@@ -186,7 +186,7 @@ function InventorySearchUtil:search(abeClientInformation, searchRequest, column)
                 local inventoryNode = viewDocumentInterface:getDoc():createElement(InventoryData.INVENTORY)
                 viewDocumentInterface:getBaseNode():appendChild(inventoryNode)
                 inventoryNode:appendChild(ModDomHelper.createNameValueNodes(viewDocumentInterface:getDoc(), SearchData.PAGE, tostring(startPage)))
-                if searchRequest:getFileBaseName() ~= nil then
+                if not rawequal(searchRequest:getFileBaseName(), nil) then
                     inventoryNode:appendChild(searchRequest:getFileBaseNameNode(viewDocumentInterface:getDoc()))
                 end
                 local currentPage = -1
@@ -196,7 +196,7 @@ function InventorySearchUtil:search(abeClientInformation, searchRequest, column)
                     local itemInterface = inventoryEntityInterface:getItem(product)
                     local keywords = itemInterface:getKeywords()
                     keywords = string.upper(keywords)
-                    if ((string.find(keywords, keyword, 1, true) or 0) - 1) ~= -1 then
+                    if not rawequal(((string.find(keywords, keyword, 1, true) or 0) - 1), -1) then
                         if currentPage + 1 >= startPage and currentPage + 1 <= endPage then
                             local itemNode = BasicItemView.new(itemInterface, BasicArrayListD.new()):toXmlNode(viewDocumentInterface:getDoc())
                             itemNode:appendChild(ModDomHelper.createNameValueNodes(viewDocumentInterface:getDoc(), BasketData.ITEMTOTALINBASKET, self.commonPhoneStrings.ONE))
@@ -214,7 +214,7 @@ function InventorySearchUtil:search(abeClientInformation, searchRequest, column)
                                 inventoryNode = viewDocumentInterface:getDoc():createElement(InventoryData.INVENTORY)
                                 viewDocumentInterface:getBaseNode():appendChild(inventoryNode)
                                 inventoryNode:appendChild(ModDomHelper.createNameValueNodes(viewDocumentInterface:getDoc(), SearchData.PAGE, tostring(currentPage + 1)))
-                                if searchRequest:getFileBaseName() ~= nil then
+                                if not rawequal(searchRequest:getFileBaseName(), nil) then
                                     inventoryNode:appendChild(searchRequest:getFileBaseNameNode(viewDocumentInterface:getDoc()))
                                 end
                             end
@@ -248,7 +248,7 @@ function InventorySearchUtil:search(abeClientInformation, searchRequest, column)
                             stringBuffer:delete(0, stringBuffer:length())
                             stringBuffer:append(searchRequest:getFileBaseName())
                             if stringBuffer:length() > 0 then
-                                if pageIndex ~= 0 then
+                                if not rawequal(pageIndex, 0) then
                                     stringBuffer:append(tostring(pageIndex))
                                 end
                                 inventoryNodes[index + 1]:appendChild(ModDomHelper.createNameValueNodes(tempDocument, SearchData.PAGE_INFO, tostring(pageIndex), tostring(stringBuffer)))
@@ -260,7 +260,7 @@ function InventorySearchUtil:search(abeClientInformation, searchRequest, column)
                         productListingPages[index + 1] = StoreTransformer.new(abeClientInformation, TransformInfoHttpSearch.new(searchRequest)):translate(success)
                     end
                 end
-                if savedPagesInRange == 0 then
+                if rawequal(savedPagesInRange, 0) then
                     local result = self:getNoResults(viewDocumentInterface, inventoryNode)
                     productListingPages[1] = StoreTransformer.new(abeClientInformation, TransformInfoHttpSearch.new(searchRequest)):translate(result)
                 end

@@ -28,11 +28,11 @@ local function java_real(class)
     return class
 end
 
--- local Command = require("javax.microedition.lcdui.Command")
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local TextField = require("javax.microedition.lcdui.TextField")
+local Command = java_lazy("javax.microedition.lcdui.Command")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local TextField = java_lazy("javax.microedition.lcdui.TextField")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")

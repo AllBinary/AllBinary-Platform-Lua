@@ -16,7 +16,7 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local DisposalUtil = java_lazy("org.allbinary.DisposalUtil")
 local PlatformBitmapBase = require("org.allbinary.platform.graphics.PlatformBitmapBase")
 local SwtImmutableImage = java_lazy("org.microemu.device.swt.SwtImmutableImage")

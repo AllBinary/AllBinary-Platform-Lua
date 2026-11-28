@@ -107,15 +107,15 @@ end
 
 -- throws Exception
 function InputAutomationModuleBundleActivator:getInputAutomationConfigurationModuleChangeListener(context)
-        local serviceReference = context:getServiceReference(InputAutomationConfigurationModuleChangeListener:getName())
-        if serviceReference ~= nil then
+        local serviceReference = context:getServiceReference(InputAutomationConfigurationModuleChangeListener.javaClassName)
+        if not rawequal(serviceReference, nil) then
             local inputAutomationConfigurationModuleChangeListener = context:getService(serviceReference)
-            if inputAutomationConfigurationModuleChangeListener == nil then
+            if rawequal(inputAutomationConfigurationModuleChangeListener, nil) then
                 error(require("java.lang.Exception").new("No Service For ServiceReference"), 0)
             end
             return inputAutomationConfigurationModuleChangeListener
         else
-            self.logUtil:putF("No ServiceReference: " .. InputAutomationConfigurationModuleChangeListener:getName(), self, "addModules")
+            self.logUtil:putF(require("allbinary_java").to_string("No ServiceReference: ") .. require("allbinary_java").to_string(InputAutomationConfigurationModuleChangeListener.javaClassName), self, "addModules")
             return nil
         end
 end
@@ -125,7 +125,7 @@ function InputAutomationModuleBundleActivator:addModules(context)
         local try_ok, try_error, try_value = pcall(function()
             self.logUtil:putF(self.commonStrings.START, self, "addModules")
             local inputAutomationConfigurationModuleChangeListener = self:getInputAutomationConfigurationModuleChangeListener(context)
-            if inputAutomationConfigurationModuleChangeListener ~= nil then
+            if not rawequal(inputAutomationConfigurationModuleChangeListener, nil) then
                 for index = 0, (self:getInputAutomationModuleInterface().n or #self:getInputAutomationModuleInterface()) - 1 do
                     local inputAutomationConfigurationModuleChangeEvent = InputAutomationConfigurationUtil.getChangeEvent(self:getInputAutomationModuleInterface()[index + 1])
                     inputAutomationConfigurationModuleChangeListener:onAdd(inputAutomationConfigurationModuleChangeEvent)
@@ -142,7 +142,7 @@ end
 
 -- throws Exception
 function InputAutomationModuleBundleActivator:registerAsService(bundleContext)
-        OSGIActivatorUtil.registerAsService(bundleContext, self:getServiceFactory(), InputAutomationModuleServiceInterface:getName())
+        OSGIActivatorUtil.registerAsService(bundleContext, self:getServiceFactory(), InputAutomationModuleServiceInterface.javaClassName)
 end
 
 
@@ -150,7 +150,7 @@ function InputAutomationModuleBundleActivator:removeModules(context)
         local try_ok, try_error, try_value = pcall(function()
             self.logUtil:putF(self.commonStrings.START, self, "removeModules")
             local inputAutomationConfigurationModuleChangeListener = self:getInputAutomationConfigurationModuleChangeListener(context)
-            if inputAutomationConfigurationModuleChangeListener ~= nil then
+            if not rawequal(inputAutomationConfigurationModuleChangeListener, nil) then
                 for index = 0, (self:getInputAutomationModuleInterface().n or #self:getInputAutomationModuleInterface()) - 1 do
                     local inputAutomationConfigurationModuleChangeEvent = InputAutomationConfigurationUtil.getChangeEvent(self:getInputAutomationModuleInterface()[index + 1])
                     inputAutomationConfigurationModuleChangeListener:onRemove(inputAutomationConfigurationModuleChangeEvent)

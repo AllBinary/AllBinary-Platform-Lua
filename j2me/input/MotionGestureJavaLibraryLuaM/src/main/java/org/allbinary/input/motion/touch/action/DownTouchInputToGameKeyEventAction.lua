@@ -131,7 +131,7 @@ setmetatable(DownTouchInputToGameKeyEventAction, {__index = GameKeyCompleteMotio
 
 
 function DownTouchInputToGameKeyEventAction.getInstance()
-        if DownTouchInputToGameKeyEventAction.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(DownTouchInputToGameKeyEventAction.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             DownTouchInputToGameKeyEventAction.instance_f = DownTouchInputToGameKeyEventAction.new()
         end
         return DownTouchInputToGameKeyEventAction.instance_f

@@ -81,7 +81,7 @@ end
 
 
 function GameSkillType:toString()
-        return self.SPELL_GAME_SKILL_TYPE .. self:getName()
+        return require("allbinary_java").to_string(self.SPELL_GAME_SKILL_TYPE) .. require("allbinary_java").to_string(self:getName())
 end
 GameSkillType.__tostring = function(self) return self:toString() end
 

@@ -16,7 +16,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local GameCommandsFactory = java_lazy("org.allbinary.game.commands.GameCommandsFactory")
 
 local function java_idiv(a, b)

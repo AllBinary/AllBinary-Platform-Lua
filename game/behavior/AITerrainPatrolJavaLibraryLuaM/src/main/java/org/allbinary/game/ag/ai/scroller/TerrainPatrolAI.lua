@@ -190,9 +190,9 @@ function TerrainPatrolAI:changeDirectionIfCliffReached()
             local terrainEvent = list:removeAt(index)
             local basicTerrainInfo = terrainEvent:getBasicTerrainInfo()
             local angle = basicTerrainInfo:getAngle()
-            if angle == self.DOWN then
+            if rawequal(angle, self.DOWN) then
                 self:nextDirection()
-                if not self.isFollowLimitedByTerrain then
+                if not (self.isFollowLimitedByTerrain) then
                     self.logUtil:putF("Following Limited", self, "onTerrainEvent")
                     self.isFollowLimitedByTerrain = true
                 end

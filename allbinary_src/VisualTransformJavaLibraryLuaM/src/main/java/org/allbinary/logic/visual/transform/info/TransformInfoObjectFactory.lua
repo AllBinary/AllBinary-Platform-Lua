@@ -150,15 +150,15 @@ function TransformInfoObjectFactory:getInstance(abeClientInformation, transformI
         local try_ok, try_error, try_value = pcall(function()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERFACTORY) then
                 local commonStrings = CommonStrings.getInstance()
-                self.logUtil:putF("Creating View: " .. transformInfoInterface:getName(), self, commonStrings.GET_INSTANCE)
+                self.logUtil:putF(require("allbinary_java").to_string("Creating View: ") .. require("allbinary_java").to_string(transformInfoInterface:getName()), self, commonStrings.GET_INSTANCE)
             end
             local params = java_new_array(nil, 1)
             local classes = java_new_array(nil, 1)
             classes[1] = TransformInfoInterface
             params[1] = transformInfoInterface
             local anyType = AbeFactory.getInstance():getInstance(abeClientInformation, transformInfoInterface:getObjectFile(), classes, params)
-            if anyType == nil then
-                if transformInfoInterface ~= nil then
+            if rawequal(anyType, nil) then
+                if not rawequal(transformInfoInterface, nil) then
                     local stringBuffer = StringMaker.new()
                     stringBuffer:append("\nNo Such View Name: ")
                     stringBuffer:append(transformInfoInterface:getName())
@@ -175,8 +175,8 @@ function TransformInfoObjectFactory:getInstance(abeClientInformation, transformI
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local error = "Failed To Get Instance: "
-            if transformInfoInterface ~= nil then
-                error = error .. transformInfoInterface:getName()
+            if not rawequal(transformInfoInterface, nil) then
+                error = require("allbinary_java").to_string(error) .. require("allbinary_java").to_string(transformInfoInterface:getName())
             end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERFACTORYERROR) then
                 local commonStrings = CommonStrings.getInstance()

@@ -29,8 +29,8 @@ local function java_real(class)
 end
 
 local Matrix = java_lazy("android.graphics.Matrix")
--- local Image = require("javax.microedition.lcdui.Image")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local AngleInfo = java_lazy("org.allbinary.math.AngleInfo")
 local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
@@ -169,9 +169,9 @@ function AllBinaryNoFlickerAndroidImageRotationAnimation:_init_fields()
     self.imageModifierUtil = ImageModifierUtil.getInstanceOrCreate()
     self.androidImageUtil = AndroidImageUtil.getInstance()
     self.matrix = Matrix.new()
-    if self.halfWidth == nil then self.halfWidth = nil end
-    if self.halfHeight == nil then self.halfHeight = nil end
-    if self.increment == nil then self.increment = nil end
+    if self.halfWidth == nil then self.halfWidth = 0 end
+    if self.halfHeight == nil then self.halfHeight = 0 end
+    if self.increment == nil then self.increment = 0 end
     if self.originalImage == nil then self.originalImage = nil end
     self.twoImages = java_new_array(nil, 2)
     if self.imageToShow == nil then self.imageToShow = nil end
@@ -202,7 +202,7 @@ end
 
 function AllBinaryNoFlickerAndroidImageRotationAnimation:setBasicColorP(basicColor)
         local changed = false
-        if self:getBasicColorP() == nil or math.tointeger(self:getBasicColorP() // 1) ~= math.tointeger(basicColor // 1) then
+        if rawequal(self:getBasicColorP(), nil) or not rawequal(math.tointeger(self:getBasicColorP() // 1), math.tointeger(basicColor // 1)) then
             self.imageModifierUtil:setColor(self.originalImage, self.imageToShow, 0, basicColor)
             changed = true
         end
@@ -223,7 +223,7 @@ java_overload(AllBinaryNoFlickerAndroidImageRotationAnimation, "changeBasicColor
 
 function AllBinaryNoFlickerAndroidImageRotationAnimation:setAlpha(alpha)
         local changed = false
-        if self.alphaP ~= alpha then
+        if not rawequal(self.alphaP, alpha) then
             changed = true
         end
         java_super(ImageBaseRotationAnimation, "setAlpha", 1)(self, alpha)
@@ -272,7 +272,7 @@ java_overload(AllBinaryNoFlickerAndroidImageRotationAnimation, "setFrame", 1, fu
 
 function AllBinaryNoFlickerAndroidImageRotationAnimation:swap()
         self.imageToShow = self.twoImages[self.bufferedImageIndex + 1]
-        if self.bufferedImageIndex == 0 then
+        if rawequal(self.bufferedImageIndex, 0) then
             self.bufferedImageIndex = 1
         else
             self.bufferedImageIndex = 0

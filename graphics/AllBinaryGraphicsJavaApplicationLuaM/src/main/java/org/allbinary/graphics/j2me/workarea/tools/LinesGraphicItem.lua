@@ -188,12 +188,12 @@ function LinesGraphicItem._new1(self, linesNode)
             local pointNodes = DomHelper.getInstance():getWithoutTextNodes(lineNode:getChildNodes())
             local pointOneNode = DomHelper.getInstance():searchNodeList(PointsDomUtil.getInstance().POINTONE, pointNodes)
             self:addPoint(pointOneNode:getChildNodes())
-            if index == numberOfLines - 1 then
+            if rawequal(index, numberOfLines - 1) then
                 local pointTwoNode = DomHelper.getInstance():searchNodeList(PointsDomUtil.getInstance().POINTTWO, pointNodes)
                 self:addPoint(pointTwoNode:getChildNodes())
             end
         end
-        if numberOfLines == 0 then
+        if rawequal(numberOfLines, 0) then
             error(require("java.lang.Exception").new("Lines node does not contain a line"), 0)
         end
     return self
@@ -212,7 +212,7 @@ end
 
 -- throws Exception
 function LinesGraphicItem:translate(x, y)
-        StatusFactory.getInstance():setStatus("Translating: " .. tostring(self.points:getPoints()))
+        StatusFactory.getInstance():setStatus(require("allbinary_java").to_string("Translating: ") .. require("allbinary_java").to_string(self.points:getPoints()))
         local basicGraphicsPipeline = BasicGraphicsPipeline.new(self.points:getPoints())
         basicGraphicsPipeline:translate(x, y)
         self.points = Points.new()
@@ -329,7 +329,7 @@ function LinesGraphicItem:duplicatePoints(list)
         local size = list:size()
         for index = 0, size - 1 do
             local point = list:get(index)
-            if point ~= nil then
+            if not rawequal(point, nil) then
                 self.points:getPoints():add(PointFactory.getInstance():createXY(point:getX(), point:getY()))
                 self.pointTreeNodeVector:add(DefaultMutableTreeNode.new(tostring(point)))
                 self.treeNode:add(self.pointTreeNodeVector:get(self.pointTreeNodeVector:size() - 1))
@@ -362,11 +362,11 @@ function LinesGraphicItem:paint(g, canvasAngle, dimension, x, y)
             local graphics = g
             graphics:setColor(self:getColor())
             graphics:setStroke(BasicStroke.new(x))
-            if self:isActive() and self.currentMousePoint ~= nil then
+            if self:isActive() and not rawequal(self.currentMousePoint, nil) then
                 self.points:getPoints():add(self.currentMousePoint)
             end
             local tempPointVector = PointsUtil.getInstance():doTransforms(self.points:getPoints(), canvasAngle, PointFactory.getInstance():createXY(dimension:getWidth(), dimension:getHeight()))
-            if self:isActive() and self.currentMousePoint ~= nil then
+            if self:isActive() and not rawequal(self.currentMousePoint, nil) then
                 self.currentMousePoint = self.points:getPoints():removeAt(self.points:getSize() - 1)
             end
             local size = tempPointVector:size()
@@ -422,11 +422,11 @@ end
 function LinesGraphicItem:mouseClicked(mouseEvent, x, y)
         local try_ok, try_error, try_value = pcall(function()
             local mousePoint = PointFactory.getInstance():createXY(mouseEvent:getPoint().x, mouseEvent:getPoint().y)
-            if (mouseEvent:getModifiers() & mouseEvent.BUTTON1_MASK) == mouseEvent.BUTTON1_MASK then
+            if rawequal((mouseEvent:getModifiers() & mouseEvent.BUTTON1_MASK), mouseEvent.BUTTON1_MASK) then
                 local point = PointFactory.getInstance():createXY(mousePoint:getX() / x, mousePoint:getY() / y)
-                StatusFactory.getInstance():setStatus("Line Point Added: " .. tostring(point))
+                StatusFactory.getInstance():setStatus(require("allbinary_java").to_string("Line Point Added: ") .. require("allbinary_java").to_string(tostring(point)))
                 self:addPoint(point)
-            elseif (mouseEvent:getModifiers() & mouseEvent.BUTTON3_MASK) == mouseEvent.BUTTON3_MASK then
+            elseif rawequal((mouseEvent:getModifiers() & mouseEvent.BUTTON3_MASK), mouseEvent.BUTTON3_MASK) then
                 StatusFactory.getInstance():setStatus("Line Point Removed")
                 self:removePoint()
             end
@@ -477,16 +477,16 @@ end
 function LinesGraphicItem:keyPressed(keyEvent)
         local try_ok, try_error, try_value = pcall(function()
             local keyCode = keyEvent:getKeyCode()
-            if keyCode == keyEvent.VK_ESCAPE then
+            if rawequal(keyCode, keyEvent.VK_ESCAPE) then
                 StatusFactory.getInstance():setStatus("Deactivated")
                 self:deactivate()
-            elseif keyCode == keyEvent.VK_UP then
+            elseif rawequal(keyCode, keyEvent.VK_UP) then
                 self:translate(0, -1)
-            elseif keyCode == keyEvent.VK_DOWN then
+            elseif rawequal(keyCode, keyEvent.VK_DOWN) then
                 self:translate(0, 1)
-            elseif keyCode == keyEvent.VK_LEFT then
+            elseif rawequal(keyCode, keyEvent.VK_LEFT) then
                 self:translate(-1, 0)
-            elseif keyCode == keyEvent.VK_RIGHT then
+            elseif rawequal(keyCode, keyEvent.VK_RIGHT) then
                 self:translate(1, 0)
             end
         end)

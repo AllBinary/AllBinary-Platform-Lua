@@ -148,7 +148,7 @@ setmetatable(Unit2DecalGameResources, {__index = BasicGameResources})
 
 
 function Unit2DecalGameResources.getInstance()
-        if Unit2DecalGameResources.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(Unit2DecalGameResources.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             Unit2DecalGameResources.instance_f = Unit2DecalGameResources.new()
         end
         return Unit2DecalGameResources.instance_f

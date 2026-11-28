@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local GameInput = java_lazy("org.allbinary.game.input.GameInput")
 local MyRandomFactory = java_lazy("org.allbinary.game.rand.MyRandomFactory")
 local AllBinaryLayer = java_lazy("org.allbinary.layer.AllBinaryLayer")

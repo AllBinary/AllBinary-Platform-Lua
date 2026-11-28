@@ -221,7 +221,7 @@ function KeyboardActionScriptInput._new1(self, node)
         -- super(...) made self above
         self.logUtil:putF(self.commonStrings.START, self, self.commonStrings.CONSTRUCTOR)
         local actionNode = DomSearchHelper.getNode(KeyboardActionScriptInputData.NAME, node:getChildNodes())
-        if actionNode ~= nil then
+        if not rawequal(actionNode, nil) then
             local nodeList = actionNode:getChildNodes()
             local vector = BasicArrayListD.new()
             for index = 0, nodeList:getLength() - 1 do
@@ -229,13 +229,13 @@ function KeyboardActionScriptInput._new1(self, node)
                 if childNode:getNodeName():startsWith(KeyboardActionScriptInputData.KEY) then
                     local keyString = DomNodeHelper.getTextNodeValue(childNode)
                     vector:add(tostring(keyString))
-                elseif childNode:getNodeName():compareTo(KeyboardActionScriptInputData.DELAY_BETWEEN_KEYS) == 0 then
+                elseif rawequal(childNode:getNodeName():compareTo(KeyboardActionScriptInputData.DELAY_BETWEEN_KEYS), 0) then
                     local time = DomNodeHelper.getTextNodeValue(childNode)
                     self:setDelayBetweenKeys(math.tointeger(tostring(time) // 1))
-                elseif childNode:getNodeName():compareTo(KeyboardActionScriptInputData.PRESS) == 0 then
+                elseif rawequal(childNode:getNodeName():compareTo(KeyboardActionScriptInputData.PRESS), 0) then
                     local value = DomNodeHelper.getTextNodeValue(childNode)
                     self:setPress(tostring(value))
-                elseif childNode:getNodeName():compareTo(KeyboardActionScriptInputData.RELEASE) == 0 then
+                elseif rawequal(childNode:getNodeName():compareTo(KeyboardActionScriptInputData.RELEASE), 0) then
                     local value = DomNodeHelper.getTextNodeValue(childNode)
                     self:setRelease(tostring(value))
                 else
@@ -247,7 +247,7 @@ function KeyboardActionScriptInput._new1(self, node)
             error(require("java.lang.Exception").new("Action Script Input Node Null"), 0)
         end
         self:setAllowsChildren(false)
-        if not self:isPress() and not self:isRelease() then
+        if not (self:isPress()) and not (self:isRelease()) then
             self:setNormal()
         end
         self.keyboardActionScriptInputJPanel = KeyboardActionScriptInputJPanel.new(self)
@@ -259,7 +259,7 @@ function KeyboardActionScriptInput._new0(self)
     java_super_init(BasicProfileActionScriptInput, self, KeyboardActionScriptInput.NAME)
     KeyboardActionScriptInput._init_fields(self)
         -- super(...) made self above
-        if not self:isPress() and not self:isRelease() then
+        if not (self:isPress()) and not (self:isRelease()) then
             self:setNormal()
         end
         self:setAllowsChildren(false)
@@ -325,7 +325,7 @@ java_overload(KeyboardActionScriptInput, "getKeyArray", 0)
 
 
 function KeyboardActionScriptInput:setKeyArray(keyArray)
-        if keyArray ~= nil then
+        if not rawequal(keyArray, nil) then
             self.logUtil:putF(CommonLabels.getInstance().START + (keyArray.n or #keyArray), self, "setKeyArray")
         end
         self.keyArray = keyArray
@@ -346,7 +346,7 @@ java_overload(KeyboardActionScriptInput, "getText", 0)
 
 
 function KeyboardActionScriptInput:setText(text)
-        self.logUtil:putF(tostring(CommonLabels.getInstance().START) .. text, self, "setText")
+        self.logUtil:putF(require("allbinary_java").to_string(CommonLabels.getInstance().START) .. require("allbinary_java").to_string(text), self, "setText")
         local integerArray = self:integerArrayValue(text)
         self:setKeyArray(integerArray)
 end
@@ -361,7 +361,7 @@ function KeyboardActionScriptInput.getText(integerArray)
             if KeyUtil.isNormallyDisplayed(nextInteger) then
                 stringBuffer:append(KeyEvent.getKeyText(nextInteger))
             else
-                stringBuffer:append("&#" .. tostring(nextInteger) .. ";")
+                stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string("&#") .. require("allbinary_java").to_string(nextInteger)) .. require("allbinary_java").to_string(";"))
             end
             index = index + 1
         end
@@ -370,18 +370,18 @@ end
 
 
 function KeyboardActionScriptInput:integerArrayValue(text)
-        self.logUtil:putF(tostring(CommonLabels.getInstance().START) .. text, self, "integerArrayValue")
+        self.logUtil:putF(require("allbinary_java").to_string(CommonLabels.getInstance().START) .. require("allbinary_java").to_string(text), self, "integerArrayValue")
         local vector = BasicArrayListD.new()
         local index = 0
         while index < #text do
             do
             local aChar = string.sub(text, (index) + 1, (index) + 1)
-            if aChar == "&" then
-                if string.sub(text, (index + 1) + 1, (index + 1) + 1) == "#" then
+            if rawequal(aChar, "&") then
+                if rawequal(string.sub(text, (index + 1) + 1, (index + 1) + 1), "#") then
                     local endIndex = ((string.find(text, ";", (index + 1) + 1, true) or 0) - 1)
-                    if endIndex ~= -1 then
+                    if not rawequal(endIndex, -1) then
                         local nextCharString = string.sub(text, (index + 2) + 1, endIndex)
-                        self.logUtil:putF(tostring(CommonLabels.getInstance().NEXT) .. " Char String: " .. nextCharString, self, "integerArrayValue")
+                        self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(CommonLabels.getInstance().NEXT) .. require("allbinary_java").to_string(" Char String: ")) .. require("allbinary_java").to_string(nextCharString), self, "integerArrayValue")
                         vector:add(tostring(string.sub(nextCharString, (index) + 1, #nextCharString)))
                         index = index + #nextCharString + 3
                         goto continue_N69468
@@ -407,7 +407,7 @@ function KeyboardActionScriptInput:toHashMap()
         hashMap:put(KeyboardActionScriptInputData.DELAY_BETWEEN_KEYS, tostring(self:getDelayBetweenKeys()))
         hashMap:put(KeyboardActionScriptInputData.PRESS, tostring(self:isPress()))
         hashMap:put(KeyboardActionScriptInputData.RELEASE, tostring(self:isRelease()))
-        self.logUtil:putF("HashMap: " .. tostring(hashMap), self, "toHashMap()")
+        self.logUtil:putF(require("allbinary_java").to_string("HashMap: ") .. require("allbinary_java").to_string(tostring(hashMap)), self, "toHashMap()")
         return hashMap
 end
 java_overload(KeyboardActionScriptInput, "toHashMap", 0)

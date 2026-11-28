@@ -90,23 +90,23 @@ end
 
 -- throws Exception
 function MediaUtil:saveImageFile(originalImageFile, newImageFileName, category, mediaData, newWidth, newHeight)
-        if originalImageFile == nil or not originalImageFile:isFile() then
+        if rawequal(originalImageFile, nil) or not (originalImageFile:isFile()) then
             error(require("java.lang.Exception").new("Original Image File Does Not Exist."), 0)
         end
         local bufferedImage = ImageIOUtil.read(originalImageFile)
-        if bufferedImage == nil then
+        if rawequal(bufferedImage, nil) then
             error(require("java.lang.Exception").new("Unable to find ImageReader for this file."), 0)
         end
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             local hashMap = self:getImageBufferPropertyHashMap(bufferedImage)
-            self.logUtil:putF("Image Properties: " .. tostring(hashMap), self, "saveImageFile()")
+            self.logUtil:putF(require("allbinary_java").to_string("Image Properties: ") .. require("allbinary_java").to_string(tostring(hashMap)), self, "saveImageFile()")
         end
-        local imageFile = AbFile.createAbFile(category .. newImageFileName)
+        local imageFile = AbFile.createAbFile(require("allbinary_java").to_string(category) .. require("allbinary_java").to_string(newImageFileName))
         imageFile:createNewFile()
         local imageUtil = ImageUtil.getInstance()
         local newBufferedImage = imageUtil:createBufferedImageForSave(bufferedImage, newWidth, newHeight)
         local isWritten = ImageIOUtil.write(newBufferedImage, mediaData:getName(), imageFile)
-        if not isWritten then
+        if not (isWritten) then
             error(require("java.lang.Exception").new("Unable to write."), 0)
         end
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
@@ -136,7 +136,7 @@ end
 function MediaUtil.getImageBufferPropertyHashMap(bufferedImage)
         local hashMap = StdUtil.getInstance():createHashMap()
         local propertyStringArray = bufferedImage:getPropertyNames()
-        if propertyStringArray ~= nil then
+        if not rawequal(propertyStringArray, nil) then
             for index = 0, (propertyStringArray.n or #propertyStringArray) - 1 do
                 local propertyObject = bufferedImage:getProperty(propertyStringArray[index + 1])
                 hashMap:put(propertyStringArray[index + 1], tostring(propertyObject))

@@ -53,7 +53,7 @@ GeologicalResource.javaClassName = "org.allbinary.game.layer.geological.resource
 
 function GeologicalResource:_init_fields()
     if self.total == nil then self.total = 0 end
-    if self.initTotal == nil then self.initTotal = nil end
+    if self.initTotal == nil then self.initTotal = 0 end
 end
 
 

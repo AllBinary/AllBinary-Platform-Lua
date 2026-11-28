@@ -125,7 +125,7 @@ end
 
 
 function PathUtil:isValidStart(path)
-        if string.sub(path, (0) + 1, (0) + 1) == self.abPathData.SEPARATORCHAR or string.sub(path, (0) + 1, (0) + 1) == "." then
+        if rawequal(string.sub(path, (0) + 1, (0) + 1), self.abPathData.SEPARATORCHAR) or rawequal(string.sub(path, (0) + 1, (0) + 1), ".") then
             return true
         else
             return false
@@ -138,7 +138,7 @@ function PathUtil:isValidEnd(path)
         if stringValidationUtil:isEmpty(path) then
             return false
         end
-        if string.sub(path, (#path - 1) + 1, (#path - 1) + 1) == self.abPathData.SEPARATORCHAR then
+        if rawequal(string.sub(path, (#path - 1) + 1, (#path - 1) + 1), self.abPathData.SEPARATORCHAR) then
             return true
         else
             return false
@@ -147,16 +147,16 @@ end
 
 
 function PathUtil:adjustStart(path)
-        if not self:isValidStart(path) then
-            path = tostring(self.abPathData.SEPARATOR) .. path
+        if not (self:isValidStart(path)) then
+            path = require("allbinary_java").to_string(self.abPathData.SEPARATOR) .. require("allbinary_java").to_string(path)
         end
         return path
 end
 
 
 function PathUtil:adjustEnd(path)
-        if not self:isValidEnd(path) then
-            path = path .. tostring(self.abPathData.SEPARATOR)
+        if not (self:isValidEnd(path)) then
+            path = require("allbinary_java").to_string(path) .. require("allbinary_java").to_string(self.abPathData.SEPARATOR)
         end
         return path
 end
@@ -183,7 +183,7 @@ function PathUtil:removeNameFromPath(path)
         if endIndex < 0 then
             return AbPath.createAbPath()
         end
-        if #path == endIndex + 1 then
+        if rawequal(#path, endIndex + 1) then
             return self:removeNameFromPath(string.sub(path, (0) + 1, endIndex - 1))
         else
             local pathWithoutName = string.sub(path, (0) + 1, endIndex)

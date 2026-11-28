@@ -29,12 +29,12 @@ local function java_real(class)
 end
 
 local Enumeration = java_lazy("java.util.Enumeration")
--- local Canvas = require("javax.microedition.lcdui.Canvas")
--- local Command = require("javax.microedition.lcdui.Command")
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
--- local Displayable = require("javax.microedition.lcdui.Displayable")
--- local NullCanvas = require("javax.microedition.lcdui.NullCanvas")
--- local MIDletStateChangeException = require("javax.microedition.midlet.MIDletStateChangeException")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
+local Command = java_lazy("javax.microedition.lcdui.Command")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
+local Displayable = java_lazy("javax.microedition.lcdui.Displayable")
+local NullCanvas = java_lazy("javax.microedition.lcdui.NullCanvas")
+local MIDletStateChangeException = java_lazy("javax.microedition.midlet.MIDletStateChangeException")
 local J2MEUtil = java_lazy("org.allbinary.J2MEUtil")
 local TsUtil = java_lazy("org.allbinary.TsUtil")
 local GameAdStateFactory = java_lazy("org.allbinary.business.advertisement.GameAdStateFactory")
@@ -355,7 +355,7 @@ java_overload(GameMidlet, "pauseApp", 0)
 
 function GameMidlet:pauseAppBackground(background)
         self.logUtil:putF(self.commonStrings.START, self, self.PAUSE_APP_BACKGROUND)
-        if self.allbinaryGameCanvasRunnableInterface ~= NullGameCanvasRunnable.NULL_GAME_CANVAS_RUNNABLE then
+        if not rawequal(self.allbinaryGameCanvasRunnableInterface, NullGameCanvasRunnable.NULL_GAME_CANVAS_RUNNABLE) then
             self.allbinaryGameCanvasRunnableInterface:pause()
         else
             self.logUtil:putF("<<<<<< Null", self, self.PAUSE_APP_BACKGROUND)
@@ -377,7 +377,7 @@ function GameMidlet:unPauseAppBackground(background)
         self.logUtil:putF(self.commonStrings.START, self, self.UN_PAUSE_APP_BACKGROUND)
         AllBinarySensorManager.getInstance():init()
         local gameCanvasRunnableInterface = self.allbinaryGameCanvasRunnableInterface
-        if gameCanvasRunnableInterface ~= NullGameCanvasRunnable.NULL_GAME_CANVAS_RUNNABLE then
+        if not rawequal(gameCanvasRunnableInterface, NullGameCanvasRunnable.NULL_GAME_CANVAS_RUNNABLE) then
             gameCanvasRunnableInterface:unPause()
         else
             self.logUtil:putF("<<<<<< Null", self, self.UN_PAUSE_APP_BACKGROUND)
@@ -406,7 +406,7 @@ function GameMidlet:destroyApp(unconditional)
             PreLogUtil.put(tostring(GameStatisticsFactory.getInstance()), self, METHOD_NAME)
             local gameAdState = self.gameAdStateFactory:getCurrentInstance()
             gameAdState:getAdvertisements():stopAll()
-            if not self:isDestroyed() then
+            if not (self:isDestroyed()) then
                 self:stopGameCanvasRunnableInterface()
                 self:setGameCanvasRunnableInterface(NullGameCanvasRunnable.NULL_GAME_CANVAS_RUNNABLE)
                 self:mediaShutdown()
@@ -434,12 +434,12 @@ function GameMidlet:startApp()
             local START_APP = "startApp"
             self.logUtil:putF(self.commonStrings.START, self, START_APP)
             local gameCanvasRunnableInterface = self.allbinaryGameCanvasRunnableInterface
-            if gameCanvasRunnableInterface == NullGameCanvasRunnable.NULL_GAME_CANVAS_RUNNABLE then
+            if rawequal(gameCanvasRunnableInterface, NullGameCanvasRunnable.NULL_GAME_CANVAS_RUNNABLE) then
                 self.gameMidletStateFactory:setCurrentGameState(self.gameStateFactory.NO_GAME_STATE)
                 self:setDemo()
             else
                 self.logUtil:putF("GameCanvasRunnableInterface is available", self, START_APP)
-                if gameCanvasRunnableInterface == self:getCurrentDisplayable() then
+                if rawequal(gameCanvasRunnableInterface, self:getCurrentDisplayable()) then
                     self:unPauseAppBackground(false)
                 else
                     self.logUtil:putF("GameCanvasRunnableInterface is not current displayable", self, START_APP)
@@ -460,38 +460,38 @@ java_overload(GameMidlet, "startApp", 0)
 function GameMidlet:commandAction(command, displayable)
         local try_ok, try_error, try_value = pcall(function()
             local displayableAsString = self.NO_DISPLAYABLE
-            if displayable ~= nil then
+            if not rawequal(displayable, nil) then
                 displayableAsString = tostring(displayable)
             end
             local label = self.NO_COMMAND
-            if command ~= nil then
+            if not rawequal(command, nil) then
                 label = command:getLabel()
             end
             PreLogUtil.put(tostring(StringMaker.new():append(self.COMMAND_NAME):append(label):append(self.DISPLAYABLE):append(displayableAsString)), self, self.COMMAND_ACTION)
             local gameCommandsFactory = GameCommandsFactory.getInstance()
             local allbinaryGameCanvasRunnableInterface = self.allbinaryGameCanvasRunnableInterface
             local gameCanvasRunnableInterface = allbinaryGameCanvasRunnableInterface
-            if command == gameCommandsFactory.SHOW_GAME_CANVAS then
-                if self:getDisplay():getCurrent() ~= gameCanvasRunnableInterface and allbinaryGameCanvasRunnableInterface:getType() ~= NullGameCanvasRunnable.NULL_GAME_CANVAS_RUNNABLE:getType() then
+            if rawequal(command, gameCommandsFactory.SHOW_GAME_CANVAS) then
+                if not rawequal(self:getDisplay():getCurrent(), gameCanvasRunnableInterface) and not rawequal(allbinaryGameCanvasRunnableInterface:getType(), NullGameCanvasRunnable.NULL_GAME_CANVAS_RUNNABLE:getType()) then
                     self:setDisplay(gameCanvasRunnableInterface)
                 end
                 self:unPauseAppBackground(false)
-            elseif command == gameCommandsFactory.CLOSE_AND_SHOW_GAME_CANVAS then
+            elseif rawequal(command, gameCommandsFactory.CLOSE_AND_SHOW_GAME_CANVAS) then
                 local menuListener = displayable
                 menuListener:close()
                 self:setDisplay(gameCanvasRunnableInterface)
                 self:unPauseAppBackground(false)
-            elseif command == gameCommandsFactory.EXIT_COMMAND then
-                if GameMidletEventHandler.getInstance():getEventListenerInterfaceListP():size() == 0 then
+            elseif rawequal(command, gameCommandsFactory.EXIT_COMMAND) then
+                if rawequal(GameMidletEventHandler.getInstance():getEventListenerInterfaceListP():size(), 0) then
                     self:exitProgress(true)
                 end
                 GameMidletEventHandler.getInstance():fireEvent(DemoGameMidletEvent.new(self, DemoGameMidletStateFactory.getInstance().NONE))
-            elseif command == gameCommandsFactory.EXIT_WITHOUT_PROGRESS_COMMAND then
+            elseif rawequal(command, gameCommandsFactory.EXIT_WITHOUT_PROGRESS_COMMAND) then
                 self:exitProgress(false)
-            elseif command == gameCommandsFactory.START_COMMAND or command == gameCommandsFactory.RESTART_COMMAND or command == gameCommandsFactory.CONTINUE_COMMAND then
-                if self.gameMidletStateFactory:getCurrentGameState() ~= self.gameStateFactory.PLAYING_GAME_STATE or command == gameCommandsFactory.RESTART_COMMAND then
+            elseif rawequal(command, gameCommandsFactory.START_COMMAND) or rawequal(command, gameCommandsFactory.RESTART_COMMAND) or rawequal(command, gameCommandsFactory.CONTINUE_COMMAND) then
+                if not rawequal(self.gameMidletStateFactory:getCurrentGameState(), self.gameStateFactory.PLAYING_GAME_STATE) or rawequal(command, gameCommandsFactory.RESTART_COMMAND) then
                     if self.gameStartTimeHelper:isTimeTNT() then
-                        if command == gameCommandsFactory.START_COMMAND and self:isDemoLoading() then
+                        if rawequal(command, gameCommandsFactory.START_COMMAND) and self:isDemoLoading() then
                             self.logUtil:putF("Trying to Start Game Before Loading Complete", self, self.midletStrings.COMMAND_ACTION)
                         else
                             self.startedBefore = true
@@ -504,16 +504,16 @@ function GameMidlet:commandAction(command, displayable)
                 else
                     self.logUtil:putF("Already in playing state", self, self.COMMAND_ACTION)
                 end
-            elseif command == gameCommandsFactory.BUY_COMMAND then
+            elseif rawequal(command, gameCommandsFactory.BUY_COMMAND) then
                 local inApplicationPurchaseFactory = InApplicationPurchaseFactory.getInstance()
                 local list = LockableFeatureFactory.getInstance():getList()
                 local lockableFeature = list:get(0)
-                if list:size() > 0 and not inApplicationPurchaseFactory:isPurchased(lockableFeature) then
+                if list:size() > 0 and not (inApplicationPurchaseFactory:isPurchased(lockableFeature)) then
                     inApplicationPurchaseFactory:purchase(lockableFeature)
                 else
                     TextNotificationUtil.getInstance():fireSuccess("Already Purchased")
                 end
-            elseif command == gameCommandsFactory.QUIT_COMMAND then
+            elseif rawequal(command, gameCommandsFactory.QUIT_COMMAND) then
                 if self.gameStartTimeHelper:isTimeTNT() then
                     if java_instanceof(displayable, HighScoreTextBox) then
                         local menuListener = displayable
@@ -523,36 +523,36 @@ function GameMidlet:commandAction(command, displayable)
                     self.gameMidletStateFactory:setCurrentGameState(self.gameStateFactory.NO_GAME_STATE)
                     self:setDemo()
                 end
-            elseif command == self.myCommandsFactory.RESUME_COMMAND then
+            elseif rawequal(command, self.myCommandsFactory.RESUME_COMMAND) then
                 self:unPauseAppBackground(false)
-            elseif command == self.myCommandsFactory.PAUSE_COMMAND then
+            elseif rawequal(command, self.myCommandsFactory.PAUSE_COMMAND) then
                 self:pauseAppBackground(false)
-            elseif command == self.myCommandsFactory.SET_DISPLAYABLE then
+            elseif rawequal(command, self.myCommandsFactory.SET_DISPLAYABLE) then
                 self:pauseAppBackground(false)
                 self:setDisplay(displayable)
-            elseif command == gameCommandsFactory.SET_MENU_DISPLAYABLE then
+            elseif rawequal(command, gameCommandsFactory.SET_MENU_DISPLAYABLE) then
                 self:pauseAppBackground(false)
                 local menuListener = displayable
                 menuListener:open()
                 self:setDisplay(displayable)
-            elseif command == gameCommandsFactory.START_TRACE then
+            elseif rawequal(command, gameCommandsFactory.START_TRACE) then
                 self.debugInterface:start()
                 local gameCanvas = allbinaryGameCanvasRunnableInterface
                 gameCanvas:addCommand(gameCommandsFactory.STOP_TRACE)
                 gameCanvas:removeCommand(gameCommandsFactory.START_TRACE)
-            elseif command == gameCommandsFactory.STOP_TRACE then
+            elseif rawequal(command, gameCommandsFactory.STOP_TRACE) then
                 self:pauseAppBackground(false)
                 self.debugInterface:stop()
                 self:unPauseAppBackground(false)
                 local gameCanvas = allbinaryGameCanvasRunnableInterface
                 gameCanvas:addCommand(gameCommandsFactory.START_TRACE)
                 gameCanvas:removeCommand(gameCommandsFactory.STOP_TRACE)
-            elseif command == gameCommandsFactory.DEFAULT_OPTIONS then
+            elseif rawequal(command, gameCommandsFactory.DEFAULT_OPTIONS) then
                 local tempDisplayable = displayable
                 if java_instanceof(tempDisplayable, GameOptionsForm) then
                     GameFeatureFormUtil.getInstance():setDefault(tempDisplayable)
                 end
-            elseif command == GameInputMappingInstructionsCanvas.DISPLAY then
+            elseif rawequal(command, GameInputMappingInstructionsCanvas.DISPLAY) then
                 local tempDisplayable = displayable
                 if java_instanceof(tempDisplayable, GameInputMappingCanvas) then
                     local gameInputMappingCanvas = tempDisplayable
@@ -565,24 +565,24 @@ function GameMidlet:commandAction(command, displayable)
                     local highScoresCanvas = tempDisplayable
                     highScoresCanvas:updateCommand(command)
                 end
-            elseif command == HighScoreCommands.getInstance().DISPLAY then
+            elseif rawequal(command, HighScoreCommands.getInstance().DISPLAY) then
                 self:commandAction(gameCommandsFactory.SET_MENU_DISPLAYABLE, self:createHighScoresCanvas())
-            elseif command == GameInputMappingInstructionsCanvas.CLOSE then
+            elseif rawequal(command, GameInputMappingInstructionsCanvas.CLOSE) then
                 local menuListener = displayable
                 menuListener:close()
                 self:commandAction(GameInputMappingCanvas.DISPLAY, NullCanvas.NULL_CANVAS)
-            elseif command == GameInputMappingCanvas.DISPLAY then
+            elseif rawequal(command, GameInputMappingCanvas.DISPLAY) then
                 if J2MEUtil.isHTML() then
                     self:pauseAppBackground(false)
                 end
                 self:commandAction(gameCommandsFactory.SET_MENU_DISPLAYABLE, self:getInputMappingCanvas())
-            elseif command == GameInputMappingCanvas.DEFAULT then
+            elseif rawequal(command, GameInputMappingCanvas.DEFAULT) then
                 local tempDisplayable = displayable
                 if java_instanceof(tempDisplayable, GameInputMappingCanvas) then
                     local gameInputMappingCanvas = tempDisplayable
                     gameInputMappingCanvas:setDefault()
                 end
-            elseif command == InGameOptionsForm.DISPLAY then
+            elseif rawequal(command, InGameOptionsForm.DISPLAY) then
                 self:pauseAppBackground(false)
                 local progressCanvas = ProgressCanvasFactory.getInstance()
                 progressCanvas:addNormalPortion(50, "In Game Options")
@@ -592,10 +592,10 @@ function GameMidlet:commandAction(command, displayable)
                 local inGameOptionsForm = inGameOptionsFormFactory:get()
                 inGameOptionsForm:setItemStateListener(allbinaryGameCanvasRunnableInterface)
                 self:commandAction(gameCommandsFactory.SET_MENU_DISPLAYABLE, inGameOptionsForm)
-            elseif command == InGameOptionsForm.DEFAULT then
+            elseif rawequal(command, InGameOptionsForm.DEFAULT) then
                 local inGameOptionsForm = InGameOptionsFormFactory.getInstance():get()
                 GameFeatureFormUtil.getInstance():setDefault(inGameOptionsForm)
-            elseif command == gameCommandsFactory.DISPLAY_OPTIONS then
+            elseif rawequal(command, gameCommandsFactory.DISPLAY_OPTIONS) then
                 AllBinaryMediaManager.setMuted(true)
                 self:stopAll()
                 local mainFeatureFactory = MainFeatureFactory.getInstance()
@@ -603,7 +603,7 @@ function GameMidlet:commandAction(command, displayable)
                 ResizableListenerHandler.getInstance():fireEvent(true)
                 self:setResized(false)
                 self:commandAction(gameCommandsFactory.SET_MENU_DISPLAYABLE, self:getGameOptionsForm())
-            elseif command == gameCommandsFactory.CLOSE_OPTIONS then
+            elseif rawequal(command, gameCommandsFactory.CLOSE_OPTIONS) then
                 ResizableListenerHandler.getInstance():fireEvent(false)
                 self:commandAction(gameCommandsFactory.CLOSE_AND_SHOW_GAME_CANVAS, displayable)
                 local stringBuffer = StringMaker.new()
@@ -617,22 +617,22 @@ function GameMidlet:commandAction(command, displayable)
                     self:updateFullScreen()
                 end
                 AllBinaryMediaManager.setMuted(false)
-            elseif command == gameCommandsFactory.DISPLAY_LOAD_FORM then
+            elseif rawequal(command, gameCommandsFactory.DISPLAY_LOAD_FORM) then
                 self:pauseAppBackground(false)
                 local keyValuePersistance = GamePersistanceSingleton.getInstance()
                 keyValuePersistance:clear()
                 keyValuePersistance:loadAll(self.abeClientInformation)
-                if self:getLoadGameForm() == CommandForm.getNullCommandForm() then
+                if rawequal(self:getLoadGameForm(), CommandForm.getNullCommandForm()) then
                     local layerManager = self:createGameLayerManager()
                     self:setLoadGameForm(LoadGameForm.new(self, "Load Game", layerManager:getBackgroundBasicColor(), layerManager:getForegroundBasicColor()))
                 else
                     self:getLoadGameForm():update()
                 end
                 self:commandAction(gameCommandsFactory.SET_MENU_DISPLAYABLE, self:getLoadGameForm())
-            elseif command == gameCommandsFactory.LOAD_FILE then
+            elseif rawequal(command, gameCommandsFactory.LOAD_FILE) then
                 local loadGameForm = self:getLoadGameForm()
                 local index = loadGameForm:getSelectedId()
-                if index ~= -1 then
+                if not rawequal(index, -1) then
                     local keyValuePersistance = GamePersistanceSingleton.getInstance()
                     self:setStartStateHashtable(keyValuePersistance:get(index))
                     local menuListener = self:getLoadGameForm()
@@ -641,22 +641,22 @@ function GameMidlet:commandAction(command, displayable)
                     self:commandAction(gameCommandsFactory.START_COMMAND, NullCanvas.NULL_CANVAS)
                     PreLogUtil.put(tostring(BasicMotionGesturesHandler.getInstance()), self, self.COMMAND_ACTION)
                 end
-            elseif command == gameCommandsFactory.DELETE_FILE then
+            elseif rawequal(command, gameCommandsFactory.DELETE_FILE) then
                 local loadGameForm = self:getLoadGameForm()
                 local index = loadGameForm:getSelectedText()
-                if index ~= -1 then
+                if not rawequal(index, -1) then
                     local keyValuePersistance = GamePersistanceSingleton.getInstance()
                     keyValuePersistance:delete(self.abeClientInformation, index)
                     keyValuePersistance:clear()
                     keyValuePersistance:loadAllSize(self.abeClientInformation, 1)
                     self:getLoadGameForm():update()
                 end
-            elseif command == gameCommandsFactory.SAVE then
+            elseif rawequal(command, gameCommandsFactory.SAVE) then
                 local keyValuePersistance = GamePersistanceSingleton.getInstance()
                 self:pauseAppBackground(false)
                 keyValuePersistance:save(self.abeClientInformation, self:getCurrentStateHashtable())
                 self:unPauseAppBackground(false)
-            elseif command == HighScoreUtil.SUBMIT_TEXTBOX_COMMAND then
+            elseif rawequal(command, HighScoreUtil.SUBMIT_TEXTBOX_COMMAND) then
                 self.logUtil:putF("Submitted Score", self, self.COMMAND_ACTION)
                 if java_instanceof(displayable, HighScoreTextBox) then
                     local highScoreTextBox = displayable
@@ -664,14 +664,14 @@ function GameMidlet:commandAction(command, displayable)
                 end
                 allbinaryGameCanvasRunnableInterface:setHighScoreSubmitted(true)
                 self:commandAction(gameCommandsFactory.CLOSE_AND_SHOW_GAME_CANVAS, displayable)
-            elseif command == gameCommandsFactory.DISPLAY_ABOUT then
+            elseif rawequal(command, gameCommandsFactory.DISPLAY_ABOUT) then
                 self.aboutCommandProcessor:process(self, gameCommandsFactory.SET_MENU_DISPLAYABLE, self:getAboutCanvas())
-            elseif command == gameCommandsFactory.OPEN_WEB_URL then
+            elseif rawequal(command, gameCommandsFactory.OPEN_WEB_URL) then
                 self.webCommandProcessor:process(self, gameCommandsFactory.OPEN_WEB_URL, NullCanvas.NULL_CANVAS)
-            elseif command == gameCommandsFactory.TOGGLE_KEYBOARD then
+            elseif rawequal(command, gameCommandsFactory.TOGGLE_KEYBOARD) then
                 local virtualKeyboardEventHandler = VirtualKeyboardEventHandler.getInstance()
                 virtualKeyboardEventHandler:fireEvent(virtualKeyboardEventHandler.SHOW_EVENT)
-            elseif self.tsUtil:compareTo(command:getLabel(), gameCommandsFactory.TOGGLE_FULLSCREEN:getLabel()) == 0 then
+            elseif rawequal(self.tsUtil:compareTo(command:getLabel(), gameCommandsFactory.TOGGLE_FULLSCREEN:getLabel()), 0) then
                 local mainFeatureFactory = MainFeatureFactory.getInstance()
                 local isFullScreen = self.features:isFeature(mainFeatureFactory.FULL_SCREEN)
                 if isFullScreen then
@@ -686,7 +686,7 @@ function GameMidlet:commandAction(command, displayable)
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             self.logUtil:put(tostring(StringMaker.new():append(self.commonStrings.EXCEPTION_LABEL):append(command:getLabel())), self, self.midletStrings.COMMAND_ACTION, e)
-            if command ~= GameCommandsFactory.getInstance().EXIT_COMMAND then
+            if not rawequal(command, GameCommandsFactory.getInstance().EXIT_COMMAND) then
                 self:exitProgress(false)
             end
         end
@@ -765,7 +765,7 @@ function GameMidlet:stopGameCanvasRunnableInterface()
         ColorChangeEventHandler.getInstance():removeAllListeners()
         GameEventHandlerUtil.removeAllListeners()
         local gameCanvasRunnableInterface = self.allbinaryGameCanvasRunnableInterface
-        if gameCanvasRunnableInterface ~= NullGameCanvasRunnable.NULL_GAME_CANVAS_RUNNABLE then
+        if not rawequal(gameCanvasRunnableInterface, NullGameCanvasRunnable.NULL_GAME_CANVAS_RUNNABLE) then
             self.logUtil:putF(tostring(StringMaker.new():append("Set Running False: "):append(tostring(gameCanvasRunnableInterface))), self, self.gameStrings.STOP_GAME_CANVAS_RUNNABLE_INTERFACE)
             gameCanvasRunnableInterface:setRunning(false)
         else
@@ -822,7 +822,7 @@ java_overload(GameMidlet, "save", 0)
 function GameMidlet:getCurrentStateHashtable()
         self.logUtil:putF(self.commonStrings.START, self, "getCurrentStateHashtable")
         local hashtable = StdUtil.getInstance():createHashtable()
-        if self.allbinaryGameCanvasRunnableInterface ~= NullGameCanvasRunnable.NULL_GAME_CANVAS_RUNNABLE then
+        if not rawequal(self.allbinaryGameCanvasRunnableInterface, NullGameCanvasRunnable.NULL_GAME_CANVAS_RUNNABLE) then
             local currentHashtable = self.allbinaryGameCanvasRunnableInterface:getCurrentStateHashtable()
             local enumeration = currentHashtable:keys()
             local key = nil

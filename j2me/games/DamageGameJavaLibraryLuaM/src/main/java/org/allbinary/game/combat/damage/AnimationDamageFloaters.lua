@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local IndexedAnimation = java_lazy("org.allbinary.animation.IndexedAnimation")
 local CanvasStrings = java_lazy("org.allbinary.graphics.displayable.CanvasStrings")
 local AllBinaryLayer = java_lazy("org.allbinary.layer.AllBinaryLayer")
@@ -140,8 +140,8 @@ function AnimationDamageFloaters:_init_fields()
     if self.layerInterface == nil then self.layerInterface = nil end
     if self.animationInterfaceArray == nil then self.animationInterfaceArray = nil end
     if self.circularIndexUtil == nil then self.circularIndexUtil = nil end
-    if self.dx == nil then self.dx = nil end
-    if self.dy == nil then self.dy = nil end
+    if self.dx == nil then self.dx = 0 end
+    if self.dy == nil then self.dy = 0 end
 end
 
 

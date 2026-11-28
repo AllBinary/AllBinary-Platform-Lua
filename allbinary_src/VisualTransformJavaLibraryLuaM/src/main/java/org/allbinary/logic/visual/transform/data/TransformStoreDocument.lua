@@ -161,7 +161,7 @@ function TransformStoreDocument._new2(self, pageContext, weblisketSession)
         local try_ok, try_error, try_value = pcall(function()
             local storeName = weblisketSession:getStoreName()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("Using Session StoreName: " .. storeName, self, self.commonStrings.CONSTRUCTOR)
+                self.logUtil:putF(require("allbinary_java").to_string("Using Session StoreName: ") .. require("allbinary_java").to_string(storeName), self, self.commonStrings.CONSTRUCTOR)
             end
             self:getBaseNode():appendChild(StoreFrontViewFactory.getInstance(storeName):toXmlNode(self:getDoc()))
             self:getBaseNode():appendChild(RequestParams.new(pageContext:getRequest()):toXmlNode(self:getDoc()))

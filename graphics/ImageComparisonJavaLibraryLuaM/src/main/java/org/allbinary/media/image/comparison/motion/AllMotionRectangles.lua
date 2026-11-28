@@ -198,7 +198,7 @@ java_overload(AllMotionRectangles, "addPixelDeltaToExistingMotionRectangle", 1, 
 
 -- throws Exception
 function AllMotionRectangles:addPixelDeltaToAMotionRectangle(pixelDelta)
-        if not self:addPixelDeltaToExistingMotionRectangle(pixelDelta) then
+        if not (self:addPixelDeltaToExistingMotionRectangle(pixelDelta)) then
             local newRectangle = Rectangle.new(pixelDelta:getPoint():getX(), pixelDelta:getPoint():getY(), 1, 1)
             local motionRectangle = MotionRectangle.new(newRectangle)
             motionRectangle:getPixelDeltaVector():add(pixelDelta)
@@ -217,7 +217,7 @@ function AllMotionRectangles:shouldPixelDeltaPartOfMotionRectangle(motionRectang
         if motionRectangle:getRectangle().x > pixelDelta:getPoint():getX() then
             isPixelLeftOfTheRectangle = true
         end
-        if not isPixelLeftOfTheRectangle then
+        if not (isPixelLeftOfTheRectangle) then
             return self:isPixelDeltaLikelyPartOfMotionRectangle(motionRectangle, pixelDelta)
         end
         return false

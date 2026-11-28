@@ -211,7 +211,7 @@ java_overload(UnitGameResources, "getString", 0)
 UnitGameResources.ICON = "_icon"
 UnitGameResources.BUILD = "_build"
 UnitGameResources.DESTROY = "_destroy"
-UnitGameResources.ICON_BUILD = "_icon" .. tostring(UnitGameResources.BUILD)
+UnitGameResources.ICON_BUILD = require("allbinary_java").to_string("_icon") .. require("allbinary_java").to_string(UnitGameResources.BUILD)
 
 return UnitGameResources
 

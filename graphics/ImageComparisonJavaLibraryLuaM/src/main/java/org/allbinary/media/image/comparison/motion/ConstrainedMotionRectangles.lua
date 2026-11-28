@@ -157,7 +157,7 @@ end
 
 -- throws Exception
 function ConstrainedMotionRectangles:applyMotionRectangleConstraints(motionRectangles)
-        self.logUtil:putF("Start - Size Before: " .. tostring(motionRectangles:getVector():size()), self, "applyMotionRectangleConstraints")
+        self.logUtil:putF(require("allbinary_java").to_string("Start - Size Before: ") .. require("allbinary_java").to_string(motionRectangles:getVector():size()), self, "applyMotionRectangleConstraints")
         local bufferedImageArray = motionRectangles:getImageComparisonResult():getBufferedImages()
         local bufferedImage = bufferedImageArray[2]
         local vector = BasicArrayListD.new()
@@ -180,10 +180,10 @@ function ConstrainedMotionRectangles:applyMotionRectangleConstraints(motionRecta
                 goto continue_N66349
             end
             local isValid = self:getMotionRectangleConstraintsInterface():isValid(self:getImageComparisonResult():getFrameTwo(), bufferedImage, motionRectangle:getRectangle())
-            if not isValid then
+            if not (isValid) then
                 goto continue_N66349
             end
-            if not isTooSmall and not isAreaTooSmall and not isTooBig and isValid then
+            if not (isTooSmall) and not (isAreaTooSmall) and not (isTooBig) and isValid then
                 vector:add(motionRectangle)
             end
             end

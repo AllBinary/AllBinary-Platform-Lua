@@ -71,7 +71,7 @@ end
 
 
 function RaceGameStateFactory.getInstance()
-        if RaceGameStateFactory.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(RaceGameStateFactory.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             RaceGameStateFactory.instance_f = RaceGameStateFactory.new()
         end
         return RaceGameStateFactory.instance_f

@@ -147,7 +147,7 @@ CustomGravityConstantVelocityMovement.javaClassName = "org.allbinary.physics.mov
 setmetatable(CustomGravityConstantVelocityMovement, {__index = BasicConstantVelocityMovement})
 
 function CustomGravityConstantVelocityMovement:_init_fields()
-    if self.customGravity == nil then self.customGravity = nil end
+    if self.customGravity == nil then self.customGravity = 0 end
     self.gravityUtil = GravityUtil.getInstance()
 end
 

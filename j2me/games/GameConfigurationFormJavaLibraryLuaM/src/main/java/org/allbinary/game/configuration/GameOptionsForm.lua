@@ -28,11 +28,11 @@ local function java_real(class)
     return class
 end
 
--- local Choice = require("javax.microedition.lcdui.Choice")
--- local Command = require("javax.microedition.lcdui.Command")
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
--- local Item = require("javax.microedition.lcdui.Item")
--- local TextField = require("javax.microedition.lcdui.TextField")
+local Choice = java_lazy("javax.microedition.lcdui.Choice")
+local Command = java_lazy("javax.microedition.lcdui.Command")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
+local Item = java_lazy("javax.microedition.lcdui.Item")
+local TextField = java_lazy("javax.microedition.lcdui.TextField")
 local MIDPUtil = java_lazy("org.allbinary.MIDPUtil")
 local GameCommandsFactory = java_lazy("org.allbinary.game.commands.GameCommandsFactory")
 local GameFeatureChoiceGroups = java_lazy("org.allbinary.game.configuration.feature.GameFeatureChoiceGroups")
@@ -220,9 +220,9 @@ java_overload(GameOptionsForm, "closeClientInformation", 1, function(java_a1) re
 function GameOptionsForm:addTextFieldsIfSimulated()
         local key = OrientationData.getInstance().ORIENTATION_SENSOR_INPUT
         local hashtable = GameFeatureChoiceGroups.getExclusiveInstance():get()
-        if hashtable ~= nil then
+        if not rawequal(hashtable, nil) then
             local listCanBeNull = hashtable:get(key)
-            if listCanBeNull ~= nil then
+            if not rawequal(listCanBeNull, nil) then
                 local list = listCanBeNull
                 if list:contains(SensorFeatureFactory.getInstance().SIMULATED_ORIENTATION_SENSORS) then
                     self:addTextFields()

@@ -35,7 +35,7 @@ end
 -- local Transparency = require("java.awt.Transparency")
 -- local AffineTransform = require("java.awt.geom.AffineTransform")
 -- local BufferedImage = require("java.awt.image.BufferedImage")
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local CommonLabels = java_lazy("org.allbinary.string.CommonLabels")
 local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
@@ -185,7 +185,7 @@ function ImageUtil:createBufferedImageAllowTranslate(bufferedImage, newWidth, ne
             ratioY = heightRatio
         end
         local affineTransform = AffineTransform.getScaleInstance(ratioX, ratioY)
-        if not scale and allowTranslate then
+        if not (scale) and allowTranslate then
             local dx = ((newWidth + 0.0) - width) / 2.0
             local dy = ((newHeight + 0.0) - height) / 2.0
             affineTransform:translate(dx, dy)
@@ -219,7 +219,7 @@ end
 
 
 function ImageUtil:convertToBufferedImage(toolkitImage)
-        if toolkitImage == nil then
+        if rawequal(toolkitImage, nil) then
             return nil
         end
         local bufferedImage = BufferedImage.new(toolkitImage:getWidth(nil), toolkitImage:getHeight(nil), BufferedImage.TYPE_INT_ARGB)

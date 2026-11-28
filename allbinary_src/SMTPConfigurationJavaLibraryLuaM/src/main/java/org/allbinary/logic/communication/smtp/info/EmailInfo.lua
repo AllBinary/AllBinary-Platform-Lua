@@ -158,7 +158,7 @@ end
 
 
 function EmailInfo:toString()
-        return "Email Info: \n " .. tostring(self:getBasicEmailInfo())
+        return require("allbinary_java").to_string("Email Info: \n ") .. require("allbinary_java").to_string(tostring(self:getBasicEmailInfo()))
 end
 EmailInfo.__tostring = function(self) return self:toString() end
 

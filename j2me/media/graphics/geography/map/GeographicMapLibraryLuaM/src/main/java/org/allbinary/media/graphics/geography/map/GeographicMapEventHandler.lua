@@ -171,7 +171,7 @@ end
 
 
 function GeographicMapEventHandler:addListener(gameLayer)
-        if not self.list:contains(gameLayer) then
+        if not (self.list:contains(gameLayer)) then
             self.list:add(gameLayer)
         end
 end

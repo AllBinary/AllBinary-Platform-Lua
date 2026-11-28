@@ -28,10 +28,10 @@ local function java_real(class)
     return class
 end
 
--- local Command = require("javax.microedition.lcdui.Command")
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
--- local Form = require("javax.microedition.lcdui.Form")
--- local NullCommandListener = require("javax.microedition.lcdui.NullCommandListener")
+local Command = java_lazy("javax.microedition.lcdui.Command")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
+local Form = require("javax.microedition.lcdui.Form")
+local NullCommandListener = java_lazy("javax.microedition.lcdui.NullCommandListener")
 local Processor = java_lazy("org.allbinary.canvas.Processor")
 local MenuListener = java_lazy("org.allbinary.game.displayable.canvas.MenuListener")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
@@ -168,7 +168,7 @@ end
 
 
 function CommandForm.getNullCommandForm()
-        if CommandForm.NULL_COMMAND_FORM == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(CommandForm.NULL_COMMAND_FORM, NullUtil.getInstance().NULL_OBJECT) then
             CommandForm.NULL_COMMAND_FORM = CommandForm.new(NullCommandListener.NULL_COMMAND_LISTENER, StringUtil.getInstance().EMPTY_STRING, BasicColorFactory.getInstance().BLACK, BasicColorFactory.getInstance().WHITE)
         end
         return CommandForm.NULL_COMMAND_FORM

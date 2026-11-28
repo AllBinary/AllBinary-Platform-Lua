@@ -167,7 +167,7 @@ function OrderHistoryHelper._jinit(self, propertiesHashMap, pageContext)
         self.request = pageContext:getRequest()
         local storeName = propertiesHashMap:get(StoreFrontData.getInstance().NAME)
         self.newStatus = propertiesHashMap:get(OrderHistoryData.STATUS)
-        if storeName ~= nil then
+        if not rawequal(storeName, nil) then
             self.storeFrontInterface = StoreFrontFactory.getInstance(storeName)
         end
         self:getFormData()
@@ -184,7 +184,7 @@ end
 function OrderHistoryHelper:getFormData()
         self.id = self.request:getParameter(OrderData.ID)
         self.groupId = self.request:getParameter(ShippingMethodData.GROUP)
-        if self.newStatus == nil then
+        if rawequal(self.newStatus, nil) then
             self.newStatus = self.request:getParameter(OrderHistoryData.STATUS)
         end
 end
@@ -193,21 +193,21 @@ java_overload(OrderHistoryHelper, "getFormData", 0)
 
 function OrderHistoryHelper:setOrderStatus()
         local try_ok, try_error, try_value = pcall(function()
-            local success = "Status successfully set to: " .. self.status
+            local success = require("allbinary_java").to_string("Status successfully set to: ") .. require("allbinary_java").to_string(self.status)
             local orderReviewInterface = OrderHistoryFactory.getInstance(self.id)
             local status = orderReviewInterface:getStatus()
-            if ((status < OrderHistoryData.CANCELLED and -1) or (status > OrderHistoryData.CANCELLED and 1) or 0) == 0 then
-                do return "__jreturn", "Order " .. self.id .. " Already Cancelled<br/>" end
-            elseif ((status < OrderHistoryData.SHIPPED and -1) or (status > OrderHistoryData.SHIPPED and 1) or 0) == 0 then
-                do return "__jreturn", "Order " .. self.id .. " Already Shipped. You can't cancel a shipped order.<br/>" end
-            elseif ((status < OrderHistoryData.PREPROCESSING and -1) or (status > OrderHistoryData.PREPROCESSING and 1) or 0) == 0 then
-                do return "__jreturn", "Order " .. self.id .. " has been cancelled.<br/>" end
-            elseif ((status < OrderHistoryData.PARTIALLYSHIPPED and -1) or (status > OrderHistoryData.PARTIALLYSHIPPED and 1) or 0) == 0 then
-                do return "__jreturn", "Order " .. self.id .. " Partially Shipped. You can cancel unshipped items, but not the whole order.<br/>" end
-            elseif ((status < OrderHistoryData.PROCESSING and -1) or (status > OrderHistoryData.PROCESSING and 1) or 0) == 0 then
+            if rawequal(((status < OrderHistoryData.CANCELLED and -1) or (status > OrderHistoryData.CANCELLED and 1) or 0), 0) then
+                do return "__jreturn", require("allbinary_java").to_string(require("allbinary_java").to_string("Order ") .. require("allbinary_java").to_string(self.id)) .. require("allbinary_java").to_string(" Already Cancelled<br/>") end
+            elseif rawequal(((status < OrderHistoryData.SHIPPED and -1) or (status > OrderHistoryData.SHIPPED and 1) or 0), 0) then
+                do return "__jreturn", require("allbinary_java").to_string(require("allbinary_java").to_string("Order ") .. require("allbinary_java").to_string(self.id)) .. require("allbinary_java").to_string(" Already Shipped. You can't cancel a shipped order.<br/>") end
+            elseif rawequal(((status < OrderHistoryData.PREPROCESSING and -1) or (status > OrderHistoryData.PREPROCESSING and 1) or 0), 0) then
+                do return "__jreturn", require("allbinary_java").to_string(require("allbinary_java").to_string("Order ") .. require("allbinary_java").to_string(self.id)) .. require("allbinary_java").to_string(" has been cancelled.<br/>") end
+            elseif rawequal(((status < OrderHistoryData.PARTIALLYSHIPPED and -1) or (status > OrderHistoryData.PARTIALLYSHIPPED and 1) or 0), 0) then
+                do return "__jreturn", require("allbinary_java").to_string(require("allbinary_java").to_string("Order ") .. require("allbinary_java").to_string(self.id)) .. require("allbinary_java").to_string(" Partially Shipped. You can cancel unshipped items, but not the whole order.<br/>") end
+            elseif rawequal(((status < OrderHistoryData.PROCESSING and -1) or (status > OrderHistoryData.PROCESSING and 1) or 0), 0) then
                 local orderHistoryEntityInterface = OrderHistoryEntityFactory.getInstance()
                 orderHistoryEntityInterface:setStatus(self.id, self.newStatus)
-                do return "__jreturn", "Order " .. self.id .. " has been cancelled.<br/>" end
+                do return "__jreturn", require("allbinary_java").to_string(require("allbinary_java").to_string("Order ") .. require("allbinary_java").to_string(self.id)) .. require("allbinary_java").to_string(" has been cancelled.<br/>") end
             end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGS) then
                 self.logUtil:putF(success, self, "setOrderStatus()")
@@ -221,7 +221,7 @@ function OrderHistoryHelper:setOrderStatus()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "setOrderStatus()", e)
             end
-            return error .. "<br/>" .. "Exception: " .. tostring(e) .. "<br/>"
+            return require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(error) .. require("allbinary_java").to_string("<br/>")) .. require("allbinary_java").to_string("Exception: ")) .. require("allbinary_java").to_string(e)) .. require("allbinary_java").to_string("<br/>")
         end
         if try_ok and try_error == "__jreturn" then return try_value end
 end

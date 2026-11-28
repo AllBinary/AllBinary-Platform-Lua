@@ -193,10 +193,10 @@ java_overload(ShippingTag, "setShippingType", 0)
 -- throws JspTagException
 function ShippingTag:doStartTag()
         local try_ok, try_error, try_value = pcall(function()
-            if self.command ~= nil then
+            if not rawequal(self.command, nil) then
                 self.propertiesHashMap = StdUtil.getInstance():createHashMap()
                 self.propertiesHashMap:put(StoreFrontData.getInstance().NAME, self.storeName)
-                if ((self.command < GLOBALS2.SETSHIPPINGTYPE and -1) or (self.command > GLOBALS2.SETSHIPPINGTYPE and 1) or 0) == 0 then
+                if rawequal(((self.command < GLOBALS2.SETSHIPPINGTYPE and -1) or (self.command > GLOBALS2.SETSHIPPINGTYPE and 1) or 0), 0) then
                     self:setShippingType()
                 end
             end

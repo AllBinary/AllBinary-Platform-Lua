@@ -28,12 +28,12 @@ local function java_real(class)
     return class
 end
 
--- local Displayable = require("javax.microedition.lcdui.Displayable")
--- local Form = require("javax.microedition.lcdui.Form")
--- local InvalidRecordIDException = require("javax.microedition.rms.InvalidRecordIDException")
--- local RecordStore = require("javax.microedition.rms.RecordStore")
--- local RecordStoreException = require("javax.microedition.rms.RecordStoreException")
--- local RecordStoreNotOpenException = require("javax.microedition.rms.RecordStoreNotOpenException")
+local Displayable = java_lazy("javax.microedition.lcdui.Displayable")
+local Form = java_lazy("javax.microedition.lcdui.Form")
+local InvalidRecordIDException = java_lazy("javax.microedition.rms.InvalidRecordIDException")
+local RecordStore = java_lazy("javax.microedition.rms.RecordStore")
+local RecordStoreException = java_lazy("javax.microedition.rms.RecordStoreException")
+local RecordStoreNotOpenException = java_lazy("javax.microedition.rms.RecordStoreNotOpenException")
 local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
 
 local function java_new_array(default, size, ...)
@@ -99,14 +99,14 @@ end
 
 
 function TsUtil:hashCode(anyType)
-        return anyType:hashCode()
+        return require("allbinary_java").hash_code(anyType)
 end
 
 
 -- throws InterruptedException
 function TsUtil:waitFor(any, timeoutMillis)
         local anyType = any
-        anyType:wait(timeoutMillis)
+        require("java.lang.Thread").waitOn(anyType, timeoutMillis)
 end
 
 
@@ -133,7 +133,7 @@ end
 
 
 function TsUtil:equalsNotstring(anyType, object2)
-        return anyType:equals(object2)
+        return require("allbinary_java").equals(anyType, object2)
 end
 
 

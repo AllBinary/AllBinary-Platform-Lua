@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 local Activity = java_lazy("android.app.Activity")
 local Context = java_lazy("android.content.Context")
 local Resources = java_lazy("android.content.res.Resources")
@@ -115,7 +115,7 @@ end
 
 function ResourceUtil:getResourceId(resource)
         local value = self.hashMap:get(resource)
-        if DebugFactory.getInstance() ~= NoDebug.getInstance() then
+        if not rawequal(DebugFactory.getInstance(), NoDebug.getInstance()) then
             PreLogUtil.put(tostring(StringMaker.new():append(resource):append(CommonSeps.getInstance().COLON):append(tostring(value))), self, "getResourceId")
         end
         return value
@@ -123,7 +123,7 @@ end
 
 
 function ResourceUtil:addResource(resource, value)
-        if DebugFactory.getInstance() ~= NoDebug.getInstance() then
+        if not rawequal(DebugFactory.getInstance(), NoDebug.getInstance()) then
             PreLogUtil.put(tostring(StringMaker.new():append(resource):append(CommonSeps.getInstance().COLON):append(tostring(value))), self, "addResource")
             if self:containsDuplicate(resource, value) then
                 ForcedLogUtil.log(tostring(StringMaker.new():append("Found Duplicate Resource: "):append(resource)), self)
@@ -139,9 +139,9 @@ function ResourceUtil:containsDuplicate(resource, value)
             local index = (objectArray.n or #objectArray)
             while (function() index = index - 1 return index end)() >= 0 do
             local integer = self.hashMap:get(objectArray[index + 1])
-            if resource ~= objectArray[index + 1] then
-                if value ~= integer then
-                    if math.tointeger(value // 1) == math.tointeger(integer // 1) then
+            if not rawequal(resource, objectArray[index + 1]) then
+                if not rawequal(value, integer) then
+                    if rawequal(math.tointeger(value // 1), math.tointeger(integer // 1)) then
                         return true
                     end
                 end
@@ -164,7 +164,7 @@ function ResourceUtil:getResourceAsStream(resource)
         local id = math.tointeger(integer // 1)
         local resources = (self.resources)
         local inputStream = resources:openRawResource(id)
-        if inputStream ~= nil then
+        if not rawequal(inputStream, nil) then
             return inputStream
         end
         return inputStream

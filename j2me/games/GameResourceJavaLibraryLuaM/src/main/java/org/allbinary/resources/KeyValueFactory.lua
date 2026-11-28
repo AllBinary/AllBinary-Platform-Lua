@@ -73,7 +73,7 @@ end
 
 
 function KeyValueFactory:get(key)
-        if not self.MAP:containsKey(key) then
+        if not (self.MAP:containsKey(key)) then
             return key
         end
         return self.MAP:get(key)

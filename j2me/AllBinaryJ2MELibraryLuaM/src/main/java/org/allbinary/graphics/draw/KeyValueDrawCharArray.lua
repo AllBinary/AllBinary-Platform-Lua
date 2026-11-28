@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local CharArrayFactory = java_lazy("org.allbinary.logic.java.character.CharArrayFactory")
 local MyFontProcessor = java_lazy("org.allbinary.graphics.font.MyFontProcessor")
 local UpdateMyFontInterface = java_lazy("org.allbinary.graphics.font.UpdateMyFontInterface")
@@ -61,7 +61,7 @@ KeyValueDrawCharArray.java_interfaces = function() return {UpdateMyFontInterface
 function KeyValueDrawCharArray:_init_fields()
     self.myFontProcessor = UpdateMyFontProcessor.new(self)
     if self.LABEL == nil then self.LABEL = nil end
-    if self.labelX == nil then self.labelX = nil end
+    if self.labelX == nil then self.labelX = 0 end
     if self.valueX == nil then self.valueX = 0 end
     self.value = CharArrayFactory.getInstance():getZeroCharArray()
     if self.len == nil then self.len = 0 end

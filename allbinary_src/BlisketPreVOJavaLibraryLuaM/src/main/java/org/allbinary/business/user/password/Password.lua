@@ -99,9 +99,9 @@ function Password:isValid()
         local try_ok, try_error, try_value = pcall(function()
             local valid = true
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VALIDATION) then
-                self.logUtil:putF("Password: " .. self.password, self, commonStrings.IS_VALID)
+                self.logUtil:putF(require("allbinary_java").to_string("Password: ") .. require("allbinary_java").to_string(self.password), self, commonStrings.IS_VALID)
             end
-            if not StringValidationUtil.getInstance():isValidRequired(self.password, 6, UserData.MAXLEN) then
+            if not (StringValidationUtil.getInstance():isValidRequired(self.password, 6, UserData.MAXLEN)) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VALIDATION) then
                     self.logUtil:putF("Password is invalid", self, commonStrings.IS_VALID)
                 end
@@ -122,7 +122,7 @@ end
 
 
 function Password:getValidationInfo()
-        if not StringValidationUtil.getInstance():isValidRequired(self.password, 6, UserData.MAXLEN) then
+        if not (StringValidationUtil.getInstance():isValidRequired(self.password, 6, UserData.MAXLEN)) then
             return "Please enter a Password with more than 6 characters.<br />"
         end
         local stringUtil = StringUtil.getInstance()

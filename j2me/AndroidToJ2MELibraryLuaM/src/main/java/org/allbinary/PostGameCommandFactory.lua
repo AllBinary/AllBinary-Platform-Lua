@@ -73,7 +73,7 @@ end
 function PostGameCommandFactory:addCommands(canvas)
         local operatingSystemInterface = OperatingSystemFactory.getInstance():getOperatingSystemInstance()
         local gameCommandsFactory = GameCommandsFactory.getInstance()
-        if not operatingSystemInterface:isOverScan() then
+        if not (operatingSystemInterface:isOverScan()) then
             canvas:addCommand(gameCommandsFactory.TOGGLE_KEYBOARD)
         end
         MultiPlayerGameFeatureFactory.getInstance():addCommands(canvas)

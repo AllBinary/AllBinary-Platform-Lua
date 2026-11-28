@@ -153,7 +153,7 @@ end
 
 function InputMapping:add(input, mappedToInput)
         local list = self:getMappedInput(input)
-        if not list:contains(mappedToInput) then
+        if not (list:contains(mappedToInput)) then
             list:add(mappedToInput)
             self.mappedList:add(mappedToInput)
         end
@@ -167,7 +167,7 @@ end
 
 function InputMapping:getMappedInput(id)
         local mappingInputCanBeNullList = self.hashtable:get(id)
-        if mappingInputCanBeNullList == nil then
+        if rawequal(mappingInputCanBeNullList, nil) then
             local list = BasicArrayListD.new()
             self.hashtable:put(id, list)
             return list

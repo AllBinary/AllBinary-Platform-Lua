@@ -175,10 +175,10 @@ end
 function EditValidationStoreFrontView:isValid()
         local try_ok, try_error, try_value = pcall(function()
             local valid = true
-            if self.newStoreFrontInterface:isNameValid() == false then
+            if rawequal(self.newStoreFrontInterface:isNameValid(), false) then
                 valid = false
             end
-            if StoreFrontFactory.getInstance(self.newStoreFrontInterface:getName()) == nil then
+            if rawequal(StoreFrontFactory.getInstance(self.newStoreFrontInterface:getName()), nil) then
                 valid = false
             end
             self.newStoreFrontInterface = StoreFrontFactory.getInstance(self.newStoreFrontInterface:getName())
@@ -200,11 +200,11 @@ java_overload(EditValidationStoreFrontView, "isValid", 0)
 function EditValidationStoreFrontView:validationInfo()
         local try_ok, try_error, try_value = pcall(function()
             local stringBuffer = StringMaker.new()
-            if self.newStoreFrontInterface:isNameValid() == false then
+            if rawequal(self.newStoreFrontInterface:isNameValid(), false) then
                 stringBuffer:append(self.newStoreFrontInterface:nameValidationInfo())
             end
-            if StoreFrontFactory.getInstance(self.newStoreFrontInterface:getName()) == nil then
-                stringBuffer:append(tostring(self.newStoreFrontInterface) .. " does not exist.<br>")
+            if rawequal(StoreFrontFactory.getInstance(self.newStoreFrontInterface:getName()), nil) then
+                stringBuffer:append(require("allbinary_java").to_string(self.newStoreFrontInterface) .. require("allbinary_java").to_string(" does not exist.<br>"))
             end
             do return "__jreturn", "Unkown Error" end
         end)

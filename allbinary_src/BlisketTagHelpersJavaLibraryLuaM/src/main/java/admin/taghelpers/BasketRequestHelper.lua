@@ -162,7 +162,7 @@ function BasketRequestHelper._jinit(self, propertiesHashMap, pageContext)
         self.pageContext = pageContext
         self.request = pageContext:getRequest()
         local storeName = propertiesHashMap:get(StoreFrontData.getInstance().NAME)
-        if storeName ~= nil then
+        if not rawequal(storeName, nil) then
             self.storeFrontInterface = StoreFrontFactory.getInstance(storeName)
         else
             self.storeFrontInterface = StoreFront.new()
@@ -188,9 +188,9 @@ java_overload(BasketRequestHelper, "getFormData", 0)
 
 function BasketRequestHelper:addItemToBasket()
         local try_ok, try_error, try_value = pcall(function()
-            if self.id ~= nil and self.num ~= nil then
+            if not rawequal(self.id, nil) and not rawequal(self.num, nil) then
                 local basket = self.weblisketSession:getOrder():getBasket()
-                if InventoryEntityFactory.getInstance():getInventoryEntityInstance():getItem(self.id) == nil then
+                if rawequal(InventoryEntityFactory.getInstance():getInventoryEntityInstance():getItem(self.id), nil) then
                     do return "__jreturn", false end
                 end
                 basket:addItem(self.id, self.num)
@@ -215,7 +215,7 @@ java_overload(BasketRequestHelper, "addItemToBasket", 0)
 
 function BasketRequestHelper:removeItemFromBasket()
         local try_ok, try_error, try_value = pcall(function()
-            if self.id ~= nil then
+            if not rawequal(self.id, nil) then
                 local basket = self.weblisketSession:getOrder():getBasket()
                 basket:removeItem(self.id)
             end
@@ -240,7 +240,7 @@ java_overload(BasketRequestHelper, "removeItemFromBasket", 0)
 function BasketRequestHelper:adjustBasket()
         local try_ok, try_error, try_value = pcall(function()
             local basket = self.weblisketSession:getOrder():getBasket()
-            if self.id ~= nil and self.num ~= nil then
+            if not rawequal(self.id, nil) and not rawequal(self.num, nil) then
                 basket:adjustItem(self.id, self.num)
             end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGS) then

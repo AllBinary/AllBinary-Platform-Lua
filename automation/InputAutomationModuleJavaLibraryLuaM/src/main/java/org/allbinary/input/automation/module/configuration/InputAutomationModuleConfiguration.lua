@@ -176,24 +176,24 @@ end
 -- throws Exception
 function InputAutomationModuleConfiguration:init_j2(abeClientInformation, node)
         local nodeList = node:getChildNodes()
-        if nodeList ~= nil then
+        if not rawequal(nodeList, nil) then
             local classNameNode = DomSearchHelper.getNode(DynamicObjectData.NAME, nodeList)
-            if classNameNode ~= nil then
+            if not rawequal(classNameNode, nil) then
                 self:setClassName(DomNodeHelper.getTextNodeValue(classNameNode))
                 self:init(abeClientInformation)
             else
                 self.logUtil:putF("Class Node Null", self, self.commonStrings.INIT)
             end
         else
-            self.logUtil:putF(tostring(InputAutomationData.NAME) .. " Node Has No Children", self, "Contructor")
+            self.logUtil:putF(require("allbinary_java").to_string(InputAutomationData.NAME) .. require("allbinary_java").to_string(" Node Has No Children"), self, "Contructor")
         end
 end
 
 
 function InputAutomationModuleConfiguration:init_j1(abeClientInformation)
         local try_ok, try_error, try_value = pcall(function()
-            self.logUtil:putF("Name: " .. self:getName(), self, self.commonStrings.INIT)
-            self.logUtil:putF("ClassName: " .. self.className, self, self.commonStrings.INIT)
+            self.logUtil:putF(require("allbinary_java").to_string("Name: ") .. require("allbinary_java").to_string(self:getName()), self, self.commonStrings.INIT)
+            self.logUtil:putF(require("allbinary_java").to_string("ClassName: ") .. require("allbinary_java").to_string(self.className), self, self.commonStrings.INIT)
             self:setInputAutomationModuleInterface(AbeFactory.getInstance():getInstance():getInstance(abeClientInformation, self:getClassName()))
         end)
         if not try_ok then
@@ -227,7 +227,7 @@ end
 
 
 function InputAutomationModuleConfiguration:setName(name)
-        self.logUtil:putF("Name: " .. name, self, "setName")
+        self.logUtil:putF(require("allbinary_java").to_string("Name: ") .. require("allbinary_java").to_string(name), self, "setName")
         self.name_f = name
 end
 
@@ -238,7 +238,7 @@ end
 
 
 function InputAutomationModuleConfiguration:setClassName(className)
-        self.logUtil:putF("ClassName : " .. className, self, "setClassName")
+        self.logUtil:putF(require("allbinary_java").to_string("ClassName : ") .. require("allbinary_java").to_string(className), self, "setClassName")
         self.className = className
 end
 
@@ -249,7 +249,7 @@ end
 
 
 function InputAutomationModuleConfiguration:setInputAutomationModuleInterface(inputAutomationModuleInterface)
-        self.logUtil:putF("InputAutomationModuleFactoryInterface : " .. tostring(inputAutomationModuleInterface), self, "setInputAutomationModuleInterface")
+        self.logUtil:putF(require("allbinary_java").to_string("InputAutomationModuleFactoryInterface : ") .. require("allbinary_java").to_string(inputAutomationModuleInterface), self, "setInputAutomationModuleInterface")
         self.inputAutomationModuleInterface = inputAutomationModuleInterface
         self:setName(self.inputAutomationModuleInterface:getName())
 end

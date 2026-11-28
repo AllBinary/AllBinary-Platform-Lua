@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local GL = require("javax.microedition.khronos.opengles.GL")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local GL = java_lazy("javax.microedition.khronos.opengles.GL")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local BasicColorFactory = java_lazy("org.allbinary.graphics.color.BasicColorFactory")
 local BasicColorSetUtil = java_lazy("org.allbinary.graphics.color.BasicColorSetUtil")

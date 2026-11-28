@@ -182,7 +182,7 @@ function UsersView:toXmlNode(document)
             local size = self.userVector:size()
             for index = 0, size - 1 do
                 local userInterface = self.userVector:get(index)
-                if userInterface ~= nil then
+                if not rawequal(userInterface, nil) then
                     local node = UserDomNode.new(userInterface):toXmlNode(document)
                     usersNode:appendChild(node)
                 else

@@ -16,8 +16,8 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local Screen = require("javax.microedition.lcdui.Screen")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Screen = java_lazy("javax.microedition.lcdui.Screen")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local BasicColorFactory = java_lazy("org.allbinary.graphics.color.BasicColorFactory")
 local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
@@ -47,7 +47,7 @@ ABCustomItem.javaClassName = "org.allbinary.graphics.form.item.ABCustomItem"
 
 
 function ABCustomItem.getNullInstance()
-        if ABCustomItem.NULL_CUSTOM_ITEM == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(ABCustomItem.NULL_CUSTOM_ITEM, NullUtil.getInstance().NULL_OBJECT) then
             ABCustomItem.NULL_CUSTOM_ITEM = ABCustomItem.new(StringUtil.getInstance().EMPTY_STRING, BasicColorFactory.getInstance().BLACK, BasicColorFactory.getInstance().WHITE)
         end
         return ABCustomItem.NULL_CUSTOM_ITEM

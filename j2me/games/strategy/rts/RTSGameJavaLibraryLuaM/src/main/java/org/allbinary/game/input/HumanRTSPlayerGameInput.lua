@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local RTSFormInput = java_lazy("org.allbinary.game.input.form.RTSFormInput")
 local MultiSelectPaintable = java_lazy("org.allbinary.game.layer.MultiSelectPaintable")
 local RTSGameStrings = java_lazy("org.allbinary.game.layer.RTSGameStrings")
@@ -244,12 +244,12 @@ function HumanRTSPlayerGameInput:processDraggingMotionInput(layerManager)
         local motionGestureEvent = self:getMotionGestureInputList():get(self:getMotionGestureInputList():size() - 1)
         local motionGestureInput = motionGestureEvent:getMotionGesture()
         local rtsFormInput = self:getSelectedRtsFormInput()
-        if motionGestureInput == self.PRESSED then
+        if rawequal(motionGestureInput, self.PRESSED) then
             local point = motionGestureEvent:getCurrentPoint()
             if self:getRtsPlayerLayerInterface():getCurrentScrollSelectionForm():isInForm(point) then
                 self.isDragging = rtsFormInput:processSticky(self:getSelectedRtsLayer(), self:getRtsPlayerLayerInterface(), layerManager, point)
             end
-        elseif motionGestureInput == self.RELEASED then
+        elseif rawequal(motionGestureInput, self.RELEASED) then
             local point = motionGestureEvent:getCurrentPoint()
             if self:getRtsPlayerLayerInterface():getCurrentScrollSelectionForm():isInForm(point) then
                 rtsFormInput:processAtPoint(self:getSelectedRtsLayer(), self:getRtsPlayerLayerInterface(), layerManager, point)
@@ -316,9 +316,9 @@ function HumanRTSPlayerGameInput:makeSelection()
             end
         end
         local gameLayer = self:getSelectedBuildingPlayerGameInput():getLastSelectedRtsLayer()
-        if gameLayer ~= CollidableDestroyableDamageableLayer.getNullInstance() then
+        if not rawequal(gameLayer, CollidableDestroyableDamageableLayer.getNullInstance()) then
             local lastRTSLayer = gameLayer
-            if lastRTSLayer:getScrollSelectionForm() ~= ScrollSelectionForm.getNullScrollSelectionForm() then
+            if not rawequal(lastRTSLayer:getScrollSelectionForm(), ScrollSelectionForm.getNullScrollSelectionForm()) then
                 self:updateForm(lastRTSLayer:getScrollSelectionForm(), lastRTSLayer:getRTSFormInput())
                 self:setSelectedRtsLayer(lastRTSLayer)
             end
@@ -334,10 +334,10 @@ function HumanRTSPlayerGameInput:processSelectionBoxMotionInput(layerManager)
             local motionGestureEvent = self:getMotionGestureInputList():get(index)
             local motionGestureInput = motionGestureEvent:getMotionGesture()
             local point = motionGestureEvent:getCurrentPoint()
-            if motionGestureInput == self.touchMotionGestureFactory.PRESSED then
+            if rawequal(motionGestureInput, self.touchMotionGestureFactory.PRESSED) then
                 self.startPoint = point
                 self.endPoint = point
-            elseif motionGestureInput == self.touchMotionGestureFactory.RELEASED then
+            elseif rawequal(motionGestureInput, self.touchMotionGestureFactory.RELEASED) then
                 self.endPoint = point
                 self:makeSelection()
                 self.startPoint = PointFactory.getInstance().ZERO_ZERO
@@ -354,7 +354,7 @@ java_overload(HumanRTSPlayerGameInput, "processSelectionBoxMotionInput", 1, func
 function HumanRTSPlayerGameInput:processMotionInput(layerManager)
         if self:getMotionGestureInputList():size() > 0 then
             local endDrag = self:processDraggingMotionInput(layerManager)
-            if not self.isDragging then
+            if not (self.isDragging) then
                 self:processSelectionBoxMotionInput(layerManager)
             end
             if endDrag then
@@ -377,7 +377,7 @@ java_overload(HumanRTSPlayerGameInput, "setSelectedRtsFormInput", 1, function(ja
 
 function HumanRTSPlayerGameInput:updateFormForLayer(rtsLayer)
         local scrollSelectionForm = rtsLayer:getScrollSelectionForm()
-        if scrollSelectionForm ~= ScrollSelectionForm.getNullScrollSelectionForm() and self:getRtsPlayerLayerInterface():getGroupInterface()[1] == rtsLayer:getGroupInterface()[1] then
+        if not rawequal(scrollSelectionForm, ScrollSelectionForm.getNullScrollSelectionForm()) and rawequal(self:getRtsPlayerLayerInterface():getGroupInterface()[1], rtsLayer:getGroupInterface()[1]) then
             self:updateForm(scrollSelectionForm, rtsLayer:getRTSFormInput())
             self:getSelectedBuildingPlayerGameInput():setSelectedRTSLayer(CollidableDestroyableDamageableLayer.getNullInstance())
             self:setSelectedRtsLayer(rtsLayer)
@@ -399,18 +399,18 @@ java_overload(HumanRTSPlayerGameInput, "updateForm", 2, function(java_a1, java_a
 
 -- throws Exception
 function HumanRTSPlayerGameInput:setSelectedRTSLayer(rtSLayer, geographicMapCellPosition)
-        if rtSLayer ~= CollidableDestroyableDamageableLayer.getNullInstance() and self:getRtsPlayerLayerInterface():getGroupInterface()[1] ~= rtSLayer:getGroupInterface()[1] then
+        if not rawequal(rtSLayer, CollidableDestroyableDamageableLayer.getNullInstance()) and not rawequal(self:getRtsPlayerLayerInterface():getGroupInterface()[1], rtSLayer:getGroupInterface()[1]) then
             self:getRtsPlayerLayerInterface():add(ErrorSound.getInstance())
             GameNotificationEventHandler.getInstance():fireEvent(self.notYoursGameNotificationEvent)
             return
         end
         local gameCanvas = self:getGameCanvas()
-        if rtSLayer ~= CollidableDestroyableDamageableLayer.getNullInstance() then
+        if not rawequal(rtSLayer, CollidableDestroyableDamageableLayer.getNullInstance()) then
             self:getRtsPlayerLayerInterface():add(SelectBuildingSound.getInstance())
             local rtsLayer = rtSLayer
             rtsLayer:select()
             self:updateFormForLayer(rtsLayer)
-            if gameCanvas:getGameState() == self.gameStateFactory.PLAYING_GAME_STATE then
+            if rawequal(gameCanvas:getGameState(), self.gameStateFactory.PLAYING_GAME_STATE) then
                 if rtsLayer:isSelfUpgradeable() then
                     gameCanvas:updateCurrentTouchInputFactory(RTSTouchButtonsBuilder.new())
                 else
@@ -418,7 +418,7 @@ function HumanRTSPlayerGameInput:setSelectedRTSLayer(rtSLayer, geographicMapCell
                 end
             else
                 local endLevelTouchButtonsBuilder = EndLevelTouchButtonsBuilder.new()
-                if self.touchButtonsBuilderFactory ~= nil then
+                if not rawequal(self.touchButtonsBuilderFactory, nil) then
                     endLevelTouchButtonsBuilder:add(self.touchButtonsBuilderFactory:getInstance())
                 end
                 gameCanvas:updateCurrentTouchInputFactory(endLevelTouchButtonsBuilder)
@@ -428,11 +428,11 @@ function HumanRTSPlayerGameInput:setSelectedRTSLayer(rtSLayer, geographicMapCell
             self:getRtsPlayerLayerInterface():setCurrentScrollSelectionForm(self:getRtsPlayerLayerInterface():getBuildingScrollSelectionForm())
             self:setSelectedRtsFormInput(self:getRtsPlayerLayerInterface():getRTSFormInput())
             self:getSelectedBuildingPlayerGameInput():setSelectedRTSLayer(CollidableDestroyableDamageableLayer.getNullInstance())
-            if gameCanvas:getGameState() == self.gameStateFactory.PLAYING_GAME_STATE then
+            if rawequal(gameCanvas:getGameState(), self.gameStateFactory.PLAYING_GAME_STATE) then
                 gameCanvas:updateCurrentTouchInputFactory(NoBuildingSelectedTouchButtonsBuilder.new())
             else
                 local endLevelNoBuildingSelectedTouchButtonsBuilder = EndLevelNoBuildingSelectedTouchButtonsBuilder.new()
-                if self.touchButtonsBuilderFactory ~= nil then
+                if not rawequal(self.touchButtonsBuilderFactory, nil) then
                     endLevelNoBuildingSelectedTouchButtonsBuilder:add(self.touchButtonsBuilderFactory:getInstance())
                 end
                 gameCanvas:updateCurrentTouchInputFactory(endLevelNoBuildingSelectedTouchButtonsBuilder)
@@ -453,7 +453,7 @@ function HumanRTSPlayerGameInput:updatePaintable()
             self.multiSelectPaintable:setBasicColorP(geographicMapInterface:getForegroundBasicColor())
             self.multiSelectPaintable:update(list)
             self:getRTSLayerInfoPaintable():updateRTSLayerInfoSelection(self.multiSelectPaintable)
-        elseif list:size() == 1 then
+        elseif rawequal(list:size(), 1) then
             local rtsLayer = list:get(0)
             self:getRTSLayerInfoPaintable():updateRTSLayerInfoSelection(rtsLayer:createHudPaintable())
         else
@@ -465,7 +465,7 @@ java_overload(HumanRTSPlayerGameInput, "updatePaintable", 0)
 
 function HumanRTSPlayerGameInput:paint(graphics)
         java_super(RTSPlayerGameInput, "paint", 1)(self, graphics)
-        if self.startPoint ~= PointFactory.getInstance().ZERO_ZERO and self.endPoint ~= PointFactory.getInstance().ZERO_ZERO then
+        if not rawequal(self.startPoint, PointFactory.getInstance().ZERO_ZERO) and not rawequal(self.endPoint, PointFactory.getInstance().ZERO_ZERO) then
             graphics:setColor(math.tointeger(BasicColorFactory.getInstance().RED // 1))
             local rectX1 = self.startPoint:getX()
             local rectY1 = self.startPoint:getY()

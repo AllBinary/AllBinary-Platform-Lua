@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
@@ -107,9 +107,9 @@ end
 -- throws Exception
 function ResourceUtil:getResourceAsStream(resource)
         local inputStream = self:getResourceAsStreamAtStart(resource, 2)
-        if inputStream == nil then
+        if rawequal(inputStream, nil) then
             inputStream = self:getResourceAsStreamAtStart(resource, 1)
-            if inputStream == nil then
+            if rawequal(inputStream, nil) then
                 error(require("java.lang.Exception").new(tostring(StringMaker.new():append("Unable to obtain: "):append(resource))), 0)
             end
         end
@@ -122,17 +122,17 @@ function ResourceUtil:getResourceAsStreamAtStart(resource, startIndex)
         local commonSeps = CommonSeps.getInstance()
         local index = ((string.find(resource, commonSeps.COLON, 1, true) or 0) - 1)
         local resourcePath = string.sub(resource, (index + startIndex) + 1)
-        local inputStream = getmetatable(resource):getResourceAsStream(resourcePath)
-        if inputStream ~= nil then
+        local inputStream = require("java.lang.ClassLoader").classResource(getmetatable(resource), resourcePath, true)
+        if not rawequal(inputStream, nil) then
             return inputStream
         end
         local classLoader = ResourceUtil.classLoader
         inputStream = classLoader:getResourceAsStream(resourcePath)
-        if inputStream ~= nil then
+        if not rawequal(inputStream, nil) then
             return inputStream
         end
         inputStream = require("java.lang.Thread").currentThread():getContextClassLoader():getResourceAsStream(resourcePath)
-        if inputStream ~= nil then
+        if not rawequal(inputStream, nil) then
             return inputStream
         end
         return inputStream

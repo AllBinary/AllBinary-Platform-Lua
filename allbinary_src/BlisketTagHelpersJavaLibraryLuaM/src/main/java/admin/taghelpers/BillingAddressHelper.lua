@@ -172,7 +172,7 @@ end
 
 function BillingAddressHelper:getAddressForm()
         self.userName = self.request:getParameter(UserData.USERNAME)
-        if self.userName == nil then
+        if rawequal(self.userName, nil) then
             self.userName = self.request:getParameter(WeblisketSessionData.REMOVABLEUSERNAME)
         end
         self.streetAddress = StreetAddress.new(self.request)
@@ -321,7 +321,7 @@ function BillingAddressHelper:setToShippingAddress()
         local try_ok, try_error, try_value = pcall(function()
             local shippingAddressesEntityFactory = ShippingAddressesEntityFactory.getInstance()
             local streetAddress = shippingAddressesEntityFactory:getInstance(self.weblisketSession:getUserName()):getDefault()
-            if streetAddress ~= nil then
+            if not rawequal(streetAddress, nil) then
                 shippingAddressesEntityFactory:getInstance(self.weblisketSession:getUserName()):add(streetAddress)
             else
                 do return "__jreturn", "No Shipping Address" end

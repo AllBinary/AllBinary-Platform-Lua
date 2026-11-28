@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local OpenGLFeatureUtil = java_lazy("org.allbinary.graphics.opengles.OpenGLFeatureUtil")
 local BasicHud = require("org.allbinary.game.graphics.hud.BasicHud")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
@@ -153,11 +153,11 @@ setmetatable(VelocityWidget, {__index = BasicHud})
 function VelocityWidget:_init_fields()
     self.KILOMETERS_PER_HOUR_STR = {" ", "k", "m", "/", "h"}
     self.totalChars = (self.KILOMETERS_PER_HOUR_STR.n or #self.KILOMETERS_PER_HOUR_STR)
-    if self.velocity == nil then self.velocity = nil end
-    if self.maxVelocity == nil then self.maxVelocity = nil end
+    if self.velocity == nil then self.velocity = 0 end
+    if self.maxVelocity == nil then self.maxVelocity = 0 end
     self.string_ = PrimitiveLongSingleton.getInstance().ZERO
     self.totalDigits = 1
-    if self.powerOfTenVelocity == nil then self.powerOfTenVelocity = nil end
+    if self.powerOfTenVelocity == nil then self.powerOfTenVelocity = 0 end
     if self.primitiveLongUtil == nil then self.primitiveLongUtil = nil end
     self.offset = 0
     self.offset2 = 0
@@ -211,7 +211,7 @@ function VelocityWidget:set(value)
         if self.velocity > self.maxVelocity then
             self.velocity = 0
         end
-        if lastVelocity ~= self.velocity then
+        if not rawequal(lastVelocity, self.velocity) then
             self.string_ = self.primitiveLongUtil:getCharArray(self.velocity * 18)
             if OpenGLFeatureUtil.getInstance():isAnyThreed() then
                 self.totalDigits = self.primitiveLongUtil:getCurrentTotalDigits() + 1

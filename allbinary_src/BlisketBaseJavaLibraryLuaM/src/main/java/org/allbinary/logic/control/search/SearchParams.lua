@@ -80,13 +80,13 @@ function SearchParams._jinit(self, request)
         self:setEndPage(page)
         self:setSortBy(request:getParameter(SearchData.SORTBY))
         local index = 0
-        local columnName = request:getParameter(tostring(SearchData.COLUMNNAME) .. "[0]")
-        local columnValue = request:getParameter(tostring(SearchData.COLUMNVALUE) .. "[0]")
-        while columnName ~= nil do
+        local columnName = request:getParameter(require("allbinary_java").to_string(SearchData.COLUMNNAME) .. require("allbinary_java").to_string("[0]"))
+        local columnValue = request:getParameter(require("allbinary_java").to_string(SearchData.COLUMNVALUE) .. require("allbinary_java").to_string("[0]"))
+        while not rawequal(columnName, nil) do
             self:add(columnName, columnValue)
             index = index + 1
-            columnName = request:getParameter(tostring(SearchData.COLUMNNAME) .. "[" .. tostring(index) .. "]")
-            columnValue = request:getParameter(tostring(SearchData.COLUMNVALUE) .. "[" .. tostring(index) .. "]")
+            columnName = request:getParameter(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(SearchData.COLUMNNAME) .. require("allbinary_java").to_string("[")) .. require("allbinary_java").to_string(index)) .. require("allbinary_java").to_string("]"))
+            columnValue = request:getParameter(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(SearchData.COLUMNVALUE) .. require("allbinary_java").to_string("[")) .. require("allbinary_java").to_string(index)) .. require("allbinary_java").to_string("]"))
         end
     return self
 end
@@ -149,7 +149,7 @@ end
 
 
 function SearchParams:getLengthInt()
-        if self.listLength ~= nil then
+        if not rawequal(self.listLength, nil) then
             return self.listLength
         else
             return 0
@@ -168,7 +168,7 @@ end
 
 
 function SearchParams:getStartPageInt()
-        if self.startPage ~= nil then
+        if not rawequal(self.startPage, nil) then
             return self.startPage
         else
             return 0
@@ -177,7 +177,7 @@ end
 
 
 function SearchParams:getEndPageInt()
-        if self.endPage ~= nil then
+        if not rawequal(self.endPage, nil) then
             return self.endPage
         else
             return 0

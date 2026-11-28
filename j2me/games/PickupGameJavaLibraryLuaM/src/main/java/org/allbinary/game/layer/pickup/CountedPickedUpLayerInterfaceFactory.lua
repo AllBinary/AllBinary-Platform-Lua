@@ -153,7 +153,7 @@ CountedPickedUpLayerInterfaceFactory.java_implements = " CountedPickedUpLayerInt
 CountedPickedUpLayerInterfaceFactory.java_interfaces = function() return {CountedPickedUpLayerInterfaceFactoryInterface} end
 
 function CountedPickedUpLayerInterfaceFactory:_init_fields()
-    if self.id == nil then self.id = nil end
+    if self.id == nil then self.id = 0 end
 end
 
 

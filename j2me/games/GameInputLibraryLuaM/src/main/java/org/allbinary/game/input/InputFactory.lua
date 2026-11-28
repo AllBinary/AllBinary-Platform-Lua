@@ -83,7 +83,7 @@ end
 
 
 function InputFactory.getInstance()
-        if InputFactory.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(InputFactory.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             InputFactory.instance_f = InputFactory.new()
         end
         return InputFactory.instance_f

@@ -71,7 +71,7 @@ function GameInfo:_init_fields()
     if self.gameMode == nil then self.gameMode = nil end
     if self.playerType == nil then self.playerType = nil end
     if self.highestLevel == nil then self.highestLevel = 0 end
-    if self.currentLevel == nil then self.currentLevel = nil end
+    if self.currentLevel == nil then self.currentLevel = 0 end
     self.NEW_LEVEL = "New Level: "
     self.SET_CURRENT_LEVEL = "setCurrentLevel"
     self.NEXT_GAME_LEVEL = "nextGameLevel"

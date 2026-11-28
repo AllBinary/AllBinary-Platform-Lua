@@ -104,7 +104,7 @@ end
 -- throws Exception
 function CustomizerUtil:getTransformInfoInterfaceToCustomize(customizerTransformInfoInterface, transformInfoInterface)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("View Name: " .. customizerTransformInfoInterface:getName(), self, "getTransformInfoInterfaceToCustomize()")
+            self.logUtil:putF(require("allbinary_java").to_string("View Name: ") .. require("allbinary_java").to_string(customizerTransformInfoInterface:getName()), self, "getTransformInfoInterfaceToCustomize()")
         end
         local transformInfoEntityInterface = TransformInfoEntityBuilder.getInstance()
         local viewName = transformInfoInterface:getName()
@@ -117,7 +117,7 @@ end
 -- throws Exception
 function CustomizerUtil:getTransformInfoObjectConfigComponentNodesToCustomize(customizerTransformInfoInterface, transformInfoInterface)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("View Name: " .. customizerTransformInfoInterface:getName(), self, "getTransformInfoObjectConfigComponentNodesToCustomize()")
+            self.logUtil:putF(require("allbinary_java").to_string("View Name: ") .. require("allbinary_java").to_string(customizerTransformInfoInterface:getName()), self, "getTransformInfoObjectConfigComponentNodesToCustomize()")
         end
         local transformInfoEntityInterface = TransformInfoEntityBuilder.getInstance()
         local viewName = transformInfoInterface:getName()
@@ -130,7 +130,7 @@ end
 -- throws Exception
 function CustomizerUtil:getTransformInfoObjectConfigComponentNodes(transformInfoInterface)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("View Name: " .. transformInfoInterface:getName(), self, "getTransformInfoObjectConfigComponentNodes()")
+            self.logUtil:putF(require("allbinary_java").to_string("View Name: ") .. require("allbinary_java").to_string(transformInfoInterface:getName()), self, "getTransformInfoObjectConfigComponentNodes()")
         end
         local transformInfoObjectConfigInterface = transformInfoInterface:getObjectConfigInterface()
         return transformInfoObjectConfigInterface:getTransforms()
@@ -140,7 +140,7 @@ end
 -- throws Exception
 function CustomizerUtil:getTransformInfoObjectConfigGroupComponentNodes(transformInfoInterface)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("View Name: " .. transformInfoInterface:getName(), self, "getTransformInfoObjectConfigComponentNodes()")
+            self.logUtil:putF(require("allbinary_java").to_string("View Name: ") .. require("allbinary_java").to_string(transformInfoInterface:getName()), self, "getTransformInfoObjectConfigComponentNodes()")
         end
         local transformInfoObjectConfigInterface = transformInfoInterface:getObjectConfigInterface()
         return transformInfoObjectConfigInterface:getGroupTransforms()
@@ -150,7 +150,7 @@ end
 -- throws Exception
 function CustomizerUtil:insert(transformInfoInterface, domNodeInterface)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("View Name: " .. transformInfoInterface:getName(), self, "insert()")
+            self.logUtil:putF(require("allbinary_java").to_string("View Name: ") .. require("allbinary_java").to_string(transformInfoInterface:getName()), self, "insert()")
         end
         local transformInfoEntityInterface = TransformInfoEntityBuilder.getInstance()
         local allViewsToBeModified = self:getTransformInfoObjectConfigGroupComponentNodes(transformInfoInterface)
@@ -179,7 +179,7 @@ function CustomizerUtil:insert(transformInfoInterface, domNodeInterface)
             end
             local httpTransformInfoInterface = transformInfoInterface
             local specifiedTransformInfoInterface = transformInfoEntityInterface:get(viewNameOfViewToBeModified, httpTransformInfoInterface:getPropertiesHashMap(), httpTransformInfoInterface:getPageContext())
-            if specifiedTransformInfoInterface == nil then
+            if rawequal(specifiedTransformInfoInterface, nil) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     stringBuffer:delete(0, stringBuffer:length())
                     stringBuffer:append(transformInfoInterface:getName())
@@ -190,7 +190,7 @@ function CustomizerUtil:insert(transformInfoInterface, domNodeInterface)
                 end
             else
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                    self.logUtil:putF(transformInfoInterface:getName() .. " is adding data to view: " .. viewNameOfViewToBeModified, self, "insert()")
+                    self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(transformInfoInterface:getName()) .. require("allbinary_java").to_string(" is adding data to view: ")) .. require("allbinary_java").to_string(viewNameOfViewToBeModified), self, "insert()")
                 end
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     stringBuffer:delete(0, stringBuffer:length())
@@ -210,7 +210,7 @@ end
 -- throws Exception
 function CustomizerUtil:write(specifiedTransformInfoInterface, documentString)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("View Name: " .. specifiedTransformInfoInterface:getName(), self, "write()")
+            self.logUtil:putF(require("allbinary_java").to_string("View Name: ") .. require("allbinary_java").to_string(specifiedTransformInfoInterface:getName()), self, "write()")
         end
         local transformInfoEntityInterface = TransformInfoEntityBuilder.getInstance()
         specifiedTransformInfoInterface:setData(documentString)
@@ -221,7 +221,7 @@ end
 -- throws Exception
 function CustomizerUtil:getViewDataForComponentsInObjectConfig(transformInfoInterface)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("View Name: " .. transformInfoInterface:getName(), self, "getViewDataForComponentsInObjectConfig()")
+            self.logUtil:putF(require("allbinary_java").to_string("View Name: ") .. require("allbinary_java").to_string(transformInfoInterface:getName()), self, "getViewDataForComponentsInObjectConfig()")
         end
         local transformInfoObjectConfigInterface = transformInfoInterface:getObjectConfigInterface()
         local allViewsToBeModified = transformInfoObjectConfigInterface:getGroupTransforms()

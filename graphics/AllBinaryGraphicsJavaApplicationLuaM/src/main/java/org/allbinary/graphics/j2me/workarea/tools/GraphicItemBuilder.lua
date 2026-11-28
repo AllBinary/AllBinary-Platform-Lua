@@ -83,10 +83,10 @@ end
 -- throws Exception
 function GraphicItemBuilder.getInstance(node)
         local graphicItemName = node:getNodeName()
-        if ((graphicItemName < PointsDomUtil.getInstance().LINES and -1) or (graphicItemName > PointsDomUtil.getInstance().LINES and 1) or 0) == 0 then
+        if rawequal(((graphicItemName < PointsDomUtil.getInstance().LINES and -1) or (graphicItemName > PointsDomUtil.getInstance().LINES and 1) or 0), 0) then
             return LinesGraphicItem.new(node)
         else
-            error(require("java.lang.Exception").new("Graphic Item Does Not Exist: " .. graphicItemName), 0)
+            error(require("java.lang.Exception").new(require("allbinary_java").to_string("Graphic Item Does Not Exist: ") .. require("allbinary_java").to_string(graphicItemName)), 0)
         end
 end
 

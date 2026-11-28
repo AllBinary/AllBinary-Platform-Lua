@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local MultiPlayerGameFeatureFactory = java_lazy("org.allbinary.game.configuration.feature.MultiPlayerGameFeatureFactory")
 
 local function java_idiv(a, b)

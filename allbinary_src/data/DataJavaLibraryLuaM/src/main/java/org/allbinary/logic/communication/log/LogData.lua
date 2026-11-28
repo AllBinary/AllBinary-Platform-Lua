@@ -55,7 +55,7 @@ LogData.javaClassName = "org.allbinary.logic.communication.log.LogData"
 function LogData:_init_fields()
     self.MAX = 5000000
     self.extension = "log"
-    self.backupFileExt = tostring(AbPathData.getInstance().EXTENSION_SEP) .. "bak" .. tostring(AbPathData.getInstance().EXTENSION_SEP) .. "txt"
+    self.backupFileExt = require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(AbPathData.getInstance().EXTENSION_SEP) .. require("allbinary_java").to_string("bak")) .. require("allbinary_java").to_string(AbPathData.getInstance().EXTENSION_SEP)) .. require("allbinary_java").to_string("txt")
     self.ALLBINARY = "allbinary"
     self.NAME = "LOG_NAME"
     self.DESCRIPTION = "LOG_DESCRIPTION"

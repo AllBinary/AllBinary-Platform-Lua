@@ -203,14 +203,14 @@ function MouseActionScriptInput._new1(self, node)
         self.logUtil:putF(self.commonStrings.START, self, self.commonStrings.CONSTRUCTOR)
         self.point = Point.new()
         local actionNode = DomSearchHelper.getNode(MouseActionScriptInputData.NAME, node:getChildNodes())
-        if actionNode ~= nil then
+        if not rawequal(actionNode, nil) then
             local nodeList = actionNode:getChildNodes()
             for index = 0, nodeList:getLength() - 1 do
                 local childNode = nodeList:item(index)
-                if childNode:getNodeName():compareTo(MouseActionScriptInputData.BUTTONS) == 0 then
+                if rawequal(childNode:getNodeName():compareTo(MouseActionScriptInputData.BUTTONS), 0) then
                     local buttons = DomNodeHelper.getTextNodeValue(childNode)
                     self:setButtonClicks(math.tointeger(tostring(buttons) // 1))
-                elseif childNode:getNodeName():compareTo(MouseActionScriptInputData.MOVE) == 0 then
+                elseif rawequal(childNode:getNodeName():compareTo(MouseActionScriptInputData.MOVE), 0) then
                     local mouseXNode = DomSearchHelper.getNode(MouseActionScriptInputData.MOVE_X, childNode:getChildNodes())
                     local mouseXString = DomNodeHelper.getTextNodeValue(mouseXNode)
                     local mouseXInteger = tostring(mouseXString)
@@ -276,7 +276,7 @@ java_overload(MouseActionScriptInput, "showDialog", 0)
 function MouseActionScriptInput:toHashMap()
         local hashMap = StdUtil.getInstance():createHashMap()
         hashMap:put(MouseActionScriptInputData.BUTTONS, tostring(self:getButtonClicks()))
-        self.logUtil:putF("HashMap: " .. tostring(hashMap), self, "toHashMap()")
+        self.logUtil:putF(require("allbinary_java").to_string("HashMap: ") .. require("allbinary_java").to_string(tostring(hashMap)), self, "toHashMap()")
         return hashMap
 end
 java_overload(MouseActionScriptInput, "toHashMap", 0)
@@ -307,24 +307,24 @@ function MouseActionScriptInput:log()
         local buttonStringBuffer = StringMaker.new()
         buttonStringBuffer:append("1: ")
         local booleanFactory = BooleanFactory.getInstance()
-        if (self:getButtonClicks() & InputEvent.BUTTON1_MASK) ~= 0 then
+        if not rawequal((self:getButtonClicks() & InputEvent.BUTTON1_MASK), 0) then
             buttonStringBuffer:append(booleanFactory.TRUE_STRING)
         else
             buttonStringBuffer:append(booleanFactory.FALSE_STRING)
         end
         buttonStringBuffer:append(" 2: ")
-        if (self:getButtonClicks() & InputEvent.BUTTON2_MASK) ~= 0 then
+        if not rawequal((self:getButtonClicks() & InputEvent.BUTTON2_MASK), 0) then
             buttonStringBuffer:append(booleanFactory.TRUE_STRING)
         else
             buttonStringBuffer:append(booleanFactory.FALSE_STRING)
         end
         buttonStringBuffer:append(" 3: ")
-        if (self:getButtonClicks() & InputEvent.BUTTON3_MASK) ~= 0 then
+        if not rawequal((self:getButtonClicks() & InputEvent.BUTTON3_MASK), 0) then
             buttonStringBuffer:append(booleanFactory.TRUE_STRING)
         else
             buttonStringBuffer:append(booleanFactory.FALSE_STRING)
         end
-        self.logUtil:putF("Input Type: " .. self:getInputRobotInterface():getName() .. " Point: " .. tostring(self:getPoint()) .. " Buttons Clicked: " .. tostring(buttonStringBuffer), self, "log")
+        self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Input Type: ") .. require("allbinary_java").to_string(self:getInputRobotInterface():getName())) .. require("allbinary_java").to_string(" Point: ")) .. require("allbinary_java").to_string(self:getPoint())) .. require("allbinary_java").to_string(" Buttons Clicked: ")) .. require("allbinary_java").to_string(tostring(buttonStringBuffer)), self, "log")
 end
 java_overload(MouseActionScriptInput, "log", 0)
 

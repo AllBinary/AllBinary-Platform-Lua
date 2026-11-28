@@ -193,11 +193,11 @@ function TitleValidation:isValid()
                 self.logUtil:putF("TitleValidation", self, self.commonStrings.IS_VALID)
             end
             local valid = true
-            if not StringValidationUtil.getInstance():isValidRequired(self:getTitle(), 1, TitleData.getInstance().MAXLEN) then
+            if not (StringValidationUtil.getInstance():isValidRequired(self:getTitle(), 1, TitleData.getInstance().MAXLEN)) then
                 valid = false
             end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("TitleValidation: " .. tostring(valid), self, self.commonStrings.IS_VALID)
+                self.logUtil:putF(require("allbinary_java").to_string("TitleValidation: ") .. require("allbinary_java").to_string(valid), self, self.commonStrings.IS_VALID)
             end
             do return "__jreturn", valid end
         end)

@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local VectorAnimation = require("org.allbinary.animation.VectorAnimation")
 local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
@@ -146,8 +146,8 @@ AdjustedVectorAnimation.javaClassName = "org.allbinary.animation.AdjustedVectorA
 setmetatable(AdjustedVectorAnimation, {__index = VectorAnimation})
 
 function AdjustedVectorAnimation:_init_fields()
-    if self.dx == nil then self.dx = nil end
-    if self.dy == nil then self.dy = nil end
+    if self.dx == nil then self.dx = 0 end
+    if self.dy == nil then self.dy = 0 end
 end
 
 

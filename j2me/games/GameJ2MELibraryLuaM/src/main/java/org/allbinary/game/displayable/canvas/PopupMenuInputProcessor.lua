@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local GameInputStrings = java_lazy("org.allbinary.game.input.GameInputStrings")
 local GameKeyEvent = java_lazy("org.allbinary.game.input.event.GameKeyEvent")
 local GPoint = java_lazy("org.allbinary.graphics.GPoint")
@@ -173,7 +173,7 @@ java_overload(PopupMenuInputProcessor, "init", 1, function(java_a1) return true 
 
 -- throws Exception
 function PopupMenuInputProcessor:processInput(key)
-        if key == Canvas.KEY_STAR then
+        if rawequal(key, Canvas.KEY_STAR) then
             local gameCanvas = self:getCanvas()
             gameCanvas:toggleMenu()
             return 1
@@ -193,9 +193,9 @@ function PopupMenuInputProcessor:processInputList()
             local gameKeyEvent = nil
             for index = 0, size - 1 do
                 gameKeyEvent = list.objectArray[index + 1]
-                if gameKeyEvent ~= nil then
+                if not rawequal(gameKeyEvent, nil) then
                     key = gameKeyEvent:getKey()
-                    if self:processInput(key) == 1 then
+                    if rawequal(self:processInput(key), 1) then
                         break
                     end
                 end
@@ -233,13 +233,13 @@ java_overload(PopupMenuInputProcessor, "processMotionInputs", 0)
 
 -- throws Exception
 function PopupMenuInputProcessor:processMotionInput(motionGestureEvent)
-        if motionGestureEvent == nil then
+        if rawequal(motionGestureEvent, nil) then
             self.logUtil:putF("Exception: Bug", self, self.gameInputStrings.PROCESS_MOTION_INPUT)
             return
         end
         local touchMotionGestureFactory = TouchMotionGestureFactory.getInstance()
         local motionGestureInput = motionGestureEvent:getMotionGesture()
-        if motionGestureInput == touchMotionGestureFactory.RELEASED then
+        if rawequal(motionGestureInput, touchMotionGestureFactory.RELEASED) then
             local point = motionGestureEvent:getCurrentPoint()
             local rectPoint = self.rectangle:getPoint()
             if self.rectangleCollisionUtil:isInside(rectPoint:getX(), rectPoint:getY(), self.rectangle:getMaxX() + 20, self.rectangle:getMaxY(), point:getX(), point:getY()) then

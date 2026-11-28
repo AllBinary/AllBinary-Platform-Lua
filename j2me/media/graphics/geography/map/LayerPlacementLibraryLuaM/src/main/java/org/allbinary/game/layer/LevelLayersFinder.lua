@@ -88,7 +88,7 @@ function LevelLayersFinder:get(hashtable)
             layerHashtableCanBeNull = hashtable:get(self.enumerationUtil:nextElement(enumeration))
             integerCanBeNull = layerHashtableCanBeNull:get(Layer.ID)
             cachedIntegerCanBeNull = smallIntegerSingletonFactory:getAt(math.tointeger(integerCanBeNull // 1))
-            if not list:contains(cachedIntegerCanBeNull) then
+            if not (list:contains(cachedIntegerCanBeNull)) then
                 list:add(cachedIntegerCanBeNull)
             end
         end

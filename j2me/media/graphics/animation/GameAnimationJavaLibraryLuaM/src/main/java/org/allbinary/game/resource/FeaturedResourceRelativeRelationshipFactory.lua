@@ -179,7 +179,7 @@ function FeaturedResourceRelativeRelationshipFactory:getRelativeRelationshipList
             local featureInterface = featureReleaseList.objectArray[index + 1]
             if featureInterface:isFeature() then
                 local list = featureInterface:getResourceRelativeRelationshipList(resource)
-                if list ~= self.basicArrayListUtil:getImmutableInstance() then
+                if not rawequal(list, self.basicArrayListUtil:getImmutableInstance()) then
                     return self:duplicate(list, layer)
                 end
             end

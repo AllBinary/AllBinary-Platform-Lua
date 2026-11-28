@@ -29,7 +29,7 @@ local function java_real(class)
 end
 
 -- local IOException = require("java.io.IOException")
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 local OpenGLBitmap = java_lazy("org.allbinary.graphics.OpenGLBitmap")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 

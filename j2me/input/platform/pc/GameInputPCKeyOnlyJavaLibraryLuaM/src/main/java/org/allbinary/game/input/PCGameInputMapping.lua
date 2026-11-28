@@ -165,7 +165,7 @@ function PCGameInputMapping:init(abeClientInformation)
         self.logUtil:putF(self.commonStrings.START, self, self.commonStrings.INIT)
         PCKeyFactory.getInstance()
         java_super(PersistentInputMapping, "init", 1)(self, abeClientInformation)
-        if self:getTotalMapped() == 0 or self:isDefaultNew() then
+        if rawequal(self:getTotalMapped(), 0) or self:isDefaultNew() then
             self:getInputMapping():addMapping(self:getDefault())
             self:save(abeClientInformation)
         end
@@ -174,7 +174,7 @@ java_overload(PCGameInputMapping, "init", 1, function(java_a1) return true and (
 
 
 function PCGameInputMapping:isDelete(input)
-        if input == PCKeyFactory.getInstance().DEL then
+        if rawequal(input, PCKeyFactory.getInstance().DEL) then
             return true
         else
             return false

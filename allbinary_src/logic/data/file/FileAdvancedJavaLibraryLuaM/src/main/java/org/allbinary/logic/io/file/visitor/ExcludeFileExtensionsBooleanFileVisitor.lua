@@ -159,7 +159,7 @@ end
 
 
 function ExcludeFileExtensionsBooleanFileVisitor:visit_j1(file)
-        if self:getFilterStringBasicArrayList():size() == 0 then
+        if rawequal(self:getFilterStringBasicArrayList():size(), 0) then
             return true
         end
         return java_super(BooleanFileVisitor, "visit", 1)(self, file)
@@ -171,7 +171,7 @@ function ExcludeFileExtensionsBooleanFileVisitor:visit_j2(file, fileNameString)
         if #fileNameAndExtension > #fileNameString then
             local startIndex = #fileNameAndExtension - #fileNameString
             local fileName = string.sub(fileNameAndExtension, (startIndex) + 1)
-            if ((fileName < fileNameString and -1) or (fileName > fileNameString and 1) or 0) == 0 then
+            if rawequal(((fileName < fileNameString and -1) or (fileName > fileNameString and 1) or 0), 0) then
                 return false
             end
         end
@@ -181,6 +181,8 @@ function ExcludeFileExtensionsBooleanFileVisitor:visit(...)
     local count = select("#", ...)
     if count == 1 then return self:visit_j1(...) end
     if count == 2 then return self:visit_j2(...) end
+    local parent = getmetatable(ExcludeFileExtensionsBooleanFileVisitor).__index
+    if parent.visit then return parent.visit(self, ...) end
     error("No method visit takes " .. count .. " arguments")
 end
 ExcludeFileExtensionsBooleanFileVisitor.visit__jdispatcher = ExcludeFileExtensionsBooleanFileVisitor.visit

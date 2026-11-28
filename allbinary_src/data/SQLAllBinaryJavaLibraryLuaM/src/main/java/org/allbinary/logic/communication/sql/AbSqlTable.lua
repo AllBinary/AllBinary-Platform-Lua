@@ -170,17 +170,17 @@ function AbSqlTable:createTable(data)
         local try_ok, try_error, try_value = pcall(function()
             self:executeSQLStatement(data)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                self.logUtil:putF(self.TABLE_CREATION_SUCCESS .. self.tableName .. " with statement: " .. data, self, self.METHOD_CREATED_TABLE)
+                self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(self.TABLE_CREATION_SUCCESS) .. require("allbinary_java").to_string(self.tableName)) .. require("allbinary_java").to_string(" with statement: ")) .. require("allbinary_java").to_string(data), self, self.METHOD_CREATED_TABLE)
             end
-            do return "__jreturn", self.tableName .. tostring(self.sqlStrings.CREATE_RETURN) end
+            do return "__jreturn", require("allbinary_java").to_string(self.tableName) .. require("allbinary_java").to_string(self.sqlStrings.CREATE_RETURN) end
         end)
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
-                self.logUtil:put("Table Creation Failed: " .. self.tableName .. " with statement: " .. data, self, self.METHOD_CREATED_TABLE, e)
+                self.logUtil:put(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Table Creation Failed: ") .. require("allbinary_java").to_string(self.tableName)) .. require("allbinary_java").to_string(" with statement: ")) .. require("allbinary_java").to_string(data), self, self.METHOD_CREATED_TABLE, e)
             end
-            return "Failed to Create " .. self.tableName .. " table."
+            return require("allbinary_java").to_string(require("allbinary_java").to_string("Failed to Create ") .. require("allbinary_java").to_string(self.tableName)) .. require("allbinary_java").to_string(" table.")
         end
         if try_ok and try_error == "__jreturn" then return try_value end
 end
@@ -188,21 +188,21 @@ java_overload(AbSqlTable, "createTable", 1, function(java_a1) return true and (j
 
 
 function AbSqlTable:dropTable()
-        local sqlStatement = tostring(self.sqlStrings.DROP_TABLE) .. self.tableName
+        local sqlStatement = require("allbinary_java").to_string(self.sqlStrings.DROP_TABLE) .. require("allbinary_java").to_string(self.tableName)
         local try_ok, try_error, try_value = pcall(function()
             self:executeSQLStatement(sqlStatement)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                self.logUtil:putF(tostring(self.SUCCESS_SQL_STATEMENT) .. sqlStatement, self, self.METHOD_DROP_TABLE)
+                self.logUtil:putF(require("allbinary_java").to_string(self.SUCCESS_SQL_STATEMENT) .. require("allbinary_java").to_string(sqlStatement), self, self.METHOD_DROP_TABLE)
             end
-            do return "__jreturn", self.tableName .. self.DROPPED_SUCCESS end
+            do return "__jreturn", require("allbinary_java").to_string(self.tableName) .. require("allbinary_java").to_string(self.DROPPED_SUCCESS) end
         end)
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGINGERROR) then
-                self.logUtil:put(tostring(self.FAILED_SQL_STATEMENT) .. sqlStatement, self, self.METHOD_DROP_TABLE, e)
+                self.logUtil:put(require("allbinary_java").to_string(self.FAILED_SQL_STATEMENT) .. require("allbinary_java").to_string(sqlStatement), self, self.METHOD_DROP_TABLE, e)
             end
-            return "Failed to Drop " .. self.tableName .. " table."
+            return require("allbinary_java").to_string(require("allbinary_java").to_string("Failed to Drop ") .. require("allbinary_java").to_string(self.tableName)) .. require("allbinary_java").to_string(" table.")
         end
         if try_ok and try_error == "__jreturn" then return try_value end
 end

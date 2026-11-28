@@ -117,7 +117,7 @@ function StaticPathGenerator:createList(geographicMapInterface, geographicMapCel
             local pathCacheFactory = PathCacheFactory.getInstance()
             local mapIdInteger = geographicMapInterface:getAllBinaryTiledLayer():getDataId()
             local list = pathCacheFactory:getOrCreate(mapIdInteger)
-            if list == self.basicArrayListUtil:getImmutableInstance() then
+            if rawequal(list, self.basicArrayListUtil:getImmutableInstance()) then
                 list = BasicArrayListD.new()
                 local smallIntegerSingletonFactory = SmallIntegerSingletonFactory.getInstance()
                 local geographicMapCellPositionFactory = geographicMapInterface:getGeographicMapCellPositionFactory()

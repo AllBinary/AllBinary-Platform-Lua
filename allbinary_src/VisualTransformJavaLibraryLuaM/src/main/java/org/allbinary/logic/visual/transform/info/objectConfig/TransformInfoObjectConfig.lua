@@ -144,7 +144,7 @@ function TransformInfoObjectConfig._new1(self, transformInfoInterface)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             local stringBuffer = StringMaker.new()
             stringBuffer:append("TransformInfo: ")
-            if self.ownerTransformInfoInterface ~= nil then
+            if not rawequal(self.ownerTransformInfoInterface, nil) then
                 stringBuffer:append(self.ownerTransformInfoInterface:getName())
             else
                 stringBuffer:append("No Owner!?#@")
@@ -162,13 +162,13 @@ function TransformInfoObjectConfig._new2(self, transformInfoInterface, document)
         self.ownerTransformInfoInterface = transformInfoInterface
         self.document = document
         local node = DomSearchHelper.getNodeNoThrow(OutputTypeData.getInstance().NAME, self:getRootNode():getChildNodes())
-        if node ~= nil then
+        if not rawequal(node, nil) then
             self:setOutputTypeName(DomNodeHelper.getTextNodeValue(node))
         end
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             local stringBuffer = StringMaker.new()
             stringBuffer:append("TransformInfo: ")
-            if self.ownerTransformInfoInterface ~= nil then
+            if not rawequal(self.ownerTransformInfoInterface, nil) then
                 stringBuffer:append(self.ownerTransformInfoInterface:getName())
             else
                 stringBuffer:append("No Owner!?#@")
@@ -192,7 +192,7 @@ function TransformInfoObjectConfig._new3(self, transformInfoInterface, name, typ
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
             local stringBuffer = StringMaker.new()
             stringBuffer:append("TransformInfo: ")
-            if self.ownerTransformInfoInterface ~= nil then
+            if not rawequal(self.ownerTransformInfoInterface, nil) then
                 stringBuffer:append(self.ownerTransformInfoInterface:getName())
             else
                 stringBuffer:append("No Owner!?#@")
@@ -236,7 +236,7 @@ function TransformInfoObjectConfig:containsView(transformInfoInterface)
             local viewNode = viewNodeList:item(index)
             local viewAttributes = viewNode:getAttributes()
             local attrNode = viewAttributes:getNamedItem(TransformInfoData.getInstance().NAME)
-            if transformInfoInterface:getName():compareTo(attrNode:getValue()) == 0 then
+            if rawequal(transformInfoInterface:getName():compareTo(attrNode:getValue()), 0) then
                 return true
             end
         end
@@ -268,7 +268,7 @@ end
 -- throws Exception
 function TransformInfoObjectConfig:getNodeVector(nodeName)
         local componentsNodeList = self.document:getElementsByTagName(nodeName)
-        if componentsNodeList ~= nil and componentsNodeList:getLength() > 0 then
+        if not rawequal(componentsNodeList, nil) and componentsNodeList:getLength() > 0 then
             local viewNodeVector = DomSearchHelper.getAllNodes(TransformInfoData.getInstance().NAME, componentsNodeList:item(0):getChildNodes())
             local numberOfViews = viewNodeVector:size()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
@@ -314,12 +314,12 @@ end
 -- throws Exception
 function TransformInfoObjectConfig:getTransformsGroup(group)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("Started: " .. group, self, "getTransformsGroup()")
+            self.logUtil:putF(require("allbinary_java").to_string("Started: ") .. require("allbinary_java").to_string(group), self, "getTransformsGroup()")
         end
         local viewVector = BasicArrayListD.new()
         local GROUP = TransformInfosData.getInstance().GROUP
         local componentsNodeList = self.document:getElementsByTagName(GROUP)
-        if componentsNodeList ~= nil and componentsNodeList:getLength() > 0 then
+        if not rawequal(componentsNodeList, nil) and componentsNodeList:getLength() > 0 then
             local componentsNode = componentsNodeList:item(0)
             local length = componentsNodeList:getLength()
             for index = 0, length - 1 do
@@ -327,7 +327,7 @@ function TransformInfoObjectConfig:getTransformsGroup(group)
                 local attributes = node:getAttributes()
                 local attrNode = attributes:getNamedItem(GROUP)
                 local value = attrNode:getValue()
-                if ((value < group and -1) or (value > group and 1) or 0) == 0 then
+                if rawequal(((value < group and -1) or (value > group and 1) or 0), 0) then
                     componentsNode = node
                     break
                 end
@@ -335,7 +335,7 @@ function TransformInfoObjectConfig:getTransformsGroup(group)
             local viewNodeVector = DomSearchHelper.getAllNodes(TransformInfoData.getInstance().NAME, componentsNode:getChildNodes())
             local numberOfViews = viewNodeVector:size()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("Number Of Nodes: " .. tostring(numberOfViews), self, "getTransformsGroup()")
+                self.logUtil:putF(require("allbinary_java").to_string("Number Of Nodes: ") .. require("allbinary_java").to_string(numberOfViews), self, "getTransformsGroup()")
             end
             local size = viewNodeVector:size()
             for index = 0, size - 1 do
@@ -344,7 +344,7 @@ function TransformInfoObjectConfig:getTransformsGroup(group)
             end
         else
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                if componentsNodeList == nil then
+                if rawequal(componentsNodeList, nil) then
                     self.logUtil:putF("Number Of Nodes: NULL", self, "getTransformsGroup()")
                 else
                     self.logUtil:putF("Number Of Nodes: 0", self, "getTransformsGroup()")
@@ -432,7 +432,7 @@ end
 
 function TransformInfoObjectConfig:toString()
         local try_ok, try_error, try_value = pcall(function()
-            if self.document ~= nil then
+            if not rawequal(self.document, nil) then
                 do return "__jreturn", XmlDocumentHelper.toString(self.document) end
             else
                 do return "__jreturn", nil end

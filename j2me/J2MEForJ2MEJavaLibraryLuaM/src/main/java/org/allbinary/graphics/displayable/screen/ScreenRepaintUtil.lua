@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Displayable = require("javax.microedition.lcdui.Displayable")
+local Displayable = java_lazy("javax.microedition.lcdui.Displayable")
 
 local function java_idiv(a, b)
     local q = a / b

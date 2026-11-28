@@ -75,7 +75,7 @@ end
 
 
 function InterfaceCastProxy.newInstance(anyType)
-        return Proxy.newProxyInstance(getmetatable(anyType):getClassLoader(), getmetatable(anyType):getInterfaces(), InterfaceCastProxy.new(anyType))
+        return Proxy.newProxyInstance(require("java.lang.ClassLoader").getSystemClassLoader(), getmetatable(anyType):getInterfaces(), InterfaceCastProxy.new(anyType))
 end
 
 
@@ -83,7 +83,7 @@ end
 function InterfaceCastProxy:invoke(proxyObject, proxyMethod, proxyArgs)
         local methodName = proxyMethod:getName()
         local realMethod = getmetatable(self.anyType):getMethod(methodName, proxyMethod:getParameterTypes())
-        if not realMethod:isAccessible() then
+        if not (realMethod:isAccessible()) then
             realMethod:setAccessible(true)
         end
         return proxyMethod:invoke(self.anyType, proxyArgs)

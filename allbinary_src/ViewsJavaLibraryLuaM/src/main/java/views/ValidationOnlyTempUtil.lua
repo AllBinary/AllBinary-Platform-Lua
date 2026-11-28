@@ -85,7 +85,7 @@ function ValidationOnlyTempUtil:view(validationComponentInterface)
         local commonStrings = CommonStrings.getInstance()
         local try_ok, try_error, try_value = pcall(function()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("View Name: " .. validationComponentInterface:getTransformInfoInterface():getName(), self, "view()")
+                self.logUtil:putF(require("allbinary_java").to_string("View Name: ") .. require("allbinary_java").to_string(validationComponentInterface:getTransformInfoInterface():getName()), self, "view()")
             end
             do return "__jreturn", StringUtil.getInstance().EMPTY_STRING end
         end)

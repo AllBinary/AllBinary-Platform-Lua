@@ -53,8 +53,8 @@ GameTickTimeDelayHelper.javaClassName = "org.allbinary.time.GameTickTimeDelayHel
 
 function GameTickTimeDelayHelper:_init_fields()
     if self.timeDelta == nil then self.timeDelta = 0 end
-    if self.startTime == nil then self.startTime = nil end
-    if self.lastStartTime == nil then self.lastStartTime = nil end
+    if self.startTime == nil then self.startTime = 0 end
+    if self.lastStartTime == nil then self.lastStartTime = 0 end
 end
 
 
@@ -79,7 +79,7 @@ end
 
 
 function GameTickTimeDelayHelper:loop()
-        if self.lastStartTime == require("java.lang.Long").MIN_VALUE then
+        if rawequal(self.lastStartTime, require("java.lang.Long").MIN_VALUE) then
             self.timeDelta = 0
         else
             self.timeDelta = math.floor(os.time() * 1000) - self.lastStartTime

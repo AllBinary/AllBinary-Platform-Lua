@@ -28,10 +28,10 @@ local function java_real(class)
     return class
 end
 
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local TextField = require("javax.microedition.lcdui.TextField")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local TextField = java_lazy("javax.microedition.lcdui.TextField")
 local PostGameCommandFactory = java_lazy("org.allbinary.PostGameCommandFactory")
 local GameInfo = java_lazy("org.allbinary.game.GameInfo")
 local HighScore = java_lazy("org.allbinary.game.score.HighScore")

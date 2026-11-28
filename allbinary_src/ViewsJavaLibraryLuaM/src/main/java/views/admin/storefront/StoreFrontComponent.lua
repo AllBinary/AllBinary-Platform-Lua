@@ -160,7 +160,7 @@ function StoreFrontComponent._jinit(self, transformInfoInterface)
     StoreFrontComponent._init_fields(self)
         -- super(...) made self above
         self.newStoreFrontInterface = StoreFront.new(self:getPageContext():getRequest())
-        if self.newStoreFrontInterface:getName() == nil then
+        if rawequal(self.newStoreFrontInterface:getName(), nil) then
             self.newStoreFrontInterface:setName(self:getWeblisketSession():getStoreName())
         end
     return self

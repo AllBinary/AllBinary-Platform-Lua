@@ -29,7 +29,7 @@ local function java_real(class)
 end
 
 local ByteArrayOutputStream = java_lazy("java.io.ByteArrayOutputStream")
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 local StreamUtil = java_lazy("org.allbinary.logic.io.StreamUtil")
 local AbCrypt = java_lazy("org.allbinary.logic.system.security.crypt.jcehelper.AbCrypt")
 local KeySpecFactory = java_lazy("org.allbinary.logic.system.security.crypt.jcehelper.KeySpecFactory")

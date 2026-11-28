@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 local ABTextItem = require("org.allbinary.graphics.form.item.ABTextItem")
 local ABStringComponent = java_lazy("org.allbinary.graphics.form.item.ABStringComponent")
@@ -152,7 +152,7 @@ java_overload(SelectableTextItem, "isFocusable", 0)
 function SelectableTextItem:paintXY(graphics, x, y)
         self.myFontProcessor:process(graphics)
         local stringComponent = self:getLabelStringComponent()
-        if stringComponent ~= nil then
+        if not rawequal(stringComponent, nil) then
             graphics:setColor(math.tointeger(stringComponent:getForegroundBasicColor() // 1))
         end
         graphics:drawString(self:getLabel(), x + 2, y, 0)

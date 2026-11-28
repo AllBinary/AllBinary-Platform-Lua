@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 -- local OutputStream = require("java.io.OutputStream")
 local LicenseInitInfoUtil = java_lazy("org.allbinary.business.init.LicenseInitInfoUtil")
 local ResourceUtil = java_lazy("org.allbinary.data.resource.ResourceUtil")
@@ -109,13 +109,13 @@ function LicenseServerInitFileUtil:write()
             local index = 0
             while true do
                 b = inputStream:read()
-                if b == -1 then
+                if rawequal(b, -1) then
                     break
                 end
                 fileOutputStream:write(b)
                 index = index + 1
             end
-            self.logUtil:putF("Wrote Bytes: " .. tostring(index), self, self.commonStrings.INIT)
+            self.logUtil:putF(require("allbinary_java").to_string("Wrote Bytes: ") .. require("allbinary_java").to_string(index), self, self.commonStrings.INIT)
             fileOutputStream:flush()
         end)
         if not try_ok then

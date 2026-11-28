@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local EGLConfig = require("javax.microedition.khronos.egl.EGLConfig")
--- local GL10 = require("javax.microedition.khronos.opengles.GL10")
+local EGLConfig = java_lazy("javax.microedition.khronos.egl.EGLConfig")
+local GL10 = java_lazy("javax.microedition.khronos.opengles.GL10")
 local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")
 local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")

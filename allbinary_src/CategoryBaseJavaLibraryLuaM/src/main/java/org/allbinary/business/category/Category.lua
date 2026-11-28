@@ -197,7 +197,7 @@ end
 
 -- throws Exception
 function Category:getFilePath()
-        return AbPath.new(tostring(self:getRootFilePath()) .. tostring(self:getProperties():getPath(self:getHierarchy())), self:getProperties():getFileName())
+        return AbPath.new(require("allbinary_java").to_string(tostring(self:getRootFilePath())) .. require("allbinary_java").to_string(tostring(self:getProperties():getPath(self:getHierarchy()))), self:getProperties():getFileName())
 end
 
 
@@ -244,10 +244,10 @@ function Category:removeChild(categoryInterface)
         local bool_return = false
         local size = self.childCategoryVector:size()
         for index = 0, size - 1 do
-            if self.CATEGORY == self.typeVector:get(index) then
+            if rawequal(self.CATEGORY, self.typeVector:get(index)) then
                 local anyType = self.childCategoryVector:get(index)
                 local currentCategoryInterface = anyType
-                if currentCategoryInterface:getProperties():getValue():compareTo(categoryInterface:getProperties():getValue()) == 0 then
+                if rawequal(currentCategoryInterface:getProperties():getValue():compareTo(categoryInterface:getProperties():getValue()), 0) then
                     removalVector:add(currentCategoryInterface)
                     bool_return = true
                 end
@@ -275,17 +275,17 @@ function Category:removeDuplicateChild(categoryInterface)
         local size = self.childCategoryVector:size()
         for index = 0, size - 1 do
             local anyType = self.childCategoryVector:get(index)
-            if self.PROPERTIES == self.typeVector:get(index) then
+            if rawequal(self.PROPERTIES, self.typeVector:get(index)) then
                 local categoryPropertiesInterface = anyType
-                if categoryInterface:getProperties():getValue():compareTo(categoryPropertiesInterface:getValue()) == 0 then
+                if rawequal(categoryInterface:getProperties():getValue():compareTo(categoryPropertiesInterface:getValue()), 0) then
                     removalVector:add(categoryPropertiesInterface)
                     bool_return = true
                     break
                 end
-            elseif self.CATEGORY == self.typeVector:get(index) then
+            elseif rawequal(self.CATEGORY, self.typeVector:get(index)) then
                 local existingCategoryInterface = anyType
                 local categoryPropertiesInterface = existingCategoryInterface:getProperties()
-                if categoryInterface:getProperties():getValue():compareTo(categoryPropertiesInterface:getValue()) == 0 then
+                if rawequal(categoryInterface:getProperties():getValue():compareTo(categoryPropertiesInterface:getValue()), 0) then
                     removalVector:add(existingCategoryInterface)
                     bool_return = true
                     break
@@ -299,10 +299,10 @@ end
 
 -- throws Exception
 function Category:isLeaf()
-        if self.childCategoryVector == nil then
+        if rawequal(self.childCategoryVector, nil) then
             error(require("java.lang.Exception").new("Category Error"), 0)
         end
-        if self.childCategoryVector:size() == 0 then
+        if rawequal(self.childCategoryVector:size(), 0) then
             return true
         else
             return false
@@ -332,20 +332,20 @@ end
 
 -- throws Exception
 function Category:isValid()
-        if not self.categoryPropertiesInterface:isValid() then
+        if not (self.categoryPropertiesInterface:isValid()) then
             return false
         end
         local size = self.childCategoryVector:size()
         for index = 0, size - 1 do
             local anyType = self.childCategoryVector:get(index)
-            if self.PROPERTIES == self.typeVector:get(index) then
+            if rawequal(self.PROPERTIES, self.typeVector:get(index)) then
                 local categoryPropertiesInterface = anyType
-                if not categoryPropertiesInterface:isValid() then
+                if not (categoryPropertiesInterface:isValid()) then
                     return false
                 end
-            elseif self.CATEGORY == self.typeVector:get(index) then
+            elseif rawequal(self.CATEGORY, self.typeVector:get(index)) then
                 local categoryInterface = anyType
-                if not categoryInterface:isValid() then
+                if not (categoryInterface:isValid()) then
                     return false
                 end
             end

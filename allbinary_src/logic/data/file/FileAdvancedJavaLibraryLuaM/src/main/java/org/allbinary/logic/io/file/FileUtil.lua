@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 -- local OutputStream = require("java.io.OutputStream")
 local URLGLOBALS = java_lazy("org.allbinary.globals.URLGLOBALS")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
@@ -221,7 +221,7 @@ end
 function FileUtil:fixPath(file, path, realPath, cloud)
         local beginIndex = file:getPath():indexOf(cloud) + #cloud
         local endIndex = file:getPath():indexOf(file:getName())
-        local fixedPathString = tostring(realPath:toFileSystemString()) .. file:getPath():substring(beginIndex, endIndex)
+        local fixedPathString = require("allbinary_java").to_string(realPath:toFileSystemString()) .. require("allbinary_java").to_string(file:getPath():substring(beginIndex, endIndex))
         local fixedPath = AbPath.new(fixedPathString, StringUtil.getInstance().EMPTY_STRING)
         self.directory:create(fixedPath)
         local string_ = fixedPath:toFileSystemString()
@@ -244,7 +244,7 @@ function FileUtil:copyToCloud_j6(file, path, realPath, cloud, overwriteNewer, ov
         local try_ok, try_error, try_value = pcall(function()
             local outPath = self:fixPath(file, path, realPath, cloud)
             local outFile = AbFile.createAbFileFromAbPath(outPath)
-            if not self:copyPrepare(file, outFile, overwriteNewer, overwriteAll) then
+            if not (self:copyPrepare(file, outFile, overwriteNewer, overwriteAll)) then
                 do return "__jreturn" end
             else
                 if LogConfigTypes.LOGGING:contains(self.logConfigTypeFactory.FILE) then
@@ -287,7 +287,7 @@ end
 function FileUtil:copyToCloud_j4_2(file, outFile, overwriteNewer, overwriteAll)
         local try_ok, try_error, try_value = pcall(function()
             local stringBuffer = StringMaker.new()
-            if not self:copyPrepare(file, outFile, overwriteNewer, overwriteAll) then
+            if not (self:copyPrepare(file, outFile, overwriteNewer, overwriteAll)) then
                 do return "__jreturn" end
             else
                 if LogConfigTypes.LOGGING:contains(self.logConfigTypeFactory.FILE) then
@@ -399,7 +399,7 @@ function FileUtil:copyFile_j4(fromFile, toFile, overwriteNewer, overwriteAll)
                 stringBuffer:append(toFile:getPath())
                 self.logUtil:putF(tostring(stringBuffer), FileUtil.getInstance(), "copyFile")
             end
-            if not self:copyPrepare(fromFile, toFile, overwriteNewer, overwriteAll) then
+            if not (self:copyPrepare(fromFile, toFile, overwriteNewer, overwriteAll)) then
                 do return "__jreturn" end
             end
             local dataOutputStream = DataOutputStreamFactory.getInstance():getInstanceForAbFile(toFile)
@@ -448,8 +448,8 @@ end
 -- throws Exception
 function FileUtil:copyDirectoryPortion(fromDirectoryAbPath, toDirectoryAbPath, overwriteNewer, overwriteAll, current, total)
         local file = AbFile.createAbFileFromAbPath(fromDirectoryAbPath)
-        if not file:isDirectory() then
-            error(require("java.lang.Exception").new("Not a directory: " .. tostring(file:getPath())), 0)
+        if not (file:isDirectory()) then
+            error(require("java.lang.Exception").new(require("allbinary_java").to_string("Not a directory: ") .. require("allbinary_java").to_string(file:getPath())), 0)
         end
         local fileList = self.directory:search(file, true)
         local size = fileList:size()
@@ -481,7 +481,7 @@ function FileUtil:copyDirectoryPortion(fromDirectoryAbPath, toDirectoryAbPath, o
                 if path:indexOf(URLGLOBALS.getWebappPath()) < 0 then
                     beginIndex = beginIndex - (AbPath.new(URLGLOBALS.getWebappPath(), StringUtil.getInstance().EMPTY_STRING):getPath():length())
                 end
-                local newPath = tostring(toDirectoryAbPath:toFileSystemString()) .. path:substring(beginIndex)
+                local newPath = require("allbinary_java").to_string(toDirectoryAbPath:toFileSystemString()) .. require("allbinary_java").to_string(path:substring(beginIndex))
                 local toFile = AbFile.createAbFileFromAbPath(AbPath.new(newPath, StringUtil.getInstance().EMPTY_STRING))
                 self:copyFile(nextFile, toFile, overwriteNewer, overwriteAll)
             end
@@ -501,9 +501,9 @@ function FileUtil:copyDirectory(fromFile, to)
                 self.logUtil:putF(tostring(stringBuffer), FileUtil.getInstance(), "copyDirectory")
             end
             local newDirectory = FileUtil.getNewDirectory(fromFile)
-            local newDirectoryAbPath = AbPath.new(tostring(to:getPath() + AbPathData.getInstance().SEPARATOR) .. newDirectory, StringUtil.getInstance().EMPTY_STRING)
-            if not self.directory:create(newDirectoryAbPath) then
-                error(require("java.lang.Exception").new("Failed to create directory: " .. tostring(newDirectoryAbPath)), 0)
+            local newDirectoryAbPath = AbPath.new(require("allbinary_java").to_string(to:getPath() + AbPathData.getInstance().SEPARATOR) .. require("allbinary_java").to_string(newDirectory), StringUtil.getInstance().EMPTY_STRING)
+            if not (self.directory:create(newDirectoryAbPath)) then
+                error(require("java.lang.Exception").new(require("allbinary_java").to_string("Failed to create directory: ") .. require("allbinary_java").to_string(newDirectoryAbPath)), 0)
             end
             local fileArray = FileWrapperUtil.wrapFiles(fromFile:listFiles())
             local size = (fileArray.n or #fileArray)
@@ -557,10 +557,10 @@ function FileUtil:copy_j2_2(fromAbPath, to)
                 stringBuffer:append(tostring(to))
                 self.logUtil:putF(tostring(stringBuffer), FileUtil.getInstance(), COPY)
             end
-            if fromAbPath == nil then
+            if rawequal(fromAbPath, nil) then
                 error(require("java.lang.Exception").new("Cannot Copy From A Null Location"), 0)
             end
-            if to == nil then
+            if rawequal(to, nil) then
                 error(require("java.lang.Exception").new("Cannot Copy To A Null Location"), 0)
             end
             local fromLocationFile = AbFile.createAbFileFromAbPath(fromAbPath)
@@ -592,7 +592,7 @@ function FileUtil:copy_j2_2(fromAbPath, to)
                     end
                 end
             elseif fromLocationFile:isDirectory() and toLocationFile:isDirectory() then
-                if fromAbPath:toFileSystemString():charAt(fromAbPath:toFileSystemString():length() - 1) == File.separatorChar then
+                if rawequal(fromAbPath:toFileSystemString():charAt(fromAbPath:toFileSystemString():length() - 1), File.separatorChar) then
                     if LogConfigTypes.LOGGING:contains(self.logConfigTypeFactory.FILE) then
                         self.logUtil:putF("Copying subdirectories", FileUtil.getInstance(), COPY)
                     end
@@ -656,7 +656,7 @@ function FileUtil:shouldSkip(file, skipFiles)
         local skipFile = nil
         for index = 0, size - 1 do
             skipFile = skipFiles[index + 1]
-            if file:getPath():compareTo(skipFile) == 0 then
+            if rawequal(file:getPath():compareTo(skipFile), 0) then
                 return true
             end
         end

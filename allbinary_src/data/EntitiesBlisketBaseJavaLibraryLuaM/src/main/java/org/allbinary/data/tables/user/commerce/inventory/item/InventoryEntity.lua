@@ -222,7 +222,7 @@ java_overload(InventoryEntity, "delete", 1, function(java_a1) return true and (j
 -- throws Exception
 function InventoryEntity:getItems(storeFrontInterface)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-            self.logUtil:putF("Getting Items For: " .. storeFrontInterface:getName(), self, "getItems")
+            self.logUtil:putF(require("allbinary_java").to_string("Getting Items For: ") .. require("allbinary_java").to_string(storeFrontInterface:getName()), self, "getItems")
         end
         local itemVector = BasicArrayListD.new()
         local keysAndValues = StdUtil.getInstance():createHashMap()
@@ -230,9 +230,9 @@ function InventoryEntity:getItems(storeFrontInterface)
         local size = itemHashMapVector:size()
         for i = 0, size - 1 do
             local itemHashMap = itemHashMapVector:get(i)
-            if itemHashMap ~= nil then
+            if not rawequal(itemHashMap, nil) then
                 local category = itemHashMap:get(self.basicItemData.CATEGORY)
-                if not StringValidationUtil.getInstance():isEmpty(category) and (string.sub(category, 1, #storeFrontInterface:getCategoryPath()) == storeFrontInterface:getCategoryPath()) then
+                if not (StringValidationUtil.getInstance():isEmpty(category)) and (string.sub(category, 1, #storeFrontInterface:getCategoryPath()) == storeFrontInterface:getCategoryPath()) then
                     itemVector:add(BasicItem.new(itemHashMap))
                 end
             end
@@ -247,7 +247,7 @@ function InventoryEntity:getItem(id)
         local keysAndValues = StdUtil.getInstance():createHashMap()
         keysAndValues:put(self.basicItemData.ID, id)
         local itemHashMap = java_super(AbSqlBean, "getRow", 1)(self, keysAndValues)
-        if itemHashMap ~= nil then
+        if not rawequal(itemHashMap, nil) then
             return BasicItem.new(itemHashMap)
         else
             return nil

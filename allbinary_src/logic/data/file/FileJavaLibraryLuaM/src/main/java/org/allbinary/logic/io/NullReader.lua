@@ -151,6 +151,8 @@ function NullReader:read(...)
     local count = select("#", ...)
     if count == 0 then return self:read_j0(...) end
     if count == 3 then return self:read_j3(...) end
+    local parent = getmetatable(NullReader).__index
+    if parent.read then return parent.read(self, ...) end
     error("No method read takes " .. count .. " arguments")
 end
 NullReader.read__jdispatcher = NullReader.read

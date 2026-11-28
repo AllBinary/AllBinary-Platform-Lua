@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local Animation = java_lazy("org.allbinary.animation.Animation")
 local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 local NullAnimationFactory = java_lazy("org.allbinary.animation.NullAnimationFactory")
@@ -159,7 +159,7 @@ end
 
 
 function CaptionAnimationHelper:isShowing()
-        if self.animation == self.captionAnimation then
+        if rawequal(self.animation, self.captionAnimation) then
             return true
         else
             return false

@@ -77,14 +77,14 @@ end
 
 
 function TsUtil:hashCode(anyType)
-        return anyType:hashCode()
+        return require("allbinary_java").hash_code(anyType)
 end
 
 
 -- throws InterruptedException
 function TsUtil:waitFor(any, timeoutMillis)
         local anyType = any
-        anyType:wait(timeoutMillis)
+        require("java.lang.Thread").waitOn(anyType, timeoutMillis)
 end
 
 

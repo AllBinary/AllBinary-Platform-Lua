@@ -190,7 +190,7 @@ BuildingRTSFormInput.javaClassName = "org.allbinary.game.input.form.BuildingRTSF
 setmetatable(BuildingRTSFormInput, {__index = RTSFormInput})
 
 function BuildingRTSFormInput:_init_fields()
-    if self.isUnitProducer == nil then self.isUnitProducer = nil end
+    if self.isUnitProducer == nil then self.isUnitProducer = false end
     if self.buildOnPathGameNotificationEvent == nil then self.buildOnPathGameNotificationEvent = nil end
     if self.spotTakenGameNotificationEvent == nil then self.spotTakenGameNotificationEvent = nil end
     if self.selectBuildSpotGameNotificationEvent == nil then self.selectBuildSpotGameNotificationEvent = nil end
@@ -278,7 +278,7 @@ java_overload(BuildingRTSFormInput, "isDemoLocked", 1, function(java_a1) return 
 function BuildingRTSFormInput:buildFromMotionInput(rtsPlayerLayerInterface, layerManager, item, itemIndex)
         local commonStrings = CommonStrings.getInstance()
         self.logUtil:putF(commonStrings.START, self, "buildFromMotionInput")
-        if layerManager == nil then
+        if rawequal(layerManager, nil) then
             error(require("java.lang.RuntimeException").new(), 0)
         end
         local geographicMapCompositeInterface = layerManager
@@ -289,12 +289,12 @@ function BuildingRTSFormInput:buildFromMotionInput(rtsPlayerLayerInterface, laye
             return
         end
         local geographicMapCellPosition = self:getSelectedGeographicCellPosition()
-        if geographicMapCellPosition ~= SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION then
-            if not self:isPositionBlocked() then
+        if not rawequal(geographicMapCellPosition, SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION) then
+            if not (self:isPositionBlocked()) then
                 local geographicMapCellType = geographicMapInterface:getCellTypeAt(geographicMapCellPosition)
                 local raceTrackGeographicMapCellTypeFactory = geographicMapInterface:getGeographicMapCellTypeFactory()
-                if not raceTrackGeographicMapCellTypeFactory:isPath(geographicMapCellType) then
-                    if self.newUnconstructedRTSLayerInterfaceArray[itemIndex + 1] == CollidableDestroyableDamageableLayer.getNullInstance() then
+                if not (raceTrackGeographicMapCellTypeFactory:isPath(geographicMapCellType)) then
+                    if rawequal(self.newUnconstructedRTSLayerInterfaceArray[itemIndex + 1], CollidableDestroyableDamageableLayer.getNullInstance()) then
                         self.newUnconstructedRTSLayerInterfaceArray[itemIndex + 1] = self:getInstance(layerManager, item, geographicMapCellPosition)
                     else
                         local positionedLayer = self.newUnconstructedRTSLayerInterfaceArray[itemIndex + 1]
@@ -306,19 +306,19 @@ function BuildingRTSFormInput:buildFromMotionInput(rtsPlayerLayerInterface, laye
                     self:attemptBuild(rtsPlayerLayerInterface, layerManager, rtsLayer, itemIndex)
                 else
                     rtsPlayerLayerInterface:add(ErrorSound.getInstance())
-                    if not rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface() then
+                    if not (rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface()) then
                         GameNotificationEventHandler.getInstance():fireEvent(self.buildOnPathGameNotificationEvent)
                     end
                 end
             else
                 rtsPlayerLayerInterface:add(ErrorSound.getInstance())
-                if not rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface() then
+                if not (rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface()) then
                     GameNotificationEventHandler.getInstance():fireEvent(self.spotTakenGameNotificationEvent)
                 end
             end
         else
             rtsPlayerLayerInterface:add(ErrorSound.getInstance())
-            if not rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface() then
+            if not (rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface()) then
                 GameNotificationEventHandler.getInstance():fireEvent(self.selectBuildSpotGameNotificationEvent)
             end
         end
@@ -331,7 +331,7 @@ function BuildingRTSFormInput:attemptBuild(rtsPlayerLayerInterface, layerManager
         self.logUtil:putF(tostring(StringMaker.new():append("Layer: "):append(StringUtil.getInstance():toString(layerInterface))), self, "attemptBuild")
         local geographicMapCellPositionArea = layerInterface.geographicMapCellPositionAreaBase
         local occupyList = geographicMapCellPositionArea:getOccupyingGeographicMapCellPositionList()
-        if not self:isBuildAttemptValid(rtsPlayerLayerInterface, layerInterface) then
+        if not (self:isBuildAttemptValid(rtsPlayerLayerInterface, layerInterface)) then
             return false
         end
         local geographicMapCellType = nil
@@ -342,7 +342,7 @@ function BuildingRTSFormInput:attemptBuild(rtsPlayerLayerInterface, layerManager
             local raceTrackGeographicMapCellTypeFactory = geographicMapInterface:getGeographicMapCellTypeFactory()
             if raceTrackGeographicMapCellTypeFactory:isPath(geographicMapCellType) then
                 rtsPlayerLayerInterface:add(ErrorSound.getInstance())
-                if not rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface() then
+                if not (rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface()) then
                     GameNotificationEventHandler.getInstance():fireEvent(self.roadCollisionGameNotificationEvent)
                 end
                 return false
@@ -366,7 +366,7 @@ function BuildingRTSFormInput:attemptBuild(rtsPlayerLayerInterface, layerManager
             return true
         else
             rtsPlayerLayerInterface:add(ErrorSound.getInstance())
-            if not rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface() then
+            if not (rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface()) then
                 GameNotificationEventHandler.getInstance():fireEvent(self.noMoneyGameNotificationEvent)
             end
             return false
@@ -381,21 +381,21 @@ function BuildingRTSFormInput:isBuildAttemptValid(rtsPlayerLayerInterface, layer
         local occupyList = geographicMapCellPositionArea:getOccupyingGeographicMapCellPositionList()
         if self.dropCellPositionHistory:anyCellPositionWithDrop(occupyList) then
             rtsPlayerLayerInterface:add(ErrorSound.getInstance())
-            if not rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface() then
+            if not (rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface()) then
                 GameNotificationEventHandler.getInstance():fireEvent(self.buildingCollisionGameNotificationEvent)
             end
             return false
         end
         if self.isUnitProducer and self.dropCellPositionHistory:anyCellPositionWithDrop(geographicMapCellPositionArea:getSurroundingGeographicMapCellPositionList()) then
             rtsPlayerLayerInterface:add(ErrorSound.getInstance())
-            if not rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface() then
+            if not (rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface()) then
                 GameNotificationEventHandler.getInstance():fireEvent(self.structureToCloseCollisionGameNotificationEvent)
             end
             return false
         else
             if self:isSurroundingCellsOffMap(layerInterface) then
                 rtsPlayerLayerInterface:add(ErrorSound.getInstance())
-                if not rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface() then
+                if not (rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface()) then
                     GameNotificationEventHandler.getInstance():fireEvent(self.mapEdgeGameNotificationEvent)
                 end
                 return false
@@ -415,7 +415,7 @@ function BuildingRTSFormInput:add(rtsPlayerLayerInterface, layerManager, layerIn
         rtsPlayerGameInput:setSelectedRTSLayer(layerInterface, self:getSelectedGeographicCellPosition())
         layerManager:append(layerInterface)
         rtsPlayerLayerInterface:add(BuildingSound.getInstance())
-        if not rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface() then
+        if not (rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface()) then
             GameNotificationEventHandler.getInstance():fireEvent(self.buildingGameNotificationEvent)
         end
 end
@@ -437,12 +437,12 @@ function BuildingRTSFormInput:isSurroundingCellsOffMap(layerInterface)
         stringBuffer:append(StringUtil.getInstance():toString(surroundList))
         self.logUtil:putF(tostring(stringBuffer), self, "isSurroundingCellsOffMap")
         local isSurroundOffMap = false
-        if occupySize == 1 and surroundSize ~= 8 then
+        if rawequal(occupySize, 1) and not rawequal(surroundSize, 8) then
             isSurroundOffMap = true
-        elseif occupySize == 4 and surroundSize ~= 12 then
+        elseif rawequal(occupySize, 4) and not rawequal(surroundSize, 12) then
             isSurroundOffMap = true
         end
-        if occupySize == 0 or isSurroundOffMap then
+        if rawequal(occupySize, 0) or isSurroundOffMap then
             return true
         else
             return false

@@ -59,15 +59,15 @@ BasicColor.javaClassName = "org.allbinary.graphics.color.BasicColor"
 
 function BasicColor:_init_fields()
     if self.name_f == nil then self.name_f = nil end
-    if self.value == nil then self.value = nil end
-    if self.redComponent == nil then self.redComponent = nil end
-    if self.greenComponent == nil then self.greenComponent = nil end
-    if self.blueComponent == nil then self.blueComponent = nil end
-    if self.alphaComponent == nil then self.alphaComponent = nil end
-    if self.red == nil then self.red = nil end
-    if self.green == nil then self.green = nil end
-    if self.blue == nil then self.blue = nil end
-    if self.alpha == nil then self.alpha = nil end
+    if self.value == nil then self.value = 0 end
+    if self.redComponent == nil then self.redComponent = 0.0 end
+    if self.greenComponent == nil then self.greenComponent = 0.0 end
+    if self.blueComponent == nil then self.blueComponent = 0.0 end
+    if self.alphaComponent == nil then self.alphaComponent = 0.0 end
+    if self.red == nil then self.red = 0 end
+    if self.green == nil then self.green = 0 end
+    if self.blue == nil then self.blue = 0 end
+    if self.alpha == nil then self.alpha = 0 end
 end
 
 

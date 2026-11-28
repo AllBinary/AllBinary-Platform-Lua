@@ -173,7 +173,7 @@ function InsertHeaderValidationView._jinit(self, transformInfoInterface)
         -- super(...) made self above
         local multipartRequestHashMap = MultipartRequestParams.new(self:getPageContext()):toHashMap()
         local storeFrontInterface = StoreFrontFactory.getInstance(self:getWeblisketSession():getStoreName())
-        local fullPath = tostring(URLGLOBALS.getWebappPath() + storeFrontInterface:getCurrentHostNamePath()) .. self.LOGOPATH
+        local fullPath = require("allbinary_java").to_string(URLGLOBALS.getWebappPath() + storeFrontInterface:getCurrentHostNamePath()) .. require("allbinary_java").to_string(self.LOGOPATH)
         multipartRequestHashMap:put(LogoData.getInstance().IMAGEPATH, fullPath)
         self.heading = HeadingValidation.new(multipartRequestHashMap)
     return self
@@ -199,7 +199,7 @@ function InsertHeaderValidationView:isValid()
                 self.logUtil:putF("topbarValidation", self, self.commonStrings.IS_VALID)
             end
             local isValid = self.heading:isValid()
-            if isValid == true then
+            if rawequal(isValid, true) then
                 CustomizerUtil.getInstance():insert(self:getTransformInfoInterface(), self)
             end
             do return "__jreturn", isValid end

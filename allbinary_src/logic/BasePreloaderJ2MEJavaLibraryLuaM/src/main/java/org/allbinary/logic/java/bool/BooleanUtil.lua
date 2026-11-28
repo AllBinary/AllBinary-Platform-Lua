@@ -98,9 +98,9 @@ function BooleanUtil:getFromString(booleanString)
             return false
         end
         local booleanStringLowerCase = string.lower(booleanString)
-        if self.tsUtil:compareTo(booleanStringLowerCase, booleanFactory.TRUE_STRING) == 0 then
+        if rawequal(self.tsUtil:compareTo(booleanStringLowerCase, booleanFactory.TRUE_STRING), 0) then
             return true
-        elseif self.tsUtil:compareTo(booleanStringLowerCase, booleanFactory.FALSE_STRING) == 0 then
+        elseif rawequal(self.tsUtil:compareTo(booleanStringLowerCase, booleanFactory.FALSE_STRING), 0) then
             return false
         else
             error(require("java.lang.Exception").new("Invalid booleanString - Must be true or false"), 0)
@@ -112,7 +112,7 @@ end
 function BooleanUtil:isStringBoolean(booleanString)
         local booleanFactory = BooleanFactory.getInstance()
         local booleanStringLowerCase = string.lower(booleanString)
-        if ((booleanStringLowerCase < booleanFactory.TRUE_STRING and -1) or (booleanStringLowerCase > booleanFactory.TRUE_STRING and 1) or 0) == 0 or ((booleanStringLowerCase < booleanFactory.FALSE_STRING and -1) or (booleanStringLowerCase > booleanFactory.FALSE_STRING and 1) or 0) == 0 then
+        if rawequal(((booleanStringLowerCase < booleanFactory.TRUE_STRING and -1) or (booleanStringLowerCase > booleanFactory.TRUE_STRING and 1) or 0), 0) or rawequal(((booleanStringLowerCase < booleanFactory.FALSE_STRING and -1) or (booleanStringLowerCase > booleanFactory.FALSE_STRING and 1) or 0), 0) then
             return true
         end
         return false

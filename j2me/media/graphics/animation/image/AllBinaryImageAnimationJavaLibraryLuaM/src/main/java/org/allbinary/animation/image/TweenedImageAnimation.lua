@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local Image = require("javax.microedition.lcdui.Image")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local DisposalUtil = java_lazy("org.allbinary.DisposalUtil")
 local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 local IndexedAnimation = require("org.allbinary.animation.IndexedAnimation")
@@ -135,9 +135,9 @@ setmetatable(TweenedImageAnimation, {__index = IndexedAnimation})
 
 function TweenedImageAnimation:_init_fields()
     if self.image == nil then self.image = nil end
-    if self.dx == nil then self.dx = nil end
-    if self.dy == nil then self.dy = nil end
-    if self.totalFrames == nil then self.totalFrames = nil end
+    if self.dx == nil then self.dx = 0 end
+    if self.dy == nil then self.dy = 0 end
+    if self.totalFrames == nil then self.totalFrames = 0 end
     if self.circularIndexUtil == nil then self.circularIndexUtil = nil end
     self.anchor = Anchor.TOP_LEFT
 end

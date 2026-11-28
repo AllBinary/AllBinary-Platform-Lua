@@ -81,7 +81,7 @@ end
 
 
 function LogUtil:putL(log)
-        if log == nil then
+        if rawequal(log, nil) then
             return
         end
         local specialMessage = log:getSpecialMessage()
@@ -94,30 +94,30 @@ end
 
 function LogUtil:putF(specialMessage, anyType, functionName)
         local className = PreLogUtil.getClassName(anyType)
-        if className == nil then
+        if rawequal(className, nil) then
             className = CommonStrings.getInstance().EMPTY
         end
         local message = self.logFormatUtil:getS(className, functionName, specialMessage)
-        PlayN.log():debug(self.LOG_SUCCESS .. message)
+        PlayN.log():debug(require("allbinary_java").to_string(self.LOG_SUCCESS) .. require("allbinary_java").to_string(message))
 end
 
 
 function LogUtil:putFS(specialMessage, className, functionName)
         local message = self.logFormatUtil:getS(className, functionName, specialMessage)
-        PlayN.log():debug(self.LOG_SUCCESS .. message)
+        PlayN.log():debug(require("allbinary_java").to_string(self.LOG_SUCCESS) .. require("allbinary_java").to_string(message))
 end
 
 
 function LogUtil:put(specialMessage, anyType, functionName, exception)
         local className = PreLogUtil.getClassName(anyType)
-        if className == nil then
+        if rawequal(className, nil) then
             className = CommonStrings.getInstance().EMPTY
         end
         local message = self.logFormatUtil:get(className, functionName, specialMessage, exception)
-        if exception ~= nil then
-            PlayN.log():error(self.LOG_SUCCESS .. message, exception)
+        if not rawequal(exception, nil) then
+            PlayN.log():error(require("allbinary_java").to_string(self.LOG_SUCCESS) .. require("allbinary_java").to_string(message), exception)
         else
-            PlayN.log():debug(self.LOG_SUCCESS .. message)
+            PlayN.log():debug(require("allbinary_java").to_string(self.LOG_SUCCESS) .. require("allbinary_java").to_string(message))
         end
 end
 

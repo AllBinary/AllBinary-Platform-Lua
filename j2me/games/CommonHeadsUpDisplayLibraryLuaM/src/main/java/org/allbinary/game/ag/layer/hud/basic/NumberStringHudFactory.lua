@@ -86,7 +86,7 @@ end
 
 
 function NumberStringHudFactory.getInstance()
-        if NumberStringHudFactory.instance_f == NullUtil.getInstance() then
+        if rawequal(NumberStringHudFactory.instance_f, NullUtil.getInstance()) then
             NumberStringHudFactory.instance_f = NumberStringHudFactory.new()
         end
         return NumberStringHudFactory.instance_f

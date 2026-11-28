@@ -257,6 +257,8 @@ function StreetAddressesEntity:add(...)
     local count = select("#", ...)
     if count == 1 then return self:add_j1(...) end
     if count == 2 then return self:add_j2(...) end
+    local parent = getmetatable(StreetAddressesEntity).__index
+    if parent.add then return parent.add(self, ...) end
     error("No method add takes " .. count .. " arguments")
 end
 StreetAddressesEntity.add__jdispatcher = StreetAddressesEntity.add
@@ -301,7 +303,7 @@ function StreetAddressesEntity:get_j0()
             for index = 0, size - 1 do
                 local addressHashMap = addressList:get(index)
                 local streetAddress = StreetAddress.new(addressHashMap)
-                if streetAddress ~= nil then
+                if not rawequal(streetAddress, nil) then
                     streetAddressVector:add(streetAddress)
                 end
             end
@@ -325,7 +327,7 @@ function StreetAddressesEntity:get_j1(index)
             keyAndValue:put(UserData.USERNAME, self.userName)
             keyAndValue:put(StreetAddressData.ID, tostring(index))
             local addressHashMap = java_super(AbSqlBean, "getRow", 1)(self, keyAndValue)
-            if addressHashMap ~= nil then
+            if not rawequal(addressHashMap, nil) then
                 do return "__jreturn", StreetAddress.new(addressHashMap) end
             else
                 do return "__jreturn", nil end
@@ -345,6 +347,8 @@ function StreetAddressesEntity:get(...)
     local count = select("#", ...)
     if count == 0 then return self:get_j0(...) end
     if count == 1 then return self:get_j1(...) end
+    local parent = getmetatable(StreetAddressesEntity).__index
+    if parent.get then return parent.get(self, ...) end
     error("No method get takes " .. count .. " arguments")
 end
 StreetAddressesEntity.get__jdispatcher = StreetAddressesEntity.get
@@ -357,7 +361,7 @@ function StreetAddressesEntity:getDefault()
             updateKeyAndValue:put(StreetAddressData.DEFAULT, StreetAddressData.DEFAULT)
             updateKeyAndValue:put(UserData.USERNAME, self.userName)
             addressHashMap = java_super(AbSqlBean, "getRow", 1)(self, updateKeyAndValue)
-            if addressHashMap ~= nil then
+            if not rawequal(addressHashMap, nil) then
                 local streetAddress = StreetAddress.new(addressHashMap)
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                     self.logUtil:putF(self.commonStrings.SUCCESS, self, "getDefault")
@@ -389,7 +393,7 @@ function StreetAddressesEntity:setDefault(value)
             local whereKeyAndValue = StdUtil.getInstance():createHashMap()
             whereKeyAndValue:put(UserData.USERNAME, self.userName)
             local streetAddress = self:getDefault()
-            if streetAddress ~= nil then
+            if not rawequal(streetAddress, nil) then
                 updateKeyAndValue:put(StreetAddressData.DEFAULT, StringUtil.getInstance().EMPTY_STRING)
                 whereKeyAndValue:put(StreetAddressData.ID, streetAddress:getId())
                 java_super(AbSqlBean, "updateWhere", 2)(self, whereKeyAndValue, updateKeyAndValue)

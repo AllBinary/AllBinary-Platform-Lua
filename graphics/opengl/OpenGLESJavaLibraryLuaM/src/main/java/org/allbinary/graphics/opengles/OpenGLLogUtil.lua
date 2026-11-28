@@ -16,8 +16,8 @@ local function java_real(class)
     return class
 end
 
--- local GL10 = require("javax.microedition.khronos.opengles.GL10")
--- local Image = require("javax.microedition.lcdui.Image")
+local GL10 = java_lazy("javax.microedition.khronos.opengles.GL10")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local OpenGLStrings = java_lazy("org.allbinary.image.opengles.OpenGLStrings")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local ForcedLogUtil = java_lazy("org.allbinary.logic.communication.log.ForcedLogUtil")
@@ -117,17 +117,17 @@ end
 
 function OpenGLLogUtil:logError_j1(gl)
         local error = gl:glGetError()
-        if error ~= GL10.GL_NO_ERROR then
+        if not rawequal(error, GL10.GL_NO_ERROR) then
             local stringBuffer = StringMaker.new()
             stringBuffer:append(OpenGLStrings.getInstance().GL_ERROR_LABEL)
             stringBuffer:appendint(error)
-            if error == 1281 then
+            if rawequal(error, 1281) then
                 stringBuffer:append(self.MAX_TEXTURE)
                 local maxTextureSize = java_typed_array("I", java_new_array(0, 1))
                 gl:glGetIntegerv(GL10.GL_MAX_TEXTURE_SIZE, maxTextureSize, 0)
                 stringBuffer:appendint(maxTextureSize[1])
             end
-            if error == 1280 then
+            if rawequal(error, 1280) then
                 PreLogUtil.put(tostring(stringBuffer), self, OpenGLStrings.getInstance().SET)
             else
                 ForcedLogUtil.log(tostring(stringBuffer), self)
@@ -138,11 +138,11 @@ end
 
 function OpenGLLogUtil:logError_j2(gl, image)
         local error = gl:glGetError()
-        if error ~= GL10.GL_NO_ERROR then
+        if not rawequal(error, GL10.GL_NO_ERROR) then
             local stringBuffer = StringMaker.new()
             stringBuffer:append(OpenGLStrings.getInstance().GL_ERROR_LABEL)
             stringBuffer:appendint(error)
-            if error == 1281 then
+            if rawequal(error, 1281) then
                 stringBuffer:append(self.MAX_TEXTURE)
                 local maxTextureSize = java_typed_array("I", java_new_array(0, 1))
                 gl:glGetIntegerv(GL10.GL_MAX_TEXTURE_SIZE, maxTextureSize, 0)

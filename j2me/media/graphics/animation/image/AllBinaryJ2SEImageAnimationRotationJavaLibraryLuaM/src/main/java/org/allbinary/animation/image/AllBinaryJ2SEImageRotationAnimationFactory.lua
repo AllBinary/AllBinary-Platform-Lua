@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local Animation = java_lazy("org.allbinary.animation.Animation")
 local AnimationBehaviorFactory = java_lazy("org.allbinary.animation.AnimationBehaviorFactory")
 local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
@@ -139,8 +139,8 @@ AllBinaryJ2SEImageRotationAnimationFactory.javaClassName = "org.allbinary.animat
 setmetatable(AllBinaryJ2SEImageRotationAnimationFactory, {__index = BaseImageAnimationFactory})
 
 function AllBinaryJ2SEImageRotationAnimationFactory:_init_fields()
-    if self.angleIncrementP == nil then self.angleIncrementP = nil end
-    if self.resizeCanvasForRotation == nil then self.resizeCanvasForRotation = nil end
+    if self.angleIncrementP == nil then self.angleIncrementP = 0 end
+    if self.resizeCanvasForRotation == nil then self.resizeCanvasForRotation = false end
 end
 
 
@@ -174,7 +174,7 @@ end
 -- throws Exception
 function AllBinaryJ2SEImageRotationAnimationFactory:getCanvasImage()
         local features = Features.getInstance()
-        if self.resizeCanvasForRotation and not features:isDefault(OpenGLFeatureFactory.getInstance().OPENGL) then
+        if self.resizeCanvasForRotation and not (features:isDefault(OpenGLFeatureFactory.getInstance().OPENGL)) then
             return ImageCopyUtil.getInstance():createImageScale(self:getImage(), 1.44, false)
         else
             return self:getImage()
@@ -191,7 +191,7 @@ function AllBinaryJ2SEImageRotationAnimationFactory:getInstance(instanceId)
         local openGLUtil = OpenGLUtil.getInstance()
         scaledImage = openGLUtil:addImage(scaledImage)
         local copyOfScaledImage = imageCopyUtil:createImageForRotation(scaledImage)
-        if self.animationFactoryInitializationVisitor.dx ~= 0 or self.animationFactoryInitializationVisitor.dy ~= 0 then
+        if not rawequal(self.animationFactoryInitializationVisitor.dx, 0) or not rawequal(self.animationFactoryInitializationVisitor.dy, 0) then
             self.animationFactoryImageScaleUtil:processAdjust(self)
             return AllBinaryAdjustedJ2SEImageRotationAnimation.new(scaledImage, copyOfScaledImage, AngleInfo.getInstance(self.angleIncrementP), AngleFactory.getInstance().TOTAL_ANGLE, self.animationFactoryInitializationVisitor.dx, self.animationFactoryInitializationVisitor.dy, self.animationBehaviorFactory:getOrCreateInstance())
         else

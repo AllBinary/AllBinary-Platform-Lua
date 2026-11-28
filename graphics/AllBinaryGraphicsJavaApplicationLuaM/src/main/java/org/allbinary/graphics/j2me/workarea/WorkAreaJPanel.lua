@@ -365,9 +365,9 @@ java_overload(WorkAreaJPanel, "deselect", 0)
 
 function WorkAreaJPanel:select_j0()
         java_super(JPanel, "setVisible", 1)(self, true)
-        if self.canvasHolderJPanel:getComponentCount() == 1 then
+        if rawequal(self.canvasHolderJPanel:getComponentCount(), 1) then
             local component = self.canvasHolderJPanel:getComponent(0)
-            if component ~= nil then
+            if not rawequal(component, nil) then
                 component:repaint()
             end
         end
@@ -391,7 +391,7 @@ java_overload(WorkAreaJPanel, "getCurrentFrame", 0)
 
 
 function WorkAreaJPanel:initDuplicate(newCanvasJPanel)
-        if newCanvasJPanel ~= nil then
+        if not rawequal(newCanvasJPanel, nil) then
             self.canvasJPanelList:add(newCanvasJPanel)
             self:select(self.canvasJPanelList:size() - 1)
         end
@@ -454,7 +454,7 @@ java_overload(WorkAreaJPanel, "autoMirror", 0)
 function WorkAreaJPanel:select_j1_1(index)
         if index < self.canvasJPanelList:size() then
             local canvasJPanel = self.canvasJPanelList:get(index)
-            if canvasJPanel ~= nil then
+            if not rawequal(canvasJPanel, nil) then
                 self.canvasHolderJPanel:removeAll()
                 self.canvasHolderJPanel:add(canvasJPanel)
                 self.selectedFrame = index
@@ -469,7 +469,7 @@ end
 function WorkAreaJPanel:select_j1_2(treeNode)
         local canvasJPanelHashMap = self:getCanvasHashMap()
         local frameInteger = canvasJPanelHashMap:get(treeNode)
-        if frameInteger ~= nil then
+        if not rawequal(frameInteger, nil) then
             self:select(math.tointeger(frameInteger // 1))
         end
 end
@@ -505,23 +505,27 @@ function WorkAreaJPanel:initComponents()
         self.innerJPanel = JPanel.new()
         self:setLayout(GridLayout.new(1, 1))
         self.innerJPanel:addKeyListener((function()
-            local o = KeyAdapter.new and KeyAdapter.new() or setmetatable({}, {__index = KeyAdapter})
+            local java_outer_self = self
+        local o = KeyAdapter.new and KeyAdapter.new() or setmetatable({}, {__index = KeyAdapter})
             
 
             function o:keyTyped(evt)
-                self:innerJPanelKeyTyped(evt)
+                ;(self.innerJPanelKeyTyped and self or java_outer_self):innerJPanelKeyTyped(evt)
+            
             end
             java_overload(o, "keyTyped", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "KeyEvent")) end)
             
 
             function o:keyPressed(evt)
-                self:innerJPanelKeyPressed(evt)
+                ;(self.innerJPanelKeyPressed and self or java_outer_self):innerJPanelKeyPressed(evt)
+            
             end
             java_overload(o, "keyPressed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "KeyEvent")) end)
             
 
             function o:keyReleased(evt)
-                self:innerJPanelKeyReleased(evt)
+                ;(self.innerJPanelKeyReleased and self or java_outer_self):innerJPanelKeyReleased(evt)
+            
             end
             java_overload(o, "keyReleased", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "KeyEvent")) end)
             return o
@@ -584,6 +588,8 @@ end
 function WorkAreaJPanel:duplicate(...)
     local count = select("#", ...)
     if count == 1 then return self:duplicate_j1(...) end
+    local parent = getmetatable(WorkAreaJPanel).__index
+    if parent.duplicate then return parent.duplicate(self, ...) end
     error("No method duplicate takes " .. count .. " arguments")
 end
 WorkAreaJPanel.duplicate__jdispatcher = WorkAreaJPanel.duplicate
@@ -602,6 +608,8 @@ function WorkAreaJPanel:select(...)
     local count = select("#", ...)
     if count == 0 then return self:select_j0(...) end
     if count == 1 then return self:select_j1(...) end
+    local parent = getmetatable(WorkAreaJPanel).__index
+    if parent.select then return parent.select(self, ...) end
     error("No method select takes " .. count .. " arguments")
 end
 WorkAreaJPanel.select__jdispatcher = WorkAreaJPanel.select
@@ -618,7 +626,7 @@ function WorkAreaJPanel:rotate(evt)
         local treeNode = evt:getTreeNode()
         local frameInt = canvasJPanelHashMap:get(evt:getTreeNode())
         local canvasJPanel = self.canvasJPanelList:get(math.tointeger(frameInt // 1))
-        if canvasJPanel ~= nil then
+        if not rawequal(canvasJPanel, nil) then
             canvasJPanel:addAngle(evt:getAngle())
             self:select(math.tointeger(frameInt // 1))
         end
@@ -641,6 +649,8 @@ function WorkAreaJPanel:autoExplode(...)
     local count = select("#", ...)
     if count == 2 then return self:autoExplode_j2(...) end
     if count == 1 then return self:autoExplode_j1(...) end
+    local parent = getmetatable(WorkAreaJPanel).__index
+    if parent.autoExplode then return parent.autoExplode(self, ...) end
     error("No method autoExplode takes " .. count .. " arguments")
 end
 WorkAreaJPanel.autoExplode__jdispatcher = WorkAreaJPanel.autoExplode
@@ -661,6 +671,8 @@ function WorkAreaJPanel:center(...)
     local count = select("#", ...)
     if count == 0 then return self:center_j0(...) end
     if count == 1 then return self:center_j1(...) end
+    local parent = getmetatable(WorkAreaJPanel).__index
+    if parent.center then return parent.center(self, ...) end
     error("No method center takes " .. count .. " arguments")
 end
 WorkAreaJPanel.center__jdispatcher = WorkAreaJPanel.center
@@ -672,16 +684,16 @@ function WorkAreaJPanel:run()
                 if self:isPlaying() then
                     local size = self.canvasJPanelList:size()
                     for index = 0, size - 1 do
-                        if not self:isPlaying() then
+                        if not (self:isPlaying()) then
                             break
                         end
                         self:select(index)
-                        java_sleep(100)
+                        require("java.lang.Thread").sleep(100)
                     end
                 else
-                    java_sleep(500)
+                    require("java.lang.Thread").sleep(500)
                 end
-                java_sleep(250)
+                require("java.lang.Thread").sleep(250)
             end
         end)
         if not try_ok then

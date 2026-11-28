@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local InputStream = require("java.io.InputStream")
--- local Player = require("javax.microedition.media.Player")
+local InputStream = java_lazy("java.io.InputStream")
+local Player = java_lazy("javax.microedition.media.Player")
 local TsUtil = java_lazy("org.allbinary.TsUtil")
 local ProgressCanvasFactory = java_lazy("org.allbinary.graphics.canvas.transition.progress.ProgressCanvasFactory")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")

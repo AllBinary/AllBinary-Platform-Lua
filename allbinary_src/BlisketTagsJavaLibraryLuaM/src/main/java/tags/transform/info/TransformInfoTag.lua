@@ -272,7 +272,7 @@ function TransformInfoTag:setType(value)
         self.type = value
         self:getPropertiesHashMap():put(OutputTypeData.getInstance().NAME, self.type)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAG) then
-            self.logUtil:putF("TransformInfoTag type set: " .. self.type, self, "setType")
+            self.logUtil:putF(require("allbinary_java").to_string("TransformInfoTag type set: ") .. require("allbinary_java").to_string(self.type), self, "setType")
         end
 end
 java_overload(TransformInfoTag, "setType", 1, function(java_a1) return true and (java_a1 == nil or type(java_a1) == "string") end)

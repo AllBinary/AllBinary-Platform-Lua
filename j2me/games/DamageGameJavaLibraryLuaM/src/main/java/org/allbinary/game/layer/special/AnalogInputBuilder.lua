@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local GameInputProcessor = java_lazy("org.allbinary.game.input.GameInputProcessor")
 local CollidableDestroyableDamageableLayer = java_lazy("org.allbinary.game.layer.special.CollidableDestroyableDamageableLayer")
 local Special1GameInputProcessor = java_lazy("org.allbinary.game.layer.special.Special1GameInputProcessor")

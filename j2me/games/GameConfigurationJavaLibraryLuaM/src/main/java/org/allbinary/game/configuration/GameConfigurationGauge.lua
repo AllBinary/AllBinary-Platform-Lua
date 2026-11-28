@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Gauge = require("javax.microedition.lcdui.Gauge")
+local Gauge = require("javax.microedition.lcdui.Gauge")
 local GameConfiguration = java_lazy("org.allbinary.game.configuration.GameConfiguration")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend

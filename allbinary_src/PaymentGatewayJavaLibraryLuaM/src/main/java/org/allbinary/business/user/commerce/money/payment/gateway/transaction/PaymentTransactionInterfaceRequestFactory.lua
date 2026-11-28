@@ -146,7 +146,7 @@ function PaymentTransactionInterfaceRequestFactory:getInstance(transformInfoInte
             local pageContext = httpTransformInfoInterface:getPageContext()
             local httpServletRequest = pageContext:getRequest()
             local command = httpServletRequest:getParameter(GLOBALS2.ADMINCOMMAND)
-            if command ~= nil and ((command < GLOBALS2.AUTHORIZEFORMEVALBODYONERROR and -1) or (command > GLOBALS2.AUTHORIZEFORMEVALBODYONERROR and 1) or 0) == 0 then
+            if not rawequal(command, nil) and rawequal(((command < GLOBALS2.AUTHORIZEFORMEVALBODYONERROR and -1) or (command > GLOBALS2.AUTHORIZEFORMEVALBODYONERROR and 1) or 0), 0) then
                 do return "__jreturn", self:generateFromTestData(transformInfoInterface) end
             else
                 local propertiesHashMap = httpTransformInfoInterface:getPropertiesHashMap()
@@ -202,7 +202,7 @@ function PaymentTransactionInterfaceRequestFactory:generateFromTestData(transfor
             orderReview:setPaymentMethod(gatewayName)
             orderReview:setUserName("testing")
             local orderId = httpServletRequest:getParameter("orderNumber")
-            if orderId == nil or ((orderId < StringUtil.getInstance().EMPTY_STRING and -1) or (orderId > StringUtil.getInstance().EMPTY_STRING and 1) or 0) == 0 then
+            if rawequal(orderId, nil) or rawequal(((orderId < StringUtil.getInstance().EMPTY_STRING and -1) or (orderId > StringUtil.getInstance().EMPTY_STRING and 1) or 0), 0) then
                 orderId = OrderIdGenerator.new():getNext()
                 orderReview:setId(orderId)
                 local account = httpServletRequest:getParameter("account")

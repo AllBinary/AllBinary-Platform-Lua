@@ -177,7 +177,7 @@ function WorkFlowRequestHelper:delete()
         local try_ok, try_error, try_value = pcall(function()
             local stringUtil = StringUtil.getInstance()
             WorkFlowEntityFactory.getInstance():create2():delete(self.workFlowInterface:getName(), stringUtil.EMPTY_STRING)
-            local success = "Successfully Removed the workflow with " .. tostring(WorkFlowData.getInstance().NAME) .. "= " .. self.workFlowInterface:getName() .. " from "
+            local success = require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Successfully Removed the workflow with ") .. require("allbinary_java").to_string(WorkFlowData.getInstance().NAME)) .. require("allbinary_java").to_string("= ")) .. require("allbinary_java").to_string(self.workFlowInterface:getName())) .. require("allbinary_java").to_string(" from ")
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGS) then
                 self.logUtil:putF(success, self, "delete()")
             end
@@ -187,7 +187,7 @@ function WorkFlowRequestHelper:delete()
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local try_ok, try_error, try_value = pcall(function()
-                local error = "Failed to remove workflow with " .. tostring(WorkFlowData.getInstance().NAME) .. "= " .. self.workFlowInterface:getName() .. " from "
+                local error = require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Failed to remove workflow with ") .. require("allbinary_java").to_string(WorkFlowData.getInstance().NAME)) .. require("allbinary_java").to_string("= ")) .. require("allbinary_java").to_string(self.workFlowInterface:getName())) .. require("allbinary_java").to_string(" from ")
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                     self.logUtil:put(self.commonStrings.EXCEPTION, self, "delete()", e)
                 end

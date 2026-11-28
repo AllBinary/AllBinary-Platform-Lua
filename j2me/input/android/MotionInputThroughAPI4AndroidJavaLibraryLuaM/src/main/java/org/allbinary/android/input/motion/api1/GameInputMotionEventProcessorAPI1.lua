@@ -138,7 +138,7 @@ end
 
 
 function GameInputMotionEventProcessorAPI1.getInstance()
-        if GameInputMotionEventProcessorAPI1.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(GameInputMotionEventProcessorAPI1.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             GameInputMotionEventProcessorAPI1.instance_f = GameInputMotionEventProcessorAPI1.new()
         end
         return GameInputMotionEventProcessorAPI1.instance_f
@@ -163,11 +163,11 @@ function GameInputMotionEventProcessorAPI1:process(motionEvent)
             local x = java_int(motionEvent:getX())
             local y = java_int(motionEvent:getY())
             local action = motionEvent:getAction()
-            if action == MotionEvent.ACTION_DOWN then
+            if rawequal(action, MotionEvent.ACTION_DOWN) then
                 self.motionRecognizer:processStartMotionEvent(x, y, motionEvent:getDeviceId(), 0)
-            elseif action == MotionEvent.ACTION_UP or action == MotionEvent.ACTION_CANCEL then
+            elseif rawequal(action, MotionEvent.ACTION_UP) or rawequal(action, MotionEvent.ACTION_CANCEL) then
                 self.motionRecognizer:processEndMotionEvent(x, y, motionEvent:getDeviceId(), 0)
-            elseif action == MotionEvent.ACTION_MOVE then
+            elseif rawequal(action, MotionEvent.ACTION_MOVE) then
                 self.motionRecognizer:processDraggedMotionEvent(x, y, motionEvent:getDeviceId(), 0)
             end
         end)

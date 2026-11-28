@@ -90,9 +90,9 @@ function GenericProfileCaptureWorkerFactory.getInstance(genericProfile)
         local size = vector:size()
         for index = 0, size - 1 do
             local genericProfileDataWorkerType = vector:get(index)
-            if genericProfileDataWorkerType == GenericProfileDataWorkerType.SCREEN_CAPTURE then
+            if rawequal(genericProfileDataWorkerType, GenericProfileDataWorkerType.SCREEN_CAPTURE) then
                 return ScreenCaptureImagesWorker.new()
-            elseif genericProfileDataWorkerType == GenericProfileDataWorkerType.SAVED_CAPTURE then
+            elseif rawequal(genericProfileDataWorkerType, GenericProfileDataWorkerType.SAVED_CAPTURE) then
                 return SavedCaptureImagesWorker.new(genericProfileDataWorkerType)
             end
         end

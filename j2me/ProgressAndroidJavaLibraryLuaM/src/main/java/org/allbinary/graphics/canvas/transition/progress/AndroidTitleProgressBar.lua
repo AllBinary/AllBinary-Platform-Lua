@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local NullProgressActivity = java_lazy("org.allbinary.android.activity.NullProgressActivity")
 local ProgressActivityInterface = java_lazy("org.allbinary.android.activity.ProgressActivityInterface")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
@@ -171,6 +171,11 @@ local TitleProgressBarSetProgressRunnable = {}
         TitleProgressBarSetProgressRunnable._jinit(self, ...)
         return self
     end
+        function TitleProgressBarSetProgressRunnable.newEnclosed(outer, ...)
+            local self = setmetatable({__javaOuter = outer}, TitleProgressBarSetProgressRunnable)
+            TitleProgressBarSetProgressRunnable._jinit(self, ...)
+            return self
+        end
     
 
     function TitleProgressBarSetProgressRunnable:run()
@@ -211,6 +216,11 @@ local TitleProgressBarPortionSetProgressRunnable = {}
         TitleProgressBarPortionSetProgressRunnable._jinit(self, ...)
         return self
     end
+        function TitleProgressBarPortionSetProgressRunnable.newEnclosed(outer, ...)
+            local self = setmetatable({__javaOuter = outer}, TitleProgressBarPortionSetProgressRunnable)
+            TitleProgressBarPortionSetProgressRunnable._jinit(self, ...)
+            return self
+        end
     
 
     function TitleProgressBarPortionSetProgressRunnable:run()
@@ -251,6 +261,11 @@ local ShowTitleProgressBarRunnable = {}
         ShowTitleProgressBarRunnable._jinit(self, ...)
         return self
     end
+        function ShowTitleProgressBarRunnable.newEnclosed(outer, ...)
+            local self = setmetatable({__javaOuter = outer}, ShowTitleProgressBarRunnable)
+            ShowTitleProgressBarRunnable._jinit(self, ...)
+            return self
+        end
     
 
     function ShowTitleProgressBarRunnable:run()
@@ -291,6 +306,11 @@ local DismissTitleProgressBarRunnable = {}
         DismissTitleProgressBarRunnable._jinit(self, ...)
         return self
     end
+        function DismissTitleProgressBarRunnable.newEnclosed(outer, ...)
+            local self = setmetatable({__javaOuter = outer}, DismissTitleProgressBarRunnable)
+            DismissTitleProgressBarRunnable._jinit(self, ...)
+            return self
+        end
     
 
     function DismissTitleProgressBarRunnable:run()
@@ -308,10 +328,10 @@ local DismissTitleProgressBarRunnable = {}
 
 
 function AndroidTitleProgressBar:_init_fields()
-    self.showTitleProgressBarRunnable = ShowTitleProgressBarRunnable.new(self)
-    self.dismissTitleProgressBarRunnable = DismissTitleProgressBarRunnable.new(self)
-    self.progressDialogPortionSetProgressRunnable = TitleProgressBarPortionSetProgressRunnable.new(self)
-    self.progressDialogSetProgressRunnable = TitleProgressBarSetProgressRunnable.new(self)
+    self.showTitleProgressBarRunnable = ShowTitleProgressBarRunnable.newEnclosed(self, self)
+    self.dismissTitleProgressBarRunnable = DismissTitleProgressBarRunnable.newEnclosed(self, self)
+    self.progressDialogPortionSetProgressRunnable = TitleProgressBarPortionSetProgressRunnable.newEnclosed(self, self)
+    self.progressDialogSetProgressRunnable = TitleProgressBarSetProgressRunnable.newEnclosed(self, self)
     self.progressActivity = NullProgressActivity.NULL_PROGRESS_ACTIVITY
     self.portion = 0
 end
@@ -338,7 +358,7 @@ java_overload(AndroidTitleProgressBar, "init", 1, function(java_a1) return true 
 
 
 function AndroidTitleProgressBar:isInitialized()
-        if self.progressActivity ~= NullProgressActivity.NULL_PROGRESS_ACTIVITY then
+        if not rawequal(self.progressActivity, NullProgressActivity.NULL_PROGRESS_ACTIVITY) then
             return true
         else
             return false

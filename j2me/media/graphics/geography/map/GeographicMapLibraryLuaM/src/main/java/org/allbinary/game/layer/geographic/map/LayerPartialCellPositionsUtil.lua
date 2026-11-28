@@ -72,16 +72,16 @@ function LayerPartialCellPositionsUtil:getAll(geographicMapInterface, layerInter
         local topRightGeographicMapCellPosition = geographicMapInterface:getCellPositionAtXYNoThrow(layerInterface:getXP() + layerInterface:getWidth(), layerInterface:getYP())
         local bottomLeftGeographicMapCellPosition = geographicMapInterface:getCellPositionAtXYNoThrow(layerInterface:getXP(), layerInterface:getYP() + layerInterface:getHeight())
         local bottomRightGeographicMapCellPosition = geographicMapInterface:getCellPositionAtXYNoThrow(layerInterface:getXP() + layerInterface:getWidth(), layerInterface:getYP() + layerInterface:getHeight())
-        if topLeftGeographicMapCellPosition ~= SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION then
+        if not rawequal(topLeftGeographicMapCellPosition, SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION) then
             reusableList:add(topLeftGeographicMapCellPosition)
         end
-        if topRightGeographicMapCellPosition ~= SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION and topLeftGeographicMapCellPosition ~= topRightGeographicMapCellPosition then
+        if not rawequal(topRightGeographicMapCellPosition, SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION) and not rawequal(topLeftGeographicMapCellPosition, topRightGeographicMapCellPosition) then
             reusableList:add(topRightGeographicMapCellPosition)
         end
-        if bottomLeftGeographicMapCellPosition ~= SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION and not reusableList:contains(bottomLeftGeographicMapCellPosition) then
+        if not rawequal(bottomLeftGeographicMapCellPosition, SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION) and not (reusableList:contains(bottomLeftGeographicMapCellPosition)) then
             reusableList:add(bottomLeftGeographicMapCellPosition)
         end
-        if bottomRightGeographicMapCellPosition ~= SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION and not reusableList:contains(bottomRightGeographicMapCellPosition) then
+        if not rawequal(bottomRightGeographicMapCellPosition, SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION) and not (reusableList:contains(bottomRightGeographicMapCellPosition)) then
             reusableList:add(bottomRightGeographicMapCellPosition)
         end
         return reusableList
@@ -95,16 +95,16 @@ function LayerPartialCellPositionsUtil:getAllDXY(geographicMapInterface, layerIn
         local topRightGeographicMapCellPosition = geographicMapInterface:getCellPositionAtXYNoThrow(layerInterface:getXP() + layerInterface:getWidth() + dx, layerInterface:getYP() + dy)
         local bottomLeftGeographicMapCellPosition = geographicMapInterface:getCellPositionAtXYNoThrow(layerInterface:getXP() + dx, layerInterface:getYP() + layerInterface:getHeight() + dy)
         local bottomRightGeographicMapCellPosition = geographicMapInterface:getCellPositionAtXYNoThrow(layerInterface:getXP() + layerInterface:getWidth() + dx, layerInterface:getYP() + layerInterface:getHeight() + dy)
-        if topLeftGeographicMapCellPosition ~= SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION then
+        if not rawequal(topLeftGeographicMapCellPosition, SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION) then
             reusableList:add(topLeftGeographicMapCellPosition)
         end
-        if topRightGeographicMapCellPosition ~= SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION and topLeftGeographicMapCellPosition ~= topRightGeographicMapCellPosition then
+        if not rawequal(topRightGeographicMapCellPosition, SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION) and not rawequal(topLeftGeographicMapCellPosition, topRightGeographicMapCellPosition) then
             reusableList:add(topRightGeographicMapCellPosition)
         end
-        if bottomLeftGeographicMapCellPosition ~= SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION and not reusableList:contains(bottomLeftGeographicMapCellPosition) then
+        if not rawequal(bottomLeftGeographicMapCellPosition, SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION) and not (reusableList:contains(bottomLeftGeographicMapCellPosition)) then
             reusableList:add(bottomLeftGeographicMapCellPosition)
         end
-        if bottomRightGeographicMapCellPosition ~= SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION and not reusableList:contains(bottomRightGeographicMapCellPosition) then
+        if not rawequal(bottomRightGeographicMapCellPosition, SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION) and not (reusableList:contains(bottomRightGeographicMapCellPosition)) then
             reusableList:add(bottomRightGeographicMapCellPosition)
         end
         return reusableList

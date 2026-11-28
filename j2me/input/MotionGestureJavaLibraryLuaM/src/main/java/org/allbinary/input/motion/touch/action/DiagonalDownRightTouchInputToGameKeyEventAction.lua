@@ -131,7 +131,7 @@ setmetatable(DiagonalDownRightTouchInputToGameKeyEventAction, {__index = GameKey
 
 
 function DiagonalDownRightTouchInputToGameKeyEventAction.getInstance()
-        if DiagonalDownRightTouchInputToGameKeyEventAction.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(DiagonalDownRightTouchInputToGameKeyEventAction.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             DiagonalDownRightTouchInputToGameKeyEventAction.instance_f = DiagonalDownRightTouchInputToGameKeyEventAction.new()
         end
         return DiagonalDownRightTouchInputToGameKeyEventAction.instance_f

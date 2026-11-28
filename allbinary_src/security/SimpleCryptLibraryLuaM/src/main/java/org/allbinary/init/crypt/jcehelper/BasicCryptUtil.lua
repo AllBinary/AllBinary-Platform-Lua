@@ -30,7 +30,7 @@ end
 
 -- local ByteArrayInputStream = require("java.io.ByteArrayInputStream")
 local ByteArrayOutputStream = java_lazy("java.io.ByteArrayOutputStream")
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 local TsUtil = java_lazy("org.allbinary.TsUtil")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local CryptInterface = java_lazy("org.allbinary.init.crypt.jcehelper.CryptInterface")
@@ -84,7 +84,7 @@ function BasicCryptUtil:getDecryptedInputStream(inputStream, cryptInterface)
         local ch = 0
         while true do
             ch = inputStream:read()
-            if ch == -1 then
+            if rawequal(ch, -1) then
                 break
             end
             buffer:write(ch)

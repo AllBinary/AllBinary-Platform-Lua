@@ -28,9 +28,9 @@ local function java_real(class)
     return class
 end
 
--- local InputStream = require("java.io.InputStream")
--- local Image = require("javax.microedition.lcdui.Image")
--- local NullImage = require("javax.microedition.lcdui.NullImage")
+local InputStream = java_lazy("java.io.InputStream")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local NullImage = java_lazy("javax.microedition.lcdui.NullImage")
 local StdUtil = java_lazy("org.allbinary.logic.StdUtil")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
@@ -124,7 +124,7 @@ end
 
 function ImageCacheBase:getImage(resourceId)
         local imageCanBeNull = self.hashtable:get(resourceId)
-        if imageCanBeNull == nil then
+        if rawequal(imageCanBeNull, nil) then
             return NullImage.NULL_IMAGE
         end
         return imageCanBeNull
@@ -144,7 +144,7 @@ function ImageCacheBase:getIndexWH(width, height)
         local foundIndex = -1
         local size = (self.widths.n or #self.widths)
         for index = 0, size - 1 do
-            if self.widths[index + 1] == width and self.heights[index + 1] == height then
+            if rawequal(self.widths[index + 1], width) and rawequal(self.heights[index + 1], height) then
                 foundIndex = index
                 return foundIndex
             end
@@ -154,7 +154,7 @@ end
 
 
 function ImageCacheBase:getFromAvailable(foundIndex, width, height)
-        if foundIndex ~= -1 then
+        if not rawequal(foundIndex, -1) then
             if self.availableListOfList[foundIndex + 1]:size() > 0 then
                 local list = self.availableListOfList[foundIndex + 1]
                 return list:removeAt(list:size() - 1)

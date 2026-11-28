@@ -102,7 +102,7 @@ end
 -- throws Exception
 function UserEmailEventNameData.getInstance(userEmailEventNameString)
         local userEmailEventNameData = UserEmailEventNameData.userNameEvenNameHashMap:get(userEmailEventNameString)
-        if userEmailEventNameData == nil then
+        if rawequal(userEmailEventNameData, nil) then
             error(require("java.lang.Exception").new(), 0)
         else
             return userEmailEventNameData

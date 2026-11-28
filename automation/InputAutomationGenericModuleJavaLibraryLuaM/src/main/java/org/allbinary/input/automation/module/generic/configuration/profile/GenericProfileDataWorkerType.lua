@@ -100,7 +100,7 @@ end
 
 
 function GenericProfileDataWorkerType:toString()
-        return "GenericProfileDataWorkerType: " .. self:getName()
+        return require("allbinary_java").to_string("GenericProfileDataWorkerType: ") .. require("allbinary_java").to_string(self:getName())
 end
 GenericProfileDataWorkerType.__tostring = function(self) return self:toString() end
 
@@ -112,7 +112,7 @@ end
 
 GenericProfileDataWorkerType.hashMap = StdUtil.getInstance():createHashMap()
 GenericProfileDataWorkerType.SAVED_CAPTURE = SavedCaptureGenericProfileDataWorkerType.SAVED_CAPTURE
-GenericProfileDataWorkerType.SCREEN_CAPTURE = GenericProfileDataWorkerType.new("Screen " .. InputImageType.CAPTURE:getName())
+GenericProfileDataWorkerType.SCREEN_CAPTURE = GenericProfileDataWorkerType.new(require("allbinary_java").to_string("Screen ") .. require("allbinary_java").to_string(InputImageType.CAPTURE:getName()))
 GenericProfileDataWorkerType.COMPARISON = GenericProfileDataWorkerType.new(InputImageType.COMPARISON:getName())
 GenericProfileDataWorkerType.MOTION = GenericProfileDataWorkerType.new(InputImageType.MOTION:getName())
 

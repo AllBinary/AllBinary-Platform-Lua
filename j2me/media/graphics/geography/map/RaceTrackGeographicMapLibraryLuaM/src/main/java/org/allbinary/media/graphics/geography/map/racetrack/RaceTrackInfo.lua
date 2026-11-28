@@ -59,9 +59,9 @@ function RaceTrackInfo:_init_fields()
     if self.raceTrackFrictionProperties == nil then self.raceTrackFrictionProperties = nil end
     if self.foregroundBasicColor == nil then self.foregroundBasicColor = nil end
     if self.backgroundBasicColor == nil then self.backgroundBasicColor = nil end
-    if self.qualifyTime == nil then self.qualifyTime = nil end
-    if self.worstContinuePosition == nil then self.worstContinuePosition = nil end
-    if self.totalLaps == nil then self.totalLaps = nil end
+    if self.qualifyTime == nil then self.qualifyTime = 0 end
+    if self.worstContinuePosition == nil then self.worstContinuePosition = 0 end
+    if self.totalLaps == nil then self.totalLaps = 0 end
 end
 
 

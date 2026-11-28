@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local AnimationFactoryInitializationVisitor = java_lazy("org.allbinary.animation.image.AnimationFactoryInitializationVisitor")
 local BaseImageAnimationFactory = java_lazy("org.allbinary.animation.image.BaseImageAnimationFactory")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
@@ -82,10 +82,10 @@ end
 -- throws Exception
 function AnimationFactoryImageScaleUtil:createImage(image, width, height, scaleWidth, scaleHeight)
         local scaledImage = nil
-        if scaleWidth ~= 0 and scaleHeight ~= 0 then
+        if not rawequal(scaleWidth, 0) and not rawequal(scaleHeight, 0) then
             local scaleX = ((scaleWidth + 0.0)) / ((width + 0.0))
             local scaleY = ((scaleHeight + 0.0)) / ((height + 0.0))
-            if (scaleX == 1.0 and scaleY == 1.0) or (scaleX == 0.0 or scaleY == 0.0) then
+            if (rawequal(scaleX, 1.0) and rawequal(scaleY, 1.0)) or (rawequal(scaleX, 0.0) or rawequal(scaleY, 0.0)) then
                 scaledImage = image
             else
                 local scaledWidth = java_int((scaleX * (width + 0.0)))
@@ -102,11 +102,11 @@ end
 -- throws Exception
 function AnimationFactoryImageScaleUtil:processAdjust(baseImageAnimationFactory)
         local scaleProperties = baseImageAnimationFactory:getScalePropertiesP()
-        if scaleProperties.scaleWidth ~= 0 and scaleProperties.scaleHeight ~= 0 then
+        if not rawequal(scaleProperties.scaleWidth, 0) and not rawequal(scaleProperties.scaleHeight, 0) then
             local animationFactoryInitializationVisitor = baseImageAnimationFactory:getAnimationFactoryInitializationVisitorP()
             local scaleX = ((scaleProperties.scaleWidth + 0.0)) / ((animationFactoryInitializationVisitor.width + 0.0))
             local scaleY = ((scaleProperties.scaleHeight + 0.0)) / ((animationFactoryInitializationVisitor.height + 0.0))
-            if (scaleX == 1.0 and scaleY == 1.0) or (scaleX == 0.0 or scaleY == 0.0) then
+            if (rawequal(scaleX, 1.0) and rawequal(scaleY, 1.0)) or (rawequal(scaleX, 0.0) or rawequal(scaleY, 0.0)) then
             else
                 animationFactoryInitializationVisitor.dx = java_int((animationFactoryInitializationVisitor.originalDx * scaleX))
                 animationFactoryInitializationVisitor.dy = java_int((animationFactoryInitializationVisitor.originalDy * scaleY))

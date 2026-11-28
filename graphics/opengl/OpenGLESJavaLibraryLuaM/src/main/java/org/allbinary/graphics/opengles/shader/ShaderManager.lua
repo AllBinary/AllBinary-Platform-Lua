@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local GL10 = require("javax.microedition.khronos.opengles.GL10")
+local GL10 = java_lazy("javax.microedition.khronos.opengles.GL10")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 
@@ -58,8 +58,8 @@ function ShaderManager:_init_fields()
     self.commonStrings = CommonStrings.getInstance()
     self.LOAD_SHADER = "loadShader"
     self.__VERSION__ = "__VERSION__"
-    if self.GL_VERTEX_SHADER == nil then self.GL_VERTEX_SHADER = nil end
-    if self.GL_FRAGMENT_SHADER == nil then self.GL_FRAGMENT_SHADER = nil end
+    if self.GL_VERTEX_SHADER == nil then self.GL_VERTEX_SHADER = 0 end
+    if self.GL_FRAGMENT_SHADER == nil then self.GL_FRAGMENT_SHADER = 0 end
 end
 
 

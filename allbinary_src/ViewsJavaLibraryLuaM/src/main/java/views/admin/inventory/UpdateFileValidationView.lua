@@ -190,13 +190,13 @@ end
 function UpdateFileValidationView:isValid_j0()
         local try_ok, try_error, try_value = pcall(function()
             local command = self:getRequestHashMap():get(GLOBALS2.ADMINCOMMAND)
-            if command == nil or ((command < UpdateFileValidationView.UPDATEPRODUCT and -1) or (command > UpdateFileValidationView.UPDATEPRODUCT and 1) or 0) ~= 0 then
+            if rawequal(command, nil) or not rawequal(((command < UpdateFileValidationView.UPDATEPRODUCT and -1) or (command > UpdateFileValidationView.UPDATEPRODUCT and 1) or 0), 0) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                    self.logUtil:putF("Invalid AdminCommand=" .. command, self, self.commonStrings.IS_VALID)
+                    self.logUtil:putF(require("allbinary_java").to_string("Invalid AdminCommand=") .. require("allbinary_java").to_string(command), self, self.commonStrings.IS_VALID)
                 end
                 do return "__jreturn", false end
             end
-            if BasicItemValidation.new(self.itemInterface):isValid() == false then
+            if rawequal(BasicItemValidation.new(self.itemInterface):isValid(), false) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     self.logUtil:putF("BasicItem is not valid", self, self.commonStrings.IS_VALID)
                 end
@@ -209,14 +209,14 @@ function UpdateFileValidationView:isValid_j0()
             stringBuffer:append(self.itemInterface:getCategory())
             local fullCategory = tostring(stringBuffer)
             local categoryFile = AbFile.createAbFile(fullCategory)
-            if not categoryFile:isDirectory() then
+            if not (categoryFile:isDirectory()) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                    self.logUtil:putF("Category Does Not Exist: " .. fullCategory, self, self.commonStrings.IS_VALID)
+                    self.logUtil:putF(require("allbinary_java").to_string("Category Does Not Exist: ") .. require("allbinary_java").to_string(fullCategory), self, self.commonStrings.IS_VALID)
                 end
                 do return "__jreturn", false end
             end
             local inventoryEntity = InventoryEntityFactory.getInstance():getInventoryEntityInstance()
-            if inventoryEntity:getItem(self.itemInterface:getId()) == nil then
+            if rawequal(inventoryEntity:getItem(self.itemInterface:getId()), nil) then
                 do return "__jreturn", false end
             end
             local anyType = self:getRequestHashMap():get(self.basicItemData.IMAGE)
@@ -225,7 +225,7 @@ function UpdateFileValidationView:isValid_j0()
                 local size = fileItem:getSize()
                 local fileName = fileItem:getName()
                 HttpFileUploadUtil.log(fileItem)
-                if self:isValid(fileName, size) == false then
+                if rawequal(self:isValid(fileName, size), false) then
                     do return "__jreturn", false end
                 end
             end
@@ -259,17 +259,17 @@ java_overload(UpdateFileValidationView, "toValidationInfoNode", 1, function(java
 function UpdateFileValidationView:validationInfo_j0()
         local stringBuffer = StringMaker.new()
         local command = self:getRequestHashMap():get(GLOBALS2.ADMINCOMMAND)
-        if command == nil or ((command < UpdateFileValidationView.UPDATEPRODUCT and -1) or (command > UpdateFileValidationView.UPDATEPRODUCT and 1) or 0) ~= 0 then
+        if rawequal(command, nil) or not rawequal(((command < UpdateFileValidationView.UPDATEPRODUCT and -1) or (command > UpdateFileValidationView.UPDATEPRODUCT and 1) or 0), 0) then
             return CommonSeps.getInstance().SPACE
         end
         stringBuffer:append(BasicItemValidation.new(self.itemInterface):validationInfo())
         local storeFrontInterface = StoreFrontFactory.getInstance(self:getWeblisketSession():getStoreName())
         local fullCategory = URLGLOBALS.getWebappPath() + storeFrontInterface:getCurrentHostNamePath() + self.itemInterface:getCategory()
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("Category: " .. fullCategory, self, "validationInfo()")
+            self.logUtil:putF(require("allbinary_java").to_string("Category: ") .. require("allbinary_java").to_string(fullCategory), self, "validationInfo()")
         end
         local try_ok, try_error, try_value = pcall(function()
-            if InventoryEntityFactory.getInstance():getInventoryEntityInstance():getItem(self.itemInterface:getId()) == nil then
+            if rawequal(InventoryEntityFactory.getInstance():getInventoryEntityInstance():getItem(self.itemInterface:getId()), nil) then
                 stringBuffer:append("Item does not exist.<br>")
             end
         end)
@@ -297,7 +297,7 @@ function UpdateFileValidationView:isValid_j2(fileName, size)
         local fileData = FileData.getInstance()
         if size > fileData.MINIMAGEFILESIZE then
             if size < fileData.MAXIMAGEFILESIZE then
-                if not StringValidationUtil.getInstance():isValidRequired(fileName, fileData.MINLEN, fileData.MAXLEN) then
+                if not (StringValidationUtil.getInstance():isValidRequired(fileName, fileData.MINLEN, fileData.MAXLEN)) then
                     return false
                 end
             else
@@ -319,6 +319,8 @@ function UpdateFileValidationView:isValid(...)
     local count = select("#", ...)
     if count == 0 then return self:isValid_j0(...) end
     if count == 2 then return self:isValid_j2(...) end
+    local parent = getmetatable(UpdateFileValidationView).__index
+    if parent.isValid then return parent.isValid(self, ...) end
     error("No method isValid takes " .. count .. " arguments")
 end
 UpdateFileValidationView.isValid__jdispatcher = UpdateFileValidationView.isValid
@@ -327,9 +329,9 @@ UpdateFileValidationView.isValid__jdispatcher = UpdateFileValidationView.isValid
 function UpdateFileValidationView:validationInfo_j4(stringBuffer, fileName, fileItemFieldName, size)
         local fileData = FileData.getInstance()
         if size > fileData.MINIMAGEFILESIZE then
-            if ((fileItemFieldName < self.basicItemData.IMAGE and -1) or (fileItemFieldName > self.basicItemData.IMAGE and 1) or 0) == 0 then
+            if rawequal(((fileItemFieldName < self.basicItemData.IMAGE and -1) or (fileItemFieldName > self.basicItemData.IMAGE and 1) or 0), 0) then
                 if size < fileData.MAXIMAGEFILESIZE then
-                    if not StringValidationUtil.getInstance():isValidRequired(fileName, fileData.MINLEN, fileData.MAXLEN) then
+                    if not (StringValidationUtil.getInstance():isValidRequired(fileName, fileData.MINLEN, fileData.MAXLEN)) then
                         stringBuffer:append("FileName must be >")
                         stringBuffer:appendint(java_int(fileData.MINLEN))
                         stringBuffer:append("and <")
@@ -350,6 +352,8 @@ function UpdateFileValidationView:validationInfo(...)
     local count = select("#", ...)
     if count == 0 then return self:validationInfo_j0(...) end
     if count == 4 then return self:validationInfo_j4(...) end
+    local parent = getmetatable(UpdateFileValidationView).__index
+    if parent.validationInfo then return parent.validationInfo(self, ...) end
     error("No method validationInfo takes " .. count .. " arguments")
 end
 UpdateFileValidationView.validationInfo__jdispatcher = UpdateFileValidationView.validationInfo

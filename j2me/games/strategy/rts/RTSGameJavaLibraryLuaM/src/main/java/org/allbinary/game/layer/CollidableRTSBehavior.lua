@@ -162,8 +162,8 @@ end
 function CollidableRTSBehavior:isCollision(ownerLayer, collidableInterfaceCompositeInterface)
         local collisionTypeFactory = CollisionTypeFactory.getInstance()
         local collisionType = collidableInterfaceCompositeInterface:getCollidableInferface():getCollisionTypeWith(ownerLayer)
-        if collisionType == collisionTypeFactory.PICKUP then
-        elseif collisionType == collisionTypeFactory.COLLISION then
+        if rawequal(collisionType, collisionTypeFactory.PICKUP) then
+        elseif rawequal(collisionType, collisionTypeFactory.COLLISION) then
             return java_super(CollidableDestroyableDamageableBehavior, "isCollision", 2)(self, ownerLayer, collidableInterfaceCompositeInterface)
         else
             if collidableInterfaceCompositeInterface:getX2() <= ownerLayer:getXP() or collidableInterfaceCompositeInterface:getY2() <= ownerLayer:getYP() or collidableInterfaceCompositeInterface:getYP() >= ownerLayer:getY2() or collidableInterfaceCompositeInterface:getXP() >= ownerLayer:getX2() then
@@ -181,8 +181,8 @@ java_overload(CollidableRTSBehavior, "isCollision", 2, function(java_a1, java_a2
 function CollidableRTSBehavior:collide(ownerLayer, collidableInterfaceCompositeInterface)
         local collisionTypeFactory = CollisionTypeFactory.getInstance()
         local collisionType = collidableInterfaceCompositeInterface:getCollidableInferface():getCollisionTypeWith(ownerLayer)
-        if collisionType == collisionTypeFactory.PICKUP then
-        elseif collisionType == collisionTypeFactory.COLLISION then
+        if rawequal(collisionType, collisionTypeFactory.PICKUP) then
+        elseif rawequal(collisionType, collisionTypeFactory.COLLISION) then
             java_super(CollidableDestroyableDamageableBehavior, "collide", 2)(self, ownerLayer, collidableInterfaceCompositeInterface)
         else
             self:collideNone(ownerLayer, collidableInterfaceCompositeInterface)

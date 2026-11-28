@@ -158,7 +158,7 @@ end
 
 
 function CollidableWeaponBehavior.getNullInstance()
-        if CollidableWeaponBehavior.NULL_COLLIDABLE_WEAPON_BEHAVIOR == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(CollidableWeaponBehavior.NULL_COLLIDABLE_WEAPON_BEHAVIOR, NullUtil.getInstance().NULL_OBJECT) then
             CollidableWeaponBehavior.NULL_COLLIDABLE_WEAPON_BEHAVIOR = CollidableWeaponBehavior.new(false)
         end
         return CollidableWeaponBehavior.NULL_COLLIDABLE_WEAPON_BEHAVIOR
@@ -191,7 +191,7 @@ java_overload(CollidableWeaponBehavior, "init", 1, function(java_a1) return true
 
 function CollidableWeaponBehavior:isCollision(ownerLayer, collisionLayer)
         if self.collisionHelper:isCollidable(collisionLayer) then
-            if ownerLayer:getGroupInterface()[1] ~= collisionLayer:getGroupInterface()[1] then
+            if not rawequal(ownerLayer:getGroupInterface()[1], collisionLayer:getGroupInterface()[1]) then
                 return java_super(CollidableDestroyableDamageableBehavior, "isCollision", 2)(self, ownerLayer, collisionLayer)
             end
         end
@@ -211,7 +211,7 @@ java_overload(CollidableWeaponBehavior, "collide", 2, function(java_a1, java_a2)
 function CollidableWeaponBehavior:isCollisionInterface(ownerLayer, collidableInterfaceCompositeInterface)
         if self.collisionHelper:isCollidable(collidableInterfaceCompositeInterface) then
             local layerInterface = collidableInterfaceCompositeInterface
-            if ownerLayer:getGroupInterface()[1] ~= layerInterface:getGroupInterface()[1] then
+            if not rawequal(ownerLayer:getGroupInterface()[1], layerInterface:getGroupInterface()[1]) then
                 if self.layerCollisionUtil:isCollision(ownerLayer, layerInterface) then
                     return true
                 end

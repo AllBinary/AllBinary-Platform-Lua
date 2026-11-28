@@ -111,14 +111,14 @@ function SpriteSplitterUtil:process(imageProcessorInput, totalFrames, totalAnima
         for index = 0, (bufferedImageArray.n or #bufferedImageArray) - 1 do
             bufferedImage = bufferedImageArray[index + 1]
             self.logUtil:putF(spriteType, self, self.commonStrings.RUN)
-            if spriteType == self.HORIZONTAL_SPRITE then
+            if rawequal(spriteType, self.HORIZONTAL_SPRITE) then
                 local cellHeight = bufferedImage:getHeight() / totalAnimations
                 local cellWidth = bufferedImage:getWidth() / totalFrames
                 local columns = totalFrames
                 local rows = totalAnimations
                 generatedBufferedImageArray = java_new_array(nil, rows, columns)
-                self.logUtil:putF("Processing Individual Cells columns: " .. tostring(columns) .. " rows: " .. tostring(rows), self, self.commonStrings.RUN)
-                self.logUtil:putF("Processing Individual Cells cellHeight: " .. tostring(cellHeight) .. " cellWidth: " .. tostring(cellWidth), self, self.commonStrings.RUN)
+                self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Processing Individual Cells columns: ") .. require("allbinary_java").to_string(columns)) .. require("allbinary_java").to_string(" rows: ")) .. require("allbinary_java").to_string(rows), self, self.commonStrings.RUN)
+                self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Processing Individual Cells cellHeight: ") .. require("allbinary_java").to_string(cellHeight)) .. require("allbinary_java").to_string(" cellWidth: ")) .. require("allbinary_java").to_string(cellWidth), self, self.commonStrings.RUN)
                 local imageUtil = ImageUtil.getInstance()
                 local nameEnding = nil
                 local x = 0
@@ -128,7 +128,7 @@ function SpriteSplitterUtil:process(imageProcessorInput, totalFrames, totalAnima
                     for index3 = 0, columns - 1 do
                         x = cellWidth * index3
                         generatedBufferedImageArray[index2 + 1][index3 + 1] = bufferedImage:getSubimage(x + widthReduction, y + heightReduction, cellWidth - (widthReduction * 2), cellHeight - (heightReduction * 2))
-                        if increaseWidth ~= 0 or increaseHeight ~= 0 then
+                        if not rawequal(increaseWidth, 0) or not rawequal(increaseHeight, 0) then
                             generatedBufferedImageArray[index2 + 1][index3 + 1] = imageUtil:createBufferedImageAllowTranslate(generatedBufferedImageArray[index2 + 1][index3 + 1], cellWidth + increaseWidth, cellHeight + increaseHeight, false, true)
                         end
                         nameEnding = tostring(StringMaker.new():appendint(index2):append(self.commonSeps.UNDERSCORE):appendint(index3))
@@ -151,8 +151,8 @@ function SpriteSplitterUtil:process(imageProcessorInput, totalFrames, totalAnima
                     local generatedBufferedImage = ImageUnifierUtil.getInstance():getImage(tempBufferedImageArray, imageUnifierProperties)
                     visitor:visit(generatedBufferedImage, nameEnding, index)
                 end
-            elseif spriteType == self.HORIZONTAL_ANIMATIONS then
-            elseif spriteType == self.DIRECTIONAL_ANIMATIONS then
+            elseif rawequal(spriteType, self.HORIZONTAL_ANIMATIONS) then
+            elseif rawequal(spriteType, self.DIRECTIONAL_ANIMATIONS) then
                 local totalFrames2 = 4
                 local cellHeight = bufferedImage:getHeight() / totalFrames2
                 local cellWidth = bufferedImage:getWidth() / totalAnimations
@@ -168,7 +168,7 @@ function SpriteSplitterUtil:process(imageProcessorInput, totalFrames, totalAnima
                     for index3 = 0, columns - 1 do
                         x = cellWidth * index3
                         generatedBufferedImageArray[index2 + 1][index3 + 1] = bufferedImage:getSubimage(x + widthReduction, y + heightReduction, cellWidth - (widthReduction * 2), cellHeight - (heightReduction * 2))
-                        if increaseWidth ~= 0 or increaseHeight ~= 0 then
+                        if not rawequal(increaseWidth, 0) or not rawequal(increaseHeight, 0) then
                             generatedBufferedImageArray[index2 + 1][index3 + 1] = ImageUtil.getInstance():createBufferedImageAllowTranslate(generatedBufferedImageArray[index2 + 1][index3 + 1], cellWidth + increaseWidth, cellHeight + increaseHeight, false, true)
                         end
                         nameEnding = tostring(StringMaker.new():append(self.commonStrings.DIRECTION_NAME[index2 + 1]):append(self.commonSeps.UNDERSCORE):appendint(index3))

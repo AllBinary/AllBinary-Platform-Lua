@@ -225,7 +225,7 @@ function RaceTrackAdjacentDropCellPositionGenerator:getFirstNonRoadAdjacentCellP
             while (function() index = index - 1 return index end)() >= 0 do
             geographicMapCellPosition = self.surroundingCellPositions[index + 1]
             raceTrackGeographicMapCellType = self.raceTrackGeographicMap:getCellTypeAt(geographicMapCellPosition)
-            if not raceTrackGeographicMapCellTypeFactory:isPath(raceTrackGeographicMapCellType) then
+            if not (raceTrackGeographicMapCellTypeFactory:isPath(raceTrackGeographicMapCellType)) then
                 nonRoadGeographicMapCellPosition = geographicMapCellPosition
                 break
             end
@@ -248,14 +248,14 @@ java_overload(RaceTrackAdjacentDropCellPositionGenerator, "update", 2, function(
 function RaceTrackAdjacentDropCellPositionGenerator:drop(allBinaryLayerManager, index)
         local geographicMapCellPosition = self.list:get(index)
         local randomGeographicMapCellPosition = self:getFirstNonRoadAdjacentCellPosition(geographicMapCellPosition:getColumn(), geographicMapCellPosition:getRow())
-        if randomGeographicMapCellPosition == nil then
+        if rawequal(randomGeographicMapCellPosition, nil) then
             return
         end
         local dropCellPositionHistory = DropCellPositionHistory.getInstance()
-        if not dropCellPositionHistory:isCellPositionWithDrop(geographicMapCellPosition) then
+        if not (dropCellPositionHistory:isCellPositionWithDrop(geographicMapCellPosition)) then
             local direction = self.geographicMapDirectionUtil:getDirectionFromCellPositionToAdjacentCellPosition(randomGeographicMapCellPosition, geographicMapCellPosition)
             local objectCanBeNull = self.hashtable:get(self.groupCommonFactory.ID)
-            if objectCanBeNull ~= nil then
+            if not rawequal(objectCanBeNull, nil) then
             else
                 self.hashtable:put(self.groupCommonFactory.ID, BasicGroupFactory.getInstance().NONE_ARRAY)
             end

@@ -96,7 +96,7 @@ function NameSpaceRequestParam._jinit(self, nameSpace, value)
         local sepTokenizer = Tokenizer.new(NameSpaceRequestParamData.SEP)
         local nameSpaceWithPropertiesVector = sepTokenizer:getTokensFromString(packages, BasicArrayListD.new())
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
-            self.logUtil:putF("\nSep Tokens: " .. tostring(nameSpaceWithPropertiesVector), self, "NameSpaceRequestParam()")
+            self.logUtil:putF(require("allbinary_java").to_string("\nSep Tokens: ") .. require("allbinary_java").to_string(tostring(nameSpaceWithPropertiesVector)), self, "NameSpaceRequestParam()")
         end
         local nameSpaceAndPropertiesTokenizer = Tokenizer.new(NameSpaceRequestParamData.PROPERTIES)
         local packageIndex = 0
@@ -108,11 +108,11 @@ function NameSpaceRequestParam._jinit(self, nameSpace, value)
             list:clear()
             local nameSpaceAndPropertiesVector = nameSpaceAndPropertiesTokenizer:getTokensFromString(nameSpaceWithProperties, list)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
-                self.logUtil:putF("\nPackageName and PackageName Properties Tokens: " .. tostring(nameSpaceAndPropertiesVector), self, "NameSpaceRequestParam()")
+                self.logUtil:putF(require("allbinary_java").to_string("\nPackageName and PackageName Properties Tokens: ") .. require("allbinary_java").to_string(tostring(nameSpaceAndPropertiesVector)), self, "NameSpaceRequestParam()")
             end
             if nameSpaceAndPropertiesVector:size() > 0 then
                 local packageName = nameSpaceAndPropertiesVector:get(0)
-                if packageName == nil then
+                if rawequal(packageName, nil) then
                     error(require("java.lang.Exception").new("Package Name Is Null"), 0)
                 end
                 self.nameSpaceVector:add(packageName)
@@ -125,7 +125,7 @@ function NameSpaceRequestParam._jinit(self, nameSpace, value)
             end
         end
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
-            self.logUtil:putF("NameSpace: " .. tostring(self.nameSpaceVector), self, "NameSpaceRequestParam()")
+            self.logUtil:putF(require("allbinary_java").to_string("NameSpace: ") .. require("allbinary_java").to_string(tostring(self.nameSpaceVector)), self, "NameSpaceRequestParam()")
         end
     return self
 end
@@ -139,7 +139,7 @@ end
 
 function NameSpaceRequestParam:getPackages()
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
-            self.logUtil:putF("NameSpace: " .. tostring(self.nameSpaceVector), self, "getPackages()")
+            self.logUtil:putF(require("allbinary_java").to_string("NameSpace: ") .. require("allbinary_java").to_string(tostring(self.nameSpaceVector)), self, "getPackages()")
         end
         return self.nameSpaceVector
 end
@@ -147,11 +147,11 @@ end
 
 function NameSpaceRequestParam:getPackageProperties(packageIndex)
         local packagePropertiesHashMap = self.nameSpacePropertiesHashMap:get(tostring(packageIndex))
-        if packagePropertiesHashMap == nil then
+        if rawequal(packagePropertiesHashMap, nil) then
             packagePropertiesHashMap = StdUtil.getInstance():createHashMap()
         end
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
-            self.logUtil:putF("Package Properties: " .. tostring(packagePropertiesHashMap), self, "getPackagesProperties()")
+            self.logUtil:putF(require("allbinary_java").to_string("Package Properties: ") .. require("allbinary_java").to_string(tostring(packagePropertiesHashMap)), self, "getPackagesProperties()")
         end
         return packagePropertiesHashMap
 end
@@ -159,7 +159,7 @@ end
 
 function NameSpaceRequestParam:getValue()
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
-            self.logUtil:putF("\nValue: " .. self.value, self, "getValue()")
+            self.logUtil:putF(require("allbinary_java").to_string("\nValue: ") .. require("allbinary_java").to_string(self.value), self, "getValue()")
         end
         return self.value
 end
@@ -184,7 +184,7 @@ function NameSpaceRequestParam:generatePackagePropertiesHashMap(properties)
                 if propertyNameValueVector:size() > 1 then
                     local propertyValue = propertyNameValueVector:get((function() local value = index2 index2 = value + 1 return value end)())
                     if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().HTTPREQUEST) then
-                        self.logUtil:putF("\nProperty Name: " .. propertyName .. "\nProperty Value: " .. propertyValue, self, "generatePackagePropertiesHashMap()")
+                        self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("\nProperty Name: ") .. require("allbinary_java").to_string(propertyName)) .. require("allbinary_java").to_string("\nProperty Value: ")) .. require("allbinary_java").to_string(propertyValue), self, "generatePackagePropertiesHashMap()")
                     end
                     packagePropertiesHashMap:put(propertyName, propertyValue)
                 else

@@ -92,7 +92,7 @@ function BasicUserRoles:getRole(role)
         local size = roleVector:size()
         for index = 0, size - 1 do
             local userRole = roleVector:get(index)
-            if ((role < tostring(userRole) and -1) or (role > tostring(userRole) and 1) or 0) == 0 then
+            if rawequal(((role < tostring(userRole) and -1) or (role > tostring(userRole) and 1) or 0), 0) then
                 return userRole
             end
         end

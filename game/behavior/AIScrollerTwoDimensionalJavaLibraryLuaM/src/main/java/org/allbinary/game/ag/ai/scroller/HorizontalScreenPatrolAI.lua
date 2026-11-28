@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local BasicAI = require("org.allbinary.game.ai.BasicAI")
 local GameInput = java_lazy("org.allbinary.game.input.GameInput")
 local AllBinaryGameLayerManager = java_lazy("org.allbinary.game.layer.AllBinaryGameLayerManager")
@@ -185,7 +185,7 @@ function HorizontalScreenPatrolAI._jinit(self, hashtable, ownerLayerInterface, g
     HorizontalScreenPatrolAI._init_fields(self)
         -- super(...) made self above
         self.sound = hashtable:get(HorizontalScreenPatrolAI.SOUND)
-        if self.sound == nil then
+        if rawequal(self.sound, nil) then
             error(require("java.lang.Exception").new("No Sound Provided!!"), 0)
         end
     return self

@@ -185,7 +185,7 @@ end
 function TransformInfoObjectConfigAndManipulatorFactory:getInstance_j2(abeClientInformation, transformInfoInterface)
         local try_ok, try_error, try_value = pcall(function()
             local stringValidationUtil = StringValidationUtil.getInstance()
-            if transformInfoInterface ~= nil and not stringValidationUtil:isEmpty(transformInfoInterface:getStoreName()) then
+            if not rawequal(transformInfoInterface, nil) and not (stringValidationUtil:isEmpty(transformInfoInterface:getStoreName())) then
                 do return "__jreturn", GenericStoreTransformInfoObjectConfig.new(abeClientInformation, transformInfoInterface) end
             else
                 do return "__jreturn", TransformInfoObjectConfig.new(transformInfoInterface) end
@@ -195,8 +195,8 @@ function TransformInfoObjectConfigAndManipulatorFactory:getInstance_j2(abeClient
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local error = "Failed To Get Instance: "
-            if transformInfoInterface ~= nil then
-                error = error .. transformInfoInterface:getName()
+            if not rawequal(transformInfoInterface, nil) then
+                error = require("allbinary_java").to_string(error) .. require("allbinary_java").to_string(transformInfoInterface:getName())
             end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERFACTORYERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, TransformInfoObjectConfigAndManipulatorFactory.getInstance(), self.commonStrings.GET_INSTANCE, e)
@@ -211,7 +211,7 @@ end
 function TransformInfoObjectConfigAndManipulatorFactory:getInstance_j3_2(abeClientInformation, transformInfoInterface, document)
         local try_ok, try_error, try_value = pcall(function()
             local stringValidationUtil = StringValidationUtil.getInstance()
-            if transformInfoInterface ~= nil and not stringValidationUtil:isEmpty(transformInfoInterface:getStoreName()) then
+            if not rawequal(transformInfoInterface, nil) and not (stringValidationUtil:isEmpty(transformInfoInterface:getStoreName())) then
                 do return "__jreturn", GenericStoreTransformInfoObjectConfig.new(abeClientInformation, transformInfoInterface, document) end
             else
                 do return "__jreturn", TransformInfoObjectConfig.new(transformInfoInterface, document) end
@@ -221,8 +221,8 @@ function TransformInfoObjectConfigAndManipulatorFactory:getInstance_j3_2(abeClie
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local error = "Failed To Get Instance: "
-            if transformInfoInterface ~= nil then
-                error = error .. transformInfoInterface:getName()
+            if not rawequal(transformInfoInterface, nil) then
+                error = require("allbinary_java").to_string(error) .. require("allbinary_java").to_string(transformInfoInterface:getName())
             end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERFACTORYERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, TransformInfoObjectConfigAndManipulatorFactory.getInstance(), "getInstance(document)", e)
@@ -235,6 +235,8 @@ function TransformInfoObjectConfigAndManipulatorFactory:getInstance(...)
     local count = select("#", ...)
     if count == 3 then return self:getInstance_j3(...) end
     if count == 2 then return self:getInstance_j2(...) end
+    local parent = getmetatable(TransformInfoObjectConfigAndManipulatorFactory).__index
+    if parent.getInstance then return parent.getInstance(self, ...) end
     error("No method getInstance takes " .. count .. " arguments")
 end
 TransformInfoObjectConfigAndManipulatorFactory.getInstance__jdispatcher = TransformInfoObjectConfigAndManipulatorFactory.getInstance

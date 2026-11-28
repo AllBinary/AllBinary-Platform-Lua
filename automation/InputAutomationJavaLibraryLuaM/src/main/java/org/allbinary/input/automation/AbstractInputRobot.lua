@@ -130,7 +130,7 @@ end
 
 function AbstractInputRobot:mouseMove_j1(point)
         self:mouseMove(point.x, point.y)
-        self.logUtil:putF("Moved Mouse To: x: " .. tostring(point.x) .. " y: " .. tostring(point.y), self, "moveMouse")
+        self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Moved Mouse To: x: ") .. require("allbinary_java").to_string(point.x)) .. require("allbinary_java").to_string(" y: ")) .. require("allbinary_java").to_string(point.y), self, "moveMouse")
 end
 
 
@@ -138,7 +138,7 @@ end
 function AbstractInputRobot:mouseMoveToTarget_j3(rectangle, x, y)
         local point = PointHelper.getCenterPoint(rectangle)
         self:mouseMove(point.x + x, point.y + y)
-        self.logUtil:putF("Moved Mouse To: x: " .. tostring(point.x) .. " y: " .. tostring(point.y) .. " in the middle of: " .. tostring(rectangle), self, "moveMouseToTarget")
+        self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Moved Mouse To: x: ") .. require("allbinary_java").to_string(point.x)) .. require("allbinary_java").to_string(" y: ")) .. require("allbinary_java").to_string(point.y)) .. require("allbinary_java").to_string(" in the middle of: ")) .. require("allbinary_java").to_string(rectangle), self, "moveMouseToTarget")
 end
 
 

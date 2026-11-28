@@ -78,7 +78,7 @@ function LicenseClientAndServerTest._jinit(self, options)
             self.vector:add(options[index + 1])
         end
         if (options.n or #options) < 2 then
-            local file = File.new(tostring(PrintLicenseInitInfo.PATH) .. "testlicenseservers.txt")
+            local file = File.new(require("allbinary_java").to_string(PrintLicenseInitInfo.PATH) .. require("allbinary_java").to_string("testlicenseservers.txt"))
             local reader = FileReader.new(file)
             local lineNumberReader = LineNumberReader.new(reader)
             while lineNumberReader:ready() do
@@ -114,27 +114,27 @@ function LicenseClientAndServerTest:test()
                     local abeClientInformation = AbeClientInformationInterfaceFactory.getInstance()
                     local xmlRpcAbeLicenseClient = XmlRpcAbeLicenseRetrievalClient.new(abeClientInformation)
                     local abeLicenseInterface = xmlRpcAbeLicenseClient:get(nil)
-                    if abeLicenseInterface ~= nil then
+                    if not rawequal(abeLicenseInterface, nil) then
                         stringBuffer:append(PROCESSING)
                         stringBuffer:append(tostring(abeLicenseInterface))
                     end
                     stringBuffer:append(END)
-                    self.logUtil:putF(RESULT .. tostring(stringBuffer), self, "test")
+                    self.logUtil:putF(require("allbinary_java").to_string(RESULT) .. require("allbinary_java").to_string(tostring(stringBuffer)), self, "test")
                     stringBuffer:delete(0, stringBuffer:length())
                 end)
                 if not try_ok then
                     local e = try_error
                     if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
                     list:add(serverName)
-                    self.logUtil:put("Test Error: " .. tostring(stringBuffer), self, "test", e)
+                    self.logUtil:put(require("allbinary_java").to_string("Test Error: ") .. require("allbinary_java").to_string(tostring(stringBuffer)), self, "test", e)
                 end
             end
-            self.logUtil:putF("Total Servers Failed: " .. tostring(list:size()) .. " Failed Servers: " .. tostring(list), self, "test")
+            self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Total Servers Failed: ") .. require("allbinary_java").to_string(list:size())) .. require("allbinary_java").to_string(" Failed Servers: ")) .. require("allbinary_java").to_string(tostring(list)), self, "test")
         end)
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-            self.logUtil:put("Test Error: " .. tostring(stringBuffer), self, "test", e)
+            self.logUtil:put(require("allbinary_java").to_string("Test Error: ") .. require("allbinary_java").to_string(tostring(stringBuffer)), self, "test", e)
         end
 end
 

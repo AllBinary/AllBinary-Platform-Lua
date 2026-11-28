@@ -133,9 +133,9 @@ setmetatable(TextFieldItemValidator, {__index = ValidatorBase})
 
 function TextFieldItemValidator:_init_fields()
     if self.textFieldItem == nil then self.textFieldItem = nil end
-    if self.min == nil then self.min = nil end
-    if self.max == nil then self.max = nil end
-    if self.allowOnEmpty == nil then self.allowOnEmpty = nil end
+    if self.min == nil then self.min = 0 end
+    if self.max == nil then self.max = 0 end
+    if self.allowOnEmpty == nil then self.allowOnEmpty = false end
 end
 
 
@@ -161,7 +161,7 @@ function TextFieldItemValidator:isValid()
         local result = booleanFactory.TRUE
         local string_ = self.textFieldItem:getString()
         local textLength = #string_
-        if (textLength == 0 and self.allowOnEmpty) or textLength > self.min and textLength < self.max then
+        if (rawequal(textLength, 0) and self.allowOnEmpty) or textLength > self.min and textLength < self.max then
         else
             if textLength < self.min then
                 result = booleanFactory.FALSE

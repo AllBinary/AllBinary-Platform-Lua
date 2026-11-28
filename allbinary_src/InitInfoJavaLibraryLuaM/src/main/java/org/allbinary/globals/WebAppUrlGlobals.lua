@@ -185,7 +185,7 @@ java_overload(WebAppUrlGlobals, "getTestHtmlPath", 0)
 -- throws Exception
 function WebAppUrlGlobals:getMainPath()
         local mainPath = InitInfo.getInstance():getMainPath()
-        if not StringValidationUtil.getInstance():isEmpty(mainPath) then
+        if not (StringValidationUtil.getInstance():isEmpty(mainPath)) then
             return mainPath
         elseif self.isWebappPathSet then
             return self:getWebappPath()

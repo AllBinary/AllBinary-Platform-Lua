@@ -168,7 +168,7 @@ function DestroyedLayerProcessor:process(allBinaryLayerManager)
         local layerInterface = nil
         for index = 0, size - 1 do
             local layerInterfaceCanBeNull = list.objectArray[index + 1]
-            if layerInterfaceCanBeNull ~= nil then
+            if not rawequal(layerInterfaceCanBeNull, nil) then
                 layerInterface = layerInterfaceCanBeNull
                 allBinaryLayerManager:remove(layerInterface)
                 destroyedEvent = destroyEventCircularStaticPool:getInstanceForLayer(layerInterface)

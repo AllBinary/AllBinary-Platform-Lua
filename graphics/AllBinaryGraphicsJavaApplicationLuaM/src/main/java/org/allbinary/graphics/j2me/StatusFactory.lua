@@ -81,7 +81,7 @@ end
 
 function StatusFactory:setStatus(status)
         self:setStatusNoLog(status)
-        self.logUtil:putF(self.STATUS_LABEL .. status, self, self.SETSTATUS)
+        self.logUtil:putF(require("allbinary_java").to_string(self.STATUS_LABEL) .. require("allbinary_java").to_string(status), self, self.SETSTATUS)
 end
 
 StatusFactory.instance_f = StatusFactory.new()

@@ -75,7 +75,7 @@ end
 
 
 function CancelTouchButtonInputFactory.getInstance()
-        if CancelTouchButtonInputFactory.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(CancelTouchButtonInputFactory.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             CancelTouchButtonInputFactory.instance_f = CancelTouchButtonInputFactory.new()
         end
         return CancelTouchButtonInputFactory.instance_f

@@ -62,7 +62,7 @@ LazyImageRotationAnimationFactory.java_implements = " AnimationInterfaceFactoryI
 LazyImageRotationAnimationFactory.java_interfaces = function() return {AnimationInterfaceFactoryInterface} end
 
 function LazyImageRotationAnimationFactory:_init_fields()
-    if self.layoutIndex == nil then self.layoutIndex = nil end
+    if self.layoutIndex == nil then self.layoutIndex = 0 end
     if self.animationInterfaceFactoryInterface == nil then self.animationInterfaceFactoryInterface = nil end
     self.scaleProperties = ScaleProperties.instance_f
 end
@@ -73,7 +73,7 @@ function LazyImageRotationAnimationFactory._jinit(self, layoutIndex, associatedL
         self.layoutIndex = layoutIndex
         self.animationInterfaceFactoryInterface = animationInterfaceFactoryInterface
         ImageCacheFactory.getInstance().hasAnyLazyAnimationFactories = true
-        if self.animationInterfaceFactoryInterface.animationBehaviorFactory == AnimationBehaviorFactory.getInstance() then
+        if rawequal(self.animationInterfaceFactoryInterface.animationBehaviorFactory, AnimationBehaviorFactory.getInstance()) then
             ForcedLogUtil.log("Using default AnimationBehaviorFactory with IndexedAnimationFactory", self)
         end
     return self

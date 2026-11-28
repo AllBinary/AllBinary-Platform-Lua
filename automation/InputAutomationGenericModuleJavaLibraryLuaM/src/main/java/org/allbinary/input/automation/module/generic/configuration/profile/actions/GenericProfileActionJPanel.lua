@@ -227,33 +227,39 @@ function GenericProfileActionJPanel:initComponents()
         self.ifJLabel:setText("Conditions:")
         self.newColorAtJButton:setText("Color Range At")
         self.newColorAtJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:newColorAtJButtonActionPerformed(evt)
+                ;(self.newColorAtJButtonActionPerformed and self or java_outer_self):newColorAtJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.newTimeIntervalJButton:setText("Time Interval")
         self.newTimeIntervalJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:newTimeIntervalJButtonActionPerformed(evt)
+                ;(self.newTimeIntervalJButtonActionPerformed and self or java_outer_self):newTimeIntervalJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.newAlwaysJButton:setText("Always On/Off")
         self.newAlwaysJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:newAlwaysJButtonActionPerformed(evt)
+                ;(self.newAlwaysJButtonActionPerformed and self or java_outer_self):newAlwaysJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o

@@ -31,8 +31,8 @@ end
 local Bitmap = java_lazy("android.graphics.Bitmap")
 local Canvas = java_lazy("android.graphics.Canvas")
 local Matrix = java_lazy("android.graphics.Matrix")
--- local Image = require("javax.microedition.lcdui.Image")
--- local NullImage = require("javax.microedition.lcdui.NullImage")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local NullImage = java_lazy("javax.microedition.lcdui.NullImage")
 local Anchor = java_lazy("org.allbinary.graphics.Anchor")
 local ImageCache = java_lazy("org.allbinary.image.ImageCache")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
@@ -131,7 +131,7 @@ function ImageScaleUtil:createImage(imageCache, originalImage, scaleX, scaleY, c
             local scaleX2 = (scaleX2Float + 0.0)
             local scaleY2Float = self.scaleYBasicArrayList:get(index)
             local scaleY2 = (scaleY2Float + 0.0)
-            if scaleX2 == scaleX and scaleY2 == scaleY then
+            if rawequal(scaleX2, scaleX) and rawequal(scaleY2, scaleY) then
                 alreadyAvailable = true
             end
         end

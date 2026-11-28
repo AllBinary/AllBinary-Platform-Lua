@@ -96,7 +96,7 @@ end
 
 
 function Health:isDamaged()
-        if self:getHealth() ~= self:getMaxHealth() then
+        if not rawequal(self:getHealth(), self:getMaxHealth()) then
             return true
         else
             return false
@@ -146,7 +146,7 @@ function Health:setHealth(health)
         else
             self.health = health
         end
-        if self.healthListenerInterface ~= nil then
+        if not rawequal(self.healthListenerInterface, nil) then
             self.healthListenerInterface:onHealthChange()
         end
 end

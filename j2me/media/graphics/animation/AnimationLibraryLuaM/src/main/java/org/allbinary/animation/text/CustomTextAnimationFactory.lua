@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Font = require("javax.microedition.lcdui.Font")
+local Font = java_lazy("javax.microedition.lcdui.Font")
 local Animation = java_lazy("org.allbinary.animation.Animation")
 local AnimationBehaviorFactory = java_lazy("org.allbinary.animation.AnimationBehaviorFactory")
 local AnimationInterfaceFactoryInterface = java_lazy("org.allbinary.animation.AnimationInterfaceFactoryInterface")
@@ -68,7 +68,7 @@ function CustomTextAnimationFactory:_init_fields()
     if self.animationBehaviorFactory == nil then self.animationBehaviorFactory = nil end
     self.basicColor = BasicColorFactory.getInstance().BLACK
     if self.text == nil then self.text = nil end
-    if self.initScaleHeight == nil then self.initScaleHeight = nil end
+    if self.initScaleHeight == nil then self.initScaleHeight = 0 end
     self.dx = 0
     self.dy = 0
     if self.font == nil then self.font = nil end
@@ -105,7 +105,7 @@ end
 -- throws Exception
 function CustomTextAnimationFactory:getInstance(instanceId)
         local customTextAnimation = nil
-        if self.dx ~= 0 or self.dy ~= 0 then
+        if not rawequal(self.dx, 0) or not rawequal(self.dy, 0) then
             customTextAnimation = AdjustCustomTextAnimation.new(self.text, self.scaleProperties.scaleHeight, self.dx, self.dy, self.animationBehaviorFactory:getOrCreateInstance())
         else
             customTextAnimation = CustomTextAnimation.new(self.text, self.scaleProperties.scaleHeight, self.animationBehaviorFactory:getOrCreateInstance())

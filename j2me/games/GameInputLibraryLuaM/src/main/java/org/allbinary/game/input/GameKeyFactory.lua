@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local NullUtil = java_lazy("org.allbinary.logic.NullUtil")
 local CommonPhoneStrings = java_lazy("org.allbinary.string.CommonPhoneStrings")
 local GameKey = java_lazy("org.allbinary.game.input.GameKey")
@@ -94,7 +94,7 @@ end
 
 
 function GameKeyFactory.getInstance()
-        if GameKeyFactory.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(GameKeyFactory.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             GameKeyFactory.instance_f = GameKeyFactory.new()
         end
         return GameKeyFactory.instance_f

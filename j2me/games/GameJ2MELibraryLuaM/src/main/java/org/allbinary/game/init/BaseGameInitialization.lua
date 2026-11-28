@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
 local FeaturedAnimationInterfaceFactoryInterfaceFactory = java_lazy("org.allbinary.animation.FeaturedAnimationInterfaceFactoryInterfaceFactory")
 local GameConfigurationCentral = java_lazy("org.allbinary.game.configuration.GameConfigurationCentral")
 local ChangedGameFeatureListener = java_lazy("org.allbinary.game.configuration.event.ChangedGameFeatureListener")
@@ -88,7 +88,7 @@ BaseGameInitialization.java_interfaces = function() return {GameInitializationIn
 
 function BaseGameInitialization:_init_fields()
     if self.resourceInitializationArray == nil then self.resourceInitializationArray = nil end
-    if self.portion == nil then self.portion = nil end
+    if self.portion == nil then self.portion = 0 end
     if self.initialized == nil then self.initialized = false end
     self.EARLY_RESOURCES = 0
     self.GAME_RESOURCES = 1
@@ -131,9 +131,9 @@ end
 -- throws Exception
 function BaseGameInitialization:init(abeClientInformation, commandListener, level)
         local resourceLoadingLevelFactory = ResourceLoadingLevelFactory.getInstance()
-        if not self:isInitialized() and (level == resourceLoadingLevelFactory.LOAD_ALL:getLevel() or level == resourceLoadingLevelFactory.LOAD_EARLY:getLevel()) then
+        if not (self:isInitialized()) and (rawequal(level, resourceLoadingLevelFactory.LOAD_ALL:getLevel()) or rawequal(level, resourceLoadingLevelFactory.LOAD_EARLY:getLevel())) then
             local localPortion = 40
-            if level == resourceLoadingLevelFactory.LOAD_EARLY:getLevel() then
+            if rawequal(level, resourceLoadingLevelFactory.LOAD_EARLY:getLevel()) then
                 localPortion = 8
             end
             self:setInitialized(true)
@@ -157,15 +157,15 @@ end
 -- throws Exception
 function BaseGameInitialization:resourceInitialization(level)
         local resourceLoadingLevelFactory = ResourceLoadingLevelFactory.getInstance()
-        if self:resourceAnimationChange() and level == resourceLoadingLevelFactory.LOAD_EARLY:getLevel() then
+        if self:resourceAnimationChange() and rawequal(level, resourceLoadingLevelFactory.LOAD_EARLY:getLevel()) then
             self:clearResources()
             self.resourceInitializationArray[self.EARLY_CHANGABLE_RESOURCES + 1]:init()
         end
-        if self:resourceAnimationChange() and level == resourceLoadingLevelFactory.LOAD_ALL:getLevel() then
+        if self:resourceAnimationChange() and rawequal(level, resourceLoadingLevelFactory.LOAD_ALL:getLevel()) then
             if self.allLoaded then
                 self:clearResources()
             end
-            if FeaturedAnimationInterfaceFactoryInterfaceFactory.getInstance():getList():size() == 0 then
+            if rawequal(FeaturedAnimationInterfaceFactoryInterfaceFactory.getInstance():getList():size(), 0) then
                 self.resourceInitializationArray[self.EARLY_CHANGABLE_RESOURCES + 1]:init()
             end
             self.resourceInitializationArray[self.GAME_CHANGABLE_RESOURCES + 1]:init()

@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local Player = require("javax.microedition.media.Player")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Player = java_lazy("javax.microedition.media.Player")
 local Animation = java_lazy("org.allbinary.animation.Animation")
 local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 local AnimationEventHandler = java_lazy("org.allbinary.animation.AnimationEventHandler")
@@ -138,11 +138,11 @@ setmetatable(CaptionIndexedAnimation, {__index = IndexedAnimation})
 function CaptionIndexedAnimation:_init_fields()
     if self.animationInterface == nil then self.animationInterface = nil end
     if self.movieIndexedAnimationInterface == nil then self.movieIndexedAnimationInterface = nil end
-    if self.captionDx == nil then self.captionDx = nil end
-    if self.captionDy == nil then self.captionDy = nil end
-    if self.dx == nil then self.dx = nil end
-    if self.dy == nil then self.dy = nil end
-    if self.time == nil then self.time = nil end
+    if self.captionDx == nil then self.captionDx = 0 end
+    if self.captionDy == nil then self.captionDy = 0 end
+    if self.dx == nil then self.dx = 0 end
+    if self.dy == nil then self.dy = 0 end
+    if self.time == nil then self.time = 0 end
     if self.END_EVENT == nil then self.END_EVENT = nil end
     if self.timeDelayHelper == nil then self.timeDelayHelper = nil end
     if self.player == nil then self.player = nil end
@@ -188,7 +188,7 @@ java_overload(CaptionIndexedAnimation, "nextFrame", 0)
 
 
 function CaptionIndexedAnimation:isLastFrame()
-        if self.movieIndexedAnimationInterface:getFrame() == self:getSize() - 1 then
+        if rawequal(self.movieIndexedAnimationInterface:getFrame(), self:getSize() - 1) then
             return true
         else
             return false

@@ -182,12 +182,12 @@ end
 
 function CategoryLoader:getDoc(categoryInterface)
         local try_ok, try_error, try_value = pcall(function()
-            if categoryInterface:getProperties():getPath(categoryInterface:getHierarchy()) ~= nil then
-                if categoryInterface:getHierarchy():getLevel() == 1 then
+            if not rawequal(categoryInterface:getProperties():getPath(categoryInterface:getHierarchy()), nil) then
+                if rawequal(categoryInterface:getHierarchy():getLevel(), 1) then
                     local rootAbFile = AbFile.createAbFileFromAbPath(categoryInterface:getRootFilePath())
-                    if not rootAbFile:isDirectory() then
+                    if not (rootAbFile:isDirectory()) then
                         rootAbFile:mkdirs()
-                        if not rootAbFile:isDirectory() then
+                        if not (rootAbFile:isDirectory()) then
                             error(require("java.lang.Exception").new("Could Not Create Directory"), 0)
                         end
                         self:save(categoryInterface)
@@ -259,6 +259,8 @@ end
 function CategoryLoader:get(...)
     local count = select("#", ...)
     if count == 1 then return self:get_j1(...) end
+    local parent = getmetatable(CategoryLoader).__index
+    if parent.get then return parent.get(self, ...) end
     error("No method get takes " .. count .. " arguments")
 end
 CategoryLoader.get__jdispatcher = CategoryLoader.get
@@ -306,10 +308,10 @@ end
 
 function CategoryLoader:getAll_j2(parentCategoryInterface, categoryNodeList)
         local try_ok, try_error, try_value = pcall(function()
-            if categoryNodeList ~= nil then
+            if not rawequal(categoryNodeList, nil) then
                 for index = 0, categoryNodeList:getLength() - 1 do
                     local categoryNode = categoryNodeList:item(index)
-                    if categoryNode ~= nil and categoryNode:getNodeName():compareTo(CategoryData.getInstance().NAME) == 0 then
+                    if not rawequal(categoryNode, nil) and rawequal(categoryNode:getNodeName():compareTo(CategoryData.getInstance().NAME), 0) then
                         local categoryInterface = self.categoryFactoryInterface:getInstance(parentCategoryInterface:getHierarchy():getRoot(), parentCategoryInterface, categoryNode)
                         parentCategoryInterface:addChild(categoryInterface)
                     end
@@ -331,6 +333,8 @@ function CategoryLoader:getAll(...)
     local count = select("#", ...)
     if count == 1 then return self:getAll_j1(...) end
     if count == 2 then return self:getAll_j2(...) end
+    local parent = getmetatable(CategoryLoader).__index
+    if parent.getAll then return parent.getAll(self, ...) end
     error("No method getAll takes " .. count .. " arguments")
 end
 CategoryLoader.getAll__jdispatcher = CategoryLoader.getAll
@@ -343,10 +347,10 @@ end
 
 function CategoryLoader:addProperties(loadedCategoryInterface, categoryNodeList)
         local try_ok, try_error, try_value = pcall(function()
-            if categoryNodeList ~= nil then
+            if not rawequal(categoryNodeList, nil) then
                 for index = 0, categoryNodeList:getLength() - 1 do
                     local categoryNode = categoryNodeList:item(index)
-                    if categoryNode ~= nil and categoryNode:getNodeName():compareTo(CategoryData.getInstance().NAME) == 0 then
+                    if not rawequal(categoryNode, nil) and rawequal(categoryNode:getNodeName():compareTo(CategoryData.getInstance().NAME), 0) then
                         local categoryPropertiesInterface = CategoryProperties.new(categoryNode)
                         loadedCategoryInterface:addChildProperty(categoryPropertiesInterface)
                     end

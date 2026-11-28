@@ -28,9 +28,9 @@ local function java_real(class)
     return class
 end
 
--- local GL10 = require("javax.microedition.khronos.opengles.GL10")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local Image = require("javax.microedition.lcdui.Image")
+local GL10 = java_lazy("javax.microedition.khronos.opengles.GL10")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local SWT = java_lazy("org.eclipse.swt.SWT")
 local ImageData = java_lazy("org.eclipse.swt.graphics.ImageData")
 local ImageLoader = java_lazy("org.eclipse.swt.graphics.ImageLoader")
@@ -178,7 +178,7 @@ function TrueTypeFontUtil:_init_fields()
     self.preResourceImageUtil = PreResourceImageUtil.getInstance()
     if self.widthFloatArray == nil then self.widthFloatArray = nil end
     self.fontImage = OpenGLESImage.NULL_OPENGL_IMAGE
-    if self.widthScale == nil then self.widthScale = nil end
+    if self.widthScale == nil then self.widthScale = 0.0 end
 end
 
 
@@ -196,7 +196,7 @@ function TrueTypeFontUtil._jinit(self)
         else
             self.widthFloatArray = {jt = "F", 1504.0, 967.0, 527.0, 961.0, 957.0, 1087.0, 920.0, 954.0, 973.0, 961.0, 955.0, 1296.0, 1013.0, 1106.0, 1167.0, 815.0, 815.0, 1216.0, 1110.0, 170.0, 520.0, 1056.0, 815.0, 1448.0, 1142.0, 1345.0, 927.0, 1345.0, 1030.0, 920.0, 1096.0, 1119.0, 1219.0, 1841.0, 1166.0, 1147.0, 1005.0, 879.0, 965.0, 792.0, 964.0, 927.0, 753.0, 1034.0, 916.0, 196.0, 469.0, 877.0, 166.0, 1563.0, 916.0, 1007.0, 965.0, 964.0, 631.0, 777.0, 649.0, 917.0, 1026.0, 1548.0, 993.0, 1028.0, 795.0, 241.0, 798.0, 241.0, 905.0, 1477.0, 393.0, 961.0, 555.0, 1029.0, 1010.0, 1378.0, 952.0, 463.0, 463.0, 926.0, 961.0, 491.0, 930.0, 457.0, 457.0, 644.0, 643.0, 326.0, 186.0, 1219.0, 241.0, 1599.0, 961.0, 302.0, 711.0, 961.0, 961.0, 710.0, 141.0, 1504.0, 1504.0}
         end
-        self.widthScale = (function() if (self.scale == 2) then return 1.2 else return 1.0 end end)()
+        self.widthScale = (function() if (rawequal(self.scale, 2)) then return 1.2 else return 1.0 end end)()
     return self
 end
 
@@ -209,10 +209,10 @@ end
 
 function TrueTypeFontUtil:getFontBitmapGL(gl, filename, cellSize, basicColor)
         local try_ok, try_error, try_value = pcall(function()
-            if self.fontImage == OpenGLESImage.NULL_OPENGL_IMAGE then
+            if rawequal(self.fontImage, OpenGLESImage.NULL_OPENGL_IMAGE) then
                 local canvasStrings = CanvasStrings.getInstance()
                 local openGLCapabilities = OpenGLCapabilities.getInstance()
-                if openGLCapabilities:isTextureSizeValid(1024) and self.scale == 2 then
+                if openGLCapabilities:isTextureSizeValid(1024) and rawequal(self.scale, 2) then
                     local FONT_ATLAS_1024 = "/font_1024.png"
                     local image = Image.createImageFromInputStream(ResourceUtil.getInstance():getResourceAsStream(FONT_ATLAS_1024))
                     image:setName(canvasStrings.FONT_ATLAS)
@@ -324,13 +324,13 @@ function TrueTypeFontUtil:getFontWidths(filename, fontSize)
         local commonStrings = CommonStrings.getInstance()
         for index = 0, self.size_f - 1 do
             self.characterArray[1] = self.pattern:charAt(index)
-            if self.characterArray[1] == " " then
+            if rawequal(self.characterArray[1], " ") then
                 self._characterWidth[index + 1] = (java_idiv(fontSize, 4))
             else
                 local shortPatternIndex = self.shortPattern:indexOf(self.characterArray[1])
                 local w = java_int((self.widthFloatArray[shortPatternIndex + 1] / 75.0)) + 19
                 self._characterWidth[index + 1] = w
-                if self.characterArray[1] == "." or self.characterArray[1] == "1" then
+                if rawequal(self.characterArray[1], ".") or rawequal(self.characterArray[1], "1") then
                     self._characterWidth[index + 1] = self._characterWidth[index + 1] + (4)
                 end
                 if self.characterArray[1] >= "a" and self.characterArray[1] < "k" then
@@ -342,7 +342,7 @@ function TrueTypeFontUtil:getFontWidths(filename, fontSize)
                 if self.characterArray[1] >= "v" and self.characterArray[1] < "z" then
                     self._characterWidth[index + 1] = self._characterWidth[index + 1] - (8)
                 end
-                if self.characterArray[1] == "D" then
+                if rawequal(self.characterArray[1], "D") then
                     self._characterWidth[index + 1] = self._characterWidth[index + 1] - (4)
                 end
                 if self.characterArray[1] >= "A" and self.characterArray[1] <= "Z" then

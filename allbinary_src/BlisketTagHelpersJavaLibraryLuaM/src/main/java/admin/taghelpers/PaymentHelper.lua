@@ -228,7 +228,7 @@ function PaymentHelper:delete()
             local paymentEntity = PaymentEntityFactory.getInstance():getPaymentEntityInstance()
             paymentEntity:remove(self.weblisketSession:getUserName(), self.value)
             local paymentInterface = paymentEntity:getDefault(self.weblisketSession:getUserName())
-            if paymentInterface == nil then
+            if rawequal(paymentInterface, nil) then
                 paymentEntity:setDefault(self.weblisketSession:getUserName(), paymentEntity:getLastId(self.weblisketSession:getUserName()))
             end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGS) then

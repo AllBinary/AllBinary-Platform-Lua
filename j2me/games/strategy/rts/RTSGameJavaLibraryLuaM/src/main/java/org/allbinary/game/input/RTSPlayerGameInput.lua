@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local RTSFormInput = java_lazy("org.allbinary.game.input.form.RTSFormInput")
 local RTSLayer = java_lazy("org.allbinary.game.layer.RTSLayer")
 local RTSLayerInfoPaintable = java_lazy("org.allbinary.game.layer.RTSLayerInfoPaintable")
@@ -208,7 +208,7 @@ function RTSPlayerGameInput._jinit(self, gameCanvas, inputList, playerInputId, t
         self.towerInfoPaintable = towerInfoPaintable
         self.rtsPlayerLayerInterface = rtsPlayerLayerInterface
         self.selectedRTSLayerPlayerGameInput = SelectedRTSLayersPlayerGameInput.new(self:getRTSLayerInfoPaintable(), self:getRtsPlayerLayerInterface(), self.inputList, playerInputId, selectRTSLayerVisitorFactoryInterface)
-        if self.rtsPlayerLayerInterface ~= NullRTSLayer.NULL_RTS_LAYER then
+        if not rawequal(self.rtsPlayerLayerInterface, NullRTSLayer.NULL_RTS_LAYER) then
             self:setSelectedRtsFormInput(self.rtsPlayerLayerInterface:getRTSFormInput())
         end
         local geographicMapCompositeInterface = self.gameCanvas:getLayerManager()
@@ -228,7 +228,7 @@ end
 -- throws Exception
 function RTSPlayerGameInput:setAllBinaryGameLayerManager(allBinaryGameLayerManager)
         self.selectedRTSLayerPlayerGameInput:setAllBinaryGameLayerManager(allBinaryGameLayerManager)
-        if self.selectedRtsFormInput ~= NullRTSFormInputFactory.getInstance() then
+        if not rawequal(self.selectedRtsFormInput, NullRTSFormInputFactory.getInstance()) then
             self.selectedRtsFormInput:setAllBinaryGameLayerManager(allBinaryGameLayerManager)
         end
 end
@@ -325,10 +325,10 @@ function RTSPlayerGameInput:select(motionGestureEvent)
         local x = point:getX() + allBinaryTiledLayer:getXP()
         local y = point:getY() + allBinaryTiledLayer:getYP()
         local geographicMapCellPosition = geographicMapInterface:getCellPositionAtXYNoThrow(x, y)
-        if geographicMapCellPosition ~= SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION then
+        if not rawequal(geographicMapCellPosition, SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION) then
             SecondaryPlayerQueueFactory.getInstance():add(SelectSound.getInstance())
             local layer = self.layerPositionFinderInterface:getLayerInterface(geographicMapCellPosition)
-            if layer == AllBinaryLayer.NULL_ALLBINARY_LAYER then
+            if rawequal(layer, AllBinaryLayer.NULL_ALLBINARY_LAYER) then
                 layer = CollidableDestroyableDamageableLayer.getNullInstance()
             else
                 geographicMapCellPosition = geographicMapInterface:getCellPositionAtXY(layer:getXP(), layer:getYP())
@@ -366,7 +366,7 @@ function RTSPlayerGameInput:paint(graphics)
                 height = rtsLayer:getHeight()
                 graphics:drawRect(rtsLayer:getXP() - allBinaryTiledLayer:getXP(), rtsLayer:getYP() - allBinaryTiledLayer:getYP(), width, height)
             end
-        elseif geographicMapCellPosition ~= SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION then
+        elseif not rawequal(geographicMapCellPosition, SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION) then
             local point = geographicMapCellPosition:getPoint()
             width = allBinaryTiledLayer:getCellWidth()
             height = allBinaryTiledLayer:getCellHeight()

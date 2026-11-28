@@ -105,11 +105,11 @@ end
 function SimpleStateTaxModule:getTaxRate(streetAddress, storeFrontInterface)
         self.streetAddress = streetAddress
         self.storeFrontInterface = storeFrontInterface
-        local fileAbPath = AbPath.new(tostring(URLGLOBALS.getMainPath() + FREEBLISKET_PATH_GLOBALS.getInstance().XSLPATH) .. self.storeFrontInterface:getName() .. self.STATETAXPATH, self.STATETAXFILE)
+        local fileAbPath = AbPath.new(require("allbinary_java").to_string(require("allbinary_java").to_string(URLGLOBALS.getMainPath() + FREEBLISKET_PATH_GLOBALS.getInstance().XSLPATH) .. require("allbinary_java").to_string(self.storeFrontInterface:getName())) .. require("allbinary_java").to_string(self.STATETAXPATH), self.STATETAXFILE)
         local data = CryptFileReader.new(TransformInfoObjectConfigData.getInstance().UNCRYPTED_EXTENSION, TransformInfoObjectConfigData.getInstance().ENCRYPTED_EXTENSION):get(fileAbPath)
         self.document = DomDocumentHelper.create(data)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAX) then
-            self.logUtil:putF("Tax Doc: " .. XmlDocumentHelper.toString(self.document), self, "getTaxRate")
+            self.logUtil:putF(require("allbinary_java").to_string("Tax Doc: ") .. require("allbinary_java").to_string(XmlDocumentHelper.toString(self.document)), self, "getTaxRate")
         end
         local state = self.streetAddress:getState()
         local country = self.streetAddress:getCountry()
@@ -121,8 +121,8 @@ function SimpleStateTaxModule:getTaxRate(streetAddress, storeFrontInterface)
             local streetAddressNode = DomSearchHelper.getNode(StreetAddressData.NAME, taxNodeChildren)
             local taxableStreetAddress = StreetAddress.new(streetAddressNode)
             local stringValidationUtil = StringValidationUtil.getInstance()
-            if not stringValidationUtil:isEmpty(country) and not stringValidationUtil:isEmpty(taxableStreetAddress:getCountry()) and ((country < taxableStreetAddress:getCountry() and -1) or (country > taxableStreetAddress:getCountry() and 1) or 0) == 0 then
-                if state ~= nil and taxableStreetAddress:getState() ~= nil and ((state < taxableStreetAddress:getState() and -1) or (state > taxableStreetAddress:getState() and 1) or 0) == 0 then
+            if not (stringValidationUtil:isEmpty(country)) and not (stringValidationUtil:isEmpty(taxableStreetAddress:getCountry())) and rawequal(((country < taxableStreetAddress:getCountry() and -1) or (country > taxableStreetAddress:getCountry() and 1) or 0), 0) then
+                if not rawequal(state, nil) and not rawequal(taxableStreetAddress:getState(), nil) and rawequal(((state < taxableStreetAddress:getState() and -1) or (state > taxableStreetAddress:getState() and 1) or 0), 0) then
                     local rateNode = DomSearchHelper.getNode(TaxData.RATE, taxNodeChildren)
                     local taxRate = DomNodeHelper.getTextNodeValue(rateNode)
                     local taxRateFloat = (taxRate + 0.0) * .01
@@ -138,11 +138,11 @@ function SimpleStateTaxModule:isValid(streetAddress, storeFrontInterface)
         local try_ok, try_error, try_value = pcall(function()
             self.streetAddress = streetAddress
             self.storeFrontInterface = storeFrontInterface
-            local fileAbPath = AbPath.new(tostring(URLGLOBALS.getMainPath() + FREEBLISKET_PATH_GLOBALS.getInstance().XSLPATH) .. self.storeFrontInterface:getName() .. self.STATETAXPATH, self.STATETAXFILE)
+            local fileAbPath = AbPath.new(require("allbinary_java").to_string(require("allbinary_java").to_string(URLGLOBALS.getMainPath() + FREEBLISKET_PATH_GLOBALS.getInstance().XSLPATH) .. require("allbinary_java").to_string(self.storeFrontInterface:getName())) .. require("allbinary_java").to_string(self.STATETAXPATH), self.STATETAXFILE)
             local data = CryptFileReader.new(TransformInfoObjectConfigData.getInstance().UNCRYPTED_EXTENSION, TransformInfoObjectConfigData.getInstance().ENCRYPTED_EXTENSION):get(fileAbPath)
             self.document = DomDocumentHelper.create(data)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAX) then
-                self.logUtil:putF("Tax Doc: " .. XmlDocumentHelper.toString(self.document), self, self.commonStrings.IS_VALID)
+                self.logUtil:putF(require("allbinary_java").to_string("Tax Doc: ") .. require("allbinary_java").to_string(XmlDocumentHelper.toString(self.document)), self, self.commonStrings.IS_VALID)
             end
             local country = self.streetAddress:getCountry()
             local rootNode = self.document:getElementsByTagName(TransformInfoObjectConfigData.getInstance().NAME):item(0)
@@ -163,12 +163,12 @@ function SimpleStateTaxModule:isValid(streetAddress, storeFrontInterface)
                 end
                 local taxableStreetAddress = StreetAddress.new(streetAddressNode)
                 local stringValidationUtil = StringValidationUtil.getInstance()
-                if not stringValidationUtil:isEmpty(country) and not stringValidationUtil:isEmpty(taxableStreetAddress:getCountry()) and taxableStreetAddress:getCountry():compareTo(self.ALL) == 0 then
+                if not (stringValidationUtil:isEmpty(country)) and not (stringValidationUtil:isEmpty(taxableStreetAddress:getCountry())) and rawequal(taxableStreetAddress:getCountry():compareTo(self.ALL), 0) then
                     do return "__jreturn", true end
                 end
-                if not stringValidationUtil:isEmpty(country) and not stringValidationUtil:isEmpty(taxableStreetAddress:getCountry()) and ((country < taxableStreetAddress:getCountry() and -1) or (country > taxableStreetAddress:getCountry() and 1) or 0) == 0 then
+                if not (stringValidationUtil:isEmpty(country)) and not (stringValidationUtil:isEmpty(taxableStreetAddress:getCountry())) and rawequal(((country < taxableStreetAddress:getCountry() and -1) or (country > taxableStreetAddress:getCountry() and 1) or 0), 0) then
                     local state = self.streetAddress:getState()
-                    if state ~= nil then
+                    if not rawequal(state, nil) then
                         do return "__jreturn", true end
                     end
                 end

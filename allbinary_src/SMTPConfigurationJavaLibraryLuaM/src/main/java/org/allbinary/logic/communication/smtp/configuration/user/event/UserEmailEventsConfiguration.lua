@@ -151,7 +151,7 @@ end
 
 function UserEmailEventsConfiguration:addUserEmailEventConfiguration(userEmailEventConfigurationInterface)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().EMAILLOGGING) then
-            self.logUtil:putF("Adding: " .. tostring(userEmailEventConfigurationInterface:log()), self, "addUserEmailEventConfiguration")
+            self.logUtil:putF(require("allbinary_java").to_string("Adding: ") .. require("allbinary_java").to_string(userEmailEventConfigurationInterface:log()), self, "addUserEmailEventConfiguration")
         end
         self.emailEventHashMap:put(userEmailEventConfigurationInterface:getName(), userEmailEventConfigurationInterface)
 end

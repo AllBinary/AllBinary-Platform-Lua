@@ -16,9 +16,9 @@ local function java_real(class)
     return class
 end
 
--- local BufferedReader = require("java.io.BufferedReader")
--- local InputStreamReader = require("java.io.InputStreamReader")
--- local Properties = require("java.util.Properties")
+local BufferedReader = java_lazy("java.io.BufferedReader")
+local InputStreamReader = java_lazy("java.io.InputStreamReader")
+local Properties = java_lazy("java.util.Properties")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local GenericOperatingSystem = java_lazy("org.allbinary.logic.system.os.GenericOperatingSystem")
 local OperatingSystemFactory = java_lazy("org.allbinary.logic.system.os.OperatingSystemFactory")
@@ -101,11 +101,11 @@ function RuntimeEnvironmentVariables:get()
             local windowsCommand = "cmd.exe /c set"
             local solarisCommand = linuxCommand
             local operatingSystems = OperatingSystems.getInstance()
-            if ((osName < operatingSystems.LINUX and -1) or (osName > operatingSystems.LINUX and 1) or 0) == 0 then
+            if rawequal(((osName < operatingSystems.LINUX and -1) or (osName > operatingSystems.LINUX and 1) or 0), 0) then
                 process = require("java.lang.Runtime").getRuntime():exec(linuxCommand)
             elseif ((string.find(osName, operatingSystems.WINDOWS, 1, true) or 0) - 1) >= 0 then
                 process = require("java.lang.Runtime").getRuntime():exec(windowsCommand)
-            elseif ((osName < operatingSystems.SOLARIS and -1) or (osName > operatingSystems.SOLARIS and 1) or 0) == 0 then
+            elseif rawequal(((osName < operatingSystems.SOLARIS and -1) or (osName > operatingSystems.SOLARIS and 1) or 0), 0) then
                 process = require("java.lang.Runtime").getRuntime():exec(solarisCommand)
             else
                 error(require("java.lang.Exception").new(), 0)
@@ -113,7 +113,7 @@ function RuntimeEnvironmentVariables:get()
             local processInputStreamReader = InputStreamReader.new(process:getInputStream())
             local bufferedReader = BufferedReader.new(processInputStreamReader)
             local keyValuePair = nil
-            while ((function() keyValuePair = bufferedReader:readLine() return keyValuePair end)()) ~= nil do
+            while not rawequal(((function() keyValuePair = bufferedReader:readLine() return keyValuePair end)()), nil) do
                 local index = ((string.find(keyValuePair, "=", 1, true) or 0) - 1)
                 local key = string.sub(keyValuePair, (0) + 1, index)
                 local value = string.sub(keyValuePair, (index + 1) + 1)
@@ -184,7 +184,7 @@ end
 function RuntimeEnvironmentVariables:updateLibraryPath(libPath)
         local try_ok, try_error, try_value = pcall(function()
             local existingPath = self:getLibraryPath()
-            require("java.lang.System").setProperty("java.library.path", libPath .. ":" .. existingPath)
+            require("java.lang.System").setProperty("java.library.path", require("allbinary_java").to_string(require("allbinary_java").to_string(libPath) .. require("allbinary_java").to_string(":")) .. require("allbinary_java").to_string(existingPath))
         end)
         if not try_ok then
             local e = try_error
@@ -247,12 +247,12 @@ function RuntimeEnvironmentVariables:setVariable(var, val)
             local operatingSystemInterface = OperatingSystemFactory.getInstance():getOperatingSystemInstance()
             local operatingSystems = OperatingSystems.getInstance()
             local osName = operatingSystemInterface:getName()
-            local windowsCommand = "cmd.exe /c set" .. var .. "=" .. val
-            if ((osName < operatingSystems.LINUX and -1) or (osName > operatingSystems.LINUX and 1) or 0) == 0 then
+            local windowsCommand = require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("cmd.exe /c set") .. require("allbinary_java").to_string(var)) .. require("allbinary_java").to_string("=")) .. require("allbinary_java").to_string(val)
+            if rawequal(((osName < operatingSystems.LINUX and -1) or (osName > operatingSystems.LINUX and 1) or 0), 0) then
                 error(require("java.lang.Exception").new(), 0)
             elseif ((string.find(osName, operatingSystems.WINDOWS, 1, true) or 0) - 1) >= 0 then
                 process = require("java.lang.Runtime").getRuntime():exec(windowsCommand)
-            elseif ((osName < operatingSystems.SOLARIS and -1) or (osName > operatingSystems.SOLARIS and 1) or 0) == 0 then
+            elseif rawequal(((osName < operatingSystems.SOLARIS and -1) or (osName > operatingSystems.SOLARIS and 1) or 0), 0) then
                 error(require("java.lang.Exception").new(), 0)
             else
                 error(require("java.lang.Exception").new(), 0)

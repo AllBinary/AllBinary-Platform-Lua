@@ -215,7 +215,8 @@ end
 
 function SpriteSplitterImageJPanel:process()
         ;(function()
-            local o = Thread.new and Thread.new() or setmetatable({}, {__index = Thread})
+            local java_outer_self = self
+        local o = Thread.new and Thread.new() or setmetatable({}, {__index = Thread})
             
 
             function o:run()
@@ -229,7 +230,7 @@ function SpriteSplitterImageJPanel:process()
                     local heightReduction = tostring(self.heightReductionTextField:getText())
                     local increaseWidth = tostring(self.increaseWidthTextField:getText())
                     local increaseHeight = tostring(self.increaseHeightTextField:getText())
-                    spriteSplitterUtil:process(self:getImageProcessorInput(), totalFrames, totalAnimations, widthReduction, heightReduction, increaseWidth, increaseHeight, spriteType, self)
+                    spriteSplitterUtil:process(java_outer_self:getImageProcessorInput(), totalFrames, totalAnimations, widthReduction, heightReduction, increaseWidth, increaseHeight, spriteType, java_outer_self)
                 end)
                 if not try_ok then
                     local e = try_error
@@ -249,12 +250,13 @@ function SpriteSplitterImageJPanel:initComponents()
         self.widthReductionTextField = JTextField.new()
         self.jLabel5 = JLabel.new()
         self.jPanel1 = (function()
-            local o = JPanel.new and JPanel.new() or setmetatable({}, {__index = JPanel})
+            local java_outer_self = self
+        local o = JPanel.new and JPanel.new() or setmetatable({}, {__index = JPanel})
             
 
             function o:paint(graphics)
-                if self.result ~= nil then
-                    graphics:drawImage(self.result, 0, 0, self.result:getWidth(nil), self.result:getHeight(nil), nil)
+                if not rawequal(java_outer_self.result, nil) then
+                    graphics:drawImage(java_outer_self.result, 0, 0, java_outer_self.result:getWidth(nil), java_outer_self.result:getHeight(nil), nil)
                 end
             end
             java_overload(o, "paint", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "Graphics")) end)
@@ -289,22 +291,26 @@ function SpriteSplitterImageJPanel:initComponents()
         self.increaseHeightTextField = JTextField.new()
         self.writeOverOriginalJCheckBox:setText("Write Over Original")
         self.writeOverOriginalJCheckBox:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:writeOverOriginalJCheckBoxActionPerformed(evt)
+                ;(self.writeOverOriginalJCheckBoxActionPerformed and self or java_outer_self):writeOverOriginalJCheckBoxActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.widthReductionTextField:setText(CommonPhoneStrings.getInstance().ZERO)
         self.widthReductionTextField:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:widthReductionTextFieldActionPerformed(evt)
+                ;(self.widthReductionTextFieldActionPerformed and self or java_outer_self):widthReductionTextFieldActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -319,11 +325,13 @@ function SpriteSplitterImageJPanel:initComponents()
         self.heightReductionTextField:setText(CommonPhoneStrings.getInstance().ZERO)
         self.generateJButton:setText("Generate")
         self.generateJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:generateJButtonActionPerformed(evt)
+                ;(self.generateJButtonActionPerformed and self or java_outer_self):generateJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -331,11 +339,13 @@ function SpriteSplitterImageJPanel:initComponents()
         self.jLabel1:setText("Row Total:")
         self.totalFramesJComboBox:setSelectedIndex(1)
         self.totalFramesJComboBox:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:totalFramesJComboBoxActionPerformed(evt)
+                ;(self.totalFramesJComboBoxActionPerformed and self or java_outer_self):totalFramesJComboBoxActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -343,22 +353,26 @@ function SpriteSplitterImageJPanel:initComponents()
         self.jLabel2:setText("Column Total :")
         self.totalAnimationsJComboBox:setSelectedIndex(3)
         self.totalAnimationsJComboBox:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:totalAnimationsJComboBoxActionPerformed(evt)
+                ;(self.totalAnimationsJComboBoxActionPerformed and self or java_outer_self):totalAnimationsJComboBoxActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.jLabel3:setText("Type:")
         self.spriteTypeJComboBox:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:spriteTypeJComboBoxActionPerformed(evt)
+                ;(self.spriteTypeJComboBoxActionPerformed and self or java_outer_self):spriteTypeJComboBoxActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -370,11 +384,13 @@ function SpriteSplitterImageJPanel:initComponents()
         self.jLabel7:setText("More Width:")
         self.increaseWidthTextField:setText(CommonPhoneStrings.getInstance().ZERO)
         self.increaseWidthTextField:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:increaseWidthTextFieldActionPerformed(evt)
+                ;(self.increaseWidthTextFieldActionPerformed and self or java_outer_self):increaseWidthTextFieldActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -446,7 +462,7 @@ function SpriteSplitterImageJPanel:visit(generatedBufferedImage, name, index)
         self.result = generatedBufferedImage
         self:getParent():repaint()
         local file = self.imageProcessorInput:getFiles()[index + 1]
-        if not self.writeOverOriginalJCheckBox:isSelected() then
+        if not (self.writeOverOriginalJCheckBox:isSelected()) then
             local filePath = file:getAbsolutePath()
             local extensionIndex = ((string.find(filePath, self.imageStrings.PNG_EXTENSION, 1, true) or 0) - 1)
             filePath = tostring(StringMaker.new():append(string.sub(filePath, (0) + 1, extensionIndex)):append(self.commonSeps.UNDERSCORE):append(name):append(self.imageStrings.PNG_EXTENSION))

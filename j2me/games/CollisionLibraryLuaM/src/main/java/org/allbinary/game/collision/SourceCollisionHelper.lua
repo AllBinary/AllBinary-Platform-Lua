@@ -143,7 +143,7 @@ end
 
 
 function SourceCollisionHelper:isCollidable(layerInterface)
-        if self.sourceLayerInterface ~= layerInterface then
+        if not rawequal(self.sourceLayerInterface, layerInterface) then
             return true
         end
         return false

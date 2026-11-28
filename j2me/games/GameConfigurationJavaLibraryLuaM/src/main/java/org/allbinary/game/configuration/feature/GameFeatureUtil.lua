@@ -29,7 +29,7 @@ local function java_real(class)
 end
 
 local Enumeration = java_lazy("java.util.Enumeration")
--- local ChoiceGroup = require("javax.microedition.lcdui.ChoiceGroup")
+local ChoiceGroup = java_lazy("javax.microedition.lcdui.ChoiceGroup")
 local TsUtil = java_lazy("org.allbinary.TsUtil")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
@@ -156,9 +156,9 @@ function GameFeatureUtil:updateMultiple(choiceGroup)
             self.logUtil:putF(tostring(stringBuffer), self, METHOD_NAME)
             local selectedChoiceLabel = choiceGroup:getString(index)
             local gameFeature = Feature.getInstance(selectedChoiceLabel)
-            if not isSelected and features:isFeature(gameFeature) then
+            if not (isSelected) and features:isFeature(gameFeature) then
                 features:remove(gameFeature)
-            elseif isSelected and not features:isFeature(gameFeature) then
+            elseif isSelected and not (features:isFeature(gameFeature)) then
                 features:add(gameFeature)
             end
         end
@@ -197,7 +197,7 @@ function GameFeatureUtil:isExclusive(itemLabel)
         local name = nil
         while self.enumerationUtil:hasMoreElements(enumeration) do
             name = self.enumerationUtil:nextElement(enumeration)
-            if self.tsUtil:compareTo(itemLabel, name) == 0 then
+            if rawequal(self.tsUtil:compareTo(itemLabel, name), 0) then
                 return true
             end
         end
@@ -229,7 +229,7 @@ function GameFeatureUtil:updateExclusiveList(gameFeature, list)
             local addIndex = list:indexOf(gameFeature)
             local size = list:size()
             for index = 0, size - 1 do
-                if addIndex ~= index then
+                if not rawequal(addIndex, index) then
                     features:remove(list.objectArray[index + 1])
                 else
                     features:add(list.objectArray[index + 1])

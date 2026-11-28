@@ -175,8 +175,8 @@ java_overload(TableTag, "setIsSelected", 1, function(java_a1) return true and (j
 
 -- throws Exception
 function TableTag:isEnabled()
-        if not StringValidationUtil.getInstance():isEmpty(self.enabled) then
-            if BooleanUtil.getInstance():getFromString(self.enabled) or ((self.enabled < "on" and -1) or (self.enabled > "on" and 1) or 0) == 0 then
+        if not (StringValidationUtil.getInstance():isEmpty(self.enabled)) then
+            if BooleanUtil.getInstance():getFromString(self.enabled) or rawequal(((self.enabled < "on" and -1) or (self.enabled > "on" and 1) or 0), 0) then
                 return true
             end
         end
@@ -403,9 +403,9 @@ function TableTag:doStartTag()
                 stringBuffer:append(request:getRequestURI())
                 self.logUtil:putF(tostring(stringBuffer), self, self.tagStrings.DO_START_TAG)
             end
-            if self:getTagRequestHelperFactoryInterface() ~= nil then
+            if not rawequal(self:getTagRequestHelperFactoryInterface(), nil) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAG) then
-                    self.logUtil:putF("TableTag RequestHelper: " .. (getmetatable(self:getTagRequestHelperFactoryInterface()).javaClassName or getmetatable(self:getTagRequestHelperFactoryInterface()).className), self, self.tagStrings.DO_START_TAG)
+                    self.logUtil:putF(require("allbinary_java").to_string("TableTag RequestHelper: ") .. require("allbinary_java").to_string((getmetatable(self:getTagRequestHelperFactoryInterface()).javaClassName or getmetatable(self:getTagRequestHelperFactoryInterface()).className)), self, self.tagStrings.DO_START_TAG)
                 end
             else
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAG) then
@@ -413,60 +413,60 @@ function TableTag:doStartTag()
                 end
             end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAG) then
-                self.logUtil:putF("TableTag this.getCommand(): " .. tostring(self:getCommand()), self, self.tagStrings.DO_START_TAG)
+                self.logUtil:putF(require("allbinary_java").to_string("TableTag this.getCommand(): ") .. require("allbinary_java").to_string(self:getCommand()), self, self.tagStrings.DO_START_TAG)
             end
             if self:isEnabled() then
-                if self:getCommand() ~= nil then
-                    if self:getCommand():compareTo(self.commonStrings.INSERT) == 0 or self:getCommand():compareTo(SqlStrings.getInstance().INSERT_INTO) == 0 or self:getCommand():compareTo(self.commonStrings.DELETE) == 0 or self:getCommand():compareTo(self.commonStrings.UPDATE) == 0 or self:getCommand():compareTo(SqlStrings.getInstance().UPDATE) == 0 then
+                if not rawequal(self:getCommand(), nil) then
+                    if rawequal(self:getCommand():compareTo(self.commonStrings.INSERT), 0) or rawequal(self:getCommand():compareTo(SqlStrings.getInstance().INSERT_INTO), 0) or rawequal(self:getCommand():compareTo(self.commonStrings.DELETE), 0) or rawequal(self:getCommand():compareTo(self.commonStrings.UPDATE), 0) or rawequal(self:getCommand():compareTo(SqlStrings.getInstance().UPDATE), 0) then
                         self.requestObject = self:getTagRequestHelperFactoryInterface():getInstance(self:getPropertiesHashMap(), self.pageContext)
                     end
-                    if self:getCommand():compareTo(self.commonStrings.INSERT) == 0 or self:getCommand():compareTo(SqlStrings.getInstance().INSERT_INTO) == 0 then
+                    if rawequal(self:getCommand():compareTo(self.commonStrings.INSERT), 0) or rawequal(self:getCommand():compareTo(SqlStrings.getInstance().INSERT_INTO), 0) then
                         self:insert()
-                    elseif self:getCommand():compareTo(self.commonStrings.DELETE) == 0 then
+                    elseif rawequal(self:getCommand():compareTo(self.commonStrings.DELETE), 0) then
                         self:delete()
-                    elseif self:getCommand():compareTo(self.commonStrings.UPDATE) == 0 or self:getCommand():compareTo(SqlStrings.getInstance().UPDATE) == 0 then
+                    elseif rawequal(self:getCommand():compareTo(self.commonStrings.UPDATE), 0) or rawequal(self:getCommand():compareTo(SqlStrings.getInstance().UPDATE), 0) then
                         self:update()
                     end
-                    if self:getCommand():compareTo(GLOBALS2.BACKUP) == 0 then
+                    if rawequal(self:getCommand():compareTo(GLOBALS2.BACKUP), 0) then
                         local output = self:backup()
                         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAGEXTRAOUTPUT) then
-                            self.pageContext:getOut():print(output .. "<br />")
+                            self.pageContext:getOut():print(require("allbinary_java").to_string(output) .. require("allbinary_java").to_string("<br />"))
                         end
                         do return "__jreturn", self.SKIP_BODY end
-                    elseif self:getCommand():compareTo(GLOBALS2.RESTORE) == 0 then
+                    elseif rawequal(self:getCommand():compareTo(GLOBALS2.RESTORE), 0) then
                         self:getPropertiesHashMap():put("current", self:getCurrent())
                         self:getPropertiesHashMap():put("total", self:getTotal())
                         local output = self:restore()
                         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAGEXTRAOUTPUT) then
-                            self.pageContext:getOut():print(output .. "<br />")
+                            self.pageContext:getOut():print(require("allbinary_java").to_string(output) .. require("allbinary_java").to_string("<br />"))
                         end
                         do return "__jreturn", self.SKIP_BODY end
-                    elseif self:getCommand():compareTo(self.commonStrings.DROP) == 0 then
+                    elseif rawequal(self:getCommand():compareTo(self.commonStrings.DROP), 0) then
                         local output = self:drop()
                         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAGEXTRAOUTPUT) then
-                            self.pageContext:getOut():print(output .. "<br />")
+                            self.pageContext:getOut():print(require("allbinary_java").to_string(output) .. require("allbinary_java").to_string("<br />"))
                         end
                         do return "__jreturn", self.SKIP_BODY end
-                    elseif self:getCommand():compareTo(self.commonStrings.CREATE) == 0 then
+                    elseif rawequal(self:getCommand():compareTo(self.commonStrings.CREATE), 0) then
                         local output = self:create()
                         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAGEXTRAOUTPUT) then
-                            self.pageContext:getOut():print(output .. "<br />")
+                            self.pageContext:getOut():print(require("allbinary_java").to_string(output) .. require("allbinary_java").to_string("<br />"))
                         end
                         do return "__jreturn", self.SKIP_BODY end
-                    elseif self:getCommand():compareTo(self.commonStrings.INSERT) == 0 then
+                    elseif rawequal(self:getCommand():compareTo(self.commonStrings.INSERT), 0) then
                         local output = self:insert()
                         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAGEXTRAOUTPUT) then
-                            self.pageContext:getOut():print(output .. "<br />")
+                            self.pageContext:getOut():print(require("allbinary_java").to_string(output) .. require("allbinary_java").to_string("<br />"))
                         end
-                    elseif self:getCommand():compareTo(self.commonStrings.DELETE) == 0 then
+                    elseif rawequal(self:getCommand():compareTo(self.commonStrings.DELETE), 0) then
                         local output = self:delete()
                         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAGEXTRAOUTPUT) then
-                            self.pageContext:getOut():print(output .. "<br />")
+                            self.pageContext:getOut():print(require("allbinary_java").to_string(output) .. require("allbinary_java").to_string("<br />"))
                         end
-                    elseif self:getCommand():compareTo(self.commonStrings.UPDATE) == 0 then
+                    elseif rawequal(self:getCommand():compareTo(self.commonStrings.UPDATE), 0) then
                         local output = self:update()
                         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAGEXTRAOUTPUT) then
-                            self.pageContext:getOut():print(output .. "<br />")
+                            self.pageContext:getOut():print(require("allbinary_java").to_string(output) .. require("allbinary_java").to_string("<br />"))
                         end
                     end
                 end

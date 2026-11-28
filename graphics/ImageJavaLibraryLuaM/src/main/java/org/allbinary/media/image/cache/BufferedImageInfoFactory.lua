@@ -74,7 +74,7 @@ function BufferedImageInfoFactory.getInstance(width, height, type)
         stringbuffer:appendint(type)
         local key = tostring(stringbuffer)
         local bufferedImageInfo = BufferedImageInfoFactory.hashMap:get(key)
-        if bufferedImageInfo == nil then
+        if rawequal(bufferedImageInfo, nil) then
             bufferedImageInfo = BufferedImageInfo.new(width, height, type)
             BufferedImageInfoFactory.hashMap:put(key, bufferedImageInfo)
         end

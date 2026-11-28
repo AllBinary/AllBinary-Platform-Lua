@@ -214,13 +214,13 @@ function OrderHistoryTag:doStartTag()
         local try_ok, try_error, try_value = pcall(function()
             self:setName("Basic Order History View")
             self:setObjectFile("views.generic.order.history.ValidationView")
-            if self:getCommand() ~= nil then
-                if self:getCommand():compareTo(OrderHistoryData.SETSTATUS) == 0 then
+            if not rawequal(self:getCommand(), nil) then
+                if rawequal(self:getCommand():compareTo(OrderHistoryData.SETSTATUS), 0) then
                     self:getPropertiesHashMap():put(OrderHistoryData.STATUS, self.status)
                     self.pageContext:getOut():print(self:setOrderStatus())
-                elseif self:getCommand():compareTo(GLOBALS2.VIEW) == 0 then
+                elseif rawequal(self:getCommand():compareTo(GLOBALS2.VIEW), 0) then
                 else
-                    error(require("java.lang.Exception").new("No Such View Command: " .. tostring(self:getCommand())), 0)
+                    error(require("java.lang.Exception").new(require("allbinary_java").to_string("No Such View Command: ") .. require("allbinary_java").to_string(self:getCommand())), 0)
                 end
                 do return "__jreturn", java_super(StoreValidationTransformTag, "doStartTag", 0)(self) end
             end

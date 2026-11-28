@@ -68,7 +68,7 @@ end
 
 
 function OpenGLImageCacheFactory.init()
-        if OpenGLImageCacheFactory.IMAGE_CACHE == nil then
+        if rawequal(OpenGLImageCacheFactory.IMAGE_CACHE, nil) then
         end
 end
 

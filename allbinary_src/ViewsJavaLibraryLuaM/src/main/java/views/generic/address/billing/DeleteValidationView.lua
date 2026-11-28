@@ -173,12 +173,12 @@ end
 
 
 function DeleteValidationView:isValid()
-        if self:getWeblisketSession():getUserName() ~= nil then
+        if not rawequal(self:getWeblisketSession():getUserName(), nil) then
             return false
         end
         local billingAddressesEntity = BillingAddressesEntity.new(self:getWeblisketSession():getUserName())
         self.streetAddress = billingAddressesEntity:get(self.value)
-        if self.streetAddress == nil then
+        if rawequal(self.streetAddress, nil) then
             return false
         end
         return self.streetAddress:isValid()

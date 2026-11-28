@@ -222,23 +222,23 @@ java_overload(InventoryTag, "viewSummary", 0)
 -- throws JspTagException
 function InventoryTag:doStartTag()
         local try_ok, try_error, try_value = pcall(function()
-            if self:getCommand() ~= nil then
-                if self:getCommand():compareTo(GLOBALS2.SEARCH) == 0 then
+            if not rawequal(self:getCommand(), nil) then
+                if rawequal(self:getCommand():compareTo(GLOBALS2.SEARCH), 0) then
                     self:setName("Basic Search Inventory View")
                     self:setObjectFile("views.generic.inventory.AutoSearchValidationInventoryView")
                     self:search()
                     do return "__jreturn", self.EVAL_BODY_INCLUDE end
-                elseif self:getCommand():compareTo(GLOBALS2.VIEWSUMMARY) == 0 then
+                elseif rawequal(self:getCommand():compareTo(GLOBALS2.VIEWSUMMARY), 0) then
                     self:setName("Basic Inventory View")
                     self:setObjectFile("views.generic.inventory.AutoValidationInventoryView")
                     self:viewSummary()
                     do return "__jreturn", self.EVAL_BODY_INCLUDE end
-                elseif self:getCommand():compareTo(GLOBALS2.VIEW) == 0 then
+                elseif rawequal(self:getCommand():compareTo(GLOBALS2.VIEW), 0) then
                     self:setName("Basic Inventory View")
                     self:setObjectFile("views.generic.inventory.AutoValidationInventoryView")
                     do return "__jreturn", java_super(StoreValidationTransformTag, "doStartTag", 0)(self) end
                 else
-                    error(require("java.lang.Exception").new("No Such View Command: " .. tostring(self:getCommand())), 0)
+                    error(require("java.lang.Exception").new(require("allbinary_java").to_string("No Such View Command: ") .. require("allbinary_java").to_string(self:getCommand())), 0)
                 end
             end
             error(require("java.lang.Exception").new("Command Null"), 0)

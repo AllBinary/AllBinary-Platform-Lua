@@ -114,7 +114,7 @@ function PolygonRasterizer:fillPolygon(polyX, polyY, numPoints, buffer, width, h
                 local x2 = x[next + 1]
                 local y2 = y[next + 1]
                 if (y1 < scanY and y2 >= scanY) or (y2 < scanY and y1 >= scanY) then
-                    if y2 ~= y1 then
+                    if not rawequal(y2, y1) then
                         local interX = x1 + java_idiv((scanY - y1) * (x2 - x1), (y2 - y1))
                         scanlineX[(function() local value = intersectCount intersectCount = value + 1 return value end)() + 1] = interX
                     end

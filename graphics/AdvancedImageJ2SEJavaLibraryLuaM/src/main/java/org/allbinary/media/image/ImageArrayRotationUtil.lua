@@ -82,9 +82,9 @@ end
 -- throws IOException
 function ImageArrayRotationUtil:process(imageProcessorInput, input, visitor)
         local totalAngle = nil
-        if input == self.commonStrings.UP then
+        if rawequal(input, self.commonStrings.UP) then
             totalAngle = tostring(-90)
-        elseif input == self.commonStrings.DOWN then
+        elseif rawequal(input, self.commonStrings.DOWN) then
             totalAngle = tostring(90)
         else
             totalAngle = tostring(input)
@@ -92,7 +92,7 @@ function ImageArrayRotationUtil:process(imageProcessorInput, input, visitor)
         local generatedBufferedImage = nil
         local bufferedImageArray = imageProcessorInput:getBufferedImageArray()
         for index = 0, (bufferedImageArray.n or #bufferedImageArray) - 1 do
-            self.logUtil:putF(self.TOTAL_ANGLE .. tostring(totalAngle), self, self.commonStrings.RUN)
+            self.logUtil:putF(require("allbinary_java").to_string(self.TOTAL_ANGLE) .. require("allbinary_java").to_string(totalAngle), self, self.commonStrings.RUN)
             generatedBufferedImage = ImageJ2SERotationUtil.getInstance():getRotatedImage(bufferedImageArray[index + 1], math.tointeger(totalAngle // 1))
             visitor:visit(generatedBufferedImage, input, index)
         end

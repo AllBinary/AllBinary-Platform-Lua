@@ -155,7 +155,7 @@ function DynamicRaceTracksPathPrinter:printAllPaths(raceTrackGeographicMapInterf
             for index = 0, size - 1 do
                 local geographicMapInterface = raceTrackGeographicMapInterfaceFactoryInterface:getTrackInstance(SmallIntegerSingletonFactory.getInstance():getAt(index))
                 local list = PathGenerator.getInstance():createList(geographicMapInterface, RaceTrackRoadsGeographicMapCellHistoryFactory.getInstance(), pathFindingInfo, 10)
-                print("Track " .. tostring(index))
+                print(require("allbinary_java").to_string("Track ") .. require("allbinary_java").to_string(index))
                 self:printPaths(list)
             end
         end)

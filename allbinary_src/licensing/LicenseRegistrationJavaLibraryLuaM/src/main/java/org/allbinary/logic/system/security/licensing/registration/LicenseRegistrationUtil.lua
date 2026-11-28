@@ -74,7 +74,7 @@ end
 function LicenseRegistrationUtil.process(abeClientInformation, registrationId)
         local try_ok, try_error, try_value = pcall(function()
             local commonStrings = CommonStrings.getInstance()
-            PreLogUtil.put(tostring(CommonLabels.getInstance().START_LABEL) .. "License Registration", "LicenseRegistrationUtil", commonStrings.PROCESS)
+            PreLogUtil.put(require("allbinary_java").to_string(CommonLabels.getInstance().START_LABEL) .. require("allbinary_java").to_string("License Registration"), "LicenseRegistrationUtil", commonStrings.PROCESS)
             local registrationConfiguration = RegistrationConfiguration.getInstance()
             registrationConfiguration:setRegistrationCode(registrationId)
             registrationConfiguration:write()

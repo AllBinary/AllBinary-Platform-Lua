@@ -150,7 +150,7 @@ setmetatable(SimultaneousCompoundRotationAnimationInterfaceFactory, {__index = C
 function SimultaneousCompoundRotationAnimationInterfaceFactory._jinit(self, basicAnimationInterfaceFactoryInterfaceArray, animationBehaviorFactory)
     java_super_init(CompoundAnimationInterfaceFactory, self, basicAnimationInterfaceFactoryInterfaceArray, animationBehaviorFactory)
         -- super(...) made self above
-        if animationBehaviorFactory == AnimationBehaviorFactory.getInstance() then
+        if rawequal(animationBehaviorFactory, AnimationBehaviorFactory.getInstance()) then
             ForcedLogUtil.log("Using default AnimationBehaviorFactory with IndexedAnimationFactory", self)
         end
     return self

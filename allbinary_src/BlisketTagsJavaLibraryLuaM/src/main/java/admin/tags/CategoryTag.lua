@@ -222,14 +222,14 @@ java_overload(CategoryTag, "viewCategories", 0)
 function CategoryTag:doStartTag()
         local try_ok, try_error, try_value = pcall(function()
             if self:isEnabled() then
-                if self:getCommand() ~= nil then
+                if not rawequal(self:getCommand(), nil) then
                     self:getPropertiesHashMap():put(TransformInfoData.getInstance().TEMPLATEFILENAME, self.xsl)
-                    if self:getCommand():compareTo(CategoryData.getInstance().VIEW) == 0 then
+                    if rawequal(self:getCommand():compareTo(CategoryData.getInstance().VIEW), 0) then
                         local output = self:viewCategory()
                         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAGEXTRAOUTPUT) then
                             self.pageContext:getOut():print(output)
                         end
-                    elseif self:getCommand():compareTo(CategoryData.getInstance().VIEW) == 0 then
+                    elseif rawequal(self:getCommand():compareTo(CategoryData.getInstance().VIEW), 0) then
                         local output = self:viewCategories()
                         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().JSPTAGEXTRAOUTPUT) then
                             self.pageContext:getOut():print(output)

@@ -205,6 +205,9 @@ local BuildingSteeringVisitor = {}
     function BuildingSteeringVisitor.new()
         return BuildingSteeringVisitor._jinit(setmetatable({}, BuildingSteeringVisitor))
     end
+    function BuildingSteeringVisitor.newEnclosed(outer)
+        return BuildingSteeringVisitor._jinit(setmetatable({__javaOuter = outer}, BuildingSteeringVisitor))
+    end
     
 
     function BuildingSteeringVisitor:visit(anyType)
@@ -213,7 +216,7 @@ local BuildingSteeringVisitor = {}
                 if self:getList():size() > 0 then
                     local allbinaryLayer = self:getList():get(0)
                     local cellPosition = self:getPositionList():get(0)
-                    local clear = self:buildingChase(allbinaryLayer, cellPosition)
+                    local clear = self.__javaOuter:buildingChase(allbinaryLayer, cellPosition)
                     if clear then
                         self:getList():clear()
                         self.positionList:clear()
@@ -257,7 +260,7 @@ function UnitWaypointBehavior2:_init_fields()
     if self.waitingOnTargetPath == nil then self.waitingOnTargetPath = false end
     if self.waitingOnWaypointPath == nil then self.waitingOnWaypointPath = false end
     self.targetWithoutCachedPathLayerInterface = CollidableDestroyableDamageableLayer.getNullInstance()
-    self.buildingSteeringVisitor = BuildingSteeringVisitor.new()
+    self.buildingSteeringVisitor = BuildingSteeringVisitor.newEnclosed(self)
 end
 
 
@@ -307,7 +310,7 @@ java_overload(UnitWaypointBehavior2, "isRunning", 0)
 -- throws Exception
 function UnitWaypointBehavior2:processTick(allBinaryLayerManager)
         if self.waypointPathRunnable:isRunning() then
-            if self.waypointPathsListP ~= UnitWaypointBehavior2.runningWaypointPathList then
+            if not rawequal(self.waypointPathsListP, UnitWaypointBehavior2.runningWaypointPathList) then
                 self.waypointPathRunnable:setRunning(false)
                 if self.waitingOnTargetPath then
                     self:setTargetPath()
@@ -321,17 +324,17 @@ function UnitWaypointBehavior2:processTick(allBinaryLayerManager)
             end
         end
         self:processTargetList()
-        if not self.waypointPathRunnable:isRunning() then
+        if not (self.waypointPathRunnable:isRunning()) then
             self:processWaypoint()
         else
             return
         end
-        if not self.waypointPathRunnable:isRunning() then
+        if not (self.waypointPathRunnable:isRunning()) then
             self:processTargeting()
         else
             return
         end
-        if not self.waypointPathRunnable:isRunning() then
+        if not (self.waypointPathRunnable:isRunning()) then
             self:teleportIfNoProgress()
         else
             return
@@ -343,7 +346,7 @@ java_overload(UnitWaypointBehavior2, "processTick", 1, function(java_a1) return 
 -- throws Exception
 function UnitWaypointBehavior2:onEnemyMovement(layerInterface)
         local anotherTargetDistance = self.layerDistanceUtil:getDistance(self.associatedAdvancedRTSGameLayer, layerInterface)
-        if layerInterface == self.currentTargetLayerInterfaceP then
+        if rawequal(layerInterface, self.currentTargetLayerInterfaceP) then
             self:setCurrentTargetDistance(anotherTargetDistance)
         else
             self:processPossibleTarget(layerInterface, anotherTargetDistance)
@@ -355,7 +358,7 @@ java_overload(UnitWaypointBehavior2, "onEnemyMovement", 1, function(java_a1) ret
 -- throws Exception
 function UnitWaypointBehavior2:processPossibleTarget(layerInterface, anotherTargetDistance)
         local isShorterThanCurrentTargetDistance = self:getCurrentTargetDistance() > anotherTargetDistance
-        local isCurrentTargetDestroyed = self.currentTargetLayerInterfaceP ~= CollidableDestroyableDamageableLayer.getNullInstance() and self.currentTargetLayerInterfaceP:isDestroyed()
+        local isCurrentTargetDestroyed = not rawequal(self.currentTargetLayerInterfaceP, CollidableDestroyableDamageableLayer.getNullInstance()) and self.currentTargetLayerInterfaceP:isDestroyed()
         self.associatedAdvancedRTSGameLayer.waypoint2LogHelperP:processPossibleTarget(self.associatedAdvancedRTSGameLayer, self, layerInterface, anotherTargetDistance, isShorterThanCurrentTargetDistance, isCurrentTargetDestroyed)
         if self:isWaypointListEmptyOrOnlyTargets() and self:isInSensorRange(layerInterface, anotherTargetDistance) and (isShorterThanCurrentTargetDistance or isCurrentTargetDestroyed) then
             self.associatedAdvancedRTSGameLayer.waypoint2LogHelperP:processSetTarget(self.associatedAdvancedRTSGameLayer, self, layerInterface, anotherTargetDistance)
@@ -371,7 +374,7 @@ java_overload(UnitWaypointBehavior2, "processPossibleTarget", 2, function(java_a
 -- throws Exception
 function UnitWaypointBehavior2:teleportIfNoProgress()
         if self:isTrackingWaypoint() or self.associatedAdvancedRTSGameLayer:getParentLayer():isDestroyed() then
-            if self.progressTimeDelayHelper:isTimeTNT() and self.nextUnvisitedPathGeographicMapCellPosition ~= SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION then
+            if self.progressTimeDelayHelper:isTimeTNT() and not rawequal(self.nextUnvisitedPathGeographicMapCellPosition, SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION) then
                 self.associatedAdvancedRTSGameLayer:teleportTo(self.nextUnvisitedPathGeographicMapCellPosition)
             end
             if self:getCompleteTimeDelayHelper():isTimeTNT() then
@@ -392,15 +395,15 @@ function UnitWaypointBehavior2:setTarget(layerInterface, anotherTargetDistance)
         self:setCurrentTargetLayerInterface(layerInterface)
         self:setTrackingWaypoint(false)
         self.targetList:clear()
-        if not self:isCloseRange(layerInterface, anotherTargetDistance) and self:canInsertWaypoint(0, self.currentTargetLayerInterfaceP) then
+        if not (self:isCloseRange(layerInterface, anotherTargetDistance)) and self:canInsertWaypoint(0, self.currentTargetLayerInterfaceP) then
             local geographicMapCellPosition = self.associatedAdvancedRTSGameLayer:getCurrentGeographicMapCellPosition()
             local pathFindingLayerInterface = (self.currentTargetLayerInterfaceP)
             local waypoint = pathFindingLayerInterface:getWaypointBehavior():getWaypoint()
             local list = waypoint:getPathsListFromCacheOnly(geographicMapCellPosition)
             self:setWaypointPathsList(list)
-            if self.waypointPathsListP == nil then
+            if rawequal(self.waypointPathsListP, nil) then
                 self.targetWithoutCachedPathLayerInterface = self.currentTargetLayerInterfaceP
-            elseif self.waypointPathsListP:size() ~= 0 then
+            elseif not rawequal(self.waypointPathsListP:size(), 0) then
                 self:setTargetPath()
             end
         end
@@ -410,14 +413,14 @@ java_overload(UnitWaypointBehavior2, "setTarget", 2, function(java_a1, java_a2) 
 
 -- throws Exception
 function UnitWaypointBehavior2:setTargetPath()
-        if self.currentTargetLayerInterfaceP ~= CollidableDestroyableDamageableLayer.getNullInstance() then
+        if not rawequal(self.currentTargetLayerInterfaceP, CollidableDestroyableDamageableLayer.getNullInstance()) then
             if self.currentTargetLayerInterfaceP:isDestroyed() then
                 self.associatedAdvancedRTSGameLayer.waypoint2LogHelperP:setTargetPath(self.associatedAdvancedRTSGameLayer)
                 self.associatedAdvancedRTSGameLayer:getCaptionAnimationHelper():update(self.unitWaypointStrings.KILL, self.basicColorFactory.ORANGE)
                 self:clearTarget()
                 return
             end
-            if self.currentTargetLayerInterfaceP == self.waypointPathRunnable:getTargetLayer() then
+            if rawequal(self.currentTargetLayerInterfaceP, self.waypointPathRunnable:getTargetLayer()) then
                 self.associatedAdvancedRTSGameLayer.waypoint2LogHelperP:setTargetPathIgnoreNewPath(self.associatedAdvancedRTSGameLayer, self)
                 self:insertWaypoint(0, self.currentTargetLayerInterfaceP)
                 self:setRandomGeographicMapCellHistory(self.waypointPathsListP)
@@ -452,16 +455,16 @@ function UnitWaypointBehavior2:processWaypoint()
                     if self:visitIfAtMidPoint(geographicMapCellPosition) then
                         self.associatedAdvancedRTSGameLayer.waypoint2LogHelperP:processWaypointTrackedVisit(self.associatedAdvancedRTSGameLayer, geographicMapCellPosition)
                     end
-                    if self.currentGeographicMapCellHistoryP:isAllVisited2() and self.currentTargetLayerInterfaceP ~= CollidableDestroyableDamageableLayer.getNullInstance() then
+                    if self.currentGeographicMapCellHistoryP:isAllVisited2() and not rawequal(self.currentTargetLayerInterfaceP, CollidableDestroyableDamageableLayer.getNullInstance()) then
                         local oldWaypointLayer = self.currentTargetLayerInterfaceP
                         oldWaypointLayer:getWaypointBehavior():getWaypoint():visit(self.associatedAdvancedRTSGameLayer)
                         self.associatedAdvancedRTSGameLayer:getCaptionAnimationHelper():update(self.unitWaypointStrings.ALL_VISITED_SHORT, self.basicColorFactory.GREEN)
                         self:removeWaypoint(self.currentTargetLayerInterfaceP, self.unitWaypointStrings.ALL_VISITED)
                     end
-                elseif self.currentTargetLayerInterfaceP == nil or self.waypointOverridesAttacking then
+                elseif rawequal(self.currentTargetLayerInterfaceP, nil) or self.waypointOverridesAttacking then
                     local list = targetLayer:getWaypointBehavior():getWaypoint():getPathsListFromCacheOnly(geographicMapCellPosition)
                     self:setWaypointPathsList(list)
-                    if self.waypointPathsListP == nil then
+                    if rawequal(self.waypointPathsListP, nil) then
                         self.waitingOnWaypointPath = true
                         self.associatedAdvancedRTSGameLayer:getCaptionAnimationHelper():update(self.unitWaypointStrings.THINKING, self.basicColorFactory.GREEN)
                         self:runWaypointPathTask(targetLayer)
@@ -493,11 +496,11 @@ java_overload(UnitWaypointBehavior2, "wander", 0)
 
 function UnitWaypointBehavior2:visitIfAtMidPoint(geographicMapCellPosition)
         local unitLayer = self.associatedAdvancedRTSGameLayer
-        if geographicMapCellPosition ~= SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION and self.nextUnvisitedPathGeographicMapCellPosition == geographicMapCellPosition then
+        if not rawequal(geographicMapCellPosition, SimpleGeographicMapCellPositionFactory.NULL_GEOGRAPHIC_MAP_CELL_POSITION) and rawequal(self.nextUnvisitedPathGeographicMapCellPosition, geographicMapCellPosition) then
             local point = geographicMapCellPosition:getMidPoint()
             local afterNextPoint = self.afterNextUnvisitedPathGeographicMapCellPosition:getMidPoint()
             local beyondMidPoint = true
-            if geographicMapCellPosition:getColumn() == self.afterNextUnvisitedPathGeographicMapCellPosition:getColumn() then
+            if rawequal(geographicMapCellPosition:getColumn(), self.afterNextUnvisitedPathGeographicMapCellPosition:getColumn()) then
             elseif point:getX() < afterNextPoint:getX() then
                 if unitLayer:getXP() + unitLayer:getHalfWidth() < point:getX() then
                     beyondMidPoint = false
@@ -507,7 +510,7 @@ function UnitWaypointBehavior2:visitIfAtMidPoint(geographicMapCellPosition)
                     beyondMidPoint = false
                 end
             end
-            if geographicMapCellPosition:getRow() == self.afterNextUnvisitedPathGeographicMapCellPosition:getRow() then
+            if rawequal(geographicMapCellPosition:getRow(), self.afterNextUnvisitedPathGeographicMapCellPosition:getRow()) then
             elseif point:getY() < afterNextPoint:getY() then
                 if unitLayer:getYP() + unitLayer:getHalfHeight() < point:getY() then
                     beyondMidPoint = false
@@ -537,7 +540,7 @@ function UnitWaypointBehavior2:processTargetList()
                 self:onEnemyMovement(layerInterface)
             end
         end
-        if self.targetWithoutCachedPathLayerInterface ~= CollidableDestroyableDamageableLayer.getNullInstance() then
+        if not rawequal(self.targetWithoutCachedPathLayerInterface, CollidableDestroyableDamageableLayer.getNullInstance()) then
             self.waitingOnTargetPath = true
             self.associatedAdvancedRTSGameLayer:getCaptionAnimationHelper():update(self.unitWaypointStrings.THINKING_ABOUT_TARGET, self.basicColorFactory.GREEN)
             self:runWaypointPathTask(self.currentTargetLayerInterfaceP)
@@ -549,7 +552,7 @@ java_overload(UnitWaypointBehavior2, "processTargetList", 0)
 
 -- throws Exception
 function UnitWaypointBehavior2:processTargeting()
-        if self.currentTargetLayerInterfaceP ~= CollidableDestroyableDamageableLayer.getNullInstance() and (self:isInSensorRange(self.currentTargetLayerInterfaceP, self:getCurrentTargetDistance()) or self:isTrackingWaypoint()) then
+        if not rawequal(self.currentTargetLayerInterfaceP, CollidableDestroyableDamageableLayer.getNullInstance()) and (self:isInSensorRange(self.currentTargetLayerInterfaceP, self:getCurrentTargetDistance()) or self:isTrackingWaypoint()) then
             if self.currentTargetLayerInterfaceP:isDestroyed() then
                 self.associatedAdvancedRTSGameLayer.waypoint2LogHelperP:targetDestroyed(self.associatedAdvancedRTSGameLayer)
                 self.associatedAdvancedRTSGameLayer:getCaptionAnimationHelper():update(self.unitWaypointStrings.KILL, self.basicColorFactory.ORANGE)
@@ -589,7 +592,7 @@ function UnitWaypointBehavior2:updateCurrentPathGeographicMapCellPosition()
         self:setCurrentPathGeographicMapCellPosition(self.nextUnvisitedPathGeographicMapCellPosition)
         self.nextUnvisitedPathGeographicMapCellPosition = self.currentGeographicMapCellHistoryP:getFirstUnvisited()
         self.afterNextUnvisitedPathGeographicMapCellPosition = self.currentGeographicMapCellHistoryP:getAfterIfNotLast(self.nextUnvisitedPathGeographicMapCellPosition)
-        if self:getCurrentPathGeographicMapCellPosition() ~= self.nextUnvisitedPathGeographicMapCellPosition then
+        if not rawequal(self:getCurrentPathGeographicMapCellPosition(), self.nextUnvisitedPathGeographicMapCellPosition) then
             self.progressTimeDelayHelper:setStartTimeTNT()
         end
 end
@@ -598,7 +601,7 @@ java_overload(UnitWaypointBehavior2, "updateCurrentPathGeographicMapCellPosition
 
 -- throws Exception
 function UnitWaypointBehavior2:setWaypointPath(waypointLayer)
-        if self.waypointPathsListP:size() ~= 0 then
+        if not rawequal(self.waypointPathsListP:size(), 0) then
             self:setCurrentTargetLayerInterface(waypointLayer)
             local MAX = require("java.lang.Integer").MAX_VALUE
             self:setCurrentTargetDistance(MAX)
@@ -631,7 +634,7 @@ function UnitWaypointBehavior2:removeWaypoint(waypointLayer, reason)
         self.associatedAdvancedRTSGameLayer.waypoint2LogHelperP:removeWaypoint(self.associatedAdvancedRTSGameLayer, self, waypointLayer, reason)
         self.targetList:remove(waypointLayer)
         self.associatedAdvancedRTSGameLayer.waypoint2LogHelperP:removeWaypointList(self.associatedAdvancedRTSGameLayer, self, self.targetList)
-        if self.currentTargetLayerInterfaceP == waypointLayer then
+        if rawequal(self.currentTargetLayerInterfaceP, waypointLayer) then
             self.associatedAdvancedRTSGameLayer.waypoint2LogHelperP:removeWaypointClear(self.associatedAdvancedRTSGameLayer)
             self:clearTarget()
         end
@@ -653,7 +656,7 @@ java_overload(UnitWaypointBehavior2, "clearTarget", 0)
 
 function UnitWaypointBehavior2:isWaypointListEmptyOrOnlyTargets()
         local list = self.targetList
-        if list:size() == 0 then
+        if rawequal(list:size(), 0) then
             return true
         end
         for index = list:size() - 1, 0, -1 do
@@ -681,7 +684,7 @@ java_overload(UnitWaypointBehavior2, "isInSensorRange", 2, function(java_a1, jav
 
 function UnitWaypointBehavior2:getCurrentTargetingStateString()
         local stringBuffer = StringMaker.new()
-        if self.currentTargetLayerInterfaceP ~= CollidableDestroyableDamageableLayer.getNullInstance() then
+        if not rawequal(self.currentTargetLayerInterfaceP, CollidableDestroyableDamageableLayer.getNullInstance()) then
             stringBuffer:append(UnitWaypointBehavior2.TARGET_LAYER)
             stringBuffer:append(self.commonSeps.SPACE)
             stringBuffer:append(self.currentTargetLayerInterfaceP:getName())
@@ -698,7 +701,7 @@ java_overload(UnitWaypointBehavior2, "getCurrentTargetingStateString", 0)
 -- throws Exception
 function UnitWaypointBehavior2:addWaypointFromUser(advancedRTSGameLayer)
         if advancedRTSGameLayer:isDestroyed() then
-            error(require("java.lang.Exception").new("Trying to add a dead: " .. tostring(advancedRTSGameLayer)), 0)
+            error(require("java.lang.Exception").new(require("allbinary_java").to_string("Trying to add a dead: ") .. require("allbinary_java").to_string(advancedRTSGameLayer)), 0)
         end
         self.associatedAdvancedRTSGameLayer.waypoint2LogHelperP:addWaypointFromUser(self.associatedAdvancedRTSGameLayer, advancedRTSGameLayer)
         self.targetList:clear()
@@ -710,11 +713,11 @@ java_overload(UnitWaypointBehavior2, "addWaypointFromUser", 1, function(java_a1)
 
 -- throws Exception
 function UnitWaypointBehavior2:addBuildingChase(allbinaryLayer, cellPosition)
-        if not self.buildingSteeringVisitor:getList():contains(allbinaryLayer) then
+        if not (self.buildingSteeringVisitor:getList():contains(allbinaryLayer)) then
             self.buildingSteeringVisitor:getList():add(allbinaryLayer)
             self.buildingSteeringVisitor:getPositionList():add(cellPosition)
         end
-        if not self:getSteeringVisitorList():contains(self.buildingSteeringVisitor) then
+        if not (self:getSteeringVisitorList():contains(self.buildingSteeringVisitor)) then
             self:getSteeringVisitorList():add(self.buildingSteeringVisitor)
         end
 end

@@ -97,7 +97,7 @@ function HashtableUtil:putAll(fromHashtable, hashtable)
         while self.enumerationUtil:hasMoreElements(enumeration) do
             keyCanBeNull = self.enumerationUtil:nextElement(enumeration)
             valueCanBeNull = hashtable:get(keyCanBeNull)
-            if valueCanBeNull == nil then
+            if rawequal(valueCanBeNull, nil) then
             else
                 hashtable:put(keyCanBeNull, valueCanBeNull)
             end

@@ -30,12 +30,12 @@ end
 
 local File = java_lazy("java.io.File")
 -- local FileFilter = require("java.io.FileFilter")
--- local FileInputStream = require("java.io.FileInputStream")
+local FileInputStream = java_lazy("java.io.FileInputStream")
 -- local URL = require("java.net.URL")
 local HashMap = java_lazy("java.util.HashMap")
 -- local Set = require("java.util.Set")
 -- local JarInputStream = require("java.util.jar.JarInputStream")
--- local Manifest = require("java.util.jar.Manifest")
+local Manifest = java_lazy("java.util.jar.Manifest")
 local Bundle = java_lazy("org.osgi.framework.Bundle")
 local BundleContext = java_lazy("org.osgi.framework.BundleContext")
 local Constants = java_lazy("org.osgi.framework.Constants")
@@ -122,7 +122,7 @@ function InputAutomationNewBundleRunnable:updateModules()
         local bundle = nil
         for index = 0, size - 1 do
             bundle = self:install(list:get(index))
-            if bundle ~= nil then
+            if not rawequal(bundle, nil) then
                 bundle:start(InputAutomationNewBundleRunnable.MODULES_START_LEVEL)
             end
         end
@@ -134,19 +134,19 @@ function InputAutomationNewBundleRunnable:getAllJarSymbolicNameHashMap()
         self.logUtil:putF(self.commonStrings.START, self, "getAllJarSymbolicNameHashMap")
         local hashMap = StdUtil.getInstance():createHashMap()
         local jarFileBasicArrayList = self:getJarModuleFileBasicArrayList()
-        self.logUtil:putF("Jar Module Files: " .. tostring(jarFileBasicArrayList), self, "getAllJarSymbolicNameHashMap")
+        self.logUtil:putF(require("allbinary_java").to_string("Jar Module Files: ") .. require("allbinary_java").to_string(jarFileBasicArrayList), self, "getAllJarSymbolicNameHashMap")
         local size = jarFileBasicArrayList:size()
         local file = nil
         for index = 0, size - 1 do
             file = jarFileBasicArrayList:get(index)
-            if not file:isDirectory() then
+            if not (file:isDirectory()) then
                 local fileInputStream = FileInputStream.new(file)
                 local jarInputStream = JarInputStream.new(fileInputStream)
                 local manifest = jarInputStream:getManifest()
-                if manifest == nil then
+                if rawequal(manifest, nil) then
                 else
                     local symbolicName = manifest:getMainAttributes():getValue(Constants.BUNDLE_SYMBOLICNAME)
-                    if symbolicName ~= nil then
+                    if not rawequal(symbolicName, nil) then
                         hashMap:put(symbolicName, URL.new(InputAutomationNewBundleRunnable.FILE + file:getAbsolutePath()))
                     end
                 end
@@ -163,10 +163,10 @@ function InputAutomationNewBundleRunnable:getJarModuleFileBasicArrayList()
             baseJarPath = string.sub(baseJarPath, (InputAutomationNewBundleRunnable.FILE:length()) + 1)
         end
         local jarFileFilter = BasicFileFilterUtil.getInstance(".jar")
-        local path = baseJarPath .. tostring(InputAutomationNewBundleRunnable.INPUT_AUTMATION_MODULE_BUNDLE_JAR_PATH)
-        self.logUtil:putF("Path: " .. path, self, "getJarModuleFileBasicArrayList")
+        local path = require("allbinary_java").to_string(baseJarPath) .. require("allbinary_java").to_string(InputAutomationNewBundleRunnable.INPUT_AUTMATION_MODULE_BUNDLE_JAR_PATH)
+        self.logUtil:putF(require("allbinary_java").to_string("Path: ") .. require("allbinary_java").to_string(path), self, "getJarModuleFileBasicArrayList")
         local file = File.new(path)
-        self.logUtil:putF("File: " .. tostring(file:getAbsolutePath()) .. " isDirectory: " .. tostring(file:isDirectory()), self, "getJarModuleFileBasicArrayList")
+        self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("File: ") .. require("allbinary_java").to_string(file:getAbsolutePath())) .. require("allbinary_java").to_string(" isDirectory: ")) .. require("allbinary_java").to_string(file:isDirectory()), self, "getJarModuleFileBasicArrayList")
         return SubDirectory.getInstance():search(jarFileFilter, FileWrapperUtil.wrapFile(file))
 end
 
@@ -177,8 +177,8 @@ function InputAutomationNewBundleRunnable:getInstalledJarSymbolicNameBasicArrayL
         local vector = BasicArrayListD.new()
         local bundleContext = InputAutomationBundleActivator.getBundleContext()
         local bundleArray = bundleContext:getBundles()
-        if bundleArray ~= nil then
-            self.logUtil:putF("bundleArray: " .. tostring((bundleArray.n or #bundleArray)), self, "getInputAutomationModuleServices")
+        if not rawequal(bundleArray, nil) then
+            self.logUtil:putF(require("allbinary_java").to_string("bundleArray: ") .. require("allbinary_java").to_string((bundleArray.n or #bundleArray)), self, "getInputAutomationModuleServices")
             for index = 0, (bundleArray.n or #bundleArray) - 1 do
                 local bundle = bundleArray[index + 1]
                 vector:add(bundle:getSymbolicName())
@@ -190,13 +190,13 @@ end
 
 -- throws Exception
 function InputAutomationNewBundleRunnable:isInstalled(symbolicName)
-        self.logUtil:putF(tostring(CommonLabels.getInstance().START) .. symbolicName, self, "isInstalled")
+        self.logUtil:putF(require("allbinary_java").to_string(CommonLabels.getInstance().START) .. require("allbinary_java").to_string(symbolicName), self, "isInstalled")
         local list = self:getInstalledJarSymbolicNameBasicArrayList()
         local size = list:size()
         local nextSymbolicName = nil
         for index = 0, size - 1 do
             nextSymbolicName = list:get(index)
-            if ((nextSymbolicName < symbolicName and -1) or (nextSymbolicName > symbolicName and 1) or 0) == 0 then
+            if rawequal(((nextSymbolicName < symbolicName and -1) or (nextSymbolicName > symbolicName and 1) or 0), 0) then
                 return true
             end
         end
@@ -209,13 +209,13 @@ function InputAutomationNewBundleRunnable:findNewModules()
         self.logUtil:putF(self.commonStrings.START, self, "findNewModules")
         local vector = BasicArrayListD.new()
         local hashMap = self:getAllJarSymbolicNameHashMap()
-        self.logUtil:putF("All: " .. tostring(hashMap), self, "findNewModules")
+        self.logUtil:putF(require("allbinary_java").to_string("All: ") .. require("allbinary_java").to_string(hashMap), self, "findNewModules")
         local set = hashMap:keySet()
         local symbolicNameArray = set:toArray()
         local size = (symbolicNameArray.n or #symbolicNameArray)
         for index = 0, size - 1 do
             local symbolicName = symbolicNameArray[index + 1]
-            if not self:isInstalled(symbolicName) then
+            if not (self:isInstalled(symbolicName)) then
                 vector:add(hashMap:get(symbolicName))
             end
         end

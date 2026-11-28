@@ -69,7 +69,7 @@ function AnalogLocationInputFactory:addPlayer(playerInputId)
         if playerInputId < self.list:size() then
             analogLocationInput = self.list:get(playerInputId)
         end
-        if analogLocationInput == AnalogLocationInput.NULL_ANALOG_LOCATION_INPUT then
+        if rawequal(analogLocationInput, AnalogLocationInput.NULL_ANALOG_LOCATION_INPUT) then
             analogLocationInput = AnalogLocationInput.new(playerInputId)
             self.list:add(analogLocationInput)
         end

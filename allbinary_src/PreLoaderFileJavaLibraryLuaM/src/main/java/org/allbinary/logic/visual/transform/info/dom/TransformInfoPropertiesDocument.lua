@@ -96,7 +96,7 @@ function TransformInfoPropertiesDocument:toTransformInfoPropertiesHashMap()
             local transformInfosChildNodeList = transformInfosNode:getChildNodes()
             local transformInfoNodeVector = DomSearchHelper.getAllNodes(TransformInfoData.getInstance().NAME, transformInfosChildNodeList)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("Size: " .. tostring(transformInfoNodeVector:size()), self, "toTransformInfoPropertiesHashMap()")
+                self.logUtil:putF(require("allbinary_java").to_string("Size: ") .. require("allbinary_java").to_string(transformInfoNodeVector:size()), self, "toTransformInfoPropertiesHashMap()")
             end
             local size = transformInfoNodeVector:size()
             local node = nil

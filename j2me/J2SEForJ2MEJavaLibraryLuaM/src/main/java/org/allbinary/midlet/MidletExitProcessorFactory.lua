@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local MIDlet = require("javax.microedition.midlet.MIDlet")
+local MIDlet = java_lazy("javax.microedition.midlet.MIDlet")
 local AppletUtil = java_lazy("org.allbinary.AppletUtil")
 local J2MEUtil = java_lazy("org.allbinary.J2MEUtil")
 local Processor = java_lazy("org.allbinary.canvas.Processor")

@@ -199,12 +199,12 @@ function InsertThemeValidationView:isValid()
                 self.logUtil:putF("Started Validation", self, self.commonStrings.IS_VALID)
             end
             local themeValidation = ThemeValidation.new(self:getTransformInfoInterface(), self.requestHashMap)
-            if themeValidation:isValid() == false then
+            if rawequal(themeValidation:isValid(), false) then
                 isValid = false
             end
             self.validationInterface = themeValidation:getCssStyleValidation()
             isValid = self.validationInterface:isValid()
-            if isValid == true then
+            if rawequal(isValid, true) then
                 CustomizerUtil.getInstance():insert(self:getTransformInfoInterface(), self.validationInterface)
             end
             do return "__jreturn", isValid end

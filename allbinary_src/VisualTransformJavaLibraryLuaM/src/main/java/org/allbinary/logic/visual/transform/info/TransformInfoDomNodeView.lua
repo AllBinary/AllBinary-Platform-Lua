@@ -198,7 +198,7 @@ function TransformInfoDomNodeView:toXmlNode(document)
         viewNameAttr:setValue(self:getTransformInfoInterface():getName())
         local componentNodeAttributes = subViewNode:getAttributes()
         componentNodeAttributes:setNamedItem(viewNameAttr)
-        if self:getMappedName() ~= nil then
+        if not rawequal(self:getMappedName(), nil) then
             local mappedNameAttr = document:createAttribute(transformInfoData.MAPPED)
             mappedNameAttr:setValue(self:getMappedName())
             componentNodeAttributes:setNamedItem(mappedNameAttr)

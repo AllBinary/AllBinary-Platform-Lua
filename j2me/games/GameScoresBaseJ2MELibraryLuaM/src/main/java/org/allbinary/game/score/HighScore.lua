@@ -57,10 +57,10 @@ HighScore.className = "HighScore"
 HighScore.javaClassName = "org.allbinary.game.score.HighScore"
 
 function HighScore:_init_fields()
-    if self.id == nil then self.id = nil end
+    if self.id == nil then self.id = 0 end
     if self.name_f == nil then self.name_f = nil end
     if self.gameInfo == nil then self.gameInfo = nil end
-    if self.score == nil then self.score = nil end
+    if self.score == nil then self.score = 0 end
     if self.scoreString == nil then self.scoreString = nil end
 end
 

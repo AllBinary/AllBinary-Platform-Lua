@@ -82,11 +82,11 @@ function ThreadPool:_init_fields()
     self.threadPoolStrings = ThreadPoolStrings.getInstance()
     self.threadObjectUtil = ThreadObjectUtil.getInstance()
     if self.poolName == nil then self.poolName = nil end
-    if self.priority == nil then self.priority = nil end
+    if self.priority == nil then self.priority = 0 end
     self.isAlive = false
     self.taskQueue = BasicArrayListUtil.getInstance():getImmutableInstance()
     if self.threadID == nil then self.threadID = 0 end
-    if self.numThreads == nil then self.numThreads = nil end
+    if self.numThreads == nil then self.numThreads = 0 end
     if self.runningTask == nil then self.runningTask = false end
 end
 
@@ -107,7 +107,7 @@ end
 
 
 function ThreadPool:init()
-        if not self.isAlive then
+        if not (self.isAlive) then
             self.isAlive = true
             self.taskQueue = BasicArrayListD.new()
             local pooledThread = nil
@@ -128,10 +128,10 @@ end
 
 function ThreadPool:runTaskWithPriority(task)
         do -- synchronized (self)
-            if not self.isAlive then
+            if not (self.isAlive) then
                 self:init()
             end
-            if task ~= nil then
+            if not rawequal(task, nil) then
                 local size = self.taskQueue:size()
                 local runnable = nil
                 local lowerPriorityRunnable = self.threadObjectUtil.NULL_PRIORITY_RUNNABLE
@@ -142,13 +142,13 @@ function ThreadPool:runTaskWithPriority(task)
                         break
                     end
                 end
-                if lowerPriorityRunnable == self.threadObjectUtil.NULL_PRIORITY_RUNNABLE then
+                if rawequal(lowerPriorityRunnable, self.threadObjectUtil.NULL_PRIORITY_RUNNABLE) then
                     self.taskQueue:add(task)
                 else
                     local index = self.taskQueue:indexOf(lowerPriorityRunnable)
                     self.taskQueue:addAt(index, task)
                 end
-                self:notify()
+                require("java.lang.Thread").signal(self)
             end
         end
 end
@@ -156,12 +156,12 @@ end
 
 function ThreadPool:runTask(task)
         do -- synchronized (self)
-            if not self.isAlive then
+            if not (self.isAlive) then
                 self:init()
             end
-            if task ~= nil then
+            if not rawequal(task, nil) then
                 self.taskQueue:add(task)
-                self:notify()
+                require("java.lang.Thread").signal(self)
             end
         end
 end
@@ -170,11 +170,11 @@ end
 -- throws InterruptedException
 function ThreadPool:getTask()
         do -- synchronized (self)
-            while self.taskQueue:size() == 0 do
-                if not self.isAlive then
+            while rawequal(self.taskQueue:size(), 0) do
+                if not (self.isAlive) then
                     return self.NULL_RUNNABLE
                 end
-                self:wait()
+                require("java.lang.Thread").waitOn(self)
             end
             local runnable = self.taskQueue:removeAt(0)
             return runnable
@@ -205,13 +205,13 @@ function ThreadPool:join()
         do -- synchronized (self)
             self.isAlive = false
             self.taskQueue:clear()
-            self:notifyAll()
+            require("java.lang.Thread").signal(self, true)
         end
 end
 
 
 function ThreadPool:isBusy()
-        if not self.isAlive then
+        if not (self.isAlive) then
             return false
         end
         if self.taskQueue:size() > 0 then
@@ -229,7 +229,7 @@ end
 
 
 function ThreadPool:threadStopped()
-        if self.numThreads == 1 then
+        if rawequal(self.numThreads, 1) then
             self.isAlive = false
             self.taskQueue:clear()
         end

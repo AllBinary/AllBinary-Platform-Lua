@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local CollidableCompositeLayer = java_lazy("org.allbinary.game.layer.CollidableCompositeLayer")
 local AllBinaryLayer = java_lazy("org.allbinary.layer.AllBinaryLayer")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")

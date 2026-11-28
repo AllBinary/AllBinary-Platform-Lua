@@ -141,18 +141,18 @@ function PaymentTypeUtil:get(paymentTypeString)
         local size = self.paymentTypeVector:size()
         for i = 0, size - 1 do
             local paymentType = self.paymentTypeVector:get(i)
-            if paymentType:getBasicPaymentType():getName():compareTo(paymentTypeString) == 0 then
+            if rawequal(paymentType:getBasicPaymentType():getName():compareTo(paymentTypeString), 0) then
                 return paymentType
             end
         end
-        error(require("java.lang.Exception").new("Unknown PaymentType: " .. paymentTypeString), 0)
+        error(require("java.lang.Exception").new(require("allbinary_java").to_string("Unknown PaymentType: ") .. require("allbinary_java").to_string(paymentTypeString)), 0)
 end
 
 
 -- throws Exception
 function PaymentTypeUtil:initDefault(storeName)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PAYMENT) then
-            self.logUtil:putF("initDefault Payment: " .. self.defaultName, self, "initDefault")
+            self.logUtil:putF(require("allbinary_java").to_string("initDefault Payment: ") .. require("allbinary_java").to_string(self.defaultName), self, "initDefault")
         end
         if StringValidationUtil.getInstance():isEmpty(self.defaultName) then
             local stringBuffer = StringMaker.new()
@@ -170,9 +170,9 @@ function PaymentTypeUtil:initDefault(storeName)
                 local defaultPaymentGatewayNode = DomSearchHelper.getNode(EntryData.getInstance().DEFAULT, node:getChildNodes())
                 local defaultPaymentGatewayNodeValue = DomNodeHelper.getTextNodeValue(defaultPaymentGatewayNode)
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().PAYMENT) then
-                    self.logUtil:putF("DefaultPaymentGatewayNodeValue: " .. defaultPaymentGatewayNodeValue, self, "initDefault")
+                    self.logUtil:putF(require("allbinary_java").to_string("DefaultPaymentGatewayNodeValue: ") .. require("allbinary_java").to_string(defaultPaymentGatewayNodeValue), self, "initDefault")
                 end
-                if not StringValidationUtil.getInstance():isEmpty(defaultPaymentGatewayNodeValue) then
+                if not (StringValidationUtil.getInstance():isEmpty(defaultPaymentGatewayNodeValue)) then
                     self.defaultName = defaultPaymentGatewayNodeValue
                 end
             end
@@ -186,10 +186,10 @@ function PaymentTypeUtil:getDefault(storeName)
             self.logUtil:putF(self.commonStrings.START, self, "getDefault")
         end
         self:initDefault(storeName)
-        if not StringValidationUtil.getInstance():isEmpty(self.defaultName) then
+        if not (StringValidationUtil.getInstance():isEmpty(self.defaultName)) then
             return self:get(self.defaultName)
         end
-        error(require("java.lang.Exception").new("No Default: " .. self.defaultName), 0)
+        error(require("java.lang.Exception").new(require("allbinary_java").to_string("No Default: ") .. require("allbinary_java").to_string(self.defaultName)), 0)
 end
 
 
@@ -203,7 +203,7 @@ function PaymentTypeUtil:difference(a_PaymentTypeVector)
         local size = self.paymentTypeVector:size()
         for i = 0, size - 1 do
             local paymentType = self.paymentTypeVector:get(i)
-            if not a_PaymentTypeVector:contains(paymentType) then
+            if not (a_PaymentTypeVector:contains(paymentType)) then
                 diff:add(paymentType)
             end
         end

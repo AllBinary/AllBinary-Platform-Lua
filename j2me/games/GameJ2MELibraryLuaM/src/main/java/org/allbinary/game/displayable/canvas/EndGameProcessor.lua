@@ -157,16 +157,16 @@ end
 function EndGameProcessor:process()
         if self.gameCanvas:isHighScoreSubmitted() then
             if self.gameCanvas:getGameStateTimeHelper():isElapsedTNT(self.WAIT) then
-                if self.gameCanvas:getGameState() == self.gameStateFactory.SHOW_END_RESULT_GAME_STATE then
+                if rawequal(self.gameCanvas:getGameState(), self.gameStateFactory.SHOW_END_RESULT_GAME_STATE) then
                     local highScoresBase = self.gameCanvas.highScoresHelper
                     local highScores = highScoresBase:getSelectedHighScores()
-                    if highScores ~= NullHighScoresSingletonFactory.getInstance() then
+                    if not rawequal(highScores, NullHighScoresSingletonFactory.getInstance()) then
                         highScoresBase:selectHighScores()
                         self.gameCanvas:getRealHighScoresPaintable():setHighScores(highScores)
                         self.gameCanvas:setGameState(self.gameStateFactory.SHOW_HIGH_SCORE_GAME_STATE)
                         self.gameCanvas:setHighScoresPaintable(self.gameCanvas:getRealHighScoresPaintable())
                     end
-                elseif self.gameCanvas:getGameState() == self.gameStateFactory.SHOW_HIGH_SCORE_GAME_STATE then
+                elseif rawequal(self.gameCanvas:getGameState(), self.gameStateFactory.SHOW_HIGH_SCORE_GAME_STATE) then
                     self.gameCanvas:setGameState(self.gameStateFactory.SHOW_END_RESULT_GAME_STATE)
                     self.gameCanvas:setHighScoresPaintable(NullPaintable.getInstance())
                 end

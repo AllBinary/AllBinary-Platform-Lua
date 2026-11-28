@@ -135,7 +135,7 @@ end
 
 -- throws Exception
 function MotionGestureRecognizer:processDraggedMotionEvent(current, deviceId, buttonMask)
-        if self.previous == self.origin or self.intermediate == self.origin then
+        if rawequal(self.previous, self.origin) or rawequal(self.intermediate, self.origin) then
             self.previous = current
             self.intermediate = current
             return

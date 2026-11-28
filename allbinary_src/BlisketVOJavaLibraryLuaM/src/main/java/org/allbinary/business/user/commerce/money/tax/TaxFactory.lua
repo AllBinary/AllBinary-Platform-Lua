@@ -153,9 +153,9 @@ function TaxFactory:getInstance(abeClientInformation, storeFrontInterface)
         for index = 0, taxNameNodeList:getLength() - 1 do
             local node = taxNameNodeList:item(index)
             local nodeList = node:getChildNodes()
-            if nodeList ~= nil then
+            if not rawequal(nodeList, nil) then
                 local classNameNode = DomSearchHelper.getNode(DynamicObjectData.NAME, nodeList)
-                if classNameNode ~= nil then
+                if not rawequal(classNameNode, nil) then
                     local className = DomNodeHelper.getTextNodeValue(classNameNode)
                     return AbeFactory.getInstance():getInstance(abeClientInformation, className)
                 else

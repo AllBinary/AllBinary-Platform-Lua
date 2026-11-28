@@ -82,7 +82,7 @@ end
 
 -- throws Exception
 function PoolInterfaceFactory.getInstance(cacheableInterfaceFactoryInterface, poolType, cachePolicy)
-        error(require("java.lang.Exception").new("No Such PoolType: " .. tostring(poolType)), 0)
+        error(require("java.lang.Exception").new(require("allbinary_java").to_string("No Such PoolType: ") .. require("allbinary_java").to_string(tostring(poolType))), 0)
 end
 
 return PoolInterfaceFactory

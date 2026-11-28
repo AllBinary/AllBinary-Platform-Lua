@@ -217,7 +217,7 @@ function HtmlSelect:getOptions()
         local optionsSize = (optionsArray.n or #optionsArray)
         for i = 0, optionsSize - 1 do
             local value = optionsArray[i + 1]
-            if value ~= nil and value:compareTo(stringUtil.EMPTY_STRING) ~= 0 then
+            if not rawequal(value, nil) and not rawequal(value:compareTo(stringUtil.EMPTY_STRING), 0) then
                 result = result .. tostring(self.STARTOPTION)
                 result = result .. tostring(self.END)
                 result = result .. tostring(value)
@@ -245,7 +245,7 @@ function HtmlSelect:toString()
         for i = 0, attributeSize - 1 do
             local key = attributeKeys[i + 1]
             local value = self.otherAttributes:get(key)
-            if value ~= nil and value:compareTo(stringUtil.EMPTY_STRING) ~= 0 then
+            if not rawequal(value, nil) and not rawequal(value:compareTo(stringUtil.EMPTY_STRING), 0) then
                 result = result .. tostring(key)
                 result = result .. tostring("=\"")
                 result = result .. tostring(value)
@@ -253,7 +253,7 @@ function HtmlSelect:toString()
             end
         end
         if self:isMultiple() then
-            result = result .. tostring(" " .. self.multiple .. " ")
+            result = result .. tostring(require("allbinary_java").to_string(require("allbinary_java").to_string(" ") .. require("allbinary_java").to_string(self.multiple)) .. require("allbinary_java").to_string(" "))
         end
         result = result .. tostring(self.END)
         result = result .. tostring(self:getOptions())

@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local GameKey = java_lazy("org.allbinary.game.input.GameKey")
 local GameKeyFactory = java_lazy("org.allbinary.game.input.GameKeyFactory")
 local Input = java_lazy("org.allbinary.game.input.Input")
@@ -199,7 +199,7 @@ function InputMappingHelpPaintable._jinit(self, gameInputMappingArray, backgroun
         -- super(...) made self above
         self.gameInputMappingArray = gameInputMappingArray
         self:update(self.NONE, self.NONE)
-        if backgroundBasicColor == self.basicColorFactory.WHITE or basicColor == self.basicColorFactory.WHITE then
+        if rawequal(backgroundBasicColor, self.basicColorFactory.WHITE) or rawequal(basicColor, self.basicColorFactory.WHITE) then
             self.selectedBasicColor = self.basicColorFactory.RED
         else
             self.selectedBasicColor = self.basicColorFactory.WHITE
@@ -250,17 +250,17 @@ function InputMappingHelpPaintable:updateMeasurement(graphics)
                 updateMyFontProperties.inputDeltaXArray[index + 1][index2 + 1] = font:stringWidth(input:getName())
                 updateMyFontProperties.sepArray[index + 1][index2 + 1] = self.EMPTY_STRING
                 if index2 + 1 < list:size() then
-                    if list:size() == 2 then
+                    if rawequal(list:size(), 2) then
                         updateMyFontProperties.sepArray[index + 1][index2 + 1] = InputMappingHelpPaintable.AND
                     else
-                        if index2 + 2 == list:size() then
+                        if rawequal(index2 + 2, list:size()) then
                             updateMyFontProperties.sepArray[index + 1][index2 + 1] = InputMappingHelpPaintable.MORE_THAN_TWO_IN_LIST_AND
                         else
                             updateMyFontProperties.sepArray[index + 1][index2 + 1] = InputMappingHelpPaintable.SEP
                         end
                     end
                 end
-                if updateMyFontProperties.sepArray[index + 1][index2 + 1] ~= self.EMPTY_STRING then
+                if not rawequal(updateMyFontProperties.sepArray[index + 1][index2 + 1], self.EMPTY_STRING) then
                     updateMyFontProperties.sepWidthArray[index + 1][index2 + 1] = font:stringWidth(updateMyFontProperties.sepArray[index + 1][index2 + 1])
                 end
             end
@@ -292,7 +292,7 @@ function InputMappingHelpPaintable:update(selectedGameKey, selectedInput)
             for index2 = 0, size2 - 1 do
                 inputBasicColorArray[index + 1][index2 + 1] = self.basicColor
             end
-            if gameKey == selectedGameKey then
+            if rawequal(gameKey, selectedGameKey) then
                 stringMaker:delete(0, stringMaker:length())
                 self.logUtil:putF(tostring(stringMaker:append("Found: selected GameKey: "):append(self.stringUtil:toString(selectedGameKey))), self, self.commonStrings.UPDATE)
                 actionBasicColor[index + 1] = self.selectedBasicColor
@@ -325,10 +325,10 @@ function InputMappingHelpPaintable:get(keyList)
             key = keyList.objectArray[index + 1]
             stringBuffer:append(key:getName())
             if index + 1 < keyList:size() then
-                if keyList:size() == 2 then
+                if rawequal(keyList:size(), 2) then
                     stringBuffer:append(InputMappingHelpPaintable.AND)
                 else
-                    if index + 2 == keyList:size() then
+                    if rawequal(index + 2, keyList:size()) then
                         stringBuffer:append(InputMappingHelpPaintable.MORE_THAN_TWO_IN_LIST_AND)
                     else
                         stringBuffer:append(InputMappingHelpPaintable.SEP)

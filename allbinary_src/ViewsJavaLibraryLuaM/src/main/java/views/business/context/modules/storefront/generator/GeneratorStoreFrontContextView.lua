@@ -143,7 +143,7 @@ function GeneratorStoreFrontContextView._jinit(self, transformInfoInterface)
     GeneratorStoreFrontContextView._init_fields(self)
         -- super(...) made self above
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("View Name: " .. transformInfoInterface:getName(), self, self.commonStrings.CONSTRUCTOR)
+            self.logUtil:putF(require("allbinary_java").to_string("View Name: ") .. require("allbinary_java").to_string(transformInfoInterface:getName()), self, self.commonStrings.CONSTRUCTOR)
         end
     return self
 end
@@ -185,6 +185,8 @@ function GeneratorStoreFrontContextView:view(...)
     local count = select("#", ...)
     if count == 1 then return self:view_j1(...) end
     if count == 0 then return self:view_j0(...) end
+    local parent = getmetatable(GeneratorStoreFrontContextView).__index
+    if parent.view then return parent.view(self, ...) end
     error("No method view takes " .. count .. " arguments")
 end
 GeneratorStoreFrontContextView.view__jdispatcher = GeneratorStoreFrontContextView.view

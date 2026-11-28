@@ -129,7 +129,7 @@ setmetatable(RaceTrackGeographicMapCellType, {__index = GeographicMapCellType})
 
 function RaceTrackGeographicMapCellType:_init_fields()
     if self.name_f == nil then self.name_f = nil end
-    if self.travelCost == nil then self.travelCost = nil end
+    if self.travelCost == nil then self.travelCost = 0 end
 end
 
 

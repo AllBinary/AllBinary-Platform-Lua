@@ -223,6 +223,8 @@ function AdvertisementsEntity:get(...)
     local count = select("#", ...)
     if count == 1 then return self:get_j1(...) end
     if count == 2 then return self:get_j2(...) end
+    local parent = getmetatable(AdvertisementsEntity).__index
+    if parent.get then return parent.get(self, ...) end
     error("No method get takes " .. count .. " arguments")
 end
 AdvertisementsEntity.get__jdispatcher = AdvertisementsEntity.get

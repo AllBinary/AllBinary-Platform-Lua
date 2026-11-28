@@ -110,7 +110,7 @@ function StringUtil:count(string_, aChar)
         local count = 0
         local size = #string_
         for index = 0, size - 1 do
-            if string.sub(string_, (index) + 1, (index) + 1) == aChar then
+            if rawequal(string.sub(string_, (index) + 1, (index) + 1), aChar) then
                 count = count + 1
             end
         end
@@ -119,7 +119,7 @@ end
 
 
 function StringUtil:toString(anyType)
-        if anyType ~= nil then
+        if not rawequal(anyType, nil) then
             return tostring(anyType)
         else
             return self.NULL_STRING

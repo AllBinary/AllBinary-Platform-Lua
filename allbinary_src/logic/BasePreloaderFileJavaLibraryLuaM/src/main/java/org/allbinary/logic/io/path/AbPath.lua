@@ -102,13 +102,13 @@ end
 function AbPath._jinit(self, aPath, name)
     AbPath._init_fields(self)
         local stringValidationUtil = StringValidationUtil.getInstance()
-        if not stringValidationUtil:isEmpty(aPath) then
+        if not (stringValidationUtil:isEmpty(aPath)) then
             self.schema = self:getSchema(aPath)
             self.nameP = name
             self.path = self.abPathUtil:adjustEnd(self.abPathUtil:adjust(self:getPathFromPath(aPath)))
         else
             self:init()
-            if not stringValidationUtil:isEmpty(name) then
+            if not (stringValidationUtil:isEmpty(name)) then
                 self.nameP = name
             end
         end
@@ -149,13 +149,13 @@ end
 function AbPath:getPathFromPath(aPath)
         local filePathData = FilePathData.getInstance()
         local tempPath = aPath
-        if not self:hasSchema() then
+        if not (self:hasSchema()) then
             tempPath = self.abPathUtil:adjustStart(tempPath)
         else
             local beginIndex = ((string.find(tempPath, self.commonSeps.COLON, 1, true) or 0) - 1)
             if beginIndex >= 0 then
                 beginIndex = beginIndex + 1
-                while string.sub(tempPath, (beginIndex) + 1, (beginIndex) + 1) == self.abPathData.SEPARATORCHAR or string.sub(tempPath, (beginIndex) + 1, (beginIndex) + 1) == filePathData.SEPARATORCHAR do
+                while rawequal(string.sub(tempPath, (beginIndex) + 1, (beginIndex) + 1), self.abPathData.SEPARATORCHAR) or rawequal(string.sub(tempPath, (beginIndex) + 1, (beginIndex) + 1), filePathData.SEPARATORCHAR) do
                     beginIndex = beginIndex + 1
                     self.numberOfSeps = self.numberOfSeps + 1
                     if self.numberOfSeps > 2 then
@@ -203,7 +203,7 @@ function AbPath:toFileSystemString()
             stringBuffer:append(self.nameP)
             return tostring(stringBuffer)
         else
-            return tostring(FilePathUtil.adjust(self:getPath())) .. self.nameP
+            return require("allbinary_java").to_string(FilePathUtil.adjust(self:getPath())) .. require("allbinary_java").to_string(self.nameP)
         end
 end
 

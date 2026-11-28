@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 
@@ -79,7 +79,7 @@ end
 
 function OpenGLESImageExclusionUtil:isCustomScaling(image)
         local imageName = image:getName()
-        local isNormalScaling = self.list:size() == 0 or (string.sub(imageName, 1, #self.EXCLUSION) == self.EXCLUSION)
+        local isNormalScaling = rawequal(self.list:size(), 0) or (string.sub(imageName, 1, #self.EXCLUSION) == self.EXCLUSION)
         if isNormalScaling then
             return false
         else

@@ -151,7 +151,7 @@ end
 
 -- throws Exception
 function PaymentType:getPaymentTransactionInterfaceFactoryInterface()
-        if self.paymentTransactionInterfaceFactoryInterface == nil then
+        if rawequal(self.paymentTransactionInterfaceFactoryInterface, nil) then
             error(require("java.lang.Exception").new("PaymentTransactionInterfaceFactoryInterface is Null"), 0)
         end
         return self.paymentTransactionInterfaceFactoryInterface
@@ -160,7 +160,7 @@ end
 
 -- throws Exception
 function PaymentType:getPaymentProcessorInterfaceFactoryInterface()
-        if self.paymentProcessorInterfaceFactoryInterface == nil then
+        if rawequal(self.paymentProcessorInterfaceFactoryInterface, nil) then
             error(require("java.lang.Exception").new("PaymentProcessorInterfaceFactoryInterface is Null"), 0)
         end
         return self.paymentProcessorInterfaceFactoryInterface
@@ -170,10 +170,10 @@ end
 function PaymentType:toVector()
         local vector = BasicArrayListD.new()
         vector:addAllList(self:getBasicPaymentType():toVector())
-        if self.paymentTransactionInterfaceFactoryInterface ~= nil then
+        if not rawequal(self.paymentTransactionInterfaceFactoryInterface, nil) then
             vector:add((getmetatable(self.paymentTransactionInterfaceFactoryInterface).javaClassName or getmetatable(self.paymentTransactionInterfaceFactoryInterface).className))
         end
-        if self.paymentProcessorInterfaceFactoryInterface ~= nil then
+        if not rawequal(self.paymentProcessorInterfaceFactoryInterface, nil) then
             vector:add((getmetatable(self.paymentProcessorInterfaceFactoryInterface).javaClassName or getmetatable(self.paymentProcessorInterfaceFactoryInterface).className))
         end
         return vector
@@ -183,10 +183,10 @@ end
 function PaymentType:toHashMap()
         local hashMap = StdUtil.getInstance():createHashMap()
         hashMap:putAll(self:getBasicPaymentType():toHashMap())
-        if self.paymentTransactionInterfaceFactoryInterface ~= nil then
+        if not rawequal(self.paymentTransactionInterfaceFactoryInterface, nil) then
             hashMap:put(tostring(PaymentGatewayData.PAYMENTTRANSACTIONINTERFACEFACTORYINTERFACE), (getmetatable(self.paymentTransactionInterfaceFactoryInterface).javaClassName or getmetatable(self.paymentTransactionInterfaceFactoryInterface).className))
         end
-        if self.paymentProcessorInterfaceFactoryInterface ~= nil then
+        if not rawequal(self.paymentProcessorInterfaceFactoryInterface, nil) then
             hashMap:put(tostring(PaymentGatewayData.PAYMENTPROCESSORINTERFACEFACTORYINTERFACE), (getmetatable(self.paymentProcessorInterfaceFactoryInterface).javaClassName or getmetatable(self.paymentProcessorInterfaceFactoryInterface).className))
         end
         return hashMap

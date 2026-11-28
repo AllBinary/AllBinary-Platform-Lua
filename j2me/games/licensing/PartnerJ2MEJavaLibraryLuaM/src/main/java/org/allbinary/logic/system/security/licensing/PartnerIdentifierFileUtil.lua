@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local InputStream = require("java.io.InputStream")
--- local InputStreamReader = require("java.io.InputStreamReader")
+local InputStream = java_lazy("java.io.InputStream")
+local InputStreamReader = java_lazy("java.io.InputStreamReader")
 local ResourceUtil = java_lazy("org.allbinary.data.resource.ResourceUtil")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local StringUtil = java_lazy("org.allbinary.logic.string.StringUtil")

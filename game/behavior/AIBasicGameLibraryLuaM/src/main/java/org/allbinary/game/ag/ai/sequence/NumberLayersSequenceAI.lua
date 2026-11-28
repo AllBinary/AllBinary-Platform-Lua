@@ -147,7 +147,7 @@ NumberLayersSequenceAI.javaClassName = "org.allbinary.game.ag.ai.sequence.Number
 setmetatable(NumberLayersSequenceAI, {__index = SequenceAI})
 
 function NumberLayersSequenceAI:_init_fields()
-    if self.numberOfLayersLeft == nil then self.numberOfLayersLeft = nil end
+    if self.numberOfLayersLeft == nil then self.numberOfLayersLeft = 0 end
 end
 
 
@@ -168,7 +168,7 @@ end
 
 -- throws Exception
 function NumberLayersSequenceAI:processAI(allBinaryLayerManager)
-        if self:getIndex() == 0 then
+        if rawequal(self:getIndex(), 0) then
             if allBinaryLayerManager:getSize() < self.numberOfLayersLeft then
                 self:setIndex(1)
             end

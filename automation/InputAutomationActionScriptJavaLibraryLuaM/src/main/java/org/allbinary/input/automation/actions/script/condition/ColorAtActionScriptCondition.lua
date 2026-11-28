@@ -209,32 +209,32 @@ function ColorAtActionScriptCondition._new1(self, node)
         -- super(...) made self above
         self.point = Point.new(0, 0)
         local actionNode = DomSearchHelper.getNode(ColorAtActionScriptConditionData.NAME, node:getChildNodes())
-        if actionNode ~= nil then
+        if not rawequal(actionNode, nil) then
             local nodeList = actionNode:getChildNodes()
             for index = 0, nodeList:getLength() - 1 do
                 local childNode = nodeList:item(index)
-                if childNode:getNodeName():compareTo(ColorAtActionScriptConditionData.LOCATION_X) == 0 then
+                if rawequal(childNode:getNodeName():compareTo(ColorAtActionScriptConditionData.LOCATION_X), 0) then
                     local locationX = DomNodeHelper.getTextNodeValue(childNode)
                     self.point.x = tostring(locationX)
-                elseif childNode:getNodeName():compareTo(ColorAtActionScriptConditionData.LOCATION_Y) == 0 then
+                elseif rawequal(childNode:getNodeName():compareTo(ColorAtActionScriptConditionData.LOCATION_Y), 0) then
                     local locationY = DomNodeHelper.getTextNodeValue(childNode)
                     self.point.y = tostring(locationY)
-                elseif childNode:getNodeName():compareTo(ColorAtActionScriptConditionData.MIN_RED) == 0 then
+                elseif rawequal(childNode:getNodeName():compareTo(ColorAtActionScriptConditionData.MIN_RED), 0) then
                     local string_ = DomNodeHelper.getTextNodeValue(childNode)
                     self:getColorRangeInterface():setMinRed(tostring(string_))
-                elseif childNode:getNodeName():compareTo(ColorAtActionScriptConditionData.MAX_RED) == 0 then
+                elseif rawequal(childNode:getNodeName():compareTo(ColorAtActionScriptConditionData.MAX_RED), 0) then
                     local string_ = DomNodeHelper.getTextNodeValue(childNode)
                     self:getColorRangeInterface():setMaxRed(tostring(string_))
-                elseif childNode:getNodeName():compareTo(ColorAtActionScriptConditionData.MIN_GREEN) == 0 then
+                elseif rawequal(childNode:getNodeName():compareTo(ColorAtActionScriptConditionData.MIN_GREEN), 0) then
                     local string_ = DomNodeHelper.getTextNodeValue(childNode)
                     self:getColorRangeInterface():setMinGreen(tostring(string_))
-                elseif childNode:getNodeName():compareTo(ColorAtActionScriptConditionData.MAX_GREEN) == 0 then
+                elseif rawequal(childNode:getNodeName():compareTo(ColorAtActionScriptConditionData.MAX_GREEN), 0) then
                     local string_ = DomNodeHelper.getTextNodeValue(childNode)
                     self:getColorRangeInterface():setMaxGreen(tostring(string_))
-                elseif childNode:getNodeName():compareTo(ColorAtActionScriptConditionData.MIN_BLUE) == 0 then
+                elseif rawequal(childNode:getNodeName():compareTo(ColorAtActionScriptConditionData.MIN_BLUE), 0) then
                     local string_ = DomNodeHelper.getTextNodeValue(childNode)
                     self:getColorRangeInterface():setMinBlue(tostring(string_))
-                elseif childNode:getNodeName():compareTo(ColorAtActionScriptConditionData.MAX_BLUE) == 0 then
+                elseif rawequal(childNode:getNodeName():compareTo(ColorAtActionScriptConditionData.MAX_BLUE), 0) then
                     local string_ = DomNodeHelper.getTextNodeValue(childNode)
                     self:getColorRangeInterface():setMaxBlue(tostring(string_))
                 end
@@ -291,7 +291,7 @@ function ColorAtActionScriptCondition:toHashMap()
         hashMap:put(ColorAtActionScriptConditionData.MAX_GREEN, tostring(self:getColorRangeInterface():getMaxGreen()))
         hashMap:put(ColorAtActionScriptConditionData.MIN_BLUE, tostring(self:getColorRangeInterface():getMinBlue()))
         hashMap:put(ColorAtActionScriptConditionData.MAX_BLUE, tostring(self:getColorRangeInterface():getMaxBlue()))
-        self.logUtil:putF("HashMap: " .. tostring(hashMap), self, "toHashMap()")
+        self.logUtil:putF(require("allbinary_java").to_string("HashMap: ") .. require("allbinary_java").to_string(tostring(hashMap)), self, "toHashMap()")
         return hashMap
 end
 java_overload(ColorAtActionScriptCondition, "toHashMap", 0)

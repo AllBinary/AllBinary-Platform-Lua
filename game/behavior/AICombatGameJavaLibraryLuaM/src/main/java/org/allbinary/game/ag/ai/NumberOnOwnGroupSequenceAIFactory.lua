@@ -109,7 +109,7 @@ function NumberOnOwnGroupSequenceAIFactory:getInstance(hashtable, artificialInte
         local list = BasicArrayListD.new()
         for index = 0, (integerArray.n or #integerArray) - 1 do
             local integerCanBeNull = hashtable:get(integerArray[index + 1])
-            if integerCanBeNull == nil then
+            if rawequal(integerCanBeNull, nil) then
                 break
             end
             list:add(integerCanBeNull)

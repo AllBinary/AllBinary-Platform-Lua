@@ -165,7 +165,7 @@ function OverrideObjectConfigRootContextView._jinit(self, transformInfoInterface
     OverrideObjectConfigRootContextView._init_fields(self)
         -- super(...) made self above
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("View Name: " .. transformInfoInterface:getName(), self, "OverrideObjectRootContextView()")
+            self.logUtil:putF(require("allbinary_java").to_string("View Name: ") .. require("allbinary_java").to_string(transformInfoInterface:getName()), self, "OverrideObjectRootContextView()")
         end
     return self
 end
@@ -181,7 +181,7 @@ end
 function OverrideObjectConfigRootContextView:view()
         local try_ok, try_error, try_value = pcall(function()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("View Name: " .. self:getTransformInfoInterface():getName(), self, "view()")
+                self.logUtil:putF(require("allbinary_java").to_string("View Name: ") .. require("allbinary_java").to_string(self:getTransformInfoInterface():getName()), self, "view()")
             end
             local rootTransformInfoInterface = TransformInfoHttp.new(self:getTransformInfoInterface())
             local stringBuffer = StringMaker.new()
@@ -189,15 +189,15 @@ function OverrideObjectConfigRootContextView:view()
             stringBuffer:append(CommonSeps.getInstance().SPACE)
             local nameStart = tostring(stringBuffer)
             if self:getTransformInfoInterface():getName():indexOf(GeneratorTransformInfoData.NAME) > 0 then
-                rootTransformInfoInterface:setName(nameStart .. tostring(GeneratorTransformInfoData.NAME))
+                rootTransformInfoInterface:setName(require("allbinary_java").to_string(nameStart) .. require("allbinary_java").to_string(GeneratorTransformInfoData.NAME))
             elseif self:getTransformInfoInterface():getName():indexOf(RootTransformInfoData.NAME) > 0 then
-                rootTransformInfoInterface:setName(nameStart .. tostring(RootTransformInfoData.NAME))
+                rootTransformInfoInterface:setName(require("allbinary_java").to_string(nameStart) .. require("allbinary_java").to_string(RootTransformInfoData.NAME))
             else
                 error(require("java.lang.Exception").new("Override Currently Not Supported"), 0)
             end
             local overrideObjectConfigDocument = self:getTransformInfoInterface():getObjectConfigInterface():toXmlDoc()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("Retrieved OverrideObjectConfig: " .. XmlDocumentHelper.toString(overrideObjectConfigDocument), self, "view()")
+                self.logUtil:putF(require("allbinary_java").to_string("Retrieved OverrideObjectConfig: ") .. require("allbinary_java").to_string(XmlDocumentHelper.toString(overrideObjectConfigDocument)), self, "view()")
             end
             local transformFactory = TransformFactory.getInstance()
             local rootComponentInterface = transformFactory:getInstance(self.abeClientInformation, rootTransformInfoInterface:getName(), rootTransformInfoInterface)
@@ -206,7 +206,7 @@ function OverrideObjectConfigRootContextView:view()
             local transformInfoObjectConfigInterface = TransformInfoObjectConfigAndManipulatorFactory.getInstance():getInstance(self.abeClientInformation, componentInterface:getTransformInfoInterface(), overrideObjectConfigDocument)
             componentInterface:getTransformInfoInterface():setObjectConfigInterface(transformInfoObjectConfigInterface)
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("Set OverrideObjectConfig: " .. tostring(componentInterface:getTransformInfoInterface():getObjectConfigInterface()), self, "view()")
+                self.logUtil:putF(require("allbinary_java").to_string("Set OverrideObjectConfig: ") .. require("allbinary_java").to_string(tostring(componentInterface:getTransformInfoInterface():getObjectConfigInterface())), self, "view()")
             end
             do return "__jreturn", componentInterface:view() end
         end)

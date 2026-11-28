@@ -101,7 +101,7 @@ end
 
 function InputAutomationConfiguration:setInstalled(installed)
         self.installed = installed
-        self.logUtil:putF("Installed: " .. tostring(installed), self, "setIntalled")
+        self.logUtil:putF(require("allbinary_java").to_string("Installed: ") .. require("allbinary_java").to_string(installed), self, "setIntalled")
 end
 
 
@@ -114,7 +114,7 @@ end
 function InputAutomationConfiguration:save()
         local document = DomDocumentHelper.create()
         local file = File.new(InputAutomationConfiguration.FILENAME)
-        FileUtil.getInstance():copy(AbPath.new(file:getAbsolutePath(), StringUtil.getInstance().EMPTY_STRING), AbPath.new(tostring(file:getAbsolutePath()) .. ".bak.xml", StringUtil.getInstance().EMPTY_STRING))
+        FileUtil.getInstance():copy(AbPath.new(file:getAbsolutePath(), StringUtil.getInstance().EMPTY_STRING), AbPath.new(require("allbinary_java").to_string(file:getAbsolutePath()) .. require("allbinary_java").to_string(".bak.xml"), StringUtil.getInstance().EMPTY_STRING))
         local jaxbContext = JAXBContext.newInstance(InputAutomationConfiguration)
         local marshaller = jaxbContext:createMarshaller()
         marshaller:setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true)

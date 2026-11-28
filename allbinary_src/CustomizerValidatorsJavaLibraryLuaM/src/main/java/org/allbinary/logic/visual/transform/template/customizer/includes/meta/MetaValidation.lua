@@ -182,9 +182,9 @@ function MetaValidation._new4(self, htmlMetaAttributeData, label, attributeValue
     java_super_init(Validation, self)
     MetaValidation._init_fields(self)
         self.label = label
-        if htmlMetaAttributeData:equals(HtmlMetaAttributeDataFactory.getInstance().HTTP_EQUIV) then
+        if require("allbinary_java").equals(htmlMetaAttributeData, HtmlMetaAttributeDataFactory.getInstance().HTTP_EQUIV) then
             self.httpEquiv = attributeValue
-        elseif htmlMetaAttributeData:equals(HtmlMetaAttributeDataFactory.getInstance().NAME) then
+        elseif require("allbinary_java").equals(htmlMetaAttributeData, HtmlMetaAttributeDataFactory.getInstance().NAME) then
             self.name_f = attributeValue
         end
         self.content = contentValue

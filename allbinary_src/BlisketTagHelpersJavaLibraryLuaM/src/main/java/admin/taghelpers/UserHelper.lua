@@ -195,7 +195,7 @@ function UserHelper:delete()
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-            local error = "Failed to remove user with " .. tostring(UserData.USERNAME) .. " from User table"
+            local error = require("allbinary_java").to_string(require("allbinary_java").to_string("Failed to remove user with ") .. require("allbinary_java").to_string(UserData.USERNAME)) .. require("allbinary_java").to_string(" from User table")
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLTAGSERROR) then
                 self.logUtil:put(self.commonStrings.EXCEPTION, self, "delete()", e)
             end
@@ -211,7 +211,7 @@ function UserHelper:insert()
         local try_ok, try_error, try_value = pcall(function()
             local userInterface = NewUserFactory.getInstance(self.request, self.hashMap)
             local enable = self.hashMap:get(EntryData.getInstance().ENABLE)
-            if not StringValidationUtil.getInstance():isEmpty(enable) then
+            if not (StringValidationUtil.getInstance():isEmpty(enable)) then
                 userInterface:setEnable(enable)
             end
             local values = userInterface:toVector()

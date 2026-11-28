@@ -228,7 +228,7 @@ java_overload(AuthenticationHelper, "invalidateSession", 0)
 
 
 function AuthenticationHelper:isSessionOld()
-        if self.role ~= nil then
+        if not rawequal(self.role, nil) then
             local timeCreated = self.weblisketSession:getCreationTime()
             local sessionTimout = self.role:getSessionTimeout()
             local calendar = Calendar.getInstance()
@@ -257,7 +257,7 @@ java_overload(AuthenticationHelper, "isSessionOld", 0)
 
 
 function AuthenticationHelper:isRarelyUsedSession()
-        if self.role ~= nil then
+        if not rawequal(self.role, nil) then
             local timeCreated = self.weblisketSession:getCreationTime()
             local lastAccess = self.weblisketSession:getLastAccessedTime()
             local inactivityAllowed = self.role:getSessionInactivityTimeout()
@@ -338,19 +338,19 @@ java_overload(AuthenticationHelper, "isAuthenticated", 0)
 
 function AuthenticationHelper:isAuthenticationSessionValid(roles)
         local try_ok, try_error, try_value = pcall(function()
-            if self.role ~= nil then
+            if not rawequal(self.role, nil) then
                 if self:isAuthenticated() then
-                    if self.sessionUserName ~= nil then
+                    if not rawequal(self.sessionUserName, nil) then
                         local basicUserRole = self.role:getBasicUserRole()
                         local basicUserRoleArray = roles:toArray()
                         local size = (basicUserRoleArray.n or #basicUserRoleArray)
                         for index = 0, size - 1 do
                             local mustBeOfRole = basicUserRoleArray[index + 1]
-                            if basicUserRole:equals(mustBeOfRole) then
-                                if basicUserRole:equals(UserRoleFactory.getInstance().CUSTOMER) then
+                            if require("allbinary_java").equals(basicUserRole, mustBeOfRole) then
+                                if require("allbinary_java").equals(basicUserRole, UserRoleFactory.getInstance().CUSTOMER) then
                                     local userEntityInterface = UserEntityFactory.getInstance()
                                     local userInterface = userEntityInterface:getUser(self.sessionUserName)
-                                    if not userInterface:isSessionValid() then
+                                    if not (userInterface:isSessionValid()) then
                                         do return "__jreturn", false end
                                     end
                                 end
@@ -381,7 +381,7 @@ java_overload(AuthenticationHelper, "isAuthenticationSessionValid", 1, function(
 
 
 function AuthenticationHelper:nextAttempt()
-        if self.attemptsInteger ~= nil and math.tointeger(self.attemptsInteger // 1) > 0 then
+        if not rawequal(self.attemptsInteger, nil) and math.tointeger(self.attemptsInteger // 1) > 0 then
             self.weblisketSession:setAttempts(math.tointeger(self.attemptsInteger // 1) + 1)
         else
             self.weblisketSession:setAttempts(1)
@@ -393,13 +393,13 @@ java_overload(AuthenticationHelper, "nextAttempt", 0)
 function AuthenticationHelper:processIfNewLogin(userName, password)
         local try_ok, try_error, try_value = pcall(function()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().AUTHENTICATIONERROR) then
-                self.logUtil:putF("Starting: " .. userName, self, "processIfNewLogin()")
+                self.logUtil:putF(require("allbinary_java").to_string("Starting: ") .. require("allbinary_java").to_string(userName), self, "processIfNewLogin()")
             end
-            if userName ~= nil and ((userName < StringUtil.getInstance().EMPTY_STRING and -1) or (userName > StringUtil.getInstance().EMPTY_STRING and 1) or 0) ~= 0 and password ~= nil and ((password < StringUtil.getInstance().EMPTY_STRING and -1) or (password > StringUtil.getInstance().EMPTY_STRING and 1) or 0) ~= 0 then
+            if not rawequal(userName, nil) and not rawequal(((userName < StringUtil.getInstance().EMPTY_STRING and -1) or (userName > StringUtil.getInstance().EMPTY_STRING and 1) or 0), 0) and not rawequal(password, nil) and not rawequal(((password < StringUtil.getInstance().EMPTY_STRING and -1) or (password > StringUtil.getInstance().EMPTY_STRING and 1) or 0), 0) then
                 local login = nil
                 local userEntityInterface = UserEntityFactory.getInstance()
                 login = userEntityInterface:login(userName, password)
-                if ((login < GLOBALS2.LOGINSUCCESS and -1) or (login > GLOBALS2.LOGINSUCCESS and 1) or 0) == 0 then
+                if rawequal(((login < GLOBALS2.LOGINSUCCESS and -1) or (login > GLOBALS2.LOGINSUCCESS and 1) or 0), 0) then
                     local userInterface = userEntityInterface:getUser(userName)
                     if userInterface:isSessionValid() then
                         self.weblisketSession:setAttempts(0)
@@ -455,8 +455,8 @@ function AuthenticationHelper:outputSessionInfo()
             local timeCreated = self.weblisketSession:getCreationTime()
             local stringBuffer = StringMaker.new()
             local lastAccess = self.weblisketSession:getLastAccessedTime()
-            stringBuffer:append("Time Since Last Access: " .. tostring((calendar:getTimeInMillis() - lastAccess)) .. "<br/>\n")
-            if self.role ~= nil then
+            stringBuffer:append(require("allbinary_java").to_string(require("allbinary_java").to_string("Time Since Last Access: ") .. require("allbinary_java").to_string((calendar:getTimeInMillis() - lastAccess))) .. require("allbinary_java").to_string("<br/>\n"))
+            if not rawequal(self.role, nil) then
                 stringBuffer:append("Auth: ")
                 stringBuffer:append(self.authenticated)
                 stringBuffer:append(" UserName: ")

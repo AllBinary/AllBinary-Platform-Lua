@@ -171,7 +171,7 @@ function DeleteValidationUserView._jinit(self, transformInfoInterface)
         local hashMap = RequestParams.new(httpServletRequest):toHashMap()
         self.userName = UserName.new(hashMap):get()
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("User Name: " .. self.userName, self, self.commonStrings.CONSTRUCTOR)
+            self.logUtil:putF(require("allbinary_java").to_string("User Name: ") .. require("allbinary_java").to_string(self.userName), self, self.commonStrings.CONSTRUCTOR)
         end
     return self
 end
@@ -185,9 +185,9 @@ end
 
 function DeleteValidationUserView:isValid()
         local try_ok, try_error, try_value = pcall(function()
-            if UserName.getInstance():isValid(self.userName) == true then
+            if rawequal(UserName.getInstance():isValid(self.userName), true) then
                 self.user = UserEntityFactory.getInstance():getUser(self.userName)
-                if self.user == nil then
+                if rawequal(self.user, nil) then
                     do return "__jreturn", false end
                 end
             else
@@ -211,9 +211,9 @@ java_overload(DeleteValidationUserView, "isValid", 0)
 function DeleteValidationUserView:validationInfo()
         local try_ok, try_error, try_value = pcall(function()
             local stringBuffer = StringMaker.new()
-            if UserName.getInstance():isValid(self.userName) == true then
+            if rawequal(UserName.getInstance():isValid(self.userName), true) then
                 self.user = UserEntityFactory.getInstance():getUser(self.userName)
-                if self.user == nil then
+                if rawequal(self.user, nil) then
                     stringBuffer:append("User does not exist.<br />")
                 end
             else

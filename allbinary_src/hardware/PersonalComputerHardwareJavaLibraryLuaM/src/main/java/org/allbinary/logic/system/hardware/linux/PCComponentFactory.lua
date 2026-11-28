@@ -125,22 +125,22 @@ end
 
 function PCComponentFactory:getInstance(component, componentData)
         local try_ok, try_error, try_value = pcall(function()
-            if component ~= nil then
-                if ((component < tostring(self.componentFactory.ETHERNET) and -1) or (component > tostring(self.componentFactory.ETHERNET) and 1) or 0) == 0 then
+            if not rawequal(component, nil) then
+                if rawequal(((component < tostring(self.componentFactory.ETHERNET) and -1) or (component > tostring(self.componentFactory.ETHERNET) and 1) or 0), 0) then
                     do return "__jreturn", Ethernet.new(componentData) end
-                elseif ((component < tostring(self.componentFactory.BRIDGE) and -1) or (component > tostring(self.componentFactory.BRIDGE) and 1) or 0) == 0 then
+                elseif rawequal(((component < tostring(self.componentFactory.BRIDGE) and -1) or (component > tostring(self.componentFactory.BRIDGE) and 1) or 0), 0) then
                     do return "__jreturn", Bridge.new(componentData) end
-                elseif ((component < tostring(self.componentFactory.IDE) and -1) or (component > tostring(self.componentFactory.IDE) and 1) or 0) == 0 then
+                elseif rawequal(((component < tostring(self.componentFactory.IDE) and -1) or (component > tostring(self.componentFactory.IDE) and 1) or 0), 0) then
                     do return "__jreturn", HardDriveController.new(componentData) end
-                elseif ((component < tostring(self.componentFactory.MULTIMEDIA) and -1) or (component > tostring(self.componentFactory.MULTIMEDIA) and 1) or 0) == 0 then
+                elseif rawequal(((component < tostring(self.componentFactory.MULTIMEDIA) and -1) or (component > tostring(self.componentFactory.MULTIMEDIA) and 1) or 0), 0) then
                     do return "__jreturn", Media.new(componentData) end
-                elseif ((component < tostring(self.componentFactory.SCSI) and -1) or (component > tostring(self.componentFactory.SCSI) and 1) or 0) == 0 then
+                elseif rawequal(((component < tostring(self.componentFactory.SCSI) and -1) or (component > tostring(self.componentFactory.SCSI) and 1) or 0), 0) then
                     do return "__jreturn", HardDriveController.new(componentData) end
-                elseif ((component < tostring(self.componentFactory.USB) and -1) or (component > tostring(self.componentFactory.USB) and 1) or 0) == 0 then
+                elseif rawequal(((component < tostring(self.componentFactory.USB) and -1) or (component > tostring(self.componentFactory.USB) and 1) or 0), 0) then
                     do return "__jreturn", Usb.new(componentData) end
-                elseif ((component < tostring(self.componentFactory.VGA) and -1) or (component > tostring(self.componentFactory.VGA) and 1) or 0) == 0 then
+                elseif rawequal(((component < tostring(self.componentFactory.VGA) and -1) or (component > tostring(self.componentFactory.VGA) and 1) or 0), 0) then
                     do return "__jreturn", Video.new(componentData) end
-                elseif ((component < tostring(self.componentFactory.PCI) and -1) or (component > tostring(self.componentFactory.PCI) and 1) or 0) == 0 then
+                elseif rawequal(((component < tostring(self.componentFactory.PCI) and -1) or (component > tostring(self.componentFactory.PCI) and 1) or 0), 0) then
                     do return "__jreturn", PCI.new(componentData) end
                 end
             end
@@ -174,7 +174,7 @@ function PCComponentFactory:getComponentType(component)
             return tostring(self.componentFactory.USB)
         elseif ((string.find(component, tostring(self.componentFactory.VGA), 1, true) or 0) - 1) >= 0 then
             return tostring(self.componentFactory.VGA)
-        elseif ((component < tostring(self.componentFactory.PCI) and -1) or (component > tostring(self.componentFactory.PCI) and 1) or 0) == 0 then
+        elseif rawequal(((component < tostring(self.componentFactory.PCI) and -1) or (component > tostring(self.componentFactory.PCI) and 1) or 0), 0) then
             return tostring(self.componentFactory.PCI)
         end
         return tostring(self.componentFactory.UNKNOWN)

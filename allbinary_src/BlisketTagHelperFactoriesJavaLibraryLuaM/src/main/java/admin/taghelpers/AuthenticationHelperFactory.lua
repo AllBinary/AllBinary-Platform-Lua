@@ -187,6 +187,8 @@ end
 function AuthenticationHelperFactory:getInstance(...)
     local count = select("#", ...)
     if count == 2 then return self:getInstance_j2(...) end
+    local parent = getmetatable(AuthenticationHelperFactory).__index
+    if parent.getInstance then return parent.getInstance(self, ...) end
     error("No method getInstance takes " .. count .. " arguments")
 end
 AuthenticationHelperFactory.getInstance__jdispatcher = AuthenticationHelperFactory.getInstance

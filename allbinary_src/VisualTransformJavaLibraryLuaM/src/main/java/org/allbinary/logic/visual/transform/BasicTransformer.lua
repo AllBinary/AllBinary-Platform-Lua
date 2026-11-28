@@ -30,7 +30,7 @@ end
 
 -- local ByteArrayInputStream = require("java.io.ByteArrayInputStream")
 local ByteArrayOutputStream = java_lazy("java.io.ByteArrayOutputStream")
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 -- local URIResolver = require("javax.xml.transform.URIResolver")
 local BasicUriResolver = java_lazy("org.allbinary.data.tree.dom.BasicUriResolver")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
@@ -207,7 +207,7 @@ function BasicTransformer:setEncryptedTemplateFileAsInputStream(file)
             local abCrypt = AbCrypt.new(KeySpecFactory.DESEDE, AbKeys.getInstance():getKey(self.abeClientInformation, file:getAbsolutePath()))
             local decrypted = abCrypt:decrypt(outputStream:toByteArray())
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERFACTORY) then
-                self.logUtil:putF("Decrypted Template: \n" .. tostring(string.char(table.unpack(decrypted))), self, "setEncryptedTemplateFileAsInputStream(file)")
+                self.logUtil:putF(require("allbinary_java").to_string("Decrypted Template: \n") .. require("allbinary_java").to_string(string.char(table.unpack(decrypted))), self, "setEncryptedTemplateFileAsInputStream(file)")
             end
             self:setInputStream(ByteArrayInputStream.new(decrypted))
             self:setURIResolver(BasicUriResolver.new(TransformInfoTemplateData.getInstance().ENCRYPTED_EXTENSION))
@@ -244,7 +244,7 @@ function BasicTransformer:setEncryptedTemplateAsInputStream()
             local abCrypt = AbCrypt.new(KeySpecFactory.DESEDE, AbKeys.getInstance():getKey(self.abeClientInformation, self:getTransformInfoInterface():getName()))
             local decrypted = abCrypt:decrypt(outputStream:toByteArray())
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERFACTORY) then
-                self.logUtil:putF("Decrypted Template: \n" .. tostring(decrypted), self, "setEncryptedTemplateAsInputStream()")
+                self.logUtil:putF(require("allbinary_java").to_string("Decrypted Template: \n") .. require("allbinary_java").to_string(tostring(decrypted)), self, "setEncryptedTemplateAsInputStream()")
             end
             self:setInputStream(ByteArrayInputStream.new(decrypted))
             self:setURIResolver(BasicUriResolver.new(TransformInfoTemplateData.getInstance().ENCRYPTED_EXTENSION))
@@ -253,7 +253,7 @@ function BasicTransformer:setEncryptedTemplateAsInputStream()
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERFACTORYERROR) then
-                self.logUtil:put("Failed to set with template: " .. tostring(self:getTransformInfoInterface():getTemplateFilePath()), self, "setEncryptedTemplateFileAsInputStream()", e)
+                self.logUtil:put(require("allbinary_java").to_string("Failed to set with template: ") .. require("allbinary_java").to_string(self:getTransformInfoInterface():getTemplateFilePath()), self, "setEncryptedTemplateFileAsInputStream()", e)
             end
             error(e, 0)
         end
@@ -275,13 +275,13 @@ function BasicTransformer:setTemplateAsInputStream()
             end
             local transformInfoTemplateData = TransformInfoTemplateData.getInstance()
             local pathUtil = PathUtil.getInstance()
-            if self:getTransformInfoInterface():getTemplateFilePath() ~= nil then
+            if not rawequal(self:getTransformInfoInterface():getTemplateFilePath(), nil) then
                 local extension = pathUtil:getExtensionWithAbPath(self:getTransformInfoInterface():getTemplateFilePath())
                 local filePath = pathUtil:getWithoutExtensionWithAbPath(self:getTransformInfoInterface():getTemplateFilePath())
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERFACTORY) then
                     self.logUtil:putF(self:getTransformInfoInterface():log(), self, "setTemplateAsInputStream()")
                 end
-                if ((extension < transformInfoTemplateData.UNCRYPTED_EXTENSION and -1) or (extension > transformInfoTemplateData.UNCRYPTED_EXTENSION and 1) or 0) == 0 then
+                if rawequal(((extension < transformInfoTemplateData.UNCRYPTED_EXTENSION and -1) or (extension > transformInfoTemplateData.UNCRYPTED_EXTENSION and 1) or 0), 0) then
                     local stringBuffer = StringMaker.new()
                     stringBuffer:append(filePath)
                     stringBuffer:append(AbPathData.getInstance().EXTENSION_SEP)
@@ -307,21 +307,21 @@ function BasicTransformer:setTemplateAsInputStream()
                             self.logUtil:putF(self:getTransformInfoInterface():log(), self, "setTemplateAsInputStream()")
                         end
                         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERFACTORY) then
-                            self.logUtil:putF("Template File isFile=" .. tostring(file:isFile()), self, "setTemplateAsInputStream()")
+                            self.logUtil:putF(require("allbinary_java").to_string("Template File isFile=") .. require("allbinary_java").to_string(file:isFile()), self, "setTemplateAsInputStream()")
                         end
                         if file:isFile() then
                             inputStream = AbFileInputStream.createFromAbFile(file)
                             outputStream = require("java.io.ByteArrayOutputStream").new()
                             outputStream = self.streamUtil:get(inputStream, outputStream, java_typed_array("B", java_new_array(0, 16384)))
                             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().TAGHELPERFACTORY) then
-                                self.logUtil:putF("Template: " .. tostring(outputStream), self, "getTemplateAsInputStream()")
+                                self.logUtil:putF(require("allbinary_java").to_string("Template: ") .. require("allbinary_java").to_string(tostring(outputStream)), self, "getTemplateAsInputStream()")
                             end
                             self:setInputStream(ByteArrayInputStream.new(outputStream:toByteArray()))
                             self:setURIResolver(BasicUriResolver.new(transformInfoTemplateData.UNCRYPTED_EXTENSION))
                             do return "__jreturn" end
                         end
                     end
-                elseif ((extension < transformInfoTemplateData.ENCRYPTED_EXTENSION and -1) or (extension > transformInfoTemplateData.ENCRYPTED_EXTENSION and 1) or 0) == 0 then
+                elseif rawequal(((extension < transformInfoTemplateData.ENCRYPTED_EXTENSION and -1) or (extension > transformInfoTemplateData.ENCRYPTED_EXTENSION and 1) or 0), 0) then
                     local stringBuffer = StringMaker.new()
                     stringBuffer:append(filePath)
                     stringBuffer:append(AbPathData.getInstance().EXTENSION_SEP)
@@ -331,7 +331,7 @@ function BasicTransformer:setTemplateAsInputStream()
                         self:setEncryptedTemplateFileAsInputStream(file)
                     end
                 else
-                    error(require("java.lang.Exception").new("View Template File Type Is Not Recognized: " .. tostring(self:getTransformInfoInterface():getTemplateFilePath())), 0)
+                    error(require("java.lang.Exception").new(require("allbinary_java").to_string("View Template File Type Is Not Recognized: ") .. require("allbinary_java").to_string(self:getTransformInfoInterface():getTemplateFilePath())), 0)
                 end
             else
                 self:setEncryptedTemplateAsInputStream()

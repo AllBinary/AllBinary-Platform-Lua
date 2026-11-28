@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local ArtificialIntelligenceInterface = java_lazy("org.allbinary.ai.ArtificialIntelligenceInterface")
 local Direction = java_lazy("org.allbinary.direction.Direction")
 local DirectionFactory = java_lazy("org.allbinary.direction.DirectionFactory")
@@ -222,7 +222,7 @@ function DiveAndDirectionalTrackingAI:processAI(allBinaryLayerManager)
             self:init()
             self.velocityInterface:zero()
         end
-        if not self.diveP then
+        if not (self.diveP) then
             self:target(allBinaryLayerManager)
         else
             self:dive()
@@ -243,7 +243,7 @@ java_overload(DiveAndDirectionalTrackingAI, "init", 0)
 
 -- throws Exception
 function DiveAndDirectionalTrackingAI:target(allBinaryLayerManager)
-        if self.list:size() == 0 then
+        if rawequal(self.list:size(), 0) then
             return
         end
         local lastTrackingEvent = self.list:removeAt(0)
@@ -252,7 +252,7 @@ function DiveAndDirectionalTrackingAI:target(allBinaryLayerManager)
         local ownerLayerInterface = self:getOwnerLayerInterface()
         local groupArray = layerInterface:getGroupInterface()
         local ownerGroupArray = ownerLayerInterface:getGroupInterface()
-        if groupArray == ownerGroupArray then
+        if rawequal(groupArray, ownerGroupArray) then
             return
         end
         local x = self.lastTrackingLayerInterface:getXP()
@@ -273,13 +273,13 @@ function DiveAndDirectionalTrackingAI:target(allBinaryLayerManager)
                 self.directionOfTarget = directionFactory.RIGHT
             end
         end
-        if not self.initialDropped and self.directionOfTarget ~= directionFactory.NOT_BORDERED_WITH then
+        if not (self.initialDropped) and not rawequal(self.directionOfTarget, directionFactory.NOT_BORDERED_WITH) then
             self:drop()
         end
         if self.initialDropped then
-            if self.directionOfTarget == directionFactory.UP or self.directionOfTarget == directionFactory.DOWN then
+            if rawequal(self.directionOfTarget, directionFactory.UP) or rawequal(self.directionOfTarget, directionFactory.DOWN) then
                 self:verticalTargeting(x)
-            elseif self.directionOfTarget == directionFactory.LEFT or self.directionOfTarget == directionFactory.RIGHT then
+            elseif rawequal(self.directionOfTarget, directionFactory.LEFT) or rawequal(self.directionOfTarget, directionFactory.RIGHT) then
                 self:horizontalTargeting(y)
             else
                 self.artificialIntelligenceInterface:processAI(allBinaryLayerManager)
@@ -391,25 +391,25 @@ java_overload(DiveAndDirectionalTrackingAI, "drop", 0)
 
 
 function DiveAndDirectionalTrackingAI:isBeyondTarget()
-        if self.directionOfTarget == self.directionFactory.DOWN then
+        if rawequal(self.directionOfTarget, self.directionFactory.DOWN) then
             if self:getOwnerLayerInterface():getYP() > self.lastTrackingLayerInterface:getYP() + self.MIN_DISTANCE then
                 return true
             else
                 return false
             end
-        elseif self.directionOfTarget == self.directionFactory.UP then
+        elseif rawequal(self.directionOfTarget, self.directionFactory.UP) then
             if self:getOwnerLayerInterface():getYP() < self.lastTrackingLayerInterface:getYP() + self.MIN_DISTANCE then
                 return true
             else
                 return false
             end
-        elseif self.directionOfTarget == self.directionFactory.RIGHT then
+        elseif rawequal(self.directionOfTarget, self.directionFactory.RIGHT) then
             if self:getOwnerLayerInterface():getXP() > self.lastTrackingLayerInterface:getXP() + self.MIN_DISTANCE then
                 return true
             else
                 return false
             end
-        elseif self.directionOfTarget == self.directionFactory.LEFT then
+        elseif rawequal(self.directionOfTarget, self.directionFactory.LEFT) then
             if self:getOwnerLayerInterface():getXP() < self.lastTrackingLayerInterface:getXP() + self.MIN_DISTANCE then
                 return true
             else
@@ -435,7 +435,7 @@ java_overload(DiveAndDirectionalTrackingAI, "onMovement", 1, function(java_a1) r
 
 
 function DiveAndDirectionalTrackingAI:onDestroyed(destroyedEvent)
-        if self:getOwnerLayerInterface() == destroyedEvent:getLayerInterface() then
+        if rawequal(self:getOwnerLayerInterface(), destroyedEvent:getLayerInterface()) then
             TrackingEventHandler.getInstance():removeListener(self)
             DestroyedEventHandler.getInstance():removeListener(self)
         end
@@ -455,13 +455,13 @@ java_overload(DiveAndDirectionalTrackingAI, "setLastDirection", 1, function(java
 
 function DiveAndDirectionalTrackingAI:setLastKey(lastKey)
         java_super(BasicAI, "setLastKey", 1)(self, lastKey)
-        if self:getLastKey() == Canvas.LEFT then
+        if rawequal(self:getLastKey(), Canvas.LEFT) then
             self.lastDirection = DirectionFactory.getInstance().LEFT
-        elseif self:getLastKey() == Canvas.DOWN then
+        elseif rawequal(self:getLastKey(), Canvas.DOWN) then
             self.lastDirection = DirectionFactory.getInstance().DOWN
-        elseif self:getLastKey() == Canvas.UP then
+        elseif rawequal(self:getLastKey(), Canvas.UP) then
             self.lastDirection = DirectionFactory.getInstance().UP
-        elseif self:getLastKey() == Canvas.RIGHT then
+        elseif rawequal(self:getLastKey(), Canvas.RIGHT) then
             self.lastDirection = DirectionFactory.getInstance().RIGHT
         end
 end

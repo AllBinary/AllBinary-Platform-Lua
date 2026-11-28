@@ -77,7 +77,7 @@ end
 -- throws Exception
 function DiveAndDirectionalTrackingAIFactory:getInstance(hashtable, ownerLayerInterface, gameInput)
         local visitorCanBeNull = hashtable:get(BasicAI.AI_VISITOR)
-        if visitorCanBeNull == nil then
+        if rawequal(visitorCanBeNull, nil) then
             visitorCanBeNull = ThrustAIVisitorFactory.getInstance()
         end
         local hashtable2 = BasicProbabilityAIDataFactory.new():getInstance()

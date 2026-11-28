@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local GL10 = require("javax.microedition.khronos.opengles.GL10")
+local GL10 = java_lazy("javax.microedition.khronos.opengles.GL10")
 local OpenGLESImageTranslate = require("org.allbinary.image.opengles.OpenGLESImageTranslate")
 local OpenGLESImage = java_lazy("org.allbinary.image.opengles.OpenGLESImage")
 

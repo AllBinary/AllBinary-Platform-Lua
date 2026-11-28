@@ -100,9 +100,9 @@ function DefaultGameInitializationListener:onGameInitialized(gameInitializedEven
         local commonStrings = CommonStrings.getInstance()
         local try_ok, try_error, try_value = pcall(function()
             self.logUtil:putF(commonStrings.START, self, ON_GAME_INITIALIZED)
-            while not self.swtJOGLProcessor:isHolderCreated() do
+            while not (self.swtJOGLProcessor:isHolderCreated()) do
                 self.logUtil:putF(commonStrings.UPDATE, self, ON_GAME_INITIALIZED)
-                java_sleep(20)
+                require("java.lang.Thread").sleep(20)
             end
             FeatureResourceInitializationUtil.getInstance():init(gameInitializedEvent:getLevel())
             if self.firstTime then

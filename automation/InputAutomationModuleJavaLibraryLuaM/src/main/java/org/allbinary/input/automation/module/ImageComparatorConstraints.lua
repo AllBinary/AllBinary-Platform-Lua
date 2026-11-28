@@ -114,7 +114,7 @@ function ImageComparatorConstraints:_init_fields()
     self.logUtil = LogUtil.getInstance()
     if self.avoidVector == nil then self.avoidVector = nil end
     if self.maxNonMatchingPixelDeltas == nil then self.maxNonMatchingPixelDeltas = 0 end
-    if self.doImageComparisonEveryNthFrame == nil then self.doImageComparisonEveryNthFrame = nil end
+    if self.doImageComparisonEveryNthFrame == nil then self.doImageComparisonEveryNthFrame = 0 end
 end
 
 
@@ -199,8 +199,8 @@ end
 
 function ImageComparatorConstraints:isFrameAllowed(frame)
         local remainder = (math.fmod((frame + 1), self.doImageComparisonEveryNthFrame))
-        self.logUtil:putF(" Frame: " .. tostring(frame) .. " remainder: " .. tostring(remainder) .. " this.doImageComparisonEveryNthFrame: " .. tostring(self.doImageComparisonEveryNthFrame), self, "isCollisionWithAvoidRectangles")
-        if remainder == 0 then
+        self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(" Frame: ") .. require("allbinary_java").to_string(frame)) .. require("allbinary_java").to_string(" remainder: ")) .. require("allbinary_java").to_string(remainder)) .. require("allbinary_java").to_string(" this.doImageComparisonEveryNthFrame: ")) .. require("allbinary_java").to_string(self.doImageComparisonEveryNthFrame), self, "isCollisionWithAvoidRectangles")
+        if rawequal(remainder, 0) then
             return true
         else
             return false
@@ -219,7 +219,7 @@ function ImageComparatorConstraints:log()
         local size = avoidVector:size()
         for index = 0, size - 1 do
             local avoidRectangle = avoidVector:get(index)
-            self.logUtil:putF("Avoid Rectangle: " .. tostring(avoidRectangle), self, "log")
+            self.logUtil:putF(require("allbinary_java").to_string("Avoid Rectangle: ") .. require("allbinary_java").to_string(avoidRectangle), self, "log")
         end
 end
 

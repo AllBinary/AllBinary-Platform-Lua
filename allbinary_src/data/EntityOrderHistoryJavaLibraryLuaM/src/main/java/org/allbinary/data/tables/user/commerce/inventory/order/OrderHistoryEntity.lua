@@ -241,7 +241,7 @@ function OrderHistoryEntity:insert_j2(userName, order)
             vector:add(ZERO)
             vector:add(OrderHistoryData.PREPROCESSING)
             vector:add(order:getPaymentMethod())
-            if paymentInterface ~= nil then
+            if not rawequal(paymentInterface, nil) then
                 vector:add(paymentInterface:getName())
                 vector:add(paymentInterface:getType())
                 vector:add(paymentInterface:getExpiration())
@@ -255,7 +255,7 @@ function OrderHistoryEntity:insert_j2(userName, order)
                 vector:add(empty)
                 vector:add(ZERO)
             end
-            if billingAddress ~= nil then
+            if not rawequal(billingAddress, nil) then
                 vector:add(billingAddress:getName())
                 vector:add(billingAddress:getStreet())
                 vector:add(billingAddress:getCity())
@@ -270,7 +270,7 @@ function OrderHistoryEntity:insert_j2(userName, order)
                 vector:add(empty)
                 vector:add(empty)
             end
-            if shippingAddress ~= nil then
+            if not rawequal(shippingAddress, nil) then
                 vector:add(shippingAddress:getName())
                 vector:add(shippingAddress:getStreet())
                 vector:add(shippingAddress:getCity())
@@ -304,7 +304,7 @@ function OrderHistoryEntity:insert_j2(userName, order)
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
-                self.logUtil:put("Command Failed: " .. tostring(vector), self, self.INSERT, e)
+                self.logUtil:put(require("allbinary_java").to_string("Command Failed: ") .. require("allbinary_java").to_string(vector), self, self.INSERT, e)
             end
         end
 end
@@ -329,6 +329,8 @@ function OrderHistoryEntity:insert(...)
     local count = select("#", ...)
     if count == 2 then return self:insert_j2(...) end
     if count == 1 then return self:insert_j1(...) end
+    local parent = getmetatable(OrderHistoryEntity).__index
+    if parent.insert then return parent.insert(self, ...) end
     error("No method insert takes " .. count .. " arguments")
 end
 OrderHistoryEntity.insert__jdispatcher = OrderHistoryEntity.insert
@@ -340,9 +342,9 @@ function OrderHistoryEntity:setStatus(orderId, status)
             local time = tostring(tostring(calendar:getTimeInMillis()))
             local updateHashMap = StdUtil.getInstance():createHashMap()
             updateHashMap:put(OrderHistoryData.STATUS, status)
-            if ((status < OrderHistoryData.CANCELLED and -1) or (status > OrderHistoryData.CANCELLED and 1) or 0) == 0 then
+            if rawequal(((status < OrderHistoryData.CANCELLED and -1) or (status > OrderHistoryData.CANCELLED and 1) or 0), 0) then
                 updateHashMap:put(OrderHistoryData.CANCELDATE, time)
-            elseif ((status < OrderHistoryData.SHIPPED and -1) or (status > OrderHistoryData.SHIPPED and 1) or 0) == 0 then
+            elseif rawequal(((status < OrderHistoryData.SHIPPED and -1) or (status > OrderHistoryData.SHIPPED and 1) or 0), 0) then
                 updateHashMap:put(OrderHistoryData.SHIPPEDDATE, time)
             end
             java_super(AbSqlBean, "updateWhere", 3)(self, OrderData.ID, orderId, updateHashMap)
@@ -444,6 +446,8 @@ function OrderHistoryEntity:getOrders(...)
     if count == 1 then return self:getOrders_j1(...) end
     if count == 3 then return self:getOrders_j3(...) end
     if count == 2 then return self:getOrders_j2(...) end
+    local parent = getmetatable(OrderHistoryEntity).__index
+    if parent.getOrders then return parent.getOrders(self, ...) end
     error("No method getOrders takes " .. count .. " arguments")
 end
 OrderHistoryEntity.getOrders__jdispatcher = OrderHistoryEntity.getOrders
@@ -454,7 +458,7 @@ function OrderHistoryEntity:getOrder(id)
         local whereHashMap = StdUtil.getInstance():createHashMap()
         whereHashMap:put(OrderData.ID, id)
         local orderReviewHashMap = java_super(AbSqlBean, "getRow", 1)(self, whereHashMap)
-        if orderReviewHashMap ~= nil then
+        if not rawequal(orderReviewHashMap, nil) then
             local orderHistory = OrderHistory.new(Basket.new(), orderReviewHashMap)
             return orderHistory
         else

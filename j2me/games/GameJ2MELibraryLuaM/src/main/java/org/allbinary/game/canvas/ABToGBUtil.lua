@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
--- local NullCanvas = require("javax.microedition.lcdui.NullCanvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
+local NullCanvas = java_lazy("javax.microedition.lcdui.NullCanvas")
 local AllBinaryGameLayerManager = java_lazy("org.allbinary.game.layer.AllBinaryGameLayerManager")
 
 local function java_idiv(a, b)

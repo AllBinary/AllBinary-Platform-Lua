@@ -115,7 +115,7 @@ function ViewHelper:view()
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local error = "Failed to View: "
-            if self.componentInterface ~= nil then
+            if not rawequal(self.componentInterface, nil) then
                 error = error .. tostring((getmetatable(self.componentInterface).javaClassName or getmetatable(self.componentInterface).className))
             else
                 error = error .. tostring("Unknown")
@@ -132,13 +132,13 @@ end
 -- throws Exception
 function ViewHelper:toXmlDoc()
         local try_ok, try_error, try_value = pcall(function()
-            error(require("java.lang.Exception").new("Hmm: " .. tostring(self.componentInterface:getTransformDocumentInterface():getDoc())), 0)
+            error(require("java.lang.Exception").new(require("allbinary_java").to_string("Hmm: ") .. require("allbinary_java").to_string(self.componentInterface:getTransformDocumentInterface():getDoc())), 0)
         end)
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local error = "Failed to View: "
-            if self.componentInterface ~= nil then
+            if not rawequal(self.componentInterface, nil) then
                 error = error .. tostring((getmetatable(self.componentInterface).javaClassName or getmetatable(self.componentInterface).className))
             else
                 error = error .. tostring("Unknown")

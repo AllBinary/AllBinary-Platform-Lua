@@ -28,9 +28,9 @@ local function java_real(class)
     return class
 end
 
--- local ChoiceGroup = require("javax.microedition.lcdui.ChoiceGroup")
--- local Item = require("javax.microedition.lcdui.Item")
--- local NullImage = require("javax.microedition.lcdui.NullImage")
+local ChoiceGroup = java_lazy("javax.microedition.lcdui.ChoiceGroup")
+local Item = java_lazy("javax.microedition.lcdui.Item")
+local NullImage = java_lazy("javax.microedition.lcdui.NullImage")
 local MIDPUtil = java_lazy("org.allbinary.MIDPUtil")
 local GameConfigurationGauge = java_lazy("org.allbinary.game.configuration.GameConfigurationGauge")
 local GameConfigurationUtil = java_lazy("org.allbinary.game.configuration.GameConfigurationUtil")

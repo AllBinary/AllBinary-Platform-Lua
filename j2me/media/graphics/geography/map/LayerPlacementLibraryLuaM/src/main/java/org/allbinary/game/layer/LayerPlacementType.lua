@@ -52,7 +52,7 @@ LayerPlacementType.className = "LayerPlacementType"
 LayerPlacementType.javaClassName = "org.allbinary.game.layer.LayerPlacementType"
 
 function LayerPlacementType:_init_fields()
-    if self.type == nil then self.type = nil end
+    if self.type == nil then self.type = 0 end
 end
 
 

@@ -17,7 +17,7 @@ local function java_real(class)
 end
 
 local ByteArrayOutputStream = java_lazy("java.io.ByteArrayOutputStream")
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local StreamUtil = java_lazy("org.allbinary.logic.io.StreamUtil")
 local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
@@ -149,7 +149,7 @@ function FileItemUtil:getBytes(fileItem)
             inputStream = fileItem:openStream()
             outputStream = require("java.io.ByteArrayOutputStream").new()
             if fileItem:isFormField() then
-                self.logUtil:putF("FileItemStream FieldName: " .. tostring(fileItem:getFieldName()), self, "write()")
+                self.logUtil:putF(require("allbinary_java").to_string("FileItemStream FieldName: ") .. require("allbinary_java").to_string(fileItem:getFieldName()), self, "write()")
             else
                 local stringBuffer = StringMaker.new()
                 stringBuffer:append("Uploaded File FieldName: ")

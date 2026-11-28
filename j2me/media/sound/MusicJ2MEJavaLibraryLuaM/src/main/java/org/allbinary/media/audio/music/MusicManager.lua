@@ -17,8 +17,8 @@ local function java_real(class)
 end
 
 local ARunnable = java_lazy("org.allbinary.thread.ARunnable")
--- local Player = require("javax.microedition.media.Player")
--- local PlayerListener = require("javax.microedition.media.PlayerListener")
+local Player = java_lazy("javax.microedition.media.Player")
+local PlayerListener = java_lazy("javax.microedition.media.PlayerListener")
 local AvianUtil = java_lazy("org.allbinary.AvianUtil")
 local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
@@ -86,11 +86,16 @@ MusicManager.javaClassName = "org.allbinary.media.audio.music.MusicManager"
         MusicManagerPlayerListener._jinit(self, ...)
         return self
     end
+        function MusicManagerPlayerListener.newEnclosed(outer, ...)
+            local self = setmetatable({__javaOuter = outer}, MusicManagerPlayerListener)
+            MusicManagerPlayerListener._jinit(self, ...)
+            return self
+        end
     
 
     function MusicManagerPlayerListener:playerUpdate(player, event, eventData)
             PreLogUtil.put(event, self, self.musicManager.commonStrings.PROCESS)
-            if event == PlayerListener.END_OF_MEDIA or event == PlayerListener.STOPPED or event == PlayerListener.CLOSED then
+            if rawequal(event, PlayerListener.END_OF_MEDIA) or rawequal(event, PlayerListener.STOPPED) or rawequal(event, PlayerListener.CLOSED) then
                 self.musicManager:reset()
             end
     end
@@ -103,10 +108,10 @@ function MusicManager:_init_fields()
     self.gameTickTimeDelayHelper = GameTickTimeDelayHelperFactory.getInstance()
     self.playerStateUtil = PlayerStateUtil.getInstance()
     self.timeDelayHelper = TimeDelayHelper.new(0)
-    self.playerListener = MusicManagerPlayerListener.new(self)
+    self.playerListener = MusicManagerPlayerListener.newEnclosed(self, self)
     self.PLAY = "Play "
     self.SONG = " for: "
-    self.NEXT_SONG = tostring(CommonLabels.getInstance().NEXT) .. " Song: "
+    self.NEXT_SONG = require("allbinary_java").to_string(CommonLabels.getInstance().NEXT) .. require("allbinary_java").to_string(" Song: ")
     self.STOPPING = "Stopping Current Song: "
     self.ENDING = "Ending Current Song: "
     self.WAITING_FOR_MEDIA_TO_END = "Waiting for media to end"
@@ -135,7 +140,7 @@ end
 
 
 function MusicManager:startNewSong()
-        if self.nextSongSound == NoSound.getInstance() then
+        if rawequal(self.nextSongSound, NoSound.getInstance()) then
             local randomSongSound = self.basicArrayListUtil:getRandom(self.songList)
             self:nextSong(randomSongSound, 0, 0)
         end
@@ -161,16 +166,16 @@ function MusicManager:process()
             if self.stopped then
                 do return "__jreturn" end
             end
-            if self.songList:size() == 0 then
+            if rawequal(self.songList:size(), 0) then
                 do return "__jreturn" end
             end
-            if (self.timeDelayHelper:isTime(self.gameTickTimeDelayHelper.startTime) and not self.noDuration) or self.reset_f then
+            if (self.timeDelayHelper:isTime(self.gameTickTimeDelayHelper.startTime) and not (self.noDuration)) or self.reset_f then
                 self.reset_f = false
                 self.noDuration = false
                 local endingCurrentSongSound = self.currentSongSound
                 local nextSongSound = self.nextSongSound
                 self.nextSongSound = NoSound.getInstance()
-                if nextSongSound == NoSound.getInstance() then
+                if rawequal(nextSongSound, NoSound.getInstance()) then
                     self.currentSongSound = BasicArrayListUtil.getInstance():getRandom(self.songList)
                 else
                     self.currentSongSound = nextSongSound
@@ -184,14 +189,14 @@ function MusicManager:process()
                     self.currentSongSound:getPlayerP():addPlayerListener(self.playerListener)
                     self.noDuration = true
                 end
-                if endingCurrentSongSound ~= NoSound.getInstance() then
-                    if endingCurrentSongSound == startingCurrentSongSound and endingCurrentSongSound:getPlayerP():getState() == Player.STARTED then
+                if not rawequal(endingCurrentSongSound, NoSound.getInstance()) then
+                    if rawequal(endingCurrentSongSound, startingCurrentSongSound) and rawequal(endingCurrentSongSound:getPlayerP():getState(), Player.STARTED) then
                         PreLogUtil.put(tostring(StringMaker.new():append(self.ALREADY_PLAYING):append(endingCurrentSongSound:getResource())), self, self.commonStrings.PROCESS)
                         PreLogUtil.put(tostring(StringMaker.new():append(self.STOPPING):append(endingCurrentSongSound:getResource()):append(self.SONG):appendlong(duration)), self, self.commonStrings.PROCESS)
                         endingCurrentSongSound:getPlayerP():stop()
                         self:waitForStateChange(endingCurrentSongSound, startingCurrentSongSound)
                     else
-                        if endingCurrentSongSound:getPlayerP():getState() == Player.STARTED then
+                        if rawequal(endingCurrentSongSound:getPlayerP():getState(), Player.STARTED) then
                             PreLogUtil.put(tostring(StringMaker.new():append(self.STOPPING):append(endingCurrentSongSound:getResource()):append(self.SONG):appendlong(duration)), self, self.commonStrings.PROCESS)
                             endingCurrentSongSound:getPlayerP():stop()
                             self:waitForStateChange(endingCurrentSongSound, startingCurrentSongSound)
@@ -214,10 +219,10 @@ function MusicManager:process()
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local resource = StringUtil.getInstance().EMPTY_STRING
-            if self.currentSongSound ~= NoSound.getInstance() then
+            if not rawequal(self.currentSongSound, NoSound.getInstance()) then
                 resource = self.currentSongSound:getResource()
             end
-            PreLogUtil.putOE(tostring(self.commonStrings.EXCEPTION_LABEL) .. resource, self, self.commonStrings.PROCESS, e)
+            PreLogUtil.putOE(require("allbinary_java").to_string(self.commonStrings.EXCEPTION_LABEL) .. require("allbinary_java").to_string(resource), self, self.commonStrings.PROCESS, e)
         end
         if try_ok and try_error == "__jreturn" then return try_value end
 end
@@ -225,9 +230,9 @@ end
 
 -- throws Exception
 function MusicManager:waitForStateChange(endingCurrentSongSound, startingCurrentSongSound)
-        while endingCurrentSongSound:getPlayerP():getState() == Player.STARTED do
+        while rawequal(endingCurrentSongSound:getPlayerP():getState(), Player.STARTED) do
             PreLogUtil.put(self.WAITING_FOR_MEDIA_TO_END, self, self.commonStrings.PROCESS)
-            java_sleep(100)
+            require("java.lang.Thread").sleep(100)
         end
         PreLogUtil.put(tostring(StringMaker.new():append(self.playerStateUtil:convert(endingCurrentSongSound:getPlayerP():getState())):append(self.commonSeps.SPACE):append(self.PLAY):append(startingCurrentSongSound:getResource())), self, self.commonStrings.PROCESS)
         startingCurrentSongSound:getPlayerP():start()
@@ -238,7 +243,7 @@ end
 function MusicManager:stop()
         local try_ok, try_error, try_value = pcall(function()
             local currentSongSound = self.currentSongSound
-            if currentSongSound ~= NoSound.getInstance() then
+            if not rawequal(currentSongSound, NoSound.getInstance()) then
                 self.stopped = true
                 PreLogUtil.put(tostring(StringMaker.new():append(self.ENDING):append(currentSongSound:getResource())), self, self.commonStrings.PROCESS)
                 currentSongSound:getPlayerP():stop()
@@ -250,10 +255,10 @@ function MusicManager:stop()
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local resource = StringUtil.getInstance().EMPTY_STRING
-            if self.currentSongSound ~= NoSound.getInstance() then
+            if not rawequal(self.currentSongSound, NoSound.getInstance()) then
                 resource = self.currentSongSound:getResource()
             end
-            PreLogUtil.putOE(tostring(self.commonStrings.EXCEPTION_LABEL) .. resource, self, self.commonStrings.END, e)
+            PreLogUtil.putOE(require("allbinary_java").to_string(self.commonStrings.EXCEPTION_LABEL) .. require("allbinary_java").to_string(resource), self, self.commonStrings.END, e)
         end
 end
 

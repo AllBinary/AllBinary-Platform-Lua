@@ -67,7 +67,7 @@ function GameInputProcessorUtil.init(inputProcessorArray)
         local total = InputFactory.getInstance().MAX
         for index = 0, total - 1 do
             local inputProcessorCanBeNull = inputProcessorArray[index + 1]
-            if inputProcessorCanBeNull == nil then
+            if rawequal(inputProcessorCanBeNull, nil) then
                 inputProcessorArray[index + 1] = noInputProcessor
             end
         end

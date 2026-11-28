@@ -85,7 +85,7 @@ function ShowVirtualKeyboardRunnable:run()
         local try_ok, try_error, try_value = pcall(function()
             local inputMethodManager = self.activity:getSystemService(Context.INPUT_METHOD_SERVICE)
             local viewCompositeInterface = self.activity
-            if viewCompositeInterface == nil then
+            if rawequal(viewCompositeInterface, nil) then
                 ForcedLogUtil.log("Activity Null", self)
             end
             local view = viewCompositeInterface:getView()

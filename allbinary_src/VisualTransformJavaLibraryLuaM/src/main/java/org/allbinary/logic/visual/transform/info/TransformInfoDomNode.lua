@@ -135,7 +135,7 @@ end
 function TransformInfoDomNode._new1_1(self, node)
     TransformInfoDomNode._init_fields(self)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("Constructing TransformInfo From TransformInfoDomNode: " .. tostring(node:getNodeName()), self, "TransformInfoDomNode(Node node)")
+            self.logUtil:putF(require("allbinary_java").to_string("Constructing TransformInfo From TransformInfoDomNode: ") .. require("allbinary_java").to_string(node:getNodeName()), self, "TransformInfoDomNode(Node node)")
         end
         local transformInfoData = TransformInfoData.getInstance()
         local attributes = node:getAttributes()
@@ -174,7 +174,7 @@ function TransformInfoDomNode._new1_1(self, node)
             self.transformInfoInterface = TransformInfo.new(name)
         end
         local templateAttrNode = attributes:getNamedItem(transformInfoData.MAPPED)
-        if templateAttrNode ~= nil then
+        if not rawequal(templateAttrNode, nil) then
             self.mappedName = templateAttrNode:getValue()
         else
             self.mappedName = self:getTransformInfoInterface():getName()
@@ -224,7 +224,7 @@ function TransformInfoDomNode:getReplaceKey()
         stringBuffer:append("\"/>")
         local key = tostring(stringBuffer)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("Component Key: " .. key, self, "getReplaceKey()")
+            self.logUtil:putF(require("allbinary_java").to_string("Component Key: ") .. require("allbinary_java").to_string(key), self, "getReplaceKey()")
         end
         return key
 end

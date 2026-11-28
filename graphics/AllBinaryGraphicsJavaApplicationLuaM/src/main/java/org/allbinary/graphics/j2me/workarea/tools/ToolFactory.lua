@@ -81,7 +81,7 @@ end
 
 function ToolFactory:setSelectedTool(tool)
         local try_ok, try_error, try_value = pcall(function()
-            StatusFactory.getInstance():setStatus(self.SELECTED_LABEL .. tool)
+            StatusFactory.getInstance():setStatus(require("allbinary_java").to_string(self.SELECTED_LABEL) .. require("allbinary_java").to_string(tool))
             self.tool = tool
         end)
         if not try_ok then
@@ -93,10 +93,10 @@ end
 
 
 function ToolFactory:getSelectedToolFactory()
-        StatusFactory.getInstance():setStatus("Tool In Use: " .. self.tool)
-        if self.tool ~= nil then
+        StatusFactory.getInstance():setStatus(require("allbinary_java").to_string("Tool In Use: ") .. require("allbinary_java").to_string(self.tool))
+        if not rawequal(self.tool, nil) then
             self.selectedTool = GraphicItemFactory.getInstance():getInstance(self.tool)
-            self.logUtil:putF("New Tool: " .. tostring(self.selectedTool), self, "getSelectedToolFactory")
+            self.logUtil:putF(require("allbinary_java").to_string("New Tool: ") .. require("allbinary_java").to_string(self.selectedTool), self, "getSelectedToolFactory")
             return self.selectedTool
         else
             return nil

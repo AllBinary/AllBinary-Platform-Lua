@@ -129,8 +129,8 @@ IndexedAnimationBehaviorFactory.javaClassName = "org.allbinary.animation.Indexed
 setmetatable(IndexedAnimationBehaviorFactory, {__index = AnimationBehaviorFactory})
 
 function IndexedAnimationBehaviorFactory:_init_fields()
-    if self.frameDelayTime == nil then self.frameDelayTime = nil end
-    if self.loopTotal == nil then self.loopTotal = nil end
+    if self.frameDelayTime == nil then self.frameDelayTime = 0 end
+    if self.loopTotal == nil then self.loopTotal = 0 end
 end
 
 

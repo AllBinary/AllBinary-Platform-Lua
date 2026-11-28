@@ -106,7 +106,7 @@ function LineReader._jinit(self, fileName)
         if not try_ok then
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-            self.logUtil:put("File: " .. fileName, self, "LineReader", e)
+            self.logUtil:put(require("allbinary_java").to_string("File: ") .. require("allbinary_java").to_string(fileName), self, "LineReader", e)
             do
             end
         end
@@ -123,7 +123,7 @@ end
 function LineReader:hasNext()
         local try_ok, try_error, try_value = pcall(function()
             local nextIndex = ((string.find(self.string_, CommonSeps.getInstance().NEW_LINE, (self.index) + 1, true) or 0) - 1)
-            if nextIndex == -1 then
+            if rawequal(nextIndex, -1) then
                 do return "__jreturn", false end
             end
             do return "__jreturn", true end
@@ -144,7 +144,7 @@ end
 function LineReader:next()
         local try_ok, try_error, try_value = pcall(function()
             local nextIndex = ((string.find(self.string_, CommonSeps.getInstance().NEW_LINE, (self.index) + 1, true) or 0) - 1)
-            if nextIndex == -1 then
+            if rawequal(nextIndex, -1) then
                 error(require("java.lang.Exception").new("next() should have been called first"), 0)
             end
             local temp = string.sub(self.string_, (self.index) + 1, nextIndex)

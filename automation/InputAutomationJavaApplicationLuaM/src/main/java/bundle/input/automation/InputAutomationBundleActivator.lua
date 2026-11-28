@@ -90,7 +90,7 @@ end
 function InputAutomationBundleActivator:start(bundleContext)
         local try_ok, try_error, try_value = pcall(function()
             self.logUtil:putF(self.commonStrings.START, self, self.commonStrings.START)
-            self.bundleContext = bundleContext
+            InputAutomationBundleActivator.bundleContext = bundleContext
             InputAutomationBundleActivator.moduleManagementThread = require("java.lang.Thread").new(InputAutomationNewBundleRunnable.new(self))
             InputAutomationBundleActivator.moduleManagementThread:start()
             InputAutomationJFrame.create(self)
@@ -106,8 +106,8 @@ end
 
 -- throws Exception
 function InputAutomationBundleActivator:registerAsService()
-        OSGIActivatorUtil.registerAsService(self:getBundleContext(), InputAutomationServiceFactory.getInstance(), InputAutomationConfigurationModuleChangeListener:getName())
-        OSGIActivatorUtil.registerAsService(self:getBundleContext(), InputAutomationServiceFactory.getInstance(), InputAutomationRobotChangeListener:getName())
+        OSGIActivatorUtil.registerAsService(self:getBundleContext(), InputAutomationServiceFactory.getInstance(), InputAutomationConfigurationModuleChangeListener.javaClassName)
+        OSGIActivatorUtil.registerAsService(self:getBundleContext(), InputAutomationServiceFactory.getInstance(), InputAutomationRobotChangeListener.javaClassName)
 end
 
 
@@ -121,7 +121,7 @@ end
 -- throws Exception
 function InputAutomationBundleActivator:stop(context)
         self.logUtil:putF(self.commonStrings.START, self, "stop")
-        if InputAutomationJFrame.getInstance() ~= nil then
+        if not rawequal(InputAutomationJFrame.getInstance(), nil) then
             InputAutomationJFrame.destroy()
         else
             self.logUtil:putF("Nothing to stop", self, "stop")

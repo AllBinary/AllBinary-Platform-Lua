@@ -229,11 +229,13 @@ function GenericModuleConfigurationJPanel:initComponents()
         self.newProfileJDialog:setResizable(false)
         self.okNewProfileJButton:setText("Ok")
         self.okNewProfileJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:okNewProfileJButtonActionPerformed(evt)
+                ;(self.okNewProfileJButtonActionPerformed and self or java_outer_self):okNewProfileJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -251,11 +253,13 @@ function GenericModuleConfigurationJPanel:initComponents()
         self.genericProfilesJPanel:setMinimumSize(Dimension.new(400, 300))
         self.genericProfilesJPanel:setPreferredSize(Dimension.new(0, 0))
         self.genericProfilesJList:addListSelectionListener((function()
-            local o = ListSelectionListener.new and ListSelectionListener.new() or setmetatable({}, {__index = ListSelectionListener})
+            local java_outer_self = self
+        local o = ListSelectionListener.new and ListSelectionListener.new() or setmetatable({}, {__index = ListSelectionListener})
             
 
             function o:valueChanged(evt)
-                self:genericProfilesJListValueChanged(evt)
+                ;(self.genericProfilesJListValueChanged and self or java_outer_self):genericProfilesJListValueChanged(evt)
+            
             end
             java_overload(o, "valueChanged", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ListSelectionEvent")) end)
             return o
@@ -264,11 +268,13 @@ function GenericModuleConfigurationJPanel:initComponents()
         self.newProfileJButton:setText("New")
         self.newProfileJButton:setToolTipText("Creates a new profile")
         self.newProfileJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:newProfileJButtonActionPerformed(evt)
+                ;(self.newProfileJButtonActionPerformed and self or java_outer_self):newProfileJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -276,11 +282,13 @@ function GenericModuleConfigurationJPanel:initComponents()
         self.deleteProfileJButton:setText("Delete")
         self.deleteProfileJButton:setToolTipText("Deletes the selected profile")
         self.deleteProfileJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:deleteProfileJButtonActionPerformed(evt)
+                ;(self.deleteProfileJButtonActionPerformed and self or java_outer_self):deleteProfileJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -291,11 +299,13 @@ function GenericModuleConfigurationJPanel:initComponents()
         self.screenCaptureJRadioButton:setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0))
         self.screenCaptureJRadioButton:setMargin(Insets.new(0, 0, 0, 0))
         self.screenCaptureJRadioButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:screenCaptureJRadioButtonActionPerformed(evt)
+                ;(self.screenCaptureJRadioButtonActionPerformed and self or java_outer_self):screenCaptureJRadioButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -307,11 +317,13 @@ function GenericModuleConfigurationJPanel:initComponents()
         self.savedCaptureJRadioButton:setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0))
         self.savedCaptureJRadioButton:setMargin(Insets.new(0, 0, 0, 0))
         self.savedCaptureJRadioButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:savedCaptureJRadioButtonActionPerformed(evt)
+                ;(self.savedCaptureJRadioButtonActionPerformed and self or java_outer_self):savedCaptureJRadioButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -321,11 +333,13 @@ function GenericModuleConfigurationJPanel:initComponents()
         self.captureMotionAnalysisJCheckBox:setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0))
         self.captureMotionAnalysisJCheckBox:setMargin(Insets.new(0, 0, 0, 0))
         self.captureMotionAnalysisJCheckBox:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:captureMotionAnalysisJCheckBoxActionPerformed(evt)
+                ;(self.captureMotionAnalysisJCheckBoxActionPerformed and self or java_outer_self):captureMotionAnalysisJCheckBoxActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -335,11 +349,13 @@ function GenericModuleConfigurationJPanel:initComponents()
         self.captureComparisonJCheckBox:setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0))
         self.captureComparisonJCheckBox:setMargin(Insets.new(0, 0, 0, 0))
         self.captureComparisonJCheckBox:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:captureComparisonJCheckBoxActionPerformed(evt)
+                ;(self.captureComparisonJCheckBoxActionPerformed and self or java_outer_self):captureComparisonJCheckBoxActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -442,7 +458,7 @@ java_overload(GenericModuleConfigurationJPanel, "captureComparisonJCheckBoxActio
 -- throws Exception
 function GenericModuleConfigurationJPanel:updateProfileUI(profileNameString)
         self:getBlankGenericProfileActionsJPanel():removeAll()
-        if profileNameString ~= nil then
+        if not rawequal(profileNameString, nil) then
             local genericProfileActionsJPanel = GenericProfileActionsJPanel.new()
             self:setSelectedGenericProfile(self:getGenericProfiles():get(profileNameString))
             self:getSelectedGenericProfile():setGenericProfileActions(GenericProfileActions.new(genericProfileActionsJPanel, profileNameString))
@@ -483,22 +499,22 @@ function GenericModuleConfigurationJPanel:updateProfileOptions()
         local size = vector:size()
         for index = 0, size - 1 do
             local genericProfileDataWorkerType = vector:get(index)
-            self.logUtil:putF(genericProfile:getName() .. " has GenericProfileDataWorkerType: " .. tostring(genericProfileDataWorkerType), self, "updateProfileOptions")
-            if genericProfileDataWorkerType == GenericProfileDataWorkerType.SCREEN_CAPTURE then
+            self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(genericProfile:getName()) .. require("allbinary_java").to_string(" has GenericProfileDataWorkerType: ")) .. require("allbinary_java").to_string(tostring(genericProfileDataWorkerType)), self, "updateProfileOptions")
+            if rawequal(genericProfileDataWorkerType, GenericProfileDataWorkerType.SCREEN_CAPTURE) then
                 self.logUtil:putF("Screen Capture Selected", self, "updateProfileOptions")
                 self.screenCaptureJRadioButton:setSelected(true)
-            elseif genericProfileDataWorkerType == GenericProfileDataWorkerType.SAVED_CAPTURE then
+            elseif rawequal(genericProfileDataWorkerType, GenericProfileDataWorkerType.SAVED_CAPTURE) then
                 self.logUtil:putF("Saved Capture Selected", self, "updateProfileOptions")
                 self.savedCaptureJRadioButton:setSelected(true)
-            elseif genericProfileDataWorkerType == GenericProfileDataWorkerType.COMPARISON then
+            elseif rawequal(genericProfileDataWorkerType, GenericProfileDataWorkerType.COMPARISON) then
                 self.logUtil:putF("Checking Comparison Box", self, "updateProfileOptions")
                 self.captureComparisonJCheckBox:setSelected(true)
-            elseif genericProfileDataWorkerType == GenericProfileDataWorkerType.MOTION then
+            elseif rawequal(genericProfileDataWorkerType, GenericProfileDataWorkerType.MOTION) then
                 self.logUtil:putF("Checking Motion Box", self, "updateProfileOptions")
                 self.captureMotionAnalysisJCheckBox:setSelected(true)
             end
         end
-        if not self.screenCaptureJRadioButton:isSelected() and not self.savedCaptureJRadioButton:isSelected() then
+        if not (self.screenCaptureJRadioButton:isSelected()) and not (self.savedCaptureJRadioButton:isSelected()) then
             self.screenCaptureJRadioButton:setSelected(true)
             self:getSelectedGenericProfile():add(GenericProfileDataWorkerType.SCREEN_CAPTURE)
         end

@@ -101,7 +101,7 @@ end
 function WaypointPathRunnableBase:setPriority()
         local pathFindingLayer = self.pathFindingLayer
         local targetLayer = self.targetPathFindingLayer
-        if targetLayer ~= nil then
+        if not rawequal(targetLayer, nil) then
             local distance = self.layerDistanceUtil:getDistance(targetLayer, pathFindingLayer)
             local distanceCategory = java_idiv(distance, 70)
             self.priorityP = distanceCategory

@@ -153,12 +153,12 @@ function GameInputMotionEventProcessorAPI5:_init_fields()
     self.logUtil = LogUtil.getInstance()
     self.displayInfo = DisplayInfoSingleton.getInstance()
     if self.motionRecognizerArray == nil then self.motionRecognizerArray = nil end
-    if self.TOTAL_MINUS_ONE == nil then self.TOTAL_MINUS_ONE = nil end
+    if self.TOTAL_MINUS_ONE == nil then self.TOTAL_MINUS_ONE = 0 end
 end
 
 
 function GameInputMotionEventProcessorAPI5.getInstance()
-        if GameInputMotionEventProcessorAPI5.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(GameInputMotionEventProcessorAPI5.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             GameInputMotionEventProcessorAPI5.instance_f = GameInputMotionEventProcessorAPI5.new()
         end
         return GameInputMotionEventProcessorAPI5.instance_f
@@ -187,7 +187,7 @@ end
 function GameInputMotionEventProcessorAPI5:isValid(pointerId)
         if pointerId > self.TOTAL_MINUS_ONE then
             local message = "Log that the pointer Ids are not what would be expected or Android has more than what I set my stuff to support pointerId: "
-            ForcedLogUtil.log(message .. tostring(pointerId), self)
+            ForcedLogUtil.log(require("allbinary_java").to_string(message) .. require("allbinary_java").to_string(pointerId), self)
             return false
         else
             return true
@@ -204,10 +204,10 @@ function GameInputMotionEventProcessorAPI5:process(motionEvent)
                 total = motionEvent:getPointerCount()
             else
                 local message = "Log that Android has more pointers than I have expected so increase it motionEvent.getPointerCount(): "
-                ForcedLogUtil.log(message .. tostring(motionEvent:getPointerCount()), self)
+                ForcedLogUtil.log(require("allbinary_java").to_string(message) .. require("allbinary_java").to_string(motionEvent:getPointerCount()), self)
             end
             local totalMinusOne = total - 1
-            if action == MotionEvent.ACTION_DOWN then
+            if rawequal(action, MotionEvent.ACTION_DOWN) then
                 for pointerIndex = totalMinusOne, 0, -1 do
                     local pointerId = motionEvent:getPointerId(pointerIndex)
                     if self:isValid(pointerId) then
@@ -217,7 +217,7 @@ function GameInputMotionEventProcessorAPI5:process(motionEvent)
                         self.motionRecognizerArray[pointerId + 1]:processStartMotionEvent(x, y, motionEvent:getDeviceId(), 0)
                     end
                 end
-            elseif action == MotionEvent.ACTION_UP or action == MotionEvent.ACTION_CANCEL then
+            elseif rawequal(action, MotionEvent.ACTION_UP) or rawequal(action, MotionEvent.ACTION_CANCEL) then
                 for pointerIndex = totalMinusOne, 0, -1 do
                     local pointerId = motionEvent:getPointerId(pointerIndex)
                     if self:isValid(pointerId) then
@@ -227,7 +227,7 @@ function GameInputMotionEventProcessorAPI5:process(motionEvent)
                         self.motionRecognizerArray[pointerId + 1]:processEndMotionEvent(x, y, motionEvent:getDeviceId(), 0)
                     end
                 end
-            elseif action == MotionEvent.ACTION_MOVE then
+            elseif rawequal(action, MotionEvent.ACTION_MOVE) then
                 for pointerIndex = totalMinusOne, 0, -1 do
                     local pointerId = motionEvent:getPointerId(pointerIndex)
                     if self:isValid(pointerId) then

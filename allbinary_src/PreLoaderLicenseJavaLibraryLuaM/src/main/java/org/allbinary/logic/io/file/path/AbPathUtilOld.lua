@@ -153,7 +153,7 @@ function AbPathUtilOld:getExtension_j1_3(filePath)
         local beginIndex = #filePath - AbPathUtilOld.MIN
         local extension = string.sub(filePath, (beginIndex + 1) + 1)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("FileExtension: " .. extension, self, "getExtension()")
+            self.logUtil:putF(require("allbinary_java").to_string("FileExtension: ") .. require("allbinary_java").to_string(extension), self, "getExtension()")
         end
         return extension
 end
@@ -191,7 +191,7 @@ function AbPathUtilOld:getWithoutExtension_j1_3(filePath)
         local endIndex = #filePath - AbPathUtilOld.MIN
         local pathWithoutExtension = string.sub(filePath, (0) + 1, endIndex)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("FileWithoutExtension: " .. pathWithoutExtension, self, "getWithoutExtension()")
+            self.logUtil:putF(require("allbinary_java").to_string("FileWithoutExtension: ") .. require("allbinary_java").to_string(pathWithoutExtension), self, "getWithoutExtension()")
         end
         return pathWithoutExtension
 end
@@ -220,7 +220,7 @@ end
 
 
 function AbPathUtilOld:isValidStart(path)
-        if string.sub(path, (0) + 1, (0) + 1) == self.abPathData.SEPARATORCHAR then
+        if rawequal(string.sub(path, (0) + 1, (0) + 1), self.abPathData.SEPARATORCHAR) then
             return true
         else
             return false
@@ -232,7 +232,7 @@ function AbPathUtilOld:isValidEnd(path)
         if StringValidationUtil.getInstance():isEmpty(path) then
             return false
         end
-        if string.sub(path, (#path - 1) + 1, (#path - 1) + 1) == self.abPathData.SEPARATORCHAR then
+        if rawequal(string.sub(path, (#path - 1) + 1, (#path - 1) + 1), self.abPathData.SEPARATORCHAR) then
             return true
         else
             return false
@@ -241,16 +241,16 @@ end
 
 
 function AbPathUtilOld:adjustStart(path)
-        if not self:isValidStart(path) then
-            path = tostring(self.abPathData.SEPARATOR) .. path
+        if not (self:isValidStart(path)) then
+            path = require("allbinary_java").to_string(self.abPathData.SEPARATOR) .. require("allbinary_java").to_string(path)
         end
         return path
 end
 
 
 function AbPathUtilOld:adjustEnd(path)
-        if not self:isValidEnd(path) then
-            path = path .. tostring(self.abPathData.SEPARATOR)
+        if not (self:isValidEnd(path)) then
+            path = require("allbinary_java").to_string(path) .. require("allbinary_java").to_string(self.abPathData.SEPARATOR)
         end
         return path
 end
@@ -275,7 +275,7 @@ function AbPathUtilOld:getNameFromPath(categoryPath)
         if endIndex < 0 then
             return categoryPath
         end
-        if #categoryPath == endIndex + 1 then
+        if rawequal(#categoryPath, endIndex + 1) then
             local categoryName = string.sub(categoryPath, (0) + 1, endIndex)
             return self:getNameFromPath(categoryName)
         else
@@ -294,7 +294,7 @@ function AbPathUtilOld:removeNameFromPath(categoryPath)
         if endIndex < 0 then
             return AbPath.createAbPath()
         end
-        if #categoryPath == endIndex + 1 then
+        if rawequal(#categoryPath, endIndex + 1) then
             return self:removeNameFromPath(string.sub(categoryPath, (0) + 1, endIndex - 1))
         else
             local categoryName = string.sub(categoryPath, (0) + 1, endIndex)

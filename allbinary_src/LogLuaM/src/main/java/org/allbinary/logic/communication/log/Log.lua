@@ -101,7 +101,7 @@ end
 function Log:toString()
         local className = CommonStrings.getInstance().EMPTY
         local clazz = getmetatable(self.anyType)
-        if (clazz.javaClassName or clazz.className) ~= nil then
+        if not rawequal((clazz.javaClassName or clazz.className), nil) then
             className = (clazz.javaClassName or clazz.className)
         end
         return self.logFormatUtil:get(className, self.functionName, self.specialMessage, self.exception)

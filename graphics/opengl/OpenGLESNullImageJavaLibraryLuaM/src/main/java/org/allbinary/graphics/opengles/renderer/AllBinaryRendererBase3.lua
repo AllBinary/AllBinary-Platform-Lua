@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local GL10 = require("javax.microedition.khronos.opengles.GL10")
--- local Image = require("javax.microedition.lcdui.Image")
+local GL10 = java_lazy("javax.microedition.khronos.opengles.GL10")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local OpenGLESImage = java_lazy("org.allbinary.image.opengles.OpenGLESImage")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
@@ -74,7 +74,7 @@ end
 function AllBinaryRendererBase3:update(gl)
         while self.list:size() > 0 do
             local openGLESImage = self.list:removeAt(0)
-            if openGLESImage ~= nil then
+            if not rawequal(openGLESImage, nil) then
                 openGLESImage:set(gl)
             end
         end

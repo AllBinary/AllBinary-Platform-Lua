@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 -- local StringBufferInputStream = require("java.io.StringBufferInputStream")
 -- local DocumentBuilder = require("javax.xml.parsers.DocumentBuilder")
 -- local DocumentBuilderFactory = require("javax.xml.parsers.DocumentBuilderFactory")

@@ -130,22 +130,22 @@ function StylesValidationFactory:getInstance(document)
         local commonStrings = CommonStrings.getInstance()
         local nodeList = document:getElementsByTagName(StylesData.getInstance().NAME)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("Style Present: " .. XmlDocumentHelper.toString(document), self, commonStrings.GET_INSTANCE)
+            self.logUtil:putF(require("allbinary_java").to_string("Style Present: ") .. require("allbinary_java").to_string(XmlDocumentHelper.toString(document)), self, commonStrings.GET_INSTANCE)
         end
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("Styles Present: " .. tostring(nodeList:getLength()), self, commonStrings.GET_INSTANCE)
+            self.logUtil:putF(require("allbinary_java").to_string("Styles Present: ") .. require("allbinary_java").to_string(nodeList:getLength()), self, commonStrings.GET_INSTANCE)
         end
         for index = 0, nodeList:getLength() - 1 do
             local stylesNode = nodeList:item(index)
             local styleNodeList = DomSearchHelper.getAllNodes(StyleData.getInstance().NAME, stylesNode:getChildNodes())
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("Number Of Style Nodes Present: " .. tostring(styleNodeList:size()), self, commonStrings.GET_INSTANCE)
+                self.logUtil:putF(require("allbinary_java").to_string("Number Of Style Nodes Present: ") .. require("allbinary_java").to_string(styleNodeList:size()), self, commonStrings.GET_INSTANCE)
             end
             for styleNodesIndex = 0, styleNodeList:size() - 1 do
                 local styleNode = styleNodeList:get(styleNodesIndex)
                 local cssElementStyleNodeList = DomSearchHelper.getAllNodes(CssElementData.getInstance().NAME, styleNode:getChildNodes())
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                    self.logUtil:putF("Number Of Element Nodes Present: " .. tostring(cssElementStyleNodeList:size()), self, commonStrings.GET_INSTANCE)
+                    self.logUtil:putF(require("allbinary_java").to_string("Number Of Element Nodes Present: ") .. require("allbinary_java").to_string(cssElementStyleNodeList:size()), self, commonStrings.GET_INSTANCE)
                 end
                 return CssElementsValidationFactory.getInstance(cssElementStyleNodeList)
             end
@@ -160,7 +160,7 @@ end
 -- throws Exception
 function StylesValidationFactory.getInstance_j1(hashMap)
         local stylesDocument = hashMap:get(NameSpaceRequestParamData.DOCUMENT)
-        return StylesValidationFactory.getInstance():getInstance(stylesDocument)
+        return StylesValidationFactory.getInstance_j0():getInstance(stylesDocument)
 end
 function StylesValidationFactory.getInstance(...)
     local count = select("#", ...)

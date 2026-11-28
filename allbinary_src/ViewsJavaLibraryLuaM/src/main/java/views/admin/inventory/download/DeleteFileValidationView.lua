@@ -197,7 +197,7 @@ end
 -- throws Exception
 function DeleteFileValidationView:getFormData()
         local hashMap = RequestParams.new(self.request):toHashMap()
-        if hashMap == nil then
+        if rawequal(hashMap, nil) then
             error(require("java.lang.Exception").new("No Request Params Found"), 0)
         end
         self.id = hashMap:get(self.basicItemData.ID)
@@ -208,17 +208,17 @@ java_overload(DeleteFileValidationView, "getFormData", 0)
 
 function DeleteFileValidationView:isValid()
         local try_ok, try_error, try_value = pcall(function()
-            if self.id == nil or not StringValidationUtil.getInstance():isNumber(self.id) then
+            if rawequal(self.id, nil) or not (StringValidationUtil.getInstance():isNumber(self.id)) then
                 do return "__jreturn", false end
             end
             local inventoryEntity = InventoryEntityFactory.getInstance():getInventoryEntityInstance()
             self.itemInterface = inventoryEntity:getItem(self.id)
-            if self.itemInterface == nil then
+            if rawequal(self.itemInterface, nil) then
                 do return "__jreturn", false end
             end
             local downloadItemsEntity = DownloadItemsEntityFactory.getInstance():getDownloadItemsEntityInstance()
             local vector = downloadItemsEntity:getForItem(self.id, self.downloadItemId)
-            if vector:size() ~= 1 then
+            if not rawequal(vector:size(), 1) then
                 do return "__jreturn", false end
             end
             do return "__jreturn", true end
@@ -248,15 +248,15 @@ java_overload(DeleteFileValidationView, "toValidationInfoNode", 1, function(java
 function DeleteFileValidationView:validationInfo()
         local try_ok, try_error, try_value = pcall(function()
             local stringBuffer = StringMaker.new()
-            if self.id == nil or not StringValidationUtil.getInstance():isNumber(self.id) then
+            if rawequal(self.id, nil) or not (StringValidationUtil.getInstance():isNumber(self.id)) then
                 stringBuffer:append("Id is not valid.<br />")
             end
-            if InventoryEntityFactory.getInstance():getInventoryEntityInstance():getItem(self.id) == nil then
+            if rawequal(InventoryEntityFactory.getInstance():getInventoryEntityInstance():getItem(self.id), nil) then
                 stringBuffer:append("Item does not exist.<br />")
             end
             local downloadItemsEntity = DownloadItemsEntityFactory.getInstance():getDownloadItemsEntityInstance()
             local vector = downloadItemsEntity:getForItem(self.id, self.downloadItemId)
-            if vector:size() == 0 then
+            if rawequal(vector:size(), 0) then
                 stringBuffer:append("DownloadItem does not exist.<br />")
             end
             if vector:size() > 1 then

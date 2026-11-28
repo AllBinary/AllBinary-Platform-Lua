@@ -28,10 +28,10 @@ local function java_real(class)
     return class
 end
 
--- local FileInputStream = require("java.io.FileInputStream")
+local FileInputStream = java_lazy("java.io.FileInputStream")
 -- local FileNotFoundException = require("java.io.FileNotFoundException")
 -- local IOException = require("java.io.IOException")
--- local InputStream = require("java.io.InputStream")
+local InputStream = require("java.io.InputStream")
 -- local FileChannel = require("java.nio.channels.FileChannel")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
@@ -209,6 +209,8 @@ function AbFileInputStream:read(...)
     if count == 0 then return self:read_j0(...) end
     if count == 1 then return self:read_j1(...) end
     if count == 3 then return self:read_j3(...) end
+    local parent = getmetatable(AbFileInputStream).__index
+    if parent.read then return parent.read(self, ...) end
     error("No method read takes " .. count .. " arguments")
 end
 AbFileInputStream.read__jdispatcher = AbFileInputStream.read

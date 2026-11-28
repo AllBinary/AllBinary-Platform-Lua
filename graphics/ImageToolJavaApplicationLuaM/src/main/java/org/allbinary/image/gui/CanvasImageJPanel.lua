@@ -194,7 +194,8 @@ end
 
 function CanvasImageJPanel:process()
         ;(function()
-            local o = Thread.new and Thread.new() or setmetatable({}, {__index = Thread})
+            local java_outer_self = self
+        local o = Thread.new and Thread.new() or setmetatable({}, {__index = Thread})
             
 
             function o:run()
@@ -207,9 +208,9 @@ function CanvasImageJPanel:process()
                     local widthReduction = tostring(self.widthReductionTextField:getText())
                     local heightReduction = tostring(self.heightReductionTextField:getText())
                     if leftReduction <= 0 or topReduction <= 0 or widthReduction <= 0 or heightReduction <= 0 then
-                        canvasTrimUtil:process(self:getImageProcessorInput(), -leftReduction, -topReduction, -widthReduction, -heightReduction, self)
+                        canvasTrimUtil:process(java_outer_self:getImageProcessorInput(), -leftReduction, -topReduction, -widthReduction, -heightReduction, java_outer_self)
                     else
-                        canvasExpandUtil:process(self:getImageProcessorInput(), leftReduction, topReduction, self)
+                        canvasExpandUtil:process(java_outer_self:getImageProcessorInput(), leftReduction, topReduction, java_outer_self)
                     end
                 end)
                 if not try_ok then
@@ -228,12 +229,13 @@ java_overload(CanvasImageJPanel, "process", 0)
 function CanvasImageJPanel:initComponents()
         self.writeOverOriginalJCheckBox = JCheckBox.new()
         self.jPanel1 = (function()
-            local o = JPanel.new and JPanel.new() or setmetatable({}, {__index = JPanel})
+            local java_outer_self = self
+        local o = JPanel.new and JPanel.new() or setmetatable({}, {__index = JPanel})
             
 
             function o:paint(graphics)
-                if self.result ~= nil then
-                    graphics:drawImage(self.result, 0, 0, self.result:getWidth(nil), self.result:getHeight(nil), nil)
+                if not rawequal(java_outer_self.result, nil) then
+                    graphics:drawImage(java_outer_self.result, 0, 0, java_outer_self.result:getWidth(nil), java_outer_self.result:getHeight(nil), nil)
                 end
             end
             java_overload(o, "paint", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "Graphics")) end)
@@ -253,11 +255,13 @@ function CanvasImageJPanel:initComponents()
         self.writeOverOriginalJCheckBox:setSelected(true)
         self.writeOverOriginalJCheckBox:setText("Write Over Original")
         self.writeOverOriginalJCheckBox:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:writeOverOriginalJCheckBoxActionPerformed(evt)
+                ;(self.writeOverOriginalJCheckBoxActionPerformed and self or java_outer_self):writeOverOriginalJCheckBoxActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -268,11 +272,13 @@ function CanvasImageJPanel:initComponents()
         jPanel1Layout:setVerticalGroup(jPanel1Layout:createParallelGroup(GroupLayout.Alignment.LEADING):addGap(0, 196, require("java.lang.Short").MAX_VALUE))
         self.generateJButton:setText("Generate")
         self.generateJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:generateJButtonActionPerformed(evt)
+                ;(self.generateJButtonActionPerformed and self or java_outer_self):generateJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -281,11 +287,13 @@ function CanvasImageJPanel:initComponents()
         self.jLabel5:setText("Right:")
         self.widthReductionTextField:setText(CommonPhoneStrings.getInstance().ZERO)
         self.widthReductionTextField:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:widthReductionTextFieldActionPerformed(evt)
+                ;(self.widthReductionTextFieldActionPerformed and self or java_outer_self):widthReductionTextFieldActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -294,11 +302,13 @@ function CanvasImageJPanel:initComponents()
         self.heightReductionTextField:setText(CommonPhoneStrings.getInstance().ZERO)
         self.widthReductionTextField1:setText(CommonPhoneStrings.getInstance().ZERO)
         self.widthReductionTextField1:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:widthReductionTextField1ActionPerformed(evt)
+                ;(self.widthReductionTextField1ActionPerformed and self or java_outer_self):widthReductionTextField1ActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -357,7 +367,7 @@ function CanvasImageJPanel:visit(generatedBufferedImage, name, index)
         self.result = generatedBufferedImage
         self:getParent():repaint()
         local file = self.imageProcessorInput:getFiles()[index + 1]
-        if not self.writeOverOriginalJCheckBox:isSelected() then
+        if not (self.writeOverOriginalJCheckBox:isSelected()) then
             local filePath = file:getAbsolutePath()
             local extensionIndex = ((string.find(filePath, self.imageStrings.PNG_EXTENSION, 1, true) or 0) - 1)
             filePath = tostring(StringMaker.new():append(string.sub(filePath, (0) + 1, extensionIndex)):append(self.commonSeps.UNDERSCORE):append(name):append(self.imageStrings.PNG_EXTENSION))

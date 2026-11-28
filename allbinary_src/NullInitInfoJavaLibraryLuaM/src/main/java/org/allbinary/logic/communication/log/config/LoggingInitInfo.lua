@@ -111,10 +111,10 @@ end
 
 -- throws Exception
 function LoggingInitInfo.updateIfNeeded()
-        if not LoggingInitInfo.hasRead then
+        if not (LoggingInitInfo.hasRead) then
             LoggingInitInfo.read()
             LoggingInitInfo.hasRead = true
-            if LoggingInitInfo.logConfigInfoList == nil then
+            if rawequal(LoggingInitInfo.logConfigInfoList, nil) then
                 error(require("java.lang.Exception").new("Read Failed"), 0)
             end
         end

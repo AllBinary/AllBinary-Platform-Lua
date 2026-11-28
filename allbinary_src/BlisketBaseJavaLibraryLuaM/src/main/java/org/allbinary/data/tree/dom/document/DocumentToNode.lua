@@ -81,13 +81,13 @@ end
 
 function DocumentToNode.remove(documentString, start, end_)
         local startIndex = 0
-        while ((function() startIndex = ((string.find(documentString, start, 1, true) or 0) - 1) return startIndex end)()) ~= -1 do
+        while not rawequal(((function() startIndex = ((string.find(documentString, start, 1, true) or 0) - 1) return startIndex end)()), -1) do
             if startIndex >= 0 then
                 local endIndex = ((string.find(documentString, end_, (startIndex) + 1, true) or 0) - 1)
                 if endIndex >= 0 then
                     local startString = string.sub(documentString, (0) + 1, startIndex)
                     local resultString = string.sub(documentString, (endIndex + 1) + 1)
-                    return startString .. resultString
+                    return require("allbinary_java").to_string(startString) .. require("allbinary_java").to_string(resultString)
                 end
             end
         end

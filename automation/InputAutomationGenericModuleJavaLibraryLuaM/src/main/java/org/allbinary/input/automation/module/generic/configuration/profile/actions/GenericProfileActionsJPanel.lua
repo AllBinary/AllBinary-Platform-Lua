@@ -195,11 +195,13 @@ function GenericProfileActionsJPanel:initComponents()
         self.newProfileActionJLabel:setText("New Action Name")
         self.okNewProfileActionJButton:setText("Ok")
         self.okNewProfileActionJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:okNewProfileActionJButtonActionPerformed(evt)
+                ;(self.okNewProfileActionJButtonActionPerformed and self or java_outer_self):okNewProfileActionJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -210,11 +212,13 @@ function GenericProfileActionsJPanel:initComponents()
         newProfileActionJDialogLayout:setVerticalGroup(newProfileActionJDialogLayout:createParallelGroup(GroupLayout.Alignment.LEADING):addGroup(GroupLayout.Alignment.TRAILING, newProfileActionJDialogLayout:createSequentialGroup():addContainerGap():addComponent(self.newProfileActionJLabel):addGap(21, 21, 21):addComponent(self.newProfileActionJTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE):addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 20, require("java.lang.Short").MAX_VALUE):addComponent(self.okNewProfileActionJButton):addContainerGap()))
         self.genericProfileActionsJPanel:setPreferredSize(Dimension.new(10000, 10000))
         self.genericProfileActionsJList:addListSelectionListener((function()
-            local o = ListSelectionListener.new and ListSelectionListener.new() or setmetatable({}, {__index = ListSelectionListener})
+            local java_outer_self = self
+        local o = ListSelectionListener.new and ListSelectionListener.new() or setmetatable({}, {__index = ListSelectionListener})
             
 
             function o:valueChanged(evt)
-                self:genericProfileActionsJListValueChanged(evt)
+                ;(self.genericProfileActionsJListValueChanged and self or java_outer_self):genericProfileActionsJListValueChanged(evt)
+            
             end
             java_overload(o, "valueChanged", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ListSelectionEvent")) end)
             return o
@@ -222,33 +226,39 @@ function GenericProfileActionsJPanel:initComponents()
         self.genericProfileActionsJScrollPane:setViewportView(self.genericProfileActionsJList)
         self.newActionJButton:setText("New")
         self.newActionJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:newActionJButtonActionPerformed(evt)
+                ;(self.newActionJButtonActionPerformed and self or java_outer_self):newActionJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.deleteActionJButton:setText("Delete")
         self.deleteActionJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:deleteActionJButtonActionPerformed(evt)
+                ;(self.deleteActionJButtonActionPerformed and self or java_outer_self):deleteActionJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.saveJButton:setText("Save")
         self.saveJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:saveJButtonActionPerformed(evt)
+                ;(self.saveJButtonActionPerformed and self or java_outer_self):saveJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -294,7 +304,7 @@ java_overload(GenericProfileActionsJPanel, "saveJButtonActionPerformed", 1, func
 
 function GenericProfileActionsJPanel:updateProfileActionUI(profileActionNameString)
         self.blankGenericProfileActionJPanel:removeAll()
-        if profileActionNameString ~= nil then
+        if not rawequal(profileActionNameString, nil) then
             local genericProfileAction = self:getGenericProfileActions():getAction(profileActionNameString)
             self:setGenericProfileActionJPanel(GenericProfileActionJPanel.new())
             self:getGenericProfileActionJPanel():setGenericProfileAction(genericProfileAction)

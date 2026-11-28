@@ -167,13 +167,13 @@ function DownloadableItem._new1_2(self, hashMap)
         self.licenseFile = hashMap:get(DownloadItemData.LICENSE_FILE)
         self.file = hashMap:get(DownloadItemData.FILE)
         local value = hashMap:get(DownloadItemData.SIZE)
-        if not StringValidationUtil.getInstance():isEmpty(value) then
+        if not (StringValidationUtil.getInstance():isEmpty(value)) then
             self.size_f = tostring(value)
         else
             self.size_f = 0
         end
         local validTime = hashMap:get(DownloadItemData.VALID_TIME)
-        if not StringValidationUtil.getInstance():isEmpty(validTime) then
+        if not (StringValidationUtil.getInstance():isEmpty(validTime)) then
             self.validTime = tostring(validTime)
         else
             local totalYears = hashMap:get(DownloadItemData.VALID_TIME_YEARS)

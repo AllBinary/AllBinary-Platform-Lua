@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local BasicAI = require("org.allbinary.game.ai.BasicAI")
 local GameInput = java_lazy("org.allbinary.game.input.GameInput")
 local DisplayInfoSingleton = java_lazy("org.allbinary.graphics.displayable.DisplayInfoSingleton")
@@ -149,7 +149,7 @@ setmetatable(HorizontalManeuverAI, {__index = BasicAI})
 
 function HorizontalManeuverAI:_init_fields()
     self.currentRelativeAngle = 0
-    if self.currentSpeed == nil then self.currentSpeed = nil end
+    if self.currentSpeed == nil then self.currentSpeed = 0 end
 end
 
 
@@ -181,15 +181,15 @@ function HorizontalManeuverAI:processAI(allBinaryLayerManager)
             self:accelerate()
             self:drop()
         end
-        if self.currentRelativeAngle == 0 then
+        if rawequal(self.currentRelativeAngle, 0) then
             x = x + (self.currentSpeed)
-        elseif self.currentRelativeAngle == 180 then
+        elseif rawequal(self.currentRelativeAngle, 180) then
             x = x - (self.currentSpeed)
         end
         ownerLayerInterface:setPosition(x, ownerLayerInterface:getYP(), ownerLayerInterface:getZP())
-        if self.currentRelativeAngle == 0 then
+        if rawequal(self.currentRelativeAngle, 0) then
             java_super(BasicAI, "processKeyAI", 1)(self, Canvas.KEY_NUM0)
-        elseif self.currentRelativeAngle == 180 then
+        elseif rawequal(self.currentRelativeAngle, 180) then
             java_super(BasicAI, "processKeyAI", 1)(self, Canvas.KEY_POUND)
         end
 end
@@ -197,9 +197,9 @@ java_overload(HorizontalManeuverAI, "processAI", 1, function(java_a1) return tru
 
 
 function HorizontalManeuverAI:reverse()
-        if self.currentRelativeAngle == 180 then
+        if rawequal(self.currentRelativeAngle, 180) then
             self.currentRelativeAngle = 0
-        elseif self.currentRelativeAngle == 0 then
+        elseif rawequal(self.currentRelativeAngle, 0) then
             self.currentRelativeAngle = 180
         end
 end

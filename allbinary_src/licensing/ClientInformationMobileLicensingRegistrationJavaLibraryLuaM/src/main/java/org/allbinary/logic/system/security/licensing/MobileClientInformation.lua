@@ -154,7 +154,7 @@ function MobileClientInformation._jinit(self, name, version, specialName, shortN
         -- super(...) made self above
         local string_ = self:getSpecialName()
         local number = string.sub(string_, (#string_ - 1) + 1)
-        if require("java.lang.Integer").getInteger(number) == nil then
+        if rawequal(require("java.lang.Integer").getInteger(number), nil) then
             self:setHardSale(false)
         end
         local commonStrings = CommonStrings.getInstance()
@@ -182,7 +182,7 @@ end
 java_overload(MobileClientInformation, "toHashtable", 0)
 
 MobileClientInformation.DESC = "Mobile"
-MobileClientInformation.ANDROID_DESC = "Android" .. tostring(MobileClientInformation.DESC)
+MobileClientInformation.ANDROID_DESC = require("allbinary_java").to_string("Android") .. require("allbinary_java").to_string(MobileClientInformation.DESC)
 
 return MobileClientInformation
 

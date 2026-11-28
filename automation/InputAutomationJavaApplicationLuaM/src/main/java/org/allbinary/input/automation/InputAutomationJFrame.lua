@@ -232,10 +232,10 @@ function InputAutomationJFrame._jinit(self)
     java_super_init(JFrame, self)
     InputAutomationJFrame._init_fields(self)
         self:initComponents()
-        local url = getmetatable(self):getResource("/help/Help.hs")
-        self.logUtil:putF("URL: " .. tostring(url), self, self.commonStrings.CONSTRUCTOR)
+        local url = require("java.lang.ClassLoader").classResource(getmetatable(self), "/help/Help.hs", false)
+        self.logUtil:putF(require("allbinary_java").to_string("URL: ") .. require("allbinary_java").to_string(url), self, self.commonStrings.CONSTRUCTOR)
         self.helpSet = JavaHelpUtil.getInstance():getHelpSet(url)
-        url = getmetatable(self):getResource("/resources/allbinaryicon8bit.jpg")
+        url = require("java.lang.ClassLoader").classResource(getmetatable(self), "/resources/allbinaryicon8bit.jpg", false)
         local imageIcon = ImageIcon.new(url)
         self:setIconImage(imageIcon:getImage())
         self:init()
@@ -266,7 +266,7 @@ function InputAutomationJFrame:init()
         local inputAutomationConfigurationFactory = InputAutomationConfigurationFactory.getInstance()
         inputAutomationConfigurationFactory:init(InputAutomationClientInformationFactory.getInstance())
         local inputAutomationModuleConfigurationList = inputAutomationConfigurationFactory.inputAutomationConfiguration:getInputAutomationModuleConfigurationList()
-        if inputAutomationModuleConfigurationList == nil then
+        if rawequal(inputAutomationModuleConfigurationList, nil) then
         else
             self.inputAutomationModuleConfigurations = InputAutomationModuleConfigurations.new(inputAutomationModuleConfigurationList)
         end
@@ -308,33 +308,39 @@ function InputAutomationJFrame:initComponents()
         self:setMinimumSize(Dimension.new(325, 215))
         self:setResizable(false)
         self:addWindowFocusListener((function()
-            local o = WindowFocusListener.new and WindowFocusListener.new() or setmetatable({}, {__index = WindowFocusListener})
+            local java_outer_self = self
+        local o = WindowFocusListener.new and WindowFocusListener.new() or setmetatable({}, {__index = WindowFocusListener})
             
 
             function o:windowGainedFocus(evt)
-                self:formWindowGainedFocus(evt)
+                ;(self.formWindowGainedFocus and self or java_outer_self):formWindowGainedFocus(evt)
+            
             end
             java_overload(o, "windowGainedFocus", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "WindowEvent")) end)
             
 
             function o:windowLostFocus(evt)
-                self:formWindowLostFocus(evt)
+                ;(self.formWindowLostFocus and self or java_outer_self):formWindowLostFocus(evt)
+            
             end
             java_overload(o, "windowLostFocus", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "WindowEvent")) end)
             return o
         end)())
         self:addFocusListener((function()
-            local o = FocusAdapter.new and FocusAdapter.new() or setmetatable({}, {__index = FocusAdapter})
+            local java_outer_self = self
+        local o = FocusAdapter.new and FocusAdapter.new() or setmetatable({}, {__index = FocusAdapter})
             
 
             function o:focusGained(evt)
-                self:formFocusGained(evt)
+                ;(self.formFocusGained and self or java_outer_self):formFocusGained(evt)
+            
             end
             java_overload(o, "focusGained", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "FocusEvent")) end)
             
 
             function o:focusLost(evt)
-                self:formFocusLost(evt)
+                ;(self.formFocusLost and self or java_outer_self):formFocusLost(evt)
+            
             end
             java_overload(o, "focusLost", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "FocusEvent")) end)
             return o
@@ -342,11 +348,13 @@ function InputAutomationJFrame:initComponents()
         self.gameRobotJTabbedPane:setMinimumSize(Dimension.new(320, 200))
         self.inputAutomationModuleJList:setMinimumSize(Dimension.new(200, 0))
         self.inputAutomationModuleJList:addListSelectionListener((function()
-            local o = ListSelectionListener.new and ListSelectionListener.new() or setmetatable({}, {__index = ListSelectionListener})
+            local java_outer_self = self
+        local o = ListSelectionListener.new and ListSelectionListener.new() or setmetatable({}, {__index = ListSelectionListener})
             
 
             function o:valueChanged(evt)
-                self:inputAutomationModuleJListValueChanged(evt)
+                ;(self.inputAutomationModuleJListValueChanged and self or java_outer_self):inputAutomationModuleJListValueChanged(evt)
+            
             end
             java_overload(o, "valueChanged", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ListSelectionEvent")) end)
             return o
@@ -366,11 +374,13 @@ function InputAutomationJFrame:initComponents()
         self.processingJMenu:setToolTipText("Set module processing state")
         self.startJMenuItem:setText(self.commonStrings.START)
         self.startJMenuItem:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:startJMenuItemActionPerformed(evt)
+                ;(self.startJMenuItemActionPerformed and self or java_outer_self):startJMenuItemActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -378,11 +388,13 @@ function InputAutomationJFrame:initComponents()
         self.processingJMenu:add(self.startJMenuItem)
         self.stopJMenuItem:setText("Stop")
         self.stopJMenuItem:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:stopJMenuItemActionPerformed(evt)
+                ;(self.stopJMenuItemActionPerformed and self or java_outer_self):stopJMenuItemActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -391,11 +403,13 @@ function InputAutomationJFrame:initComponents()
         self.mainJMenuBar:add(self.processingJMenu)
         self.optionsJMenu:setText("Options")
         self.optionsJMenu:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:optionsJMenuActionPerformed(evt)
+                ;(self.optionsJMenuActionPerformed and self or java_outer_self):optionsJMenuActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -404,11 +418,13 @@ function InputAutomationJFrame:initComponents()
         self.stopOnFocusJCheckBoxMenuItem:setEnabled(false)
         self.stopOnFocusJCheckBoxMenuItem:setLabel("Stop Module On Focus")
         self.stopOnFocusJCheckBoxMenuItem:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:stopOnFocusJCheckBoxMenuItemActionPerformed(evt)
+                ;(self.stopOnFocusJCheckBoxMenuItemActionPerformed and self or java_outer_self):stopOnFocusJCheckBoxMenuItemActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -418,11 +434,13 @@ function InputAutomationJFrame:initComponents()
         self.toolsJMenu:setText("Help")
         self.helpJMenuItem:setText("Help")
         self.helpJMenuItem:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:helpJMenuItemActionPerformed(evt)
+                ;(self.helpJMenuItemActionPerformed and self or java_outer_self):helpJMenuItemActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -430,11 +448,13 @@ function InputAutomationJFrame:initComponents()
         self.toolsJMenu:add(self.helpJMenuItem)
         self.updatesJMenuItem:setText("Updates")
         self.updatesJMenuItem:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:updatesJMenuItemActionPerformed(evt)
+                ;(self.updatesJMenuItemActionPerformed and self or java_outer_self):updatesJMenuItemActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -442,11 +462,13 @@ function InputAutomationJFrame:initComponents()
         self.toolsJMenu:add(self.updatesJMenuItem)
         self.subscriptionJMenuItem:setText("Subscription")
         self.subscriptionJMenuItem:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:subscriptionJMenuItemActionPerformed(evt)
+                ;(self.subscriptionJMenuItemActionPerformed and self or java_outer_self):subscriptionJMenuItemActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -454,11 +476,13 @@ function InputAutomationJFrame:initComponents()
         self.toolsJMenu:add(self.subscriptionJMenuItem)
         self.modulesJMenuItem:setText("Module Manager")
         self.modulesJMenuItem:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:modulesJMenuItemActionPerformed(evt)
+                ;(self.modulesJMenuItemActionPerformed and self or java_outer_self):modulesJMenuItemActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -466,11 +490,13 @@ function InputAutomationJFrame:initComponents()
         self.toolsJMenu:add(self.modulesJMenuItem)
         self.aboutJMenuItem:setText("About")
         self.aboutJMenuItem:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:aboutJMenuItemActionPerformed(evt)
+                ;(self.aboutJMenuItemActionPerformed and self or java_outer_self):aboutJMenuItemActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -559,7 +585,7 @@ java_overload(InputAutomationJFrame, "formWindowLostFocus", 1, function(java_a1)
 function InputAutomationJFrame:formWindowGainedFocus(evt)
         if self.stopOnFocusJCheckBoxMenuItem:isSelected() then
             self.logUtil:putF("Stopping", self, "focusGained")
-            if self.runnableInterface ~= nil then
+            if not rawequal(self.runnableInterface, nil) then
                 self.runnableInterface:setRunning(false)
             end
         end
@@ -580,14 +606,14 @@ java_overload(InputAutomationJFrame, "formFocusGained", 1, function(java_a1) ret
 function InputAutomationJFrame:inputAutomationModuleJListValueChanged(evt)
         local try_ok, try_error, try_value = pcall(function()
             local gameAutomationRobotModuleNameString = self.inputAutomationModuleJList:getSelectedValue()
-            if gameAutomationRobotModuleNameString ~= nil then
+            if not rawequal(gameAutomationRobotModuleNameString, nil) then
                 self.inputAutomationModuleInterface = self.inputAutomationModuleFactory:getInstance(gameAutomationRobotModuleNameString)
                 self:getAutomationModuleConfigurationJPanel():removeAll()
                 local layout = self:getAutomationModuleConfigurationJPanel():getLayout()
                 layout:setHorizontalGroup(layout:createParallelGroup(GroupLayout.Alignment.LEADING):addGap(0, 395, require("java.lang.Short").MAX_VALUE):addComponent(self.inputAutomationModuleInterface:getConfigurationJPanel(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 layout:setVerticalGroup(layout:createParallelGroup(GroupLayout.Alignment.LEADING):addGap(0, 256, require("java.lang.Short").MAX_VALUE):addComponent(self.inputAutomationModuleInterface:getConfigurationJPanel(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 self.gameRobotJTabbedPane:setEnabledAt(1, true)
-                self.logUtil:putF("Setting Module: " .. gameAutomationRobotModuleNameString .. " and Configuration JPanel", self, "gameAutomationRobotModuleJListValueChanged")
+                self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string("Setting Module: ") .. require("allbinary_java").to_string(gameAutomationRobotModuleNameString)) .. require("allbinary_java").to_string(" and Configuration JPanel"), self, "gameAutomationRobotModuleJListValueChanged")
             else
                 self.logUtil:putF("Module name was null", self, "gameAutomationRobotModuleJListValueChanged")
                 self.gameRobotJTabbedPane:setEnabledAt(1, false)
@@ -603,7 +629,7 @@ java_overload(InputAutomationJFrame, "inputAutomationModuleJListValueChanged", 1
 
 
 function InputAutomationJFrame:stopJMenuItemActionPerformed(evt)
-        if self.runnableInterface ~= nil then
+        if not rawequal(self.runnableInterface, nil) then
             self.runnableInterface:setRunning(false)
         else
             self.noModuleSelectedJDialog:setVisible(true)
@@ -616,9 +642,9 @@ java_overload(InputAutomationJFrame, "stopJMenuItemActionPerformed", 1, function
 function InputAutomationJFrame:startJMenuItemActionPerformed(evt)
         local try_ok, try_error, try_value = pcall(function()
             self.logUtil:putF("Starting", self, "startJMenuItemActionPerformed")
-            if self.inputAutomationModuleInterface ~= nil then
+            if not rawequal(self.inputAutomationModuleInterface, nil) then
                 self.runnableInterface = self.inputAutomationModuleInterface:getInstance()
-                if self.runnableInterface ~= nil then
+                if not rawequal(self.runnableInterface, nil) then
                     self.thread = require("java.lang.Thread").new(self.runnableInterface)
                     self.thread:setPriority(require("java.lang.Thread").MIN_PRIORITY + 1)
                     self.thread:start()
@@ -657,7 +683,7 @@ function InputAutomationJFrame.create(inputAutomationBundleActivatorListenerInte
         local appUrlGlobals = AppUrlGlobals.new()
         appUrlGlobals:setWebappPath("G:/mnt/bc/mydev/work_automation/automation/run/")
         URLGLOBALS.init(appUrlGlobals)
-        WebappClassLoaderInfo.setLoader(getmetatable(appUrlGlobals):getClassLoader())
+        WebappClassLoaderInfo.setLoader(require("java.lang.ClassLoader").getSystemClassLoader())
         EventQueue.invokeLater((function()
             local o = ARunnable.new and ARunnable.new() or setmetatable({}, {__index = ARunnable})
             
@@ -669,7 +695,7 @@ function InputAutomationJFrame.create(inputAutomationBundleActivatorListenerInte
                     logUtil:putF("Running", self, commonStrings.RUN)
                     InputAutomationJFrame.INPUTAUTOMATION_JFRAME = InputAutomationJFrame.new()
                     InputRobotFactory.getInstance():addListener(InputAutomationJFrame.getInstance())
-                    if inputAutomationBundleActivatorListenerInterface ~= nil then
+                    if not rawequal(inputAutomationBundleActivatorListenerInterface, nil) then
                         inputAutomationBundleActivatorListenerInterface:registerAsService()
                         inputAutomationBundleActivatorListenerInterface:useServices()
                     end
@@ -746,6 +772,8 @@ end
 function InputAutomationJFrame:onAdd(...)
     local count = select("#", ...)
     if count == 1 then return self:onAdd_j1(...) end
+    local parent = getmetatable(InputAutomationJFrame).__index
+    if parent.onAdd then return parent.onAdd(self, ...) end
     error("No method onAdd takes " .. count .. " arguments")
 end
 InputAutomationJFrame.onAdd__jdispatcher = InputAutomationJFrame.onAdd
@@ -761,10 +789,10 @@ function InputAutomationJFrame:onRemove_j1_2(inputAutomationConfigurationChangeE
             self.logUtil:putF(self.commonStrings.START, self, "onRemove")
             local inputAutomationConfiguration = InputAutomationConfigurationFactory.getInstance().inputAutomationConfiguration
             local inputAutomationModuleConfigurationList = inputAutomationConfiguration:getInputAutomationModuleConfigurationList()
-            if inputAutomationModuleConfigurationList == nil then
+            if rawequal(inputAutomationModuleConfigurationList, nil) then
                 local logUtil = LogUtil.getInstance()
                 local commonStrings = CommonStrings.getInstance()
-                logUtil:putF("inputAutomationModuleConfigurationList: " .. tostring(inputAutomationModuleConfigurationList), self, commonStrings.INIT)
+                logUtil:putF(require("allbinary_java").to_string("inputAutomationModuleConfigurationList: ") .. require("allbinary_java").to_string(inputAutomationModuleConfigurationList), self, commonStrings.INIT)
                 error(require("java.lang.Exception").new(), 0)
             end
             local inputAutomationModuleConfigurations = InputAutomationModuleConfigurations.new(inputAutomationConfiguration:getInputAutomationModuleConfigurationList())
@@ -780,6 +808,8 @@ end
 function InputAutomationJFrame:onRemove(...)
     local count = select("#", ...)
     if count == 1 then return self:onRemove_j1(...) end
+    local parent = getmetatable(InputAutomationJFrame).__index
+    if parent.onRemove then return parent.onRemove(self, ...) end
     error("No method onRemove takes " .. count .. " arguments")
 end
 InputAutomationJFrame.onRemove__jdispatcher = InputAutomationJFrame.onRemove

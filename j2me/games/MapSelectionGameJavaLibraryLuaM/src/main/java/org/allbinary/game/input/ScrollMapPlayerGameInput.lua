@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
 local InputFeatureFactory = java_lazy("org.allbinary.game.configuration.feature.InputFeatureFactory")
@@ -241,13 +241,13 @@ java_overload(ScrollMapPlayerGameInput, "scrollMiddleX", 0)
 function ScrollMapPlayerGameInput:scrollY(anchor)
         local terrainTiledLayer = self.geographicMapInterface:getAllBinaryTiledLayer()
         local displayInfo = DisplayInfoSingleton.getInstance()
-        if anchor == Graphics.TOP then
+        if rawequal(anchor, Graphics.TOP) then
             self.logUtil:putF("Top", self, "scrollY")
-        elseif anchor == Graphics.BOTTOM then
+        elseif rawequal(anchor, Graphics.BOTTOM) then
             self.logUtil:putF("Bottom", self, "scrollY")
             local diffY = (terrainTiledLayer:getHeight() - displayInfo:getLastHeight())
             self:move(0, diffY)
-        elseif anchor == Graphics.VCENTER then
+        elseif rawequal(anchor, Graphics.VCENTER) then
             self.logUtil:putF("Center", self, "scrollY")
             local diffY = (terrainTiledLayer:getHeight() - displayInfo:getLastHeight()) / 2
             self:move(0, diffY)

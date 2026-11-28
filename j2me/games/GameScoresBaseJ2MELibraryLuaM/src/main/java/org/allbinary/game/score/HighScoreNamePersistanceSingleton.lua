@@ -32,9 +32,9 @@ end
 local ByteArrayOutputStream = java_lazy("java.io.ByteArrayOutputStream")
 -- local DataInputStream = require("java.io.DataInputStream")
 -- local DataOutputStream = require("java.io.DataOutputStream")
--- local RecordEnumeration = require("javax.microedition.rms.RecordEnumeration")
--- local RecordStore = require("javax.microedition.rms.RecordStore")
--- local RecordStoreException = require("javax.microedition.rms.RecordStoreException")
+local RecordEnumeration = java_lazy("javax.microedition.rms.RecordEnumeration")
+local RecordStore = java_lazy("javax.microedition.rms.RecordStore")
+local RecordStoreException = java_lazy("javax.microedition.rms.RecordStoreException")
 local TsUtil = java_lazy("org.allbinary.TsUtil")
 local GameInfo = java_lazy("org.allbinary.game.GameInfo")
 local NullRecordComparator = java_lazy("org.allbinary.game.configuration.persistance.NullRecordComparator")
@@ -134,7 +134,7 @@ function HighScoreNamePersistanceSingleton:delete(abeClientInformation, gameInfo
             error(e, 0)
         end
         do -- finally
-            if recordStore ~= nil then
+            if not rawequal(recordStore, nil) then
                 PreLogUtil.put("Closing RecordStore", self, self.commonStrings.delete)
                 recordStore:closeRecordStore()
             end
@@ -150,7 +150,7 @@ end
 function HighScoreNamePersistanceSingleton:load(abeClientInformation, gameInfo)
         local recordStore = NullRecordStore.NULL_RECORD_STORE
         local try_ok, try_error, try_value = pcall(function()
-            if self.name_f == StringUtil.getInstance().EMPTY_STRING then
+            if rawequal(self.name_f, StringUtil.getInstance().EMPTY_STRING) then
                 local LOADING_ID = "Loading id: "
                 recordStore = RecordStore.openRecordStore(self:getRecordId(abeClientInformation), true)
                 local recordEnum = recordStore:enumerateRecords(NullRecordFilter.NULL_RECORD_FILTER, NullRecordComparator.NULL_RECORD_COMPARATOR, true)
@@ -179,7 +179,7 @@ function HighScoreNamePersistanceSingleton:load(abeClientInformation, gameInfo)
         end
         do -- finally
             local try_ok, try_error, try_value = pcall(function()
-                if recordStore ~= nil then
+                if not rawequal(recordStore, nil) then
                     PreLogUtil.put("Closing RecordStore", self, self.commonStrings.LOAD)
                     recordStore:closeRecordStore()
                 end
@@ -213,7 +213,7 @@ function HighScoreNamePersistanceSingleton:save(abeClientInformation, gameInfo, 
         end
         do -- finally
             local try_ok, try_error, try_value = pcall(function()
-                if recordStore ~= nil then
+                if not rawequal(recordStore, nil) then
                     PreLogUtil.put("Closing RecordStore", self, self.commonStrings.SAVE)
                     recordStore:closeRecordStore()
                 end

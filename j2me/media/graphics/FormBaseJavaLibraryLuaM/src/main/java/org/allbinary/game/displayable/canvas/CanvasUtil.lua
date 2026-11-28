@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local CommonPhoneStrings = java_lazy("org.allbinary.string.CommonPhoneStrings")
 
 local function java_idiv(a, b)
@@ -67,15 +67,15 @@ end
 
 function CanvasUtil.getKeyName(key)
         local commonPhoneStrings = CommonPhoneStrings.getInstance()
-        if key == Canvas.UP then
+        if rawequal(key, Canvas.UP) then
             return commonPhoneStrings.UP
-        elseif key == Canvas.DOWN then
+        elseif rawequal(key, Canvas.DOWN) then
             return commonPhoneStrings.DOWN
-        elseif key == Canvas.RIGHT then
+        elseif rawequal(key, Canvas.RIGHT) then
             return commonPhoneStrings.RIGHT
-        elseif key == Canvas.LEFT then
+        elseif rawequal(key, Canvas.LEFT) then
             return commonPhoneStrings.LEFT
-        elseif key == Canvas.FIRE then
+        elseif rawequal(key, Canvas.FIRE) then
             return commonPhoneStrings.FIRE
         end
         return "UNKNOWN KEY"

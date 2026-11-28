@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Displayable = require("javax.microedition.lcdui.Displayable")
+local Displayable = java_lazy("javax.microedition.lcdui.Displayable")
 local J2MEUtil = java_lazy("org.allbinary.J2MEUtil")
 local Features = java_lazy("org.allbinary.game.configuration.feature.Features")
 local AllBinaryGameCanvas = java_lazy("org.allbinary.game.displayable.canvas.AllBinaryGameCanvas")
@@ -157,7 +157,7 @@ end
 function CurrentDisplayableFactory:setRunnable(runnable)
         PreLogUtil.put(tostring(StringMaker.new():append(self.RUNNABLE):append(self.stringUtil:toString(runnable))), self, self.SET_RUNNABLE)
         self.runnable = runnable
-        if self.usedRunnable ~= self.runnable then
+        if not rawequal(self.usedRunnable, self.runnable) then
             self:update()
         else
             PreLogUtil.put(tostring(StringMaker.new():append(self.RUNNABLE_WAS_ALREADY_IN_USE):append(self.stringUtil:toString(runnable))), self, self.SET_RUNNABLE)
@@ -177,7 +177,7 @@ function CurrentDisplayableFactory:update()
             local features = Features.getInstance()
             local stringMaker = StringMaker.new()
             stringMaker:append(self.stringUtil:toString(self.openGlReadydisplayable))
-            if SWTUtil.isSWT and not features:isDefault(OpenGLFeatureFactory.getInstance().OPENGL) then
+            if SWTUtil.isSWT and not (features:isDefault(OpenGLFeatureFactory.getInstance().OPENGL)) then
                 PreLogUtil.put(tostring(stringMaker:append(commonSeps.SPACE):append(SWTUtil.SWT):append(commonSeps.SPACE):append(self.RUNNABLE):append(self.stringUtil:toString(NullRunnable.getInstance()))), self, self.commonStrings.UPDATE)
                 self:setUsedRunnable(NullWaitGameRunnable.getInstance())
             elseif J2MEUtil.isHTML() then

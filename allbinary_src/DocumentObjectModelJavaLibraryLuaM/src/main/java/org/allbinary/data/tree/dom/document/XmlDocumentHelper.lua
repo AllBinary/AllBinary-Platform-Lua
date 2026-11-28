@@ -29,7 +29,7 @@ local function java_real(class)
 end
 
 local ByteArrayOutputStream = java_lazy("java.io.ByteArrayOutputStream")
--- local StringReader = require("java.io.StringReader")
+local StringReader = java_lazy("java.io.StringReader")
 -- local StringWriter = require("java.io.StringWriter")
 -- local Writer = require("java.io.Writer")
 -- local DocumentBuilderFactory = require("javax.xml.parsers.DocumentBuilderFactory")

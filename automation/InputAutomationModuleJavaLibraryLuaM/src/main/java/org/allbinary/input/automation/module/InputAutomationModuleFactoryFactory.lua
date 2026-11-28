@@ -87,7 +87,7 @@ function InputAutomationModuleFactoryFactory._jinit(self, inputAutomationModuleC
             self:add(inputAutomationModuleConfiguration)
         end
         self.defaultListModelHelper:initDefaultModelList()
-        self.logUtil:putF("Loaded " .. tostring(self.hashMap:size()) .. "/" .. tostring(self.defaultListModelHelper:getListModel():getSize()) .. " Input Automation Modules", self, "Contructor")
+        self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Loaded ") .. require("allbinary_java").to_string(self.hashMap:size())) .. require("allbinary_java").to_string("/")) .. require("allbinary_java").to_string(self.defaultListModelHelper:getListModel():getSize())) .. require("allbinary_java").to_string(" Input Automation Modules"), self, "Contructor")
     return self
 end
 
@@ -103,7 +103,7 @@ function InputAutomationModuleFactoryFactory:add(inputAutomationModuleConfigurat
         self.hashMap:put(inputAutomationModuleConfiguration:getName(), inputAutomationModuleInterface)
         self.defaultListModelHelper:add(inputAutomationModuleConfiguration:getName())
         local helpSet = inputAutomationModuleInterface:getHelpSet()
-        if not JavaHelpSetNotifier.isNotified(helpSet) then
+        if not (JavaHelpSetNotifier.isNotified(helpSet)) then
             local helpSetEvent = HelpSetEvent.new(self, helpSet, HelpSetEvent.HELPSET_ADDED)
             self.helpSetListenerInterface:helpSetAdded(helpSetEvent)
         end
@@ -117,10 +117,10 @@ end
 
 function InputAutomationModuleFactoryFactory:getInstance(moduleName)
         local commonStrings = CommonStrings.getInstance()
-        self.logUtil:putF("Getting Module: " .. moduleName, self, commonStrings.GET_INSTANCE)
+        self.logUtil:putF(require("allbinary_java").to_string("Getting Module: ") .. require("allbinary_java").to_string(moduleName), self, commonStrings.GET_INSTANCE)
         local inputAutomationModuleFactoryInterface = self.hashMap:get(moduleName)
-        if inputAutomationModuleFactoryInterface == nil then
-            self.logUtil:putF("Module: " .. moduleName .. " was null", self, commonStrings.GET_INSTANCE)
+        if rawequal(inputAutomationModuleFactoryInterface, nil) then
+            self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string("Module: ") .. require("allbinary_java").to_string(moduleName)) .. require("allbinary_java").to_string(" was null"), self, commonStrings.GET_INSTANCE)
         end
         return inputAutomationModuleFactoryInterface
 end

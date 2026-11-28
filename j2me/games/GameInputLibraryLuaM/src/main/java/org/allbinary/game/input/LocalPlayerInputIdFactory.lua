@@ -108,12 +108,12 @@ function LocalPlayerInputIdFactory:getPlayerForDevice(deviceId)
         local index = 0
         if deviceId < self.MAX_FAST_DEVICEID then
             local playerInputId = self.deviceIdToplayerId[deviceId + 1]
-            if playerInputId ~= -1 then
+            if not rawequal(playerInputId, -1) then
                 return playerInputId
             end
         else
             for index = self.totalDevicesMapped - 1, 0, -1 do
-                if self.playerIdToDeviceId[index + 1] == deviceId then
+                if rawequal(self.playerIdToDeviceId[index + 1], deviceId) then
                     return index
                 end
             end
@@ -135,7 +135,7 @@ end
 function LocalPlayerInputIdFactory:getTotalDevicesInPlay()
         local total = 0
         for index = self.totalDevicesMapped - 1, 0, -1 do
-            if self.playersInPlay[index + 1] == true then
+            if rawequal(self.playersInPlay[index + 1], true) then
                 total = total + 1
             end
         end

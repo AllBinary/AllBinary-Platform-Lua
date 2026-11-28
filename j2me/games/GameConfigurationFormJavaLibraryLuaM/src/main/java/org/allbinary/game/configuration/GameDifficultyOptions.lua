@@ -28,10 +28,10 @@ local function java_real(class)
     return class
 end
 
--- local Choice = require("javax.microedition.lcdui.Choice")
--- local ChoiceGroup = require("javax.microedition.lcdui.ChoiceGroup")
--- local CommandListener = require("javax.microedition.lcdui.CommandListener")
--- local NullImage = require("javax.microedition.lcdui.NullImage")
+local Choice = java_lazy("javax.microedition.lcdui.Choice")
+local ChoiceGroup = java_lazy("javax.microedition.lcdui.ChoiceGroup")
+local CommandListener = java_lazy("javax.microedition.lcdui.CommandListener")
+local NullImage = java_lazy("javax.microedition.lcdui.NullImage")
 local MIDPUtil = java_lazy("org.allbinary.MIDPUtil")
 local GameCommandsFactory = java_lazy("org.allbinary.game.commands.GameCommandsFactory")
 local GameDifficultyFactory = java_lazy("org.allbinary.game.configuration.persistance.GameDifficultyFactory")

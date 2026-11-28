@@ -138,7 +138,7 @@ function PaymentProcessorInterfaceFactory:getInstance(transformInfoInterface)
         local try_ok, try_error, try_value = pcall(function()
             local paymentTransactionInterface = PaymentTransactionInterfaceRequestFactory.getInstance():getInstance(transformInfoInterface)
             local gatewayName = paymentTransactionInterface:getOrderHistory():getPaymentMethod()
-            if not StringValidationUtil.getInstance():isEmpty(gatewayName) then
+            if not (StringValidationUtil.getInstance():isEmpty(gatewayName)) then
                 local paymentType = PaymentTypeUtil.getInstance():get(gatewayName)
                 local paymentProcessorInterfaceFactoryInterface = paymentType:getPaymentProcessorInterfaceFactoryInterface()
                 do return "__jreturn", paymentProcessorInterfaceFactoryInterface:getInstance(transformInfoInterface, paymentTransactionInterface) end

@@ -30,7 +30,7 @@ end
 
 local ByteArrayOutputStream = java_lazy("java.io.ByteArrayOutputStream")
 -- local Closeable = require("java.io.Closeable")
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 -- local OutputStream = require("java.io.OutputStream")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")
@@ -84,7 +84,7 @@ function StreamUtil:get(inputStream, outputStream, buffer)
         local len = 0
         while true do
             len = inputStream:read(buffer, 0, (buffer.n or #buffer))
-            if len ~= -1 then
+            if not rawequal(len, -1) then
             else
                 break
             end
@@ -115,7 +115,7 @@ end
 
 function StreamUtil:close(closeable)
         local try_ok, try_error, try_value = pcall(function()
-            if closeable ~= nil then
+            if not rawequal(closeable, nil) then
                 closeable:close()
             end
             do return "__jreturn", true end

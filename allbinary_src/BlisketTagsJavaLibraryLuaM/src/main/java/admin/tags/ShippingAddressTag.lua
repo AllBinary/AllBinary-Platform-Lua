@@ -220,11 +220,11 @@ java_overload(ShippingAddressTag, "setToBillingAddress", 0)
 function ShippingAddressTag:doStartTag()
         local try_ok, try_error, try_value = pcall(function()
             if self:isEnabled() then
-                if self:getCommand() ~= nil then
-                    if self:getCommand():compareTo(ShippingAddressData.SELECT) == 0 then
+                if not rawequal(self:getCommand(), nil) then
+                    if rawequal(self:getCommand():compareTo(ShippingAddressData.SELECT), 0) then
                         self:set()
                         do return "__jreturn", self.EVAL_BODY_INCLUDE end
-                    elseif self:getCommand():compareTo(ShippingAddressData.SETTOBILLINGADDRESS) == 0 then
+                    elseif rawequal(self:getCommand():compareTo(ShippingAddressData.SETTOBILLINGADDRESS), 0) then
                         self:setToBillingAddress()
                     else
                         do return "__jreturn", java_super(TableTag, "doStartTag", 0)(self) end

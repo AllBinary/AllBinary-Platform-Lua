@@ -174,11 +174,11 @@ function SelectionTool:makeSelection()
         local size = (graphicItemArray.n or #graphicItemArray)
         for index = 0, size - 1 do
             local item = hashMap:get(graphicItemArray[index + 1])
-            if item:getName() == LinesGraphicItem.getStaticName() then
+            if rawequal(item:getName(), LinesGraphicItem.getStaticName()) then
                 if RectangleCollisionPointUtil.allPointsInsideCell(xRect, yRect, xRect2, yRect2, item:getPointsInterface():getPoints(), self.canvasJPanel:getXPixelsPerWorkAreaPixel(), self.canvasJPanel:getYPixelsPerWorkAreaPixel()) then
                     item:setColor(Color.YELLOW)
                     item:activate()
-                elseif not self.controlIdDown then
+                elseif not (self.controlIdDown) then
                     item:setColor(Color.WHITE)
                     item:deactivate()
                 end
@@ -279,14 +279,14 @@ end
 
 
 function SelectionTool:keyPressed(keyEvent)
-        if keyEvent:getKeyCode() == keyEvent.VK_CONTROL then
+        if rawequal(keyEvent:getKeyCode(), keyEvent.VK_CONTROL) then
             self.controlIdDown = true
         end
 end
 
 
 function SelectionTool:keyReleased(keyEvent)
-        if keyEvent:getKeyCode() == keyEvent.VK_CONTROL then
+        if rawequal(keyEvent:getKeyCode(), keyEvent.VK_CONTROL) then
             self.controlIdDown = false
         end
 end

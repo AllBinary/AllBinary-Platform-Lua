@@ -30,7 +30,7 @@ end
 
 -- local DataOutputStream = require("java.io.DataOutputStream")
 local File = java_lazy("java.io.File")
--- local FileInputStream = require("java.io.FileInputStream")
+local FileInputStream = java_lazy("java.io.FileInputStream")
 -- local FileOutputStream = require("java.io.FileOutputStream")
 local HashMap = java_lazy("java.util.HashMap")
 -- local Set = require("java.util.Set")
@@ -205,14 +205,14 @@ end
 
 -- throws Exception
 function GenericProfileActions:save()
-        local idFile = FileOutputStream.new(tostring(GenericProfileActions.DEFAULT_PROFILE_ACTIONS_PATH) .. self:getName() .. tostring(self.commonFileStrings._XML))
+        local idFile = FileOutputStream.new(require("allbinary_java").to_string(require("allbinary_java").to_string(GenericProfileActions.DEFAULT_PROFILE_ACTIONS_PATH) .. require("allbinary_java").to_string(self:getName())) .. require("allbinary_java").to_string(self.commonFileStrings._XML))
         local idOutData = DataOutputStream.new(idFile)
         idOutData:writeBytes(XmlDocumentHelper.toString(self:toXmlDoc()))
 end
 
 
 function GenericProfileActions:getFile(name)
-        local fileName = GenericProfileActions.DEFAULT_PROFILE_ACTIONS_PATH .. name .. tostring(self.commonFileStrings._XML)
+        local fileName = require("allbinary_java").to_string(require("allbinary_java").to_string(GenericProfileActions.DEFAULT_PROFILE_ACTIONS_PATH) .. require("allbinary_java").to_string(name)) .. require("allbinary_java").to_string(self.commonFileStrings._XML)
         return File.new(fileName)
 end
 
@@ -224,7 +224,7 @@ function GenericProfileActions:load()
             local idFile = FileInputStream.new(file)
             self:fileInit(idFile)
         else
-            self.logUtil:putF("No Profile: " .. tostring(file:getAbsolutePath()), self, "Contructor")
+            self.logUtil:putF(require("allbinary_java").to_string("No Profile: ") .. require("allbinary_java").to_string(file:getAbsolutePath()), self, "Contructor")
         end
 end
 
@@ -237,17 +237,17 @@ function GenericProfileActions:fileInit(fileInputStream)
         local endIndex = data:lastIndexOf(">")
         local document = DomDocumentHelper.create(string.sub(data, (0) + 1, endIndex + 1))
         local nameNodeList = document:getElementsByTagName(GenericProfileActionsData.NAME)
-        self.logUtil:putF("Number Of Profiles Specified: " .. tostring(nameNodeList:getLength()), self, "Contructor")
+        self.logUtil:putF(require("allbinary_java").to_string("Number Of Profiles Specified: ") .. require("allbinary_java").to_string(nameNodeList:getLength()), self, "Contructor")
         for index = 0, nameNodeList:getLength() - 1 do
             local node = nameNodeList:item(index)
             local nodeList = node:getChildNodes()
-            if nodeList ~= nil then
+            if not rawequal(nodeList, nil) then
                 self:initActions(nodeList)
             else
-                error(require("java.lang.Exception").new(tostring(GenericProfileActionData.NAME) .. " Name Node Node Children"), 0)
+                error(require("java.lang.Exception").new(require("allbinary_java").to_string(GenericProfileActionData.NAME) .. require("allbinary_java").to_string(" Name Node Node Children")), 0)
             end
         end
-        self.logUtil:putF("Loaded: " .. tostring(self:getHashMap():size()) .. " Configuration Profile Action(s)", self, "Contructor")
+        self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string("Loaded: ") .. require("allbinary_java").to_string(self:getHashMap():size())) .. require("allbinary_java").to_string(" Configuration Profile Action(s)"), self, "Contructor")
         self:getDefaultListModelHelper():initDefaultModelList()
 end
 
@@ -256,12 +256,12 @@ end
 function GenericProfileActions:initActions(nodeList)
         for index = 0, nodeList:getLength() - 1 do
             local actionNode = nodeList:item(index)
-            if actionNode ~= nil then
+            if not rawequal(actionNode, nil) then
                 local genericConfigurationProfileAction = GenericProfileAction.new(self:getGenericProfileActionsJPanel():getGenericProfileActionJPanel(), actionNode)
                 self:getHashMap():put(genericConfigurationProfileAction:getName(), genericConfigurationProfileAction)
                 self:getDefaultListModelHelper():add(genericConfigurationProfileAction:getName())
             else
-                error(require("java.lang.Exception").new(tostring(GenericProfileActionData.NAME) .. " Node Null"), 0)
+                error(require("java.lang.Exception").new(require("allbinary_java").to_string(GenericProfileActionData.NAME) .. require("allbinary_java").to_string(" Node Null")), 0)
             end
         end
 end
@@ -298,7 +298,7 @@ end
 
 function GenericProfileActions:toHashMap()
         local hashMap = StdUtil.getInstance():createHashMap()
-        self.logUtil:putF("HashMap: " .. tostring(hashMap), self, "toHashMap()")
+        self.logUtil:putF(require("allbinary_java").to_string("HashMap: ") .. require("allbinary_java").to_string(tostring(hashMap)), self, "toHashMap()")
         return hashMap
 end
 
@@ -356,7 +356,7 @@ function GenericProfileActions:setName(name)
         self.name_f = name
 end
 
-GenericProfileActions.DEFAULT_PROFILE_ACTIONS_PATH = tostring(GenericProfiles.DEFAULT_PROFILES_PATH) .. "actions/"
+GenericProfileActions.DEFAULT_PROFILE_ACTIONS_PATH = require("allbinary_java").to_string(GenericProfiles.DEFAULT_PROFILES_PATH) .. require("allbinary_java").to_string("actions/")
 
 return GenericProfileActions
 

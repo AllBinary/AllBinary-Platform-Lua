@@ -179,13 +179,13 @@ end
 
 function AddValidationUserView:isValid()
         local try_ok, try_error, try_value = pcall(function()
-            if UserEntityFactory.getInstance():getUser(self.user:getUserName()) ~= nil then
+            if not rawequal(UserEntityFactory.getInstance():getUser(self.user:getUserName()), nil) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     self.logUtil:putF("User already in existance.", self, self.commonStrings.IS_VALID)
                 end
                 do return "__jreturn", false end
             end
-            if self.user:isValid() == false then
+            if rawequal(self.user:isValid(), false) then
                 do return "__jreturn", false end
             end
             do return "__jreturn", true end
@@ -206,13 +206,13 @@ java_overload(AddValidationUserView, "isValid", 0)
 function AddValidationUserView:validationInfo()
         local try_ok, try_error, try_value = pcall(function()
             local stringBuffer = StringMaker.new()
-            if UserEntityFactory.getInstance():getUser(self.user:getUserName()) ~= nil then
+            if not rawequal(UserEntityFactory.getInstance():getUser(self.user:getUserName()), nil) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     self.logUtil:putF("User already exists", self, "validationInfo()")
                 end
                 stringBuffer:append("The User Name you selected is already in use.<br/>  Please select another User Name.<br />")
             end
-            if self.user:isValid() == false then
+            if rawequal(self.user:isValid(), false) then
                 stringBuffer:append(self.user:validationInfo())
             end
             do return "__jreturn", tostring(stringBuffer) end

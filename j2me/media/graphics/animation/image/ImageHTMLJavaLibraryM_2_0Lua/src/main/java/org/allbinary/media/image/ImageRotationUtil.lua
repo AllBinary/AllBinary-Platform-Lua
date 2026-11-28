@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local PlaynImmutableImage = java_lazy("org.microemu.device.playn.PlaynImmutableImage")
 local PlaynMutableImage = java_lazy("org.microemu.device.playn.PlaynMutableImage")
 local Canvas = java_lazy("playn.core.Canvas")
@@ -151,7 +151,7 @@ end
 function ImageRotationUtil:createRotatedImage(originalImage, rotationInDegrees)
         local image = ImageCreationUtil.getInstance():createImageWH(originalImage:getWidth(), originalImage:getHeight())
         local rotatedImage = self:rotateImage(originalImage, image, rotationInDegrees)
-        if rotatedImage == nil then
+        if rawequal(rotatedImage, nil) then
             error(require("java.lang.Exception").new("Not Mutable"), 0)
         end
         return rotatedImage

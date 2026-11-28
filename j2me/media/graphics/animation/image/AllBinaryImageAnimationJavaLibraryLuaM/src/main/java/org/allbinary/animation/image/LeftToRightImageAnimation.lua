@@ -28,9 +28,9 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
--- local Image = require("javax.microedition.lcdui.Image")
--- local Sprite = require("javax.microedition.lcdui.game.Sprite")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local Sprite = java_lazy("javax.microedition.lcdui.game.Sprite")
 local AnimationBehavior = java_lazy("org.allbinary.animation.AnimationBehavior")
 local Anchor = java_lazy("org.allbinary.graphics.Anchor")
 local ImageSegmentAnimation = require("org.allbinary.animation.image.ImageSegmentAnimation")
@@ -148,7 +148,7 @@ LeftToRightImageAnimation.javaClassName = "org.allbinary.animation.image.LeftToR
 setmetatable(LeftToRightImageAnimation, {__index = ImageSegmentAnimation})
 
 function LeftToRightImageAnimation:_init_fields()
-    if self.currentWidth == nil then self.currentWidth = nil end
+    if self.currentWidth == nil then self.currentWidth = 0 end
     self.anchor = Anchor.TOP_LEFT
 end
 
@@ -158,7 +158,7 @@ function LeftToRightImageAnimation._jinit(self, image, sequenceArray, animationB
     LeftToRightImageAnimation._init_fields(self)
         -- super(...) made self above
         self.currentWidth = 0
-        if self:getSequence()[1] == -1 then
+        if rawequal(self:getSequence()[1], -1) then
             self:setFrame(self:getSize() - 1)
         end
     return self
@@ -172,7 +172,7 @@ end
 
 
 function LeftToRightImageAnimation:nextFrame()
-        if self:getSequence()[1] == -1 then
+        if rawequal(self:getSequence()[1], -1) then
             java_super(ImageSegmentAnimation, "previousFrame", 0)(self)
         else
             java_super(ImageSegmentAnimation, "nextFrame", 0)(self)
@@ -183,7 +183,7 @@ java_overload(LeftToRightImageAnimation, "nextFrame", 0)
 
 
 function LeftToRightImageAnimation:previousFrame()
-        if self:getSequence()[1] == -1 then
+        if rawequal(self:getSequence()[1], -1) then
             java_super(ImageSegmentAnimation, "nextFrame", 0)(self)
         else
             java_super(ImageSegmentAnimation, "previousFrame", 0)(self)

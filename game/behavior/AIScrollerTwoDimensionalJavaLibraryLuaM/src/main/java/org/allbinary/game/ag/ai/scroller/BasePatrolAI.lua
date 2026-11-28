@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
 local BasicAI = require("org.allbinary.game.ai.BasicAI")
 local GameInput = java_lazy("org.allbinary.game.input.GameInput")
 local BasicVelocityProperties = java_lazy("org.allbinary.game.physics.velocity.BasicVelocityProperties")
@@ -136,7 +136,7 @@ setmetatable(BasePatrolAI, {__index = BasicAI})
 
 function BasePatrolAI:_init_fields()
     if self.maxDistance == nil then self.maxDistance = nil end
-    if self.currentDistance == nil then self.currentDistance = nil end
+    if self.currentDistance == nil then self.currentDistance = 0 end
     if self.xTotalDistance == nil then self.xTotalDistance = 0 end
     self.lastKeyDirection = Canvas.RIGHT
     self.keyDirection = Canvas.RIGHT
@@ -185,11 +185,11 @@ java_overload(BasePatrolAI, "changeDirectionIfReachedPacingAreaMax", 0)
 
 
 function BasePatrolAI:nextDirection()
-        if self.lastKeyDirection == Canvas.LEFT then
+        if rawequal(self.lastKeyDirection, Canvas.LEFT) then
             self.keyDirection = Canvas.RIGHT
             self.lastKeyDirection = self.keyDirection
             self.xTotalDistance = 0
-        elseif self.lastKeyDirection == Canvas.RIGHT then
+        elseif rawequal(self.lastKeyDirection, Canvas.RIGHT) then
             self.keyDirection = Canvas.LEFT
             self.lastKeyDirection = self.keyDirection
             self.xTotalDistance = 0

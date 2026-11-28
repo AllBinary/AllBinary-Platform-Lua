@@ -173,7 +173,7 @@ function GameNotificationEventHandler:removeAllListeners()
             eventListenerInterface = list.objectArray[1]
         end
         java_super(BasicEventHandler, "removeAllListeners", 0)(self)
-        if eventListenerInterface ~= NullEventListener.NULL_EVENT_LISTENER then
+        if not rawequal(eventListenerInterface, NullEventListener.NULL_EVENT_LISTENER) then
             self:addListenerInterface(eventListenerInterface)
         end
 end
@@ -187,7 +187,7 @@ end
 
 -- throws Exception
 function GameNotificationEventHandler:process(eventObject, eventListenerInterface)
-        if not self.enabled then
+        if not (self.enabled) then
             return
         end
         local gameNotificationListenerInterface = eventListenerInterface

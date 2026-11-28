@@ -162,12 +162,12 @@ function GameKeyFromMotionGestureEventListener:onCompleteMotionGestureInputEvent
         local try_ok, try_error, try_value = pcall(function()
             local gameKeyCompleteMotionGestureInputEvent = completeMotionGestureInputEvent
             local gameKeyEvent = gameKeyCompleteMotionGestureInputEvent:getGameKeyEvent()
-            if gameKeyEvent ~= self.previousGameKeyEvent then
-                if self.previousGameKeyEvent ~= GameKeyEvent.NONE then
+            if not rawequal(gameKeyEvent, self.previousGameKeyEvent) then
+                if not rawequal(self.previousGameKeyEvent, GameKeyEvent.NONE) then
                     UpGameKeyEventHandler.getInstance():fireEvent(self.previousGameKeyEvent)
                 end
                 self.previousGameKeyEvent = gameKeyEvent
-                if gameKeyEvent ~= nil and gameKeyEvent ~= GameKeyEvent.NONE then
+                if not rawequal(gameKeyEvent, nil) and not rawequal(gameKeyEvent, GameKeyEvent.NONE) then
                     DownGameKeyEventHandler.getInstance():fireEvent(gameKeyEvent)
                 end
             end

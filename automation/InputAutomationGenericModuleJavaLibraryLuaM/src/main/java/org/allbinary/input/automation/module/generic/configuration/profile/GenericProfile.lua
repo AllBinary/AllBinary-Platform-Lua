@@ -131,12 +131,12 @@ function GenericProfile._new1_1(self, node)
         self:setName(DomNodeHelper.getTextNodeValue(node))
         self.vector = BasicArrayListD.new()
         local nodeList = node:getChildNodes()
-        self.logUtil:putF("Name: " .. self:getName() .. " Child Nodes: " .. tostring(nodeList:getLength()), self, "Contructor")
+        self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Name: ") .. require("allbinary_java").to_string(self:getName())) .. require("allbinary_java").to_string(" Child Nodes: ")) .. require("allbinary_java").to_string(nodeList:getLength()), self, "Contructor")
         for index = 0, nodeList:getLength() - 1 do
             local profileNode = nodeList:item(index)
-            if profileNode:getNodeName():compareTo(GenericProfileDataWorkerData.NAME) == 0 then
+            if rawequal(profileNode:getNodeName():compareTo(GenericProfileDataWorkerData.NAME), 0) then
                 local genericProfileDataWorkerType = GenericProfileDataWorkerType.getInstance(profileNode)
-                self.logUtil:putF("Adding GenericProfileDataWorkerType: " .. tostring(genericProfileDataWorkerType), self, "Contructor")
+                self.logUtil:putF(require("allbinary_java").to_string("Adding GenericProfileDataWorkerType: ") .. require("allbinary_java").to_string(tostring(genericProfileDataWorkerType)), self, "Contructor")
                 self.vector:add(genericProfileDataWorkerType)
             end
         end
@@ -158,7 +158,7 @@ end
 
 
 function GenericProfile:add(genericProfileDataWorkerType)
-        if not self.vector:contains(genericProfileDataWorkerType) then
+        if not (self.vector:contains(genericProfileDataWorkerType)) then
             self.vector:add(genericProfileDataWorkerType)
         end
 end

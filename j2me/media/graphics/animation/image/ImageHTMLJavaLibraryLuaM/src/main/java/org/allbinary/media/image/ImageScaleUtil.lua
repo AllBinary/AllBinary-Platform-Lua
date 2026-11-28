@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local Anchor = java_lazy("org.allbinary.graphics.Anchor")
 local ImageCache = java_lazy("org.allbinary.image.ImageCache")
 local PreLogUtil = java_lazy("org.allbinary.logic.communication.log.PreLogUtil")

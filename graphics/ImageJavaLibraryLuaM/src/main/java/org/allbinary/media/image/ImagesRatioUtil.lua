@@ -136,7 +136,7 @@ function ImagesRatioUtil:isEqual(bufferedImageArray, totalImages)
         end
         local ratio = ((bufferedImageArray[1]:getWidth() + 0.0) / bufferedImageArray[1]:getHeight())
         for index = 1, end_ - 1 do
-            if ratio ~= ((bufferedImageArray[index + 1]:getWidth() + 0.0) / bufferedImageArray[index + 1]:getHeight()) then
+            if not rawequal(ratio, ((bufferedImageArray[index + 1]:getWidth() + 0.0) / bufferedImageArray[index + 1]:getHeight())) then
                 return false
             end
         end
@@ -171,7 +171,7 @@ function ImagesRatioUtil:fudge_j2(bufferedImage, ratio)
             point.y = (newHeight - bufferedImage:getHeight()) / 2
         end
         local commonLabels = CommonLabels.getInstance()
-        self.logUtil:putF(tostring(commonLabels.WIDTH_LABEL + bufferedImage:getWidth()) .. " newWidth: " .. tostring(newWidth) .. tostring(commonLabels.HEIGHT_LABEL) .. tostring(bufferedImage:getHeight()) .. " newHeight: " .. tostring(newHeight) .. " needed ratio: " .. tostring(((newWidth + 0.0) / (newHeight + 0.0))), self, "fudge")
+        self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(commonLabels.WIDTH_LABEL + bufferedImage:getWidth()) .. require("allbinary_java").to_string(" newWidth: ")) .. require("allbinary_java").to_string(newWidth)) .. require("allbinary_java").to_string(commonLabels.HEIGHT_LABEL)) .. require("allbinary_java").to_string(bufferedImage:getHeight())) .. require("allbinary_java").to_string(" newHeight: ")) .. require("allbinary_java").to_string(newHeight)) .. require("allbinary_java").to_string(" needed ratio: ")) .. require("allbinary_java").to_string(((newWidth + 0.0) / (newHeight + 0.0))), self, "fudge")
         local newBufferedImage = self.imageUtil:create(newWidth, newHeight)
         local g = newBufferedImage:createGraphics()
         if point.x > 0 then

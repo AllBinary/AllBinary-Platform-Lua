@@ -68,7 +68,7 @@ end
 
 
 function ProgressCanvasFactory.getInstance()
-        if ProgressCanvasFactory.PROGRESS_FORM_SCREEN == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(ProgressCanvasFactory.PROGRESS_FORM_SCREEN, NullUtil.getInstance().NULL_OBJECT) then
             ProgressCanvasFactory.PROGRESS_FORM_SCREEN = AndroidBasicTitleProgressBar.new(StringUtil.getInstance().EMPTY_STRING, BasicColorFactory.getInstance().BLACK, BasicColorFactory.getInstance().WHITE)
         end
         return ProgressCanvasFactory.PROGRESS_FORM_SCREEN

@@ -68,7 +68,7 @@ end
 
 
 function LicenseInterfaceSingleton.init(licenseInterface)
-        if licenseInterface ~= nil then
+        if not rawequal(licenseInterface, nil) then
             LicenseInterfaceSingleton.licenseInterface = licenseInterface
         end
 end

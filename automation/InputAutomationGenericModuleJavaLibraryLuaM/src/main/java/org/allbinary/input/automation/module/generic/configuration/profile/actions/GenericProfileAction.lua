@@ -138,7 +138,7 @@ end
 function GenericProfileAction._new2(self, genericProfileActionJPanel, node)
     GenericProfileAction._init_fields(self)
         local actionNameNode = DomSearchHelper.getNode(GenericProfileActionData.NAME, node:getChildNodes())
-        if actionNameNode ~= nil then
+        if not rawequal(actionNameNode, nil) then
             self.name_f = DomNodeHelper.getTextNodeValue(actionNameNode)
         else
             error(require("java.lang.Exception").new("Profile Action Name Node Null"), 0)
@@ -169,7 +169,7 @@ end
 function GenericProfileAction:toHashMap()
         local hashMap = StdUtil.getInstance():createHashMap()
         hashMap:put(GenericProfileActionData.NAME, self.name_f)
-        self.logUtil:putF("HashMap: " .. tostring(hashMap), self, "toHashMap()")
+        self.logUtil:putF(require("allbinary_java").to_string("HashMap: ") .. require("allbinary_java").to_string(tostring(hashMap)), self, "toHashMap()")
         return hashMap
 end
 

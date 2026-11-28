@@ -154,7 +154,7 @@ function GeographicMapCellPositionFactory:getInstance(geographicMapInterface)
         local commonStrings = CommonStrings.getInstance()
         local allBinaryTiledLayer = geographicMapInterface:getAllBinaryTiledLayer()
         local geographicMapCellPositionFactoryCanBeNull = GeographicMapCellPositionFactory.hashtable:get(allBinaryTiledLayer:getDataId())
-        if geographicMapCellPositionFactoryCanBeNull == nil then
+        if rawequal(geographicMapCellPositionFactoryCanBeNull, nil) then
             self.logUtil:putF(tostring(StringMaker.new():append("Creating GeographicMapCellPositionFactory for TileLayer: "):appendint(java_int(math.tointeger(allBinaryTiledLayer:getDataId() // 1)))), self, commonStrings.GET_INSTANCE)
             geographicMapCellPositionFactoryCanBeNull = BasicGeographicMapCellPositionFactory.new(geographicMapInterface)
             GeographicMapCellPositionFactory.hashtable:put(allBinaryTiledLayer:getDataId(), geographicMapCellPositionFactoryCanBeNull)

@@ -52,7 +52,7 @@ AllMotionRecognizer.className = "AllMotionRecognizer"
 AllMotionRecognizer.javaClassName = "org.allbinary.input.motion.AllMotionRecognizer"
 
 function AllMotionRecognizer:_init_fields()
-    if self.id == nil then self.id = nil end
+    if self.id == nil then self.id = 0 end
 end
 
 

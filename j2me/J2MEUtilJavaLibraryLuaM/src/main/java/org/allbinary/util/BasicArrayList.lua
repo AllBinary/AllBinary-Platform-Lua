@@ -125,9 +125,9 @@ end
 
 
 function BasicArrayList:remove(anyType)
-        if anyType == nil then
+        if rawequal(anyType, nil) then
             for index = 0, self.currentIndex - 1 do
-                if self.objectArray[index + 1] == nil then
+                if rawequal(self.objectArray[index + 1], nil) then
                     local numMoved = self.currentIndex - index - 1
                     if numMoved > 0 then
                         table.move(self.objectArray, (index + 1) + 1, (index + 1) + (numMoved), (index) + 1, self.objectArray)
@@ -138,7 +138,7 @@ function BasicArrayList:remove(anyType)
             end
         else
             for index = 0, self.currentIndex - 1 do
-                if anyType == self.objectArray[index + 1] or anyType:equals(self.objectArray[index + 1]) then
+                if rawequal(anyType, self.objectArray[index + 1]) or require("allbinary_java").equals(anyType, self.objectArray[index + 1]) then
                     local numMoved = self.currentIndex - index - 1
                     if numMoved > 0 then
                         table.move(self.objectArray, (index + 1) + 1, (index + 1) + (numMoved), (index) + 1, self.objectArray)
@@ -186,7 +186,7 @@ function BasicArrayList:addAll(newObjectArray)
         self:ensureCapacity(self.currentIndex + numSize)
         table.move(newObjectArray, (0) + 1, (0) + (numSize), (self.currentIndex) + 1, self.objectArray)
         self.currentIndex = self.currentIndex + (numSize)
-        return numSize ~= 0
+        return not rawequal(numSize, 0)
 end
 
 
@@ -211,15 +211,15 @@ end
 
 
 function BasicArrayList:indexOf(anyType)
-        if anyType == nil then
+        if rawequal(anyType, nil) then
             for i = 0, self.currentIndex - 1 do
-                if self.objectArray[i + 1] == nil then
+                if rawequal(self.objectArray[i + 1], nil) then
                     return i
                 end
             end
         else
             for i = 0, self.currentIndex - 1 do
-                if anyType:equals(self.objectArray[i + 1]) then
+                if require("allbinary_java").equals(anyType, self.objectArray[i + 1]) then
                     return i
                 end
             end
@@ -229,15 +229,15 @@ end
 
 
 function BasicArrayList:lastIndexOf(anyType)
-        if anyType == nil then
+        if rawequal(anyType, nil) then
             for i = self.currentIndex - 1, 0, -1 do
-                if self.objectArray[i + 1] == nil then
+                if rawequal(self.objectArray[i + 1], nil) then
                     return i
                 end
             end
         else
             for i = self.currentIndex - 1, 0, -1 do
-                if anyType:equals(self.objectArray[i + 1]) then
+                if require("allbinary_java").equals(anyType, self.objectArray[i + 1]) then
                     return i
                 end
             end
@@ -288,7 +288,7 @@ end
 
 
 function BasicArrayList:isEmpty()
-        return self.currentIndex == 0
+        return rawequal(self.currentIndex, 0)
 end
 
 

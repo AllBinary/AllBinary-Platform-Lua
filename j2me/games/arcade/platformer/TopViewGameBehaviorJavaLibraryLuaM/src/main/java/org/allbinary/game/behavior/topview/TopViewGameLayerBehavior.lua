@@ -130,7 +130,7 @@ TopViewGameLayerBehavior.javaClassName = "org.allbinary.game.behavior.topview.To
 setmetatable(TopViewGameLayerBehavior, {__index = GameLayerBehavior})
 
 function TopViewGameLayerBehavior:_init_fields()
-    if self.maxGravityActionIndex == nil then self.maxGravityActionIndex = nil end
+    if self.maxGravityActionIndex == nil then self.maxGravityActionIndex = 0 end
     self.isJumpAction = true
     self.isJumpOver = false
     self.isFallingWithoutJumpAttempt = false
@@ -153,7 +153,7 @@ end
 
 
 function TopViewGameLayerBehavior:gravity()
-        if self.gravityActionIndex == 0 then
+        if rawequal(self.gravityActionIndex, 0) then
             self.gravityActionIndex = self.gravityActionIndex + 1
             self.isFallingWithoutJumpAttempt = true
         end
@@ -178,7 +178,7 @@ java_overload(TopViewGameLayerBehavior, "landReset", 0)
 
 
 function TopViewGameLayerBehavior:up(velocityProperties, acceleration, jumpBehavior, accelerationMultiplier)
-        if not self.isJumpOver then
+        if not (self.isJumpOver) then
             if self.gravityActionIndex < self.maxGravityActionIndex then
                 local acceleration2 = -acceleration:getForward() * accelerationMultiplier
                 velocityProperties:getVelocityYBasicDecimalP():addint(acceleration2)

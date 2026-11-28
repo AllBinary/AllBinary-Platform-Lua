@@ -62,13 +62,13 @@ end
 
 
 function ThreadObjectUtil:notifyObject(anyType)
-        anyType:notify()
+        require("java.lang.Thread").signal(anyType)
 end
 
 
 -- throws Exception
 function ThreadObjectUtil:waitObject(anyType)
-        anyType:wait()
+        require("java.lang.Thread").waitOn(anyType)
 end
 
 

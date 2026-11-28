@@ -134,9 +134,9 @@ setmetatable(BasePathFinderGraphVisitor, {__index = PathFinderGraphVisitorBase})
 
 function BasePathFinderGraphVisitor:_init_fields()
     if self.geographicMapInterface == nil then self.geographicMapInterface = nil end
-    if self.edgeMinimum == nil then self.edgeMinimum = nil end
-    if self.minPathWeight == nil then self.minPathWeight = nil end
-    if self.maxPathWeight == nil then self.maxPathWeight = nil end
+    if self.edgeMinimum == nil then self.edgeMinimum = 0 end
+    if self.minPathWeight == nil then self.minPathWeight = 0 end
+    if self.maxPathWeight == nil then self.maxPathWeight = 0 end
 end
 
 
@@ -187,13 +187,13 @@ java_overload(BasePathFinderGraphVisitor, "isValid", 1, function(java_a1) return
 function BasePathFinderGraphVisitor:getInvalidReason(graphPath)
         local stringBuffer = StringMaker.new()
         if graphPath:getEdgeList():size() < self.edgeMinimum then
-            stringBuffer:append("Ignoring Small: " .. tostring(graphPath:getEdgeList():size()))
+            stringBuffer:append(require("allbinary_java").to_string("Ignoring Small: ") .. require("allbinary_java").to_string(graphPath:getEdgeList():size()))
         end
         if graphPath:getWeight() <= self.minPathWeight then
-            stringBuffer:append(" Low Weighted Path: " .. tostring(graphPath:getWeight()))
+            stringBuffer:append(require("allbinary_java").to_string(" Low Weighted Path: ") .. require("allbinary_java").to_string(graphPath:getWeight()))
         end
         if graphPath:getWeight() >= self.maxPathWeight then
-            stringBuffer:append(" To High Weighted Path: " .. tostring(graphPath:getWeight()))
+            stringBuffer:append(require("allbinary_java").to_string(" To High Weighted Path: ") .. require("allbinary_java").to_string(graphPath:getWeight()))
         end
         return tostring(stringBuffer)
 end

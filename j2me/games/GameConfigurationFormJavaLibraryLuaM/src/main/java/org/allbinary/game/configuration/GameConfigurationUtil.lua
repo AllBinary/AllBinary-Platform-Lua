@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Item = require("javax.microedition.lcdui.Item")
+local Item = java_lazy("javax.microedition.lcdui.Item")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local SmallIntegerSingletonFactory = java_lazy("org.allbinary.logic.math.SmallIntegerSingletonFactory")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
@@ -142,7 +142,7 @@ end
 function GameConfigurationUtil:updateChallange(gameOptionsForm, gameConfiguration)
         local gameConfigurationSingleton = GameConfigurationSingleton.getInstance()
         local gameConfigurationCentral = GameConfigurationCentral.getInstance()
-        if gameConfiguration == gameConfigurationCentral.CHALLENGE_LEVEL then
+        if rawequal(gameConfiguration, gameConfigurationCentral.CHALLENGE_LEVEL) then
             self.logUtil:putF(self.commonStrings.START, self, "updateChallange")
             gameConfigurationCentral.COLLIDE_DAMAGE:setValue(gameConfiguration:getValue())
             gameConfigurationCentral.ATTACK_CHALLENGE_LEVEL:setValue(gameConfiguration:getValue())
@@ -155,13 +155,13 @@ function GameConfigurationUtil:updateChallange(gameOptionsForm, gameConfiguratio
                     local gauge = item
                     local name = item:getLabel()
                     local nextGameConfiguration = gameConfigurationSingleton:getInstanceByName(name)
-                    if nextGameConfiguration == gameConfigurationCentral.COLLIDE_DAMAGE then
+                    if rawequal(nextGameConfiguration, gameConfigurationCentral.COLLIDE_DAMAGE) then
                         gauge:setValue(math.tointeger(gameConfigurationCentral.COLLIDE_DAMAGE:getValue() // 1) - math.tointeger(gameConfiguration:getMinValue() // 1))
-                    elseif nextGameConfiguration == gameConfigurationCentral.DURABILITY_CHALLENGE_LEVEL then
+                    elseif rawequal(nextGameConfiguration, gameConfigurationCentral.DURABILITY_CHALLENGE_LEVEL) then
                         gauge:setValue(math.tointeger(gameConfigurationCentral.DURABILITY_CHALLENGE_LEVEL:getValue() // 1) - math.tointeger(gameConfiguration:getMinValue() // 1))
-                    elseif nextGameConfiguration == gameConfigurationCentral.ATTACK_CHALLENGE_LEVEL then
+                    elseif rawequal(nextGameConfiguration, gameConfigurationCentral.ATTACK_CHALLENGE_LEVEL) then
                         gauge:setValue(math.tointeger(gameConfigurationCentral.ATTACK_CHALLENGE_LEVEL:getValue() // 1) - math.tointeger(gameConfiguration:getMinValue() // 1))
-                    elseif nextGameConfiguration == gameConfigurationCentral.SPEED_CHALLENGE_LEVEL then
+                    elseif rawequal(nextGameConfiguration, gameConfigurationCentral.SPEED_CHALLENGE_LEVEL) then
                         gauge:setValue(math.tointeger(gameConfigurationCentral.SPEED_CHALLENGE_LEVEL:getValue() // 1) - math.tointeger(gameConfiguration:getMinValue() // 1))
                     end
                 end

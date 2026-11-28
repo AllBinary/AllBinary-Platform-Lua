@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
--- local NullImage = require("javax.microedition.lcdui.NullImage")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local NullImage = java_lazy("javax.microedition.lcdui.NullImage")
 local Animation = java_lazy("org.allbinary.animation.Animation")
 local AnimationBehaviorFactory = java_lazy("org.allbinary.animation.AnimationBehaviorFactory")
 local AnimationInterfaceFactoryInterface = java_lazy("org.allbinary.animation.AnimationInterfaceFactoryInterface")
@@ -66,7 +66,7 @@ AllBinaryFlickerAndroidImageRotationAnimationFactory.java_interfaces = function(
 
 function AllBinaryFlickerAndroidImageRotationAnimationFactory:_init_fields()
     self.image = NullImage.NULL_IMAGE
-    if self.angleIncrement == nil then self.angleIncrement = nil end
+    if self.angleIncrement == nil then self.angleIncrement = 0 end
     if self.animationBehaviorFactory == nil then self.animationBehaviorFactory = nil end
 end
 

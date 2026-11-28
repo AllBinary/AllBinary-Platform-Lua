@@ -31,7 +31,7 @@ end
 local ByteArrayOutputStream = java_lazy("java.io.ByteArrayOutputStream")
 local PrintStream = java_lazy("java.io.PrintStream")
 local HashMap = java_lazy("java.util.HashMap")
--- local Properties = require("java.util.Properties")
+local Properties = java_lazy("java.util.Properties")
 -- local Address = require("javax.mail.Address")
 -- local Authenticator = require("javax.mail.Authenticator")
 -- local Message = require("javax.mail.Message")
@@ -147,7 +147,7 @@ function Email:_init_fields()
     if self.msg == nil then self.msg = nil end
     if self.properties == nil then self.properties = nil end
     if self.bs == nil then self.bs = nil end
-    if self.isDebug == nil then self.isDebug = nil end
+    if self.isDebug == nil then self.isDebug = false end
 end
 
 function Email._jinit(self, ...)
@@ -185,13 +185,13 @@ end
 function Email:init_j7(from, to, subject, server, textBody, htmlAttachment, contentBase)
         local try_ok, try_error, try_value = pcall(function()
             local stringValidationUtil = StringValidationUtil.getInstance()
-            local mimeBodyParts = java_new_array(nil, (function() if not stringValidationUtil:isEmpty(htmlAttachment) then return 2 else return 1 end end)())
+            local mimeBodyParts = java_new_array(nil, (function() if not (stringValidationUtil:isEmpty(htmlAttachment)) then return 2 else return 1 end end)())
             mimeBodyParts[1] = MimeBodyPart.new()
             mimeBodyParts[1]:setText(textBody)
-            if not stringValidationUtil:isEmpty(htmlAttachment) then
+            if not (stringValidationUtil:isEmpty(htmlAttachment)) then
                 local internetHeaders = InternetHeaders.new()
                 internetHeaders:addHeader("Content-Type", "text/html")
-                if not stringValidationUtil:isEmpty(contentBase) then
+                if not (stringValidationUtil:isEmpty(contentBase)) then
                     internetHeaders:addHeader("Content-Base", contentBase)
                 end
                 mimeBodyParts[2] = MimeBodyPart.new(internetHeaders, {string.byte(htmlAttachment, 1, -1)})
@@ -269,7 +269,7 @@ end
 
 function Email:getDebugInfo()
         if self.isDebug then
-            return "More Logging Before This To Standard Out: " .. tostring(tostring(tostring(self.bs)))
+            return require("allbinary_java").to_string("More Logging Before This To Standard Out: ") .. require("allbinary_java").to_string(tostring(tostring(self.bs)))
         else
             return "Debugging Is Off"
         end
@@ -278,7 +278,7 @@ end
 
 -- throws Exception
 function Email:log()
-        return "\nHashMap: " .. tostring(self:toHashMap())
+        return require("allbinary_java").to_string("\nHashMap: ") .. require("allbinary_java").to_string(tostring(self:toHashMap()))
 end
 
 
@@ -288,32 +288,32 @@ function Email:toHashMap()
             local hashMap = StdUtil.getInstance():createHashMap()
             hashMap:put(EmailData.SERVER, self.properties:get(Email.SMTP_HOST))
             local addresses = self.msg:getFrom()
-            if addresses ~= nil then
+            if not rawequal(addresses, nil) then
                 for index = 0, (addresses.n or #addresses) - 1 do
                     hashMap:put(EmailData.FROM, tostring(addresses[index + 1]))
                 end
             end
             addresses = self.msg:getRecipients(Message.RecipientType.TO)
-            if addresses ~= nil then
+            if not rawequal(addresses, nil) then
                 for index = 0, (addresses.n or #addresses) - 1 do
                     hashMap:put(EmailData.TO, tostring(addresses[index + 1]))
                 end
             end
             addresses = self.msg:getRecipients(Message.RecipientType.CC)
-            if addresses ~= nil then
+            if not rawequal(addresses, nil) then
                 for index = 0, (addresses.n or #addresses) - 1 do
                     hashMap:put(EmailData.CC, tostring(addresses[index + 1]))
                 end
             end
             addresses = self.msg:getRecipients(Message.RecipientType.BCC)
-            if addresses ~= nil then
+            if not rawequal(addresses, nil) then
                 for index = 0, (addresses.n or #addresses) - 1 do
                     hashMap:put(EmailData.BCC, tostring(addresses[index + 1]))
                 end
             end
             hashMap:put(EmailData.SUBJECT, self.msg:getSubject())
             local mimeMultipart = self.msg:getContent()
-            if mimeMultipart ~= nil then
+            if not rawequal(mimeMultipart, nil) then
                 for index = 0, mimeMultipart:getCount() - 1 do
                     local content = mimeMultipart:getBodyPart(index):getContent()
                     hashMap:put(EmailData.CONTENT, content)

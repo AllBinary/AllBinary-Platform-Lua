@@ -78,7 +78,7 @@ end
 
 function Tokenizer._jinit(self, sep)
     Tokenizer._init_fields(self)
-        if TsUtil.getInstance():compareTo(sep, StringUtil.getInstance().EMPTY_STRING) == 0 then
+        if rawequal(TsUtil.getInstance():compareTo(sep, StringUtil.getInstance().EMPTY_STRING), 0) then
             error(require("java.lang.Exception").new("Sep provided is not valid"), 0)
         end
         self.sep = sep
@@ -108,9 +108,9 @@ function Tokenizer:getInsideSep(string_)
         local size = #string_
         while index < size do
             index = ((string.find(string_, self.sep, (index) + 1, true) or 0) - 1)
-            if index ~= -1 then
+            if not rawequal(index, -1) then
                 local end_ = ((string.find(string_, self.endSep, (index + #self.sep) + 1, true) or 0) - 1)
-                if end_ ~= -1 then
+                if not rawequal(end_, -1) then
                     tokenList:add(string.sub(string_, (index + #self.sep) + 1, end_ - (#self.endSep - 1)))
                     index = end_ + #self.endSep
                 else
@@ -128,7 +128,7 @@ function Tokenizer:getTokensFromString(string_, tokenVector)
         local end_ = 0
         while index < #string_ do
             end_ = ((string.find(string_, self.sep, (index) + 1, true) or 0) - 1)
-            if end_ ~= -1 then
+            if not rawequal(end_, -1) then
                 tokenVector:add(string.sub(string_, (index) + 1, end_))
                 index = end_ + #self.sep
             else

@@ -29,7 +29,7 @@ local function java_real(class)
 end
 
 local File = java_lazy("java.io.File")
--- local FileInputStream = require("java.io.FileInputStream")
+local FileInputStream = java_lazy("java.io.FileInputStream")
 -- local List = require("java.util.List")
 -- local JAXBContext = require("javax.xml.bind.JAXBContext")
 -- local JAXBElement = require("javax.xml.bind.JAXBElement")
@@ -99,8 +99,8 @@ function InputAutomationConfigurationFactory:init(abeClientInformation)
             local root = unmarshaller:unmarshal(StreamSource.new(FileInputStream.new(file)), InputAutomationConfiguration)
             self.inputAutomationConfiguration = root:getValue()
             local inputAutomationModuleConfigurationList = self.inputAutomationConfiguration:getInputAutomationModuleConfigurationList()
-            logUtil:putF("isInstalled: " .. tostring(self.inputAutomationConfiguration:isInstalled()) .. " inputAutomationModuleConfigurationList: " .. tostring(inputAutomationModuleConfigurationList), INPUT_AUTOMATION_CONFIGURATION, commonStrings.INIT)
-            if inputAutomationModuleConfigurationList ~= nil then
+            logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("isInstalled: ") .. require("allbinary_java").to_string(self.inputAutomationConfiguration:isInstalled())) .. require("allbinary_java").to_string(" inputAutomationModuleConfigurationList: ")) .. require("allbinary_java").to_string(inputAutomationModuleConfigurationList), INPUT_AUTOMATION_CONFIGURATION, commonStrings.INIT)
+            if not rawequal(inputAutomationModuleConfigurationList, nil) then
                 local size = inputAutomationModuleConfigurationList:size()
                 local inputAutomationModuleConfiguration = nil
                 for index = 0, size - 1 do

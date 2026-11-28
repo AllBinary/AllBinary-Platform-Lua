@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local AndroidUtil = java_lazy("org.allbinary.AndroidUtil")
 local J2MEUtil = java_lazy("org.allbinary.J2MEUtil")
 local Anchor = java_lazy("org.allbinary.graphics.Anchor")
@@ -152,7 +152,7 @@ function DrawVerticalStringUtil:drawCenterStrings(graphics, stringArray, maxWidt
         local extraLines = 0
         for index = 0, (stringArray.n or #stringArray) - 1 do
             local string_ = stringArray[index + 1]
-            if string_ ~= self.EMPTY_STRING then
+            if not rawequal(string_, self.EMPTY_STRING) then
                 local width = graphics:getFont():stringWidth(string_)
                 local minTotalLines = 1
                 if width > maxWidth then
@@ -166,8 +166,8 @@ function DrawVerticalStringUtil:drawCenterStrings(graphics, stringArray, maxWidt
                     if offset + currentLength > size then
                         currentLength = size - offset
                     end
-                    if offset + currentLength ~= size then
-                        while currentLength > 0 and stringArray[index + 1]:charAt(offset + currentLength) ~= " " do
+                    if not rawequal(offset + currentLength, size) then
+                        while currentLength > 0 and not rawequal(stringArray[index + 1]:charAt(offset + currentLength), " ") do
                             currentLength = currentLength - 1
                         end
                         if currentLength <= 4 then

@@ -139,12 +139,12 @@ end
 
 
 function DragVelocityBehavior:reduce(velocityProperties, nominator, denominator)
-        if velocityProperties:getVelocityXBasicDecimalP():getUnscaled() ~= 0 then
+        if not rawequal(velocityProperties:getVelocityXBasicDecimalP():getUnscaled(), 0) then
             local basicDecimal = velocityProperties:getVelocityXBasicDecimalP()
             basicDecimal:multiplyint(nominator)
             basicDecimal:divideint(denominator)
         end
-        if velocityProperties:getVelocityYBasicDecimalP():getUnscaled() ~= 0 then
+        if not rawequal(velocityProperties:getVelocityYBasicDecimalP():getUnscaled(), 0) then
             local basicDecimal = velocityProperties:getVelocityYBasicDecimalP()
             basicDecimal:multiplyint(nominator)
             basicDecimal:divideint(denominator)
@@ -155,7 +155,7 @@ java_overload(DragVelocityBehavior, "reduce", 3, function(java_a1, java_a2, java
 
 function DragVelocityBehavior:reduceX(velocityProperties, nominator, denominator)
         local basicDecimal = velocityProperties:getVelocityXBasicDecimalP()
-        if basicDecimal:getUnscaled() ~= 0 then
+        if not rawequal(basicDecimal:getUnscaled(), 0) then
             basicDecimal:multiplyint(nominator)
             basicDecimal:divideint(denominator)
         end
@@ -164,7 +164,7 @@ java_overload(DragVelocityBehavior, "reduceX", 3, function(java_a1, java_a2, jav
 
 
 function DragVelocityBehavior:reduceY(velocityProperties, nominator, denominator)
-        if velocityProperties:getVelocityYBasicDecimalP():getUnscaled() ~= 0 then
+        if not rawequal(velocityProperties:getVelocityYBasicDecimalP():getUnscaled(), 0) then
             local basicDecimal = velocityProperties:getVelocityYBasicDecimalP()
             basicDecimal:multiplyint(nominator)
             basicDecimal:divideint(denominator)

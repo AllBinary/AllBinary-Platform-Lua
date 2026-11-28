@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local MIDlet = require("javax.microedition.midlet.MIDlet")
+local MIDlet = java_lazy("javax.microedition.midlet.MIDlet")
 local Processor = require("org.allbinary.canvas.Processor")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend

@@ -145,7 +145,7 @@ function HttpContextView._jinit(self, transformInfoInterface)
     HttpContextView._init_fields(self)
         -- super(...) made self above
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("View Name: " .. transformInfoInterface:getName(), self, self.commonStrings.CONSTRUCTOR)
+            self.logUtil:putF(require("allbinary_java").to_string("View Name: ") .. require("allbinary_java").to_string(transformInfoInterface:getName()), self, self.commonStrings.CONSTRUCTOR)
         end
         self:setTransformDocumentInterface(TransformHttpRequestDocumentFactory.getInstance(self:getPageContext(), self:getWeblisketSession()))
     return self

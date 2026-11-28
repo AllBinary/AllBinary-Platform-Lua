@@ -213,7 +213,7 @@ function PathFinderGraphHackVisitor:fixOverPassEdges(graph)
         local CellPositionArray = raceTrackGeographicMap:getRaceTrackData():getOverPassGeographicMapCellPositionArray()
         for index = (CellPositionArray.n or #CellPositionArray) - 1, 0, -1 do
             local overPassGeographicMapCellPosition = CellPositionArray[index + 1]
-            self.logUtil:putF("Fixing Over Pass: " .. tostring(overPassGeographicMapCellPosition:getColumn()) .. ", " .. tostring(overPassGeographicMapCellPosition:getRow()), self, "fixOverPassEdges")
+            self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Fixing Over Pass: ") .. require("allbinary_java").to_string(overPassGeographicMapCellPosition:getColumn())) .. require("allbinary_java").to_string(", ")) .. require("allbinary_java").to_string(overPassGeographicMapCellPosition:getRow()), self, "fixOverPassEdges")
             local underPassGeographicMapCellPosition = geographicMapCellPositionFactory:getAt(overPassGeographicMapCellPosition:getColumn(), overPassGeographicMapCellPosition:getRow())
             local rightUnderPassGeographicMapCellPosition = geographicMapCellPositionFactory:getAt(overPassGeographicMapCellPosition:getColumn() + 1, overPassGeographicMapCellPosition:getRow())
             local leftUnderPassGeographicMapCellPosition = geographicMapCellPositionFactory:getAt(overPassGeographicMapCellPosition:getColumn() - 1, overPassGeographicMapCellPosition:getRow())
@@ -253,7 +253,7 @@ function PathFinderGraphHackVisitor:removeOverPassEdges(pathList)
             local overPassGeographicMapCellPosition = CellPositionArray[index + 1]
             local underPassGeographicMapCellPosition = geographicMapCellPositionFactory:getAt(overPassGeographicMapCellPosition:getColumn(), overPassGeographicMapCellPosition:getRow())
             local indexOf = pathList:indexOf(overPassGeographicMapCellPosition)
-            if indexOf ~= -1 then
+            if not rawequal(indexOf, -1) then
                 pathList:set(indexOf, underPassGeographicMapCellPosition)
             end
         end

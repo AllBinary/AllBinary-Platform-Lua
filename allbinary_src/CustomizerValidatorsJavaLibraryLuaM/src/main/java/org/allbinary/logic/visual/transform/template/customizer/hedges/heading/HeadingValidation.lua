@@ -215,19 +215,19 @@ function HeadingValidation:isValid()
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                 self.logUtil:putF(self.commonStrings.START, self, self.commonStrings.IS_VALID)
             end
-            if not self.title:isValid() then
+            if not (self.title:isValid()) then
                 titleValid = false
             end
-            if not self.logo:isValid() then
+            if not (self.logo:isValid()) then
                 logoValid = false
             else
                 self.logo:processLogoFile()
             end
-            if not titleValid and not logoValid then
+            if not (titleValid) and not (logoValid) then
                 valid = false
             end
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("HeadingValidation: " .. tostring(valid), self, self.commonStrings.IS_VALID)
+                self.logUtil:putF(require("allbinary_java").to_string("HeadingValidation: ") .. require("allbinary_java").to_string(valid), self, self.commonStrings.IS_VALID)
             end
             do return "__jreturn", valid end
         end)
@@ -250,16 +250,16 @@ function HeadingValidation:validationInfo()
             local titleValid = true
             local logoValid = true
             local stringBuffer = StringMaker.new()
-            if not self.title:isValid() then
+            if not (self.title:isValid()) then
                 titleValid = false
             end
-            if not self.logo:isValid() then
+            if not (self.logo:isValid()) then
                 logoValid = false
             end
-            if not titleValid and not logoValid then
+            if not (titleValid) and not (logoValid) then
                 valid = false
             end
-            if not valid then
+            if not (valid) then
                 stringBuffer:append("Include a title and/or logo for the header.")
             end
             do return "__jreturn", tostring(stringBuffer) end

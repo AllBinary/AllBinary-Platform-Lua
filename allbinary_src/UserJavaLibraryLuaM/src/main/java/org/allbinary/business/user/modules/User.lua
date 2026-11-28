@@ -220,9 +220,9 @@ function User:getFormData(userHashMap)
         self.fax = stringUtil:getNonNull(userHashMap:get(UserData.FAX))
         self.role = UserRoleB.getRole(userHashMap:get(tostring(UserRoleData.NAME)))
         self.permissions = stringUtil:getNonNull(userHashMap:get(UserData.PERMISSIONS))
-        if not stringValidationUtil:isEmpty(self.permissions) and ((self.permissions < StoreFrontData.getInstance().NAME and -1) or (self.permissions > StoreFrontData.getInstance().NAME and 1) or 0) == 0 then
+        if not (stringValidationUtil:isEmpty(self.permissions)) and rawequal(((self.permissions < StoreFrontData.getInstance().NAME and -1) or (self.permissions > StoreFrontData.getInstance().NAME and 1) or 0), 0) then
             self.permissions = stringUtil:getNonNull(userHashMap:get(StoreFrontData.getInstance().NAME))
-        elseif self.permissions == nil then
+        elseif rawequal(self.permissions, nil) then
             self.permissions = "No Permissions"
         end
         self.enable_f = stringUtil:getNonNull(userHashMap:get(EntryData.getInstance().ENABLE))
@@ -232,20 +232,20 @@ end
 function User:isValid()
         local try_ok, try_error, try_value = pcall(function()
             local valid = true
-            if not UserName.getInstance():isValid(self.userName) then
+            if not (UserName.getInstance():isValid(self.userName)) then
                 valid = false
             end
-            if not self.password:isValid() then
+            if not (self.password:isValid()) then
                 valid = false
             end
             local stringValidationUtil = StringValidationUtil.getInstance()
-            if not stringValidationUtil:isValidRequired(self.firstName, 1, UserData.MAXLEN) then
+            if not (stringValidationUtil:isValidRequired(self.firstName, 1, UserData.MAXLEN)) then
                 valid = false
             end
-            if not stringValidationUtil:isValidRequired(self.lastName, 1, UserData.MAXLEN) then
+            if not (stringValidationUtil:isValidRequired(self.lastName, 1, UserData.MAXLEN)) then
                 valid = false
             end
-            if not stringValidationUtil:isValidRequired(self.mainEmail, 1, UserData.MAXLEN) or ((string.find(self.mainEmail, "@", 1, true) or 0) - 1) == -1 then
+            if not (stringValidationUtil:isValidRequired(self.mainEmail, 1, UserData.MAXLEN)) or rawequal(((string.find(self.mainEmail, "@", 1, true) or 0) - 1), -1) then
                 valid = false
             end
             do return "__jreturn", valid end
@@ -269,13 +269,13 @@ function User:validationInfo()
             local stringBuffer = StringMaker.new()
             stringBuffer:append(UserName.getValidationInfo(self.userName))
             stringBuffer:append(self.password:getValidationInfo())
-            if not stringValidationUtil:isValidRequired(self.firstName, 1, UserData.MAXLEN) then
+            if not (stringValidationUtil:isValidRequired(self.firstName, 1, UserData.MAXLEN)) then
                 stringBuffer:append("Please enter a valid First Name.<br />")
             end
-            if not stringValidationUtil:isValidRequired(self.lastName, 1, UserData.MAXLEN) then
+            if not (stringValidationUtil:isValidRequired(self.lastName, 1, UserData.MAXLEN)) then
                 stringBuffer:append("Please enter a valid Last Name.<br />")
             end
-            if not stringValidationUtil:isValidRequired(self.mainEmail, 1, UserData.MAXLEN) or ((string.find(self.mainEmail, "@", 1, true) or 0) - 1) == -1 then
+            if not (stringValidationUtil:isValidRequired(self.mainEmail, 1, UserData.MAXLEN)) or rawequal(((string.find(self.mainEmail, "@", 1, true) or 0) - 1), -1) then
                 stringBuffer:append("Please enter a valid email address.<br />")
             end
             do return "__jreturn", tostring(stringBuffer) end
@@ -569,7 +569,7 @@ function User:toHashMap()
         values:put(UserData.OTHERCONTACT, self.otherContact)
         values:put(UserData.ELECTRONICDEVICE, self.electronicDevice)
         values:put(UserData.FAX, self.fax)
-        if self:getRole() ~= nil then
+        if not rawequal(self:getRole(), nil) then
             values:put(tostring(UserRoleData.NAME), tostring(self:getRole()))
         end
         local userConfigurationDomDocumentMapping = UserConfigurationDomDocumentMapping.new(self:getUserConfigurationInterface())

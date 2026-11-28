@@ -147,7 +147,7 @@ function BasicGeographicMapUtil:isSameCellPosition(fromGeographicMapCellPosition
         local fromRow = fromGeographicMapCellPosition:getRow()
         local goColumn = toGeographicMapCellPosition:getColumn()
         local goRow = toGeographicMapCellPosition:getRow()
-        if fromColumn == goColumn and fromRow == goRow then
+        if rawequal(fromColumn, goColumn) and rawequal(fromRow, goRow) then
             return true
         else
             return false

@@ -153,7 +153,7 @@ function LastKeyAIVisitor:visit(anyType)
         local try_ok, try_error, try_value = pcall(function()
             local basicAI = anyType
             local key = basicAI:getLastKey()
-            if key ~= -1 then
+            if not rawequal(key, -1) then
                 basicAI:processKeyAI(key)
             end
         end)

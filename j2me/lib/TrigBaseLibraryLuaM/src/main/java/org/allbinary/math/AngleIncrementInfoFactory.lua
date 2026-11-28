@@ -90,7 +90,7 @@ function AngleIncrementInfoFactory:getAt(angleIncrement)
         local halfAngleIncrement = (((angleIncrement) // (1 << (1))))
         local angleIncrementInfo = nil
         local angleIncrementInfoCanBeNull = self.angleIncrementInfo[halfAngleIncrement + 1]
-        if angleIncrementInfoCanBeNull == nil then
+        if rawequal(angleIncrementInfoCanBeNull, nil) then
             angleIncrementInfo = AngleIncrementInfo.new(angleIncrement)
             self.angleIncrementInfo[halfAngleIncrement + 1] = angleIncrementInfo
             return angleIncrementInfo

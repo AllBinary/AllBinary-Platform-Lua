@@ -53,7 +53,7 @@ ResourceLoadingLevel.javaClassName = "org.allbinary.game.resource.ResourceLoadin
 
 function ResourceLoadingLevel:_init_fields()
     if self.name_f == nil then self.name_f = nil end
-    if self.level == nil then self.level = nil end
+    if self.level == nil then self.level = 0 end
 end
 
 

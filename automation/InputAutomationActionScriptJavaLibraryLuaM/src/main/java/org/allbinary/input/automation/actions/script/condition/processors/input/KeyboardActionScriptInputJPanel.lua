@@ -233,7 +233,7 @@ java_overload(KeyboardActionScriptInputJPanel, "set", 0)
 function KeyboardActionScriptInputJPanel:updateInputType()
         local comboBoxModel = self.inputAutomationTypeJComboBox:getModel()
         local selectedItem = comboBoxModel:getSelectedItem()
-        if not StringValidationUtil.getInstance():isEmpty(selectedItem) then
+        if not (StringValidationUtil.getInstance():isEmpty(selectedItem)) then
             self.keyActionScriptInputInterface:setInputRobotInterface(InputRobotFactory.getInstance():get(selectedItem))
         end
 end
@@ -243,7 +243,7 @@ java_overload(KeyboardActionScriptInputJPanel, "updateInputType", 0)
 function KeyboardActionScriptInputJPanel:getSelectedKey()
         local comboBoxModel = self.keyNameJComboBox:getModel()
         local selectedItem = comboBoxModel:getSelectedItem()
-        if not StringValidationUtil.getInstance():isEmpty(selectedItem) then
+        if not (StringValidationUtil.getInstance():isEmpty(selectedItem)) then
             return KeySingletonFactory.getHashtable():get(selectedItem)
         end
         return nil
@@ -308,11 +308,13 @@ function KeyboardActionScriptInputJPanel:initComponents()
         self.titleJLabel:setText("Keyboard Input Options")
         self.addKeyJLabel:setText("Add Key:")
         self.keyNameJComboBox:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:keyNameJComboBoxActionPerformed(evt)
+                ;(self.keyNameJComboBoxActionPerformed and self or java_outer_self):keyNameJComboBoxActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -328,11 +330,13 @@ function KeyboardActionScriptInputJPanel:initComponents()
         self.pressJRadioButton:setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0))
         self.pressJRadioButton:setMargin(Insets.new(0, 0, 0, 0))
         self.pressJRadioButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:pressJRadioButtonActionPerformed(evt)
+                ;(self.pressJRadioButtonActionPerformed and self or java_outer_self):pressJRadioButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -341,11 +345,13 @@ function KeyboardActionScriptInputJPanel:initComponents()
         self.releaseJRadioButton:setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0))
         self.releaseJRadioButton:setMargin(Insets.new(0, 0, 0, 0))
         self.releaseJRadioButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:releaseJRadioButtonActionPerformed(evt)
+                ;(self.releaseJRadioButtonActionPerformed and self or java_outer_self):releaseJRadioButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -355,11 +361,13 @@ function KeyboardActionScriptInputJPanel:initComponents()
         self.normalJRadioButton:setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0))
         self.normalJRadioButton:setMargin(Insets.new(0, 0, 0, 0))
         self.normalJRadioButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:normalJRadioButtonActionPerformed(evt)
+                ;(self.normalJRadioButtonActionPerformed and self or java_outer_self):normalJRadioButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -369,11 +377,13 @@ function KeyboardActionScriptInputJPanel:initComponents()
         self.simultaneousJRadioButton:setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0))
         self.simultaneousJRadioButton:setMargin(Insets.new(0, 0, 0, 0))
         self.simultaneousJRadioButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:simultaneousJRadioButtonActionPerformed(evt)
+                ;(self.simultaneousJRadioButtonActionPerformed and self or java_outer_self):simultaneousJRadioButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -382,11 +392,13 @@ function KeyboardActionScriptInputJPanel:initComponents()
         self.sequenceJRadioButton:setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0))
         self.sequenceJRadioButton:setMargin(Insets.new(0, 0, 0, 0))
         self.sequenceJRadioButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:sequenceJRadioButtonActionPerformed(evt)
+                ;(self.sequenceJRadioButtonActionPerformed and self or java_outer_self):sequenceJRadioButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -394,22 +406,26 @@ function KeyboardActionScriptInputJPanel:initComponents()
         self.okJButton:setText("OK")
         self.okJButton:setHorizontalTextPosition(SwingConstants.CENTER)
         self.okJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:okJButtonActionPerformed(evt)
+                ;(self.okJButtonActionPerformed and self or java_outer_self):okJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
         end)())
         self.jPanel1:add(self.okJButton)
         self.keyIntegerJComboBox:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:keyIntegerJComboBoxActionPerformed(evt)
+                ;(self.keyIntegerJComboBoxActionPerformed and self or java_outer_self):keyIntegerJComboBoxActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -421,11 +437,13 @@ function KeyboardActionScriptInputJPanel:initComponents()
         self:setMinimumSize(Dimension.new(100, 0))
         self.keyActionJButton:setText("Edit")
         self.keyActionJButton:addActionListener((function()
-            local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
+            local java_outer_self = self
+        local o = ActionListener.new and ActionListener.new() or setmetatable({}, {__index = ActionListener})
             
 
             function o:actionPerformed(evt)
-                self:keyActionJButtonActionPerformed(evt)
+                ;(self.keyActionJButtonActionPerformed and self or java_outer_self):keyActionJButtonActionPerformed(evt)
+            
             end
             java_overload(o, "actionPerformed", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "ActionEvent")) end)
             return o
@@ -440,9 +458,9 @@ java_overload(KeyboardActionScriptInputJPanel, "initComponents", 0)
 
 
 function KeyboardActionScriptInputJPanel:prependText(integer)
-        if integer ~= nil then
-            local newKey = "&#" .. tostring(integer) .. ";"
-            self.textJTextField:setText(newKey .. tostring(self.textJTextField:getText()))
+        if not rawequal(integer, nil) then
+            local newKey = require("allbinary_java").to_string(require("allbinary_java").to_string("&#") .. require("allbinary_java").to_string(tostring(integer))) .. require("allbinary_java").to_string(";")
+            self.textJTextField:setText(require("allbinary_java").to_string(newKey) .. require("allbinary_java").to_string(self.textJTextField:getText()))
         end
 end
 java_overload(KeyboardActionScriptInputJPanel, "prependText", 1, function(java_a1) return true and (java_a1 == nil or math.type(java_a1) == "integer") end)

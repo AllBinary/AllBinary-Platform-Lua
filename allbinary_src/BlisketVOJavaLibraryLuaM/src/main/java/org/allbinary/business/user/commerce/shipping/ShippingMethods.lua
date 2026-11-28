@@ -110,11 +110,11 @@ function ShippingMethods:getShippingInterface(name)
         local size = self.shippingVector:size()
         for index = 0, size - 1 do
             shipping = self.shippingVector:get(index)
-            if ((name < shipping:getName() and -1) or (name > shipping:getName() and 1) or 0) == 0 then
+            if rawequal(((name < shipping:getName() and -1) or (name > shipping:getName() and 1) or 0), 0) then
                 return shipping
             end
         end
-        local error = "Error Finding Shipping: " .. name
+        local error = require("allbinary_java").to_string("Error Finding Shipping: ") .. require("allbinary_java").to_string(name)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SHIPPINGERROR) then
             self.logUtil:putF(self.commonStrings.EXCEPTION, self, "getShippingInterface(String name)")
         end

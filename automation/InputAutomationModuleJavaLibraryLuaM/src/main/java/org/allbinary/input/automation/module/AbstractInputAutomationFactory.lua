@@ -166,7 +166,7 @@ function AbstractInputAutomationFactory._new2(self, name, jPanel)
     AbstractInputAutomationFactory._init_fields(self)
         self.name_f = name
         self.jPanel = jPanel
-        local url = getmetatable(self):getResource("/help/Help.hs")
+        local url = require("java.lang.ClassLoader").classResource(getmetatable(self), "/help/Help.hs", false)
         self.helpSet = JavaHelpUtil.getInstance():getHelpSet(url)
     return self
 end

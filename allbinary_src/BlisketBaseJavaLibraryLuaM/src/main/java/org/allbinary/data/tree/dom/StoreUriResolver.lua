@@ -142,7 +142,7 @@ end
 
 function StoreUriResolver:toString()
         local try_ok, try_error, try_value = pcall(function()
-            do return "__jreturn", tostring(URLGLOBALS.getMainPath() + FREEBLISKET_PATH_GLOBALS.getInstance().XSLPATH) .. "{Store Name if Any}/{import url}" end
+            do return "__jreturn", require("allbinary_java").to_string(URLGLOBALS.getMainPath() + FREEBLISKET_PATH_GLOBALS.getInstance().XSLPATH) .. require("allbinary_java").to_string("{Store Name if Any}/{import url}") end
         end)
         if not try_ok then
             local e = try_error

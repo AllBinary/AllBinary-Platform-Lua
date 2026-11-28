@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
--- local Sprite = require("javax.microedition.lcdui.game.Sprite")
+local Image = java_lazy("javax.microedition.lcdui.Image")
+local Sprite = java_lazy("javax.microedition.lcdui.game.Sprite")
 local SpriteFactory = java_lazy("org.allbinary.game.layer.SpriteFactory")
 local OpenGLUtil = java_lazy("org.allbinary.graphics.opengles.OpenGLUtil")
 local ImageCache = java_lazy("org.allbinary.image.ImageCache")
@@ -92,10 +92,10 @@ function AnimationFactorySpriteScaleUtil:createImage(image, width, height, scale
         local spriteFactory = SpriteFactory.getInstance()
         local sprite = nil
         local scaledImage = nil
-        if scaleWidth ~= 0 and scaleHeight ~= 0 then
+        if not rawequal(scaleWidth, 0) and not rawequal(scaleHeight, 0) then
             local scaleX = ((scaleWidth + 0.0)) / ((width + 0.0))
             local scaleY = ((scaleHeight + 0.0)) / ((height + 0.0))
-            if (scaleX == 1.0 and scaleY == 1.0) or (scaleX == 0.0 or scaleY == 0.0) then
+            if (rawequal(scaleX, 1.0) and rawequal(scaleY, 1.0)) or (rawequal(scaleX, 0.0) or rawequal(scaleY, 0.0)) then
                 scaledImage = self.openGLUtil:addImage(image)
                 sprite = spriteFactory:createSprite(scaledImage, width, height)
             else

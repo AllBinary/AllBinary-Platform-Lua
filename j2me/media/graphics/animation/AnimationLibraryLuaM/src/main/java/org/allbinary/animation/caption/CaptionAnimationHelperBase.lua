@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local Animation = require("org.allbinary.animation.Animation")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
 

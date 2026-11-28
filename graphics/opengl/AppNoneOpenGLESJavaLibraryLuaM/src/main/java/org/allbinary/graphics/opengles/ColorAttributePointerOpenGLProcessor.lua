@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local GL10 = require("javax.microedition.khronos.opengles.GL10")
+local GL10 = java_lazy("javax.microedition.khronos.opengles.GL10")
 local ObjectThreedOpenGLProcessor = require("org.allbinary.graphics.threed.min3d.renderer.processor.ObjectThreedOpenGLProcessor")
 
 -- Java library Throwable. tostring gives the message like Java getMessage.

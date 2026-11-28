@@ -16,8 +16,8 @@ local function java_real(class)
     return class
 end
 
--- local GL10 = require("javax.microedition.khronos.opengles.GL10")
--- local Image = require("javax.microedition.lcdui.Image")
+local GL10 = java_lazy("javax.microedition.khronos.opengles.GL10")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local LoadTextures = java_lazy("org.allbinary.device.LoadTextures")
 local OpenGLESGraphics = java_lazy("org.allbinary.device.OpenGLESGraphics")
 local ProgressCanvas = java_lazy("org.allbinary.graphics.canvas.transition.progress.ProgressCanvas")
@@ -128,9 +128,9 @@ end
 
 function OpenGLUtil:onSurfaceCreated_j1(gl)
         local try_ok, try_error, try_value = pcall(function()
-            if not self.created then
+            if not (self.created) then
                 self.created = true
-                PreLogUtil.put(tostring(CommonLabels.getInstance().START_LABEL) .. tostring(OpenGLCapabilities.getInstance()), self, self.renderStrings.ON_SURFACE_CREATED)
+                PreLogUtil.put(require("allbinary_java").to_string(CommonLabels.getInstance().START_LABEL) .. require("allbinary_java").to_string(tostring(OpenGLCapabilities.getInstance())), self, self.renderStrings.ON_SURFACE_CREATED)
             end
         end)
         if not try_ok then
@@ -163,7 +163,7 @@ OpenGLUtil.onSurfaceCreated__jdispatcher = OpenGLUtil.onSurfaceCreated
 
 -- throws Exception
 function OpenGLUtil:onSurfaceChanged(gl, graphics)
-        if not self.surfaceCreatedAndInitialized then
+        if not (self.surfaceCreatedAndInitialized) then
             graphics:init()
             self.surfaceCreatedAndInitialized = true
         end
@@ -178,7 +178,7 @@ end
 
 function OpenGLUtil:addImage(image)
         local encapsulateImage = self.preResourceImageUtil:encapsulate(image)
-        if encapsulateImage ~= image then
+        if not rawequal(encapsulateImage, image) then
             do -- synchronized (self.anyType)
                 self.list:add(encapsulateImage)
             end
@@ -197,7 +197,7 @@ end
 
 function OpenGLUtil:addRunnable(runnable)
         do -- synchronized (self.lockObject)
-            if not self.runnableList:contains(runnable) then
+            if not (self.runnableList:contains(runnable)) then
                 self.runnableList:add(runnable)
                 self.displayInfoSingleton:add(self.canvasStrings.SCALED_IMAGES)
             end

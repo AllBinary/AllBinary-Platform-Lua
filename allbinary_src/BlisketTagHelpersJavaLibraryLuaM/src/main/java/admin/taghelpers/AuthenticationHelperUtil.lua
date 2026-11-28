@@ -87,10 +87,10 @@ end
 -- throws Exception
 function AuthenticationHelperUtil:isAuthorized(authenticationHelper, filePath)
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEWERROR) then
-            self.logUtil:putF(tostring(CommonLabels.getInstance().START) .. filePath, self, "isAuthorized()")
+            self.logUtil:putF(require("allbinary_java").to_string(CommonLabels.getInstance().START) .. require("allbinary_java").to_string(filePath), self, "isAuthorized()")
         end
         local endIndex = HttpRequestUtil.getInstance():getLastSeparatorIndex(filePath)
-        local fullPath = AbPath.new(tostring(URLGLOBALS.getWebappPath()) .. string.sub(filePath, (0) + 1, endIndex), StringUtil.getInstance().EMPTY_STRING)
+        local fullPath = AbPath.new(require("allbinary_java").to_string(URLGLOBALS.getWebappPath()) .. require("allbinary_java").to_string(string.sub(filePath, (0) + 1, endIndex)), StringUtil.getInstance().EMPTY_STRING)
         local downloadFilePermissions = HttpFilePermissions.new(fullPath)
         local userRoles = downloadFilePermissions:getUserRoles()
         local userRole = authenticationHelper:getRole()
@@ -102,7 +102,7 @@ function AuthenticationHelperUtil:isAuthorized(authenticationHelper, filePath)
             return true
         else
             if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-                self.logUtil:putF("Not Authorized: " .. tostring(basicUserRole), self, "isAuthorized()")
+                self.logUtil:putF(require("allbinary_java").to_string("Not Authorized: ") .. require("allbinary_java").to_string(tostring(basicUserRole)), self, "isAuthorized()")
             end
             return false
         end

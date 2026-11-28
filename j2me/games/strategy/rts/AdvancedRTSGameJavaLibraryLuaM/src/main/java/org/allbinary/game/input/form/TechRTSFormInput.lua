@@ -218,7 +218,7 @@ function TechRTSFormInput:processGameSpecific(associatedRtsLayer, rtsPlayerLayer
                 TechEventHandler.getInstance():fireEvent(self.EVENT)
             else
                 rtsPlayerLayerInterface:add(ErrorSound.getInstance())
-                if not rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface() then
+                if not (rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface()) then
                     GameNotificationEventHandler.getInstance():fireEvent(self.noMoneyGameNotificationEvent)
                 end
             end

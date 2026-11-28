@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Font = require("javax.microedition.lcdui.Font")
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Font = java_lazy("javax.microedition.lcdui.Font")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local BasicHud = require("org.allbinary.game.graphics.hud.BasicHud")
 local BasicHudFactory = java_lazy("org.allbinary.game.graphics.hud.BasicHudFactory")
 local BasicColor = java_lazy("org.allbinary.graphics.color.BasicColor")
@@ -175,8 +175,8 @@ function NumberStringHud:_init_fields()
     if self.primitiveLongUtil == nil then self.primitiveLongUtil = nil end
     if self.prependString == nil then self.prependString = nil end
     if self.PREPEND_STRING == nil then self.PREPEND_STRING = nil end
-    if self.value == nil then self.value = nil end
-    if self.max == nil then self.max = nil end
+    if self.value == nil then self.value = 0 end
+    if self.max == nil then self.max = 0 end
     if self.offset == nil then self.offset = 0 end
     if self.valueString == nil then self.valueString = nil end
     if self.valueTotalDigits == nil then self.valueTotalDigits = 0 end
@@ -193,7 +193,7 @@ function NumberStringHud._jinit(self, prependString, max, location, direction, b
         self.primitiveLongUtil = PrimitiveLongUtil.createPowerOfTen(max + 1)
         self.max = max
         self.value = 0
-        if direction == 0 then
+        if rawequal(direction, 0) then
             error(require("java.lang.RuntimeException").new(BasicHudFactory.getInstance().DIRECTION_EXCEPTION), 0)
         end
     return self

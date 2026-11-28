@@ -127,7 +127,7 @@ end
 
 
 function MyRandomFactory:getAbsoluteNextIntAllowZero(range)
-        if range == 0 then
+        if rawequal(range, 0) then
             return 0
         else
             return self.mathUtil:abs(self:getNextInt(range))
@@ -210,11 +210,11 @@ function MyRandomFactory.main(args)
         for index = 0, size - 1 do
             found = false
             for index2 = 0, size - 1 do
-                if intArray[index2 + 1] == index then
+                if rawequal(intArray[index2 + 1], index) then
                     found = true
                 end
             end
-            if not found then
+            if not (found) then
                 error(require("java.lang.RuntimeException").new(), 0)
             end
         end

@@ -118,7 +118,7 @@ function SmallDelete:deleteBetween(start, end_, newText)
                 local text = string.sub(self.string_, (endIndex + #end_) + 1, #self.string_)
                 local idFile = FileOutputStream.new(self.fileName)
                 local idOutData = DataOutputStream.new(idFile)
-                idOutData:writeBytes(newStart .. newText .. text)
+                idOutData:writeBytes(require("allbinary_java").to_string(require("allbinary_java").to_string(newStart) .. require("allbinary_java").to_string(newText)) .. require("allbinary_java").to_string(text))
                 do return "__jreturn", true end
             end
             do return "__jreturn", false end

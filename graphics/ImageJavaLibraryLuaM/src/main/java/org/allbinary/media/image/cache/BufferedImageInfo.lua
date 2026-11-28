@@ -54,9 +54,9 @@ BufferedImageInfo.className = "BufferedImageInfo"
 BufferedImageInfo.javaClassName = "org.allbinary.media.image.cache.BufferedImageInfo"
 
 function BufferedImageInfo:_init_fields()
-    if self.width == nil then self.width = nil end
-    if self.height == nil then self.height = nil end
-    if self.type == nil then self.type = nil end
+    if self.width == nil then self.width = 0 end
+    if self.height == nil then self.height = 0 end
+    if self.type == nil then self.type = 0 end
 end
 
 

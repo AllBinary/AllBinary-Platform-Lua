@@ -68,7 +68,7 @@ end
 
 
 function AllBinarySensorManager.getInstance()
-        if AllBinarySensorManager.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(AllBinarySensorManager.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             AllBinarySensorManager.instance_f = AllBinarySensorManager.new()
         end
         return AllBinarySensorManager.instance_f

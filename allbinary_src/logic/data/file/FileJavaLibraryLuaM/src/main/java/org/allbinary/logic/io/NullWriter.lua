@@ -159,6 +159,8 @@ function NullWriter:write(...)
     local count = select("#", ...)
     if count == 1 then return self:write_j1(...) end
     if count == 3 then return self:write_j3(...) end
+    local parent = getmetatable(NullWriter).__index
+    if parent.write then return parent.write(self, ...) end
     error("No method write takes " .. count .. " arguments")
 end
 NullWriter.write__jdispatcher = NullWriter.write

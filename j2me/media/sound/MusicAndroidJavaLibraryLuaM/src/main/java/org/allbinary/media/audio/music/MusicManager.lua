@@ -96,7 +96,7 @@ end
 
 
 function MusicManager:nextSong(nextSongSound, leftVolume, rightVolume)
-        if nextSongSound == nil then
+        if rawequal(nextSongSound, nil) then
             nextSongSound = NoSound.getInstance()
         end
         self.nextSongSound = nextSongSound
@@ -112,7 +112,7 @@ end
 
 
 function MusicManager:process()
-        if self.songList:size() == 0 then
+        if rawequal(self.songList:size(), 0) then
             return
         end
         if self.timeDelayHelper:isTime(self.gameTickTimeDelayHelper.startTime) then
@@ -143,7 +143,7 @@ end
 function MusicManager:startNewSong()
         local try_ok, try_error, try_value = pcall(function()
             self.resourceUtil:getContext():stopService(self.currentIntent)
-            if self.nextSongSound == NoSound.getInstance() then
+            if rawequal(self.nextSongSound, NoSound.getInstance()) then
                 self.currentSongSound = self.basicArrayListUtil:getRandom(self.songList)
             else
                 self.currentSongSound = self.nextSongSound
@@ -161,10 +161,10 @@ function MusicManager:startNewSong()
             local e = try_error
             if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
             local resource = StringUtil.getInstance().EMPTY_STRING
-            if self.currentSongSound ~= nil then
+            if not rawequal(self.currentSongSound, nil) then
                 resource = self.currentSongSound:getResource()
             end
-            PreLogUtil.putOE(tostring(self.commonStrings.EXCEPTION_LABEL) .. resource, self, self.commonStrings.PROCESS, e)
+            PreLogUtil.putOE(require("allbinary_java").to_string(self.commonStrings.EXCEPTION_LABEL) .. require("allbinary_java").to_string(resource), self, self.commonStrings.PROCESS, e)
         end
 end
 

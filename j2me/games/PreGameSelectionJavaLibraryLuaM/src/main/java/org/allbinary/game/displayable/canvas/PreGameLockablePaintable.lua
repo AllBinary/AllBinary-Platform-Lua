@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local GameFeatureImageCacheFactory = java_lazy("org.allbinary.image.GameFeatureImageCacheFactory")
 local LockedResources = java_lazy("org.allbinary.logic.system.security.licensing.LockedResources")
 local LockedUtil = java_lazy("org.allbinary.logic.system.security.licensing.LockedUtil")
@@ -132,7 +132,7 @@ PreGameLockablePaintable.javaClassName = "org.allbinary.game.displayable.canvas.
 setmetatable(PreGameLockablePaintable, {__index = LockablePaintable})
 
 function PreGameLockablePaintable:_init_fields()
-    if self.halfWidth == nil then self.halfWidth = nil end
+    if self.halfWidth == nil then self.halfWidth = 0 end
     if self.paintableForm == nil then self.paintableForm = nil end
 end
 

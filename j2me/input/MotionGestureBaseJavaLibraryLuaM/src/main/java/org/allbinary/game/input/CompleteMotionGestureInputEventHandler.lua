@@ -174,7 +174,7 @@ end
 
 
 function CompleteMotionGestureInputEventHandler:addListener(completeMotionGestureInputEventListener)
-        if not self.list:contains(completeMotionGestureInputEventListener) then
+        if not (self.list:contains(completeMotionGestureInputEventListener)) then
             self.list:add(completeMotionGestureInputEventListener)
         end
 end

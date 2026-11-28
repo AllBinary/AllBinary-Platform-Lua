@@ -232,11 +232,11 @@ java_overload(PathFinder, "searchTotalPath", 3, function(java_a1, java_a2, java_
 
 -- throws Exception
 function PathFinder:searchTotalPathN(startPathFindingNodeList, endPathFindingNodeList, totalPaths, multipassState)
-        if multipassState.step == 0 then
+        if rawequal(multipassState.step, 0) then
             multipassState.step = multipassState.step + 1
-        elseif multipassState.step == 1 then
+        elseif rawequal(multipassState.step, 1) then
             self:searchStart(startPathFindingNodeList:get(0), endPathFindingNodeList:get(0), multipassState)
-        elseif multipassState.step == 2 then
+        elseif rawequal(multipassState.step, 2) then
             return self:searchN(startPathFindingNodeList:get(0), endPathFindingNodeList:get(0), multipassState)
         end
         return self.basicArrayListUtil:getImmutableInstance()
@@ -264,7 +264,7 @@ java_overload(PathFinder, "searchStart", 3, function(java_a1, java_a2, java_a3) 
 -- throws Exception
 function PathFinder:searchN(startPathFindingNode, endPathFindingNode, multipassState)
         local list = self:findPathEnd(startPathFindingNode.geographicMapCellPosition, endPathFindingNode.geographicMapCellPosition, multipassState)
-        if list == nil then
+        if rawequal(list, nil) then
             return self.basicArrayListUtil:getImmutableInstance()
         end
         local pathList = BasicArrayListD.new()
@@ -304,7 +304,7 @@ function PathFinder:findPath(start, target)
         repeat
             current = self.openPriorityQueue:poll()
             self.closedSet:add(current)
-            if current:equals(targetNode) then
+            if require("allbinary_java").equals(current, targetNode) then
                 return self:extractPath(start, current)
             end
             local neighbor = nil
@@ -320,10 +320,10 @@ function PathFinder:findPath(start, target)
                         end
                         neighborInfo = neighbor.pathFindingNodeCostInfoP
                         calculatedCost = neighborInfo.costToEndP + neighborInfo.costFromStartP + current.pathFindingNodeCostInfoP.totalCostP
-                        if calculatedCost < neighborInfo.totalCostP or not self.openPriorityQueue:contains(neighbor) then
+                        if calculatedCost < neighborInfo.totalCostP or not (self.openPriorityQueue:contains(neighbor)) then
                             neighborInfo.totalCostP = calculatedCost
                             neighbor.parent = current
-                            if not self.openPriorityQueue:contains(neighbor) then
+                            if not (self.openPriorityQueue:contains(neighbor)) then
                                 if geographicMapInterface:isOfFourDirections(current.geographicMapCellPosition, neighbor.geographicMapCellPosition) then
                                     self.openPriorityQueue:add(neighbor)
                                 end
@@ -334,7 +334,7 @@ function PathFinder:findPath(start, target)
                     ::continue_N70404::
                 end
             end
-        until not (not self.openPriorityQueue:isEmpty())
+        until not (not (self.openPriorityQueue:isEmpty()))
         error(require("java.lang.RuntimeException").new(), 0)
 end
 java_overload(PathFinder, "findPath", 2, function(java_a1, java_a2) return true and (java_a1 == nil or java_is(java_a1, "GeographicMapCellPosition")) and (java_a2 == nil or java_is(java_a2, "GeographicMapCellPosition")) end)
@@ -376,7 +376,7 @@ function PathFinder:findPathEnd(start, target, multipassState)
         repeat
             current = self.openPriorityQueue:poll()
             self.closedSet:add(current)
-            if current:equals(targetNode) then
+            if require("allbinary_java").equals(current, targetNode) then
                 return self:extractPath(start, current)
             end
             local neighbor = nil
@@ -392,10 +392,10 @@ function PathFinder:findPathEnd(start, target, multipassState)
                         end
                         neighborInfo = neighbor.pathFindingNodeCostInfoP
                         calculatedCost = neighborInfo.costToEndP + neighborInfo.costFromStartP + current.pathFindingNodeCostInfoP.totalCostP
-                        if calculatedCost < neighborInfo.totalCostP or not self.openPriorityQueue:contains(neighbor) then
+                        if calculatedCost < neighborInfo.totalCostP or not (self.openPriorityQueue:contains(neighbor)) then
                             neighborInfo.totalCostP = calculatedCost
                             neighbor.parent = current
-                            if not self.openPriorityQueue:contains(neighbor) then
+                            if not (self.openPriorityQueue:contains(neighbor)) then
                                 if geographicMapInterface:isOfFourDirections(current.geographicMapCellPosition, neighbor.geographicMapCellPosition) then
                                     self.openPriorityQueue:add(neighbor)
                                 end
@@ -410,7 +410,7 @@ function PathFinder:findPathEnd(start, target, multipassState)
             if total > 10 then
                 return self.basicArrayListUtil:getImmutableInstance()
             end
-        until not (not self.openPriorityQueue:isEmpty())
+        until not (not (self.openPriorityQueue:isEmpty()))
         error(require("java.lang.RuntimeException").new(), 0)
 end
 java_overload(PathFinder, "findPathEnd", 3, function(java_a1, java_a2, java_a3) return true and (java_a1 == nil or java_is(java_a1, "GeographicMapCellPosition")) and (java_a2 == nil or java_is(java_a2, "GeographicMapCellPosition")) and (java_a3 == nil or java_is(java_a3, "MultipassState")) end)
@@ -418,7 +418,7 @@ java_overload(PathFinder, "findPathEnd", 3, function(java_a1, java_a2, java_a3) 
 
 function PathFinder:extractPath(start, current)
         local path = BasicArrayListD.new()
-        while current.parent ~= NullUtil.getInstance().NULL_OBJECT do
+        while not rawequal(current.parent, NullUtil.getInstance().NULL_OBJECT) do
             path:add(current.geographicMapCellPosition)
             current = current.parent
         end

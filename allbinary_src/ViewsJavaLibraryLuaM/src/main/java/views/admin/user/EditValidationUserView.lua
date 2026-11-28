@@ -182,9 +182,9 @@ end
 
 function EditValidationUserView:isValid()
         local try_ok, try_error, try_value = pcall(function()
-            if UserName.getInstance():isValid(self.userName) == true then
+            if rawequal(UserName.getInstance():isValid(self.userName), true) then
                 self.user = UserEntityFactory.getInstance():getUser(self.userName)
-                if self.user == nil then
+                if rawequal(self.user, nil) then
                     do return "__jreturn", false end
                 end
             else
@@ -208,12 +208,12 @@ java_overload(EditValidationUserView, "isValid", 0)
 function EditValidationUserView:validationInfo()
         local try_ok, try_error, try_value = pcall(function()
             local stringBuffer = StringMaker.new()
-            if UserName.getInstance():isValid(self.userName) == true then
+            if rawequal(UserName.getInstance():isValid(self.userName), true) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     self.logUtil:putF("User Name is valid", self, "validationInfo()")
                 end
                 self.user = UserEntityFactory.getInstance():getUser(self.userName)
-                if self.user == nil then
+                if rawequal(self.user, nil) then
                     stringBuffer:append("User does not exist.<br />")
                     do return "__jreturn", tostring(stringBuffer) end
                 end
@@ -221,7 +221,7 @@ function EditValidationUserView:validationInfo()
                 stringBuffer:append("User Name is not valid.<br />")
                 do return "__jreturn", tostring(stringBuffer) end
             end
-            if self.user:isValid() == false then
+            if rawequal(self.user:isValid(), false) then
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
                     self.logUtil:putF("User exists but is invalid - Probably manually modified", self, "validationInfo()")
                 end

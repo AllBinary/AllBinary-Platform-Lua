@@ -247,18 +247,18 @@ java_overload(BasketTag, "adjustBasket", 0)
 -- throws JspTagException
 function BasketTag:doStartTag()
         local try_ok, try_error, try_value = pcall(function()
-            if self.command ~= nil then
+            if not rawequal(self.command, nil) then
                 self.propertiesHashMap = StdUtil.getInstance():createHashMap()
                 self.propertiesHashMap:put(StoreFrontData.getInstance().NAME, self.storeName)
-                if ((self.command < BasketData.INSERT and -1) or (self.command > BasketData.INSERT and 1) or 0) == 0 then
-                    if not self:addItemToBasket() then
+                if rawequal(((self.command < BasketData.INSERT and -1) or (self.command > BasketData.INSERT and 1) or 0), 0) then
+                    if not (self:addItemToBasket()) then
                         self.pageContext:getOut():println("Item is not currently being sold.<p/>")
                     end
-                elseif ((self.command < BasketData.DELETE and -1) or (self.command > BasketData.DELETE and 1) or 0) == 0 then
+                elseif rawequal(((self.command < BasketData.DELETE and -1) or (self.command > BasketData.DELETE and 1) or 0), 0) then
                     self:removeItemFromBasket()
-                elseif ((self.command < BasketData.ADJUST and -1) or (self.command > BasketData.ADJUST and 1) or 0) == 0 then
+                elseif rawequal(((self.command < BasketData.ADJUST and -1) or (self.command > BasketData.ADJUST and 1) or 0), 0) then
                     self:adjustBasket()
-                elseif ((self.command < BasketData.ISEMPTY and -1) or (self.command > BasketData.ISEMPTY and 1) or 0) == 0 then
+                elseif rawequal(((self.command < BasketData.ISEMPTY and -1) or (self.command > BasketData.ISEMPTY and 1) or 0), 0) then
                     if self:isBasketEmpty() then
                         do return "__jreturn", self.EVAL_BODY_INCLUDE end
                     else

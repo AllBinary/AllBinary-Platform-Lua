@@ -185,11 +185,11 @@ function GenericProfileActionScript._new2(self, genericProfileActionJPanel, node
         self.genericProfileActionJPanel = genericProfileActionJPanel
         self:setProfileActionConditionInterfaceVector(BasicArrayListD.new())
         local actionScriptNode = DomSearchHelper.getNode(GenericProfileActionData.SCRIPT, node:getChildNodes())
-        if actionScriptNode ~= nil then
+        if not rawequal(actionScriptNode, nil) then
             local nodeList = actionScriptNode:getChildNodes()
             for index = 0, nodeList:getLength() - 1 do
                 local actionConditionNode = nodeList:item(index)
-                if actionConditionNode:getNodeType() == Node.ELEMENT_NODE then
+                if rawequal(actionConditionNode:getNodeType(), Node.ELEMENT_NODE) then
                     self:addCondition(ProfileActionScriptConditionFactory.getInstance(actionConditionNode))
                 end
             end
@@ -227,7 +227,7 @@ java_overload(GenericProfileActionScript, "removeCondition", 1, function(java_a1
 
 function GenericProfileActionScript:toHashMap()
         local hashMap = StdUtil.getInstance():createHashMap()
-        self.logUtil:putF("HashMap: " .. tostring(hashMap), self, "toHashMap()")
+        self.logUtil:putF(require("allbinary_java").to_string("HashMap: ") .. require("allbinary_java").to_string(tostring(hashMap)), self, "toHashMap()")
         return hashMap
 end
 java_overload(GenericProfileActionScript, "toHashMap", 0)

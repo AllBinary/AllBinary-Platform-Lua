@@ -258,7 +258,7 @@ function ImageUtil:createBufferedImage6(bufferedImage, newWidth, newHeight, scal
         self.logUtil:putF(tostring(StringMaker.new():appendfloat(width):append(self.commonSeps.FORWARD_SLASH):appendfloat(height):append(self.commonSeps.COLON):appendint(newWidth):append(self.commonSeps.FORWARD_SLASH):appendint(newHeight):append(self.commonSeps.COLON):appendfloat(widthRatio):append(self.commonSeps.FORWARD_SLASH):appendfloat(heightRatio)), self, self.CREATE_BUFFERED_IMAGE)
         local dx = 0.0
         local dy = 0.0
-        if not scale and allowTranslate then
+        if not (scale) and allowTranslate then
             dx = ((newWidth + 0.0) - width) / 2.0
             dy = ((newHeight + 0.0) - height) / 2.0
             self.logUtil:putF(tostring(StringMaker.new():append("Translate dx: "):appendfloat(dx):append(" dy: "):appendfloat(dy)), self, self.CREATE_BUFFERED_IMAGE)

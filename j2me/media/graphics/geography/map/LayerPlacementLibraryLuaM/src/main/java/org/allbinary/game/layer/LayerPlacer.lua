@@ -136,13 +136,13 @@ end
 function LayerPlacer:getPoint(layerPlacementInterface)
         local pointFactory = PointFactory.getInstance()
         local layerPlacementType = layerPlacementInterface:getLayerType()
-        if layerPlacementType == LayerPlacementTypeFactory.getInstance().MAP then
+        if rawequal(layerPlacementType, LayerPlacementTypeFactory.getInstance().MAP) then
             local width = layerPlacementInterface:getWidth()
             local height = layerPlacementInterface:getHeight()
             local x = ((self.dimension:getX() - width) / 2)
             local y = ((self.dimension:getY() - height) / 2)
             return pointFactory:createXY(x, y)
-        elseif layerPlacementType == LayerPlacementTypeFactory.getInstance().UP then
+        elseif rawequal(layerPlacementType, LayerPlacementTypeFactory.getInstance().UP) then
             local width = layerPlacementInterface:getWidth()
             local height = layerPlacementInterface:getHeight()
             local x = ((self.dimension:getX() - width) / 2)

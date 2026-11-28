@@ -121,7 +121,7 @@ end
 
 function BasicColorFactory:createInstanceARGB(alphaValue, r, g, b, name)
         local ALPHA_MASK = (0xFF000000 - 0x100000000)
-        return BasicColor.new(alphaValue, ((alphaValue << 24) & ALPHA_MASK) + ((r << 16) & 0x00FF0000) + ((g << 8) & 0x0000FF00) + (b & 0x000000FF), StringUtil.getInstance().EMPTY_STRING)
+        return BasicColor.new(alphaValue, (((((((alphaValue) << ((24) & 31)) + 0x80000000) & 0xffffffff) - 0x80000000)) & ALPHA_MASK) + (((((((r) << ((16) & 31)) + 0x80000000) & 0xffffffff) - 0x80000000)) & 0x00FF0000) + (((((((g) << ((8) & 31)) + 0x80000000) & 0xffffffff) - 0x80000000)) & 0x0000FF00) + (b & 0x000000FF), StringUtil.getInstance().EMPTY_STRING)
 end
 
 BasicColorFactory.instance_f = BasicColorFactory.new()

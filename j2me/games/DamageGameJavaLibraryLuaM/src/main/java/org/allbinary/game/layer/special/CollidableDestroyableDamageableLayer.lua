@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Graphics = require("javax.microedition.lcdui.Graphics")
+local Graphics = java_lazy("javax.microedition.lcdui.Graphics")
 local CollidableNeverCollideBehaviorFactory = java_lazy("org.allbinary.game.collision.CollidableNeverCollideBehaviorFactory")
 local DamageableInterface = java_lazy("org.allbinary.game.combat.damage.DamageableInterface")
 local DestroyableInterface = java_lazy("org.allbinary.game.combat.destroy.DestroyableInterface")
@@ -184,8 +184,8 @@ CollidableDestroyableDamageableLayer.java_interfaces = function() return {Destro
 function CollidableDestroyableDamageableLayer:_init_fields()
     if self.groupInterface == nil then self.groupInterface = nil end
     if self.readyForExplosion == nil then self.readyForExplosion = false end
-    if self.initWidth == nil then self.initWidth = nil end
-    if self.initHeight == nil then self.initHeight = nil end
+    if self.initWidth == nil then self.initWidth = 0 end
+    if self.initHeight == nil then self.initHeight = 0 end
     if self.initX == nil then self.initX = 0 end
     if self.initY == nil then self.initY = 0 end
     if self.initZ == nil then self.initZ = 0 end
@@ -199,7 +199,7 @@ end
 
 
 function CollidableDestroyableDamageableLayer.getNullInstance()
-        if CollidableDestroyableDamageableLayer.NULL_COLLIDABLE_DESTROYABLE_DAMAGE_LAYER == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(CollidableDestroyableDamageableLayer.NULL_COLLIDABLE_DESTROYABLE_DAMAGE_LAYER, NullUtil.getInstance().NULL_OBJECT) then
             CollidableDestroyableDamageableLayer.NULL_COLLIDABLE_DESTROYABLE_DAMAGE_LAYER = CollidableDestroyableDamageableLayer.new(BasicGroupFactory.getInstance().NONE_ARRAY, StringUtil.getInstance().EMPTY_STRING, RectangleFactory.SINGLETON, ViewPositionBase.NULL_VIEW_POSITION)
         end
         return CollidableDestroyableDamageableLayer.NULL_COLLIDABLE_DESTROYABLE_DAMAGE_LAYER
@@ -282,7 +282,7 @@ java_overload(CollidableDestroyableDamageableLayer, "setGroupInterface", 1, func
 -- throws Exception
 function CollidableDestroyableDamageableLayer:setAllBinaryGameLayerManager(allBinaryGameLayerManager)
         self.allBinaryGameLayerManagerP = allBinaryGameLayerManager
-        if self.allBinaryGameLayerManagerP == nil then
+        if rawequal(self.allBinaryGameLayerManagerP, nil) then
             error(require("java.lang.RuntimeException").new(), 0)
         end
 end
@@ -480,7 +480,7 @@ function CollidableDestroyableDamageableLayer:toStringAppend(stringBuffer)
             stringBuffer:append(commonSeps.COMMA)
         end
         local pickupBehavior = self:getPickupBehavior()
-        if pickupBehavior ~= nil then
+        if not rawequal(pickupBehavior, nil) then
             stringBuffer:append(commonSeps.NEW_LINE)
             stringBuffer:append(tostring(pickupBehavior))
         end

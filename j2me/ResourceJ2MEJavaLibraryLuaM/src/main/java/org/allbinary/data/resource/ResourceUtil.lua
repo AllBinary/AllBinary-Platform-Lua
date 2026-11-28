@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
@@ -99,46 +99,46 @@ end
 
 -- throws Exception
 function ResourceUtil:getResourceAsStream(resource)
-        local inputStream = getmetatable(resource):getResourceAsStream(resource)
-        if inputStream == nil then
+        local inputStream = require("java.lang.ClassLoader").classResource(getmetatable(resource), resource, true)
+        if rawequal(inputStream, nil) then
             inputStream = self:getResourceAsStreamAtStart(resource, 2)
-            if inputStream == nil then
+            if rawequal(inputStream, nil) then
                 inputStream = self:getResourceAsStreamAtStart(resource, 1)
-                if inputStream == nil then
+                if rawequal(inputStream, nil) then
                     local stringMaker = StringMaker.new()
                     local index = resource:lastIndexOf("/")
                     local resourcePath = string.sub(resource, (index + 1) + 1)
-                    inputStream = getmetatable(resource):getResourceAsStream(resourcePath)
-                    if inputStream == nil then
+                    inputStream = require("java.lang.ClassLoader").classResource(getmetatable(resource), resourcePath, true)
+                    if rawequal(inputStream, nil) then
                         resourcePath = string.sub(resource, (index) + 1)
-                        inputStream = getmetatable(resource):getResourceAsStream(resourcePath)
-                        if inputStream == nil then
+                        inputStream = require("java.lang.ClassLoader").classResource(getmetatable(resource), resourcePath, true)
+                        if rawequal(inputStream, nil) then
                             local RES = "res"
                             resourcePath = tostring(stringMaker:append(RES):append(string.sub(resource, (index) + 1)))
-                            inputStream = getmetatable(resource):getResourceAsStream(resourcePath)
-                            if inputStream == nil then
+                            inputStream = require("java.lang.ClassLoader").classResource(getmetatable(resource), resourcePath, true)
+                            if rawequal(inputStream, nil) then
                                 stringMaker:delete(0, stringMaker:length())
                                 resourcePath = tostring(stringMaker:append("/"):append(RES):append(string.sub(resource, (index) + 1)))
-                                inputStream = getmetatable(resource):getResourceAsStream(resourcePath)
+                                inputStream = require("java.lang.ClassLoader").classResource(getmetatable(resource), resourcePath, true)
                                 local COLON = CommonSeps.getInstance().COLON
-                                if inputStream == nil then
+                                if rawequal(inputStream, nil) then
                                     stringMaker:delete(0, stringMaker:length())
                                     resourcePath = tostring(stringMaker:append(RES):append(COLON):append(string.sub(resource, (index) + 1)))
-                                    inputStream = getmetatable(resource):getResourceAsStream(resourcePath)
-                                    if inputStream == nil then
+                                    inputStream = require("java.lang.ClassLoader").classResource(getmetatable(resource), resourcePath, true)
+                                    if rawequal(inputStream, nil) then
                                         stringMaker:delete(0, stringMaker:length())
                                         resourcePath = tostring(stringMaker:append(RES):append(COLON):append(string.sub(resource, (index + 1) + 1)))
-                                        inputStream = getmetatable(resource):getResourceAsStream(resourcePath)
-                                        if inputStream == nil then
+                                        inputStream = require("java.lang.ClassLoader").classResource(getmetatable(resource), resourcePath, true)
+                                        if rawequal(inputStream, nil) then
                                             local RESOURCE_STRING = "resource"
                                             stringMaker:delete(0, stringMaker:length())
                                             resourcePath = tostring(stringMaker:append(RESOURCE_STRING):append(COLON):append(string.sub(resource, (index) + 1)))
-                                            inputStream = getmetatable(resource):getResourceAsStream(resourcePath)
-                                            if inputStream == nil then
+                                            inputStream = require("java.lang.ClassLoader").classResource(getmetatable(resource), resourcePath, true)
+                                            if rawequal(inputStream, nil) then
                                                 stringMaker:delete(0, stringMaker:length())
                                                 resourcePath = tostring(stringMaker:append(RESOURCE_STRING):append(COLON):append(string.sub(resource, (index + 1) + 1)))
-                                                inputStream = getmetatable(resource):getResourceAsStream(resourcePath)
-                                                if inputStream == nil then
+                                                inputStream = require("java.lang.ClassLoader").classResource(getmetatable(resource), resourcePath, true)
+                                                if rawequal(inputStream, nil) then
                                                     stringMaker:delete(0, stringMaker:length())
                                                     error(require("java.lang.Exception").new(tostring(stringMaker:append("Unable to obtain: "):append(resource))), 0)
                                                 end
@@ -161,8 +161,8 @@ function ResourceUtil:getResourceAsStreamAtStart(resource, startIndex)
         local stringMaker = StringMaker.new()
         local index = ((string.find(resource, CommonSeps.getInstance().COLON, 1, true) or 0) - 1)
         local resourcePath = string.sub(resource, (index + startIndex) + 1)
-        local inputStream = getmetatable(resource):getResourceAsStream(resourcePath)
-        if inputStream ~= nil then
+        local inputStream = require("java.lang.ClassLoader").classResource(getmetatable(resource), resourcePath, true)
+        if not rawequal(inputStream, nil) then
             return inputStream
         end
         return inputStream

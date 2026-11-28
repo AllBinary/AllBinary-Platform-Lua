@@ -101,7 +101,7 @@ function OperatingSystemFactory:getOperatingSystemInstance()
         local try_ok, try_error, try_value = pcall(function()
             local systemProperties = SystemProperties.getInstance()
             local osName = systemProperties:getName()
-            if not self.hasDetected then
+            if not (self.hasDetected) then
                 self.hasDetected = true
                 if ((string.find(osName, OperatingSystems.getInstance().ANDROID, 1, true) or 0) - 1) >= 0 then
                     self.logUtil:putF("Found a Android OS", self, commonStrings.GET_INSTANCE)

@@ -72,12 +72,12 @@ function PathParser.tokenize(d)
         local sb = require("java.lang.StringBuffer").new()
         for i = 0, #d - 1 do
             local c = string.sub(d, (i) + 1, (i) + 1)
-            if c == " " or c == "," or c == "\t" or c == "\n" or c == "\r" then
+            if rawequal(c, " ") or rawequal(c, ",") or rawequal(c, "\t") or rawequal(c, "\n") or rawequal(c, "\r") then
                 if sb:length() > 0 then
                     tokens:add(tostring(sb))
                     sb:setLength(0)
                 end
-            elseif c == "M" or c == "m" or c == "L" or c == "l" or c == "V" or c == "v" or c == "C" or c == "c" or c == "Z" or c == "z" then
+            elseif rawequal(c, "M") or rawequal(c, "m") or rawequal(c, "L") or rawequal(c, "l") or rawequal(c, "V") or rawequal(c, "v") or rawequal(c, "C") or rawequal(c, "c") or rawequal(c, "Z") or rawequal(c, "z") then
                 if sb:length() > 0 then
                     tokens:add(tostring(sb))
                     sb:setLength(0)
@@ -108,10 +108,10 @@ function PathParser.parsePath(d, outX, outY, maxPoints)
         while idx < (tokens.n or #tokens) do
             local tok = tokens[(function() local value = idx idx = value + 1 return value end)() + 1]
             local cmd = string.sub(tok, (0) + 1, (0) + 1)
-            if cmd == "M" or cmd == "m" then
+            if rawequal(cmd, "M") or rawequal(cmd, "m") then
                 local x = fixedPoint:toFixed(tonumber(tokens[(function() local value = idx idx = value + 1 return value end)() + 1]))
                 local y = fixedPoint:toFixed(tonumber(tokens[(function() local value = idx idx = value + 1 return value end)() + 1]))
-                if cmd == "m" then
+                if rawequal(cmd, "m") then
                     x = x + (curX)
                     y = y + (curY)
                 end
@@ -122,10 +122,10 @@ function PathParser.parsePath(d, outX, outY, maxPoints)
                 outX[count[1] + 1] = curX
                 outY[count[1] + 1] = curY
                 count[1] = count[1] + 1
-            elseif cmd == "L" or cmd == "l" then
+            elseif rawequal(cmd, "L") or rawequal(cmd, "l") then
                 local x = fixedPoint:toFixed(tonumber(tokens[(function() local value = idx idx = value + 1 return value end)() + 1]))
                 local y = fixedPoint:toFixed(tonumber(tokens[(function() local value = idx idx = value + 1 return value end)() + 1]))
-                if cmd == "l" then
+                if rawequal(cmd, "l") then
                     x = x + (curX)
                     y = y + (curY)
                 end
@@ -134,23 +134,23 @@ function PathParser.parsePath(d, outX, outY, maxPoints)
                 outX[count[1] + 1] = curX
                 outY[count[1] + 1] = curY
                 count[1] = count[1] + 1
-            elseif cmd == "V" or cmd == "v" then
+            elseif rawequal(cmd, "V") or rawequal(cmd, "v") then
                 local y = fixedPoint:toFixed(tonumber(tokens[(function() local value = idx idx = value + 1 return value end)() + 1]))
-                if cmd == "v" then
+                if rawequal(cmd, "v") then
                     y = y + (curY)
                 end
                 curY = y
                 outX[count[1] + 1] = curX
                 outY[count[1] + 1] = curY
                 count[1] = count[1] + 1
-            elseif cmd == "C" or cmd == "c" then
+            elseif rawequal(cmd, "C") or rawequal(cmd, "c") then
                 local x1 = fixedPoint:toFixed(tonumber(tokens[(function() local value = idx idx = value + 1 return value end)() + 1]))
                 local y1 = fixedPoint:toFixed(tonumber(tokens[(function() local value = idx idx = value + 1 return value end)() + 1]))
                 local x2 = fixedPoint:toFixed(tonumber(tokens[(function() local value = idx idx = value + 1 return value end)() + 1]))
                 local y2 = fixedPoint:toFixed(tonumber(tokens[(function() local value = idx idx = value + 1 return value end)() + 1]))
                 local x3 = fixedPoint:toFixed(tonumber(tokens[(function() local value = idx idx = value + 1 return value end)() + 1]))
                 local y3 = fixedPoint:toFixed(tonumber(tokens[(function() local value = idx idx = value + 1 return value end)() + 1]))
-                if cmd == "c" then
+                if rawequal(cmd, "c") then
                     x1 = x1 + (curX)
                     y1 = y1 + (curY)
                     x2 = x2 + (curX)
@@ -161,18 +161,18 @@ function PathParser.parsePath(d, outX, outY, maxPoints)
                 PGUtil.getInstance():flattenCubicBezier(curX, curY, x1, y1, x2, y2, x3, y3, outX, outY, count, maxPoints)
                 curX = x3
                 curY = y3
-            elseif cmd == "Z" or cmd == "z" then
+            elseif rawequal(cmd, "Z") or rawequal(cmd, "z") then
                 curX = startX
                 curY = startY
                 outX[count[1] + 1] = curX
                 outY[count[1] + 1] = curY
                 count[1] = count[1] + 1
             end
-            while idx < (tokens.n or #tokens) and not PathParser.isCommand(tokens[idx + 1]) do
-                if cmd == "M" or cmd == "m" or cmd == "L" or cmd == "l" then
+            while idx < (tokens.n or #tokens) and not (PathParser.isCommand(tokens[idx + 1])) do
+                if rawequal(cmd, "M") or rawequal(cmd, "m") or rawequal(cmd, "L") or rawequal(cmd, "l") then
                     local x = fixedPoint:toFixed(tonumber(tokens[(function() local value = idx idx = value + 1 return value end)() + 1]))
                     local y = fixedPoint:toFixed(tonumber(tokens[(function() local value = idx idx = value + 1 return value end)() + 1]))
-                    if cmd == "m" or cmd == "l" then
+                    if rawequal(cmd, "m") or rawequal(cmd, "l") then
                         x = x + (curX)
                         y = y + (curY)
                     end
@@ -181,9 +181,9 @@ function PathParser.parsePath(d, outX, outY, maxPoints)
                     outX[count[1] + 1] = curX
                     outY[count[1] + 1] = curY
                     count[1] = count[1] + 1
-                elseif cmd == "V" or cmd == "v" then
+                elseif rawequal(cmd, "V") or rawequal(cmd, "v") then
                     local y = fixedPoint:toFixed(tonumber(tokens[(function() local value = idx idx = value + 1 return value end)() + 1]))
-                    if cmd == "v" then
+                    if rawequal(cmd, "v") then
                         y = y + (curY)
                     end
                     curY = y

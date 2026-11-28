@@ -65,7 +65,7 @@ end
 
 
 function PlatformKeyFactory.getInstance()
-        if PlatformKeyFactory.instance_f == NullUtil.getInstance().NULL_OBJECT then
+        if rawequal(PlatformKeyFactory.instance_f, NullUtil.getInstance().NULL_OBJECT) then
             PlatformKeyFactory.instance_f = PlatformKeyFactory.new()
         end
         return PlatformKeyFactory.instance_f

@@ -284,6 +284,8 @@ function ABVector:add(...)
     local count = select("#", ...)
     if count == 1 then return self:add_j1(...) end
     if count == 2 then return self:add_j2(...) end
+    local parent = getmetatable(ABVector).__index
+    if parent.add then return parent.add(self, ...) end
     error("No method add takes " .. count .. " arguments")
 end
 ABVector.add__jdispatcher = ABVector.add
@@ -295,6 +297,8 @@ end
 function ABVector:remove(...)
     local count = select("#", ...)
     if count == 1 then return self:remove_j1(...) end
+    local parent = getmetatable(ABVector).__index
+    if parent.remove then return parent.remove(self, ...) end
     error("No method remove takes " .. count .. " arguments")
 end
 ABVector.remove__jdispatcher = ABVector.remove

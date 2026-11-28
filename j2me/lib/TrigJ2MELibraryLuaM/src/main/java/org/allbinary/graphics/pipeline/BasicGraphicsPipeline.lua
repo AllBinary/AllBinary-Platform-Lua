@@ -93,7 +93,7 @@ function BasicGraphicsPipeline:translate(x, y)
         local secondPoint = nil
         for index = 0, size - 1 do
             secondPoint = self.pointBasicArrayList.objectArray[index + 1]
-            if secondPoint:getX() ~= 1000 then
+            if not rawequal(secondPoint:getX(), 1000) then
                 newBasicArrayList:add(pointFactory:createXY(secondPoint:getX() + x, secondPoint:getY() + y))
             else
                 newBasicArrayList:add(secondPoint)
@@ -123,7 +123,7 @@ function BasicGraphicsPipeline:rotate(angle)
         local cos = 0
         for index = 0, size - 1 do
             secondPoint = self.pointBasicArrayList.objectArray[index + 1]
-            if secondPoint:getX() ~= 1000 then
+            if not rawequal(secondPoint:getX(), 1000) then
                 sin = self.noDecimalTrigTable:sin(angle)
                 cos = self.noDecimalTrigTable:cos(angle)
                 y = secondPoint:getY() * sin
@@ -150,7 +150,7 @@ function BasicGraphicsPipeline:mirror(width)
         local size = self.pointBasicArrayList:size()
         for index = 0, size - 1 do
             secondPoint = self.pointBasicArrayList.objectArray[index + 1]
-            if secondPoint:getX() ~= 1000 then
+            if not rawequal(secondPoint:getX(), 1000) then
                 newX = 0
                 if secondPoint:getX() > halfWidth then
                     newX = halfWidth - (secondPoint:getX() - halfWidth)

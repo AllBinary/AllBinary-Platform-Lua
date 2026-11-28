@@ -29,7 +29,7 @@ local function java_real(class)
 end
 
 -- local ByteArrayInputStream = require("java.io.ByteArrayInputStream")
--- local InputStream = require("java.io.InputStream")
+local InputStream = java_lazy("java.io.InputStream")
 local Globals = java_lazy("org.allbinary.globals.Globals")
 local URLGLOBALS = java_lazy("org.allbinary.globals.URLGLOBALS")
 local BasicTextJDialog = java_lazy("org.allbinary.gui.dialog.BasicTextJDialog")
@@ -75,8 +75,8 @@ end
 
 function CryptService._jinit(self)
     CryptService._init_fields(self)
-        Globals.getInstance():init(getmetatable(self):getClassLoader(), "./")
-        self.logUtil:putF("Set Globals: " .. tostring(URLGLOBALS.getWebappPath()), self, self.commonStrings.CONSTRUCTOR)
+        Globals.getInstance():init(require("java.lang.ClassLoader").getSystemClassLoader(), "./")
+        self.logUtil:putF(require("allbinary_java").to_string("Set Globals: ") .. require("allbinary_java").to_string(URLGLOBALS.getWebappPath()), self, self.commonStrings.CONSTRUCTOR)
     return self
 end
 
@@ -109,7 +109,7 @@ function CryptService:showLicenseDialog(abeClientInformation, e)
             local basicTextJDialog = BasicTextJDialog.new(tostring(e))
             local try_ok, try_error, try_value = pcall(function()
                 local abeLicenseInterface = AbeLicenseInterfaceFactory.getInstance():getLicenseInstance(abeClientInformation)
-                if abeLicenseInterface ~= AbeNoLicense.getInstance() then
+                if not rawequal(abeLicenseInterface, AbeNoLicense.getInstance()) then
                     if abeLicenseInterface:isValid() then
                         basicTextJDialog:setText("Subscription Invalid")
                     end

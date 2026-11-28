@@ -131,7 +131,7 @@ SingleAnalogControllerVisitor.javaClassName = "org.allbinary.android.input.motio
 setmetatable(SingleAnalogControllerVisitor, {__index = AnalogControllerVisitor})
 
 function SingleAnalogControllerVisitor:_init_fields()
-    if self.playerInputId == nil then self.playerInputId = nil end
+    if self.playerInputId == nil then self.playerInputId = 0 end
 end
 
 

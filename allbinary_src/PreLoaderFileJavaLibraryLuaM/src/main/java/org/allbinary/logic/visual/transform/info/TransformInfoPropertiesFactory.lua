@@ -128,11 +128,11 @@ function TransformInfoPropertiesFactory:getInstance(node)
         local attrNode = attributes:getNamedItem(transformInfoData.NAME)
         local name = attrNode:getValue()
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF(tostring(CommonLabels.getInstance().NEXT) .. " View Name: " .. name, self, "toTransformInfoPropertiesHashMap()")
+            self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(CommonLabels.getInstance().NEXT) .. require("allbinary_java").to_string(" View Name: ")) .. require("allbinary_java").to_string(name), self, "toTransformInfoPropertiesHashMap()")
         end
         local labelNode = DomSearchHelper.getNodeNoThrow(transformInfoData.LABEL, transformInfoChildNodeList)
         local label = DomNodeHelper.getTextNodesValue(labelNode)
-        if label == nil then
+        if rawequal(label, nil) then
             label = name
         end
         local descriptionNode = DomSearchHelper.getNode(transformInfoData.DESCRIPTION, transformInfoChildNodeList)

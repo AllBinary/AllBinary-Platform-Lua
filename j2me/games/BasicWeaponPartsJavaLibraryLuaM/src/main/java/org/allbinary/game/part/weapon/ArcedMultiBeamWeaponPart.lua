@@ -137,7 +137,7 @@ setmetatable(ArcedMultiBeamWeaponPart, {__index = BasicWeaponPart})
 
 function ArcedMultiBeamWeaponPart:_init_fields()
     if self.weaponLayerCircularStaticPool == nil then self.weaponLayerCircularStaticPool = nil end
-    if self.total == nil then self.total = nil end
+    if self.total == nil then self.total = 0 end
     self.TOTAL_ANGLE = java_int(AngleFactory.getInstance().TOTAL_ANGLE)
 end
 

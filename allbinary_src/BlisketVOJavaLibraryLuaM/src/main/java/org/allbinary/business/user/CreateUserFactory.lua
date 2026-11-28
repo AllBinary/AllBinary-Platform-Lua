@@ -84,9 +84,9 @@ end
 
 -- throws Exception
 function CreateUserFactory.getInstance(hashMap)
-        if hashMap ~= nil then
+        if not rawequal(hashMap, nil) then
             local roleString = hashMap:get(tostring(UserRoleData.NAME))
-            if not StringValidationUtil.getInstance():isEmpty(roleString) then
+            if not (StringValidationUtil.getInstance():isEmpty(roleString)) then
                 local role = UserRoleB.getRole(roleString)
                 return role:getUserFactory():getInstance(hashMap)
             else

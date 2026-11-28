@@ -193,7 +193,7 @@ end
 
 function BasicProfileActionScriptProcessor:actionPerformed(actionEvent)
         java_super(ProfileActionScriptItem, "actionPerformed", 1)(self, actionEvent)
-        if actionEvent:getActionCommand():compareTo(self.DELETE) == 0 then
+        if rawequal(actionEvent:getActionCommand():compareTo(self.DELETE), 0) then
             if java_instanceof(self:getParent(), ProfileActionScriptConditionInterface) then
                 local profileActionScriptConditionInterface = self:getParent()
                 profileActionScriptConditionInterface:removeProcessor(self)

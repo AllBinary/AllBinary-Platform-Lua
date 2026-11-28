@@ -78,9 +78,9 @@ end
 
 -- throws Exception
 function ClassLoaderUtil.getName(anyType)
-        local classLoader = getmetatable(anyType):getClassLoader()
-        if classLoader ~= nil then
-            return "ClassLoader: " .. (getmetatable(classLoader).javaClassName or getmetatable(classLoader).className)
+        local classLoader = require("java.lang.ClassLoader").getSystemClassLoader()
+        if not rawequal(classLoader, nil) then
+            return require("allbinary_java").to_string("ClassLoader: ") .. require("allbinary_java").to_string((getmetatable(classLoader).javaClassName or getmetatable(classLoader).className))
         end
         error(require("java.lang.Exception").new("Unable to get ClassLoader"), 0)
 end

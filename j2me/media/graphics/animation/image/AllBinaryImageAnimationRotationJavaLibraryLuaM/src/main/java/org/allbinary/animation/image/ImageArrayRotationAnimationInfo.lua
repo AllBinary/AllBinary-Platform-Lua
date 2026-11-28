@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Image = require("javax.microedition.lcdui.Image")
+local Image = java_lazy("javax.microedition.lcdui.Image")
 local AngleInfo = java_lazy("org.allbinary.math.AngleInfo")
 
 local function java_idiv(a, b)
@@ -55,10 +55,10 @@ ImageArrayRotationAnimationInfo.javaClassName = "org.allbinary.animation.image.I
 
 function ImageArrayRotationAnimationInfo:_init_fields()
     if self.imageArray == nil then self.imageArray = nil end
-    if self.angleIncrement == nil then self.angleIncrement = nil end
-    if self.totalAngle == nil then self.totalAngle = nil end
-    if self.dx == nil then self.dx = nil end
-    if self.dy == nil then self.dy = nil end
+    if self.angleIncrement == nil then self.angleIncrement = 0 end
+    if self.totalAngle == nil then self.totalAngle = 0 end
+    if self.dx == nil then self.dx = 0 end
+    if self.dy == nil then self.dy = 0 end
 end
 
 

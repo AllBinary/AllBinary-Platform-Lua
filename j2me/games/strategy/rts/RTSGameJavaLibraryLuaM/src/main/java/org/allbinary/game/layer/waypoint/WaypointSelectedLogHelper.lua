@@ -163,7 +163,7 @@ function WaypointSelectedLogHelper:onWaypointEvent(associatedAdvancedRTSGameLaye
         stringBuffer:append(associatedAdvancedRTSGameLayer:getName())
         stringBuffer:append(" onWaypointEvent: ")
         stringBuffer:append(advancedRTSGameLayer:getName())
-        if advancedRTSGameLayer:getParentLayer() ~= nil then
+        if not rawequal(advancedRTSGameLayer:getParentLayer(), nil) then
             stringBuffer:append(" With Parent: ")
             stringBuffer:append(advancedRTSGameLayer:getParentLayer():getName())
         end
@@ -177,7 +177,7 @@ function WaypointSelectedLogHelper:addWaypointFromBuilding(associatedAdvancedRTS
         stringBuffer:append(associatedAdvancedRTSGameLayer:getName())
         stringBuffer:append(" Adding Waypoint: ")
         stringBuffer:append(advancedRTSGameLayer:getName())
-        if advancedRTSGameLayer:getParentLayer() ~= nil then
+        if not rawequal(advancedRTSGameLayer:getParentLayer(), nil) then
             stringBuffer:append(" With Parent: ")
             stringBuffer:append(advancedRTSGameLayer:getParentLayer():getName())
         end
@@ -256,7 +256,7 @@ java_overload(WaypointSelectedLogHelper, "setRandomGeographicMapCellHistory", 1,
 
 
 function WaypointSelectedLogHelper:setCurrentPathGeographicMapCellPosition(associatedAdvancedRTSGameLayer, existingCurrentPathGeographicMapCellPosition, currentPathGeographicMapCellPosition)
-        if existingCurrentPathGeographicMapCellPosition == nil then
+        if rawequal(existingCurrentPathGeographicMapCellPosition, nil) then
             self.logUtil:putF(tostring(StringMaker.new():append(associatedAdvancedRTSGameLayer:getName()):append(" currentPathGeographicMapCellPosition: "):append(self.stringUtil:toString(currentPathGeographicMapCellPosition))), self, "setCurrentPathGeographicMapCellPosition")
         end
 end
@@ -264,7 +264,7 @@ java_overload(WaypointSelectedLogHelper, "setCurrentPathGeographicMapCellPositio
 
 
 function WaypointSelectedLogHelper:setNextUnvisitedPathGeographicMapCellPosition(associatedAdvancedRTSGameLayer, existingNextUnvisitedPathGeographicMapCellPosition, nextUnvisitedPathGeographicMapCellPosition)
-        if existingNextUnvisitedPathGeographicMapCellPosition ~= nextUnvisitedPathGeographicMapCellPosition then
+        if not rawequal(existingNextUnvisitedPathGeographicMapCellPosition, nextUnvisitedPathGeographicMapCellPosition) then
             self.logUtil:putF(tostring(StringMaker.new():append(associatedAdvancedRTSGameLayer:getName()):append(" nextUnvisitedPathGeographicMapCellPosition: "):append(self.stringUtil:toString(nextUnvisitedPathGeographicMapCellPosition))), self, "setNextUnvisitedPathGeographicMapCellPosition")
         end
 end

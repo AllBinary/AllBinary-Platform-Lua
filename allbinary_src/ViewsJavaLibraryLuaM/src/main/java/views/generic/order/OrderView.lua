@@ -185,7 +185,7 @@ end
 -- throws Exception
 function OrderView:getFormData()
         local id = self.request:getParameter(OrderData.ID)
-        if id == nil then
+        if rawequal(id, nil) then
             id = self:getWeblisketSession():getOrder():getId()
         end
         self.order = Order.new(Basket.new())

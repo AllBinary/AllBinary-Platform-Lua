@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local Canvas = require("javax.microedition.lcdui.Canvas")
--- local Displayable = require("javax.microedition.lcdui.Displayable")
+local Canvas = java_lazy("javax.microedition.lcdui.Canvas")
+local Displayable = java_lazy("javax.microedition.lcdui.Displayable")
 
 local function java_idiv(a, b)
     local q = a / b

@@ -1222,7 +1222,7 @@ function NoDecimalTrigTable:antiTan(dx, dy)
         local MAX_VALUE = (java_int(require("java.lang.Integer").MAX_VALUE))
         local MIN_VALUE = (java_int(require("java.lang.Integer").MIN_VALUE))
         local ratio = (MAX_VALUE - 1)
-        if dy ~= 0 then
+        if not rawequal(dy, 0) then
             local dxl = (dx)
             ratio = java_idiv(self.SCALE * dxl, dy)
             if dx <= 0 and dy < 0 then
@@ -1234,7 +1234,7 @@ function NoDecimalTrigTable:antiTan(dx, dy)
                 if ratio <= self.noDecimalTan[index + 1] then
                     if ratio > self.noDecimalTan[index - 1 + 1] then
                         return (index)
-                    elseif self.noDecimalTan[index - 1 + 1] == MAX_VALUE and ratio > MIN_VALUE then
+                    elseif rawequal(self.noDecimalTan[index - 1 + 1], MAX_VALUE) and ratio > MIN_VALUE then
                         return (index)
                     end
                 end
@@ -1250,7 +1250,7 @@ function NoDecimalTrigTable:antiTan(dx, dy)
                 if ratio < self.noDecimalTan[index + 1] then
                     if ratio >= self.noDecimalTan[index - 1 + 1] then
                         return (index)
-                    elseif self.noDecimalTan[index - 1 + 1] == MAX_VALUE and ratio >= MIN_VALUE then
+                    elseif rawequal(self.noDecimalTan[index - 1 + 1], MAX_VALUE) and ratio >= MIN_VALUE then
                         return (index)
                     end
                 end

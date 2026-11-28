@@ -219,17 +219,20 @@ function GenericProfileActionScriptJPanel:initComponents()
         self:setLayout(GridLayout.new(1, 0))
         self.actionScriptJTree:setPreferredSize(Dimension.new(500, 500))
         self.actionScriptJTree:addMouseListener((function()
-            local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
+            local java_outer_self = self
+        local o = MouseAdapter.new and MouseAdapter.new() or setmetatable({}, {__index = MouseAdapter})
             
 
             function o:mouseClicked(evt)
-                self:actionScriptJTreeMouseClicked(evt)
+                ;(self.actionScriptJTreeMouseClicked and self or java_outer_self):actionScriptJTreeMouseClicked(evt)
+            
             end
             java_overload(o, "mouseClicked", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             
 
             function o:mouseReleased(evt)
-                self:actionScriptJTreeMouseReleased(evt)
+                ;(self.actionScriptJTreeMouseReleased and self or java_outer_self):actionScriptJTreeMouseReleased(evt)
+            
             end
             java_overload(o, "mouseReleased", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MouseEvent")) end)
             return o
@@ -242,9 +245,9 @@ java_overload(GenericProfileActionScriptJPanel, "initComponents", 0)
 
 function GenericProfileActionScriptJPanel:actionScriptJTreeMouseReleased(evt)
         local button = evt:getButton()
-        if button == MouseEvent.BUTTON3 then
+        if rawequal(button, MouseEvent.BUTTON3) then
             local treePath = self:getActionScriptJTree():getSelectionPath()
-            if treePath ~= nil then
+            if not rawequal(treePath, nil) then
                 local anyType = treePath:getLastPathComponent()
                 if java_instanceof(anyType, CustomTreeNodeInterface) then
                     local customTreeNodeInterface = anyType

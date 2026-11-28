@@ -168,7 +168,7 @@ function UserEmailEventsConfigurationView:toXmlNode(document)
         local emailEventHashMap = self:getUserEmailEventsConfigurationInterface():getEventConfigurationHashMap()
         local set = emailEventHashMap:keySet()
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().EMAILLOGGING) then
-            self.logUtil:putF("Number Of Email Events Specified in file: " .. tostring(set:size()), self, self.commonStrings.CONSTRUCTOR)
+            self.logUtil:putF(require("allbinary_java").to_string("Number Of Email Events Specified in file: ") .. require("allbinary_java").to_string(set:size()), self, self.commonStrings.CONSTRUCTOR)
         end
         local eventNameArray = set:toArray()
         local size = (eventNameArray.n or #eventNameArray)

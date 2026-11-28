@@ -139,14 +139,14 @@ function ComparisonImageInputOutput:save_j1(frame)
         local commonStrings = CommonStrings.getInstance()
         if frame > 0 then
             local imageComparisonResultFrameCacheable = (ImageComparisonResultCacheSingleton.getInstance()):get(frame)
-            if imageComparisonResultFrameCacheable ~= nil then
+            if not rawequal(imageComparisonResultFrameCacheable, nil) then
                 local imageComparisonResult = imageComparisonResultFrameCacheable:getImageComparisonResult()
                 self:save(imageComparisonResult, imageComparisonResultFrameCacheable:getFrame())
             else
-                self.logUtil:putF("Comparison Results Not Available for Output: " .. tostring(frame), self, commonStrings.SAVE)
+                self.logUtil:putF(require("allbinary_java").to_string("Comparison Results Not Available for Output: ") .. require("allbinary_java").to_string(frame), self, commonStrings.SAVE)
             end
         else
-            self.logUtil:putF("No Comparison Results: for first frame: " .. tostring(frame), self, commonStrings.SAVE)
+            self.logUtil:putF(require("allbinary_java").to_string("No Comparison Results: for first frame: ") .. require("allbinary_java").to_string(frame), self, commonStrings.SAVE)
         end
 end
 
@@ -169,8 +169,8 @@ function ComparisonImageInputOutput:save_j2(imageComparisonResult, frame)
         filePathStringBuffer2:append(MediaDataFactory.getInstance().JPG:getExtension())
         local filePath2 = tostring(filePathStringBuffer2)
         local bufferedImageCacheables = ChangedPixelsUtil.generateBufferedImageChacheables(imageComparisonResult)
-        self.logUtil:putF("Comparison Image File Path 1: " .. filePath1, self, commonStrings.SAVE)
-        self.logUtil:putF("Comparison Image File Path 2: " .. filePath2, self, commonStrings.SAVE)
+        self.logUtil:putF(require("allbinary_java").to_string("Comparison Image File Path 1: ") .. require("allbinary_java").to_string(filePath1), self, commonStrings.SAVE)
+        self.logUtil:putF(require("allbinary_java").to_string("Comparison Image File Path 2: ") .. require("allbinary_java").to_string(filePath2), self, commonStrings.SAVE)
         local bufferedImageArray = java_new_array(nil, 2)
         bufferedImageArray[1] = bufferedImageCacheables[1]:getBufferedImage()
         bufferedImageArray[2] = bufferedImageCacheables[2]:getBufferedImage()

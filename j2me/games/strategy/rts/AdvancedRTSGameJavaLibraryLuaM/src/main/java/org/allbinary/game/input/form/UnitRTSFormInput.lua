@@ -215,7 +215,7 @@ function UnitRTSFormInput:processGameSpecific(associatedRtsLayer, rtsPlayerLayer
         local geographicMapCellPosition = geographicMapCellPositionArea:getNextSurroundingGeographicMapCellPosition()
         self:getHashtable():put(Layer.ID, associatedRtsLayer)
         self:getHashtable():put(UnitRTSFormInput.DECAL_ID, (rtsPlayerLayerInterface):getDecalBasicColor())
-        if self.newUnconstructedRTSLayerInterfaceArray[itemIndex + 1] == CollidableDestroyableDamageableLayer.getNullInstance() then
+        if rawequal(self.newUnconstructedRTSLayerInterfaceArray[itemIndex + 1], CollidableDestroyableDamageableLayer.getNullInstance()) then
             self.newUnconstructedRTSLayerInterfaceArray[itemIndex + 1] = self:getInstance(layerManager, item, geographicMapCellPosition)
         else
             local selectedCellPoint = geographicMapCellPosition:getPoint()
@@ -255,12 +255,12 @@ function UnitRTSFormInput:attemptBuild(associatedRtsLayer, rtsPlayerLayerInterfa
             local advancedRTSPlayerLayerInterface = rtsPlayerLayerInterface
             local advancedPlayerOwnedRTSLayers = advancedRTSPlayerLayerInterface:getAdvancedPlayerOwnedRTSLayers()
             advancedPlayerOwnedRTSLayers:addUnit(layerInterface)
-            if not rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface() then
+            if not (rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface()) then
                 GameNotificationEventHandler.getInstance():fireEvent(self.newUnitGameNotificationEvent)
             end
         else
             rtsPlayerLayerInterface:add(ErrorSound.getInstance())
-            if not rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface() then
+            if not (rtsPlayerLayerInterface:implmentsArtificialIntelligenceCompositeInterface()) then
                 GameNotificationEventHandler.getInstance():fireEvent(self.noMoneyGameNotificationEvent)
             end
         end

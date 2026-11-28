@@ -79,14 +79,14 @@ end
 
 
 function InventoryColumnUtil:getColumnWhereLike(inventoryEntity, category, column)
-        self.logUtil:putF("Start Category: " .. category, self, "getKeywords")
+        self.logUtil:putF(require("allbinary_java").to_string("Start Category: ") .. require("allbinary_java").to_string(category), self, "getKeywords")
         local keywords = BasicArrayListD.new()
         local vectorOfHashMaps = inventoryEntity:getAllRows()
         local size = vectorOfHashMaps:size()
         for index = 0, size - 1 do
             local hashMap = vectorOfHashMaps:get(index)
             local categoryName = hashMap:get(self.basicItemData.CATEGORY)
-            if not StringValidationUtil.getInstance():isEmpty(categoryName) and (string.sub(categoryName, 1, #category) == category) then
+            if not (StringValidationUtil.getInstance():isEmpty(categoryName)) and (string.sub(categoryName, 1, #category) == category) then
                 keywords:add(hashMap:get(column))
             end
         end

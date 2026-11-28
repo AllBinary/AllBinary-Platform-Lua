@@ -136,7 +136,7 @@ end
 -- throws Exception
 function ImageAnalysis:process(bufferedImageArray, colorRangeInterface)
         local commonStrings = CommonStrings.getInstance()
-        self.logUtil:putF(tostring(CommonLabels.getInstance().START) .. tostring(colorRangeInterface), self, commonStrings.PROCESS)
+        self.logUtil:putF(require("allbinary_java").to_string(CommonLabels.getInstance().START) .. require("allbinary_java").to_string(tostring(colorRangeInterface)), self, commonStrings.PROCESS)
         local imageAnalysisResultsArray = java_new_array(nil, (bufferedImageArray.n or #bufferedImageArray))
         for index = 0, (bufferedImageArray.n or #bufferedImageArray) - 1 do
             imageAnalysisResultsArray[index + 1] = ImageAnalysis.process(bufferedImageArray[index + 1], colorRangeInterface)

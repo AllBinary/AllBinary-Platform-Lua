@@ -29,7 +29,7 @@ local function java_real(class)
 end
 
 local NullParcelable = java_lazy("org.allbinary.android.NullParcelable")
--- local Command = require("javax.microedition.lcdui.Command")
+local Command = java_lazy("javax.microedition.lcdui.Command")
 local PendingIntent = java_lazy("android.app.PendingIntent")
 local Context = java_lazy("android.content.Context")
 local Parcelable = java_lazy("android.os.Parcelable")

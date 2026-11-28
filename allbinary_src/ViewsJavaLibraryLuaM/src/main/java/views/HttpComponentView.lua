@@ -175,7 +175,7 @@ function HttpComponentView._jinit(self, transformInfoInterface)
     HttpComponentView._init_fields(self)
         -- super(...) made self above
         if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().VIEW) then
-            self.logUtil:putF("View Name: " .. transformInfoInterface:getName(), self, self.commonStrings.CONSTRUCTOR)
+            self.logUtil:putF(require("allbinary_java").to_string("View Name: ") .. require("allbinary_java").to_string(transformInfoInterface:getName()), self, self.commonStrings.CONSTRUCTOR)
         end
         self.domNodeInterfaceVector = BasicArrayListD.new()
         self:setTransformDocumentInterface(TransformHttpRequestDocumentFactory.getInstance(self:getPageContext(), self:getWeblisketSession()))
@@ -240,9 +240,9 @@ java_overload(HttpComponentView, "toXmlDoc", 0)
 function HttpComponentView:getDoc()
         local document = self:getTransformInfoInterface():getDataDocument()
         local node = DomNodeHelper.getFirstChildElement(document)
-        if node ~= nil then
+        if not rawequal(node, nil) then
             local dataNode = self:getTransformDocumentInterface():getDoc():importNode(node, true)
-            if dataNode ~= nil then
+            if not rawequal(dataNode, nil) then
                 self:getTransformDocumentInterface():getBaseNode():appendChild(dataNode)
             end
         end
