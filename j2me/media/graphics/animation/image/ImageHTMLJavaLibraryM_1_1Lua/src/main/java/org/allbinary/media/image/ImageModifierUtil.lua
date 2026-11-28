@@ -230,7 +230,7 @@ function ImageModifierUtil:handleImage(imageArray, index, image)
 
                     function o:onSuccess(resource)
                         local logUtil = LogUtil.getInstance()
-                        logUtil:putF(require("allbinary_java").to_string(self.resourceCallbackStrings.DONE) .. require("allbinary_java").to_string(image:getName()), self, self.resourceCallbackStrings.HANDLE_IMAGE)
+                        logUtil:putF(require("allbinary_java").to_string(java_outer_self.resourceCallbackStrings.DONE) .. require("allbinary_java").to_string(image:getName()), self, java_outer_self.resourceCallbackStrings.HANDLE_IMAGE)
                         ;(self.copy and self or java_outer_self):copy(imageArray, index, image, image3)
             
                     end
@@ -239,7 +239,7 @@ function ImageModifierUtil:handleImage(imageArray, index, image)
 
                     function o:onFailure(e)
                         local logUtil = LogUtil.getInstance()
-                        logUtil:putF(tostring(StringMaker.new():append(self.commonStrings.EXCEPTION_LABEL):append(self.resourceCallbackStrings.ERROR):append(image:getName())), self, self.resourceCallbackStrings.HANDLE_IMAGE)
+                        logUtil:putF(tostring(StringMaker.new():append(java_outer_self.commonStrings.EXCEPTION_LABEL):append(java_outer_self.resourceCallbackStrings.ERROR):append(image:getName())), self, java_outer_self.resourceCallbackStrings.HANDLE_IMAGE)
                     end
                     java_overload(o, "onFailure", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "Throwable")) end)
                     return o

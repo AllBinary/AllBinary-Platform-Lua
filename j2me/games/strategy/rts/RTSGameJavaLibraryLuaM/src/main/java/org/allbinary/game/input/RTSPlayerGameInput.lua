@@ -355,7 +355,7 @@ function RTSPlayerGameInput:paint(graphics)
         local geographicMapCompositeInterface = self.gameCanvas:getLayerManager()
         local geographicMapInterface = geographicMapCompositeInterface:getGeographicMapInterface()[1]
         local allBinaryTiledLayer = geographicMapInterface:getAllBinaryTiledLayer()
-        graphics:setColor(math.tointeger(BasicColorFactory.getInstance().GREEN // 1))
+        graphics:setColor(require("allbinary_java").number_value(BasicColorFactory.getInstance().GREEN, "intValue"))
         local list = self:getSelectedBuildingPlayerGameInput():getPaintSelectedRTSLayersList()
         local width = 0
         local height = 0

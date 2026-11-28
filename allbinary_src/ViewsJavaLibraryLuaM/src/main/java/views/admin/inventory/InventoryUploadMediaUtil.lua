@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local ByteArrayInputStream = require("java.io.ByteArrayInputStream")
+local ByteArrayInputStream = java_lazy("java.io.ByteArrayInputStream")
 local StoreFrontInterface = java_lazy("org.allbinary.business.context.modules.storefront.StoreFrontInterface")
 local ItemInterface = java_lazy("org.allbinary.business.user.commerce.inventory.item.ItemInterface")
 local URLGLOBALS = java_lazy("org.allbinary.globals.URLGLOBALS")

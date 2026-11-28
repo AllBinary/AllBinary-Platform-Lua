@@ -203,10 +203,10 @@ function CanvasImageJPanel:process()
                 local try_ok, try_error, try_value = pcall(function()
                     local canvasTrimUtil = CanvasTrimUtil.getInstance()
                     local canvasExpandUtil = CanvasExpandUtil.getInstance()
-                    local leftReduction = tostring(self.widthReductionTextField1:getText())
-                    local topReduction = tostring(self.heightReductionTextField1:getText())
-                    local widthReduction = tostring(self.widthReductionTextField:getText())
-                    local heightReduction = tostring(self.heightReductionTextField:getText())
+                    local leftReduction = tostring(java_outer_self.widthReductionTextField1:getText())
+                    local topReduction = tostring(java_outer_self.heightReductionTextField1:getText())
+                    local widthReduction = tostring(java_outer_self.widthReductionTextField:getText())
+                    local heightReduction = tostring(java_outer_self.heightReductionTextField:getText())
                     if leftReduction <= 0 or topReduction <= 0 or widthReduction <= 0 or heightReduction <= 0 then
                         canvasTrimUtil:process(java_outer_self:getImageProcessorInput(), -leftReduction, -topReduction, -widthReduction, -heightReduction, java_outer_self)
                     else
@@ -216,7 +216,7 @@ function CanvasImageJPanel:process()
                 if not try_ok then
                     local e = try_error
                     if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-                    logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.RUN, e)
+                    logUtil:put(java_outer_self.commonStrings.EXCEPTION, self, java_outer_self.commonStrings.RUN, e)
                 end
             end
             java_overload(o, "run", 0)

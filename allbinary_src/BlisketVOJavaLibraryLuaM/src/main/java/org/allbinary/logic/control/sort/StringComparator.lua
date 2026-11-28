@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local Comparator = require("java.util.Comparator")
+local Comparator = java_lazy("java.util.Comparator")
 
 local function java_idiv(a, b)
     local q = a / b

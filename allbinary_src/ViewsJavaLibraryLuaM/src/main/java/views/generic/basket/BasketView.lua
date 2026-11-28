@@ -207,7 +207,7 @@ function BasketView:toXmlNode(document)
                     node:appendChild(ModDomHelper.createNameValueNodes(document, BasketData.ITEMTOTALINBASKET, numberInBasket))
                     local itemPrice = itemInterface:getPrice()
                     local itemTotal = Money.new(itemPrice)
-                    itemTotal:multiply(math.tointeger(basketInterface:getNumberOf(product) // 1))
+                    itemTotal:multiply(require("allbinary_java").number_value(basketInterface:getNumberOf(product), "intValue"))
                     node:appendChild(ModDomHelper.createNameValueNodes(document, BasketData.ITEMTOTAL, tostring(itemTotal)))
                     basketNode:appendChild(node)
                 else

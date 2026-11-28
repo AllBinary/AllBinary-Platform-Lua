@@ -91,7 +91,7 @@ function GameConfiguration:setValue(value)
         if not rawequal(self.value, value) then
             local oldValue = self.value
             self.value = value
-            GameFeatureEventHandler.getInstance():fireEvent(GameFeatureEvent.new(self, tostring(StringMaker.new():append(self.name_f):append(" value: from: "):appendint(java_int(math.tointeger(oldValue // 1))):append(" to "):appendint(java_int(math.tointeger(self.value // 1))))))
+            GameFeatureEventHandler.getInstance():fireEvent(GameFeatureEvent.new(self, tostring(StringMaker.new():append(self.name_f):append(" value: from: "):appendint(java_int(require("allbinary_java").number_value(oldValue, "intValue"))):append(" to "):appendint(java_int(require("allbinary_java").number_value(self.value, "intValue"))))))
         end
 end
 
@@ -152,13 +152,13 @@ function GameConfiguration:toString()
         stringBuffer:append("Name: ")
         stringBuffer:append(self.name_f)
         stringBuffer:append(" Min: ")
-        stringBuffer:appendint(java_int(math.tointeger(self:getMinValue() // 1)))
+        stringBuffer:appendint(java_int(require("allbinary_java").number_value(self:getMinValue(), "intValue")))
         stringBuffer:append(" Max: ")
-        stringBuffer:appendint(java_int(math.tointeger(self:getMaxValue() // 1)))
+        stringBuffer:appendint(java_int(require("allbinary_java").number_value(self:getMaxValue(), "intValue")))
         stringBuffer:append(" Value: ")
-        stringBuffer:appendint(java_int(math.tointeger(self:getValue() // 1)))
+        stringBuffer:appendint(java_int(require("allbinary_java").number_value(self:getValue(), "intValue")))
         stringBuffer:append(" Default: ")
-        stringBuffer:appendint(java_int(math.tointeger(self:getDefaultValue() // 1)))
+        stringBuffer:appendint(java_int(require("allbinary_java").number_value(self:getDefaultValue(), "intValue")))
         stringBuffer:append(" Modifiable: ")
         stringBuffer:appendboolean(self:isModifiable())
         return tostring(stringBuffer)

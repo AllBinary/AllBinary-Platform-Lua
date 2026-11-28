@@ -1206,7 +1206,7 @@ function AllBinaryGameCanvas:loadState()
         local hashtable = self:getLoadStateHashtable()
         if not rawequal(hashtable, nil) and hashtable:size() > 0 then
             local levelAsString = hashtable:get(GameInfo.LEVEL_NAME)
-            local level = math.tointeger(tostring(levelAsString) // 1)
+            local level = require("allbinary_java").number_value(tostring(levelAsString), "intValue")
             local gameInfo = self.gameLayerManager:getGameInfo()
             gameInfo:setCurrentLevel(level)
         end

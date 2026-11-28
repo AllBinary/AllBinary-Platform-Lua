@@ -228,8 +228,8 @@ java_overload(FileAuthenticationTag, "getFormData", 0)
 
 
 function FileAuthenticationTag:nextAttempt()
-        if not rawequal(self.attemptsInteger, nil) and math.tointeger(self.attemptsInteger // 1) > 0 then
-            self.weblisketSession:setAttempts(math.tointeger(self.attemptsInteger // 1) + 1)
+        if not rawequal(self.attemptsInteger, nil) and require("allbinary_java").number_value(self.attemptsInteger, "intValue") > 0 then
+            self.weblisketSession:setAttempts(require("allbinary_java").number_value(self.attemptsInteger, "intValue") + 1)
         else
             self.weblisketSession:setAttempts(1)
         end
@@ -270,7 +270,7 @@ java_overload(FileAuthenticationTag, "changePassword", 0)
 function FileAuthenticationTag:invalidateSession()
         local try_ok, try_error, try_value = pcall(function()
             self.weblisketSession:clear()
-            do return "__jreturn", math.tointeger(TagSupport.EVAL_BODY_INCLUDE // 1) end
+            do return "__jreturn", require("allbinary_java").number_value(TagSupport.EVAL_BODY_INCLUDE, "intValue") end
         end)
         if not try_ok then
             local e = try_error

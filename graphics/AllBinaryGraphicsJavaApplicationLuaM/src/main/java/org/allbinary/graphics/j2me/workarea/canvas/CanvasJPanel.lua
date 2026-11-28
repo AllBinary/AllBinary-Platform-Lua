@@ -855,8 +855,8 @@ end
 java_overload(CanvasJPanel, "getGrid", 0)
 
 CanvasJPanel.frame = 0
-CanvasJPanel.gridColor = Color.new(math.tointeger(BasicColorFactory.getInstance().WHITE // 1))
-CanvasJPanel.backgroundColor = Color.new(math.tointeger(BasicColorFactory.getInstance().CLEAR_COLOR // 1))
+CanvasJPanel.gridColor = Color.new(require("allbinary_java").number_value(BasicColorFactory.getInstance().WHITE, "intValue"))
+CanvasJPanel.backgroundColor = Color.new(require("allbinary_java").number_value(BasicColorFactory.getInstance().CLEAR_COLOR, "intValue"))
 
 return CanvasJPanel
 

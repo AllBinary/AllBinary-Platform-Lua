@@ -218,8 +218,8 @@ function CreateIconImagesJPanel:process()
                     local width = 0
                     local height = 0
                     for index2 = 0, size - 1 do
-                        width = math.tointeger((iconWidthList:get(index2)) // 1)
-                        height = math.tointeger((iconHeightList:get(index2)) // 1)
+                        width = require("allbinary_java").number_value((iconWidthList:get(index2)), "intValue")
+                        height = require("allbinary_java").number_value((iconHeightList:get(index2)), "intValue")
                         local generatedBufferedImageArray = imageUtil:createBufferedImage3(imageProcessorInput:getBufferedImageArray(), width, height, true)
                         local imagePersistanceUtil = ImagePersistanceUtil.getInstance()
                         for index = 0, (generatedBufferedImageArray.n or #generatedBufferedImageArray) - 1 do
@@ -241,7 +241,7 @@ function CreateIconImagesJPanel:process()
                 if not try_ok then
                     local e = try_error
                     if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-                    logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.RUN, e)
+                    logUtil:put(java_outer_self.commonStrings.EXCEPTION, self, java_outer_self.commonStrings.RUN, e)
                 end
             end
             java_overload(o, "run", 0)

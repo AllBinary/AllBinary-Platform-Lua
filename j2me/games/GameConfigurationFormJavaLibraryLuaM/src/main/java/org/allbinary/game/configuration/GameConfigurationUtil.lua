@@ -110,14 +110,14 @@ function GameConfigurationUtil:update(gauge)
         local gameConfigurationSingleton = GameConfigurationSingleton.getInstance()
         local gameConfiguration = gameConfigurationSingleton:getInstanceByName(gauge:getLabel())
         local smallIntegerSingletonFactory = SmallIntegerSingletonFactory.getInstance()
-        local value = smallIntegerSingletonFactory:getAt(gauge:getValue() + math.tointeger(gameConfiguration:getMinValue() // 1))
+        local value = smallIntegerSingletonFactory:getAt(gauge:getValue() + require("allbinary_java").number_value(gameConfiguration:getMinValue(), "intValue"))
         local stringBuffer = StringMaker.new()
         stringBuffer:append(self.GAUGE_UPDATE)
         stringBuffer:append(gameConfiguration:getName())
         stringBuffer:append(self.FROM)
-        stringBuffer:appendint(java_int(math.tointeger(gameConfiguration:getValue() // 1)))
+        stringBuffer:appendint(java_int(require("allbinary_java").number_value(gameConfiguration:getValue(), "intValue")))
         stringBuffer:append(self.TO)
-        stringBuffer:appendint(java_int(math.tointeger(value // 1)))
+        stringBuffer:appendint(java_int(require("allbinary_java").number_value(value, "intValue")))
         self.logUtil:putF(tostring(stringBuffer), self, self.commonStrings.UPDATE)
         gameConfiguration:setValue(value)
 end
@@ -131,9 +131,9 @@ function GameConfigurationUtil:setDefault(gauge)
         stringBuffer:append("Gauge Default: ")
         stringBuffer:append(gameConfiguration:getName())
         stringBuffer:append(self.TO)
-        stringBuffer:appendint(java_int(math.tointeger(gameConfiguration:getDefaultValue() // 1)))
+        stringBuffer:appendint(java_int(require("allbinary_java").number_value(gameConfiguration:getDefaultValue(), "intValue")))
         self.logUtil:putF(tostring(stringBuffer), self, "setDefault")
-        gauge:setValue(math.tointeger(gameConfiguration:getDefaultValue() // 1) - math.tointeger(gameConfiguration:getMinValue() // 1))
+        gauge:setValue(require("allbinary_java").number_value(gameConfiguration:getDefaultValue(), "intValue") - require("allbinary_java").number_value(gameConfiguration:getMinValue(), "intValue"))
         gameConfiguration:setValue(gameConfiguration:getDefaultValue())
 end
 
@@ -156,13 +156,13 @@ function GameConfigurationUtil:updateChallange(gameOptionsForm, gameConfiguratio
                     local name = item:getLabel()
                     local nextGameConfiguration = gameConfigurationSingleton:getInstanceByName(name)
                     if rawequal(nextGameConfiguration, gameConfigurationCentral.COLLIDE_DAMAGE) then
-                        gauge:setValue(math.tointeger(gameConfigurationCentral.COLLIDE_DAMAGE:getValue() // 1) - math.tointeger(gameConfiguration:getMinValue() // 1))
+                        gauge:setValue(require("allbinary_java").number_value(gameConfigurationCentral.COLLIDE_DAMAGE:getValue(), "intValue") - require("allbinary_java").number_value(gameConfiguration:getMinValue(), "intValue"))
                     elseif rawequal(nextGameConfiguration, gameConfigurationCentral.DURABILITY_CHALLENGE_LEVEL) then
-                        gauge:setValue(math.tointeger(gameConfigurationCentral.DURABILITY_CHALLENGE_LEVEL:getValue() // 1) - math.tointeger(gameConfiguration:getMinValue() // 1))
+                        gauge:setValue(require("allbinary_java").number_value(gameConfigurationCentral.DURABILITY_CHALLENGE_LEVEL:getValue(), "intValue") - require("allbinary_java").number_value(gameConfiguration:getMinValue(), "intValue"))
                     elseif rawequal(nextGameConfiguration, gameConfigurationCentral.ATTACK_CHALLENGE_LEVEL) then
-                        gauge:setValue(math.tointeger(gameConfigurationCentral.ATTACK_CHALLENGE_LEVEL:getValue() // 1) - math.tointeger(gameConfiguration:getMinValue() // 1))
+                        gauge:setValue(require("allbinary_java").number_value(gameConfigurationCentral.ATTACK_CHALLENGE_LEVEL:getValue(), "intValue") - require("allbinary_java").number_value(gameConfiguration:getMinValue(), "intValue"))
                     elseif rawequal(nextGameConfiguration, gameConfigurationCentral.SPEED_CHALLENGE_LEVEL) then
-                        gauge:setValue(math.tointeger(gameConfigurationCentral.SPEED_CHALLENGE_LEVEL:getValue() // 1) - math.tointeger(gameConfiguration:getMinValue() // 1))
+                        gauge:setValue(require("allbinary_java").number_value(gameConfigurationCentral.SPEED_CHALLENGE_LEVEL:getValue(), "intValue") - require("allbinary_java").number_value(gameConfiguration:getMinValue(), "intValue"))
                     end
                 end
             end
@@ -173,7 +173,7 @@ end
 function GameConfigurationUtil:updateCompetitionValue()
         self.logUtil:putF(self.commonStrings.START, self, "updateCompetitionValue")
         local gameConfigurationCentral = GameConfigurationCentral.getInstance()
-        self.COMPETITION_VALUE = math.tointeger(gameConfigurationCentral.COLLIDE_DAMAGE:getValue() // 1) + math.tointeger(gameConfigurationCentral.ATTACK_CHALLENGE_LEVEL:getValue() // 1) + math.tointeger(gameConfigurationCentral.DURABILITY_CHALLENGE_LEVEL:getValue() // 1) + math.tointeger(gameConfigurationCentral.SPEED_CHALLENGE_LEVEL:getValue() // 1)
+        self.COMPETITION_VALUE = require("allbinary_java").number_value(gameConfigurationCentral.COLLIDE_DAMAGE:getValue(), "intValue") + require("allbinary_java").number_value(gameConfigurationCentral.ATTACK_CHALLENGE_LEVEL:getValue(), "intValue") + require("allbinary_java").number_value(gameConfigurationCentral.DURABILITY_CHALLENGE_LEVEL:getValue(), "intValue") + require("allbinary_java").number_value(gameConfigurationCentral.SPEED_CHALLENGE_LEVEL:getValue(), "intValue")
         self.COMPETITION_VALUE = (((self.COMPETITION_VALUE) // (1 << (2))))
 end
 

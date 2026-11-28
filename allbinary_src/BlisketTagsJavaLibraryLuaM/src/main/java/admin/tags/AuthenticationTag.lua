@@ -247,7 +247,7 @@ function AuthenticationTag:invalidateSession()
             local addressHelperClass = getmetatable(anyType)
             local method = addressHelperClass:getMethod("invalidateSession", nil)
             local resultInteger = method:invoke(anyType, nil)
-            do return "__jreturn", math.tointeger(resultInteger // 1) end
+            do return "__jreturn", require("allbinary_java").number_value(resultInteger, "intValue") end
         end)
         if not try_ok then
             local e = try_error

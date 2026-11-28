@@ -93,7 +93,7 @@ function ImageArrayRotationUtil:process(imageProcessorInput, input, visitor)
         local bufferedImageArray = imageProcessorInput:getBufferedImageArray()
         for index = 0, (bufferedImageArray.n or #bufferedImageArray) - 1 do
             self.logUtil:putF(require("allbinary_java").to_string(self.TOTAL_ANGLE) .. require("allbinary_java").to_string(totalAngle), self, self.commonStrings.RUN)
-            generatedBufferedImage = ImageJ2SERotationUtil.getInstance():getRotatedImage(bufferedImageArray[index + 1], math.tointeger(totalAngle // 1))
+            generatedBufferedImage = ImageJ2SERotationUtil.getInstance():getRotatedImage(bufferedImageArray[index + 1], require("allbinary_java").number_value(totalAngle, "intValue"))
             visitor:visit(generatedBufferedImage, input, index)
         end
 end

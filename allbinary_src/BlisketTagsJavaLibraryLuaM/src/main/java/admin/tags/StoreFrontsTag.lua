@@ -238,7 +238,7 @@ function StoreFrontsTag:doStartTag()
                     elseif rawequal(self:getCommand():compareTo(storeFrontData.INSTALL), 0) then
                         self:getPropertiesHashMap():put("current", self:getCurrent())
                         self:getPropertiesHashMap():put("total", self:getTotal())
-                        if rawequal(math.tointeger(self:getCurrent() // 1), math.tointeger(self:getTotal() // 1)) then
+                        if rawequal(require("allbinary_java").number_value(self:getCurrent(), "intValue"), require("allbinary_java").number_value(self:getTotal(), "intValue")) then
                             do return "__jreturn", TagSupport.EVAL_BODY_INCLUDE end
                         end
                         self:install()

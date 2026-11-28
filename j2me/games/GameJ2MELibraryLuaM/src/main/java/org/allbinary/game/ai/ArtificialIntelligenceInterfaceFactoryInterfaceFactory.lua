@@ -83,7 +83,7 @@ end
 
 function ArtificialIntelligenceInterfaceFactoryInterfaceFactory:getInstanceFromCollection(hashtable)
         local typeInteger = hashtable:get(BasicAI.ID)
-        local type = math.tointeger(typeInteger // 1)
+        local type = require("allbinary_java").number_value(typeInteger, "intValue")
         local artificialIntelligenceInterfaceFactoryInterface = self.list.objectArray[type - 1 + 1]
         return artificialIntelligenceInterfaceFactoryInterface
 end

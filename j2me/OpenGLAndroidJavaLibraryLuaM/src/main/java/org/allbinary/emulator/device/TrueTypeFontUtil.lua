@@ -29,7 +29,7 @@ local function java_real(class)
 end
 
 local File = java_lazy("java.io.File")
--- local FileOutputStream = require("java.io.FileOutputStream")
+local FileOutputStream = java_lazy("java.io.FileOutputStream")
 local GL10 = java_lazy("javax.microedition.khronos.opengles.GL10")
 local Image = java_lazy("javax.microedition.lcdui.Image")
 local Bitmap = java_lazy("android.graphics.Bitmap")
@@ -209,7 +209,7 @@ function TrueTypeFontUtil:getFontBitmapGL(gl, filename, cellSize, basicColor)
             paint:setTypeface(typeface)
             paint:setTextSize((self.realFontSize + 0.0))
             paint:setAlpha(java_int(basicColor.alpha))
-            paint:setColor(math.tointeger(basicColor // 1))
+            paint:setColor(require("allbinary_java").number_value(basicColor, "intValue"))
             local biggestHeight = 0
             local bounds = Rect.new()
             local x = 0

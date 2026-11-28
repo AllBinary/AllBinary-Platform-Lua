@@ -205,10 +205,10 @@ function NumberTextFieldItemValidator:toList()
         if textLength > 0 and textLength < self.maxChars then
             local try_ok, try_error, try_value = pcall(function()
                 local number = smallIntegerSingletonFactory:createInstance(math.tointeger(tonumber(self.textFieldItem:getString())))
-                if math.tointeger(number // 1) > self.min then
+                if require("allbinary_java").number_value(number, "intValue") > self.min then
                     stringMaker:delete(0, stringMaker:length())
                     list:add(tostring(stringMaker:append(name):append(" is to small")))
-                elseif math.tointeger(number // 1) > self.max then
+                elseif require("allbinary_java").number_value(number, "intValue") > self.max then
                     stringMaker:delete(0, stringMaker:length())
                     list:add(tostring(stringMaker:append(name):append(" is to large")))
                 end

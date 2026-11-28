@@ -119,6 +119,7 @@ end
 function TransformInfoObjectConfigGeneratorFactory.getInstance()
         return TransformInfoObjectConfigGeneratorFactory.instance_f
 end
+TransformInfoObjectConfigGeneratorFactory.getInstance__static = TransformInfoObjectConfigGeneratorFactory.getInstance
 
 
 function TransformInfoObjectConfigGeneratorFactory._jinit(self)
@@ -147,6 +148,14 @@ function TransformInfoObjectConfigGeneratorFactory:getInstance(transformInfoInte
         else
             error(require("java.lang.Exception").new("No Such TransformInfoObjectConfigGenerator Type"), 0)
         end
+end
+TransformInfoObjectConfigGeneratorFactory.getInstance__instance = TransformInfoObjectConfigGeneratorFactory.getInstance
+function TransformInfoObjectConfigGeneratorFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return TransformInfoObjectConfigGeneratorFactory.getInstance__static() end
+                
+    return TransformInfoObjectConfigGeneratorFactory.getInstance__instance(...)
+                
 end
 
 TransformInfoObjectConfigGeneratorFactory.instance_f = TransformInfoObjectConfigGeneratorFactory.new()

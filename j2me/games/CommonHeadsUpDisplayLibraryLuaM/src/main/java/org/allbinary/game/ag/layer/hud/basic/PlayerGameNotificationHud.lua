@@ -281,7 +281,7 @@ function PlayerGameNotificationHud:setAndRemoveProcess()
         self.point:setX(self:getX())
         self.point:setY(self:getY())
         local time = self.gameNotification.timeList:removeAt(0)
-        local iTime = math.tointeger(time // 1) * 1000
+        local iTime = require("allbinary_java").number_value(time, "intValue") * 1000
         if rawequal(iTime, 0) then
             iTime = 500
         end
@@ -307,7 +307,7 @@ function PlayerGameNotificationHud:setNextUnremoveableProcess()
         self.point:setX(self:getX())
         self.point:setY(self:getY())
         local time = self.permanentGameNotification.timeList.objectArray[index + 1]
-        self.timeDelayHelper.delay = math.tointeger(time // 1) * 1000
+        self.timeDelayHelper.delay = require("allbinary_java").number_value(time, "intValue") * 1000
         self:setBasicColorP(self.permanentGameNotification.colorList.objectArray[index + 1])
         self.circularIndexUtil:next()
 end

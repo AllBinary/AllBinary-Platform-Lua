@@ -93,7 +93,7 @@ function LayerInterfaceFactory:getNexInstance(hashtable, x, y, z)
         local commonStrings = CommonStrings.getInstance()
         self.logUtil:putF(tostring(StringMaker.new():append(self.HASHTABLE_LABEL):append(StringUtil.getInstance():toString(hashtable))), self, commonStrings.GET_INSTANCE)
         local typeInteger = hashtable:get(Layer.ID)
-        local layerInterfaceFactoryInterface = self.list.objectArray[math.tointeger(typeInteger // 1) - 1 + 1]
+        local layerInterfaceFactoryInterface = self.list.objectArray[require("allbinary_java").number_value(typeInteger, "intValue") - 1 + 1]
         return layerInterfaceFactoryInterface:getNextInstance(hashtable, x, y, z)
 end
 

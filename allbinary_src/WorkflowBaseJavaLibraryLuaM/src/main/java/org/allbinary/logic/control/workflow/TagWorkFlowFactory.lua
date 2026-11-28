@@ -120,6 +120,7 @@ end
 function TagWorkFlowFactory.getInstance()
         return TagWorkFlowFactory.instance_f
 end
+TagWorkFlowFactory.getInstance__static = TagWorkFlowFactory.getInstance
 
 
 function TagWorkFlowFactory._jinit(self)
@@ -162,6 +163,14 @@ function TagWorkFlowFactory:getInstance(abeClientInformation, propertiesHashMap,
             error(e, 0)
         end
         if try_ok and try_error == "__jreturn" then return try_value end
+end
+TagWorkFlowFactory.getInstance__instance = TagWorkFlowFactory.getInstance
+function TagWorkFlowFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return TagWorkFlowFactory.getInstance__static() end
+                
+    return TagWorkFlowFactory.getInstance__instance(...)
+                
 end
 
 TagWorkFlowFactory.instance_f = TagWorkFlowFactory.new()

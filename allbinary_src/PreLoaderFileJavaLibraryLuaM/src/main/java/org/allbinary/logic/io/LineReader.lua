@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local DataInputStream = require("java.io.DataInputStream")
+local DataInputStream = java_lazy("java.io.DataInputStream")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")
 local CommonStrings = java_lazy("org.allbinary.string.CommonStrings")

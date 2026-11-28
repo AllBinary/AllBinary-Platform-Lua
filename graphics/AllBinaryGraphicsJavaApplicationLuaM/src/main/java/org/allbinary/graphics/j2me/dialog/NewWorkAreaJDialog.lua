@@ -216,7 +216,7 @@ function NewWorkAreaJDialog:disposeNewDialog()
             if rawequal(newName, nil) then
                 error(GraphicsException.new("No Name", self, "disposeNewDialog"), 0)
             end
-            local workAreaJPanel = WorkAreaJPanel.new(newName, self.dimension, math.tointeger(canvasWidth // 1), math.tointeger(canvasHeight // 1))
+            local workAreaJPanel = WorkAreaJPanel.new(newName, self.dimension, require("allbinary_java").number_value(canvasWidth, "intValue"), require("allbinary_java").number_value(canvasHeight, "intValue"))
             workAreaJPanel:setLayout(GridLayout.new(1, 1))
             self.parent:add(workAreaJPanel)
             self:dispose()

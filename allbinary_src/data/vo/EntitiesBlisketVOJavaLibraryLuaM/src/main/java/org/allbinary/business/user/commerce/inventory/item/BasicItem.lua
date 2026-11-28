@@ -353,7 +353,7 @@ function BasicItem:setDownloads(value)
         self.downloads = value
         if not (StringValidationUtil.getInstance():isEmpty(self.downloads)) then
             local downloadInteger = tostring(self.downloads)
-            if not rawequal(math.tointeger(downloadInteger // 1), 0) then
+            if not rawequal(require("allbinary_java").number_value(downloadInteger, "intValue"), 0) then
                 self:setDownloadable(true)
             end
         end
@@ -542,7 +542,7 @@ end
 
 function BasicItem:getTotal()
         local itemTotal = Money.new(self.price)
-        itemTotal:multiply(math.tointeger(self.number // 1))
+        itemTotal:multiply(require("allbinary_java").number_value(self.number, "intValue"))
         return itemTotal
 end
 

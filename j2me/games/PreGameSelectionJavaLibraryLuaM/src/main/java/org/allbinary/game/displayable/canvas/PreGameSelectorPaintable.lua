@@ -163,7 +163,7 @@ java_overload(PreGameSelectorPaintable, "update", 0)
 
 
 function PreGameSelectorPaintable:paint(graphics)
-        graphics:setColor(math.tointeger(BasicColorFactory.getInstance().WHITE // 1))
+        graphics:setColor(require("allbinary_java").number_value(BasicColorFactory.getInstance().WHITE, "intValue"))
         self.canvasDrawLineString:paint(graphics, self.title, 0)
         self:getPreGameSelectionForm():paint(graphics)
 end

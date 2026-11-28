@@ -98,11 +98,11 @@ function ImageUnifierUtil:getImage(bufferedImageArray, imageUnifierProperties)
         local columnIndex = 0
         local rowIndex = 0
         for index = 0, (bufferedImageArray.n or #bufferedImageArray) - 1 do
-            local x = math.tointeger(imageUnifierProperties:getImageUnifierCell():getWidth() // 1) * (function() local value = columnIndex columnIndex = value + 1 return value end)()
-            local y = math.tointeger(imageUnifierProperties:getImageUnifierCell():getHeight() // 1) * rowIndex
+            local x = require("allbinary_java").number_value(imageUnifierProperties:getImageUnifierCell():getWidth(), "intValue") * (function() local value = columnIndex columnIndex = value + 1 return value end)()
+            local y = require("allbinary_java").number_value(imageUnifierProperties:getImageUnifierCell():getHeight(), "intValue") * rowIndex
             self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string(require("allbinary_java").to_string("Adding Image: ") .. require("allbinary_java").to_string(index)) .. require("allbinary_java").to_string(" x: ")) .. require("allbinary_java").to_string(x)) .. require("allbinary_java").to_string(" y: ")) .. require("allbinary_java").to_string(y), self, "getImage")
-            g:drawImage(bufferedImageArray[index + 1], x, y, math.tointeger(imageUnifierProperties:getImageUnifierCell():getWidth() // 1), math.tointeger(imageUnifierProperties:getImageUnifierCell():getHeight() // 1), nil)
-            local totalColumnsMinusOne = (math.tointeger(imageUnifierProperties:getColumns() // 1) - 1)
+            g:drawImage(bufferedImageArray[index + 1], x, y, require("allbinary_java").number_value(imageUnifierProperties:getImageUnifierCell():getWidth(), "intValue"), require("allbinary_java").number_value(imageUnifierProperties:getImageUnifierCell():getHeight(), "intValue"), nil)
+            local totalColumnsMinusOne = (require("allbinary_java").number_value(imageUnifierProperties:getColumns(), "intValue") - 1)
             if columnIndex > totalColumnsMinusOne then
                 rowIndex = rowIndex + 1
                 columnIndex = 0

@@ -131,6 +131,7 @@ end
 function TransformInfoObjectFactory.getInstance()
         return TransformInfoObjectFactory.instance_f
 end
+TransformInfoObjectFactory.getInstance__static = TransformInfoObjectFactory.getInstance
 
 
 function TransformInfoObjectFactory._jinit(self)
@@ -185,6 +186,14 @@ function TransformInfoObjectFactory:getInstance(abeClientInformation, transformI
             error(e, 0)
         end
         if try_ok and try_error == "__jreturn" then return try_value end
+end
+TransformInfoObjectFactory.getInstance__instance = TransformInfoObjectFactory.getInstance
+function TransformInfoObjectFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return TransformInfoObjectFactory.getInstance__static() end
+                
+    return TransformInfoObjectFactory.getInstance__instance(...)
+                
 end
 
 TransformInfoObjectFactory.instance_f = TransformInfoObjectFactory.new()

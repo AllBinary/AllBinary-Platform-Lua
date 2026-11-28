@@ -169,7 +169,7 @@ end
 
 
 function RandomPatrolAI:updateRandomDistance()
-        self.currentDistance = MyRandomFactory.getInstance():getAbsoluteNextInt(math.tointeger(self.maxDistance // 1))
+        self.currentDistance = MyRandomFactory.getInstance():getAbsoluteNextInt(require("allbinary_java").number_value(self.maxDistance, "intValue"))
 end
 java_overload(RandomPatrolAI, "updateRandomDistance", 0)
 

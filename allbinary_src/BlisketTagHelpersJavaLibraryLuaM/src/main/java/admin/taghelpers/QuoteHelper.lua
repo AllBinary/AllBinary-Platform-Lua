@@ -252,7 +252,7 @@ function QuoteHelper:email()
             local id = 0
             local size = vector:size()
             for index = 0, size - 1 do
-                local nextId = math.tointeger((vector:get(index)) // 1)
+                local nextId = require("allbinary_java").number_value((vector:get(index)), "intValue")
                 if id < nextId then
                     id = nextId
                 end

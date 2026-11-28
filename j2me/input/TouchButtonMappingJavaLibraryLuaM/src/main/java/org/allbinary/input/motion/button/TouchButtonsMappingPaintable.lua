@@ -161,7 +161,7 @@ end
 function TouchButtonsMappingPaintable._jinit(self, basicColor)
     java_super_init(Paintable, self)
     TouchButtonsMappingPaintable._init_fields(self)
-        self.foregroundColor = math.tointeger(basicColor // 1)
+        self.foregroundColor = require("allbinary_java").number_value(basicColor, "intValue")
         self:init()
     return self
 end

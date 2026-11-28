@@ -179,7 +179,7 @@ function HorizontaRotationManeuverAI._jinit(self, ownerLayerInterface, gameInput
         self.velocityInterface = self.baseVelocityInterface
         local rotationAnimationInterface = self.rotationAnimationInterface
         local angleIncrementInfo = rotationAnimationInterface:getAngleInfoP():getAngleIncrementInfo()
-        rotationAnimationInterfaceCompositeInterface:setFrame(math.tointeger(angleIncrementInfo.RIGHT_FRAME // 1))
+        rotationAnimationInterfaceCompositeInterface:setFrame(require("allbinary_java").number_value(angleIncrementInfo.RIGHT_FRAME, "intValue"))
     return self
 end
 
@@ -194,7 +194,7 @@ function HorizontaRotationManeuverAI:transition()
         local rotationAnimationInterface = self.rotationAnimationInterface
         local angleIncrementInfo = rotationAnimationInterface:getAngleInfoP():getAngleIncrementInfo()
         local rotationAnimationInterfaceCompositeInterface = self:getOwnerLayerInterface()
-        rotationAnimationInterfaceCompositeInterface:setFrame(math.tointeger(angleIncrementInfo.RIGHT_FRAME // 1))
+        rotationAnimationInterfaceCompositeInterface:setFrame(require("allbinary_java").number_value(angleIncrementInfo.RIGHT_FRAME, "intValue"))
         local allbinaryLayer = self:getOwnerLayerInterface()
         allbinaryLayer:setPosition(allbinaryLayer:getXP(), 1, allbinaryLayer:getZP())
 end
@@ -207,12 +207,12 @@ function HorizontaRotationManeuverAI:processAI(allBinaryLayerManager)
         local angleIncrementInfo = rotationAnimationInterface:getAngleInfoP():getAngleIncrementInfo()
         local frame = self.rotationAnimationInterface:getFrame()
         local ownerLayerInterface = self:getOwnerLayerInterface()
-        if ownerLayerInterface:getXP() - ownerLayerInterface:getWidth() <= 0 and rawequal(frame, math.tointeger(angleIncrementInfo.LEFT_FRAME // 1)) then
+        if ownerLayerInterface:getXP() - ownerLayerInterface:getWidth() <= 0 and rawequal(frame, require("allbinary_java").number_value(angleIncrementInfo.LEFT_FRAME, "intValue")) then
             self:reverse()
             self:drop()
         end
         local displayInfo = DisplayInfoSingleton.getInstance()
-        if ownerLayerInterface:getX2() + ownerLayerInterface:getWidth() > displayInfo:getLastWidth() and rawequal(frame, math.tointeger(angleIncrementInfo.RIGHT_FRAME // 1)) then
+        if ownerLayerInterface:getX2() + ownerLayerInterface:getWidth() > displayInfo:getLastWidth() and rawequal(frame, require("allbinary_java").number_value(angleIncrementInfo.RIGHT_FRAME, "intValue")) then
             self:reverse()
             self:accelerate()
             self:drop()
@@ -223,9 +223,9 @@ function HorizontaRotationManeuverAI:processAI(allBinaryLayerManager)
             self.velocityInterface:limitMaxXYVelocity(self.velocityInterface:getMaxForwardVelocity() / self.currentSpeedDivisor)
         end
         self.circularIndexUtil:next()
-        if rawequal(frame, math.tointeger(angleIncrementInfo.LEFT_FRAME // 1)) then
+        if rawequal(frame, require("allbinary_java").number_value(angleIncrementInfo.LEFT_FRAME, "intValue")) then
             java_super(BasicAI, "processKeyAI", 1)(self, Canvas.KEY_NUM0)
-        elseif rawequal(frame, math.tointeger(angleIncrementInfo.RIGHT_FRAME // 1)) then
+        elseif rawequal(frame, require("allbinary_java").number_value(angleIncrementInfo.RIGHT_FRAME, "intValue")) then
             java_super(BasicAI, "processKeyAI", 1)(self, Canvas.KEY_POUND)
         end
 end
@@ -236,13 +236,13 @@ function HorizontaRotationManeuverAI:reverse()
         local rotationAnimationInterface = self.rotationAnimationInterface
         local angleIncrementInfo = rotationAnimationInterface:getAngleInfoP():getAngleIncrementInfo()
         local frame = self.rotationAnimationInterface:getFrame()
-        if rawequal(frame, math.tointeger(angleIncrementInfo.LEFT_FRAME // 1)) then
+        if rawequal(frame, require("allbinary_java").number_value(angleIncrementInfo.LEFT_FRAME, "intValue")) then
             local rotationAnimationInterfaceCompositeInterface = self:getOwnerLayerInterface()
-            rotationAnimationInterfaceCompositeInterface:setFrame(math.tointeger(angleIncrementInfo.RIGHT_FRAME // 1))
+            rotationAnimationInterfaceCompositeInterface:setFrame(require("allbinary_java").number_value(angleIncrementInfo.RIGHT_FRAME, "intValue"))
             self.baseVelocityInterface:zero()
-        elseif rawequal(frame, math.tointeger(angleIncrementInfo.RIGHT_FRAME // 1)) then
+        elseif rawequal(frame, require("allbinary_java").number_value(angleIncrementInfo.RIGHT_FRAME, "intValue")) then
             local rotationAnimationInterfaceCompositeInterface = self:getOwnerLayerInterface()
-            rotationAnimationInterfaceCompositeInterface:setFrame(math.tointeger(angleIncrementInfo.LEFT_FRAME // 1))
+            rotationAnimationInterfaceCompositeInterface:setFrame(require("allbinary_java").number_value(angleIncrementInfo.LEFT_FRAME, "intValue"))
             self.baseVelocityInterface:zero()
         end
 end

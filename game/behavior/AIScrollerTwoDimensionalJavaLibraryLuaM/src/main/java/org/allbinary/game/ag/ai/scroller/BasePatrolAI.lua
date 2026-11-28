@@ -148,7 +148,7 @@ function BasePatrolAI._jinit(self, hashtable, ownerLayerInterface, gameInput)
     BasePatrolAI._init_fields(self)
         -- super(...) made self above
         self.maxDistance = hashtable:get(BasePatrolAI.MAX_DISTANCE)
-        self.currentDistance = math.tointeger(self.maxDistance // 1)
+        self.currentDistance = require("allbinary_java").number_value(self.maxDistance, "intValue")
     return self
 end
 

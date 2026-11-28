@@ -113,7 +113,7 @@ end
 
 function Animation:setBasicColorP(basicColor)
         self.basicColor = basicColor
-        self.colorP = math.tointeger(self.basicColor // 1)
+        self.colorP = require("allbinary_java").number_value(self.basicColor, "intValue")
 end
 
 
@@ -128,7 +128,7 @@ end
 
 function Animation:changeBasicColor(basicColor)
         self.changeBasicColorP = basicColor
-        self.changeColorP = math.tointeger(self.changeBasicColorP // 1)
+        self.changeColorP = require("allbinary_java").number_value(self.changeBasicColorP, "intValue")
 end
 
 

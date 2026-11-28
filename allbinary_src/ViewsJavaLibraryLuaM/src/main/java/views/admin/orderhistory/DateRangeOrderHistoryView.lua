@@ -371,7 +371,7 @@ function DateRangeOrderHistoryView:isValid()
                     elseif rawequal(((self.command < self.VIEWALLORDERS and -1) or (self.command > self.VIEWALLORDERS and 1) or 0), 0) then
                         rangeDate = tostring(currentTime)
                     end
-                    local rangeDateLong = math.tointeger(rangeDate // 1)
+                    local rangeDateLong = require("allbinary_java").number_value(rangeDate, "longValue")
                     self.fromDate = tostring(currentTime - rangeDateLong)
                     local time = tostring(tostring(currentTime))
                     self.toDate = time

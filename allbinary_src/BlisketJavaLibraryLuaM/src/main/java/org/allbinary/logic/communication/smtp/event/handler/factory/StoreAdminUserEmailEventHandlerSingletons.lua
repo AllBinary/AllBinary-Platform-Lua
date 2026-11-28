@@ -110,6 +110,7 @@ end
 function StoreAdminUserEmailEventHandlerSingletons.getInstance()
         return StoreAdminUserEmailEventHandlerSingletons.instance_f
 end
+StoreAdminUserEmailEventHandlerSingletons.getInstance__static = StoreAdminUserEmailEventHandlerSingletons.getInstance
 
 
 function StoreAdminUserEmailEventHandlerSingletons._jinit(self)
@@ -147,6 +148,14 @@ function StoreAdminUserEmailEventHandlerSingletons:getInstance(userEmailEventNam
             end
             return userEmailEventHandler
         end
+end
+StoreAdminUserEmailEventHandlerSingletons.getInstance__instance = StoreAdminUserEmailEventHandlerSingletons.getInstance
+function StoreAdminUserEmailEventHandlerSingletons.getInstance(...)
+                
+    if select("#", ...) == 0 then return StoreAdminUserEmailEventHandlerSingletons.getInstance__static() end
+                
+    return StoreAdminUserEmailEventHandlerSingletons.getInstance__instance(...)
+                
 end
 
 StoreAdminUserEmailEventHandlerSingletons.instance_f = StoreAdminUserEmailEventHandlerSingletons.new()

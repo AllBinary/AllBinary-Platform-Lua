@@ -100,6 +100,7 @@ end
 function BillingAddressesEntityFactory.getInstance()
         return BillingAddressesEntityFactory.instance_f
 end
+BillingAddressesEntityFactory.getInstance__static = BillingAddressesEntityFactory.getInstance
 
 
 function BillingAddressesEntityFactory._jinit(self)
@@ -128,6 +129,14 @@ function BillingAddressesEntityFactory:getInstance(userName)
             return nil
         end
         if try_ok and try_error == "__jreturn" then return try_value end
+end
+BillingAddressesEntityFactory.getInstance__instance = BillingAddressesEntityFactory.getInstance
+function BillingAddressesEntityFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return BillingAddressesEntityFactory.getInstance__static() end
+                
+    return BillingAddressesEntityFactory.getInstance__instance(...)
+                
 end
 
 BillingAddressesEntityFactory.instance_f = BillingAddressesEntityFactory.new()

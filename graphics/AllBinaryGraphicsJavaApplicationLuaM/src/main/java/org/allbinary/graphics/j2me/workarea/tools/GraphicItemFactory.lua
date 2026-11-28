@@ -106,6 +106,7 @@ end
 function GraphicItemFactory.getInstance()
         return GraphicItemFactory.instance_f
 end
+GraphicItemFactory.getInstance__static = GraphicItemFactory.getInstance
 
 
 function GraphicItemFactory._jinit(self)
@@ -153,6 +154,14 @@ function GraphicItemFactory:getInstance_j1(...)
     local java_a1 = ...
     if true and (java_a1 == nil or type(java_a1) == "string") then return GraphicItemFactory.getInstance_j1_1(self, ...) end
     return GraphicItemFactory.getInstance_j1_2(self, ...)
+end
+GraphicItemFactory.getInstance__instance = GraphicItemFactory.getInstance
+function GraphicItemFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return GraphicItemFactory.getInstance__static() end
+                
+    return GraphicItemFactory.getInstance__instance(...)
+                
 end
 
 GraphicItemFactory.instance_f = GraphicItemFactory.new()

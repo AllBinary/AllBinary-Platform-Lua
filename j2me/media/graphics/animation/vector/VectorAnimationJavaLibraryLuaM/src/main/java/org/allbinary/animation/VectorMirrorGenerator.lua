@@ -103,6 +103,7 @@ end
 function VectorMirrorGenerator.getInstance()
         return VectorMirrorGenerator.instance_f
 end
+VectorMirrorGenerator.getInstance__static = VectorMirrorGenerator.getInstance
 
 
 function VectorMirrorGenerator._jinit(self)
@@ -168,6 +169,14 @@ function VectorMirrorGenerator:getInstance_j2(...)
     local java_a1, java_a2 = ...
     if true and (java_a1 == nil or (type(java_a1) == "table" and getmetatable(java_a1) == nil and java_a1.jt == nil and (java_a1[1] == nil or type(java_a1[1]) == "table"))) and math.type(java_a2) == "integer" then return VectorMirrorGenerator.getInstance_j2_1(self, ...) end
     return VectorMirrorGenerator.getInstance_j2_2(self, ...)
+end
+VectorMirrorGenerator.getInstance__instance = VectorMirrorGenerator.getInstance
+function VectorMirrorGenerator.getInstance(...)
+                
+    if select("#", ...) == 0 then return VectorMirrorGenerator.getInstance__static() end
+                
+    return VectorMirrorGenerator.getInstance__instance(...)
+                
 end
 
 VectorMirrorGenerator.instance_f = VectorMirrorGenerator.new()

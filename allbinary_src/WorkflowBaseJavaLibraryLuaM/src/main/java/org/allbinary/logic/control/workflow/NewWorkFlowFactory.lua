@@ -134,6 +134,7 @@ end
 function NewWorkFlowFactory.getInstance()
         return NewWorkFlowFactory.instance_f
 end
+NewWorkFlowFactory.getInstance__static = NewWorkFlowFactory.getInstance
 
 
 function NewWorkFlowFactory._jinit(self)
@@ -203,6 +204,14 @@ function NewWorkFlowFactory:getInstance(...)
     error("No method getInstance takes " .. count .. " arguments")
 end
 NewWorkFlowFactory.getInstance__jdispatcher = NewWorkFlowFactory.getInstance
+NewWorkFlowFactory.getInstance__instance = NewWorkFlowFactory.getInstance
+function NewWorkFlowFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return NewWorkFlowFactory.getInstance__static() end
+                
+    return NewWorkFlowFactory.getInstance__instance(...)
+                
+end
 
 NewWorkFlowFactory.instance_f = NewWorkFlowFactory.new()
 

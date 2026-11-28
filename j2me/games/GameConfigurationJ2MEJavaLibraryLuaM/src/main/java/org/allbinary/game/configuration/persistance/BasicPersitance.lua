@@ -97,7 +97,7 @@ function BasicPersitance:deleteAll(abeClientInformation)
         local size = self.idList:size()
         for index = 0, size - 1 do
             local integer = self.idList.objectArray[index + 1]
-            self:delete(abeClientInformation, math.tointeger(integer // 1))
+            self:delete(abeClientInformation, require("allbinary_java").number_value(integer, "intValue"))
         end
         self:clear()
 end

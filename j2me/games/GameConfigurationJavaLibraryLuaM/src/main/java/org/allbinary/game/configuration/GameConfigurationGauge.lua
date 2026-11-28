@@ -129,7 +129,7 @@ setmetatable(GameConfigurationGauge, {__index = Gauge})
 
 
 function GameConfigurationGauge._jinit(self, gameConfiguration)
-    java_super_init(Gauge, self, gameConfiguration:getName(), gameConfiguration:isModifiable(), math.tointeger(gameConfiguration:getMaxValue() // 1) - math.tointeger(gameConfiguration:getMinValue() // 1), math.tointeger(gameConfiguration:getValue() // 1) - math.tointeger(gameConfiguration:getMinValue() // 1))
+    java_super_init(Gauge, self, gameConfiguration:getName(), gameConfiguration:isModifiable(), require("allbinary_java").number_value(gameConfiguration:getMaxValue(), "intValue") - require("allbinary_java").number_value(gameConfiguration:getMinValue(), "intValue"), require("allbinary_java").number_value(gameConfiguration:getValue(), "intValue") - require("allbinary_java").number_value(gameConfiguration:getMinValue(), "intValue"))
         -- super(...) made self above
     return self
 end

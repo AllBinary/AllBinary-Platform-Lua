@@ -97,7 +97,7 @@ function GeographicMapCellHistory:_init_fields()
     if self.totalVisited == nil then self.totalVisited = 0 end
     self.halfWidth = 0
     self.fontHeight = 0
-    self.RED = math.tointeger(BasicColorFactory.getInstance().RED // 1)
+    self.RED = require("allbinary_java").number_value(BasicColorFactory.getInstance().RED, "intValue")
 end
 
 

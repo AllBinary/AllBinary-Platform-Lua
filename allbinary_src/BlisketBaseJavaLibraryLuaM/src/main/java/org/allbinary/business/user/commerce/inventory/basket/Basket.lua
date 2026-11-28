@@ -85,7 +85,7 @@ function Basket:addItem(id, num)
             local oldNumStr = tostring(self.items:get(id))
             local oldNumInt = tostring(oldNumStr)
             local numInt = tostring(num)
-            local newNumInt = math.tointeger(oldNumInt // 1) + math.tointeger(numInt // 1)
+            local newNumInt = require("allbinary_java").number_value(oldNumInt, "intValue") + require("allbinary_java").number_value(numInt, "intValue")
             self.items:put(id, tostring(newNumInt))
         else
             self.items:put(id, num)
@@ -99,7 +99,7 @@ end
 
 
 function Basket:adjustItem(id, num)
-        if math.tointeger(tostring(num) // 1) > 0 then
+        if require("allbinary_java").number_value(tostring(num), "intValue") > 0 then
             self.items:put(id, num)
         else
             self.items:remove(id)
@@ -163,7 +163,7 @@ function Basket:getSubTotal()
                 local product = tostring(itemArray[index + 1])
                 local itemInterface = inventoryEntity:getItem(product)
                 local productTotal = itemInterface:getPrice()
-                productTotal:multiply(math.tointeger(self:getNumberOf(product) // 1))
+                productTotal:multiply(require("allbinary_java").number_value(self:getNumberOf(product), "intValue"))
                 subTotal:add(tostring(productTotal))
             end
         end

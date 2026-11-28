@@ -104,6 +104,7 @@ end
 function ColorFillPaintableFactory.getInstance()
         return ColorFillPaintableFactory.instance_f
 end
+ColorFillPaintableFactory.getInstance__static = ColorFillPaintableFactory.getInstance
 
 
 function ColorFillPaintableFactory:getInstance(basicColor, forThreedCanvas)
@@ -113,6 +114,14 @@ function ColorFillPaintableFactory:getInstance(basicColor, forThreedCanvas)
         else
             return ColorFillPaintable.new(basicColor)
         end
+end
+ColorFillPaintableFactory.getInstance__instance = ColorFillPaintableFactory.getInstance
+function ColorFillPaintableFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return ColorFillPaintableFactory.getInstance__static() end
+                
+    return ColorFillPaintableFactory.getInstance__instance(...)
+                
 end
 
 ColorFillPaintableFactory.instance_f = ColorFillPaintableFactory.new()

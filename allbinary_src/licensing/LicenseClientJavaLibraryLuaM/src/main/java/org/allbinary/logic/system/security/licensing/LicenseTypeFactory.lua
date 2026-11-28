@@ -107,6 +107,7 @@ end
 function LicenseTypeFactory.getInstance()
         return LicenseTypeFactory.instance_f
 end
+LicenseTypeFactory.getInstance__static = LicenseTypeFactory.getInstance
 
 
 function LicenseTypeFactory:getInstance(name)
@@ -116,6 +117,14 @@ function LicenseTypeFactory:getInstance(name)
             return self.NORMAL
         end
         return self.UNKNOWN
+end
+LicenseTypeFactory.getInstance__instance = LicenseTypeFactory.getInstance
+function LicenseTypeFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return LicenseTypeFactory.getInstance__static() end
+                
+    return LicenseTypeFactory.getInstance__instance(...)
+                
 end
 
 LicenseTypeFactory.instance_f = LicenseTypeFactory.new()

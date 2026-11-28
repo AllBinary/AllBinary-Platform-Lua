@@ -93,7 +93,7 @@ function DownloadableItemView:toXmlNode(document)
             self.logUtil:putF(self.commonStrings.START, self, "toXmlNode")
         end
         local hashMap = self.downloadableItem:toHashMap()
-        local totalTime = math.tointeger(self.downloadableItem:getValidTime() // 1)
+        local totalTime = require("allbinary_java").number_value(self.downloadableItem:getValidTime(), "longValue")
         local calendar = Calendar.getInstance()
         local year = calendar:get(Calendar.YEAR)
         local month = calendar:get(Calendar.MONTH)

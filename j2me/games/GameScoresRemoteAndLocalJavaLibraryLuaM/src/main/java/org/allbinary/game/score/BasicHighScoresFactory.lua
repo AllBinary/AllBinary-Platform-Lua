@@ -202,8 +202,8 @@ function BasicHighScoresFactory:fetchHighScoresPreload(gameInfo, highScoresResul
             function o:run()
                 local logUtil = LogUtil.getInstance()
                 local try_ok, try_error, try_value = pcall(function()
-                    logUtil:putF(java_outer_self.commonStrings.START, self, self.FETCH)
-                    self.highScoresArray[1] = RecordStoreHighScores.getInstance(self.abeClientInformation, gameInfo, self.TOP, self.PERSONAL_HIGH_SCORES, self.SCORES, ScoreComparator.new(true))
+                    logUtil:putF(java_outer_self.commonStrings.START, self, java_outer_self.FETCH)
+                    java_outer_self.highScoresArray[1] = RecordStoreHighScores.getInstance(java_outer_self.abeClientInformation, gameInfo, java_outer_self.TOP, java_outer_self.PERSONAL_HIGH_SCORES, java_outer_self.SCORES, ScoreComparator.new(true))
                     local gameType = gameInfo:getGameType()
                     local gameTypeFactory = GameTypeFactory.getInstance()
                     local gameInfo2 = gameInfo
@@ -212,15 +212,15 @@ function BasicHighScoresFactory:fetchHighScoresPreload(gameInfo, highScoresResul
                     elseif rawequal(gameType, gameTypeFactory.MULTI_PLAYER) then
                         gameInfo2 = BasicHighScoresGameInfoFactory.getInstance().MULTI_PLAYER_SERVER
                     end
-                    self.highScoresArray[2] = RemoteHighScores.getInstancePreload(self.abeClientInformation, self.softwareInformation, gameInfo2, self.WORLD_TOP_SCORES, self.SCORES, BooleanFactory.getInstance().FALSE, preload)
-                    logUtil:putF(java_outer_self.commonStrings.END, self, self.FETCH)
-                    LastFetchHighScoresFactory.getInstance().highScoresArray = self.highScoresArray
-                    highScoresResultsListener:setHighScoresArray(self.highScoresArray)
+                    java_outer_self.highScoresArray[2] = RemoteHighScores.getInstancePreload(java_outer_self.abeClientInformation, java_outer_self.softwareInformation, gameInfo2, java_outer_self.WORLD_TOP_SCORES, java_outer_self.SCORES, BooleanFactory.getInstance().FALSE, preload)
+                    logUtil:putF(java_outer_self.commonStrings.END, self, java_outer_self.FETCH)
+                    LastFetchHighScoresFactory.getInstance().highScoresArray = java_outer_self.highScoresArray
+                    highScoresResultsListener:setHighScoresArray(java_outer_self.highScoresArray)
                 end)
                 if not try_ok then
                     local e = try_error
                     if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-                    logUtil:put(self.commonStrings.EXCEPTION, self, self.FETCH, e)
+                    logUtil:put(self.commonStrings.EXCEPTION, self, java_outer_self.FETCH, e)
                 end
             end
             java_overload(o, "run", 0)

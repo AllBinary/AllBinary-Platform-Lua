@@ -70,14 +70,14 @@ end
 
 -- throws Exception
 function GraphicsAnalysisUtil.getNominator(bufferedImage, min_x, max_x, y)
-        for index = math.tointeger(max_x // 1), math.tointeger(min_x // 1) + 1, -1 do
-            local colorInteger = tostring(bufferedImage:getRGB(index, math.tointeger(y // 1)))
+        for index = require("allbinary_java").number_value(max_x, "intValue"), require("allbinary_java").number_value(min_x, "intValue") + 1, -1 do
+            local colorInteger = tostring(bufferedImage:getRGB(index, require("allbinary_java").number_value(y, "intValue")))
             local automaticCacheInterface = ColorCacheFactory.getInstance()
             local colorCacheable = automaticCacheInterface:get(colorInteger)
             local color = colorCacheable:getColor()
             if color:getRed() < GraphicsAnalysisUtil.MAX and color:getGreen() < GraphicsAnalysisUtil.MAX and color:getBlue() < GraphicsAnalysisUtil.MAX then
             else
-                return index - math.tointeger(min_x // 1)
+                return index - require("allbinary_java").number_value(min_x, "intValue")
             end
         end
         return 0.0

@@ -685,7 +685,8 @@ function InputAutomationJFrame.create(inputAutomationBundleActivatorListenerInte
         URLGLOBALS.init(appUrlGlobals)
         WebappClassLoaderInfo.setLoader(require("java.lang.ClassLoader").getSystemClassLoader())
         EventQueue.invokeLater((function()
-            local o = ARunnable.new and ARunnable.new() or setmetatable({}, {__index = ARunnable})
+            local java_outer_self = self
+        local o = ARunnable.new and ARunnable.new() or setmetatable({}, {__index = ARunnable})
             
 
             function o:run()

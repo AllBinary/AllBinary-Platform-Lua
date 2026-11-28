@@ -71,7 +71,7 @@ end
 
 
 function BasicColorSetUtil:setBasicColorP(graphics, basicColor)
-        graphics:setColor(math.tointeger(basicColor // 1))
+        graphics:setColor(require("allbinary_java").number_value(basicColor, "intValue"))
 end
 
 

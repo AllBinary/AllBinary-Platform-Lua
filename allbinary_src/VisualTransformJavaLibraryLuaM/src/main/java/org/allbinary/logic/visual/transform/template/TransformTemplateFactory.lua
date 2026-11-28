@@ -105,6 +105,7 @@ end
 function TransformTemplateFactory.getInstance()
         return TransformTemplateFactory.instance_f
 end
+TransformTemplateFactory.getInstance__static = TransformTemplateFactory.getInstance
 
 
 function TransformTemplateFactory._jinit(self)
@@ -136,6 +137,14 @@ function TransformTemplateFactory:getInstance(abeClientInformation, templateName
             error(e, 0)
         end
         if try_ok and try_error == "__jreturn" then return try_value end
+end
+TransformTemplateFactory.getInstance__instance = TransformTemplateFactory.getInstance
+function TransformTemplateFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return TransformTemplateFactory.getInstance__static() end
+                
+    return TransformTemplateFactory.getInstance__instance(...)
+                
 end
 
 TransformTemplateFactory.instance_f = TransformTemplateFactory.new()

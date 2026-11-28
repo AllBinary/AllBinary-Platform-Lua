@@ -79,7 +79,7 @@ function SelectionTool:_init_fields()
     if self.canvasJPanel == nil then self.canvasJPanel = nil end
     self.active = true
     if self.controlIdDown == nil then self.controlIdDown = false end
-    self.rectColor = Color.new(math.tointeger(BasicColorFactory.getInstance().RED // 1))
+    self.rectColor = Color.new(require("allbinary_java").number_value(BasicColorFactory.getInstance().RED, "intValue"))
     self.startPoint = PointFactory.getInstance().ZERO_ZERO
     self.endPoint = self.startPoint
 end

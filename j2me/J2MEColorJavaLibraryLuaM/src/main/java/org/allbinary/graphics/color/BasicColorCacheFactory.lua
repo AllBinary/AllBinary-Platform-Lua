@@ -78,14 +78,14 @@ end
 
 
 function BasicColorCacheFactory:add(basicDefaultColor)
-        self.hashtable:put(math.tointeger(basicDefaultColor // 1), basicDefaultColor)
+        self.hashtable:put(require("allbinary_java").number_value(basicDefaultColor, "intValue"), basicDefaultColor)
 end
 
 
 function BasicColorCacheFactory:getAndOrCreate(integer)
         local basicColor = self.hashtable:get(integer)
         if rawequal(basicColor, nil) then
-            basicColor = BasicColorFactory.getInstance():createInstance(math.tointeger(integer // 1))
+            basicColor = BasicColorFactory.getInstance():createInstance(require("allbinary_java").number_value(integer, "intValue"))
             self.hashtable:put(integer, basicColor)
         end
         return basicColor

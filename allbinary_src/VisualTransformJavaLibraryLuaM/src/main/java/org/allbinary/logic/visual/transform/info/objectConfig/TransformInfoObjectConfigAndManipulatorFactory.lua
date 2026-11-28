@@ -148,6 +148,7 @@ end
 function TransformInfoObjectConfigAndManipulatorFactory.getInstance()
         return TransformInfoObjectConfigAndManipulatorFactory.instance_f
 end
+TransformInfoObjectConfigAndManipulatorFactory.getInstance__static = TransformInfoObjectConfigAndManipulatorFactory.getInstance
 
 
 function TransformInfoObjectConfigAndManipulatorFactory._jinit(self)
@@ -244,6 +245,14 @@ function TransformInfoObjectConfigAndManipulatorFactory:getInstance_j3(...)
     local java_a1, java_a2, java_a3 = ...
     if true and (java_a1 == nil or java_is(java_a1, "AbeClientInformationInterface")) and (java_a2 == nil or java_is(java_a2, "TransformInfoInterface")) and (java_a3 == nil or java_is(java_a3, "AbPath")) then return TransformInfoObjectConfigAndManipulatorFactory.getInstance_j3_1(self, ...) end
     return TransformInfoObjectConfigAndManipulatorFactory.getInstance_j3_2(self, ...)
+end
+TransformInfoObjectConfigAndManipulatorFactory.getInstance__instance = TransformInfoObjectConfigAndManipulatorFactory.getInstance
+function TransformInfoObjectConfigAndManipulatorFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return TransformInfoObjectConfigAndManipulatorFactory.getInstance__static() end
+                
+    return TransformInfoObjectConfigAndManipulatorFactory.getInstance__instance(...)
+                
 end
 
 TransformInfoObjectConfigAndManipulatorFactory.instance_f = TransformInfoObjectConfigAndManipulatorFactory.new()

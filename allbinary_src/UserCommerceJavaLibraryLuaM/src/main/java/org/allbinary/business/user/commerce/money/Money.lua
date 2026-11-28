@@ -149,7 +149,7 @@ end
 
 
 function Money:isValid()
-        if not rawequal(self.units, nil) and math.tointeger(self.units // 1) > 0 and math.tointeger(self.units // 1) < require("java.lang.Long").MAX_VALUE then
+        if not rawequal(self.units, nil) and require("allbinary_java").number_value(self.units, "longValue") > 0 and require("allbinary_java").number_value(self.units, "longValue") < require("java.lang.Long").MAX_VALUE then
             return true
         else
             return false
@@ -163,7 +163,7 @@ end
 
 
 function Money:add_j1_2(usDollarStr)
-        self.units = math.tointeger(self.units // 1) + self:convertUsdToUnits(usDollarStr)
+        self.units = require("allbinary_java").number_value(self.units, "longValue") + self:convertUsdToUnits(usDollarStr)
 end
 function Money:add(...)
     local count = select("#", ...)
@@ -179,17 +179,17 @@ end
 
 
 function Money:subtract(usDollarStr)
-        self.units = math.tointeger(self.units // 1) - self:convertUsdToUnits(usDollarStr)
+        self.units = require("allbinary_java").number_value(self.units, "longValue") - self:convertUsdToUnits(usDollarStr)
 end
 
 
 function Money:multiply_j1_1(multiplier)
-        self.units = math.tointeger(math.tointeger(self.units // 1) * (multiplier + 0.0) // 1)
+        self.units = require("allbinary_java").number_value(require("allbinary_java").number_value(self.units, "longValue") * (multiplier + 0.0), "longValue")
 end
 
 
 function Money:multiply_j1_2(multiplier)
-        self.units = math.tointeger(self.units // 1) * multiplier
+        self.units = require("allbinary_java").number_value(self.units, "longValue") * multiplier
 end
 function Money:multiply(...)
     local count = select("#", ...)
@@ -207,8 +207,8 @@ end
 function Money:convertUnitsTo(currency)
         local stringBuffer = StringMaker.new()
         if rawequal(((currency < self.DEFAULT_CURRENCY and -1) or (currency > self.DEFAULT_CURRENCY and 1) or 0), 0) then
-            local dollar = math.tointeger(self.units // 1) / 100
-            local cents = math.tointeger(self.units // 1) - (dollar * 100)
+            local dollar = require("allbinary_java").number_value(self.units, "longValue") / 100
+            local cents = require("allbinary_java").number_value(self.units, "longValue") - (dollar * 100)
             stringBuffer:append(tostring(dollar))
             stringBuffer:append(AbPathData.getInstance().EXTENSION_SEP)
             if cents < 10 then
@@ -233,14 +233,14 @@ function Money:convertUsdToUnits(usDollarStr)
             dollarStr = tostring(string.sub(usDollarStr, (0) + 1, index))
             centsStr = tostring(string.sub(usDollarStr, (index + 1) + 1))
         end
-        localUnit = math.tointeger(math.tointeger(dollarStr // 1) * 100 // 1)
-        localUnit = localUnit + (math.tointeger(centsStr // 1))
+        localUnit = require("allbinary_java").number_value(require("allbinary_java").number_value(dollarStr, "longValue") * 100, "longValue")
+        localUnit = localUnit + (require("allbinary_java").number_value(centsStr, "longValue"))
         return localUnit
 end
 
 
 function Money:getUnits()
-        return math.tointeger(self.units // 1)
+        return require("allbinary_java").number_value(self.units, "longValue")
 end
 
 

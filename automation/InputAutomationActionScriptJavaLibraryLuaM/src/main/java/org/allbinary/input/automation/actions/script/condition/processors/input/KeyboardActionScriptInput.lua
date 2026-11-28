@@ -193,7 +193,7 @@ KeyboardActionScriptInput.java_interfaces = function() return {KeyboardActionScr
 
 function KeyboardActionScriptInput:_init_fields()
     self.logUtil = LogUtil.getInstance()
-    self.keyArray = {KeySingletonFactory.getInstance(KeyEvent.VK_0)}
+    self.keyArray = {KeySingletonFactory.getInstance(48)}
     if self.keyboardActionScriptInputJPanel == nil then self.keyboardActionScriptInputJPanel = nil end
     if self.press == nil then self.press = false end
     if self.release == nil then self.release = false end
@@ -231,7 +231,7 @@ function KeyboardActionScriptInput._new1(self, node)
                     vector:add(tostring(keyString))
                 elseif rawequal(childNode:getNodeName():compareTo(KeyboardActionScriptInputData.DELAY_BETWEEN_KEYS), 0) then
                     local time = DomNodeHelper.getTextNodeValue(childNode)
-                    self:setDelayBetweenKeys(math.tointeger(tostring(time) // 1))
+                    self:setDelayBetweenKeys(require("allbinary_java").number_value(tostring(time), "intValue"))
                 elseif rawequal(childNode:getNodeName():compareTo(KeyboardActionScriptInputData.PRESS), 0) then
                     local value = DomNodeHelper.getTextNodeValue(childNode)
                     self:setPress(tostring(value))

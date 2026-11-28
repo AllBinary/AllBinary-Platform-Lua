@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local FileNotFoundException = require("java.io.FileNotFoundException")
+local FileNotFoundException = java_lazy("java.io.FileNotFoundException")
 local Context = java_lazy("android.content.Context")
 local ResourceUtil = java_lazy("org.allbinary.data.resource.ResourceUtil")
 local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
@@ -111,6 +111,7 @@ end
 function FileFactory.getInstance()
         return FileFactory.SINGLETON
 end
+FileFactory.getInstance__static = FileFactory.getInstance
 
 
 -- throws Exception
@@ -142,6 +143,14 @@ end
 -- throws Exception
 function FileFactory:getInstance(file, childFilePath)
         return AbFile.createAbFileWithChild(file, childFilePath)
+end
+FileFactory.getInstance__instance = FileFactory.getInstance
+function FileFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return FileFactory.getInstance__static() end
+                
+    return FileFactory.getInstance__instance(...)
+                
 end
 
 FileFactory.SINGLETON = FileFactory.new(ResourceUtil.getInstance():getContext())

@@ -106,6 +106,7 @@ end
 function TransformInfoPropertiesFactory.getInstance()
         return TransformInfoPropertiesFactory.instance_f
 end
+TransformInfoPropertiesFactory.getInstance__static = TransformInfoPropertiesFactory.getInstance
 
 
 function TransformInfoPropertiesFactory._jinit(self)
@@ -145,6 +146,14 @@ function TransformInfoPropertiesFactory:getInstance(node)
         local templateFileName = DomNodeHelper.getTextNodeValue(templateFileNode)
         local transformInfoProperties = TransformInfoProperties.new(name, label, description, objectFileName, objectConfigFileName, templateFileName)
         return transformInfoProperties
+end
+TransformInfoPropertiesFactory.getInstance__instance = TransformInfoPropertiesFactory.getInstance
+function TransformInfoPropertiesFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return TransformInfoPropertiesFactory.getInstance__static() end
+                
+    return TransformInfoPropertiesFactory.getInstance__instance(...)
+                
 end
 
 TransformInfoPropertiesFactory.instance_f = TransformInfoPropertiesFactory.new()

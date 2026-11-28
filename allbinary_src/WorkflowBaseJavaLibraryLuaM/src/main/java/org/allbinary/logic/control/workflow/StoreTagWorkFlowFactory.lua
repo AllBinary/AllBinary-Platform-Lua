@@ -120,6 +120,7 @@ end
 function StoreTagWorkFlowFactory.getInstance()
         return StoreTagWorkFlowFactory.instance_f
 end
+StoreTagWorkFlowFactory.getInstance__static = StoreTagWorkFlowFactory.getInstance
 
 
 function StoreTagWorkFlowFactory._jinit(self)
@@ -171,6 +172,14 @@ function StoreTagWorkFlowFactory:getInstance(abeClientInformation, propertiesHas
             error(e, 0)
         end
         if try_ok and try_error == "__jreturn" then return try_value end
+end
+StoreTagWorkFlowFactory.getInstance__instance = StoreTagWorkFlowFactory.getInstance
+function StoreTagWorkFlowFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return StoreTagWorkFlowFactory.getInstance__static() end
+                
+    return StoreTagWorkFlowFactory.getInstance__instance(...)
+                
 end
 
 StoreTagWorkFlowFactory.instance_f = StoreTagWorkFlowFactory.new()

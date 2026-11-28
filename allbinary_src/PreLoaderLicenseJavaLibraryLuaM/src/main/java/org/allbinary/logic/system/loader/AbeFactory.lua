@@ -107,6 +107,7 @@ end
 function AbeFactory.getInstance()
         return AbeFactory.instance_f
 end
+AbeFactory.getInstance__static = AbeFactory.getInstance
 
 
 function AbeFactory._jinit(self)
@@ -176,6 +177,14 @@ function AbeFactory:getInstance(...)
     error("No method getInstance takes " .. count .. " arguments")
 end
 AbeFactory.getInstance__jdispatcher = AbeFactory.getInstance
+AbeFactory.getInstance__instance = AbeFactory.getInstance
+function AbeFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return AbeFactory.getInstance__static() end
+                
+    return AbeFactory.getInstance__instance(...)
+                
+end
 
 
 -- throws LicensingException

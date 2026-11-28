@@ -28,10 +28,10 @@ local function java_real(class)
     return class
 end
 
--- local ByteArrayInputStream = require("java.io.ByteArrayInputStream")
+local ByteArrayInputStream = java_lazy("java.io.ByteArrayInputStream")
 local ByteArrayOutputStream = java_lazy("java.io.ByteArrayOutputStream")
--- local DataInputStream = require("java.io.DataInputStream")
--- local DataOutputStream = require("java.io.DataOutputStream")
+local DataInputStream = java_lazy("java.io.DataInputStream")
+local DataOutputStream = java_lazy("java.io.DataOutputStream")
 local RecordEnumeration = java_lazy("javax.microedition.rms.RecordEnumeration")
 local RecordStore = java_lazy("javax.microedition.rms.RecordStore")
 local TsUtil = java_lazy("org.allbinary.TsUtil")

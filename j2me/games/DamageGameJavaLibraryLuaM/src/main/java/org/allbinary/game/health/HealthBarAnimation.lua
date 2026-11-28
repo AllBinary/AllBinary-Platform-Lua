@@ -182,16 +182,16 @@ function HealthBarAnimation:onHealthChange(newX2)
         local quarter = (((self.allbinaryLayer:getWidth()) // (1 << (2))))
         if self.x2 > quarter * 3 then
             self.basicColor = self.basicColorFactory.GREEN
-            self.colorP = math.tointeger(self.basicColor // 1)
+            self.colorP = require("allbinary_java").number_value(self.basicColor, "intValue")
         elseif self.x2 > quarter * 2 then
             self.basicColor = self.basicColorFactory.YELLOW
-            self.colorP = math.tointeger(self.basicColor // 1)
+            self.colorP = require("allbinary_java").number_value(self.basicColor, "intValue")
         elseif self.x2 > quarter then
             self.basicColor = self.basicColorFactory.ORANGE
-            self.colorP = math.tointeger(self.basicColor // 1)
+            self.colorP = require("allbinary_java").number_value(self.basicColor, "intValue")
         else
             self.basicColor = self.basicColorFactory.RED
-            self.colorP = math.tointeger(self.basicColor // 1)
+            self.colorP = require("allbinary_java").number_value(self.basicColor, "intValue")
         end
 end
 java_overload(HealthBarAnimation, "onHealthChange", 1, function(java_a1) return true and type(java_a1) == "number" end)

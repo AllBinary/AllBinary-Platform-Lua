@@ -258,7 +258,7 @@ function AbSqlTableUtil:restoreTable(abSqlTable, portion)
         local tableName = abSqlTable:getTableName()
         local try_ok, try_error, try_value = pcall(function()
             local path = URLGLOBALS.getMainPath() + PATH_GLOBALS.getInstance().BACKUP_PATH
-            local current = math.tointeger(portion:getCurrent() // 1)
+            local current = require("allbinary_java").number_value(portion:getCurrent(), "intValue")
             if rawequal(current, 0) then
                 if Directory.create(AbPath.new(path)) then
                     if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
@@ -269,7 +269,7 @@ function AbSqlTableUtil:restoreTable(abSqlTable, portion)
             local backupFile = AbFile.createAbFile(path, require("allbinary_java").to_string(tableName) .. require("allbinary_java").to_string(self.EXTENSION))
             local bufferedLineReader = BufferedLineReader.new(backupFile)
             local size = bufferedLineReader:getSize()
-            local section = size / math.tointeger(portion:getTotal() // 1) + 1
+            local section = size / require("allbinary_java").number_value(portion:getTotal(), "intValue") + 1
             local start = section * current
             local end_ = start + section
             if end_ > size then

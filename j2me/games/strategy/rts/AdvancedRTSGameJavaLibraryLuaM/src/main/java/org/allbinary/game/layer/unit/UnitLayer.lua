@@ -310,7 +310,7 @@ function UnitLayer._jinit(self, remoteInfo, parentLayer, advancedRTSProperties, 
         -- super(...) made self above
         self:setCollidableInferface(CollidableUnitBehavior.new(true))
         self.waypointLayerInterfaceFactoryInterface = waypointLayerInterfaceFactoryInterface
-        self.maxResourceLoad = math.tointeger(maxResourceLoad // 1)
+        self.maxResourceLoad = require("allbinary_java").number_value(maxResourceLoad, "shortValue")
         self.moveSoundInterface = moveSoundInterface
         if Features.getInstance():isFeature(GameFeatureFactory.getInstance().DAMAGE_FLOATERS) then
             self.damageFloaters = PtsDamageFloaters.new(self)

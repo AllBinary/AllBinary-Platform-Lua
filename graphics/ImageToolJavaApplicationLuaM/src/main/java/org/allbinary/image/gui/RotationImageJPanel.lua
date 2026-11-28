@@ -212,7 +212,7 @@ function RotationImageJPanel:process()
                 if not try_ok then
                     local e = try_error
                     if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-                    logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.RUN, e)
+                    logUtil:put(java_outer_self.commonStrings.EXCEPTION, self, java_outer_self.commonStrings.RUN, e)
                 end
             end
             java_overload(o, "run", 0)
@@ -246,8 +246,8 @@ function RotationImageJPanel:initComponents()
         self.jLabel2 = JLabel.new()
         local jPanel1Layout = GroupLayout.new(self.jPanel1)
         self.jPanel1:setLayout(jPanel1Layout)
-        jPanel1Layout:setHorizontalGroup(jPanel1Layout:createParallelGroup(org.jdesktop.layout_f.GroupLayout.LEADING):add(0, 436, require("java.lang.Short").MAX_VALUE))
-        jPanel1Layout:setVerticalGroup(jPanel1Layout:createParallelGroup(org.jdesktop.layout_f.GroupLayout.LEADING):add(0, 227, require("java.lang.Short").MAX_VALUE))
+        jPanel1Layout:setHorizontalGroup(jPanel1Layout:createParallelGroup(require("org.jdesktop.layout.GroupLayout").LEADING):add(0, 436, require("java.lang.Short").MAX_VALUE))
+        jPanel1Layout:setVerticalGroup(jPanel1Layout:createParallelGroup(require("org.jdesktop.layout.GroupLayout").LEADING):add(0, 227, require("java.lang.Short").MAX_VALUE))
         self.generateJButton:setText("Generate")
         self.generateJButton:addActionListener((function()
             local java_outer_self = self
@@ -278,17 +278,17 @@ function RotationImageJPanel:initComponents()
         self.writeOverOriginalJCheckBox:setText("Write Over Original")
         local jPanel2Layout = GroupLayout.new(self.jPanel2)
         self.jPanel2:setLayout(jPanel2Layout)
-        jPanel2Layout:setHorizontalGroup(jPanel2Layout:createParallelGroup(org.jdesktop.layout_f.GroupLayout.LEADING):add(jPanel2Layout:createSequentialGroup():add(8, 8, 8):add(self.jLabel1):addPreferredGap(org.jdesktop.layout_f.LayoutStyle.RELATED):add(self.jLabel3):addPreferredGap(org.jdesktop.layout_f.LayoutStyle.RELATED):add(self.totalAngleJComboBox, org.jdesktop.layout_f.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout_f.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout_f.GroupLayout.PREFERRED_SIZE):addPreferredGap(org.jdesktop.layout_f.LayoutStyle.RELATED):add(self.writeOverOriginalJCheckBox):addPreferredGap(org.jdesktop.layout_f.LayoutStyle.RELATED):add(self.generateJButton):addContainerGap(org.jdesktop.layout_f.GroupLayout.DEFAULT_SIZE, require("java.lang.Short").MAX_VALUE)))
-        jPanel2Layout:setVerticalGroup(jPanel2Layout:createParallelGroup(org.jdesktop.layout_f.GroupLayout.LEADING):add(jPanel2Layout:createParallelGroup(org.jdesktop.layout_f.GroupLayout.BASELINE):add(self.jLabel1):add(self.generateJButton):add(self.totalAngleJComboBox, org.jdesktop.layout_f.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout_f.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout_f.GroupLayout.PREFERRED_SIZE):add(self.jLabel3):add(self.writeOverOriginalJCheckBox)))
+        jPanel2Layout:setHorizontalGroup(jPanel2Layout:createParallelGroup(require("org.jdesktop.layout.GroupLayout").LEADING):add(jPanel2Layout:createSequentialGroup():add(8, 8, 8):add(self.jLabel1):addPreferredGap(require("org.jdesktop.layout.LayoutStyle").RELATED):add(self.jLabel3):addPreferredGap(require("org.jdesktop.layout.LayoutStyle").RELATED):add(self.totalAngleJComboBox, require("org.jdesktop.layout.GroupLayout").PREFERRED_SIZE, require("org.jdesktop.layout.GroupLayout").DEFAULT_SIZE, require("org.jdesktop.layout.GroupLayout").PREFERRED_SIZE):addPreferredGap(require("org.jdesktop.layout.LayoutStyle").RELATED):add(self.writeOverOriginalJCheckBox):addPreferredGap(require("org.jdesktop.layout.LayoutStyle").RELATED):add(self.generateJButton):addContainerGap(require("org.jdesktop.layout.GroupLayout").DEFAULT_SIZE, require("java.lang.Short").MAX_VALUE)))
+        jPanel2Layout:setVerticalGroup(jPanel2Layout:createParallelGroup(require("org.jdesktop.layout.GroupLayout").LEADING):add(jPanel2Layout:createParallelGroup(require("org.jdesktop.layout.GroupLayout").BASELINE):add(self.jLabel1):add(self.generateJButton):add(self.totalAngleJComboBox, require("org.jdesktop.layout.GroupLayout").PREFERRED_SIZE, require("org.jdesktop.layout.GroupLayout").DEFAULT_SIZE, require("org.jdesktop.layout.GroupLayout").PREFERRED_SIZE):add(self.jLabel3):add(self.writeOverOriginalJCheckBox)))
         self.jLabel2:setText("Results:")
         local jPanel3Layout = GroupLayout.new(self.jPanel3)
         self.jPanel3:setLayout(jPanel3Layout)
-        jPanel3Layout:setHorizontalGroup(jPanel3Layout:createParallelGroup(org.jdesktop.layout_f.GroupLayout.LEADING):add(jPanel3Layout:createSequentialGroup():add(self.jLabel2):addContainerGap(377, require("java.lang.Short").MAX_VALUE)))
-        jPanel3Layout:setVerticalGroup(jPanel3Layout:createParallelGroup(org.jdesktop.layout_f.GroupLayout.LEADING):add(self.jLabel2))
+        jPanel3Layout:setHorizontalGroup(jPanel3Layout:createParallelGroup(require("org.jdesktop.layout.GroupLayout").LEADING):add(jPanel3Layout:createSequentialGroup():add(self.jLabel2):addContainerGap(377, require("java.lang.Short").MAX_VALUE)))
+        jPanel3Layout:setVerticalGroup(jPanel3Layout:createParallelGroup(require("org.jdesktop.layout.GroupLayout").LEADING):add(self.jLabel2))
         local layout = GroupLayout.new(self)
         self:setLayout(layout)
-        layout:setHorizontalGroup(layout:createParallelGroup(org.jdesktop.layout_f.GroupLayout.LEADING):add(org.jdesktop.layout_f.GroupLayout.TRAILING, self.jPanel2, org.jdesktop.layout_f.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout_f.GroupLayout.DEFAULT_SIZE, require("java.lang.Short").MAX_VALUE):add(layout:createSequentialGroup():addContainerGap():add(self.jPanel3, org.jdesktop.layout_f.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout_f.GroupLayout.DEFAULT_SIZE, require("java.lang.Short").MAX_VALUE):addContainerGap()):add(self.jPanel1, org.jdesktop.layout_f.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout_f.GroupLayout.DEFAULT_SIZE, require("java.lang.Short").MAX_VALUE))
-        layout:setVerticalGroup(layout:createParallelGroup(org.jdesktop.layout_f.GroupLayout.LEADING):add(layout:createSequentialGroup():add(self.jPanel2, org.jdesktop.layout_f.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout_f.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout_f.GroupLayout.PREFERRED_SIZE):addPreferredGap(org.jdesktop.layout_f.LayoutStyle.UNRELATED):add(self.jPanel3, org.jdesktop.layout_f.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout_f.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout_f.GroupLayout.PREFERRED_SIZE):addPreferredGap(org.jdesktop.layout_f.LayoutStyle.RELATED):add(self.jPanel1, org.jdesktop.layout_f.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout_f.GroupLayout.DEFAULT_SIZE, require("java.lang.Short").MAX_VALUE)))
+        layout:setHorizontalGroup(layout:createParallelGroup(require("org.jdesktop.layout.GroupLayout").LEADING):add(require("org.jdesktop.layout.GroupLayout").TRAILING, self.jPanel2, require("org.jdesktop.layout.GroupLayout").DEFAULT_SIZE, require("org.jdesktop.layout.GroupLayout").DEFAULT_SIZE, require("java.lang.Short").MAX_VALUE):add(layout:createSequentialGroup():addContainerGap():add(self.jPanel3, require("org.jdesktop.layout.GroupLayout").DEFAULT_SIZE, require("org.jdesktop.layout.GroupLayout").DEFAULT_SIZE, require("java.lang.Short").MAX_VALUE):addContainerGap()):add(self.jPanel1, require("org.jdesktop.layout.GroupLayout").DEFAULT_SIZE, require("org.jdesktop.layout.GroupLayout").DEFAULT_SIZE, require("java.lang.Short").MAX_VALUE))
+        layout:setVerticalGroup(layout:createParallelGroup(require("org.jdesktop.layout.GroupLayout").LEADING):add(layout:createSequentialGroup():add(self.jPanel2, require("org.jdesktop.layout.GroupLayout").PREFERRED_SIZE, require("org.jdesktop.layout.GroupLayout").DEFAULT_SIZE, require("org.jdesktop.layout.GroupLayout").PREFERRED_SIZE):addPreferredGap(require("org.jdesktop.layout.LayoutStyle").UNRELATED):add(self.jPanel3, require("org.jdesktop.layout.GroupLayout").PREFERRED_SIZE, require("org.jdesktop.layout.GroupLayout").DEFAULT_SIZE, require("org.jdesktop.layout.GroupLayout").PREFERRED_SIZE):addPreferredGap(require("org.jdesktop.layout.LayoutStyle").RELATED):add(self.jPanel1, require("org.jdesktop.layout.GroupLayout").DEFAULT_SIZE, require("org.jdesktop.layout.GroupLayout").DEFAULT_SIZE, require("java.lang.Short").MAX_VALUE)))
 end
 java_overload(RotationImageJPanel, "initComponents", 0)
 

@@ -104,6 +104,7 @@ end
 function SystemHardwareFactory.getInstance()
         return SystemHardwareFactory.instance_f
 end
+SystemHardwareFactory.getInstance__static = SystemHardwareFactory.getInstance
 
 
 function SystemHardwareFactory._jinit(self)
@@ -131,6 +132,14 @@ function SystemHardwareFactory:getInstance(operatingSystemInterface)
             self.logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.CONSTRUCTOR, e)
         end
         return self.hardwareInterface
+end
+SystemHardwareFactory.getInstance__instance = SystemHardwareFactory.getInstance
+function SystemHardwareFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return SystemHardwareFactory.getInstance__static() end
+                
+    return SystemHardwareFactory.getInstance__instance(...)
+                
 end
 
 

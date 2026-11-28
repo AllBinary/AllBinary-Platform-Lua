@@ -147,7 +147,7 @@ function FlockingAI._jinit(self, hashtable, ownerLayerInterface, gameInput)
     FlockingAI._init_fields(self)
         -- super(...) made self above
         local allowedDistance = hashtable:get(BasePatrolAI.MAX_DISTANCE)
-        self.allowedDistance = math.tointeger(allowedDistance // 1)
+        self.allowedDistance = require("allbinary_java").number_value(allowedDistance, "intValue")
     return self
 end
 

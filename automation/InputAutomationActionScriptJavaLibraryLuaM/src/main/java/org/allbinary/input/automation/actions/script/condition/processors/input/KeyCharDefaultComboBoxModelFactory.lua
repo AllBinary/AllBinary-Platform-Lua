@@ -72,7 +72,7 @@ function KeyCharDefaultComboBoxModelFactory.getInstance()
         local keyArray = KeySingletonFactory.getArray()
         for index = 0, (keyArray.n or #keyArray) - 1 do
             local nextKey = keyArray[index + 1]
-            local keyStroke = KeyStroke.getKeyStroke(math.tointeger(nextKey // 1), 0)
+            local keyStroke = KeyStroke.getKeyStroke(require("allbinary_java").number_value(nextKey, "intValue"), 0)
             local keyChar = KeyStrokeMap.getChar(keyStroke)
             defaultComboBoxModel:addElement(tostring(keyChar))
         end

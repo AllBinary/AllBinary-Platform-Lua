@@ -157,7 +157,7 @@ function MultiSelectPaintable:_init_fields()
     self.totalCharArray = NullUtil.getInstance().NULL_CHAR_ARRAY
     self.rootNamesString = StringUtil.getInstance().EMPTY_STRING
     self.TOTAL = "Total Selected: "
-    self.backgroundColor = math.tointeger(BasicColorFactory.getInstance().GREY // 1)
+    self.backgroundColor = require("allbinary_java").number_value(BasicColorFactory.getInstance().GREY, "intValue")
     if self.totalWidth == nil then self.totalWidth = 0 end
     if self.textLine2Y == nil then self.textLine2Y = 0 end
 end

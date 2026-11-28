@@ -119,6 +119,7 @@ end
 function DbWorkFlowFactory.getInstance()
         return DbWorkFlowFactory.instance_f
 end
+DbWorkFlowFactory.getInstance__static = DbWorkFlowFactory.getInstance
 
 
 function DbWorkFlowFactory._jinit(self)
@@ -154,6 +155,14 @@ function DbWorkFlowFactory:getInstance(abeClientInformation, hashMap)
             error(e, 0)
         end
         if try_ok and try_error == "__jreturn" then return try_value end
+end
+DbWorkFlowFactory.getInstance__instance = DbWorkFlowFactory.getInstance
+function DbWorkFlowFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return DbWorkFlowFactory.getInstance__static() end
+                
+    return DbWorkFlowFactory.getInstance__instance(...)
+                
 end
 
 DbWorkFlowFactory.instance_f = DbWorkFlowFactory.new()

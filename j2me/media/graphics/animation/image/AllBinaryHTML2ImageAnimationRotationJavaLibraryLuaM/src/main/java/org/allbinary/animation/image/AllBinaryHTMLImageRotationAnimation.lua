@@ -218,7 +218,7 @@ java_overload(AllBinaryHTMLImageRotationAnimation, "getCanvasSurface", 1, functi
 
 function AllBinaryHTMLImageRotationAnimation:setBasicColorP(basicColor)
         local changed = false
-        if rawequal(self:getBasicColorP(), nil) or not rawequal(math.tointeger(self:getBasicColorP() // 1), math.tointeger(basicColor // 1)) then
+        if rawequal(self:getBasicColorP(), nil) or not rawequal(require("allbinary_java").number_value(self:getBasicColorP(), "intValue"), require("allbinary_java").number_value(basicColor, "intValue")) then
             changed = true
         end
         java_super(ImageBaseRotationAnimation, "setBasicColorP", 1)(self, basicColor)

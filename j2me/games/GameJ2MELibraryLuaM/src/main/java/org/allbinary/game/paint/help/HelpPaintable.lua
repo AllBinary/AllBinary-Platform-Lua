@@ -205,7 +205,7 @@ java_overload(HelpPaintable, "setInputInfoP", 1, function(java_a1) return true a
 function HelpPaintable:paint(graphics)
         self.myFontProcessor:process(graphics)
         local halfWidth = self.displayInfo:getLastHalfWidth()
-        graphics:setColor(math.tointeger(self.basicColor // 1))
+        graphics:setColor(require("allbinary_java").number_value(self.basicColor, "intValue"))
         graphics:drawString(self.title, halfWidth - self.titleBeginWidth, self.charHeight, self.anchor)
         local size = (self.inputInfo.n or #self.inputInfo)
         for index = 0, size - 1 do

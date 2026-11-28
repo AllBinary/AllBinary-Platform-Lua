@@ -28,10 +28,10 @@ local function java_real(class)
     return class
 end
 
--- local ByteArrayInputStream = require("java.io.ByteArrayInputStream")
+local ByteArrayInputStream = java_lazy("java.io.ByteArrayInputStream")
 local ByteArrayOutputStream = java_lazy("java.io.ByteArrayOutputStream")
--- local DataInputStream = require("java.io.DataInputStream")
--- local DataOutputStream = require("java.io.DataOutputStream")
+local DataInputStream = java_lazy("java.io.DataInputStream")
+local DataOutputStream = java_lazy("java.io.DataOutputStream")
 local RecordEnumeration = java_lazy("javax.microedition.rms.RecordEnumeration")
 local RecordStore = java_lazy("javax.microedition.rms.RecordStore")
 local RecordStoreException = java_lazy("javax.microedition.rms.RecordStoreException")
@@ -109,7 +109,7 @@ function HighScoreNamePersistanceSingleton:deleteAll(abeClientInformation, gameI
         local size = self.nameBasicArrayList:size()
         for index = 0, size - 1 do
             local integer = self.nameBasicArrayList.objectArray[index + 1]
-            self:delete(abeClientInformation, gameInfo, math.tointeger(integer // 1))
+            self:delete(abeClientInformation, gameInfo, require("allbinary_java").number_value(integer, "intValue"))
         end
         self:clear()
 end

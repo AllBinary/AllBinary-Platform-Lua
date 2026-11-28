@@ -124,6 +124,7 @@ end
 function TransformFactory.getInstance()
         return TransformFactory.instance_f
 end
+TransformFactory.getInstance__static = TransformFactory.getInstance
 
 
 function TransformFactory._jinit(self)
@@ -238,6 +239,14 @@ function TransformFactory:getInstance_j3(...)
     local java_a1, java_a2, java_a3 = ...
     if true and (java_a1 == nil or java_is(java_a1, "AbeClientInformationInterface")) and (java_a2 == nil or type(java_a2) == "string") and (java_a3 == nil or java_is(java_a3, "TransformInfoInterface")) then return TransformFactory.getInstance_j3_1(self, ...) end
     return TransformFactory.getInstance_j3_2(self, ...)
+end
+TransformFactory.getInstance__instance = TransformFactory.getInstance
+function TransformFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return TransformFactory.getInstance__static() end
+                
+    return TransformFactory.getInstance__instance(...)
+                
 end
 
 TransformFactory.instance_f = TransformFactory.new()

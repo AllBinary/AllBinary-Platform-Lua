@@ -99,7 +99,7 @@ function StoreFrontUsersStatistics:getNewTotal(userRole)
         if rawequal(numberOfUsersForRoleLong, nil) then
             numberOfUsersForRoleLong = 0
         end
-        return math.tointeger(numberOfUsersForRoleLong // 1) + 1
+        return require("allbinary_java").number_value(numberOfUsersForRoleLong, "longValue") + 1
 end
 
 

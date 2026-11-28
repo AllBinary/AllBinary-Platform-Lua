@@ -58,7 +58,7 @@ ColorFromEventUtil.javaClassName = "org.allbinary.media.graphics.geography.map.C
 
 function ColorFromEventUtil:_init_fields()
     self.YELLOW = BasicColorFactory.getInstance().YELLOW
-    self.COLOR_INT = math.tointeger(self.YELLOW // 1)
+    self.COLOR_INT = require("allbinary_java").number_value(self.YELLOW, "intValue")
 end
 
 function ColorFromEventUtil._jinit(self)

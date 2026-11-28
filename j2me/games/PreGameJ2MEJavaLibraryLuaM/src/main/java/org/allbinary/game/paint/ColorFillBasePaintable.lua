@@ -154,7 +154,7 @@ end
 
 function ColorFillBasePaintable:setBasicColorP(basicColor)
         self.basicColor = basicColor
-        self:setColor(math.tointeger(self:getBasicColorP() // 1))
+        self:setColor(require("allbinary_java").number_value(self:getBasicColorP(), "intValue"))
 end
 java_overload(ColorFillBasePaintable, "setBasicColorP", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "BasicColor")) end)
 

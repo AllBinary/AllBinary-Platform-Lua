@@ -64,7 +64,7 @@ end
 function ColorCacheable._jinit(self, key)
     ColorCacheable._init_fields(self)
         self.key = key
-        self.color = Color.new(math.tointeger((key) // 1))
+        self.color = Color.new(require("allbinary_java").number_value((key), "intValue"))
     return self
 end
 

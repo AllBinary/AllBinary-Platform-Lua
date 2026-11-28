@@ -223,9 +223,9 @@ function ResizeImageJPanel:process()
                     local imageProcessorInput = java_outer_self:getImageProcessorInput()
                     local files = imageProcessorInput:getFiles()
                     local generatedBufferedImageArray = nil
-                    if not rawequal(math.tointeger(percentAsFloat // 1), -1) then
+                    if not rawequal(require("allbinary_java").number_value(percentAsFloat, "intValue"), -1) then
                         generatedBufferedImageArray = imageUtil:createBufferedImage2(imageProcessorInput:getBufferedImageArray(), percentAsFloat, true)
-                    elseif not rawequal(math.tointeger(percent // 1), -1) then
+                    elseif not rawequal(require("allbinary_java").number_value(percent, "intValue"), -1) then
                         generatedBufferedImageArray = imageUtil:createBufferedImageForResize(imageProcessorInput:getBufferedImageArray(), percent, true)
                     else
                         local width = tostring(java_outer_self.jTextField1:getText())
@@ -247,7 +247,7 @@ function ResizeImageJPanel:process()
                 if not try_ok then
                     local e = try_error
                     if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-                    logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.RUN, e)
+                    logUtil:put(java_outer_self.commonStrings.EXCEPTION, self, java_outer_self.commonStrings.RUN, e)
                 end
             end
             java_overload(o, "run", 0)
@@ -280,7 +280,7 @@ function ResizeImageJPanel:update()
                 if not try_ok then
                     local e = try_error
                     if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-                    logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.RUN, e)
+                    logUtil:put(java_outer_self.commonStrings.EXCEPTION, self, java_outer_self.commonStrings.RUN, e)
                 end
             end
             java_overload(o, "run", 0)
@@ -313,7 +313,7 @@ function ResizeImageJPanel:updateFor16Above()
                 if not try_ok then
                     local e = try_error
                     if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-                    logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.RUN, e)
+                    logUtil:put(java_outer_self.commonStrings.EXCEPTION, self, java_outer_self.commonStrings.RUN, e)
                 end
             end
             java_overload(o, "run", 0)
@@ -346,7 +346,7 @@ function ResizeImageJPanel:updateFor16Below()
                 if not try_ok then
                     local e = try_error
                     if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-                    logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.RUN, e)
+                    logUtil:put(java_outer_self.commonStrings.EXCEPTION, self, java_outer_self.commonStrings.RUN, e)
                 end
             end
             java_overload(o, "run", 0)

@@ -180,7 +180,7 @@ end
 
 function AllBinaryFlickerAndroidImageRotationAnimation:setBasicColorP(basicColor)
         local changed = false
-        if rawequal(self:getBasicColorP(), nil) or not rawequal(math.tointeger(self:getBasicColorP() // 1), math.tointeger(basicColor // 1)) then
+        if rawequal(self:getBasicColorP(), nil) or not rawequal(require("allbinary_java").number_value(self:getBasicColorP(), "intValue"), require("allbinary_java").number_value(basicColor, "intValue")) then
             self.imageModifierUtil:setColor(self.originalImage, self:getImage(), 0, basicColor)
             changed = true
         end

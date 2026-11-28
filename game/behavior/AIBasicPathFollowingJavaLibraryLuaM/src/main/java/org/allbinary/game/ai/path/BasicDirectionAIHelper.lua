@@ -99,9 +99,9 @@ end
 
 
 function BasicDirectionAIHelper:getAIKeyPressed(frame)
-        local angle = java_int(self.angleInfo:getAngleIncrementInfo():getFrameAngle(math.tointeger(frame // 1)))
+        local angle = java_int(self.angleInfo:getAngleIncrementInfo():getFrameAngle(require("allbinary_java").number_value(frame, "intValue")))
         if not rawequal(self.angleInfo:getAngle(), angle) then
-            return self:turnAI(math.tointeger(frame // 1))
+            return self:turnAI(require("allbinary_java").number_value(frame, "intValue"))
         else
             return Canvas.UP
         end

@@ -109,6 +109,7 @@ end
 function AdminUserEmailEventHandlerSingletons.getInstance()
         return AdminUserEmailEventHandlerSingletons.instance_f
 end
+AdminUserEmailEventHandlerSingletons.getInstance__static = AdminUserEmailEventHandlerSingletons.getInstance
 
 
 function AdminUserEmailEventHandlerSingletons._jinit(self)
@@ -146,6 +147,14 @@ function AdminUserEmailEventHandlerSingletons:getInstance(abeClientInformation, 
             end
             return userEmailEventHandler
         end
+end
+AdminUserEmailEventHandlerSingletons.getInstance__instance = AdminUserEmailEventHandlerSingletons.getInstance
+function AdminUserEmailEventHandlerSingletons.getInstance(...)
+                
+    if select("#", ...) == 0 then return AdminUserEmailEventHandlerSingletons.getInstance__static() end
+                
+    return AdminUserEmailEventHandlerSingletons.getInstance__instance(...)
+                
 end
 
 AdminUserEmailEventHandlerSingletons.instance_f = AdminUserEmailEventHandlerSingletons.new()

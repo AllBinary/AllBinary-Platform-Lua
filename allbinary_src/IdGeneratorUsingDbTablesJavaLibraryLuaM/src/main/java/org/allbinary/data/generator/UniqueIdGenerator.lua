@@ -112,7 +112,7 @@ end
 function UniqueIdGenerator:getNext()
         local try_ok, try_error, try_value = pcall(function()
             local idLong = self.idGeneratorEntity:get(self.name_f)
-            local newValue = tostring(math.tointeger(idLong // 1) + 1)
+            local newValue = tostring(require("allbinary_java").number_value(idLong, "longValue") + 1)
             self.idGeneratorEntity:update(self.name_f, newValue)
             do return "__jreturn", tostring(idLong) end
         end)

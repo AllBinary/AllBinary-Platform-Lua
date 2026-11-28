@@ -71,7 +71,7 @@ end
 
 -- throws Exception
 function PointsUtil:doTransforms(pointVector, angle, fulcrumPoint)
-        return VectorRotationGenerator.getInstance():getListAtAngle(fulcrumPoint:getX(), fulcrumPoint:getY(), pointVector, AngleFactory.getInstance():getAt(math.tointeger(angle // 1)))
+        return VectorRotationGenerator.getInstance():getListAtAngle(fulcrumPoint:getX(), fulcrumPoint:getY(), pointVector, AngleFactory.getInstance():getAt(require("allbinary_java").number_value(angle, "intValue")))
 end
 
 PointsUtil.instance_f = PointsUtil.new()

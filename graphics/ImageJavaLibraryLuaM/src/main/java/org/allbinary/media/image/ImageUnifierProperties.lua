@@ -72,12 +72,12 @@ end
 
 
 function ImageUnifierProperties:getWidth()
-        return math.tointeger(self:getColumns() // 1) * math.tointeger(self:getImageUnifierCell():getWidth() // 1)
+        return require("allbinary_java").number_value(self:getColumns(), "intValue") * require("allbinary_java").number_value(self:getImageUnifierCell():getWidth(), "intValue")
 end
 
 
 function ImageUnifierProperties:getHeight()
-        return math.tointeger(self:getRows() // 1) * math.tointeger(self:getImageUnifierCell():getHeight() // 1)
+        return require("allbinary_java").number_value(self:getRows(), "intValue") * require("allbinary_java").number_value(self:getImageUnifierCell():getHeight(), "intValue")
 end
 
 

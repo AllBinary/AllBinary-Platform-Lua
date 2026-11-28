@@ -155,12 +155,12 @@ function GeographicMapCellPositionFactory:getInstance(geographicMapInterface)
         local allBinaryTiledLayer = geographicMapInterface:getAllBinaryTiledLayer()
         local geographicMapCellPositionFactoryCanBeNull = GeographicMapCellPositionFactory.hashtable:get(allBinaryTiledLayer:getDataId())
         if rawequal(geographicMapCellPositionFactoryCanBeNull, nil) then
-            self.logUtil:putF(tostring(StringMaker.new():append("Creating GeographicMapCellPositionFactory for TileLayer: "):appendint(java_int(math.tointeger(allBinaryTiledLayer:getDataId() // 1)))), self, commonStrings.GET_INSTANCE)
+            self.logUtil:putF(tostring(StringMaker.new():append("Creating GeographicMapCellPositionFactory for TileLayer: "):appendint(java_int(require("allbinary_java").number_value(allBinaryTiledLayer:getDataId(), "intValue")))), self, commonStrings.GET_INSTANCE)
             geographicMapCellPositionFactoryCanBeNull = BasicGeographicMapCellPositionFactory.new(geographicMapInterface)
             GeographicMapCellPositionFactory.hashtable:put(allBinaryTiledLayer:getDataId(), geographicMapCellPositionFactoryCanBeNull)
             return geographicMapCellPositionFactoryCanBeNull
         else
-            self.logUtil:putF(tostring(StringMaker.new():append("Reusing GeographicMapCellPositionFactory for TileLayer: "):appendint(java_int(math.tointeger(allBinaryTiledLayer:getDataId() // 1)))), self, commonStrings.GET_INSTANCE)
+            self.logUtil:putF(tostring(StringMaker.new():append("Reusing GeographicMapCellPositionFactory for TileLayer: "):appendint(java_int(require("allbinary_java").number_value(allBinaryTiledLayer:getDataId(), "intValue")))), self, commonStrings.GET_INSTANCE)
             return geographicMapCellPositionFactoryCanBeNull
         end
 end

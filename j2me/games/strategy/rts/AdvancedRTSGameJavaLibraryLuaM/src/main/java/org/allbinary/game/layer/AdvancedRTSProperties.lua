@@ -74,7 +74,7 @@ end
 
 
 function AdvancedRTSProperties.createProperties()
-        return AdvancedRTSProperties.new(ShakeAnimationListenerFactory.getInstance(), AllBinaryVibration.getInstance(), math.tointeger(GameConfigurationCentral.getInstance().VIBRATION:getValue() // 1) * 100, WaypointBehaviorBase.new())
+        return AdvancedRTSProperties.new(ShakeAnimationListenerFactory.getInstance(), AllBinaryVibration.getInstance(), require("allbinary_java").number_value(GameConfigurationCentral.getInstance().VIBRATION:getValue(), "intValue") * 100, WaypointBehaviorBase.new())
 end
 
 

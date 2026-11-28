@@ -121,7 +121,7 @@ function StaticPathGenerator:createList(geographicMapInterface, geographicMapCel
                 list = BasicArrayListD.new()
                 local smallIntegerSingletonFactory = SmallIntegerSingletonFactory.getInstance()
                 local geographicMapCellPositionFactory = geographicMapInterface:getGeographicMapCellPositionFactory()
-                local id = PathData.getInstance().OFFSET + math.tointeger(mapIdInteger // 1)
+                local id = PathData.getInstance().OFFSET + require("allbinary_java").number_value(mapIdInteger, "intValue")
                 local basicList = pathCacheFactory:getOrCreate(smallIntegerSingletonFactory:getAt(id))
                 local size = basicList:size()
                 local pathList = nil

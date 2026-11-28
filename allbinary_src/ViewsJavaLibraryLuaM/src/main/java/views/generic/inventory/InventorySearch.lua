@@ -149,7 +149,7 @@ end
 function InventorySearch:searchSingleDynamicPage()
         local try_ok, try_error, try_value = pcall(function()
             local str = self:search()
-            do return "__jreturn", str[math.tointeger(self.searchRequest:getParams():getStartPageInt() // 1) + 1] end
+            do return "__jreturn", str[require("allbinary_java").number_value(self.searchRequest:getParams():getStartPageInt(), "intValue") + 1] end
         end)
         if not try_ok then
             local e = try_error

@@ -145,7 +145,7 @@ function OwnershipPaintable:_init_fields()
     self.myFontProcessor = UpdateMyFontProcessor.new(self)
     self.COPYRIGHT = "AllBinary Copyright (c) 2011"
     self.basicColor = BasicColorFactory.getInstance().WHITE
-    self.color = math.tointeger(self.basicColor // 1)
+    self.color = require("allbinary_java").number_value(self.basicColor, "intValue")
     self.anchor = Anchor.TOP_LEFT
     if self.COPYRIGHT_Y == nil then self.COPYRIGHT_Y = 0 end
     if self.beginWidth == nil then self.beginWidth = 0 end
@@ -181,7 +181,7 @@ java_overload(OwnershipPaintable, "updateMeasurement", 1, function(java_a1) retu
 
 function OwnershipPaintable:setBasicColorP(basicColor)
         self.basicColor = basicColor
-        self.color = math.tointeger(basicColor // 1)
+        self.color = require("allbinary_java").number_value(basicColor, "intValue")
 end
 java_overload(OwnershipPaintable, "setBasicColorP", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "BasicColor")) end)
 

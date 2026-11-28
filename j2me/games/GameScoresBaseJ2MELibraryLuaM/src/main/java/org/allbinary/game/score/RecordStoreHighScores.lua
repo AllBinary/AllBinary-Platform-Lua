@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local ByteArrayInputStream = require("java.io.ByteArrayInputStream")
--- local DataInputStream = require("java.io.DataInputStream")
+local ByteArrayInputStream = java_lazy("java.io.ByteArrayInputStream")
+local DataInputStream = java_lazy("java.io.DataInputStream")
 -- local EOFException = require("java.io.EOFException")
 -- local IOException = require("java.io.IOException")
 local RecordComparator = java_lazy("javax.microedition.rms.RecordComparator")

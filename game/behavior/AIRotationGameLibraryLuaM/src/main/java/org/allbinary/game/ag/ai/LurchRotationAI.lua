@@ -182,12 +182,12 @@ function LurchRotationAI:update()
             local rotationAnimationInterface = self.rotationAnimationInterface
             local angleIncrementInfo = rotationAnimationInterface:getAngleInfoP():getAngleIncrementInfo()
             local rotationAnimationInterfaceCompositeInterface = self:getOwnerLayerInterface()
-            rotationAnimationInterfaceCompositeInterface:setFrame(math.tointeger(angleIncrementInfo.RIGHT_FRAME // 1))
+            rotationAnimationInterfaceCompositeInterface:setFrame(require("allbinary_java").number_value(angleIncrementInfo.RIGHT_FRAME, "intValue"))
         elseif rawequal(self.currentRelativeAngle, 180) then
             local rotationAnimationInterface = self.rotationAnimationInterface
             local angleIncrementInfo = rotationAnimationInterface:getAngleInfoP():getAngleIncrementInfo()
             local rotationAnimationInterfaceCompositeInterface = self:getOwnerLayerInterface()
-            rotationAnimationInterfaceCompositeInterface:setFrame(math.tointeger(angleIncrementInfo.LEFT_FRAME // 1))
+            rotationAnimationInterfaceCompositeInterface:setFrame(require("allbinary_java").number_value(angleIncrementInfo.LEFT_FRAME, "intValue"))
         end
 end
 java_overload(LurchRotationAI, "update", 0)

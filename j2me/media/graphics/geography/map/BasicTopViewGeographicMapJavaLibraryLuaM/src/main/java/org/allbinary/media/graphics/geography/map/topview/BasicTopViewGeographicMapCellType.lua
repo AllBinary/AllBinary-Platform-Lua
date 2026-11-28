@@ -96,7 +96,7 @@ function BasicTopViewGeographicMapCellType._jinit(self, name, types, cost)
         local type = 0
         for index = 0, size - 1 do
             typeAsInteger = (types:get(index))
-            type = math.tointeger(typeAsInteger // 1)
+            type = require("allbinary_java").number_value(typeAsInteger, "intValue")
             if rawequal(GeographicMapCellTypeFactory.getInstance():getGeographicMapCellTypeArray()[type + 1], nil) then
                 RaceTrackGeographicMapCellType.new(name, type, cost, 0)
             else

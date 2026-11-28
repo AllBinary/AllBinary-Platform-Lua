@@ -165,7 +165,7 @@ function BasicRandomAI:processAI(allBinaryLayerManager)
             self.i_random = self.myRandomFactory:getAbsoluteNextInt(self.inputProbability:getMax())
             local repeat_ = false
             local repeatLikelyhoodIntegerArray = self.inputProbability:getRepeatLikelyhoodIntegerArray()
-            if not rawequal(self:getLastKey(), -1) and math.tointeger(repeatLikelyhoodIntegerArray[self:getLastKey() + 1] // 1) >= self.i_random then
+            if not rawequal(self:getLastKey(), -1) and require("allbinary_java").number_value(repeatLikelyhoodIntegerArray[self:getLastKey() + 1], "intValue") >= self.i_random then
                 repeat_ = true
             end
             if not (repeat_) then
@@ -177,7 +177,7 @@ function BasicRandomAI:processAI(allBinaryLayerManager)
                     local key = self.keyArray[index + 1]
                     likelyhoodIntegerKeyArray = likelyhoodIntegerArray[key + 1]
                     if (likelyhoodIntegerArray.n or #likelyhoodIntegerArray) >= key and not rawequal(likelyhoodIntegerKeyArray[1], nil) then
-                        if self.i_random >= math.tointeger(likelyhoodIntegerKeyArray[1] // 1) and self.i_random < math.tointeger(likelyhoodIntegerKeyArray[2] // 1) then
+                        if self.i_random >= require("allbinary_java").number_value(likelyhoodIntegerKeyArray[1], "intValue") and self.i_random < require("allbinary_java").number_value(likelyhoodIntegerKeyArray[2], "intValue") then
                             self:setLastKey(key)
                             break
                         end

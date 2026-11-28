@@ -95,7 +95,7 @@ end
 
 function SmallBasicColorCacheFactory:add(basicDefaultColor)
         self.BASIC_COLOR_ARRAY[self.colorIndex + 1] = basicDefaultColor
-        self.INDEX_TO_COLOR[self.colorIndex + 1] = math.tointeger(basicDefaultColor // 1)
+        self.INDEX_TO_COLOR[self.colorIndex + 1] = require("allbinary_java").number_value(basicDefaultColor, "intValue")
         self.colorIndex = self.colorIndex + 1
 end
 

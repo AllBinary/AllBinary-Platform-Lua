@@ -29,7 +29,7 @@ local function java_real(class)
 end
 
 -- local Closeable = require("java.io.Closeable")
--- local DataInputStream = require("java.io.DataInputStream")
+local DataInputStream = java_lazy("java.io.DataInputStream")
 local InputStream = java_lazy("java.io.InputStream")
 -- local OutputStream = require("java.io.OutputStream")
 local TsUtil = java_lazy("org.allbinary.TsUtil")

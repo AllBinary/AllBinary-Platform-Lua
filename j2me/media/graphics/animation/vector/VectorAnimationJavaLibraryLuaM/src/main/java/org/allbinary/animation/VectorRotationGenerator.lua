@@ -107,6 +107,7 @@ end
 function VectorRotationGenerator.getInstance()
         return VectorRotationGenerator.instance_f
 end
+VectorRotationGenerator.getInstance__static = VectorRotationGenerator.getInstance
 
 
 function VectorRotationGenerator._jinit(self)
@@ -123,6 +124,14 @@ end
 
 function VectorRotationGenerator:getInstance(vectorRotationInfo)
         return self:getInstanceFrames(vectorRotationInfo:getWidth(), vectorRotationInfo:getHeight(), vectorRotationInfo:getPoints(), vectorRotationInfo:getTotalFrames())
+end
+VectorRotationGenerator.getInstance__instance = VectorRotationGenerator.getInstance
+function VectorRotationGenerator.getInstance(...)
+                
+    if select("#", ...) == 0 then return VectorRotationGenerator.getInstance__static() end
+                
+    return VectorRotationGenerator.getInstance__instance(...)
+                
 end
 
 

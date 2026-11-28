@@ -169,7 +169,7 @@ end
 function BasketHelper:isBasketEmpty()
         local try_ok, try_error, try_value = pcall(function()
             local basket = self.weblisketSession:getOrder():getBasket()
-            if math.tointeger(basket:getNumberOfItems() // 1) <= 0 then
+            if require("allbinary_java").number_value(basket:getNumberOfItems(), "intValue") <= 0 then
                 do return "__jreturn", true end
             else
                 do return "__jreturn", false end

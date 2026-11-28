@@ -466,7 +466,7 @@ java_overload(HumanRTSPlayerGameInput, "updatePaintable", 0)
 function HumanRTSPlayerGameInput:paint(graphics)
         java_super(RTSPlayerGameInput, "paint", 1)(self, graphics)
         if not rawequal(self.startPoint, PointFactory.getInstance().ZERO_ZERO) and not rawequal(self.endPoint, PointFactory.getInstance().ZERO_ZERO) then
-            graphics:setColor(math.tointeger(BasicColorFactory.getInstance().RED // 1))
+            graphics:setColor(require("allbinary_java").number_value(BasicColorFactory.getInstance().RED, "intValue"))
             local rectX1 = self.startPoint:getX()
             local rectY1 = self.startPoint:getY()
             local rectX2 = self.endPoint:getX()

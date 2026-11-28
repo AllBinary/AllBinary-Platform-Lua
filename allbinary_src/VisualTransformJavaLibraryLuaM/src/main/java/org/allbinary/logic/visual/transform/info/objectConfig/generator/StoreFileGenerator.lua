@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local ByteArrayInputStream = require("java.io.ByteArrayInputStream")
+local ByteArrayInputStream = java_lazy("java.io.ByteArrayInputStream")
 local InputStream = java_lazy("java.io.InputStream")
 local HashMap = java_lazy("java.util.HashMap")
 local URLGLOBALS = java_lazy("org.allbinary.globals.URLGLOBALS")

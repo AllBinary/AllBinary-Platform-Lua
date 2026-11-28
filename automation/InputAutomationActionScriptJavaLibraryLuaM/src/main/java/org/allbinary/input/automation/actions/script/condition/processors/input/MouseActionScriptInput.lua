@@ -209,7 +209,7 @@ function MouseActionScriptInput._new1(self, node)
                 local childNode = nodeList:item(index)
                 if rawequal(childNode:getNodeName():compareTo(MouseActionScriptInputData.BUTTONS), 0) then
                     local buttons = DomNodeHelper.getTextNodeValue(childNode)
-                    self:setButtonClicks(math.tointeger(tostring(buttons) // 1))
+                    self:setButtonClicks(require("allbinary_java").number_value(tostring(buttons), "intValue"))
                 elseif rawequal(childNode:getNodeName():compareTo(MouseActionScriptInputData.MOVE), 0) then
                     local mouseXNode = DomSearchHelper.getNode(MouseActionScriptInputData.MOVE_X, childNode:getChildNodes())
                     local mouseXString = DomNodeHelper.getTextNodeValue(mouseXNode)
@@ -217,7 +217,7 @@ function MouseActionScriptInput._new1(self, node)
                     local mouseYNode = DomSearchHelper.getNode(MouseActionScriptInputData.MOVE_Y, childNode:getChildNodes())
                     local mouseYString = DomNodeHelper.getTextNodeValue(mouseYNode)
                     local mouseYInteger = tostring(mouseYString)
-                    local newPoint = Point.new(math.tointeger(mouseXInteger // 1), math.tointeger(mouseYInteger // 1))
+                    local newPoint = Point.new(require("allbinary_java").number_value(mouseXInteger, "intValue"), require("allbinary_java").number_value(mouseYInteger, "intValue"))
                     self:setPoint(newPoint)
                 else
                     error(require("java.lang.Exception").new("Action Script Input Unknown Node"), 0)

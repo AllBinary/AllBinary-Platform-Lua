@@ -125,6 +125,7 @@ end
 function PaymentTransactionInterfaceRequestFactory.getInstance()
         return PaymentTransactionInterfaceRequestFactory.instance_f
 end
+PaymentTransactionInterfaceRequestFactory.getInstance__static = PaymentTransactionInterfaceRequestFactory.getInstance
 
 
 function PaymentTransactionInterfaceRequestFactory._jinit(self)
@@ -176,6 +177,14 @@ function PaymentTransactionInterfaceRequestFactory:getInstance(transformInfoInte
             error(e, 0)
         end
         if try_ok and try_error == "__jreturn" then return try_value end
+end
+PaymentTransactionInterfaceRequestFactory.getInstance__instance = PaymentTransactionInterfaceRequestFactory.getInstance
+function PaymentTransactionInterfaceRequestFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return PaymentTransactionInterfaceRequestFactory.getInstance__static() end
+                
+    return PaymentTransactionInterfaceRequestFactory.getInstance__instance(...)
+                
 end
 
 

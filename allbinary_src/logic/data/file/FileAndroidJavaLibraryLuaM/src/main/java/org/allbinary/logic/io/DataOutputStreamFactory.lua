@@ -102,6 +102,7 @@ end
 function DataOutputStreamFactory.getInstance()
         return DataOutputStreamFactory.instance_f
 end
+DataOutputStreamFactory.getInstance__static = DataOutputStreamFactory.getInstance
 
 
 -- throws Exception
@@ -118,6 +119,14 @@ function DataOutputStreamFactory:getInstance(filePath, fileName)
         local fileOutputStream = fileStreamFactory:getFileOutputStreamInstance(filePath, fileName)
         local idOutData = AbDataOutputStream.new(fileOutputStream)
         return idOutData
+end
+DataOutputStreamFactory.getInstance__instance = DataOutputStreamFactory.getInstance
+function DataOutputStreamFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return DataOutputStreamFactory.getInstance__static() end
+                
+    return DataOutputStreamFactory.getInstance__instance(...)
+                
 end
 
 DataOutputStreamFactory.instance_f = DataOutputStreamFactory.new()

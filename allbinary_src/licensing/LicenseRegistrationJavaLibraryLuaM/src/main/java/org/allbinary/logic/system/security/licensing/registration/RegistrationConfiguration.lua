@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local DataInputStream = require("java.io.DataInputStream")
+local DataInputStream = java_lazy("java.io.DataInputStream")
 local InputStream = java_lazy("java.io.InputStream")
 -- local OutputStream = require("java.io.OutputStream")
 local AbDataOutputStream = java_lazy("org.allbinary.logic.io.AbDataOutputStream")

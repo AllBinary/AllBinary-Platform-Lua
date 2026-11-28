@@ -144,7 +144,7 @@ function TouchButtonsPaintable._jinit(self, basicColor)
     java_super_init(Paintable, self)
     TouchButtonsPaintable._init_fields(self)
         self.foregroundBasicColor = basicColor
-        self.foregroundColor = math.tointeger(basicColor // 1)
+        self.foregroundColor = require("allbinary_java").number_value(basicColor, "intValue")
     return self
 end
 

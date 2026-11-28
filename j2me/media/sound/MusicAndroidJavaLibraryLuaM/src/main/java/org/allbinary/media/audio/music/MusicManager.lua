@@ -152,7 +152,7 @@ function MusicManager:startNewSong()
             local duration = java_int(self.currentSongSound:getDuration())
             PreLogUtil.put(tostring(StringMaker.new():append(self.PLAY):append(self.currentSongSound:getResource()):append(self.FOR):appendlong(duration)), self, self.commonStrings.PROCESS)
             self.timeDelayHelper.delay = duration
-            self.currentIntent:putExtra(self.musicStrings.SONG_EXTRA, math.tointeger(self.resourceUtil:getResourceId(self.currentSongSound:getResource()) // 1))
+            self.currentIntent:putExtra(self.musicStrings.SONG_EXTRA, require("allbinary_java").number_value(self.resourceUtil:getResourceId(self.currentSongSound:getResource()), "intValue"))
             self.currentIntent:putExtra(self.musicStrings.LEFT_VOLUME, self.leftVolume)
             self.currentIntent:putExtra(self.musicStrings.RIGHT_VOLUME, self.rightVolume)
             self.resourceUtil:getContext():startService(self.currentIntent)

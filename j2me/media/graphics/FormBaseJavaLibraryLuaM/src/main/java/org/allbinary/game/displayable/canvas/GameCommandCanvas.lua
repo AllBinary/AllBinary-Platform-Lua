@@ -225,8 +225,8 @@ function GameCommandCanvas._jinit(self, cmdListener, name, backgroundBasicColor,
         self.repaintBehavior = RepaintBehavior.getInstance()
         self.foregroundBasicColor = foregroundBasicColor
         self.backgroundBasicColor = backgroundBasicColor
-        self.foregroundColor = math.tointeger(self.foregroundBasicColor // 1)
-        self.backgroundColor = math.tointeger(self.backgroundBasicColor // 1)
+        self.foregroundColor = require("allbinary_java").number_value(self.foregroundBasicColor, "intValue")
+        self.backgroundColor = require("allbinary_java").number_value(self.backgroundBasicColor, "intValue")
         self:initCommands(cmdListener)
         if not rawequal(cmdListener, NullCommandListener.NULL_COMMAND_LISTENER) then
             local try_ok, try_error, try_value = pcall(function()

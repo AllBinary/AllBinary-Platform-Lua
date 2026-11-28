@@ -133,6 +133,7 @@ end
 function VectorExplosionGenerator.getInstance()
         return VectorExplosionGenerator.instance_f
 end
+VectorExplosionGenerator.getInstance__static = VectorExplosionGenerator.getInstance
 
 
 function VectorExplosionGenerator._jinit(self)
@@ -167,6 +168,14 @@ function VectorExplosionGenerator:getInstance(points, howMuch, type)
         local tempBasicArrayList = pointsBasicArrayList.objectArray[1]
         local newPoints = self.vectorAnimationUtil:toAnimationArrayFromListOfPointListWithPointsPerFrame(pointsBasicArrayList, tempBasicArrayList:size())
         return newPoints
+end
+VectorExplosionGenerator.getInstance__instance = VectorExplosionGenerator.getInstance
+function VectorExplosionGenerator.getInstance(...)
+                
+    if select("#", ...) == 0 then return VectorExplosionGenerator.getInstance__static() end
+                
+    return VectorExplosionGenerator.getInstance__instance(...)
+                
 end
 
 

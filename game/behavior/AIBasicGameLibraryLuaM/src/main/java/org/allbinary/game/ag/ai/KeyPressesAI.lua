@@ -191,7 +191,7 @@ end
 function KeyPressesAI:processAI(allBinaryLayerManager)
         if self.on then
             for index = 0, (self.keys.n or #self.keys) - 1 do
-                java_super(BasicAI, "processKeyAI", 1)(self, math.tointeger(self.keys[index + 1] // 1))
+                java_super(BasicAI, "processKeyAI", 1)(self, require("allbinary_java").number_value(self.keys[index + 1], "intValue"))
             end
         end
 end

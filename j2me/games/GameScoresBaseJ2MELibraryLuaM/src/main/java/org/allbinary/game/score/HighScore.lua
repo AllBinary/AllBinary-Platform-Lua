@@ -29,7 +29,7 @@ local function java_real(class)
 end
 
 local ByteArrayOutputStream = java_lazy("java.io.ByteArrayOutputStream")
--- local DataOutputStream = require("java.io.DataOutputStream")
+local DataOutputStream = java_lazy("java.io.DataOutputStream")
 local GameInfo = java_lazy("org.allbinary.game.GameInfo")
 local StringMaker = java_lazy("org.allbinary.logic.string.StringMaker")
 local CommonSeps = java_lazy("org.allbinary.string.CommonSeps")

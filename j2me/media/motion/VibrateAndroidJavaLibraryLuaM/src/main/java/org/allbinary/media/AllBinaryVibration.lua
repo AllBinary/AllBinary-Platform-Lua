@@ -155,7 +155,7 @@ end
 
 
 function AllBinaryVibration.init()
-        if rawequal(math.tointeger(GameConfigurationCentral.getInstance().VIBRATION:getValue() // 1), 0) then
+        if rawequal(require("allbinary_java").number_value(GameConfigurationCentral.getInstance().VIBRATION:getValue(), "intValue"), 0) then
             AllBinaryVibration.VIBRATION = AllBinaryNoVibration.NO_VIBRATION
         else
             AllBinaryVibration.VIBRATION = AllBinaryVibration.new()

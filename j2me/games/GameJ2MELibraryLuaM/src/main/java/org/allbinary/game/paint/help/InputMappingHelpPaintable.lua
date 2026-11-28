@@ -344,7 +344,7 @@ java_overload(InputMappingHelpPaintable, "get", 1, function(java_a1) return true
 function InputMappingHelpPaintable:paint(graphics)
         self.myFontProcessor:process(graphics)
         local halfWidth = self.displayInfo:getLastHalfWidth()
-        graphics:setColor(math.tointeger(self.basicColor // 1))
+        graphics:setColor(require("allbinary_java").number_value(self.basicColor, "intValue"))
         graphics:drawString(self.title, halfWidth - self.titleBeginWidth, self.updateMyFontProperties.charHeight, self.anchor)
         local inputInfo = self.inputInfo
         local size = (inputInfo.n or #inputInfo)
@@ -362,17 +362,17 @@ function InputMappingHelpPaintable:paint(graphics)
             list = self.keyMappingArray[index + 1]
             size2 = list:size()
             beginWidth = self.updateMyFontProperties.keymappingBeginWidthArray[index + 1]
-            graphics:setColor(math.tointeger(self.actionBasicColor[index + 1] // 1))
+            graphics:setColor(require("allbinary_java").number_value(self.actionBasicColor[index + 1], "intValue"))
             actionString = self.updateMyFontProperties.actionStringArray[index + 1]
             graphics:drawString(actionString, halfWidth - beginWidth + deltaX, y, self.anchor)
             deltaX = deltaX + (self.updateMyFontProperties.actionStringDeltaXArray[index + 1])
             for index2 = 0, size2 - 1 do
                 input = list.objectArray[index2 + 1]
-                graphics:setColor(math.tointeger(self.inputBasicColorArray[index + 1][index2 + 1] // 1))
+                graphics:setColor(require("allbinary_java").number_value(self.inputBasicColorArray[index + 1][index2 + 1], "intValue"))
                 graphics:drawString(input:getName(), halfWidth - beginWidth + deltaX, y, self.anchor)
                 deltaX = deltaX + (self.updateMyFontProperties.inputDeltaXArray[index + 1][index2 + 1])
                 sep = self.updateMyFontProperties.sepArray[index + 1][index2 + 1]
-                graphics:setColor(math.tointeger(self.basicColor // 1))
+                graphics:setColor(require("allbinary_java").number_value(self.basicColor, "intValue"))
                 graphics:drawString(sep, halfWidth - beginWidth + deltaX, y, self.anchor)
                 deltaX = deltaX + (self.updateMyFontProperties.sepWidthArray[index + 1][index2 + 1])
             end

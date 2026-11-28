@@ -141,7 +141,7 @@ function LinesGraphicItem:_init_fields()
     if self.fulcrumPoint == nil then self.fulcrumPoint = nil end
     self.active = false
     self.theta = 0.0
-    self.color = Color.new(math.tointeger(BasicColorFactory.getInstance().WHITE // 1))
+    self.color = Color.new(require("allbinary_java").number_value(BasicColorFactory.getInstance().WHITE, "intValue"))
     if self.points == nil then self.points = nil end
 end
 
@@ -270,7 +270,7 @@ function LinesGraphicItem:addPoint_j1_1(pointNodes)
         local yNode = DomHelper.getInstance():searchNodeList(PositionStrings.getInstance().Y, list)
         local yTextNode = yNode:getFirstChild()
         local yInteger = yTextNode:getNodeValue()
-        local point = PointFactory.getInstance():createXY(math.tointeger(xInteger // 1), math.tointeger(yInteger // 1))
+        local point = PointFactory.getInstance():createXY(require("allbinary_java").number_value(xInteger, "intValue"), require("allbinary_java").number_value(yInteger, "intValue"))
         self:addPoint(point)
 end
 

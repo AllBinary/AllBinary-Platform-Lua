@@ -143,7 +143,7 @@ end
 
 
 function NotificationBuilderAPI23:build(context, command, message, integer, pendingIntent)
-        local notification = Builder.new(context):setSmallIcon(math.tointeger(integer // 1)):setTicker(message):setWhen(math.floor(os.time() * 1000)):setContentTitle(command:getLabel()):setContentText(message):setContentIntent(pendingIntent):build()
+        local notification = Builder.new(context):setSmallIcon(require("allbinary_java").number_value(integer, "intValue")):setTicker(message):setWhen(math.floor(os.time() * 1000)):setContentTitle(command:getLabel()):setContentText(message):setContentIntent(pendingIntent):build()
         return notification
 end
 java_overload(NotificationBuilderAPI23, "build", 5, function(java_a1, java_a2, java_a3, java_a4, java_a5) return true and (java_a1 == nil or java_is(java_a1, "Context")) and (java_a2 == nil or java_is(java_a2, "Command")) and (java_a3 == nil or type(java_a3) == "string") and (java_a4 == nil or math.type(java_a4) == "integer") and (java_a5 == nil or java_is(java_a5, "PendingIntent")) end)

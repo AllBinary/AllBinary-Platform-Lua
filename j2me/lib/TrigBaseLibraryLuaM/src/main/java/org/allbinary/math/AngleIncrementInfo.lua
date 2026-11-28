@@ -106,19 +106,19 @@ AngleIncrementInfo.__tostring = function(self) return self:toString() end
 
 function AngleIncrementInfo:getClosestGeneralDirection(angle)
         local closestDirection = SmallIntegerSingletonFactory.getInstance():getAt(360)
-        if math.tointeger(self.UP_FRAME // 1) - angle < math.tointeger(closestDirection // 1) - angle then
+        if require("allbinary_java").number_value(self.UP_FRAME, "intValue") - angle < require("allbinary_java").number_value(closestDirection, "intValue") - angle then
             closestDirection = self.UP_FRAME
         end
-        if math.tointeger(self.DOWN_FRAME // 1) - angle < math.tointeger(closestDirection // 1) - angle then
+        if require("allbinary_java").number_value(self.DOWN_FRAME, "intValue") - angle < require("allbinary_java").number_value(closestDirection, "intValue") - angle then
             closestDirection = self.DOWN_FRAME
         end
-        if math.tointeger(self.LEFT_FRAME // 1) - angle < math.tointeger(closestDirection // 1) - angle then
+        if require("allbinary_java").number_value(self.LEFT_FRAME, "intValue") - angle < require("allbinary_java").number_value(closestDirection, "intValue") - angle then
             closestDirection = self.LEFT_FRAME
         end
-        if math.tointeger(self.RIGHT_FRAME // 1) - angle < math.tointeger(closestDirection // 1) - angle then
+        if require("allbinary_java").number_value(self.RIGHT_FRAME, "intValue") - angle < require("allbinary_java").number_value(closestDirection, "intValue") - angle then
             closestDirection = self.RIGHT_FRAME
         end
-        return math.tointeger(closestDirection // 1)
+        return require("allbinary_java").number_value(closestDirection, "intValue")
 end
 
 AngleIncrementInfo.INCREMENT = "Inc: "

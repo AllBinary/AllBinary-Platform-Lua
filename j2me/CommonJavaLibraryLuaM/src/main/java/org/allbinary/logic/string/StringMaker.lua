@@ -76,6 +76,7 @@ end
 
 
 function StringMaker:append(string_)
+        if string_ == nil then string_ = "null" end
         local stringLength = #string_
         self:ensureCapacity(self.currentLength + stringLength)
         ;(function(text, first, last, destination, offset) for index = first, last - 1 do destination[offset + index - first + 1] = string.sub(text, index + 1, index + 1) end end)(string_, 0, stringLength, self.charArray, self.currentLength)

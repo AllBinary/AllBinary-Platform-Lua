@@ -29,7 +29,7 @@ local function java_real(class)
 end
 
 local FileInputStream = java_lazy("java.io.FileInputStream")
--- local FileNotFoundException = require("java.io.FileNotFoundException")
+local FileNotFoundException = java_lazy("java.io.FileNotFoundException")
 -- local IOException = require("java.io.IOException")
 local InputStream = require("java.io.InputStream")
 -- local FileChannel = require("java.nio.channels.FileChannel")

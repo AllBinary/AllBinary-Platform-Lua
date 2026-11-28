@@ -100,6 +100,7 @@ end
 function BasicStoreFrontFactory.getInstance()
         return BasicStoreFrontFactory.instance_f
 end
+BasicStoreFrontFactory.getInstance__static = BasicStoreFrontFactory.getInstance
 
 
 function BasicStoreFrontFactory._jinit(self)
@@ -130,6 +131,14 @@ function BasicStoreFrontFactory:getInstance(storeName)
             return nil
         end
         if try_ok and try_error == "__jreturn" then return try_value end
+end
+BasicStoreFrontFactory.getInstance__instance = BasicStoreFrontFactory.getInstance
+function BasicStoreFrontFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return BasicStoreFrontFactory.getInstance__static() end
+                
+    return BasicStoreFrontFactory.getInstance__instance(...)
+                
 end
 
 BasicStoreFrontFactory.instance_f = BasicStoreFrontFactory.new()

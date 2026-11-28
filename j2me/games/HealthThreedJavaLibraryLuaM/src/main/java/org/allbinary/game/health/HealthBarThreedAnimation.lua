@@ -166,7 +166,7 @@ function HealthBarThreedAnimation._jinit(self, layerInterface, location)
     HealthBarThreedAnimation._init_fields(self)
         -- super(...) made self above
         self.basicColor = self.basicColorFactory.GREEN
-        self.colorP = math.tointeger(self.basicColor // 1)
+        self.colorP = require("allbinary_java").number_value(self.basicColor, "intValue")
         self.rectangle = Rectangle.new(0, 0, 1, 1, self.basicColor)
         self.rectangle:setDoubleSidedEnabled(true)
         self.rectangle:setNormalsEnabled(false)

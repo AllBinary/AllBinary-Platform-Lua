@@ -191,7 +191,7 @@ function AndroidMediaPlayerWrapper._jinit(self, resource)
             if rawequal(resource, StringUtil.getInstance().EMPTY_STRING) then
             else
                 local resourceUtil = ResourceUtil.getInstance()
-                local mediaPlayer = MediaPlayer.create(resourceUtil:getContext(), math.tointeger(resourceUtil:getResourceId(resource) // 1))
+                local mediaPlayer = MediaPlayer.create(resourceUtil:getContext(), require("allbinary_java").number_value(resourceUtil:getResourceId(resource), "intValue"))
                 if rawequal(mediaPlayer, nil) then
                     error(require("java.lang.Exception").new(tostring(StringMaker.new():append("Failed to create media player for: "):append(resource):append(" with id: "):append(tostring(resourceUtil:getResourceId(resource))))), 0)
                 end

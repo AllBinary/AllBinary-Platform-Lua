@@ -109,6 +109,7 @@ end
 function PCComponentFactory.getInstance()
         return PCComponentFactory.instance_f
 end
+PCComponentFactory.getInstance__static = PCComponentFactory.getInstance
 
 
 function PCComponentFactory._jinit(self)
@@ -156,6 +157,14 @@ function PCComponentFactory:getInstance(component, componentData)
             return Unknown.new(commonStrings.EXCEPTION)
         end
         if try_ok and try_error == "__jreturn" then return try_value end
+end
+PCComponentFactory.getInstance__instance = PCComponentFactory.getInstance
+function PCComponentFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return PCComponentFactory.getInstance__static() end
+                
+    return PCComponentFactory.getInstance__instance(...)
+                
 end
 
 

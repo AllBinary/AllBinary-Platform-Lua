@@ -29,7 +29,7 @@ local function java_real(class)
 end
 
 local ARunnable = java_lazy("org.allbinary.thread.ARunnable")
--- local ByteArrayInputStream = require("java.io.ByteArrayInputStream")
+local ByteArrayInputStream = java_lazy("java.io.ByteArrayInputStream")
 local InputStream = java_lazy("java.io.InputStream")
 local Control = java_lazy("javax.microedition.media.Control")
 local MediaException = java_lazy("javax.microedition.media.MediaException")

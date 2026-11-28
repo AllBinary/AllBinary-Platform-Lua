@@ -153,7 +153,7 @@ function SelectableTextItem:paintXY(graphics, x, y)
         self.myFontProcessor:process(graphics)
         local stringComponent = self:getLabelStringComponent()
         if not rawequal(stringComponent, nil) then
-            graphics:setColor(math.tointeger(stringComponent:getForegroundBasicColor() // 1))
+            graphics:setColor(require("allbinary_java").number_value(stringComponent:getForegroundBasicColor(), "intValue"))
         end
         graphics:drawString(self:getLabel(), x + 2, y, 0)
 end

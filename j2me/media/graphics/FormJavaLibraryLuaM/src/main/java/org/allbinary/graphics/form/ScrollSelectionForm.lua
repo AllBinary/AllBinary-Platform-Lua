@@ -469,7 +469,7 @@ function ScrollSelectionForm:paintItem(graphics, index, item, x, y)
         item:paintXY(graphics, x, y)
         local width = item:getMinimumWidth()
         local height = item:getMinimumHeight()
-        graphics:setColor(math.tointeger(self:getButtonBasicColor() // 1))
+        graphics:setColor(require("allbinary_java").number_value(self:getButtonBasicColor(), "intValue"))
         local adjustedBorder = 3
         graphics:drawRect(x - self.halfBorder - adjustedBorder, y - self.halfBorder - adjustedBorder, width + self.border + self.adjustedExtraBorder, height + self.border + self.adjustedExtraBorder)
         return self.scrollSelectionFormFormTypeItemIndexPaintable:paint(graphics, index, item, x, y)
@@ -479,7 +479,7 @@ java_overload(ScrollSelectionForm, "paintItem", 5, function(java_a1, java_a2, ja
 
 -- throws Exception
 function ScrollSelectionForm:paintUnselectedItem(graphics, index, item, x, y)
-        graphics:setColor(math.tointeger(self:getButtonBasicColor() // 1))
+        graphics:setColor(require("allbinary_java").number_value(self:getButtonBasicColor(), "intValue"))
         item:paintUnselected(graphics, x, y)
         return self.scrollSelectionFormFormTypeItemIndexPaintable:paint(graphics, index, item, x, y)
 end

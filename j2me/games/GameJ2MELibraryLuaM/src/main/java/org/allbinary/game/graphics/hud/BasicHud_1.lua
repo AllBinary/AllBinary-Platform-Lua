@@ -103,7 +103,7 @@ function BasicHud_1._jinit(self, location, direction, bufferZone, basicColor)
         self:setBufferZone(bufferZone)
         self:onDisplayChangeEvent(DisplayInfoSingleton.getInstance().displayChangeEvent)
         self:setBasicColorP(basicColor)
-        self.color = math.tointeger(basicColor // 1)
+        self.color = require("allbinary_java").number_value(basicColor, "intValue")
     return self
 end
 

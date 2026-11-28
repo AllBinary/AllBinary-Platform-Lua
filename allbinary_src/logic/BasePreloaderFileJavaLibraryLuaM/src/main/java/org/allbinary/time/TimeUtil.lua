@@ -67,32 +67,32 @@ end
 
 
 function TimeUtil:setCalendar(calendar, yearString, monthString, dayString, hourString)
-        local year = math.tointeger(yearString // 1)
-        local month = math.tointeger(monthString // 1)
-        local day = math.tointeger(dayString // 1)
-        local hour = math.tointeger(hourString // 1)
+        local year = require("allbinary_java").number_value(yearString, "intValue")
+        local month = require("allbinary_java").number_value(monthString, "intValue")
+        local day = require("allbinary_java").number_value(dayString, "intValue")
+        local hour = require("allbinary_java").number_value(hourString, "intValue")
         calendar:set(year, month, day, hour, 0)
 end
 
 
 function TimeUtil:setCalendarWithTime(calendar, yearString, monthString, dayString, hourString, minuteString, secondString)
-        local year = math.tointeger(yearString // 1)
-        local month = math.tointeger(monthString // 1)
-        local day = math.tointeger(dayString // 1)
-        local hour = math.tointeger(hourString // 1)
-        local minute = math.tointeger(minuteString // 1)
-        local second = math.tointeger(secondString // 1)
+        local year = require("allbinary_java").number_value(yearString, "intValue")
+        local month = require("allbinary_java").number_value(monthString, "intValue")
+        local day = require("allbinary_java").number_value(dayString, "intValue")
+        local hour = require("allbinary_java").number_value(hourString, "intValue")
+        local minute = require("allbinary_java").number_value(minuteString, "intValue")
+        local second = require("allbinary_java").number_value(secondString, "intValue")
         calendar:set(year, month, day, hour, minute, second)
 end
 
 
 function TimeUtil:setExpirationCalendar(calendar, yearsString, monthsString, daysString, hoursString, minutesString, secondsString)
-        local year = calendar:get(Calendar.YEAR) + math.tointeger(yearsString // 1)
-        local month = calendar:get(Calendar.MONTH) + math.tointeger(monthsString // 1)
-        local day = calendar:get(Calendar.DAY_OF_MONTH) + math.tointeger(daysString // 1)
-        local hour = calendar:get(Calendar.HOUR) + math.tointeger(hoursString // 1)
-        local minute = calendar:get(Calendar.MINUTE) + math.tointeger(minutesString // 1)
-        local second = calendar:get(Calendar.SECOND) + math.tointeger(secondsString // 1)
+        local year = calendar:get(Calendar.YEAR) + require("allbinary_java").number_value(yearsString, "intValue")
+        local month = calendar:get(Calendar.MONTH) + require("allbinary_java").number_value(monthsString, "intValue")
+        local day = calendar:get(Calendar.DAY_OF_MONTH) + require("allbinary_java").number_value(daysString, "intValue")
+        local hour = calendar:get(Calendar.HOUR) + require("allbinary_java").number_value(hoursString, "intValue")
+        local minute = calendar:get(Calendar.MINUTE) + require("allbinary_java").number_value(minutesString, "intValue")
+        local second = calendar:get(Calendar.SECOND) + require("allbinary_java").number_value(secondsString, "intValue")
         calendar:set(year, month, day, hour, minute, second)
 end
 

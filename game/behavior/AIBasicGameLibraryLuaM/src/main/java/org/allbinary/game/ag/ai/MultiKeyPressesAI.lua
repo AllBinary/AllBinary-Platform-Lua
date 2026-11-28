@@ -183,14 +183,14 @@ function MultiKeyPressesAI:update()
         local size = (keys.n or #keys)
         if self:isOn() then
             for index = 0, size - 1 do
-                local key = math.tointeger(keys[index + 1] // 1)
+                local key = require("allbinary_java").number_value(keys[index + 1], "intValue")
                 if not rawequal(key, -1) then
                     gameInput:add(self.gameKeyEventFactory:getInstanceForKey(self, key))
                 end
             end
         else
             for index = 0, size - 1 do
-                local key = math.tointeger(keys[index + 1] // 1)
+                local key = require("allbinary_java").number_value(keys[index + 1], "intValue")
                 if not rawequal(key, -1) then
                     gameInput:addForRemoval(self.gameKeyEventFactory:getInstanceForKey(self, key))
                 end

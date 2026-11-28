@@ -192,7 +192,7 @@ function BasicProfileActionScriptInput._new2(self, label, node)
         local timeNode = DomSearchHelper.getNodeNoThrow(GenericProfileActionScriptInputData.DELAY, node:getChildNodes())
         if not rawequal(timeNode, nil) then
             local delayString = DomNodeHelper.getTextNodeValue(timeNode)
-            self:setTime(math.tointeger(tostring(delayString) // 1))
+            self:setTime(require("allbinary_java").number_value(tostring(delayString), "intValue"))
         else
             self:setTime(0)
         end

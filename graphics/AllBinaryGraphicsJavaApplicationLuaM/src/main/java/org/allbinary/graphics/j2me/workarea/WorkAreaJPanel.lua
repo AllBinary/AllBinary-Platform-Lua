@@ -404,7 +404,7 @@ function WorkAreaJPanel:duplicate_j1_1(treeNode)
         local canvasJPanelHashMap = self:getCanvasHashMap()
         if canvasJPanelHashMap:containsKey(treeNode) then
             local frameInteger = canvasJPanelHashMap:get(treeNode)
-            local canvasJPanel = self.canvasJPanelList:get(math.tointeger(frameInteger // 1))
+            local canvasJPanel = self.canvasJPanelList:get(require("allbinary_java").number_value(frameInteger, "intValue"))
             self:initDuplicate(canvasJPanel:duplicate())
         end
 end
@@ -470,7 +470,7 @@ function WorkAreaJPanel:select_j1_2(treeNode)
         local canvasJPanelHashMap = self:getCanvasHashMap()
         local frameInteger = canvasJPanelHashMap:get(treeNode)
         if not rawequal(frameInteger, nil) then
-            self:select(math.tointeger(frameInteger // 1))
+            self:select(require("allbinary_java").number_value(frameInteger, "intValue"))
         end
 end
 
@@ -574,8 +574,8 @@ function WorkAreaJPanel:delete(evt)
         if canvasJPanelHashMap:containsKey(evt:getTreeNode()) then
             self.canvasHolderJPanel:removeAll()
             local frameInt = canvasJPanelHashMap:get(evt:getTreeNode())
-            self.canvasJPanelList:remove(math.tointeger(frameInt // 1))
-            self:select(math.tointeger(frameInt // 1))
+            self.canvasJPanelList:remove(require("allbinary_java").number_value(frameInt, "intValue"))
+            self:select(require("allbinary_java").number_value(frameInt, "intValue"))
         end
 end
 java_overload(WorkAreaJPanel, "delete", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "MyCanvasEvent")) end)
@@ -625,10 +625,10 @@ function WorkAreaJPanel:rotate(evt)
         local canvasJPanelHashMap = self:getCanvasHashMap()
         local treeNode = evt:getTreeNode()
         local frameInt = canvasJPanelHashMap:get(evt:getTreeNode())
-        local canvasJPanel = self.canvasJPanelList:get(math.tointeger(frameInt // 1))
+        local canvasJPanel = self.canvasJPanelList:get(require("allbinary_java").number_value(frameInt, "intValue"))
         if not rawequal(canvasJPanel, nil) then
             canvasJPanel:addAngle(evt:getAngle())
-            self:select(math.tointeger(frameInt // 1))
+            self:select(require("allbinary_java").number_value(frameInt, "intValue"))
         end
         StatusFactory.getInstance():setStatus("Canvas Rotated")
 end

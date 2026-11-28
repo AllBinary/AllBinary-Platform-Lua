@@ -275,7 +275,7 @@ function TrueTypeFontUtil:getFontBitmap(filename, cellSize, basicColor)
         local cellsPerRow7 = self.CELLS_PER_ROW * 7
         local image = Image.createImage(self.textureSize, self.textureSize)
         local graphics = image:getGraphics()
-        graphics:setColor(math.tointeger(basicColor // 1))
+        graphics:setColor(require("allbinary_java").number_value(basicColor, "intValue"))
         local biggestHeight = 0
         local bounds = Rectangle.new(PointFactory.getInstance():createXY(0, 0), cellSize, cellSize)
         local x = 0

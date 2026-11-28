@@ -141,7 +141,7 @@ end
 function CategoryHierarchy._new3_2(self, rootCategoryInterface, parentCategoryInterface, categoryPropertiesHashMap)
     CategoryHierarchy._init_fields(self)
         local levelString = StringUtil.getInstance():getNonNull(categoryPropertiesHashMap:get(CategoryData.getInstance().LEVEL))
-        self.level = math.tointeger(tostring(levelString) // 1)
+        self.level = require("allbinary_java").number_value(tostring(levelString), "intValue")
         self:setRoot(rootCategoryInterface)
         self:setParent(parentCategoryInterface)
     return self

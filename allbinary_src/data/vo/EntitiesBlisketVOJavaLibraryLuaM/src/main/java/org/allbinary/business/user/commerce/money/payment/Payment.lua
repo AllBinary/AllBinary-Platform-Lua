@@ -148,7 +148,7 @@ function Payment._new1_1(self, payment)
         self.type = payment:get(PaymentData.TYPE)
         self.expiration = payment:get(PaymentData.EXPIRATION)
         self.encryption = payment:get(EntryData.getInstance().ENCRYPTION)
-        self.number = SuperCrypt.new(math.tointeger(self.encryption // 1)):decrypt(payment:get(PaymentData.NUMBER))
+        self.number = SuperCrypt.new(require("allbinary_java").number_value(self.encryption, "intValue")):decrypt(payment:get(PaymentData.NUMBER))
         self.id = payment:get(PaymentData.ID)
         local def = payment:get(EntryData.getInstance().DEFAULT)
         if not rawequal(def, nil) and rawequal(((def < EntryData.getInstance().DEFAULT and -1) or (def > EntryData.getInstance().DEFAULT and 1) or 0), 0) then

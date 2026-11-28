@@ -223,19 +223,19 @@ function SpriteSplitterImageJPanel:process()
                 local logUtil = LogUtil.getInstance()
                 local try_ok, try_error, try_value = pcall(function()
                     local spriteSplitterUtil = SpriteSplitterUtil.getInstance()
-                    local spriteType = self.spriteTypeJComboBox:getSelectedItem()
-                    local totalFrames = tostring(self.totalFramesJComboBox:getSelectedItem())
-                    local totalAnimations = tostring(self.totalAnimationsJComboBox:getSelectedItem())
-                    local widthReduction = tostring(self.widthReductionTextField:getText())
-                    local heightReduction = tostring(self.heightReductionTextField:getText())
-                    local increaseWidth = tostring(self.increaseWidthTextField:getText())
-                    local increaseHeight = tostring(self.increaseHeightTextField:getText())
+                    local spriteType = java_outer_self.spriteTypeJComboBox:getSelectedItem()
+                    local totalFrames = tostring(java_outer_self.totalFramesJComboBox:getSelectedItem())
+                    local totalAnimations = tostring(java_outer_self.totalAnimationsJComboBox:getSelectedItem())
+                    local widthReduction = tostring(java_outer_self.widthReductionTextField:getText())
+                    local heightReduction = tostring(java_outer_self.heightReductionTextField:getText())
+                    local increaseWidth = tostring(java_outer_self.increaseWidthTextField:getText())
+                    local increaseHeight = tostring(java_outer_self.increaseHeightTextField:getText())
                     spriteSplitterUtil:process(java_outer_self:getImageProcessorInput(), totalFrames, totalAnimations, widthReduction, heightReduction, increaseWidth, increaseHeight, spriteType, java_outer_self)
                 end)
                 if not try_ok then
                     local e = try_error
                     if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
-                    logUtil:put(self.commonStrings.EXCEPTION, self, self.commonStrings.RUN, e)
+                    logUtil:put(java_outer_self.commonStrings.EXCEPTION, self, java_outer_self.commonStrings.RUN, e)
                 end
             end
             java_overload(o, "run", 0)

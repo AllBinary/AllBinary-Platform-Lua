@@ -28,10 +28,10 @@ local function java_real(class)
     return class
 end
 
--- local DataOutputStream = require("java.io.DataOutputStream")
+local DataOutputStream = java_lazy("java.io.DataOutputStream")
 local File = java_lazy("java.io.File")
 local FileInputStream = java_lazy("java.io.FileInputStream")
--- local FileOutputStream = require("java.io.FileOutputStream")
+local FileOutputStream = java_lazy("java.io.FileOutputStream")
 local HashMap = java_lazy("java.util.HashMap")
 -- local Set = require("java.util.Set")
 local DomNodeInterface = java_lazy("org.allbinary.data.tree.dom.DomNodeInterface")

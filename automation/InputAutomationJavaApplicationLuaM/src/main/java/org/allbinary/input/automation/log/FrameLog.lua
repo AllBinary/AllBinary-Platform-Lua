@@ -29,7 +29,7 @@ local function java_real(class)
 end
 
 local File = java_lazy("java.io.File")
--- local FileOutputStream = require("java.io.FileOutputStream")
+local FileOutputStream = java_lazy("java.io.FileOutputStream")
 local BasicArrayList = java_lazy("org.allbinary.util.BasicArrayList")
 local BasicArrayListD = java_lazy("org.allbinary.util.BasicArrayListD")
 local ImageOutputData = java_lazy("org.allbinary.input.automation.ImageOutputData")

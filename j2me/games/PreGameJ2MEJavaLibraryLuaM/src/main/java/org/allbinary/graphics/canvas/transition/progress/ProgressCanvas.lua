@@ -349,7 +349,7 @@ java_overload(ProgressCanvas, "paint", 1, function(java_a1) return true and (jav
 
 function ProgressCanvas:paint2(graphics)
         self.myFontProcessor:process(graphics)
-        graphics:setColor(math.tointeger(self.backgroundBasicColor // 1))
+        graphics:setColor(require("allbinary_java").number_value(self.backgroundBasicColor, "intValue"))
         graphics:fillRect(0, 0, self.displayInfo:getLastWidth(), self.displayInfo:getLastHeight())
         self.gauge:paintXY(graphics, 0, 0)
         self.hasPainted = true

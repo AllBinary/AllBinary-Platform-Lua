@@ -141,7 +141,7 @@ function ResourceUtil:containsDuplicate(resource, value)
             local integer = self.hashMap:get(objectArray[index + 1])
             if not rawequal(resource, objectArray[index + 1]) then
                 if not rawequal(value, integer) then
-                    if rawequal(math.tointeger(value // 1), math.tointeger(integer // 1)) then
+                    if rawequal(require("allbinary_java").number_value(value, "intValue"), require("allbinary_java").number_value(integer, "intValue")) then
                         return true
                     end
                 end
@@ -161,7 +161,7 @@ end
 -- throws Exception
 function ResourceUtil:getResourceAsStream(resource)
         local integer = self.hashMap:get(resource)
-        local id = math.tointeger(integer // 1)
+        local id = require("allbinary_java").number_value(integer, "intValue")
         local resources = (self.resources)
         local inputStream = resources:openRawResource(id)
         if not rawequal(inputStream, nil) then

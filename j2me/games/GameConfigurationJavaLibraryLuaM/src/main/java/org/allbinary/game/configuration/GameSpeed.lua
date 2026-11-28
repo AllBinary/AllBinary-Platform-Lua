@@ -64,13 +64,13 @@ end
 
 function GameSpeed:getSpeed()
         local speedGameConfiguration = GameConfigurationCentral.getInstance().SPEED
-        return (math.tointeger(speedGameConfiguration:getMaxValue() // 1) - math.tointeger(speedGameConfiguration:getValue() // 1) + 1)
+        return (require("allbinary_java").number_value(speedGameConfiguration:getMaxValue(), "intValue") - require("allbinary_java").number_value(speedGameConfiguration:getValue(), "intValue") + 1)
 end
 
 
 function GameSpeed:getDelay()
         local speedGameConfiguration = GameConfigurationCentral.getInstance().SPEED
-        return 19 * (math.tointeger(speedGameConfiguration:getMaxValue() // 1) - math.tointeger(speedGameConfiguration:getValue() // 1))
+        return 19 * (require("allbinary_java").number_value(speedGameConfiguration:getMaxValue(), "intValue") - require("allbinary_java").number_value(speedGameConfiguration:getValue(), "intValue"))
 end
 
 

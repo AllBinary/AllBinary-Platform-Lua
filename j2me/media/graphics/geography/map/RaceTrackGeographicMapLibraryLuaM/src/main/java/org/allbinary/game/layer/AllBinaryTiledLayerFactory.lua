@@ -75,7 +75,7 @@ end
 function AllBinaryTiledLayerFactory:getInstance(raceTrackInfo, raceTrackData)
         local allbinaryTiledLayer = nil
         local tiledLayer = TiledLayerFactory.new():getInstance(raceTrackData)
-        allbinaryTiledLayer = AllBinaryJ2METiledLayer.new(raceTrackData:getId(), tiledLayer, raceTrackData:getMapArray(), math.tointeger(BasicColorFactory.getInstance().RED // 1))
+        allbinaryTiledLayer = AllBinaryJ2METiledLayer.new(raceTrackData:getId(), tiledLayer, raceTrackData:getMapArray(), require("allbinary_java").number_value(BasicColorFactory.getInstance().RED, "intValue"))
         allbinaryTiledLayer:setCells(raceTrackData:getMapArray())
         return allbinaryTiledLayer
 end
@@ -85,7 +85,7 @@ end
 function AllBinaryTiledLayerFactory:getMiniInstance(raceTrackData)
         local smallIntegerSingletonFactory = SmallIntegerSingletonFactory.getInstance()
         local tiledLayer = TiledLayerFactory.new():getMiniInstance(raceTrackData)
-        local allbinaryTiledLayer = AllBinaryJ2METiledLayer.new(smallIntegerSingletonFactory:getAt(math.tointeger(raceTrackData:getId() // 1) + 100 + 1), tiledLayer, raceTrackData:getMapArray(), math.tointeger(BasicColorFactory.getInstance().RED // 1))
+        local allbinaryTiledLayer = AllBinaryJ2METiledLayer.new(smallIntegerSingletonFactory:getAt(require("allbinary_java").number_value(raceTrackData:getId(), "intValue") + 100 + 1), tiledLayer, raceTrackData:getMapArray(), require("allbinary_java").number_value(BasicColorFactory.getInstance().RED, "intValue"))
         allbinaryTiledLayer:setCells(raceTrackData:getMapArray())
         return allbinaryTiledLayer
 end

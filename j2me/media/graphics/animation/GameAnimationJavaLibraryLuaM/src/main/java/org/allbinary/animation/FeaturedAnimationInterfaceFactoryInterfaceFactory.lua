@@ -182,7 +182,7 @@ java_overload(FeaturedAnimationInterfaceFactoryInterfaceFactory, "getRectangle",
 function FeaturedAnimationInterfaceFactoryInterfaceFactory:getRectangleXY(resource, x, y)
         local pointFactory = PointFactory.getInstance()
         local list = self:getList()
-        local scale = math.tointeger(GameConfigurationCentral.getInstance().SCALE:getValue() // 1)
+        local scale = require("allbinary_java").number_value(GameConfigurationCentral.getInstance().SCALE:getValue(), "intValue")
         local size = self:getList():size()
         for index = 0, size - 1 do
             local featureInterface = list.objectArray[index + 1]

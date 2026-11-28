@@ -185,7 +185,7 @@ function StartIntermissionPaintable._jinit(self, gameCanvas, stringArray, basicC
         self.stringArray = stringArray
         self.lastWidth = java_typed_array("I", java_new_array(0, (self.stringArray.n or #self.stringArray)))
         self:setBasicColorP(basicColor)
-        self.color = math.tointeger(basicColor // 1)
+        self.color = require("allbinary_java").number_value(basicColor, "intValue")
         self.fontSize = font:getSize()
         self.font = font
     return self

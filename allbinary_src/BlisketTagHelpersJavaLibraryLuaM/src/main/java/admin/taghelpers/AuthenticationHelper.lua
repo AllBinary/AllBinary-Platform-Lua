@@ -381,8 +381,8 @@ java_overload(AuthenticationHelper, "isAuthenticationSessionValid", 1, function(
 
 
 function AuthenticationHelper:nextAttempt()
-        if not rawequal(self.attemptsInteger, nil) and math.tointeger(self.attemptsInteger // 1) > 0 then
-            self.weblisketSession:setAttempts(math.tointeger(self.attemptsInteger // 1) + 1)
+        if not rawequal(self.attemptsInteger, nil) and require("allbinary_java").number_value(self.attemptsInteger, "intValue") > 0 then
+            self.weblisketSession:setAttempts(require("allbinary_java").number_value(self.attemptsInteger, "intValue") + 1)
         else
             self.weblisketSession:setAttempts(1)
         end

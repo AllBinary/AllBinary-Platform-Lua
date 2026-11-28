@@ -169,7 +169,7 @@ MultipleScrollSelectionHorizontalForm.java_interfaces = function() return {Updat
 function MultipleScrollSelectionHorizontalForm:_init_fields()
     self.rectPaintable = NullPaintable.getInstance()
     self.multipleScrollSelectionHorizontalFormTypeItemIndexPaintable = ItemIndexPaintable.getInstance()
-    self.backgroundColor = math.tointeger(BasicColorFactory.getInstance().TRANSPARENT_GREY // 1)
+    self.backgroundColor = require("allbinary_java").number_value(BasicColorFactory.getInstance().TRANSPARENT_GREY, "intValue")
     self.myFontProcessor = UpdateMyFontProcessor.new(self)
     self.logged = false
     self.fontHeight = 0

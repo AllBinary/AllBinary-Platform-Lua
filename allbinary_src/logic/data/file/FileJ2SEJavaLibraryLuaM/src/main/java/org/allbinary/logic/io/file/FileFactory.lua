@@ -99,6 +99,7 @@ end
 function FileFactory.getInstance()
         return FileFactory.instance_f
 end
+FileFactory.getInstance__static = FileFactory.getInstance
 
 
 -- throws Exception
@@ -118,6 +119,14 @@ function FileFactory:getInstance(...)
     error("No method getInstance takes " .. count .. " arguments")
 end
 FileFactory.getInstance__jdispatcher = FileFactory.getInstance
+FileFactory.getInstance__instance = FileFactory.getInstance
+function FileFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return FileFactory.getInstance__static() end
+                
+    return FileFactory.getInstance__instance(...)
+                
+end
 
 
 -- throws Exception

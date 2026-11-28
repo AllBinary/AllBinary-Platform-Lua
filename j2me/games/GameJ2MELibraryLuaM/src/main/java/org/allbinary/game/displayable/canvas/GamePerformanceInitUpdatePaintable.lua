@@ -156,7 +156,7 @@ function GamePerformanceInitUpdatePaintable:_init_fields()
     self.myFontProcessor = UpdateMyFontProcessor.new(self)
     self.baseRefreshHelperCharArray = java_new_array("\0", 0, 0)
     if self.defaultStringWidth == nil then self.defaultStringWidth = 0 end
-    self.RED = math.tointeger(BasicColorFactory.getInstance().RED // 1)
+    self.RED = require("allbinary_java").number_value(BasicColorFactory.getInstance().RED, "intValue")
 end
 
 function GamePerformanceInitUpdatePaintable._jinit(self)

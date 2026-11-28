@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local ByteArrayInputStream = require("java.io.ByteArrayInputStream")
+local ByteArrayInputStream = java_lazy("java.io.ByteArrayInputStream")
 local ByteArrayOutputStream = java_lazy("java.io.ByteArrayOutputStream")
 local InputStream = java_lazy("java.io.InputStream")
 -- local URIResolver = require("javax.xml.transform.URIResolver")

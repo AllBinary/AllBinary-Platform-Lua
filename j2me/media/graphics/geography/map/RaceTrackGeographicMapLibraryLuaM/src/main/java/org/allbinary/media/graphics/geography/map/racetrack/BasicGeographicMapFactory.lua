@@ -71,7 +71,7 @@ end
 
 -- throws Exception
 function BasicGeographicMapFactory:getInstance(raceTrackInfo, raceTrackData, tiledLayerFactoryInterface, geographicMapCellPositionFactoryInterface, geographicMapCellTypeFactory)
-        return BasicGeographicMap.new(SmallIntegerSingletonFactory.getInstance():getAt(math.tointeger(raceTrackInfo:getId() // 1) + 100 + 1), raceTrackInfo:getName(), raceTrackData:getCellTypeIdToGeographicMapCellTypeArray(), tiledLayerFactoryInterface:getMiniInstance(raceTrackData), BasicColorFactory.getInstance().CLEAR_COLOR, BasicColorFactory.getInstance().CLEAR_COLOR, geographicMapCellPositionFactoryInterface, GeographicMapCellPositionBaseFactory.new(), geographicMapCellTypeFactory)
+        return BasicGeographicMap.new(SmallIntegerSingletonFactory.getInstance():getAt(require("allbinary_java").number_value(raceTrackInfo:getId(), "intValue") + 100 + 1), raceTrackInfo:getName(), raceTrackData:getCellTypeIdToGeographicMapCellTypeArray(), tiledLayerFactoryInterface:getMiniInstance(raceTrackData), BasicColorFactory.getInstance().CLEAR_COLOR, BasicColorFactory.getInstance().CLEAR_COLOR, geographicMapCellPositionFactoryInterface, GeographicMapCellPositionBaseFactory.new(), geographicMapCellTypeFactory)
 end
 
 return BasicGeographicMapFactory

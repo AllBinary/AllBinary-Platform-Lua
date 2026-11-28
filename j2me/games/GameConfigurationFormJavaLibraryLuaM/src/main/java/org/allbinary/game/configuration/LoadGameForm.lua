@@ -244,7 +244,7 @@ java_overload(LoadGameForm, "getSelectedId", 0)
 function LoadGameForm:getSelectedText()
         if self.areChoices then
             local choiceGroup = self:get(0)
-            local value = math.tointeger(tostring(choiceGroup:getString(choiceGroup:getSelectedIndex())) // 1)
+            local value = require("allbinary_java").number_value(tostring(choiceGroup:getString(choiceGroup:getSelectedIndex())), "intValue")
             return value
         else
             return -1

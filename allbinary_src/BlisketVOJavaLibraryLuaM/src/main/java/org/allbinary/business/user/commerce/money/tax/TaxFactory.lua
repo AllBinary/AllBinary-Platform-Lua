@@ -120,6 +120,7 @@ end
 function TaxFactory.getInstance()
         return TaxFactory.instance_f
 end
+TaxFactory.getInstance__static = TaxFactory.getInstance
 
 
 function TaxFactory._jinit(self)
@@ -170,6 +171,14 @@ function TaxFactory:getInstance(abeClientInformation, storeFrontInterface)
             end
         end
         return SimpleStateTaxModule.new()
+end
+TaxFactory.getInstance__instance = TaxFactory.getInstance
+function TaxFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return TaxFactory.getInstance__static() end
+                
+    return TaxFactory.getInstance__instance(...)
+                
 end
 
 TaxFactory.instance_f = TaxFactory.new()

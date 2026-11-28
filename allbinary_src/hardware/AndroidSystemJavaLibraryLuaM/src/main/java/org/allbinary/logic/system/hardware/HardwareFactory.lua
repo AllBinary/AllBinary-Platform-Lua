@@ -116,6 +116,7 @@ end
 function HardwareFactory.getInstance()
         return HardwareFactory.instance_f
 end
+HardwareFactory.getInstance__static = HardwareFactory.getInstance
 
 
 function HardwareFactory._jinit(self)
@@ -149,6 +150,14 @@ function HardwareFactory:getInstance(os)
             return NoHardware.new()
         end
         if try_ok and try_error == "__jreturn" then return try_value end
+end
+HardwareFactory.getInstance__instance = HardwareFactory.getInstance
+function HardwareFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return HardwareFactory.getInstance__static() end
+                
+    return HardwareFactory.getInstance__instance(...)
+                
 end
 
 HardwareFactory.instance_f = HardwareFactory.new()

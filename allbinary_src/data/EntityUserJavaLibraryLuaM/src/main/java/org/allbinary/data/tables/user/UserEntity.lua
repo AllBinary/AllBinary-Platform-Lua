@@ -320,7 +320,7 @@ function UserEntity:login(userName, password)
             local result = java_super(AbSqlBean, "getField", 3)(self, UserData.USERNAME, userName, UserData.PASSWORD)
             local encryption = java_super(AbSqlBean, "getField", 3)(self, UserData.USERNAME, userName, EntryData.getInstance().ENCRYPTION)
             if not rawequal(encryption, nil) and not rawequal(((encryption < self.stringUtil.EMPTY_STRING and -1) or (encryption > self.stringUtil.EMPTY_STRING and 1) or 0), 0) then
-                isUserNameAndPasswordCorrect = ((result < SuperCrypt.new(math.tointeger(encryption // 1)):encrypt(password) and -1) or (result > SuperCrypt.new(math.tointeger(encryption // 1)):encrypt(password) and 1) or 0)
+                isUserNameAndPasswordCorrect = ((result < SuperCrypt.new(require("allbinary_java").number_value(encryption, "intValue")):encrypt(password) and -1) or (result > SuperCrypt.new(require("allbinary_java").number_value(encryption, "intValue")):encrypt(password) and 1) or 0)
             else
                 if LogConfigTypes.LOGGING:contains(LogConfigTypeFactory.getInstance().SQLLOGGING) then
                     self.logUtil:putF(require("allbinary_java").to_string(require("allbinary_java").to_string("Command Success but login failed for user: ") .. require("allbinary_java").to_string(userName)) .. require("allbinary_java").to_string(" because user did not exist"), self, "login")
@@ -345,7 +345,7 @@ function UserEntity:login(userName, password)
                     stringBuffer:append(self.COMMAND_SUCCESS_BUT_LOGIN_FAILED)
                     stringBuffer:append(userName)
                     stringBuffer:append(self.INVALID_PASSWORD_LABEL)
-                    stringBuffer:append(SuperCrypt.new(math.tointeger(encryption // 1)):encrypt(password))
+                    stringBuffer:append(SuperCrypt.new(require("allbinary_java").number_value(encryption, "intValue")):encrypt(password))
                     stringBuffer:append(self.NOT_EQUAL)
                     stringBuffer:append(result)
                     stringBuffer:append(self.END_QUOTES)

@@ -76,12 +76,12 @@ end
 
 
 function ImageModifierUtil:setColor(unusedOriginalImage, image, imageIndex, basicColor)
-        self.paint:setColorFilter(PorterDuffColorFilter.new(math.tointeger(basicColor // 1), PorterDuff.Mode.SRC_IN))
+        self.paint:setColorFilter(PorterDuffColorFilter.new(require("allbinary_java").number_value(basicColor, "intValue"), PorterDuff.Mode.SRC_IN))
 end
 
 
 function ImageModifierUtil:changeColor(unusedOriginalImage, image, imageIndex, basicColor)
-        self.paint:setColorFilter(PorterDuffColorFilter.new(math.tointeger(basicColor // 1), PorterDuff.Mode.SRC_IN))
+        self.paint:setColorFilter(PorterDuffColorFilter.new(require("allbinary_java").number_value(basicColor, "intValue"), PorterDuff.Mode.SRC_IN))
 end
 
 

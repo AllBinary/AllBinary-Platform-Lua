@@ -91,7 +91,7 @@ end
 
 function BasicGameResources:init(ROOT, SIZE)
         local try_ok, try_error, try_value = pcall(function()
-            local scale = math.tointeger(GameConfigurationCentral.getInstance().SCALE:getValue() // 1)
+            local scale = require("allbinary_java").number_value(GameConfigurationCentral.getInstance().SCALE:getValue(), "intValue")
             if scale > 1 and scale - 1 < (SIZE.n or #SIZE) then
                 self:append(ROOT, SIZE[scale - 1 + 1])
             else

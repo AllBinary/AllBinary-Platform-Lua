@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local DataOutputStream = require("java.io.DataOutputStream")
+local DataOutputStream = require("java.io.DataOutputStream")
 -- local OutputStream = require("java.io.OutputStream")
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend

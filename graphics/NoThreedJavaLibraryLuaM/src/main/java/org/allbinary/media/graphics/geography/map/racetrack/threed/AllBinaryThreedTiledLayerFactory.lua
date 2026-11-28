@@ -114,11 +114,20 @@ end
 function AllBinaryThreedTiledLayerFactory.getInstance()
         return AllBinaryThreedTiledLayerFactory.instance_f
 end
+AllBinaryThreedTiledLayerFactory.getInstance__static = AllBinaryThreedTiledLayerFactory.getInstance
 
 
 -- throws Exception
 function AllBinaryThreedTiledLayerFactory:getInstance(raceTrackInfo, raceTrackData)
         error(require("java.lang.Exception").new("No Threed"), 0)
+end
+AllBinaryThreedTiledLayerFactory.getInstance__instance = AllBinaryThreedTiledLayerFactory.getInstance
+function AllBinaryThreedTiledLayerFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return AllBinaryThreedTiledLayerFactory.getInstance__static() end
+                
+    return AllBinaryThreedTiledLayerFactory.getInstance__instance(...)
+                
 end
 
 AllBinaryThreedTiledLayerFactory.instance_f = AllBinaryThreedTiledLayerFactory.new()

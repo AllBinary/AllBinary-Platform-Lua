@@ -29,7 +29,7 @@ local function java_real(class)
 end
 
 local BufferedInputStream = java_lazy("java.io.BufferedInputStream")
--- local ByteArrayInputStream = require("java.io.ByteArrayInputStream")
+local ByteArrayInputStream = java_lazy("java.io.ByteArrayInputStream")
 -- local IOException = require("java.io.IOException")
 local InputStream = java_lazy("java.io.InputStream")
 local Manager = java_lazy("javax.microedition.media.Manager")

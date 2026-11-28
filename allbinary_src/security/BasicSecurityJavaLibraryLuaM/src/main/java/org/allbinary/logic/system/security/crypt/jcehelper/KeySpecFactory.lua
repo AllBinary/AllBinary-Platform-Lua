@@ -115,6 +115,7 @@ end
 function KeySpecFactory.getInstance()
         return KeySpecFactory.instance_f
 end
+KeySpecFactory.getInstance__static = KeySpecFactory.getInstance
 
 
 function KeySpecFactory._jinit(self)
@@ -148,6 +149,14 @@ function KeySpecFactory:getInstance(algorithm, keyData)
             error(require("java.lang.RuntimeException").new(), 0)
         end
         if try_ok and try_error == "__jreturn" then return try_value end
+end
+KeySpecFactory.getInstance__instance = KeySpecFactory.getInstance
+function KeySpecFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return KeySpecFactory.getInstance__static() end
+                
+    return KeySpecFactory.getInstance__instance(...)
+                
 end
 
 KeySpecFactory.instance_f = KeySpecFactory.new()

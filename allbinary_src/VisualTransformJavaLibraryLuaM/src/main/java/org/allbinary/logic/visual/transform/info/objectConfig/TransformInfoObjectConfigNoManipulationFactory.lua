@@ -105,6 +105,7 @@ end
 function TransformInfoObjectConfigNoManipulationFactory.getInstance()
         return TransformInfoObjectConfigNoManipulationFactory.instance_f
 end
+TransformInfoObjectConfigNoManipulationFactory.getInstance__static = TransformInfoObjectConfigNoManipulationFactory.getInstance
 
 
 function TransformInfoObjectConfigNoManipulationFactory._jinit(self)
@@ -136,6 +137,14 @@ function TransformInfoObjectConfigNoManipulationFactory:getInstance(transformInf
             error(e, 0)
         end
         if try_ok and try_error == "__jreturn" then return try_value end
+end
+TransformInfoObjectConfigNoManipulationFactory.getInstance__instance = TransformInfoObjectConfigNoManipulationFactory.getInstance
+function TransformInfoObjectConfigNoManipulationFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return TransformInfoObjectConfigNoManipulationFactory.getInstance__static() end
+                
+    return TransformInfoObjectConfigNoManipulationFactory.getInstance__instance(...)
+                
 end
 
 TransformInfoObjectConfigNoManipulationFactory.instance_f = TransformInfoObjectConfigNoManipulationFactory.new()

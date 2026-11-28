@@ -137,7 +137,8 @@ end
 
 function ImageTool.main(args)
         EventQueue.invokeLater((function()
-            local o = ARunnable.new and ARunnable.new() or setmetatable({}, {__index = ARunnable})
+            local java_outer_self = self
+        local o = ARunnable.new and ARunnable.new() or setmetatable({}, {__index = ARunnable})
             
 
             function o:run()

@@ -130,7 +130,7 @@ end
 
 
 function Time:getlong()
-        return math.tointeger(self.timeLong // 1)
+        return require("allbinary_java").number_value(self.timeLong, "longValue")
 end
 
 

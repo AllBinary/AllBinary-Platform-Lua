@@ -181,7 +181,7 @@ function MineCountedPickedUpLayerInterfaceFactory:getNextInstance(hashtable, x, 
         local sourceLayerInterface = hashtable:get(self.smallIntegerSingletonFactory:getAt(0))
         local angle = hashtable:get(self.smallIntegerSingletonFactory:getAt(1))
         local scoreableInterface = sourceLayerInterface
-        return self.weaponLayerCircularStaticPool:getInstanceWeaponLayer(sourceLayerInterface, x, y, z, java_int(math.tointeger(angle // 1)), 0, self.weaponProperties, scoreableInterface)
+        return self.weaponLayerCircularStaticPool:getInstanceWeaponLayer(sourceLayerInterface, x, y, z, java_int(require("allbinary_java").number_value(angle, "intValue")), 0, self.weaponProperties, scoreableInterface)
 end
 java_overload(MineCountedPickedUpLayerInterfaceFactory, "getNextInstance", 4, function(java_a1, java_a2, java_a3, java_a4) return true and (java_a1 == nil or java_is(java_a1, "ABHashtable")) and type(java_a2) == "number" and type(java_a3) == "number" and type(java_a4) == "number" end)
 

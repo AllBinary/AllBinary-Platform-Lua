@@ -106,10 +106,19 @@ end
 function NullAIFactory:getInstance(hashtable, ownerLayerInterface, gameInput)
         return NullAIFactory.NULL_AI
 end
+NullAIFactory.getInstance__instance = NullAIFactory.getInstance
 
 
 function NullAIFactory.getInstance()
         return NullAIFactory.NULL_AI
+end
+NullAIFactory.getInstance__static = NullAIFactory.getInstance
+function NullAIFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return NullAIFactory.getInstance__static() end
+                
+    return NullAIFactory.getInstance__instance(...)
+                
 end
 
 NullAIFactory.NULL_AI = NullAI.new()

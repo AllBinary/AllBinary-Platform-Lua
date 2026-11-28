@@ -30,7 +30,7 @@ end
 
 local File = java_lazy("java.io.File")
 local FileInputStream = require("java.io.FileInputStream")
--- local FileNotFoundException = require("java.io.FileNotFoundException")
+local FileNotFoundException = java_lazy("java.io.FileNotFoundException")
 local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
 local AbFileNativeUtil = java_lazy("org.allbinary.logic.io.file.AbFileNativeUtil")
 

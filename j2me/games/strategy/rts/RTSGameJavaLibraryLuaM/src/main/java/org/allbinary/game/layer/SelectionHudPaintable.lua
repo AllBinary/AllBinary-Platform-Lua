@@ -156,7 +156,7 @@ function SelectionHudPaintable:_init_fields()
     if self.height == nil then self.height = 0 end
     self.name_f = StringUtil.getInstance().EMPTY_STRING
     self.animationInterface = NullAnimationFactory.getFactoryInstance():getInstance(0)
-    self.backgroundColor = math.tointeger(BasicColorFactory.getInstance().GREY // 1)
+    self.backgroundColor = require("allbinary_java").number_value(BasicColorFactory.getInstance().GREY, "intValue")
 end
 
 
@@ -239,7 +239,7 @@ java_overload(SelectionHudPaintable, "getName", 0)
 
 function SelectionHudPaintable:setBasicColorP(basicColor)
         self.basicColor = basicColor
-        self:setColor(math.tointeger(basicColor // 1))
+        self:setColor(require("allbinary_java").number_value(basicColor, "intValue"))
 end
 java_overload(SelectionHudPaintable, "setBasicColorP", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "BasicColor")) end)
 

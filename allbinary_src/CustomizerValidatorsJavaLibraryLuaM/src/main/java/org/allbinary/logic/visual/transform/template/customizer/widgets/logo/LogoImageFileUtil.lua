@@ -28,7 +28,7 @@ local function java_real(class)
     return class
 end
 
--- local ByteArrayInputStream = require("java.io.ByteArrayInputStream")
+local ByteArrayInputStream = java_lazy("java.io.ByteArrayInputStream")
 local AbFile = java_lazy("org.allbinary.logic.io.file.AbFile")
 local FileUtil = java_lazy("org.allbinary.logic.io.file.FileUtil")
 local Directory = java_lazy("org.allbinary.logic.io.file.directory.Directory")

@@ -172,8 +172,8 @@ function AllBinaryGameLayerManager._jinit(self, backgroundBasicColor, foreground
         self.backgroundBasicColor = backgroundBasicColor
         self.foregroundBasicColor = foregroundBasicColor
         local itemColorFactory = ItemColorFactory.getInstance()
-        itemColorFactory.INVERT_PAINT = math.tointeger(self.backgroundBasicColor // 1)
-        itemColorFactory.PAINT = math.tointeger(self.foregroundBasicColor // 1)
+        itemColorFactory.INVERT_PAINT = require("allbinary_java").number_value(self.backgroundBasicColor, "intValue")
+        itemColorFactory.PAINT = require("allbinary_java").number_value(self.foregroundBasicColor, "intValue")
         self.gameInfo = gameInfo
     return self
 end
@@ -204,7 +204,7 @@ java_overload(AllBinaryGameLayerManager, "getBackgroundBasicColor", 0)
 
 function AllBinaryGameLayerManager:setBackgroundBasicColor(backgroundBasicColor)
         self.backgroundBasicColor = backgroundBasicColor
-        ItemColorFactory.getInstance().INVERT_PAINT = math.tointeger(self.backgroundBasicColor // 1)
+        ItemColorFactory.getInstance().INVERT_PAINT = require("allbinary_java").number_value(self.backgroundBasicColor, "intValue")
 end
 java_overload(AllBinaryGameLayerManager, "setBackgroundBasicColor", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "BasicColor")) end)
 
@@ -217,7 +217,7 @@ java_overload(AllBinaryGameLayerManager, "getForegroundBasicColor", 0)
 
 function AllBinaryGameLayerManager:setForegroundBasicColor(foregroundBasicColor)
         self.foregroundBasicColor = foregroundBasicColor
-        ItemColorFactory.getInstance().PAINT = math.tointeger(self.foregroundBasicColor // 1)
+        ItemColorFactory.getInstance().PAINT = require("allbinary_java").number_value(self.foregroundBasicColor, "intValue")
 end
 java_overload(AllBinaryGameLayerManager, "setForegroundBasicColor", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "BasicColor")) end)
 

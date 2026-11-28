@@ -175,7 +175,7 @@ java_overload(SimpleTextPaintable, "updateMeasurement", 1, function(java_a1) ret
 function SimpleTextPaintable:paint(graphics)
         self.myFontProcessor:process(graphics)
         local width = self.displayInfoSingleton:getLast()[self.displayInfoSingleton.WIDTH + 1]
-        graphics:setColor(math.tointeger(self:getBasicColorP() // 1))
+        graphics:setColor(require("allbinary_java").number_value(self:getBasicColorP(), "intValue"))
         graphics:drawString(self.text, (((width) // (1 << (1)))) - self.topScoresWidth, self.fontHeight, self.anchor)
 end
 java_overload(SimpleTextPaintable, "paint", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "Graphics")) end)

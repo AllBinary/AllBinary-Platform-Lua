@@ -176,7 +176,7 @@ function StoreWorkFlowTag:process()
             local helperClass = getmetatable(self:getHelper())
             local method = helperClass:getMethod(self.commonStrings.PROCESS, nil)
             local result = method:invoke(self:getHelper(), nil)
-            do return "__jreturn", math.tointeger(result // 1) end
+            do return "__jreturn", require("allbinary_java").number_value(result, "intValue") end
         end)
         if not try_ok then
             local e = try_error

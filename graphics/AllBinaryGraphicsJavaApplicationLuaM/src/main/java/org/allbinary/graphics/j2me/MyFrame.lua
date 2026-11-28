@@ -925,7 +925,7 @@ java_overload(MyFrame, "save", 0)
 function MyFrame:onHashMap(hashMap)
         local angleIncrementInteger = hashMap:get(tostring(0))
         local totalRotationInteger = hashMap:get(tostring(1))
-        self:getSelectedWorkArea():autoRotate(math.tointeger(angleIncrementInteger // 1), math.tointeger(totalRotationInteger // 1))
+        self:getSelectedWorkArea():autoRotate(require("allbinary_java").number_value(angleIncrementInteger, "intValue"), require("allbinary_java").number_value(totalRotationInteger, "intValue"))
 end
 java_overload(MyFrame, "onHashMap", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "HashMap")) end)
 

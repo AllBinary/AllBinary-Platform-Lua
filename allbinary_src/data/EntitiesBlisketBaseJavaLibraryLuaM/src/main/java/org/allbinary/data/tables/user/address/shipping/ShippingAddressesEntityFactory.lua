@@ -100,6 +100,7 @@ end
 function ShippingAddressesEntityFactory.getInstance()
         return ShippingAddressesEntityFactory.instance_f
 end
+ShippingAddressesEntityFactory.getInstance__static = ShippingAddressesEntityFactory.getInstance
 
 
 function ShippingAddressesEntityFactory._jinit(self)
@@ -128,6 +129,14 @@ function ShippingAddressesEntityFactory:getInstance(userName)
             return nil
         end
         if try_ok and try_error == "__jreturn" then return try_value end
+end
+ShippingAddressesEntityFactory.getInstance__instance = ShippingAddressesEntityFactory.getInstance
+function ShippingAddressesEntityFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return ShippingAddressesEntityFactory.getInstance__static() end
+                
+    return ShippingAddressesEntityFactory.getInstance__instance(...)
+                
 end
 
 ShippingAddressesEntityFactory.instance_f = ShippingAddressesEntityFactory.new()

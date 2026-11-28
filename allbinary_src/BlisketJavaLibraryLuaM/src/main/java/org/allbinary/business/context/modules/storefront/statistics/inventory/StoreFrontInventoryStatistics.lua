@@ -78,7 +78,7 @@ function StoreFrontInventoryStatistics._jinit(self, storeFrontInterface)
         local size = itemVector:size()
         for index = 0, size - 1 do
             local itemInterface = itemVector:get(index)
-            local numberInStock = math.tointeger(tostring(itemInterface:getNumber()) // 1)
+            local numberInStock = require("allbinary_java").number_value(tostring(itemInterface:getNumber()), "intValue")
             self.totalNumberOfItems = self.totalNumberOfItems + numberInStock
             local itemPriceMoney = itemInterface:getPrice()
             itemPriceMoney:multiply(numberInStock)

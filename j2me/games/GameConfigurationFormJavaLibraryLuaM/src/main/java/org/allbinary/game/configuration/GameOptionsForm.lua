@@ -295,7 +295,7 @@ function GameOptionsForm:save(abeClientInformation)
         GameConfigurationUtil.getInstance():updateCompetitionValue()
         local hashtable = StdUtil.getInstance():createHashtable()
         local SCALE = GameConfigurationCentral.getInstance().SCALE
-        hashtable:put(SCALE:getName(), tostring(math.tointeger(SCALE:getValue() // 1)))
+        hashtable:put(SCALE:getName(), tostring(require("allbinary_java").number_value(SCALE:getValue(), "intValue")))
         local keyValuePersistance = GameConfigurationPersistanceSingleton.getInstance()
         keyValuePersistance:clear()
         keyValuePersistance:loadAll(abeClientInformation)
@@ -305,7 +305,7 @@ function GameOptionsForm:save(abeClientInformation)
         local integer = nil
         for index = 0, size2 - 1 do
             integer = list.objectArray[index + 1]
-            keyValuePersistance:delete(abeClientInformation, math.tointeger(integer // 1))
+            keyValuePersistance:delete(abeClientInformation, require("allbinary_java").number_value(integer, "intValue"))
         end
 end
 java_overload(GameOptionsForm, "save", 1, function(java_a1) return true and (java_a1 == nil or java_is(java_a1, "AbeClientInformationInterface")) end)

@@ -247,7 +247,7 @@ function MiniMapLayer:paintDots(graphics)
             while (function() index = index - 1 return index end)() >= 0 do
             point = localPositionList:get(index)
             basicColor = localBasicColorList:get(index)
-            graphics:setColor(math.tointeger(basicColor // 1))
+            graphics:setColor(require("allbinary_java").number_value(basicColor, "intValue"))
             self.animationInterface:setBasicColorP(basicColor)
             self.animationInterface:paintXY(graphics, point:getX() + self.x, point:getY() + self.y)
             end

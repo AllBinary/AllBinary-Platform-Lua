@@ -100,6 +100,7 @@ ContextConfigurationInterfaceFactory.javaClassName = "org.allbinary.business.con
 function ContextConfigurationInterfaceFactory.getInstance()
         return ContextConfigurationInterfaceFactory.instance_f
 end
+ContextConfigurationInterfaceFactory.getInstance__static = ContextConfigurationInterfaceFactory.getInstance
 
 
 function ContextConfigurationInterfaceFactory._jinit(self)
@@ -139,6 +140,14 @@ function ContextConfigurationInterfaceFactory:getInstance_j1(...)
     local java_a1 = ...
     if true and (java_a1 == nil or java_is(java_a1, "Document")) then return ContextConfigurationInterfaceFactory.getInstance_j1_1(self, ...) end
     return ContextConfigurationInterfaceFactory.getInstance_j1_2(self, ...)
+end
+ContextConfigurationInterfaceFactory.getInstance__instance = ContextConfigurationInterfaceFactory.getInstance
+function ContextConfigurationInterfaceFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return ContextConfigurationInterfaceFactory.getInstance__static() end
+                
+    return ContextConfigurationInterfaceFactory.getInstance__instance(...)
+                
 end
 
 ContextConfigurationInterfaceFactory.instance_f = ContextConfigurationInterfaceFactory.new()

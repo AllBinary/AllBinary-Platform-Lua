@@ -262,7 +262,7 @@ java_overload(KeyboardActionScriptInputJPanel, "updateKeys", 0)
 function KeyboardActionScriptInputJPanel:update()
         self:updateInputType()
         self:updateKeys()
-        self.keyActionScriptInputInterface:setTime(math.tointeger(tostring(self.timeJTextField:getText()) // 1))
+        self.keyActionScriptInputInterface:setTime(require("allbinary_java").number_value(tostring(self.timeJTextField:getText()), "intValue"))
         self.keyActionScriptInputInterface:log()
 end
 java_overload(KeyboardActionScriptInputJPanel, "update", 0)

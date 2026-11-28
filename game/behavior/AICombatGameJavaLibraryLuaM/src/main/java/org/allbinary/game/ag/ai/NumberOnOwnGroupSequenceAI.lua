@@ -173,7 +173,7 @@ function NumberOnOwnGroupSequenceAI:processAI(allBinaryLayerManager)
         local index = self:getIndex()
         if (self.numberOnSameTeam.n or #self.numberOnSameTeam) > index then
             local size = GroupLayerManagerListener.getInstance():getGroupSizeFromInterface(layerInterface)
-            if math.tointeger(self.numberOnSameTeam[index + 1] // 1) > size then
+            if require("allbinary_java").number_value(self.numberOnSameTeam[index + 1], "intValue") > size then
                 self:next()
             end
         end

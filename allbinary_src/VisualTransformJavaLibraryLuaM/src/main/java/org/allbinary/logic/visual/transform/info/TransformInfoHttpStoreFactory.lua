@@ -97,6 +97,7 @@ TransformInfoHttpStoreFactory.java_interfaces = function() return {TransformInfo
 function TransformInfoHttpStoreFactory.getInstance()
         return TransformInfoHttpStoreFactory.instance_f
 end
+TransformInfoHttpStoreFactory.getInstance__static = TransformInfoHttpStoreFactory.getInstance
 
 
 function TransformInfoHttpStoreFactory._jinit(self)
@@ -113,6 +114,14 @@ end
 -- throws Exception
 function TransformInfoHttpStoreFactory:getInstance(databaseHashMap, propertiesHashMap, pageContext)
         return TransformInfoHttpStore.new(databaseHashMap, propertiesHashMap, pageContext)
+end
+TransformInfoHttpStoreFactory.getInstance__instance = TransformInfoHttpStoreFactory.getInstance
+function TransformInfoHttpStoreFactory.getInstance(...)
+                
+    if select("#", ...) == 0 then return TransformInfoHttpStoreFactory.getInstance__static() end
+                
+    return TransformInfoHttpStoreFactory.getInstance__instance(...)
+                
 end
 
 TransformInfoHttpStoreFactory.instance_f = TransformInfoHttpStoreFactory.new()

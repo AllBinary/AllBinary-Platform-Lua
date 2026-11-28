@@ -28,8 +28,8 @@ local function java_real(class)
     return class
 end
 
--- local FileNotFoundException = require("java.io.FileNotFoundException")
--- local FileOutputStream = require("java.io.FileOutputStream")
+local FileNotFoundException = java_lazy("java.io.FileNotFoundException")
+local FileOutputStream = java_lazy("java.io.FileOutputStream")
 -- local IOException = require("java.io.IOException")
 -- local OutputStream = require("java.io.OutputStream")
 -- local FileChannel = require("java.nio.channels.FileChannel")

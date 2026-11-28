@@ -261,7 +261,7 @@ java_overload(GameDifficultyOptions, "getSelectedId", 0)
 
 function GameDifficultyOptions:getSelectedText()
         local choiceGroup = self:get(0)
-        local value = math.tointeger(tostring(choiceGroup:getString(choiceGroup:getSelectedIndex())) // 1)
+        local value = require("allbinary_java").number_value(tostring(choiceGroup:getString(choiceGroup:getSelectedIndex())), "intValue")
         return value
 end
 java_overload(GameDifficultyOptions, "getSelectedText", 0)

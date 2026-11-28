@@ -90,7 +90,7 @@ function BasicPlatormGeographicMapCellType._jinit(self, types)
         local type = 0
         for index = 0, size - 1 do
             typeAsInteger = (types:get(index))
-            type = math.tointeger(typeAsInteger // 1)
+            type = require("allbinary_java").number_value(typeAsInteger, "intValue")
             GeographicMapCellType.new(type, 0)
             typeArray[index + 1] = type
         end

@@ -186,7 +186,7 @@ function HighScoresPaintable:paint(graphics)
         self.myFontProcessor:process(graphics)
         local width = self.displayInfoSingleton:getLastWidth()
         local height = self.displayInfoSingleton:getLastHeight()
-        graphics:setColor(math.tointeger(self:getBasicColorP() // 1))
+        graphics:setColor(require("allbinary_java").number_value(self:getBasicColorP(), "intValue"))
         local heading = self.highScores:getHeading()
         local topScoresWidth = (((graphics:getFont():stringWidth(heading)) // (1 << (1))))
         local charHeight = self.charHeight
