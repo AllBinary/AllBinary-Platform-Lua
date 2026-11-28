@@ -32,14 +32,32 @@ local ByteArrayOutputStream = java_lazy("java.io.ByteArrayOutputStream")
 local File = java_lazy("java.io.File")
 -- local OutputStream = require("java.io.OutputStream")
 -- local StringBufferInputStream = require("java.io.StringBufferInputStream")
+-- local Objects = require("java.util.Objects")
+-- local Callable = require("java.util.concurrent.Callable")
+-- local Supplier = require("java.util.function.Supplier")
+-- local Source = require("javax.xml.transform.Source")
 -- local Templates = require("javax.xml.transform.Templates")
 -- local Transformer = require("javax.xml.transform.Transformer")
 -- local TransformerFactory = require("javax.xml.transform.TransformerFactory")
+-- local TransformerFactoryConfigurationError = require("javax.xml.transform.TransformerFactoryConfigurationError")
 -- local URIResolver = require("javax.xml.transform.URIResolver")
 -- local StreamResult = require("javax.xml.transform.stream.StreamResult")
 -- local StreamSource = require("javax.xml.transform.stream.StreamSource")
 local XmlDocumentHelper = java_lazy("org.allbinary.data.tree.dom.document.XmlDocumentHelper")
 local Document = java_lazy("org.w3c.dom.Document")
+
+-- Java library Throwable. tostring gives the message like Java getMessage.
+local function java_exception(className, message, cause)
+    if cause == nil and type(message) == "table" then
+        cause = message
+        message = tostring(message)
+    end
+    local exception = {className = className, message = message, cause = cause}
+    function exception:getMessage() return self.message end
+    function exception:getCause() return self.cause end
+    function exception:printStackTrace() print(debug.traceback(tostring(self))) end
+    return setmetatable(exception, {__tostring = function(self) if self.message ~= nil then return tostring(self.message) end return self.className end})
+end
 
 -- Sub interfaces: the interface tables a class implements (java_interfaces) and the interfaces they extend
 local function java_is_interface(interface, name, depth)
@@ -108,6 +126,127 @@ end
 XslHelper.__index = XslHelper
 XslHelper.className = "XslHelper"
 XslHelper.javaClassName = "org.allbinary.data.tree.dom.XslHelper"
+local Processor = {}
+    Processor.__index = Processor
+    Processor.className = "Processor"
+    Processor.javaClassName = "org.allbinary.data.tree.dom.XslHelper$Processor"
+    XslHelper.Processor = Processor
+
+    function Processor:_init_fields()
+        if self.name_f == nil then self.name_f = nil end
+        if self.factory == nil then self.factory = nil end
+    end
+    
+
+    function Processor._jinit(self, name, factory)
+        Processor._init_fields(self)
+            self.name_f = name
+            self.factory = factory
+        return self
+    end
+
+    function Processor.new(...)
+        local self = setmetatable({}, Processor)
+        Processor._jinit(self, ...)
+        return self
+    end
+    
+
+    function Processor.named(name, factoryClass)
+            return Processor.new(name, --[[ Otherwise - expression - LambdaExpr ]])
+    end
+    
+
+    function Processor.loadFactory(factoryClass)
+            return TransformerFactory.newInstance(factoryClass, require("java.lang.Thread").currentThread():getContextClassLoader())
+    end
+    
+
+    function Processor.newQuiXsltFactory()
+            local factoryClass = require("java.lang.System").getProperty(Processor.QUIXSLT_FACTORY_PROPERTY, ""):trim()
+            if (#factoryClass == 0) then
+                error(java_exception("TransformerFactoryConfigurationError", require("allbinary_java").to_string(require("allbinary_java").to_string("QuiXSLT requires a JAXP adapter on the classpath. Set ") .. require("allbinary_java").to_string(Processor.QUIXSLT_FACTORY_PROPERTY)) .. require("allbinary_java").to_string(" to its TransformerFactory class name.")), 0)
+            end
+            return Processor.loadFactory(factoryClass)
+    end
+    
+
+    function Processor:newTransformerFactory()
+            return self.factory:get()
+    end
+    
+
+    function Processor:toString()
+            return self.name_f
+    end
+    Processor.__tostring = function(self) return self:toString() end
+
+    Processor.QUIXSLT_FACTORY_PROPERTY = "allbinary.xslt.quixslt.factory"
+    Processor.GAE = Processor.named("GAE", "org.apache.xalan.processor.TransformerFactoryImpl")
+    Processor.JAXP = Processor.new("JAXP", --[[ Otherwise - expression - MethodReferenceExpr ]])
+    Processor.JDK_XSLTC = Processor.named("JDK_XSLTC", "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl")
+    Processor.SAXON = Processor.named("SAXON", "net.sf.saxon.TransformerFactoryImpl")
+    Processor.XALAN = Processor.named("XALAN", "org.apache.xalan.xsltc.trax.TransformerFactoryImpl")
+    Processor.QUIXSLT = Processor.new("QUIXSLT", --[[ Otherwise - expression - MethodReferenceExpr ]])
+
+-- Caches a single stylesheet and recompiles it when the selected processor changes. 
+    local TemplatesCache = {}
+    TemplatesCache.__index = TemplatesCache
+    TemplatesCache.className = "TemplatesCache"
+    TemplatesCache.javaClassName = "org.allbinary.data.tree.dom.XslHelper$TemplatesCache"
+    XslHelper.TemplatesCache = TemplatesCache
+
+    function TemplatesCache:_init_fields()
+        if self.resolver == nil then self.resolver = nil end
+        if self.processor == nil then self.processor = nil end
+        if self.templates == nil then self.templates = nil end
+    end
+    
+
+    function TemplatesCache._jinit(self, resolver)
+        TemplatesCache._init_fields(self)
+            self.resolver = resolver
+        return self
+    end
+
+    function TemplatesCache.new(...)
+        local self = setmetatable({}, TemplatesCache)
+        TemplatesCache._jinit(self, ...)
+        return self
+    end
+    
+
+    -- throws Exception
+    function TemplatesCache:get(stylesheet)
+            local selected = XslHelper.getInstance():getProcessor()
+            if rawequal(self.templates, nil) or not rawequal(self.processor, selected) then
+                local factory = selected:newTransformerFactory()
+                factory:setURIResolver(self.resolver)
+                self.templates = factory:newTemplates(stylesheet:call())
+                self.processor = selected
+            end
+            return self.templates
+    end
+
+
+function XslHelper:_init_fields()
+    self.processor = Processor.JAXP
+end
+
+
+function XslHelper:getProcessor()
+        return self.processor
+end
+
+
+function XslHelper:setProcessor(processor)
+        self.processor = Objects.requireNonNull(processor)
+end
+
+
+function XslHelper:newTransformerFactory()
+        return self.processor:newTransformerFactory()
+end
 
 
 function XslHelper.getInstance()
@@ -116,6 +255,7 @@ end
 
 
 function XslHelper._jinit(self)
+    XslHelper._init_fields(self)
     return self
 end
 
@@ -129,7 +269,7 @@ end
 -- throws Exception
 function XslHelper:translate_j3_1(xsltStreamSource, xmlStreamSource, streamResult)
         local try_ok, try_error, try_value = pcall(function()
-            local transformerFactory = TransformerFactory.newInstance()
+            local transformerFactory = self:newTransformerFactory()
             local transformer = transformerFactory:newTransformer(xsltStreamSource)
             transformer:transform(xmlStreamSource, streamResult)
             do return "__jreturn", streamResult:getOutputStream() end
@@ -146,7 +286,7 @@ end
 -- throws Exception
 function XslHelper:translate_j4(resolver, xsltStreamSource, xmlStreamSource, streamResult)
         local try_ok, try_error, try_value = pcall(function()
-            local tFactory = TransformerFactory.newInstance()
+            local tFactory = self:newTransformerFactory()
             tFactory:setURIResolver(resolver)
             local transformer = tFactory:newTransformer(xsltStreamSource)
             transformer:transform(xmlStreamSource, streamResult)

@@ -131,7 +131,7 @@ end
 
 -- throws Exception
 function AllBinaryMediaManager.createPlayer(resource)
-        if (string.sub(resource, 1, #Manager.TONE_DEVICE_LOCATOR) == Manager.TONE_DEVICE_LOCATOR) then
+        if not rawequal(resource, nil) and not rawequal(Manager.TONE_DEVICE_LOCATOR, nil) and (string.sub(resource, 1, #Manager.TONE_DEVICE_LOCATOR) == Manager.TONE_DEVICE_LOCATOR) then
             return AllBinaryMediaManager.createPlayerFromInputStream(ByteArrayInputStream.new(NullUtil.getInstance().NULL_BYTE_ARRAY), AudioContentTypeDataFactory.getInstance().MIME_AUDIO_TONE:getName())
         elseif Features.getInstance():isFeature(GameFeatureFactory.getInstance().SOUND) then
             local try_ok, try_error, try_value = pcall(function()

@@ -889,10 +889,7 @@ function DemoCanvas:run()
                 currentDisplayableFactory:setRunnable(demoGameRunnable)
                 currentDisplayableFactory:setMyCanvas(self)
             else
-                while self:isRunning() do
-                    self:run3()
-                end
-                self:end_()
+                self:runCanvasLoop()
             end
         end)
         if not try_ok then
@@ -903,6 +900,16 @@ function DemoCanvas:run()
         self.logUtil:putF(self.commonStrings.END_RUNNABLE, self, self.commonStrings.RUN)
 end
 java_overload(DemoCanvas, "run", 0)
+
+
+-- throws Exception
+function DemoCanvas:runCanvasLoop()
+        while self:isRunning() do
+            self:run3()
+        end
+        self:end_()
+end
+java_overload(DemoCanvas, "runCanvasLoop", 0)
 
 
 -- throws Exception

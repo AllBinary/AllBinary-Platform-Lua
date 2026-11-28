@@ -42,6 +42,7 @@ local StringReader = java_lazy("java.io.StringReader")
 local LogUtil = java_lazy("org.allbinary.logic.communication.log.LogUtil")
 local BooleanFactory = java_lazy("org.allbinary.logic.java.bool.BooleanFactory")
 local CharacterSetData = java_lazy("org.allbinary.logic.java.characters.CharacterSetData")
+local XslHelper = java_lazy("org.allbinary.data.tree.dom.XslHelper")
 local Document = java_lazy("org.w3c.dom.Document")
 local InputSource = java_lazy("org.xml.sax.InputSource")
 
@@ -147,8 +148,14 @@ end
 -- throws TransformerConfigurationException
 function XmlDocumentHelper:createTransformer_j2(indent, ignoreDeclaration)
         local booleanFactory = BooleanFactory.getInstance()
-        local transformerFactory = TransformerFactory.newInstance()
-        transformerFactory:setAttribute(self.INDENT_NUMBER, indent)
+        local transformerFactory = XslHelper.getInstance():newTransformerFactory()
+        local try_ok, try_error, try_value = pcall(function()
+            transformerFactory:setAttribute(self.INDENT_NUMBER, indent)
+        end)
+        if not try_ok then
+            local e = try_error
+            if type(e) ~= "table" then e = require("java.lang.RuntimeException").new(tostring(e)) end
+        end
         local transformer = transformerFactory:newTransformer()
         transformer:setOutputProperty(OutputKeys.ENCODING, CharacterSetData.getInstance().UTF_8)
         transformer:setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, (function() if ignoreDeclaration then return booleanFactory.YES else return booleanFactory.NO end end)())
@@ -198,7 +205,7 @@ function XmlDocumentHelper.toString(document)
             local domSource = DOMSource.new(document)
             local byteArrayOutputStream = require("java.io.ByteArrayOutputStream").new()
             local streamResult = StreamResult.new(byteArrayOutputStream)
-            local copyTransformerFactory = TransformerFactory.newInstance()
+            local copyTransformerFactory = XslHelper.getInstance():newTransformerFactory()
             local copyTransformer = copyTransformerFactory:newTransformer()
             copyTransformer:transform(domSource, streamResult)
             do return "__jreturn", tostring(byteArrayOutputStream) end
